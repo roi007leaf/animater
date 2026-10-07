@@ -15,6 +15,7 @@ export function catalogAuditEntries(){return [
  ...PF2E_WEAPONS.flatMap(item=>item.modes.map(mode=>({domain:'weapon',item,mode:mode.mode,build:options=>weaponRecipe(item,mode.mode,options),sound:WEAPON_SOUND_DESIGNS[`${item.id}:${mode.mode}`]}))),
  ...[...PF2E_CONDITIONS,...PF2E_EFFECTS].map(item=>({domain:item.kind,item,build:options=>stateRecipe(item,{catalog:options?.catalog})})),
  ...PF2E_CONDITIONS.flatMap(item=>Object.keys(item.damageVariants??{}).map(damageType=>({domain:'damageVariant',item,mode:damageType,build:options=>stateRecipe(item,{damageType,catalog:options?.catalog})}))),
+ ...PF2E_EFFECTS.flatMap(item=>Object.keys(item.elementVariants??{}).map(element=>({domain:'elementVariant',item,mode:element,build:options=>stateRecipe(item,{element,aura:null,catalog:options?.catalog})}))),
  ...PF2E_EFFECTS.flatMap(item=>Object.keys(item.auraDesign?.variants??{}).map(auraVariant=>({domain:'auraVariant',item,mode:auraVariant,build:options=>stateRecipe(item,{auraVariant,catalog:options?.catalog})}))),
  ...starterRecipes().map(recipe=>({domain:'starter',item:recipe,build:()=>recipe})),
  ...Object.keys(ORB_ELEMENTS).map(element=>({domain:'orb',item:{id:`chromatic-orb-${element}`,name:`Chromatic orb · ${ORB_ELEMENTS[element]}`},mode:element,build:()=>orbRecipe({element})})),

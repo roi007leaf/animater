@@ -42,10 +42,17 @@ export const FIRE_SPELL_DESIGNS=Object.fromEntries(Object.entries({
  'earths-bile':'fireBile','plasma-whirl':'firePlasma','rejuvenating-flames':'fireRejuvenating','fire-ray':'fireRayGround','sun-blade':'fireSunBlade',
 }).map(([slug,motif])=>[slug,[motif,'']]));
 
-export function fireSpellLayers(spell,{cast,fx,track,charge,copy}){
+// Descriptive stage labels where the media family name would only repeat the spell name.
+const STAGE_LABELS={
+ fireWhirling:{cast:'Flames begin to whirl',area:'Flame vortex rises',hit:'Burning ground',aura:'Hot wind spirals'},
+ fireWildfire:{cast:'Spark the blaze',area:'Wildfire spreads',aura:'Second flame front',hit:'Ash drifts'},
+ fireSkyrocket:{cast:'Light the fuse',hit:'Rocket climbs',area:'Burst overhead',aura:'Sparks scatter'},
+};
+export function fireSpellLayers(spell,{cast:castFx,fx,track,charge,copy}){
  if(!FIRE_SPELL_MOTIFS[spell.design?.motif])return null;
- const d=spell.design,name=spell.name;
- const mediaName=slot=>{const family=d.assets[slot]?.[0]?.split('.')[1]?.replaceAll('_',' ')??name;return family[0].toUpperCase()+family.slice(1);};
+ const d=spell.design,name=spell.name,labels=STAGE_LABELS[d.motif]??{};
+ const cast=label=>castFx(labels.cast??label);
+ const mediaName=slot=>{if(labels[slot])return labels[slot];const family=d.assets[slot]?.[0]?.split('.')[1]?.replaceAll('_',' ')??name;return family[0].toUpperCase()+family.slice(1);};
  const oneShot=slot=>!d.assets[slot]?.some(k=>/\.loop\.|_loop\.|\.flames\.(01|02)\./.test(k));
  const area=(slot,delay=charge,duration=3600,extra={})=>fx('template',slot,mediaName(slot),delay,duration,{scale:1,below:true,oneShot:oneShot(slot),...extra});
  const local=(slot,delay=charge,duration=2600,extra={})=>fx('cast',slot,mediaName(slot),delay,duration,{subject:'source',oneShot:oneShot(slot),...extra});

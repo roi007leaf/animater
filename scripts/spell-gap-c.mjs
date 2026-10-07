@@ -40,7 +40,7 @@ const A=(slot,asset,label,options={})=>({type:'area',slot,asset:art(asset),label
 const T=(asset,label,options={})=>({type:'travel',slot:'bolt',asset:art(asset),label,options});
 const F=(asset,label,options={})=>({type:'fan',slot:'bolt',asset:art(asset),label,options});
 const D=(label,options={})=>({type:'copy',label,options});
-const P=(motion,label,subject='source')=>({type:'pose',motion,label,subject});
+const P=(motion,label,subject='source',options={})=>typeof subject==='object'?{type:'pose',motion,label,subject:'source',options:subject}:{type:'pose',motion,label,subject,options};
 const E=(label,theme,nodes,options={})=>({label,theme,nodes,symbolic:true,castingOnly:true,...options});
 
 const REVIEWED = {
@@ -135,7 +135,7 @@ const REVIEWED = {
  'skeleton-army':E('Skeletal hulks arrive','void',[A('area','palm','Bony hands rise'),A('aura','skull','Skeletal legion')],{delivery:'emanation',previewArea:{type:'emanation',value:20},nativeArea:true,castingOnly:false}),
  'sky-signs':E('Atmospheric message invocation','wind',[S('hit','fog','Atmospheric medium',{offsetY:-.7,scale:1.5}),S('aura','script','Message symbols',{offsetY:-.7})]),
  'skyglass-prison':E('Glass air cage','wind',[B('hit','bubble','Hardened air enclosure',{scale:1.4}),B('aura','shimmer','Glass cage',{scale:1.15})]),
- sleep:E('Drowsy sleep','mind',[A('area','sleep','Drowsiness'),A('aura','moon','Sleep symbol',{scale:.5,opacity:.4})],{nativeArea:true}),
+ sleep:E('Drowsy sleep','mind',[A('area','sleep.cloud','Drowsiness'),A('aura','sleep.symbol','Sleep symbol',{scale:.5,opacity:.7,below:false})],{nativeArea:true}),
  'sleepless-season':E('Sleepless curse invocation','mind',[S('hit','gem','Amethyst pendant'),S('aura','eyes','Restless invocation',{offsetY:-.3})]),
  'slough-skin':E('Harmless skin shedding','transform',[S('hit','shimmer','New skin',{maskToken:true}),S('aura','dust','Skin sheds',{tween:[['position.y',0,.6,2600]],opacity:.5})]),
  'soft-landing':E('Buoyant landing field','force',[A('area','field','Buoyant field',{tween:[['scale.y',.5,1,2000]],opacity:.65}),A('aura','feather','Gentle landing',{opacity:.55})],{nativeArea:true}),
@@ -166,16 +166,16 @@ const REVIEWED = {
  'steel-fortifications':E('Metal fortification beams','metal',[S('hit','spiritual_weapon.spear','Angled metal beams',{rotation:45,scale:1.4}),S('aura','shield','Cover structure intent')]),
  'still-life-storage':E('Still life painting','illusion',[S('hit','script','Canvas composition'),S('aura','shimmer','Objects painted into scene')]),
  'stoke-the-heart':E('Fervor empowerment','mind',[B('hit','heart','Heart stoked',{scale:.65}),B('aura','sword','Empowered blows ready',{scale:.6,offsetX:.35})]),
- 'stop-heart':E('Heart squeeze','void',[B('hit','heart','Heart grasp',{scale:.6,tween:[['scale.x',1,.4,1800],['scale.y',1,.4,1800]]}),B('aura','palm','Cruel squeeze',{scale:.8})],{castingOnly:false}),
+ 'stop-heart':E('Heart squeeze','void',[B('hit','icon.heart','Heart grasp',{scale:.6,tintEnabled:true,colorize:true,tint:'#8a1f3a',tween:[['scale.x',1,.4,1800],['scale.y',1,.4,1800]]}),B('aura','palm','Cruel squeeze',{scale:.8})],{castingOnly:false}),
  'store-time':E('Stored reaction time','time',[S('hit','clock','Time stored',{scale:.7}),S('aura','gem','Reaction reserve',{scale:.5})]),
- stormburst:E('Lightning and wind storm','electricity',[S('cast','sound','Thunder voice'),A('area','static_electricity','Localized lightning'),A('aura','winds','Storm wind')],{nativeArea:true,castingOnly:false,symbolic:false}),
+ stormburst:E('Lightning and wind storm','electricity',[S('cast','sound','Thunder voice'),A('area','static_electricity','Localized lightning'),A('aura','winds','Storm wind'),A('hit','shatter.blue','Thunderclap',{below:false,scale:.75,delay:700})],{nativeArea:true,castingOnly:false,symbolic:false}),
  'string-of-fate':E('Shared fate thread','divination',[T('link','Fate thread'),B('hit','die','Shared fortune',{scale:.6}),S('aura','heart','Cherished bond',{scale:.55})]),
  'stumbling-curse':E('Haphazard movement curse','mind',[B('hit','rune','Trajectory curse',{below:true,scale:.65}),B('aura','dizzy_stars','Unsteady direction',{offsetY:.3,scale:.7})]),
  'subconscious-suggestion':E('Subconscious directive','mind',[B('hit','script','Directive planted',{offsetY:-.3,scale:.55}),B('aura','mind','Subconscious trigger',{offsetY:-.3,scale:.85})]),
  'sudden-shift':E('Veiled evasive step','illusion',[S('hit','shimmer','Veiling shimmer'),P('dodge','Evasive step'),S('aura','fog','Concealment veil',{opacity:.6})],{castingOnly:false}),
  'sudden-transposition':E('Teleportation wrench','teleport',[B('hit','portal','Teleportation potential'),B('aura','strands','Spatial wrench')],{delivery:'target'}),
  suffocate:E('Breath withdrawal','wind',[B('hit','winds','Breath draws out',{offsetY:-.2,tween:[['scale.x',1.2,.3,2300]]}),B('aura','mute','Breath deprivation',{scale:.5,offsetY:-.15})],{castingOnly:false}),
- 'summerland-spell':E('Weather tempering invocation','wind',[S('hit','sun','Temperate weather intent',{scale:.55,offsetY:-.4}),S('aura','winds','Weather invocation')]),
+ 'summerland-spell':E('Weather tempering invocation','wind',[S('hit','dancing_light.yellow','Temperate weather intent',{scale:.55,offsetY:-.4}),S('aura','winds','Weather invocation')]),
  'suns-fury':E('Glowing weapon flame','fire',[B('hit','fire','Weapon flame',{offsetX:.35,scale:.7}),B('aura','glint','Torch brightness',{offsetX:.35,scale:.7})],{symbolic:false}),
  sunburst:E('Searing sunlight globe','light',[A('area','sun','Sunlight globe'),A('hit','glint','Searing sunlight'),A('aura','fire','Solar heat',{opacity:.55})],{nativeArea:true,castingOnly:false}),
  'supreme-connection':E('Vine entity petition','plant',[S('hit','roots','Vines and branches'),S('aura','eyes','Entity petition',{scale:.55,offsetY:-.2})]),
@@ -198,7 +198,7 @@ const REVIEWED = {
  'telekinetic-rend':E('Violent telekinetic axis','force',[A('area','strands','Telekinetic axis',{tween:[['rotation',-45,45,1800]]}),A('aura','cracked','Rending pressure')],{nativeArea:true,castingOnly:false}),
  'telepathic-bond':E('Planetary mental bond','mind',[T('link','Telepathic bond'),B('hit','mind','Linked minds',{offsetY:-.3,scale:.6})]),
  telepathy:E('Two-way mental speech','mind',[S('hit','mind','Mental communication',{offsetY:-.3,scale:.65}),S('aura','script','Shared mental language',{offsetY:-.5,scale:.45})]),
- 'teleportation-circle':E('Destination circle invocation','teleport',[S('hit','rune','Destination inscription',{below:true}),S('aura','ward','Portal invocation',{below:true,scale:1.4})]),
+ 'teleportation-circle':E('Destination circle invocation','teleport',[S('hit','rune','Destination inscription',{below:true}),S('aura','ward','Circle runes',{below:true,scale:1.4}),S('cast','portal','Ground portal circle',{below:true,scale:1.7,opacity:.85})]),
  'tempest-touch':E('Clinging icy water','water',[B('hit','glob','Icy water clings'),B('aura','ice','Cold water mass',{scale:.85})],{castingOnly:false}),
  'temporal-distortion':E('Unpredictable time warp','time',[B('hit','clock','Temporal warp',{offsetY:-.3}),B('aura','shimmer','Mind and body distortion',{tween:[['scale.x',.7,1.2,1800]],opacity:.65})]),
  'temporal-twin':E('Recent past duplicate','time',[B('hit','clock','Recent past opens'),D('Temporal ally duplicate',{copies:1,copySpread:0,offsetX:1,opacity:.7}),B('aura','shimmer','Transient duplicate',{offsetX:1})]),
@@ -213,10 +213,10 @@ const REVIEWED = {
  'the-worlds-a-stage':E('Fate performance','sonic',[S('hit','music','Stage performance'),S('aura','script','Prepared dramatic script'),S('cast','die','Fate invocation',{scale:.5})]),
  'thermal-remedy':E('Restorative ingredients','healing',[B('hit','glob','Prepared food or drink',{scale:.65}),B('aura','heart','Restorative properties',{scale:.55})]),
  'thermal-stasis':E('Thermal equilibrium','ward',[B('hit','icon.snowflake.blue','Cold resistance',{offsetX:-.35,scale:.45}),B('aura','shield','Thermal protection'),B('cast','fire','Fire resistance',{subject:'targets',kind:'impact',offsetX:.35,scale:.45})]),
- 'thicket-of-knives':E('Phantom weapon arms','illusion',[D('Phantom weapon arms',{copies:3,copySpread:.25,opacity:.4}),S('hit','shimmer','Arm illusions',{offsetX:.35,scale:.85})]),
+ 'thicket-of-knives':E('Phantom weapon arms','illusion',[D('Phantom weapon arms',{copies:3,copySpread:.25,opacity:.4}),S('hit','shimmer','Arm illusions',{offsetX:.35,scale:.85}),S('aura','cloud_of_daggers.daggers','Phantom blades flicker',{offsetX:.35,scale:.55,opacity:.5})]),
  'thief-of-fortune':E('Benefit siphon','force',[T('link','Beneficial magic siphon',{travelOrigin:'target'}),S('hit','gem','Borrowed benefit',{scale:.65}),S('aura','strands','Shared magical energy')]),
  'thrall-charge':E('Thrall attack command','void',[P('dodge','Thrall charge gesture','targets'),B('hit','fists','Thrall Strike'),B('aura','skull','Thrall attack empowerment',{scale:.55})],{castingOnly:false}),
- 'thunderous-strike':E('Weapon sonic wave','sonic',[S('cast','staff','Two-handed weapon swing'),F('sound','Sonic vibration cone'),B('hit','fists','Weapon contact')],{nativeArea:true,castingOnly:false}),
+ 'thunderous-strike':E('Weapon sonic wave','sonic',[S('cast','melee_generic.slash.02','Two-handed weapon swing'),F('sound','Sonic vibration cone'),B('hit','fists','Weapon contact')],{nativeArea:true,castingOnly:false}),
  'tidal-surge':E('Moving tidal wave','water',[B('hit','water','Wave carries target'),B('aura','glob','Tidal force',{below:true})]),
  'time-beacon':E('Turn rewind beacon','time',[S('hit','clock','Temporal beacon',{below:true}),S('aura','glint','Beacon point',{below:true,scale:.6})]),
  'time-jump':E('Paused-time travel','time',[S('hit','clock','Time pauses'),P('dodge','Temporal movement gesture'),D('Temporal afterimage',{copies:1,copySpread:.3,opacity:.3}),S('aura','shimmer','Time resumes')],{castingOnly:false}),
@@ -234,7 +234,7 @@ const REVIEWED = {
  'traveling-workshop':E('Apparition tools','transform',[S('hit','tool','Ephemeral tools',{offsetX:.35,scale:.75}),S('aura','soul','Crafter apparition',{opacity:.45}),S('cast','script','Procedural guidance',{scale:.55,offsetY:-.4})]),
  'tree-of-seasons':E('Seasonal seedpod tree','plant',[S('hit','plants','Small tree sprouts'),S('aura','gem','Four seedpods',{repeats:4,repeatGap:300,scale:.45}),S('cast','leaf','Tree foliage')]),
  'tremor-signs':E('Ground vibration message','earth',[S('cast','wave','Tremor message',{below:true}),T('link','Ground vibration path',{below:true}),B('hit','sound','Received tremors',{below:true,scale:.75})]),
- 'tricksters-mirrors':E('One distorted mirror','illusion',[D('Reflected image',{copies:1,copySpread:0,offsetX:.7,opacity:.5}),S('hit','bubble','First mirror',{offsetX:.7,scale:.7}),S('aura','shimmer','Distorted reflection',{offsetX:.7,scale:.75})]),
+ 'tricksters-mirrors':E('One distorted mirror','illusion',[D('Reflected image',{copies:1,copySpread:0,offsetX:.7,opacity:.5}),S('hit','shimmer','First mirror',{offsetX:.7,scale:.8}),S('aura','glint','Mirror glint',{offsetX:.7,scale:.5})]),
  'tricksters-twin':E('Phantasmal caster twin','illusion',[D('Caster twin',{subject:'source',copies:1,copySpread:0,offsetX:1,opacity:.65}),S('hit','shimmer','Twin appearance',{offsetX:1})]),
  'trim-the-blight':E('Shimmering blight purge','spirit',[F('shimmer','Shimmering cleansing energy',{fanCount:7}),S('cast','leaf','Blight trimming intent',{opacity:.55})],{nativeArea:true}),
  'true-target':E('Future attack visions','divination',[B('hit','eyes','Future defenses',{offsetY:-.35,scale:.55}),B('aura','die','Best possible attacks',{scale:.65}),B('cast','script','Shared future vision',{subject:'targets',kind:'impact',offsetY:-.5,scale:.5})]),
@@ -243,8 +243,8 @@ const REVIEWED = {
  'turbulent-tide':E('Weapon water surge','water',[S('cast','glob','Weapon water sheath',{offsetX:.35,scale:.7}),B('hit','fists','Improvised Strike'),S('aura','water','Sheath surges outward',{scale:1.6})],{castingOnly:false}),
  'umbral-extraction':E('Shadow spell pocket','shadow',[S('hit','dark','Ephemeral shadow pocket',{offsetX:.25,scale:.8}),S('aura','gem','Empty spell reserve',{scale:.6})]),
  'umbral-graft':E('Shadow benefit graft','shadow',[S('hit','shimmer','Shadow reflection'),S('aura','dark','Spell storage prepared'),S('cast','palm','Steal prepared',{offsetX:.25,scale:.55})]),
- 'umbral-mindtheft':E('Shadow knowledge pocket','shadow',[S('hit','script','Lore storage prepared',{offsetY:-.35}),S('aura','dark','Shadow mind pocket',{offsetY:-.25,scale:.75})]),
- 'unbearable-cacophony':E('Sound amplification invocation','sonic',[S('hit','sound','Sound amplification'),S('aura','note','Cacophony invocation',{scale:.7})]),
+ 'umbral-mindtheft':E('Shadow knowledge pocket','shadow',[S('hit','script','Lore storage prepared',{offsetY:-.35,tintEnabled:true,colorize:true,tint:'#8f6bc7'}),S('aura','dark','Shadow mind pocket',{offsetY:-.25,scale:.75})]),
+ 'unbearable-cacophony':E('Sound amplification invocation','sonic',[S('hit','sound','Sound amplification',{scale:1.6}),S('aura','note','Cacophony invocation',{scale:.7}),S('cast','shatter.blue','Sound becomes damaging',{scale:1.4,delay:900})]),
  'unblinking-flame-emblem':E('Fiery tracking sigil','fire',[B('hit','ward','Fiery sigil',{scale:.65}),B('aura','fire','Flame emblem',{scale:.75}),B('cast','eyes','Projected sight',{subject:'targets',kind:'impact',offsetY:-.3,scale:.45})]),
  'unblinking-flame-revelation':E('Revealing foe flame','fire',[B('hit','fire','Revealing flame'),B('aura','eyes','Illusions examined',{scale:.55,offsetY:-.3})]),
  'unbounded-sphere':E('Looping planar boundary','teleport',[A('area','bubble','Unbounded boundary'),A('aura','strands','Looping spatial threads',{opacity:.6})],{nativeArea:true}),
@@ -262,17 +262,17 @@ const REVIEWED = {
  'unfettered-movement':E('Hindrance repulsion','ward',[B('hit','chain','Hindrance releases',{scaleOut:.2,scaleOutDuration:2600}),B('aura','shield','Movement protection',{opacity:.6})]),
  'unfettered-pack':E('Environmental freedom','plant',[B('hit','leaf','Vegetation hindrance fades',{below:true,scaleOut:.2,scaleOutDuration:2600}),B('aura','winds','Travel freedom',{below:true})]),
  'unfolding-wind-buffet':E('Air unarmed buffet','wind',[S('cast','winds','Air surrounds fists'),B('hit','fists','Three unarmed Strikes',{repeats:3,repeatGap:500}),B('aura','winds','Buffeting air')],{castingOnly:false}),
- 'unfolding-wind-crash':E('Airborne landing crash','wind',[S('cast','winds','Jump air'),P('levitate','Jump lift'),A('hit','cracks','Landing force'),A('area','wave','Landing shockwave')],{delivery:'burst',previewArea:{type:'burst',value:20},nativeArea:true,castingOnly:false}),
+ 'unfolding-wind-crash':E('Airborne landing crash','wind',[S('cast','winds','Jump air'),P('leap','High jump',{distance:.3,jumpHeight:2.4,duration:2400,intensity:.6,motionRange:'distance'}),A('hit','cracks','Landing force'),A('area','wave','Landing shockwave')],{delivery:'burst',previewArea:{type:'burst',value:20},nativeArea:true,castingOnly:false}),
  'unfolding-wind-rush':E('Rushing wind travel','wind',[S('hit','winds','Rushing wind'),P('dodge','Wind travel gesture'),S('aura','winds','Wind wake',{scale:1.5})],{castingOnly:false}),
  'unholy-army':E('Unholy legion invocation','void',[S('hit','void','Legions rise'),S('aura','skull','Unchosen squadron intent',{scale:.65})]),
  unity:E('United defense','ward',[T('link','United defensive bond'),B('hit','shield','Shared saving defense'),S('aura','holy','Caster defense')]),
  'unravel-existence':E('Reality tearing','force',[A('area','strands','Reality unravels',{scaleOut:.3,scaleOutDuration:3000}),A('aura','dust','Substance fragments',{opacity:.55})],{nativeArea:true,castingOnly:false}),
  'unrelenting-observation':E('Perfect tracking sensor','divination',[B('hit','eyes','Tracked subject',{offsetY:-.3,scale:.55}),B('aura','shimmer','Ghostly tracked image'),D('Observed silhouette',{copies:1,copySpread:0,opacity:.35})],{delivery:'target'}),
  'unsealing-of-secrets':E('Spirit writing petition','spirit',[B('hit','script','Blank parchment'),B('aura','soul','Writing spirit invoked',{opacity:.5})]),
- 'unseen-heralds':E('Illusory mouth invocation','sonic',[S('hit','mute','Illusory mouths prepared',{scale:.7}),S('aura','sound','Voice transmission intent')]),
+ 'unseen-heralds':E('Illusory mouth invocation','sonic',[S('hit','wave','Illusory mouths speak',{scale:.7}),S('aura','sound','Voice transmission intent')]),
  'unsettling-knowledge':E('Hidden knowledge shared','mind',[B('hit','script','Unsettling knowledge',{offsetY:-.3,scale:.65}),B('aura','horror','Upsetting insight',{offsetY:-.3,scale:.7})]),
  'utter-destruction':E('Destructive screech','sonic',[F('sound','Destructive voice cone',{fanCount:5}),S('cast','skull','Void-laced voice',{scale:.55})],{nativeArea:true,castingOnly:false}),
- 'vampiric-exsanguination':E('Blood and life withdrawal','blood',[A('area','detect_magic.cone','Life withdrawal area',{opacity:.15}),B('hit','blood','Blood draws from victims',{subject:'targets'}),T('link','Life draws to caster',{travelOrigin:'target'}),S('aura','inward','Life gathers')],{nativeArea:true,castingOnly:false}),
+ 'vampiric-exsanguination':E('Blood and life withdrawal','blood',[A('area','detect_magic.cone','Life withdrawal area',{opacity:.4}),B('hit','blood','Blood draws from victims',{subject:'targets'}),T('link','Life draws to caster',{travelOrigin:'target'}),S('aura','inward','Life gathers')],{nativeArea:true,castingOnly:false}),
  'vampiric-revelry':E('Blood life siphon','blood',[A('area','blood','Blood and life essence'),S('hit','inward','Life energy gathers'),S('aura','heart','Life reserve',{scale:.6})],{delivery:'emanation',previewArea:{type:'emanation',value:20},nativeArea:true,castingOnly:false}),
  'vanishing-tracks':E('Obscured tracks','illusion',[B('hit','footprints','Tracks fade',{below:true,scaleOut:.2,scaleOutDuration:2600}),B('aura','dust','Track concealment',{below:true,opacity:.6})]),
  'veil-of-broken-reality':E('Imperceptible passing time','time',[A('area','shimmer','Reality veil'),A('aura','clock','Hidden time passage',{opacity:.45})],{delivery:'burst',previewArea:{type:'burst',value:528000},nativeArea:true}),
@@ -293,11 +293,11 @@ const REVIEWED = {
  'wails-of-the-damned':E('Damned souls lament','void',[S('cast','sound','Lament howl'),A('area','skull','Damned souls'),A('aura','wave','Lament carries')],{nativeArea:true,castingOnly:false}),
  'waking-dream':E('Vivid waking dreams','mind',[B('hit','sleep','Dreamlike imagery'),B('aura','horror','Imagined threats',{offsetY:-.35,scale:.6})]),
  'wall-of-fire':E('Blazing fire wall','fire',[A('area','fireWall','Vertical flame wall')],{delivery:'line',pattern:'lineBarrier',previewArea:{type:'line',value:60,width:5},symbolic:false}),
- 'wall-of-flesh':E('Living flesh wall','blood',[A('area','blood','Living flesh segments'),A('aura','heart','Living tissue',{scale:.5})],{delivery:'line',areaLayout:'tiles',previewArea:{type:'line',value:30,width:3}}),
+ 'wall-of-flesh':E('Living flesh wall','blood',[A('area','blood','Living flesh segments',{scale:1.25}),A('aura','liquid.splash_side02.red','Living tissue',{scale:.9,opacity:.7})],{delivery:'line',areaLayout:'tiles',previewArea:{type:'line',value:30,width:3}}),
  'wall-of-force':E('Invisible force wall','force',[A('area','forceWall','Invisible force barrier',{opacity:.45})],{delivery:'line',pattern:'lineBarrier',previewArea:{type:'line',value:50,width:1},symbolic:false}),
  'wall-of-ice':E('Opaque ice wall','cold',[A('area','iceLine','Ice barrier')],{delivery:'line',previewArea:{type:'line',value:60,width:1}}),
  'wall-of-mirrors':E('Reflective glass wall','illusion',[A('area','shimmer','Reflective glass segments'),A('aura','bubble','Solid glass',{scale:.8,opacity:.5})],{delivery:'line',areaLayout:'tiles',previewArea:{type:'line',value:50,width:1}}),
- 'wall-of-radiance':E('Brilliant light wall','light',[A('area','glint','Brilliant light segments')],{delivery:'line',areaLayout:'tiles',previewArea:{type:'line',value:60,width:1}}),
+ 'wall-of-radiance':E('Brilliant light wall','light',[A('area','energy_wall.01.25x05ft.01.complete','Brilliant light wall',{tintEnabled:true,colorize:true,tint:'#fff1b8',opacity:.75})],{delivery:'line',pattern:'lineBarrier',previewArea:{type:'line',value:60,width:1},symbolic:false}),
  'wall-of-shadow':E('Pure darkness wall','shadow',[A('area','dark','Darkness sheet')],{delivery:'line',areaLayout:'tiles',previewArea:{type:'line',value:60,width:1}}),
  'wall-of-shrubs':E('Regional shrub line','plant',[A('area','plants','Bushes rise'),A('aura','leaf','Shrub foliage')],{delivery:'line',areaLayout:'tiles',previewArea:{type:'line',value:60,width:1}}),
  'wall-of-stone':E('Solid stone wall','earth',[A('area','rock','Stone segments'),A('aura','cracks','Stone joins',{opacity:.5})],{delivery:'line',areaLayout:'tiles',previewArea:{type:'line',value:120,width:1}}),
@@ -314,7 +314,7 @@ const REVIEWED = {
  waterproof:E('Hydrophobic surface','water',[B('hit','bubble','Hydrophobic coating',{maskToken:true}),B('aura','water','Water repelled',{scaleOut:1.4,scaleOutDuration:2500})]),
  'waters-of-prediction':E('Still water divination','divination',[B('hit','glob','Still natural pool',{below:true}),B('aura','eyes','Collective future petition',{below:true,scale:.55})]),
  'wave-of-despair':E('Despair wave','mind',[F('fear','Despair symbols',{fanCount:5}),S('cast','heart','Despair invocation',{scale:.5})],{nativeArea:true}),
- 'weapon-of-judgment':E('Hovering judgment weapon','spirit',[B('hit','sword','Judgment weapon',{offsetY:-.8,scale:1.2}),B('aura','holy','War or peace decree',{offsetY:-.4,scale:.55})]),
+ 'weapon-of-judgment':E('Hovering judgment weapon','spirit',[B('hit','spiritual_weapon.longsword.01.spectral','Judgment weapon',{offsetY:-.8,scale:1.2}),B('aura','holy','War or peace decree',{offsetY:-.4,scale:.55})]),
  web:E('Sticky web terrain','web',[A('area','web','Sticky web'),A('aura','web','Web strands',{opacity:.5})],{nativeArea:true,symbolic:false}),
  'web-of-eyes':E('Shared vision sensors','divination',[B('hit','eyes','Sensor above eyes',{scale:.4,offsetY:-.45}),B('aura','strands','Vision sharing link',{scale:.75})]),
  'whispers-of-a-dead-goddess':E('Goddess whispers','sonic',[A('area','sound','Mysterious whispers'),A('aura','skull','Dead goddess voice',{scale:.5,opacity:.5})],{nativeArea:true}),
@@ -326,7 +326,7 @@ const REVIEWED = {
  'winning-streak':E('Energizing fortune','divination',[B('hit','die','Good fortune',{scale:.6}),B('aura','winds','Energized readiness',{below:true})]),
  'winters-breath':E('Tea ceremony','water',[S('hit','glob','Freshly brewed tea',{scale:.6}),S('aura','smoke','Tea steam',{offsetY:-.2}),S('cast','leaf','Tea ingredients',{scale:.65})]),
  'wisdom-of-the-winds':E('Air spirit guidance','wind',[S('hit','winds','Air spirits asked'),S('aura','script','Guidance intent',{offsetY:-.3,scale:.65})]),
- wish:E('Declared desire invocation','force',[B('hit','sound','Wish declared'),B('aura','strands','Reality fabric petition')]),
+ wish:E('Declared desire invocation','force',[B('hit','sound','Wish declared',{scale:1.4}),B('aura','strands','Reality fabric petition',{scale:1.6}),S('cast','portals.vertical','Reality opens',{scale:1.8,opacity:.75,below:true}),S('area','twinkling_stars','Reality rewrites',{scale:2,opacity:.8,delay:1100})]),
  'wish-market':E('Ghostly merchant contracts','spirit',[S('hit','soul','Ghostly merchants'),S('aura','script','Offered contracts',{scale:.75}),S('cast','palm','Offer accepted',{scale:.65})]),
  'wish-twisted-form':E('Defenses unravel','mind',[B('hit','cracked','Defenses weakened',{scale:.65}),B('aura','strands','Strengths twisted',{scaleOut:.4,scaleOutDuration:2500})]),
  'withering-grasp':E('Substance erosion touch','void',[B('hit','palm','Withering touch',{scale:.7}),B('aura','dust','Organic decay',{maskToken:true,saturation:-1})],{castingOnly:false}),
@@ -367,14 +367,20 @@ export function gapCLayers(spell,{fx,copy,pose,track,subject}){
  const slug=spell.design?.motif?.replace(/^gapC-/,'');
  const row=REVIEWED[slug];
  if(!row)return null;
- return row.nodes.map((node,index)=>{
+ // A projectile fan alone does not show the native cone; add its footprint.
+ const nodes=row.nodes.some(n=>n.type==='fan')&&!row.nodes.some(n=>n.slot==='area')&&spell.delivery==='cone'
+  ?[...row.nodes,A('area','detect_magic.cone','Cone footprint',{opacity:.4,delay:0,fadeOut:300})]:row.nodes;
+ return nodes.map((node,index)=>{
   const extra={...node.options};
   const delay=extra.delay??index*450;
   delete extra.delay;
   const duration=Math.max(4500,(spell.design.mediaTiming?.[node.slot]?.duration??0)/(extra.playbackRate??1));
   if(extra.tween){extra.tracks=extra.tween.map(([property,from,to,span])=>track(property,from,to,span));delete extra.tween;}
   if(node.type==='copy')return copy(node.label,delay,4500,{...extra});
-  if(node.type==='pose')return pose(node.motion,node.label,delay,1600,node.subject,.25,.35);
+  if(node.type==='pose'){
+   const {duration=1600,distance=.25,intensity=.35,...motion}=extra;
+   return {...pose(node.motion,node.label,delay,duration,node.subject,distance,intensity),...motion};
+  }
   if(node.type==='travel')return fx('travel','bolt',node.label,delay,duration,{scale:.6,fadeIn:150,fadeOut:450,...extra});
   if(node.type==='fan')return fx('projectile','bolt',node.label,delay,duration,{travelDestination:'area',areaLayout:'fan',fanCount:5,scale:.45,fadeIn:0,fadeOut:400,...extra});
   if(node.type==='area')return fx('template',node.slot,node.label,delay,duration,{scale:1,below:true,opacity:.9,fadeIn:400,fadeOut:700,areaLayout:row.areaLayout??'fit',...extra});

@@ -5,6 +5,7 @@ import { REVIEWED_DELIVERY } from "../scripts/spell-delivery-designs.mjs";
 import { DEEP_SPELL_MOTIFS } from "../scripts/spell-deep-designs.mjs";
 import {SPECIFIC_FALLBACK_MOTIFS,describedMaterialArea} from '../scripts/spell-specific-fallbacks.mjs';
 import {GAP_SPELL_MOTIFS} from '../scripts/spell-gap-designs.mjs';
+import {refineSpellMotif} from '../scripts/spell-fix-designs.mjs';
 import {
   AUTHORED_SPELL_DESIGNS,
   SPELL_MOTIFS,
@@ -310,6 +311,8 @@ export function analyzeSpellDescription(item, direction) {
     )
       motif = "mentalJolt";
     else motif = themeMotif[direction.theme] ?? "generic";
+    // Split shared clusters (wards, senses, polymorphs) by element and form.
+    motif = refineSpellMotif(motif, { name: item.name, traits: item.system.traits.value, theme: direction.theme });
   }
   // Directionally incompatible decorations remain native base geometry cues.
   if (
@@ -329,7 +332,7 @@ export function analyzeSpellDescription(item, direction) {
     ) &&
     !(
       direction.delivery === "point" &&
-      ["arrival", "hoveringFlame"].includes(SPELL_MOTIFS[motif].pattern)
+      ["arrival", "hoveringFlame", "fix:summon"].includes(SPELL_MOTIFS[motif].pattern)
     )
   )
     motif = "generic";

@@ -20,12 +20,14 @@ const ROOTS={
  shatter:'shatter',bell:'toll_the_dead.green.bell',spirit:'spirit_guardians.blueyellow.ring',void:'sphere_of_annihilation',
  fireCone:'burning_hands',waterCone:'water_splash.cone.01.blue',force:'energy_field.02.above.blue',wall:'wall_of_force',
  muzzle:'muzzle_flash',halberd:'halberd',claw:'claws',bite:'bite',grease:'grease',boon:'on_token_buff.001.001.white',
+ toadPrints:'footprints.monster.grey,footprints.shoe.grey',toadSwarm:'particles.002.001.complete.many.greenyellow,particles.002.001.complete.many.blue',
+ arcaneBlast:'explosion.01.purple,explosion.02.blue',daggers:'cloud_of_daggers.daggers',
 };
 
 // slug | graph | main stage | material | supporting material | connecting material | flags
 // F: native area, C: preparation only, X: caster-local, S: symbolic artwork.
 const rows=`
-500-toads|hopping|Hopping multitude|feet|dust||FS
+500-toads|hopping|Hopping multitude|toadPrints|toadSwarm||FS
 aberrant-whispers|whisperArea|Unknown phrases|voice|words||FS
 accelerated-decomposition|wither|Body withers|smoke|dust||S
 access-lore|lore|Divine lore|words|eye||CXS
@@ -47,7 +49,7 @@ animus-mine|mentalMine|Mental mine armed|crystal|words||CXS
 annunciation-of-the-outer-gate|invitation|Ancient invitation|voice|words|link|FS
 antimagic-artifice|objectSeal|Suppression trigger|rune|mute||CS
 aqueous-orb|waterOrb|Water sphere|bubble|water||S
-arcane-explosion|pureMagic|Body becomes magic|sphere|force||FXS
+arcane-explosion|pureMagic|Body becomes magic|sphere|arcaneBlast||FXS
 arcane-weaving|weave|Shared spell weaving|strand|words|link|CS
 arms-of-nature|woodShape|Wooden armament|leaves|vine||S
 army-of-shadows|shadowRitual|Shadows invoked|dark|smoke||FCS
@@ -55,7 +57,7 @@ artistic-recollection|paint|Painted recollection|shine|sparkles||S
 ash-strewn-ending|pyreRitual|Mythic pyre|fire|dust|wind|FCS
 asmodean-wager|contract|Wager terms|words|die|link|CXS
 aspirational-state|spiritRitual|Collective aspiration|strand|eye||CXS
-astral-labyrinth|maze|Astral maze|web|strand||FS
+astral-labyrinth|maze|Astral maze|mesh|strand||FS
 astral-projection|astralRitual|Astral essence|strand|portal||CS
 atone|prayer|Penitent prayer|words|star||CS
 attacked-from-within|anguish|Spirit anguish|horror|eye||S
@@ -206,7 +208,7 @@ dance-of-darkness|darkDance|Darkness dance|dark|smoke||FCXS
 darkened-eyes|darkEyes|Darkness in vision|eye|smoke||CS
 darkened-sight|darkVision|Darkness sight|eye|glint||CS
 dawnflowers-light|goldLight|Golden revealing light|glint|eye||FCS
-daydreamers-curse|daydreamCurse|Attention drifts|sleepCloud|eye||CS
+daydreamers-curse|daydreamCurse|Attention drifts|shine|eye||CS
 dazzling-flash|symbolFlash|Religious symbol flash|star|glint||FS
 death-knell|snuffLife|Life snuffed|heart|skull||S
 deaths-call|deathVitality|Death invigorates|skull|in||CXS
@@ -321,7 +323,7 @@ feast-of-supplication|cookContest|Patron cooking contest|plume|notes|words|CXS
 feral-shades|predatorMist|Predatory gray mist|plume|claw||FS
 fey-abeyance|ironBells|Cold iron bell ward|bell|rune||CXS
 field-of-life|lifeField|Life energy field|heart|glint||FCS
-field-of-razors|wireField|Barbed metal thicket|web|glint||FCS
+field-of-razors|wireField|Barbed metal thicket|daggers|glint||FCS
 fiendish-rift|fiendRift|Fiendish tear opens|portalFloor|tentacles||FS
 filter-air|lungFilter|Inhaled air filtered|wind|smoke||CX
 fireproof|fireResistObject|Object heat ward|shieldIcon|glint||CS
@@ -330,6 +332,8 @@ fireproof|fireResistObject|Object heat ward|shieldIcon|glint||CS
  return {slug,graph,label,h:ROOTS[h],a:ROOTS[a],b:ROOTS[b],flags};
 });
 
+// Projectile-fan cones also show a faint native cone footprint (area slot).
+const FAN_GRAPHS=new Set(['coneFan','boneFan','radiationCone','timeCone','unselectedCone','colorsCone','predatorMist','windCone','sonicCone','eagleCry','lifeCone','beautyCone','symbolFlash','dualBreath','unselectedBreath']);
 export const GAP_A_MOTIFS=Object.fromEntries(rows.map(r=>[`gapA-${r.slug}`,{
  label:r.label,pattern:`gapA-${r.graph}`,cast:r.h,hit:r.h,aura:r.a,area:r.h,bolt:r.b,assetIntent:r.label,
  nativeArea:r.flags.includes('F'),castingOnly:r.flags.includes('C'),symbolic:r.flags.includes('S'),
@@ -345,6 +349,7 @@ for(const r of rows){
  if(['waterCone','annihilationCone'].includes(r.graph)){motif.cast=r.a;motif.hit=r.a;}
  if(r.graph==='waterCone')motif.theme='water';
  if(r.graph==='annihilationCone')motif.theme='fire';
+ if(FAN_GRAPHS.has(r.graph))motif.area='detect_magic.cone';
 }
 export const GAP_A_DESIGNS=Object.fromEntries(rows.map(r=>[r.slug,[`gapA-${r.slug}`,'']]));
 const reviewSpecs=Object.fromEntries(rows.map(r=>[r.slug,r]));
@@ -375,7 +380,14 @@ for(const [slug,previewArea] of Object.entries(PREVIEW_AREAS))Object.assign(GAP_
  ...(previewArea.type==='line'?{areaLayout:'tiles'}:{}),
 });
 
-export function gapALayers(spell,{fx,copy,track,subject,pattern}){
+export function gapALayers(spell,helpers){
+ const layers=gapAGraphLayers(spell,helpers);
+ const r=layers&&(reviewSpecs[spell.slug?.replace(/-legacy$/,'')]??rows.find(x=>`gapA-${x.slug}`===spell.design.motif));
+ if(!layers||!FAN_GRAPHS.has(r.graph)||spell.delivery!=='cone'||layers.some(s=>s.kind==='template'))return layers;
+ const duration=Math.max(4200,spell.design.mediaTiming?.area?.duration??0)+350;
+ return [...layers,helpers.fx('template','area','Cone footprint',0,duration,{scale:1,below:true,opacity:.4,fadeIn:300,fadeOut:300})];
+}
+function gapAGraphLayers(spell,{fx,copy,track,subject,pattern}){
  const r=reviewSpecs[spell.slug?.replace(/-legacy$/,'')]??rows.find(x=>`gapA-${x.slug}`===spell.design.motif);
  if(!r||!pattern.startsWith('gapA-'))return null;
  const who=r.flags.includes('X')?'source':subject;
@@ -392,7 +404,7 @@ export function gapALayers(spell,{fx,copy,track,subject,pattern}){
  const tinted=(tint)=>({tintEnabled:true,colorize:true,tint});
  const main=r.label;
  switch(r.graph){
- case 'hopping':return [tiles('hit',main,0,{scale:.18,tracks:[track('position.y',0,-.12,650,{loop:true,pingPong:true})]}),tiles('aura','Multitude grain',400,{scale:.5,opacity:.45,...tinted('#829f52')})];
+ case 'hopping':return [tiles('hit',main,0,{scale:.18,...tinted('#7d8f4a'),tracks:[track('position.y',0,-.12,650,{loop:true,pingPong:true})]}),tiles('aura','Multitude grain',400,{scale:.5,opacity:.45,...tinted('#829f52')})];
  case 'whisperArea':return [source('hit',main,0,{scale:.6,offsetY:-.15}),area('aura','Surrounding murmurs',350,{opacity:.45})];
  case 'wither':return [body('hit',main,0,{maskToken:true,saturation:-1,scaleOut:.4,scaleOutDuration:3000}),echo('Fading vitality',{saturation:-1,opacity:.18}),body('aura','Decay fragments',700,{opacity:.55})];
  case 'lore':case 'memoryRitual':return [...wordNodes('hit',main,r.graph==='lore'?3:5),head('aura','Knowledge focus',{scale:.5,delay:600})];
@@ -417,7 +429,7 @@ export function gapALayers(spell,{fx,copy,track,subject,pattern}){
  case 'pureMagic':return [source('hit',main,0,{maskToken:true,scale:1.2}),area('aura','Outward magical force',450),echo('Pure magic silhouette',{subject:'source',opacity:.15})];
  case 'weave':return [link(main),body('hit','Shared threads',400,{scale:.8}),...wordNodes('aura','Spell knowledge',3,{offsetY:.2})];
  case 'woodShape':return [body('hit',main,0,{scale:.75,offsetY:.25}),body('aura','Wood takes shape',600,{scale:.65,offsetY:.15})];
- case 'shadowRitual':return [area('hit',main,0,{opacity:.25}),source('aura','Shadow petition',400,{scale:.75,opacity:.6})];
+ case 'shadowRitual':return [area('hit',main,0,{opacity:.5}),source('aura','Shadow petition',400,{scale:.75,opacity:.6})];
  case 'paint':return [body('hit',main,0,{maskToken:true,scale:.7,tracks:[track('position.x',-.3,.3,3000)]}),body('aura','Pastel brush texture',450,{scale:.6,opacity:.5})];
  case 'pyreRitual':return [body('hit',main,0,{scale:1.25}),area('aura','Ash scattering',500,{opacity:.5,saturation:-1}),area('bolt','Ash carried by wind',1000,{opacity:.3})];
  case 'contract':return [...wordNodes('hit',main,3),body('aura','Undecided wager',600,{scale:.4,offsetY:.3}),link('Agreement bonds',850,{opacity:.4})];
@@ -587,7 +599,7 @@ export function gapALayers(spell,{fx,copy,track,subject,pattern}){
  case 'ambition':return [head('hit',main,{scale:.65,opacity:.6}),head('aura','Misfortune in initiative',{scale:.3,delay:750,saturation:-1})];
  case 'duplicate':return [echo(main,{offsetX:1,opacity:.75}),body('hit','Adjacent duplicate shimmer',0,{offsetX:1}),body('aura','Unstable duplicate essence',700,{offsetX:1,scale:.65,opacity:.4})];
  case 'challenge':return [link(main),head('hit','Attention on challenger',{delay:400}),source('aura','Mutual challenge bond',650,{scale:.7,opacity:.55})];
- case 'groundWeight':return [body('hit',main,0,{below:true,scale:.7}),body('aura','Gravity binding threads',500,{scale:.8,tracks:[track('position.y',-.25,.35,3000)]})];
+ case 'groundWeight':return [body('hit',main,0,{below:true,scale:.7}),body('aura','Gravity binding threads',500,{scale:.8,...tinted('#9b7a55'),tracks:[track('position.y',-.25,.35,3000)]})];
  case 'barriers':return [area('hit',main,0,{saturation:-.6}),tiles('aura','Small earth barriers',650,{scale:.35,saturation:-.6})];
  case 'ingestFire':return [source('hit',main,0,{scale:.55,offsetY:-.1,scaleOut:.15,scaleOutDuration:3200}),source('aura','Smoke retained',900,{maskToken:true,scale:.65,opacity:.35})];
  case 'teleportEcho':return [echo(main,{subject:'source',opacity:.3}),source('hit','Teleport departure shimmer',0,{scale:.85}),area('aura','Echo force explosion',550,{subject:'source',scale:1.1})];

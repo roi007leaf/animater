@@ -74,7 +74,7 @@ export const DELIVERY_MOTIFS = {
   }),
   woodSplinters: motif("Flying wooden splinters", "needles", {
     cast: "swirling_leaves",
-    bolt: "arrow.physical.brown,arrow",
+    bolt: "arrow.physical.green,arrow.physical",
     hit: "melee_generic.piercing,impact",
     aura: "swirling_leaves",
   }),
@@ -380,9 +380,9 @@ export const DELIVERY_MOTIFS = {
     cast: "glint",
     area: "energy_beam.normal.yellow,energy_beam.normal",
   }),
-  frostRift: motif("Frigid crack along the line", "lineTiles", {
+  frostRift: motif("Frigid crack along the line", "lineBeam", {
     cast: "glint",
-    area: "ice_spikes",
+    area: "template_line.ice,ice_spikes",
     symbolic: true,
   }),
   starLinks: motif("One burning starlight link", "lineBeam", {

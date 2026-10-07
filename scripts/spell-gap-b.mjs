@@ -29,7 +29,7 @@ const pulse='extras.tmfx.radar.circle.pulse.01.normal';
 const profiles=[];
 const add=(slug,label,nodes,extra={})=>profiles.push({slug,label,nodes,symbolic:true,castingOnly:true,...extra});
 
-add('fishing-spot','Fishing pool',[self(water,'Extraplanar pool',{below:true,scale:1.6}),self(splash,'Pool ripples',{below:true,delay:400}),self('quarterstaff.melee','Fishing rod',{scale:.5,offsetX:.5,rotation:35})]);
+add('fishing-spot','Fishing pool',[self(water,'Extraplanar pool',{below:true,scale:1.6}),self(splash,'Pool ripples',{below:true,delay:400}),self(glint,'Fishing rod glints',{scale:.5,offsetX:.5,offsetY:-.3})]);
 add('flame-dancer','Burning hands and feet',[body(fire,'Hands aflame',{offsetX:.4,scale:.5}),body(fire,'Feet aflame',{offsetY:.5,scale:.6}),body(fire,'Hair aflame',{offsetY:-.45,scale:.45})]);
 add('flame-wisp','Three fire wisps',[-.55,0,.55].map(x=>self('dancing_light.yellow','Fire wisp',{offsetX:x,offsetY:-.6,scale:.25})));
 add('flames-of-ego','Beautiful flames',[body(fire,'Coruscating flames',{maskToken:true}),body(glint,'Flame beauty',{scale:.8,delay:500})]);
@@ -42,7 +42,7 @@ add('focusing-hum','Sustained hum',[self(sound,'Focused hum',{offsetY:-.15,scale
 add('fold-metal','Metal folds into a ball',[body('aura_themed.01.inward.complete.metal.01.grey','Metal folds',{scaleOut:.2,scaleOutDuration:1800}),body('icosahedron.simple.blue','Folded metallic ball',{scale:.3,delay:700})]);
 add('font-of-serenity','Serenity beacon',[field('dancing_light.blueteal','Divine beacon',{scale:.3,below:false}),field('template_circle.aura.01.complete.small.bluepurple','Serene light',{opacity:.55,delay:300})],{nativeArea:true});
 add('footholds-and-foothills','Terrain invocation',[self('ground_cracks.01.orange','Terrain lines',{below:true,scale:1.4,opacity:.5}),self(rune,'Terrain choice',{scale:.65,delay:550})]);
-add('foraging-friends','Foraging call',[self(sound,'Cheerful whistle',{offsetY:-.25,scale:.55}),self(leaves,'Foraging invitation',{scale:1.2,delay:450}),self('footprints.shoe.grey','Small animal tracks',{below:true,scale:.6,delay:800})]);
+add('foraging-friends','Foraging call',[self(sound,'Cheerful whistle',{offsetY:-.25,scale:.55}),self(leaves,'Foraging invitation',{scale:1.2,delay:450}),self('footprints.monster.grey,footprints.shoe.grey','Small animal tracks',{below:true,scale:.6,delay:800})]);
 add('force-fang','Force spike',[self('melee_attack.01.trail.01.blueyellow','Force fang',{scale:.8}),body('energy_attack.01.blue','Force contact',{scale:.75,delay:300})],{castingOnly:false});
 add('foresee-the-path','Future movement insight',[self(eye,'Future movement',{offsetY:-.35,scale:.6}),link(tether,'Ally foresight',{opacity:.55,delay:400}),body(pulse,'Reaction prepared',{scale:.7,delay:700})]);
 add('forge','Superheated metal',[body('aura_themed.01.inward.complete.metal.01.grey','Metal heats',{maskToken:true}),body(fire,'Superheating',{maskToken:true,delay:300})],{castingOnly:false});
@@ -66,7 +66,7 @@ add('geas','Binding rule invocation',[body(text,'Rule inscribed',{scale:.7}),bod
 add('gentle-breeze','Soothing breeze',[field('wind_lines.01.01.white','Cool breeze',{opacity:.5}),field(leaves,'Restful air',{opacity:.55,delay:350})],{nativeArea:true});
 add('gentle-landing','Arrested fall',[body('wind_lines.01.01.white','Magical updraft',{rotation:270,scale:1.1}),body('swirling_feathers.outburst.01.textured','Gentle descent',{scale:.6,delay:400})]);
 add('ghostly-shift','Insubstantial body',[self(shimmer,'Partial phasing',{maskToken:true,opacity:.5}),image('Ghostly silhouette',{subject:'source',copySpread:0,opacity:.25,saturation:-1,delay:450})]);
-add('ghostly-tragedy','Spiritual reenactment',[self('spirit_guardians.blueyellow.ring','Local spirits gather',{opacity:.45}),self(eye,'Past event scrutiny',{offsetY:-.4,scale:.5,delay:650})]);
+add('ghostly-tragedy','Spiritual reenactment',[field('spirit_guardians.blueyellow.ring','Local spirits gather',{opacity:.45}),self(eye,'Past event scrutiny',{offsetY:-.4,scale:.5,delay:650})]);
 add('ghostly-transcription','Glowing speech',[body(text,'Speech letters',{offsetY:-.5,scale:.7}),body(notes,'Spoken language',{offsetY:-.7,scale:.35,delay:600})]);
 add('ghoulish-cravings','Raw meat craving',[body('bite.200px.red','Hunger image',{offsetY:-.25,scale:.6}),body(skull,'Ghoulish craving',{scale:.45,delay:500})]);
 add('glacial-heart','Inner glacial cold',[body(water,'Inner moisture',{maskToken:true,scale:.55}),body(frost,'Bone-deep cold',{maskToken:true,delay:300}),body(snow,'Cold at the heart',{offsetY:.05,scale:.45,delay:650})],{castingOnly:false});
@@ -102,7 +102,7 @@ add('heartbond','Affection bond invocation',[link(tether,'Affection bond',{opaci
 add('hedge-prison','Dense hedge cube',[body(vines,'Hedge walls rise',{scale:1.4}),body(plants,'Dense bushes',{scale:1.25,delay:500})]);
 add('heinous-future','Fractured future mirror',[body(shimmer,'Fractured mirror',{scale:.9}),image('Possible future reflection',{copies:1,copySpread:0,opacity:.3,delay:300}),body(horror,'Dreadful possibility',{scale:.4,offsetY:-.4,delay:850})]);
 add('helpful-reload','Weapon reload',[body('icosahedron.simple.blue','Ammunition at weapon',{scale:.25,offsetX:.45}),body('glint.yellow.few','Reload detail',{scale:.45,offsetX:.45,delay:450})]);
-add('helpful-steps','Ladder or staircase',[self('quarterstaff.melee','Wooden supports',{scale:.65,offsetX:-.3,rotation:90}),self('quarterstaff.melee','Wooden supports',{scale:.65,offsetX:.3,rotation:90}),self(text,'Steps sketched',{scale:.75,delay:500})]);
+add('helpful-steps','Ladder or staircase',[self(shimmer,'Steps take shape',{scale:.8,offsetY:-.1}),self(glint,'Construction glints',{scale:.6,delay:300}),self(text,'Steps sketched',{scale:.75,delay:500})]);
 add('heroic-feat','Martial knowledge',[self(text,'Combat technique recalled',{offsetY:-.35,scale:.7}),self('energy_strands.02.marker.bluepurple','Unchosen technique',{scale:.7,delay:550,opacity:.5})]);
 add('heroism','Inner heroism',[body('ward.star.yellow.01','Heroic resolve',{scale:.8}),body(heart,'Courage',{scale:.45,offsetY:-.35,delay:600})]);
 add('hidebound','Thick hide',[body('aura_themed.01.inward.complete.nature.01.green','Hide hardens',{maskToken:true}),body(shield,'Physical resistance',{scale:.55,delay:500})]);
@@ -114,7 +114,7 @@ add('house-of-imaginary-walls','Mimed wall',[self('arcane_hand.blue','Wall panto
 add('hungry-depths','Corrupted water vortex',[field('template_circle.vortex.loop.blue','Water spiral',{opacity:.7}),field(eyes,'Eyes in the depths',{scale:.65,below:false,delay:300}),field('bite.200px.red','Gnashing depths',{scale:.6,delay:650})],{nativeArea:true,castingOnly:false});
 add('hunters-luck','Foe knowledge fortune',[self(eye,'Creature details recalled',{scale:.6,offsetY:-.35}),self(dice,'Knowledge fortune',{scale:.45,delay:550})]);
 add('hunters-vision','Visible hunted prey',[body('hunters_mark.pulse.01','Prey glow',{scale:1.1,opacity:.6}),body(eye,'Shared prey vision',{scale:.45,offsetY:-.4,delay:550})]);
-add('ibexs-harvest','Harvest tale',[self(notes,'Harvest tale told',{offsetY:-.4,scale:.6}),body(leaves,'Bountiful harvest',{scale:.9,delay:550}),body(heart,'Shared bounty',{scale:.4,delay:800})]);
+add('ibexs-harvest','Harvest tale',[self(notes,'Harvest tale told',{offsetY:-.4,scale:.6}),field(leaves,'Bountiful harvest',{opacity:.75,delay:550}),body(heart,'Shared bounty',{scale:.4,delay:800})]);
 add('ideal-mimicry','Sympathetic doll invocation',[image('Target likeness',{copies:1,copySpread:0,scale:.45,offsetX:.7,opacity:.6}),self('liquid.splash02.red','Body component',{below:true,scale:.4,delay:350}),self(strands,'Doll bond petition',{scale:.6,offsetX:.7,delay:800})]);
 add('ill-omen','Misfortune',[body(dice,'Unfavorable chance',{scale:.6}),body(fear,'Ill omen',{scale:.4,offsetY:-.35,delay:550})]);
 add('illuminate','Light sources ignited',[field('dancing_light.yellow','Lights kindle',{scale:.9,opacity:.65}),field(glint,'Firelight glints',{delay:400})],{nativeArea:true});
@@ -147,7 +147,7 @@ add('interdisciplinary-incantation','Borrowed spell formula',[self(particles,'Sp
 add('interstellar-void','Frigid outer space',[body('darkness.black','Freezing void',{opacity:.55}),body(frost,'Interstellar chill',{delay:450}),body(stars,'Distant stars',{scale:1.1,delay:650})],{castingOnly:false});
 add('inveigle','Friendship invocation',[body(heart,'Friendship petition',{offsetY:-.2,scale:.6}),body('liquid.blob.blue','Attuned oils',{below:true,scale:.65,delay:600}),body(text,'Suggestions framed',{scale:.65,delay:900})]);
 add('invisibility-cloak','Invisible cloak',[self(shimmer,'Cloak fades',{maskToken:true,opacity:.45}),image('Fading silhouette',{subject:'source',copySpread:0,opacity:.35,alphaOut:true,delay:350})]);
-add('invisibility-curtain','Invisible boundary',[self('energy_strands.02.marker.bluepurple','Curtain boundary',{opacity:.14,scale:1.5}),self(shimmer,'One-sided concealment',{scale:1.1,opacity:.3,delay:600})]);
+add('invisibility-curtain','Invisible boundary',[self('energy_strands.02.marker.bluepurple','Curtain boundary',{opacity:.3,scale:1.5}),self(shimmer,'One-sided concealment',{scale:1.1,opacity:.3,delay:600})]);
 add('invisible-item','Invisible object',[body(shimmer,'Object fades',{maskToken:true,scale:.7,opacity:.45}),body(inward,'Invisible outline',{scale:.7,opacity:.3,delay:400})]);
 add('invoke-the-crimson-oath','Ruby energy arc',[self('melee_attack.01.trail.01.orangered','Crimson weapon arc',{scale:1}),fan('energy_field.01.blue','Ruby blast',{fanCount:7,tint:'#c41e44',scale:.55,delay:450})],{pattern:'coneObjectFan',nativeArea:true,castingOnly:false});
 add('invoke-the-harrow','Harrow card influence',[self(dice,'Harrow suit drawn',{scale:.55}),body(signs,'Card influence',{scale:.65,delay:500})]);
@@ -181,9 +181,9 @@ add('lucky-month','Lucky token invocation',[body('icosahedron.simple.blue','Toke
 add('lucky-number','Lucky number prepared',[self(dice,'Number drawn',{scale:.65}),self(rune,'Lucky number seal',{scale:.5,offsetY:-.35,delay:650})]);
 add('lure-dream','Animate dream invitation',[self('sleep.cloud.01.pink','Dream realm beckons',{scale:1.1}),self(eye,'Dream presence locus',{scale:.55,offsetY:-.3,delay:650})]);
 add('luring-wail','Plaintive cry',[self(sound,'Plaintive wail',{offsetY:-.15,scale:.7}),field(sound,'Call fills the air',{delay:300,opacity:.6}),field('icon.music_note.blue','Luring call symbol',{scale:.2,delay:750})],{nativeArea:true});
-add('mad-monkeys','Monkey spirits',[field('spirit_guardians.blueyellow.ring','Monkey spirits locus',{opacity:.55}),field('footprints.shoe.grey','Climbing monkey marks',{scale:.6,delay:500})],{nativeArea:true});
+add('mad-monkeys','Monkey spirits',[field('particles.002.001.complete.many.orangeyellow,particles.002.001.complete.many.blue','Monkey spirits scramble',{opacity:.75,tint:'#c99a5b'}),field('footprints.monster.grey,footprints.shoe.grey','Climbing monkey marks',{scale:.6,delay:500})],{nativeArea:true});
 add('magic-passage','Wall tunnel',[body(portal,'Tunnel entrance',{scale:1.25}),body(inward,'Wall space opens',{scale:1.1,delay:500})]);
-add('magic-stone','Vital stones',[body('celestial_bodies.asteroid.single.iron.red.01','Stones prepared',{scale:.4}),body('ward.star.yellow.01','Vitality infused',{scale:.65,delay:550})]);
+add('magic-stone','Vital stones',[body('falling_rocks.top.1x1.grey','Stones prepared',{scale:.35}),body('ward.star.yellow.01','Vitality infused',{scale:.65,delay:550})]);
 add('magics-vessel','Divine receptacle',[body(inward,'Pure magic gathers',{maskToken:true}),body(shield,'Divine receptacle',{scale:.6,delay:550}),body(strands,'Spell energy capacity',{opacity:.55,delay:900})]);
 add('magnetic-dominion','Roiling magnetic fields',[field('aura_themed.01.orbit.complete.metal.01.grey','Magnetic fields',{opacity:.75}),field(inward,'Magnetic control',{opacity:.5,delay:450})],{nativeArea:true});
 add('malediction','Distress emanation',[self(fear,'Distress spoken',{scale:.45,offsetY:-.35}),field('energy_strands.02.marker.bluepurple','Distress field',{opacity:.5,delay:400}),field('icon.shield_cracked.purple','Defense unease',{scale:.25,delay:850})],{nativeArea:true});
@@ -195,7 +195,7 @@ add('marvelous-mount','Unchosen fantastical mount',[body('footprints.shoe.grey',
 add('medusas-wrath','Petrifying unarmed strike',[self('unarmed_strike.magical.01.blue','Medusa power strike',{scale:1.05}),body('aura_themed.01.inward.complete.metal.01.grey','Petrifying potential',{maskToken:true,opacity:.5,delay:550})],{castingOnly:false});
 add('menacing-lament','Threatening dirge',[self(notes,'Dirge sung',{offsetY:-.35,scale:.75}),field(sound,'Menacing lament',{opacity:.6,delay:350})],{nativeArea:true});
 add('metal-reverberation','Tuning fork vibration',[self('quarterstaff.melee','Tuning fork symbol',{scale:.45,offsetX:.4,rotation:90}),body(sound,'Metal note',{scale:.9,delay:450}),body('aura_themed.01.orbit.complete.metal.01.grey','Reverberating metal',{scale:.75,delay:650})],{castingOnly:false});
-add('metallic-meteorite-glyph','Meteor-seeking rune',[body(rune,'Meteor glyph',{scale:.6}),object('celestial_bodies.asteroid.single.iron.red.01','Metal meteor',{delay:500,scale:.6}),body('aura_themed.01.outward.complete.metal.01.grey','Meteor pressure',{delay:950,scale:1.15})],{pattern:'object',castingOnly:false});
+add('metallic-meteorite-glyph','Meteor-seeking rune',[body(rune,'Meteor glyph',{scale:.6}),object('celestial_bodies.asteroid.single.iron.red.01','Metal meteor',{delay:500,scale:.6,playbackRate:3}),body('aura_themed.01.outward.complete.metal.01.grey','Meteor pressure',{delay:950,scale:1.15})],{pattern:'object',castingOnly:false});
 add('mimic-spell','Observed spell knowledge',[self(eye,'Spell watched',{offsetY:-.35,scale:.55}),self(text,'Spell secrets retained',{scale:.8,delay:600})]);
 add('mind-games','Mental contest',[link(tether,'Minds contend',{scale:.5}),body(stun,'Mental pressure',{scale:.45,offsetY:-.3,delay:550})],{pattern:'tetherConnection'});
 add('mind-probe','Memory questioning',[link(tether,'Thoughts enter',{scale:.45}),body(eye,'Memories sifted',{offsetY:-.35,scale:.55,delay:450}),body(text,'Question locus',{scale:.7,delay:800})],{pattern:'tetherConnection'});
@@ -331,6 +331,9 @@ add('regale-the-lost-ones','Opera for spirits',[self(notes,'Opera performed',{sc
 add('reincarnate','Soul incarnation petition',[body('spirit_guardians.blueyellow.ring','Departed soul called',{opacity:.45}),body('energy_strands.02.marker.bluepurple','New body petition',{scale:1.2,delay:550}),body(heart,'Return to life requested',{scale:.5,delay:1000})]);
 
 const radialSlots=['hit','aura','cast','area'];
+// A projectile fan alone does not show the native cone; add its footprint.
+for(const profile of profiles)if(profile.nodes.some(n=>n.kind==='fan')&&!profile.nodes.some(n=>n.kind==='field'))
+  profile.nodes.push(field('detect_magic.cone','Cone footprint',{opacity:.4,fadeOut:300}));
 const plans=new Map();
 export const GAP_B_MOTIFS={};
 export const GAP_B_DESIGNS={};

@@ -1,6 +1,6 @@
 // Visual cues for contents released by a native bomb Strike. These never apply
 // conditions, persistent damage, splash targeting or terrain rules.
-export const WEAPON_COLORS = {physical:'#d8bf8a',fire:'#ff875f',cold:'#82d8ff',electricity:'#acb0ff',acid:'#b8e580',poison:'#8dd998',void:'#9366bf',negative:'#9366bf',vitality:'#fff0ab',positive:'#fff0ab',sonic:'#b9cff5',mental:'#c591e5',force:'#c9b8ff',spirit:'#fff0cf',bleed:'#c53750',water:'#7dcced',mud:'#b48b60',glue:'#ddd49e',light:'#fff5b3',silver:'#cbd5eb',foam:'#cbbfac'};
+export const WEAPON_COLORS = {physical:'#d8bf8a',fire:'#ff875f',cold:'#82d8ff',electricity:'#acb0ff',acid:'#b8e580',poison:'#8dd998',void:'#9366bf',negative:'#9366bf',vitality:'#fff0ab',positive:'#fff0ab',sonic:'#b9cff5',mental:'#c591e5',force:'#c9b8ff',spirit:'#fff0cf',bleed:'#c53750',water:'#7dcced',mud:'#b48b60',glue:'#ddd49e',light:'#fff5b3',silver:'#cbd5eb',foam:'#cbbfac',unholy:'#7a3f9e',holy:'#fff0cf',air:'#e6f0f5',earth:'#b48b60',plant:'#96ba65',shadow:'#4a4458'};
 export const WEAPON_ACCENTS = {
  // impact.001 has no white film; 005/007/009 do. Never fall through to impact.001.blue.
  physical:['impact.005.white','impact.007.white','impact.001.orange','impact.005','impact.001'],
@@ -18,6 +18,16 @@ export const WEAPON_ACCENTS = {
  force:['explosion.02.purple','explosion.02.blue'],
  spirit:['divine_smite.target.yellowwhite','divine_smite.target.blueyellow'],
  bleed:['liquid.splash.red','liquid.splash02.red'],
+ // Unholy spirit is the dark counterpart of holy radiance, never yellow-white.
+ unholy:['divine_smite.target.dark_purple','smoke.puff.centered.dark_purple','smoke.puff.centered.grey'],
+ // Trait/construction flourishes (see weapon-semantics traitFlavors).
+ holy:['divine_smite.target.yellowwhite','divine_smite.target.blueyellow'],
+ light:['impact.007.yellow','impact.005.yellow'],
+ air:['wind_lines.01.01.white','wind_lines.01.02.white'],
+ earth:['impact.ground_crack.01.orange','impact.earth.01.browngreen'],
+ water:['water_splash.circle.01.blue','liquid.splash.blue'],
+ plant:['swirling_leaves.outburst.01.greenorange','wind_lines.01.leaves.01.green'],
+ shadow:['smoke.puff.centered.dark_black','smoke.puff.centered.grey'],
 };
 export const BOMB_PAYLOADS = {
  crossFire:{roots:['fireball.explosion.orange'],label:'Crossed flame release'},
@@ -51,7 +61,7 @@ export function payloadAppearance(element,assets=[]) {
  if(materialColors[element])return {colorize:true,tintEnabled:true,tint:materialColors[element]};
  // Preserve authored highlights and secondary hues when both edition choices
  // already show the intended material. Neutralize only off-color substitutes.
- const palette={fire:/\.(?:orange|orangered|orangeyellow|yellow)\b/,cold:/\.(?:blue|white)\b/,electricity:/\.blue\b/,acid:/\.green\b/,poison:/\.(?:green|greenyellow)\b/,water:/\.blue\b/,void:/\.purple\b/,negative:/\.purple\b/,vitality:/\.(?:yellowwhite|blueyellow)\b/,positive:/\.(?:yellowwhite|blueyellow)\b/,spirit:/\.(?:yellowwhite|blueyellow)\b/,bleed:/\.red\b/,sonic:/\.blue\b/,force:/\.purple\b/,mental:/\.purple\b/,light:/\.white\b/,silver:/\.white\b/}[element];
+ const palette={fire:/\.(?:orange|orangered|orangeyellow|yellow)\b/,cold:/\.(?:blue|white)\b/,electricity:/\.blue\b/,acid:/\.green\b/,poison:/\.(?:green|greenyellow)\b/,water:/\.blue\b/,void:/\.purple\b/,negative:/\.purple\b/,vitality:/\.(?:yellowwhite|blueyellow)\b/,positive:/\.(?:yellowwhite|blueyellow)\b/,spirit:/\.(?:yellowwhite|blueyellow)\b/,bleed:/\.red\b/,sonic:/\.blue\b/,force:/\.purple\b/,mental:/\.purple\b/,light:/\.(?:white|yellow)\b/,silver:/\.white\b/,unholy:/\.dark_purple\b/,holy:/\.(?:yellowwhite|blueyellow)\b/,air:/\.white\b/,earth:/\.(?:orange|browngreen)\b/,shadow:/\.dark_black\b/}[element];
  if(assets.length&&palette&&assets.every(key=>palette.test(key)))return {};
  // Neutralize source color before tinting: multiplying a blue Free liquid by
  // green alone makes it dark, rather than producing an acid-green splash.

@@ -13,31 +13,39 @@
       "condition": 46,
       "effect": 400
     },
-    "variants": 2049,
+    "variants": 2056,
     "excluded": 2062,
     "descriptionHashes": 1928,
     "variety": {
-      "changed": 125,
+      "changed": 148,
       "variants": [
+        {
+          "id": "gsYEuWv04XTDxe91",
+          "name": "Call Spirit",
+          "edition": "patreon",
+          "slot": "bolt",
+          "from": "jb2a.guiding_bolt.02.yellow",
+          "to": "jb2a.guiding_bolt.01.yellow"
+        },
         {
           "id": "Mt6ZzkVX8Q4xigFq",
           "name": "Create Food",
-          "edition": "patreon",
-          "slot": "cast",
-          "from": "jb2a.cast_generic.02.dark_purple",
-          "to": "jb2a.cast_generic.01.dark_purple"
-        },
-        {
-          "id": "fZPCv2VHuM2yPbC8",
-          "name": "Deafness",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "5c692cCcTDXjSEzk",
-          "name": "Dragon Form",
+          "id": "fZPCv2VHuM2yPbC8",
+          "name": "Deafness",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.02.dark_purple",
+          "to": "jb2a.cast_generic.01.dark_purple"
+        },
+        {
+          "id": "PRrZ7anETWPm90YY",
+          "name": "Disguise Magic",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
@@ -50,6 +58,14 @@
           "slot": "cast",
           "from": "jb2a.static_electricity.02.blue",
           "to": "jb2a.static_electricity.01.blue"
+        },
+        {
+          "id": "wzctak6BxOW8xvFV",
+          "name": "Enlarge",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
           "id": "ynm8JIU3sc3qUMpa",
@@ -156,6 +172,14 @@
           "to": "jb2a.misty_step.02.purple"
         },
         {
+          "id": "RQjSQVZRG497cJhX",
+          "name": "Vibrant Pattern",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
           "id": "kOa055FIrO9Smnya",
           "name": "Wall of Stone",
           "edition": "patreon",
@@ -172,24 +196,16 @@
           "to": "jb2a.sleet_storm.02.blue"
         },
         {
-          "id": "RDvWFbAaXtxrhJMD",
-          "name": "Accelerate",
+          "id": "p83iYWlcJRqe0PxL",
+          "name": "Adaptive Camouflage",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "h7IhypLwItepwhou",
-          "name": "Adhere",
-          "edition": "patreon",
-          "slot": "cast",
-          "from": "jb2a.cast_generic.01.dark_purple",
-          "to": "jb2a.cast_generic.02.dark_purple"
-        },
-        {
-          "id": "z0Spgrf92nmaqjCW",
-          "name": "Akashic Assistant",
+          "id": "NzXpEzcZAjuDTZjK",
+          "name": "Aerial Form",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
@@ -204,12 +220,36 @@
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "wp09USMB3GIW1qbp",
-          "name": "Animal Form",
+          "id": "f98vwzcdxafum8ln",
+          "name": "Akashic Revival",
           "edition": "patreon",
           "slot": "cast",
-          "from": "jb2a.cast_generic.01.dark_purple",
-          "to": "jb2a.cast_generic.02.dark_purple"
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.002.blueteal"
+        },
+        {
+          "id": "NkvRoN33RbDg3fl9",
+          "name": "Analyze Target",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.003.blueteal"
+        },
+        {
+          "id": "NkvRoN33RbDg3fl9",
+          "name": "Analyze Target",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.001.loop.002.blueteal"
+        },
+        {
+          "id": "NkvRoN33RbDg3fl9",
+          "name": "Analyze Target",
+          "edition": "patreon",
+          "slot": "area",
+          "from": "jb2a.markers_scifi.002.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.001.blueteal"
         },
         {
           "id": "UnWaP06SVi3jRN0M",
@@ -218,6 +258,22 @@
           "slot": "hit",
           "from": "jb2a.impact.001.orange",
           "to": "jb2a.impact.002.orange"
+        },
+        {
+          "id": "FIM54CSlkvBwwzdA",
+          "name": "Awaken Computer",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.002.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.002.blueteal"
+        },
+        {
+          "id": "n5a3t5Qnx5AU8auy",
+          "name": "Carcinization",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
           "id": "JIAIyvj4PV84tnFk",
@@ -240,8 +296,24 @@
           "name": "Commune with Tech",
           "edition": "patreon",
           "slot": "cast",
-          "from": "jb2a.cast_generic.01.dark_purple",
-          "to": "jb2a.cast_generic.02.dark_purple"
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.003.blueteal"
+        },
+        {
+          "id": "dyDIRdq3QmP2QzBR",
+          "name": "Commune with Tech",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.001.loop.003.blueteal"
+        },
+        {
+          "id": "CjVOXjuvvTJqC7AD",
+          "name": "Data Drain",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.002.blueteal"
         },
         {
           "id": "CjVOXjuvvTJqC7AD",
@@ -252,20 +324,12 @@
           "to": "jb2a.impact.012.purple"
         },
         {
-          "id": "J9IWyHhvdtMVBjqg",
-          "name": "Deadly Vitality",
+          "id": "yXD9uU8w8uFD2OBQ",
+          "name": "Delete",
           "edition": "patreon",
           "slot": "cast",
-          "from": "jb2a.cast_generic.01.dark_purple",
-          "to": "jb2a.cast_generic.02.dark_purple"
-        },
-        {
-          "id": "rBh2PjtbDGAjbcu6",
-          "name": "Discharge",
-          "edition": "patreon",
-          "slot": "bolt",
-          "from": "jb2a.electric_arc.blue.01",
-          "to": "jb2a.electric_arc.blue.02"
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.003.blueteal"
         },
         {
           "id": "VIKDSgBRR3Wd1mQx",
@@ -312,6 +376,22 @@
           "name": "Feline Senses",
           "edition": "patreon",
           "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.002.blueteal"
+        },
+        {
+          "id": "1lv6Zmp2eWRIPn1n",
+          "name": "Feline Senses",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.002.loop.001.blueteal"
+        },
+        {
+          "id": "0zU8CPejjQFnhZFI",
+          "name": "Figment",
+          "edition": "patreon",
+          "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
@@ -324,20 +404,36 @@
           "to": "jb2a.misty_step.02.purple"
         },
         {
-          "id": "2qGqa33E4GPUCbMV",
-          "name": "Humanoid Form",
+          "id": "U58aQWJ47VrI36yP",
+          "name": "Hallucination",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
+          "id": "eHiWtMiXoI1d48A7",
+          "name": "Holographic Memory",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.003.blueteal"
+        },
+        {
           "id": "ZBeKxBcUOsXrfMRo",
           "name": "Implant Data",
           "edition": "patreon",
           "slot": "cast",
-          "from": "jb2a.cast_generic.01.dark_purple",
-          "to": "jb2a.cast_generic.02.dark_purple"
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.002.blueteal"
+        },
+        {
+          "id": "ZBeKxBcUOsXrfMRo",
+          "name": "Implant Data",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.markers_scifi.002.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.003.blueteal"
         },
         {
           "id": "ZofLZ5Zs8NN5yDPJ",
@@ -348,20 +444,36 @@
           "to": "jb2a.arrow.poison.green.02"
         },
         {
-          "id": "bBQ83xDvjQS3W1CG",
-          "name": "Measure",
+          "id": "XI6Lzd2B5pernkPd",
+          "name": "Insect Form",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "8AMvNVOUEtxBCDvJ",
-          "name": "Monstrosity Form",
+          "id": "ijlB3l9IBnpppfK0",
+          "name": "Logic Bomb",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.002.blueteal"
+        },
+        {
+          "id": "pswdik31kuHEvdno",
+          "name": "Metamorphosis",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "jon2tSGg7fSTqtk9",
+          "name": "New Game",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.003.blueteal"
         },
         {
           "id": "jon2tSGg7fSTqtk9",
@@ -428,52 +540,84 @@
           "to": "jb2a.wind_lines.01.leaves.02.greenorange"
         },
         {
-          "id": "nf8q0zvJDnnkzANe",
-          "name": "Scan Environment",
+          "id": "L6Gww2b2YVM3q0ZQ",
+          "name": "Selective Invisibility",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
-        },
-        {
-          "id": "McnPlLFvKtQVXNcG",
-          "name": "Shape Stone",
-          "edition": "patreon",
-          "slot": "cast",
-          "from": "jb2a.ground_cracks.01.orange",
-          "to": "jb2a.ground_cracks.02.orange"
-        },
-        {
-          "id": "McnPlLFvKtQVXNcG",
-          "name": "Shape Stone",
-          "edition": "patreon",
-          "slot": "hit",
-          "from": "jb2a.ground_cracks.02.orange",
-          "to": "jb2a.ground_cracks.03.orange"
         },
         {
           "id": "tVTJS07cKDA5rNgc",
           "name": "Sift the Sphere",
           "edition": "patreon",
           "slot": "cast",
-          "from": "jb2a.cast_generic.01.dark_purple",
-          "to": "jb2a.cast_generic.02.dark_purple"
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.002.blueteal"
         },
         {
-          "id": "VmtQlZqeraTv0Eer",
-          "name": "Skyfire Wings",
+          "id": "tVTJS07cKDA5rNgc",
+          "name": "Sift the Sphere",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.001.loop.002.blueteal"
+        },
+        {
+          "id": "NpsEhi5m9SUm0zqV",
+          "name": "Singlemind",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.003.blueteal"
+        },
+        {
+          "id": "NpsEhi5m9SUm0zqV",
+          "name": "Singlemind",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.001.loop.003.blueteal"
+        },
+        {
+          "id": "v2S6tlilNbA4uGdM",
+          "name": "Skim Data",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.markers_scifi.002.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.002.blueteal"
+        },
+        {
+          "id": "v2S6tlilNbA4uGdM",
+          "name": "Skim Data",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.002.loop.001.blueteal"
+        },
+        {
+          "id": "QpP30fcEl4NGjHwo",
+          "name": "Sonic Scream",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.soundwave.02.blue",
+          "to": "jb2a.soundwave.01.blue"
+        },
+        {
+          "id": "jgN33YSYXB8iIHTw",
+          "name": "Stumble",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "CptKtBneM7od45nc",
-          "name": "Subjective Reality",
+          "id": "KlJEDmAOk1ztdNFf",
+          "name": "Summon Robot",
           "edition": "patreon",
           "slot": "cast",
-          "from": "jb2a.cast_generic.01.dark_purple",
-          "to": "jb2a.cast_generic.02.dark_purple"
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.001.complete.003.blueteal"
         },
         {
           "id": "JbAcSLu62TU1OgNF",
@@ -490,6 +634,22 @@
           "slot": "bolt",
           "from": "jb2a.guiding_bolt.01.purplepink",
           "to": "jb2a.guiding_bolt.02.purplepink"
+        },
+        {
+          "id": "A09nTb61ceLF27vX",
+          "name": "Tech Intuition",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.001.loop.002.blueteal"
+        },
+        {
+          "id": "OudLZtxmg6gI1UEL",
+          "name": "Telekinetic Strangulation",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.01.orange",
+          "to": "jb2a.ground_cracks.02.orange"
         },
         {
           "id": "OudLZtxmg6gI1UEL",
@@ -540,8 +700,8 @@
           "to": "jb2a.impact.009.purple"
         },
         {
-          "id": "V8wXOsoejQhe6CyG",
-          "name": "Vapor Form",
+          "id": "XhypWjpV3NP76ahy",
+          "name": "Twisted Vision",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
@@ -601,7 +761,7 @@
           "edition": "patreon",
           "slot": "hit",
           "from": "jb2a.ground_cracks.01.purple",
-          "to": "jb2a.ground_cracks.03.purple"
+          "to": "jb2a.ground_cracks.02.purple"
         },
         {
           "id": "1gkdgFwKfAoQx163",
@@ -625,7 +785,7 @@
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.ground_cracks.01.orange",
-          "to": "jb2a.ground_cracks.02.orange"
+          "to": "jb2a.ground_cracks.03.orange"
         },
         {
           "id": "7Ib3qxIC0bFD3ued",
@@ -656,96 +816,72 @@
           "name": "Divine Lance",
           "edition": "free",
           "slot": "bolt",
-          "from": "jb2a.energy_beam.normal.bluepink.02",
-          "to": "jb2a.energy_beam.normal.bluepink.03"
-        },
-        {
-          "id": "fI20AVwOzJMHXRdo",
-          "name": "Levitate",
-          "edition": "free",
-          "slot": "area",
-          "from": "jb2a.ground_cracks.03.orange",
-          "to": "jb2a.ground_cracks.01.orange"
-        },
-        {
-          "id": "10VcmSYNBrvBphu1",
-          "name": "Massacre",
-          "edition": "free",
-          "slot": "area",
           "from": "jb2a.energy_beam.normal.bluepink.03",
           "to": "jb2a.energy_beam.normal.bluepink.02"
         },
         {
-          "id": "dMKP4fkWx8V2cqAy",
-          "name": "Remake",
+          "id": "4koZzrnMXhhosn0D",
+          "name": "Fear",
           "edition": "free",
           "slot": "cast",
-          "from": "jb2a.particles.inward.greenyellow.02.05",
-          "to": "jb2a.particles.inward.greenyellow.01.02"
-        },
-        {
-          "id": "dMKP4fkWx8V2cqAy",
-          "name": "Remake",
-          "edition": "free",
-          "slot": "hit",
-          "from": "jb2a.particles.inward.greenyellow.01.02",
-          "to": "jb2a.particles.inward.greenyellow.01.03"
-        },
-        {
-          "id": "dMKP4fkWx8V2cqAy",
-          "name": "Remake",
-          "edition": "free",
-          "slot": "area",
-          "from": "jb2a.particles.inward.greenyellow.01.03",
-          "to": "jb2a.particles.inward.greenyellow.01.04"
-        },
-        {
-          "id": "WsUwpfmhKrKwoIe3",
-          "name": "Slow",
-          "edition": "free",
-          "slot": "hit",
-          "from": "jb2a.impact.002.blue",
-          "to": "jb2a.impact.001.blue"
-        },
-        {
-          "id": "Et8RSCLx8w7uOLvo",
-          "name": "Sound Body",
-          "edition": "free",
-          "slot": "aura",
-          "from": "jb2a.particles.outward.greenyellow.01.04",
-          "to": "jb2a.particles.outward.greenyellow.01.01"
-        },
-        {
-          "id": "e9UJoVYUd5kJWUpi",
-          "name": "Summon Giant",
-          "edition": "free",
-          "slot": "aura",
           "from": "jb2a.particles.inward.greenyellow.02.01",
-          "to": "jb2a.particles.inward.greenyellow.02.03"
+          "to": "jb2a.particles.inward.greenyellow.01.01"
         },
         {
-          "id": "Jvyy6oVIQsD34MHB",
-          "name": "Uncontrollable Dance",
+          "id": "tlSE7Ly8vi1Dgddv",
+          "name": "Laughing Fit",
           "edition": "free",
           "slot": "area",
           "from": "jb2a.sleep.cloud.02.pink",
           "to": "jb2a.sleep.cloud.01.pink"
         },
         {
+          "id": "10VcmSYNBrvBphu1",
+          "name": "Massacre",
+          "edition": "free",
+          "slot": "area",
+          "from": "jb2a.energy_beam.normal.bluepink.02",
+          "to": "jb2a.energy_beam.normal.bluepink.03"
+        },
+        {
+          "id": "R9xqCBblkS5KE4y7",
+          "name": "Sending",
+          "edition": "free",
+          "slot": "area",
+          "from": "jb2a.sleep.cloud.02.pink",
+          "to": "jb2a.sleep.cloud.01.pink"
+        },
+        {
+          "id": "e9UJoVYUd5kJWUpi",
+          "name": "Summon Giant",
+          "edition": "free",
+          "slot": "aura",
+          "from": "jb2a.particles.inward.greenyellow.02.02",
+          "to": "jb2a.particles.inward.greenyellow.02.04"
+        },
+        {
           "id": "fd31tAHSSGXyOxW6",
           "name": "Vampiric Exsanguination",
           "edition": "free",
           "slot": "aura",
-          "from": "jb2a.particles.inward.greenyellow.02.05",
-          "to": "jb2a.particles.inward.greenyellow.02.04"
+          "from": "jb2a.particles.inward.greenyellow.01.02",
+          "to": "jb2a.particles.inward.greenyellow.02.05"
         },
         {
-          "id": "f98vwzcdxafum8ln",
-          "name": "Akashic Revival",
+          "id": "NkvRoN33RbDg3fl9",
+          "name": "Analyze Target",
+          "edition": "free",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.002.complete.001.blueteal"
+        },
+        {
+          "id": "NkvRoN33RbDg3fl9",
+          "name": "Analyze Target",
           "edition": "free",
           "slot": "aura",
-          "from": "jb2a.particles.outward.greenyellow.01.01",
-          "to": "jb2a.particles.outward.greenyellow.01.03"
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.002.loop.001.blueteal"
         },
         {
           "id": "FIM54CSlkvBwwzdA",
@@ -756,28 +892,12 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
-          "id": "g58dbrP7FadZhh6j",
-          "name": "Chrono Push",
-          "edition": "free",
-          "slot": "hit",
-          "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.004.blue"
-        },
-        {
-          "id": "CjVOXjuvvTJqC7AD",
-          "name": "Data Drain",
-          "edition": "free",
-          "slot": "bolt",
-          "from": "jb2a.energy_beam.normal.bluepink.02",
-          "to": "jb2a.energy_beam.normal.bluepink.03"
-        },
-        {
           "id": "CjVOXjuvvTJqC7AD",
           "name": "Data Drain",
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.blue"
+          "to": "jb2a.impact.012.blue"
         },
         {
           "id": "zdzeVZlKHkMAt2Rf",
@@ -786,6 +906,14 @@
           "slot": "bolt",
           "from": "jb2a.energy_beam.normal.bluepink.02",
           "to": "jb2a.energy_beam.normal.bluepink.03"
+        },
+        {
+          "id": "yXD9uU8w8uFD2OBQ",
+          "name": "Delete",
+          "edition": "free",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.002.complete.001.blueteal"
         },
         {
           "id": "FEaM1B4WuiqFO7Uk",
@@ -826,6 +954,22 @@
           "slot": "hit",
           "from": "jb2a.melee_attack.01.trail.01.pinkpurple",
           "to": "jb2a.melee_attack.02.trail.01.pinkpurple"
+        },
+        {
+          "id": "1lv6Zmp2eWRIPn1n",
+          "name": "Feline Senses",
+          "edition": "free",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.002.complete.001.blueteal"
+        },
+        {
+          "id": "zR67Rt3UMHKC5evy",
+          "name": "Flicker",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.misty_step.02.blue",
+          "to": "jb2a.misty_step.01.blue"
         },
         {
           "id": "c3pohoiOH2qIhDDp",
@@ -876,6 +1020,14 @@
           "to": "jb2a.static_electricity.02.blue"
         },
         {
+          "id": "ijlB3l9IBnpppfK0",
+          "name": "Logic Bomb",
+          "edition": "free",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.002.complete.001.blueteal"
+        },
+        {
           "id": "uBo6g5aW087cLSJR",
           "name": "Mind Skewer",
           "edition": "free",
@@ -884,20 +1036,20 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
-          "id": "0mNmVi9CLXor3McX",
-          "name": "Personal Gravity",
-          "edition": "free",
-          "slot": "area",
-          "from": "jb2a.ground_cracks.01.orange",
-          "to": "jb2a.ground_cracks.02.orange"
-        },
-        {
           "id": "ITzIb93GBvyX8UbJ",
           "name": "Pocket Vacuum",
           "edition": "free",
           "slot": "area",
           "from": "jb2a.wind_lines.01.leaves.01.green",
           "to": "jb2a.wind_lines.01.leaves.02.green"
+        },
+        {
+          "id": "5y70IWhVV6bVjC9N",
+          "name": "Recharge Weapon",
+          "edition": "free",
+          "slot": "bolt",
+          "from": "jb2a.energy_beam.normal.bluepink.02",
+          "to": "jb2a.energy_beam.normal.bluepink.03"
         },
         {
           "id": "Ii8adgcCejAovsNv",
@@ -924,12 +1076,44 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
+          "id": "tVTJS07cKDA5rNgc",
+          "name": "Sift the Sphere",
+          "edition": "free",
+          "slot": "cast",
+          "from": "jb2a.markers_scifi.001.complete.001.blueteal",
+          "to": "jb2a.markers_scifi.002.complete.001.blueteal"
+        },
+        {
+          "id": "tVTJS07cKDA5rNgc",
+          "name": "Sift the Sphere",
+          "edition": "free",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.002.loop.001.blueteal"
+        },
+        {
           "id": "NpsEhi5m9SUm0zqV",
           "name": "Singlemind",
           "edition": "free",
           "slot": "area",
           "from": "jb2a.sleep.cloud.01.pink",
           "to": "jb2a.sleep.cloud.02.pink"
+        },
+        {
+          "id": "VmtQlZqeraTv0Eer",
+          "name": "Skyfire Wings",
+          "edition": "free",
+          "slot": "aura",
+          "from": "jb2a.swirling_leaves.loop.01.green",
+          "to": "jb2a.swirling_leaves.loop.02.green"
+        },
+        {
+          "id": "A09nTb61ceLF27vX",
+          "name": "Tech Intuition",
+          "edition": "free",
+          "slot": "aura",
+          "from": "jb2a.markers_scifi.001.loop.001.blueteal",
+          "to": "jb2a.markers_scifi.002.loop.001.blueteal"
         },
         {
           "id": "64DDZxOrmr4ddqs2",
@@ -993,7 +1177,7 @@
           "edition": "free",
           "slot": "aura",
           "from": "jb2a.ground_cracks.01.orange",
-          "to": "jb2a.ground_cracks.02.orange"
+          "to": "jb2a.ground_cracks.03.orange"
         },
         {
           "id": "TN2pHF9l3k4ZJ7di",

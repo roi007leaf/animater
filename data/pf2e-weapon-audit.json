@@ -12,7 +12,7 @@
     "missingDescriptions": [
       "IF6qUrR3i030v0dH"
     ],
-    "probedKeys": 124,
+    "probedKeys": 137,
     "missingTiming": [],
     "modes": {
       "melee": 695,
@@ -23,7 +23,7 @@
   "coverage": {
     "patreon": {
       "available": 7648,
-      "used": 106,
+      "used": 116,
       "keys": [
         "jb2a.arrow.cold.blue",
         "jb2a.arrow.physical.white.01",
@@ -43,6 +43,7 @@
         "jb2a.dagger.throw.01.white",
         "jb2a.dart.01.return.physical.white",
         "jb2a.dart.01.throw.physical.white",
+        "jb2a.divine_smite.target.dark_purple",
         "jb2a.divine_smite.target.yellowwhite",
         "jb2a.energy_field.01.blue",
         "jb2a.energy_field.02.above.green",
@@ -67,14 +68,17 @@
         "jb2a.handaxe.return.01",
         "jb2a.handaxe.throw.01",
         "jb2a.impact.005.white",
+        "jb2a.impact.007.yellow",
         "jb2a.impact.fire.01.orange",
         "jb2a.impact.frost.white.01",
+        "jb2a.impact.ground_crack.01.orange",
         "jb2a.impact_themed.ice_shard.blue",
         "jb2a.impact_themed.poison.greenyellow",
         "jb2a.javelin.01.return",
         "jb2a.javelin.01.throw",
+        "jb2a.kunai.throw.01",
         "jb2a.lightning_ball.blue",
-        "jb2a.liquid.blob.blue",
+        "jb2a.liquid.blob.brown",
         "jb2a.liquid.blob.green",
         "jb2a.liquid.splash.blue",
         "jb2a.liquid.splash.brown",
@@ -82,9 +86,11 @@
         "jb2a.liquid.splash.grey",
         "jb2a.liquid.splash.red",
         "jb2a.liquid.splash02.red",
+        "jb2a.mace.throw",
         "jb2a.maul.melee.fire.orange",
         "jb2a.maul.melee.standard.white",
         "jb2a.melee_attack.01.butterflysword.01",
+        "jb2a.melee_attack.01.chakram.01",
         "jb2a.melee_attack.01.flail.01",
         "jb2a.melee_attack.01.sickle.01",
         "jb2a.melee_attack.02.mace.01",
@@ -94,10 +100,10 @@
         "jb2a.melee_attack.04.katana.01",
         "jb2a.melee_attack.05.scythe.01",
         "jb2a.melee_attack.06.shield.01",
-        "jb2a.melee_generic.bludgeoning.one_handed",
-        "jb2a.melee_generic.bludgeoning.two_handed",
         "jb2a.melee_generic.creature_attack.claw.001.green",
-        "jb2a.melee_generic.slash.01.bluepurple",
+        "jb2a.melee_generic.piercing.one_handed",
+        "jb2a.melee_generic.piercing.two_handed",
+        "jb2a.melee_generic.slashing.one_handed",
         "jb2a.muzzle_flash.single.01.yellow",
         "jb2a.particles.002.001.complete.few.greenyellow",
         "jb2a.particles.002.001.complete.few.white",
@@ -112,6 +118,7 @@
         "jb2a.shortsword.melee.01.white",
         "jb2a.shuriken.01",
         "jb2a.slingshot",
+        "jb2a.smoke.puff.centered.dark_black",
         "jb2a.smoke.puff.centered.grey",
         "jb2a.snowball_toss.white.01",
         "jb2a.spear.melee.01.white",
@@ -119,23 +126,26 @@
         "jb2a.spear.return.01",
         "jb2a.spear.throw.01",
         "jb2a.spell_projectile.poison.greenyellow",
+        "jb2a.swirling_leaves.outburst.01.greenorange",
         "jb2a.sword.melee.01.white",
         "jb2a.sword.melee.fire.orange",
         "jb2a.throwable.throw.bomb.01.blue",
         "jb2a.throwable.throw.bomb.01.green",
         "jb2a.throwable.throw.bomb.01.grey",
         "jb2a.throwable.throw.bomb.01.red",
+        "jb2a.throwable.throw.flask.01.black",
         "jb2a.throwable.throw.flask.01.white",
         "jb2a.toll_the_dead.purple.skull_smoke",
-        "jb2a.unarmed_strike.physical.01.blue",
         "jb2a.unarmed_strike.physical.01.green",
         "jb2a.unarmed_strike.physical.01.orange",
-        "jb2a.warhammer.melee.01.white"
+        "jb2a.warhammer.melee.01.white",
+        "jb2a.water_splash.circle.01.blue",
+        "jb2a.wind_lines.01.01.white"
       ]
     },
     "free": {
       "available": 1351,
-      "used": 66,
+      "used": 72,
       "keys": [
         "jb2a.arrow.physical.white.01",
         "jb2a.arrow.poison.green.01",
@@ -147,7 +157,6 @@
         "jb2a.dagger.return.01.white",
         "jb2a.dagger.throw.01.white",
         "jb2a.divine_smite.target.blueyellow",
-        "jb2a.eldritch_blast.purple",
         "jb2a.energy_field.01.blue",
         "jb2a.energy_field.02.above.blue",
         "jb2a.entangle.02.complete.02.green",
@@ -168,15 +177,19 @@
         "jb2a.hammer.melee.01.white",
         "jb2a.handaxe.melee.standard.white",
         "jb2a.impact.005.orange",
+        "jb2a.impact.007.yellow",
         "jb2a.impact.fire.01.orange",
         "jb2a.impact.frost.white.01",
+        "jb2a.impact.ground_crack.01.orange",
         "jb2a.impact_themed.ice_shard.blue",
         "jb2a.lightning_ball.blue",
+        "jb2a.lightning_bolt.narrow.blue",
         "jb2a.liquid.blob.blue",
         "jb2a.liquid.splash.blue",
         "jb2a.liquid.splash02.red",
         "jb2a.maul.melee.standard.white",
         "jb2a.melee_attack.01.butterflysword.01",
+        "jb2a.melee_attack.01.chakram.01",
         "jb2a.melee_attack.01.flail.01",
         "jb2a.melee_attack.01.sickle.01",
         "jb2a.melee_attack.02.mace.01",
@@ -202,7 +215,10 @@
         "jb2a.throwable.throw.flask.01.orange",
         "jb2a.toll_the_dead.green.skull_smoke",
         "jb2a.unarmed_strike.physical.01.blue",
-        "jb2a.warhammer.melee.01.white"
+        "jb2a.warhammer.melee.01.white",
+        "jb2a.water_splash.circle.01.blue",
+        "jb2a.wind_lines.01.01.white",
+        "jb2a.wind_lines.01.leaves.01.green"
       ]
     }
   },
@@ -509,12 +525,14 @@
       "descriptionHash": "b2020420c9bf4645",
       "descriptionChars": 223,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "club throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "loueS11Tfa9WD320",
@@ -659,7 +677,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -675,7 +693,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -836,12 +854,12 @@
       "mode": "melee",
       "family": "dagger",
       "elements": [
-        "spirit",
+        "unholy",
         "bleed"
       ],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "One-handed piercing contact. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -852,12 +870,12 @@
       "mode": "thrown",
       "family": "dagger",
       "elements": [
-        "spirit",
+        "unholy",
         "bleed"
       ],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "dagger throw across 10 ft increments. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "dagger throw across 10 ft increments. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -883,7 +901,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -963,7 +981,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -976,7 +994,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -989,7 +1007,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1002,7 +1020,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1175,7 +1193,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1477,7 +1495,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1490,7 +1508,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1503,7 +1521,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1570,7 +1588,7 @@
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed slashing contact. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed slashing contact. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. unholy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1613,7 +1631,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + cold + electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1626,7 +1644,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + cold + electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1676,12 +1694,14 @@
       "descriptionHash": "2d727884dfbd6c9a",
       "descriptionChars": 241,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "chakram",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 40 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "chakram throw across 40 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "PJboj72eI9JXjtbn",
@@ -1745,7 +1765,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1758,7 +1778,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1865,7 +1885,7 @@
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -1878,7 +1898,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -2342,12 +2362,14 @@
       "descriptionHash": "fab3f56f2f67a3b2",
       "descriptionChars": 107,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "bola",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "bola throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "y5bkwzClxfs6gpDn",
@@ -2374,7 +2396,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. cold flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -2605,7 +2627,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -2660,7 +2682,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -2716,7 +2738,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -2797,7 +2819,7 @@
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed fire contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed fire contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -2925,12 +2947,13 @@
       "descriptionHash": "50cafb5dbbd750bb",
       "descriptionChars": 1887,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Successful-hit Warpwave is illustrated by a finite distortion field; its random rules outcome is not applied. Patreon has multicolored footage; Free uses a blue approximation. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Successful-hit Warpwave is illustrated by a finite distortion field; its random rules outcome is not applied. Patreon has multicolored footage; Free uses a blue approximation. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
+        "free flight: jb2a.dagger.throw.01.white",
         "free onHit: jb2a.energy_field.01.blue"
       ]
     },
@@ -2966,12 +2989,14 @@
       "descriptionHash": "dc9f75331b008863",
       "descriptionChars": 116,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "IBxtmyiVjWVqFawh",
@@ -2998,7 +3023,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -3012,7 +3037,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3025,7 +3050,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3038,7 +3063,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3051,7 +3076,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3265,12 +3290,14 @@
       "descriptionHash": "a824511f7377165d",
       "descriptionChars": 70,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "chakram",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "chakram throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "OIs6WPuCRh2UJTOe",
@@ -3465,12 +3492,14 @@
       "descriptionHash": "05e365ec2e4ee27e",
       "descriptionChars": 174,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "LLYD2GEhzhdxoCAx",
@@ -3520,12 +3549,14 @@
       "descriptionHash": "51f2e210818a10a8",
       "descriptionChars": 810,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "weight",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "weight throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "3T3ayvgw9HDn05Mz",
@@ -3546,11 +3577,11 @@
       "descriptionHash": "49aa88def1c4dfde",
       "descriptionChars": 190,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "hook",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "hook throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3572,12 +3603,14 @@
       "descriptionHash": "aba124f1db6f1aaf",
       "descriptionChars": 182,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "weight",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "weight throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "6TC4FywUTzVAK97v",
@@ -3706,7 +3739,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3719,7 +3752,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3732,7 +3765,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3860,12 +3893,14 @@
       "descriptionHash": "75f042232c278651",
       "descriptionChars": 154,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "club throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "ivaL0xt33k6QNwQK",
@@ -4347,7 +4382,7 @@
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "firearm shot across 30 ft increments. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "firearm shot across 30 ft increments. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -4516,7 +4551,7 @@
       "descriptionHash": "b6478940f2d30a3c",
       "descriptionChars": 1086,
       "mode": "melee",
-      "family": "spear",
+      "family": "glaive",
       "elements": [],
       "persistent": "",
       "payload": null,
@@ -4529,7 +4564,7 @@
       "descriptionHash": "9f84aa5aa35d1a2e",
       "descriptionChars": 1095,
       "mode": "melee",
-      "family": "spear",
+      "family": "glaive",
       "elements": [],
       "persistent": "",
       "payload": null,
@@ -4542,7 +4577,7 @@
       "descriptionHash": "07c8f0b73e5925cb",
       "descriptionChars": 1096,
       "mode": "melee",
-      "family": "spear",
+      "family": "glaive",
       "elements": [],
       "persistent": "",
       "payload": null,
@@ -4559,7 +4594,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "bow shot across 60 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "bow shot across 60 ft increments. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -4689,8 +4724,7 @@
       "payload": null,
       "rationale": "spittle shot across 150 ft increments. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon flight: jb2a.bolt.lightning.blue",
-        "free flight: jb2a.eldritch_blast.purple"
+        "patreon flight: jb2a.bolt.lightning.blue"
       ]
     },
     {
@@ -5089,7 +5123,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5102,7 +5136,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5688,7 +5722,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5701,7 +5735,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5714,7 +5748,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5736,11 +5770,11 @@
       "descriptionHash": "e2db0c6c14b3972d",
       "descriptionChars": 268,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "hook",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "hook throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5779,7 +5813,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5792,7 +5826,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. cold + electricity + fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5835,7 +5869,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. cold flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5953,7 +5987,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -5966,7 +6000,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white",
         "free return: jb2a.dagger.return.01.white"
@@ -6277,7 +6311,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -6360,7 +6394,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -6373,7 +6407,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -6386,7 +6420,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "dagger throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "dagger throw across 10 ft increments. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -6590,7 +6624,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -6603,7 +6637,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. fire + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white",
         "free return: jb2a.dagger.return.01.white"
@@ -6912,7 +6946,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -6925,7 +6959,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -6938,7 +6972,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -6951,7 +6985,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -7027,12 +7061,14 @@
       "descriptionHash": "5cd1d3f2d5065010",
       "descriptionChars": 573,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "dgWxsYm0DWHb27h6",
@@ -7167,7 +7203,7 @@
       "payload": null,
       "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.bludgeoning.one_handed",
+        "patreon contact: jb2a.melee_generic.piercing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -7290,11 +7326,11 @@
       "family": "quarterstaff",
       "elements": [
         "fire",
-        "spirit"
+        "unholy"
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. fire + unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -7331,13 +7367,13 @@
       "descriptionHash": "a6a52d9f01881a27",
       "descriptionChars": 321,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "vial",
       "elements": [
         "spirit"
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "vial throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -7493,12 +7529,14 @@
       "descriptionHash": "f11a9d6a242b3434",
       "descriptionChars": 950,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "DA3hZ45tpmBuPkKZ",
@@ -7566,7 +7604,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "firearm shot across 80 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "firearm shot across 80 ft increments. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -7838,12 +7876,14 @@
       "descriptionHash": "17466f05db004f45",
       "descriptionChars": 230,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "club throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "QhUTsTnbehv1ft9u",
@@ -8060,7 +8100,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -8192,7 +8232,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -8204,11 +8244,11 @@
       "mode": "melee",
       "family": "greatsword",
       "elements": [
-        "spirit"
+        "unholy"
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed slashing contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed slashing contact. unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -8234,7 +8274,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -8349,12 +8389,12 @@
       "mode": "melee",
       "family": "sword",
       "elements": [
-        "spirit",
+        "unholy",
         "bleed"
       ],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "One-handed slashing contact. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -8367,7 +8407,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -8464,7 +8504,7 @@
       ],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "One-handed piercing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -8479,7 +8519,7 @@
       ],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "spear throw across 20 ft increments. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "spear throw across 20 ft increments. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white"
       ]
@@ -8497,7 +8537,7 @@
       ],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "One-handed piercing contact. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -8513,7 +8553,7 @@
       ],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "spear throw across 20 ft increments. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "spear throw across 20 ft increments. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white"
       ]
@@ -8832,12 +8872,14 @@
       "descriptionHash": "41ae51534a6bcb6b",
       "descriptionChars": 978,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "bola",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 15 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "bola throw across 15 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "iWcw1sFLAzByVLBP",
@@ -9000,7 +9042,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -9013,7 +9055,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -9026,7 +9068,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -9132,7 +9174,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -9145,7 +9187,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -9546,12 +9588,14 @@
       "descriptionHash": "c6ad1a63d593fe3a",
       "descriptionChars": 691,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "ASjNBiQfQfWppPJc",
@@ -9910,7 +9954,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "firearm shot across 60 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "firearm shot across 60 ft increments. Physical weapon footage and restrained contact finish. fire + unholy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -10388,7 +10432,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -10401,7 +10445,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -10414,7 +10458,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -10661,7 +10705,7 @@
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed piercing contact, extended reach. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed piercing contact, extended reach. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -10767,7 +10811,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -10808,7 +10852,7 @@
       ],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "Two-handed slashing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed slashing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -10834,7 +10878,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "firearm shot across 60 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "firearm shot across 60 ft increments. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -11181,7 +11225,7 @@
       "payload": null,
       "rationale": "Two-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.bludgeoning.two_handed",
+        "patreon contact: jb2a.melee_generic.piercing.two_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -11335,7 +11379,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -11464,7 +11508,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -11659,7 +11703,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -11829,7 +11873,7 @@
       "payload": null,
       "rationale": "Two-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -12403,7 +12447,7 @@
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -12418,7 +12462,7 @@
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -12431,7 +12475,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -12459,7 +12503,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -13148,7 +13192,7 @@
       "elements": [],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13161,7 +13205,7 @@
       "elements": [],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white"
       ]
@@ -13176,7 +13220,7 @@
       "elements": [],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13189,7 +13233,7 @@
       "elements": [],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white"
       ]
@@ -13204,7 +13248,7 @@
       "elements": [],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13217,7 +13261,7 @@
       "elements": [],
       "persistent": "bleed",
       "payload": null,
-      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white"
       ]
@@ -13377,7 +13421,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13390,7 +13434,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13403,7 +13447,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13416,7 +13460,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13429,7 +13473,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13442,7 +13486,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13494,7 +13538,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13507,7 +13551,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13520,7 +13564,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13572,7 +13616,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13585,7 +13629,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13598,7 +13642,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13650,7 +13694,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13663,7 +13707,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13676,7 +13720,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13689,7 +13733,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13702,7 +13746,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13715,7 +13759,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13728,7 +13772,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13741,7 +13785,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13845,7 +13889,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13858,7 +13902,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13871,7 +13915,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13884,7 +13928,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13897,7 +13941,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13910,7 +13954,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -13962,7 +14006,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14157,7 +14201,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14170,7 +14214,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14183,7 +14227,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14196,7 +14240,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14209,7 +14253,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14222,7 +14266,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14235,7 +14279,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14326,7 +14370,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14352,7 +14396,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14365,7 +14409,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14378,7 +14422,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14430,7 +14474,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14443,7 +14487,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14456,7 +14500,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -14570,13 +14614,14 @@
       "descriptionHash": "b8b7cccb9a297db1",
       "descriptionChars": 600,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "club",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "patreon return: jb2a.dagger.return.01.white",
+        "free flight: jb2a.dagger.throw.01.white",
         "free return: jb2a.dagger.return.01.white"
       ]
     },
@@ -14802,7 +14847,7 @@
       "payload": null,
       "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.bludgeoning.one_handed",
+        "patreon contact: jb2a.melee_generic.piercing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -14812,12 +14857,14 @@
       "descriptionHash": "4dc88bd7b7b327fe",
       "descriptionChars": 313,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "dart",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": []
+      "rationale": "dart throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "approximations": [
+        "free flight: jb2a.dagger.throw.01.white"
+      ]
     },
     {
       "id": "ud3pqCquYA5UecaS",
@@ -14829,7 +14876,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "javelin throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "javelin throw across 30 ft increments. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white",
         "free return: jb2a.dagger.return.01.white"
@@ -14926,7 +14973,7 @@
         "residue": false,
         "residueElement": "",
         "fracture": true,
-        "secondary": "",
+        "secondary": "acid",
         "note": "Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint."
       },
       "rationale": "flask throw across 20 ft increments. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. gas contents at impact. Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
@@ -14949,7 +14996,7 @@
         "residue": false,
         "residueElement": "",
         "fracture": true,
-        "secondary": "",
+        "secondary": "acid",
         "note": "Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint."
       },
       "rationale": "flask throw across 20 ft increments. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. gas contents at impact. Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
@@ -14972,7 +15019,7 @@
         "residue": false,
         "residueElement": "",
         "fracture": true,
-        "secondary": "",
+        "secondary": "acid",
         "note": "Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint."
       },
       "rationale": "flask throw across 20 ft increments. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. gas contents at impact. Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
@@ -14995,7 +15042,7 @@
         "residue": false,
         "residueElement": "",
         "fracture": true,
-        "secondary": "",
+        "secondary": "acid",
         "note": "Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint."
       },
       "rationale": "flask throw across 20 ft increments. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. gas contents at impact. Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
@@ -15194,15 +15241,12 @@
       "descriptionHash": "994a8bb1cdf36cd7",
       "descriptionChars": 228,
       "mode": "melee",
-      "family": "contact",
+      "family": "chakram",
       "elements": [],
       "persistent": "",
       "payload": null,
       "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-      "approximations": [
-        "patreon contact: jb2a.melee_generic.bludgeoning.one_handed",
-        "free contact: jb2a.melee_generic.slash.01.orange"
-      ]
+      "approximations": []
     },
     {
       "id": "kedgBVNDRAdmseRe",
@@ -15632,7 +15676,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "crossbow shot across 120 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "crossbow shot across 120 ft increments. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -15645,7 +15689,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -15654,11 +15698,11 @@
       "descriptionHash": "23c2c87b63a5e145",
       "descriptionChars": 964,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "hook",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "hook throw across 20 ft increments. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "patreon return: jb2a.dagger.return.01.white",
         "free return: jb2a.dagger.return.01.white"
@@ -15811,7 +15855,7 @@
       "descriptionHash": "0acff49a1f1bb61b",
       "descriptionChars": 319,
       "mode": "melee",
-      "family": "spear",
+      "family": "glaive",
       "elements": [],
       "persistent": "",
       "payload": null,
@@ -15824,7 +15868,7 @@
       "descriptionHash": "f30b708f840f8b77",
       "descriptionChars": 327,
       "mode": "melee",
-      "family": "spear",
+      "family": "glaive",
       "elements": [],
       "persistent": "",
       "payload": null,
@@ -16012,7 +16056,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -16099,13 +16143,13 @@
       "descriptionHash": "b8ee83b102ce42c6",
       "descriptionChars": 328,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "vial",
       "elements": [
-        "spirit"
+        "unholy"
       ],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "vial throw across 20 ft increments. unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -16120,7 +16164,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -16179,7 +16223,7 @@
       "payload": null,
       "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -16193,7 +16237,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -16206,7 +16250,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -16334,7 +16378,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "Two-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "Two-handed slashing contact. Physical weapon footage and restrained contact finish. holy + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -16349,7 +16393,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -16482,7 +16526,7 @@
       "payload": null,
       "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.bludgeoning.one_handed",
+        "patreon contact: jb2a.melee_generic.piercing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -16688,7 +16732,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -16704,7 +16748,7 @@
       "payload": null,
       "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -16720,7 +16764,7 @@
       "payload": null,
       "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
-        "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+        "patreon contact: jb2a.melee_generic.slashing.one_handed",
         "free contact: jb2a.melee_generic.slash.01.orange"
       ]
     },
@@ -16786,13 +16830,14 @@
       "descriptionHash": "7b35c0aaf63874f4",
       "descriptionChars": 597,
       "mode": "thrown",
-      "family": "thrown",
+      "family": "bola",
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "bola throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "patreon return: jb2a.dagger.return.01.white",
+        "free flight: jb2a.dagger.throw.01.white",
         "free return: jb2a.dagger.return.01.white"
       ]
     },
@@ -16984,7 +17029,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -16997,7 +17042,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -17010,7 +17055,7 @@
       "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {

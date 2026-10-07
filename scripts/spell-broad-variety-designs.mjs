@@ -46,7 +46,7 @@ export const BROAD_VARIETY_MOTIFS = {
   broadUndeadCommand:motif('An undead control seal','broadUndeadCommand',{hit:'magic_signs.rune.necromancy',aura:'markers.chain.spectral_standard.complete'}),
   broadLatentMemory:motif('Knowledge is sealed for a later trigger','broadLatentMemory',{hit:'icon.runes02',aura:'energy_strands.02.marker'},{castingOnly:true}),
   broadAstralTutor:motif('A small psychic library connection','broadAstralTutor',{hit:'magic_signs.rune.divination',aura:'portals.vertical.vortex,portals.vertical.ring'}),
-  broadJealousy:motif('Social threads turn outward','broadJealousy',{hit:'energy_strands.complete',aura:'icon.heart'}),
+  broadJealousy:motif('Social ties sever and isolate','broadJealousy',{hit:'energy_strands.complete',aura:'icon.heart'}),
   broadDiscord:motif('Two allies receive divergent mental marks','broadDiscord',{hit:'icon.heart',aura:'energy_strands.02.marker'}),
   broadFreedomWord:motif('A liberating word expands beyond the mind','broadFreedomWord',{hit:'icon.runes',aura:'particles.outward'}),
   broadAuthority:motif('A restrained authority impression','broadAuthority',{hit:'eyes.01',aura:'magic_signs.rune.enchantment'}),

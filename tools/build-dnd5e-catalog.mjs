@@ -11,6 +11,7 @@ import {statePresentation} from '../scripts/state-presentation.mjs';
 import {selectWeaponMedia} from './weapon-asset-selection.mjs';
 import {ABILITY_SOUND_PROFILES} from '../data/ability-sounds.mjs';
 import {SOUND_PROFILES} from '../data/spell-sounds.mjs';
+import {MEDIA_DURATIONS} from '../data/media-durations.mjs';
 const hash=v=>createHash('sha256').update(String(v)).digest('hex');
 const seed=v=>parseInt(hash(v).slice(0,8),16);
 const data=await dnd5eSources(),db=await assetDatabases(),rows=[];
@@ -21,9 +22,9 @@ const siblingCache=new Map();
 function siblings(key,id,edition){const base=allAssets.get(key);if(!base)return key;const identity=k=>k.split('.').map(p=>/^\d+$/.test(p)?'#':p).join('.');const cacheKey=edition+identity(key);if(!siblingCache.has(cacheKey))siblingCache.set(cacheKey,db[edition].filter(r=>identity(r.key)===identity(key)&&assetGeometry(r)===assetGeometry(base)));const options=siblingCache.get(cacheKey);return (options[seed(id)%options.length]??base).key;}
 function media(direction,row,id){
  const theme=SPELL_THEMES[direction.theme]?direction.theme:'arcane',defaults=SPELL_THEMES[theme];
- const profile={...defaults,...Object.fromEntries(['bolt','hit','area','aura','cast'].filter(k=>typeof direction[k]==='string').map(k=>[k,direction[k]])),...(direction.areaAsset?{area:direction.areaAsset}:{})};
- const key=JSON.stringify([theme,profile,row.source.name,direction.delivery]);
- if(!mediaCache.has(key))mediaCache.set(key,resolveSpellMedia(db,theme,profile,defaults,{system:'dnd5e',name:row.source.name,slug:id,delivery:direction.delivery==='fork'?'chain':direction.delivery==='rayFan'?'coneRayFan':direction.delivery,design:{pattern:['ray','fork','rayFan'].includes(direction.delivery)?'ray':['missile','areaMissile'].includes(direction.delivery)?'missile':'generic',assetIntent:row.source.name}}));
+ const profile={...defaults,...Object.fromEntries(['bolt','hit','area','aura','cast'].filter(k=>typeof direction[k]==='string').map(k=>[k,direction[k]])),...(direction.areaAsset?{area:direction.areaAsset}:{}),...(direction.slotThemes?{slotThemes:direction.slotThemes}:{})};
+ const key=JSON.stringify([theme,profile,row.source.name,direction.delivery,direction.areaTiles]);
+ if(!mediaCache.has(key))mediaCache.set(key,resolveSpellMedia(db,theme,profile,defaults,{system:'dnd5e',name:row.source.name,slug:id,delivery:direction.delivery==='fork'?'chain':direction.delivery==='rayFan'?'coneRayFan':direction.delivery,design:{...(direction.areaTiles?{areaLayout:'tiles'}:{}),pattern:['ray','fork','rayFan'].includes(direction.delivery)?'ray':['missile','areaMissile'].includes(direction.delivery)?'missile':'generic',assetIntent:row.source.name}}));
  const resolved=mediaCache.get(key);
  return Object.fromEntries(Object.entries(resolved).map(([slot,keys])=>[slot,[...new Set(['patreon','free'].map(edition=>{const key=keys.find(k=>db[edition].some(r=>r.key===k));return siblings(key,id+slot,edition);} ))]]));
 }
@@ -39,13 +40,25 @@ function stateAssets(row,theme){
  const name=row.source.name.toLowerCase(),status=row.statusId??row.source.statuses?.[0];
  const damage=name.match(/\b(acid|cold|fire|force|lightning|necrotic|poison|psychic|radiant|thunder|bludgeoning|piercing|slashing)\b/)?.[1];
  const vulnerable=/vulnerab/.test(name),defense=/resistan|immun|ward|shield|armor/.test(name)&&!vulnerable;
- const negative=vulnerable||/disadvantage|penalt|cursed|lethargy|\bslow|withered|enfeebl|enervat|weaken|-\s*\d|−\s*\d/.test(name);
+ const negative=vulnerable||/disadvantage|penalt|cursed|lethargy|\bslow|withered|enfeebl|enervat|weaken|sickness|fatigue|taxed|insanit|befuddl|disease|cannot heal|wounded|-\s*\d|−\s*\d/.test(name);
  const positive=!negative&&/advantage|bonus|\+\s*\d|blessed|bless|heroism|\baid\b|enhanced|guidance/.test(name);
- const hint=sustained[status]??(
+ // Iron chains are chains even when the native status is Restrained.
+ const chained=/chain|manacle|shackle|iron/.test(name)&&/restrain|chain|bound|imprison/.test(name);
+ const hint=chained?'markers.chain':sustained[status]??(
   vulnerable?'condition.curse,token_border.circle.static':
   defense&&damage==='fire'?'shield_themed.above.fire,shield.01.loop':
   defense&&damage==='cold'?'shield_themed.above.ice,shield.01.loop':
+  defense&&!damage&&/armor|\bac\b/.test(name)?'shield.02.loop,shield.01.loop':
   defense?'shield.01.loop':
+  /insanit|befuddl|confus|madness/.test(name)?'dizzy_stars':
+  /disease/.test(name)?'fumes.04.loop,markers.poison':
+  /divine|thaumaturg/.test(name)?'dancing_light':
+  /cloud giant strength|giant strength \(cloud\)/.test(name)?'whirlwind':
+  /storm giant strength|giant strength \(storm\)/.test(name)?'static_electricity,lightning_ball':
+  /messenger|message/.test(name)?'swirling_feathers':
+  /imprisonment: slumber/.test(name)?'sleep.symbol,sleep.cloud':
+  /imprisonment: buried/.test(name)?'falling_rocks.top,ground_cracks':
+  /imprison/.test(name)?'energy_field.01,energy_field':
   /ioun|enhanced (?:agility|awareness|fortitude|insight|intellect|leadership|mastery|protection|strength)/.test(name)?'markers.light_orb,dancing_light':
   /\bfly|flying|levitat/.test(name)?'token_border.circle.spinning':
   /haste|speed/.test(name)&&!negative?'token_border.circle.spinning':
@@ -57,13 +70,25 @@ function stateAssets(row,theme){
   /invisib/.test(name)?sustained.invisible:
   negative?'condition.curse,token_border.circle.static':
   positive?'condition.boon,token_border.circle.static':
-  SPELL_THEMES[theme]?.aura??'token_border.circle.static');
- const color=({poisoned:'green',bloodied:'red',exhaustion:'yellow',petrified:'grey',dead:'grey',restrained:'white',grappled:'grey',paralyzed:'yellow'}[status]??(damage&&(defense||vulnerable||/hunter/.test(name))?DAMAGE_COLOR[damage]:negative?'dark_red':positive?'green':{fire:'orange',cold:'blue',electricity:'blue',acid:'green',poison:'green',blood:'red',light:'yellow',spirit:'yellow',void:'purple',shadow:'purple',plant:'green',healing:'green',water:'blue',ward:'blue',earth:'brown'}[theme]));
- const hex=damage&&(defense||vulnerable||/hunter/.test(name))?DAMAGE_HEX[damage]:negative?'#e07a84':positive?'#a9dbb4':THEME_HEX[theme];
+  // No floating spectral weapon or annihilation sphere as an ambient marker.
+  ({weapon:'token_border.circle.static',ward:'shield.01.loop,shield.02.loop',void:'energy_strands.overlay.dark_purple,token_border.circle.static'}[theme]??SPELL_THEMES[theme]?.aura??'token_border.circle.static'));
+ const color=({poisoned:'green',bloodied:'red',exhaustion:'yellow',petrified:'grey',dead:'grey',restrained:'white',grappled:'grey',paralyzed:'yellow',diseased:'green'}[status]??(/disease/.test(name)?'green':damage&&(defense||vulnerable||/hunter/.test(name))?DAMAGE_COLOR[damage]:negative?'dark_red':positive?'green':{fire:'orange',cold:'blue',electricity:'blue',acid:'green',poison:'green',blood:'red',light:'yellow',spirit:'yellow',void:'purple',shadow:'purple',plant:'green',healing:'green',water:'blue',ward:'blue',earth:'brown'}[theme]));
+ const hex=/disease/.test(name)||status==='diseased'?'#9cc26a':damage&&(defense||vulnerable||/hunter/.test(name))?DAMAGE_HEX[damage]:negative?'#e07a84':positive?'#a9dbb4':THEME_HEX[theme];
  const choose=options=>[...options].sort((a,b)=>colorAffinity(b.key,color)-colorAffinity(a.key,color)||a.key.localeCompare(b.key))[0].key;
  const assets=[...new Set(Object.entries(db).map(([edition,inventory])=>{for(const prefix of hint.split(',')){const options=inventory.filter(r=>r.key.startsWith('jb2a.'+prefix)&&assetGeometry(r)==='radial'&&!/intro|outro|complete|pulse|outburst/.test(r.key));if(options.length)return choose(options);}const options=inventory.filter(r=>r.key.startsWith('jb2a.token_border.circle.static'));if(!options.length)throw Error('No sustained media '+edition);return choose(options);} ))];
  const needsTint=Boolean(color&&hex)&&assets.some(k=>colorAffinity(k,color)<0.9);
  return {assets,tint:needsTint?{tintEnabled:true,colorize:true,tint:hex}:{}};
+}
+// One-shot stages play their whole movie (media-lifetime). Instantaneous
+// actions must not hold the stage for 8-16 s: speed long clips up to 1.5x, then
+// clip with a fade so casts end within ~3 s and other one-shots within ~4 s.
+// Persistent (document) stages and travel flights are left alone.
+function capOneShot(s){
+ if(!s.assets?.length||s.persist||s.oneShot===false||s.clipEnd||['travel','projectile','motion','sound'].includes(s.kind))return;
+ const cap=s.kind==='cast'?3000:4000,native=Math.max(0,...s.assets.map(k=>MEDIA_DURATIONS[k]??0));
+ if(!native||native/(s.playbackRate??1)<=cap+250)return;
+ s.playbackRate=Math.round(Math.min(1.5,Math.max(1,native/cap))*100)/100;
+ if(native/s.playbackRate>cap+250){s.clipEnd=Math.round(cap*s.playbackRate);s.duration=cap;s.fadeOut=Math.max(s.fadeOut??0,500);}
 }
 function finiteRecipe(entry,row,raw,mode){
  const d=nativeDirection(row,raw,mode),id=`${raw._id}${mode?'-'+mode:''}`,m=mode?{}:media(d,row,entry.id+id),a=d.activity;
@@ -83,9 +108,13 @@ function finiteRecipe(entry,row,raw,mode){
    d.sound=({electricity:'electric',sonic:'sonic',void:'void',mind:'psychic',light:'light'}[d.theme]??d.theme);
    Object.assign(m,media(d,row,entry.id+id));
   }else{
-  const native=selectWeaponMedia(db,{name:row.source.name,slug:entry.slug},{mode,family,element:elements[0]??'physical',elements,damage:type,hands:row.source.system?.properties?.includes('two')?2:1,...(['contact','spike'].includes(family)?{contactRoots:[`melee_generic.${physical?type:'piercing'}`]}:family==='boulder'?{contactRoots:['impact.boulder'],flightRoots:['boulder.toss.01','boulder.toss.02'],}:family==='sword'?{flightRoots:['sword.throw.white','greatsword.throw']}:{} )});
+  const native=selectWeaponMedia(db,{name:row.source.name,slug:entry.slug},{mode,family,element:elements[0]??'physical',elements,damage:type,hands:row.source.system?.properties?.includes('two')?2:1,...(['contact','spike'].includes(family)?{contactRoots:[`melee_generic.${physical?type:'piercing'}`]}:family==='boulder'?{contactRoots:['impact.boulder'],flightRoots:['boulder.toss.01','boulder.toss.02'],}:family==='sword'?{flightRoots:['sword.throw.white','greatsword.throw']}:['hammer','maul','warhammer'].includes(family)?{flightRoots:['hammer.throw']}:{} )});
   if(family==='boulder')d.nativeMaterialProfile='earth';
   for(const [slot,keys]of Object.entries({bolt:native.assets.flight,hit:mode==='melee'?native.assets.contact:native.assets.accent}))m[slot]=[...new Set(['patreon','free'].map(edition=>siblings(keys.find(key=>db[edition].some(r=>r.key===key)),entry.id+id+slot,edition)).filter(Boolean))];
+  // A dancing weapon flies and strikes on its own: show the spectral blade at
+  // the victim instead of the wielder lunging with an ordinary swing.
+  const dancing=mode==='melee'&&/^dancing /i.test(row.source.name)&&row.source.system?.type?.baseItem;
+  if(dancing){const keys=['patreon','free'].map(edition=>[`.01.spectral.01.blue`,`.01.spectral`,``].map(p=>db[edition].find(r=>r.key.startsWith(`jb2a.spiritual_weapon.${dancing}${p}`))?.key).find(Boolean)).filter(Boolean);if(keys.length){m.hit=[...new Set(keys)];d.flyingWeapon=true;}}
   // A magical melee material adds a payload layer to its physical contact.
   if(elements.length&&mode==='melee')m.payload=native.assets.accent;
   for(const [i,keys]of Object.entries(native.assets).filter(([k])=>/^accent\d+$/.test(k)))m['payload'+i]=keys;
@@ -99,12 +128,13 @@ function finiteRecipe(entry,row,raw,mode){
   // Shared physical sound profiles anchor melee blows to contact, ranged
   // landings and elemental finishes to accent. Preserve these phase IDs.
   const phase=physical&&kind==='impact'?(slot==='hit'?(mode==='melee'||!mode?'contact':'accent'):slot.startsWith('payload')?'accent':slot):slot;
-  const s={stageId:`${stages.length}-${phase}`,kind,label,assets:m[slot],duration:1400,scale:kind==='travel'?.65:1.65,opacity:1,fadeIn:0,fadeOut:180,oneShot:true,playbackRate:fast?.5:1,delay:0,...extra};stages.push(s);return s;
+  const tint=d.tints?.[slot]?{tintEnabled:true,colorize:true,tint:d.tints[slot]}:{};
+  const s={stageId:`${stages.length}-${phase}`,kind,label,assets:m[slot],duration:1400,scale:kind==='travel'?.65:1.65,opacity:1,fadeIn:0,fadeOut:180,oneShot:true,playbackRate:fast?.5:1,delay:0,...tint,...extra};stages.push(s);return s;
  };
  const motion=(motion,subject,delay,duration=1200,distance=.16)=>stages.push({stageId:'motion-'+stages.length,kind:'motion',label:motion==='pulse'?'Casting breath':motion==='lunge'?'Measured approach':motion==='levitate'?'Illustrative lift':motion==='dodge'?'Wind step':'Guard and settle',assets:[],motion,subject,delay,duration,distance,intensity:.6,...(motion==='dodge'?{motionRange:'distance'}:{})});
  const gesture=(subject,delay)=>{if(d.motion==='none')return;const [type,duration,distance]=({ 'throw-small':['lunge',1400,.1],'brace-small':['recoil',1500,.06],'reach-small':['lunge',1500,.12],'stride-small':['lunge',1600,.24],'evade-small':['dodge',1600,.15],'lift-illustrative':['levitate',2000,.22],'hop-illustrative':['levitate',1600,.18],'wind-step-small':['dodge',1600,.15],'lash-small':['lunge',1600,.18],'guard-small':['recoil',1500,.06],'native-teleport-cue':['pulse',1600,.04],'transform-cue':['pulse',1800,.1] }[d.motion]??['pulse',1500,.09]);motion(type,subject,delay,duration,distance);};
  const physical=!d.nativeEnergy&&mode||d.physicalThrow||d.theme==='weapon',source=d.delivery==='source';
- if(!d.followup&&!physical&&d.motion!=='none')add('cast','cast','Gather '+(SPELL_THEMES[d.theme]?.label??'magic'),{scale:1.2,duration:1600});
+ if(!d.followup&&!physical&&d.motion!=='none'&&!d.noCast)add('cast','cast','Gather '+(SPELL_THEMES[d.theme]?.label??'magic'),{scale:1.2,duration:1600});
  if(d.delivery==='fork'){
   const first=add('travel','bolt','Primary arc',{delay:350,targetSelection:'first',scale:.65});
   add('travel','bolt','Forks from primary',{afterStage:first.stageId,timingAnchor:'start',startOffset:450,travelOrigin:'firstTarget',targetSelection:'secondary',targetLimit:3,scale:.55});
@@ -126,7 +156,7 @@ function finiteRecipe(entry,row,raw,mode){
   }else add('template','area',a.name||'Area manifests',{delay:350,scale:1,areaLayout:layout});
   gesture('source',0);
  }else{
-  if(physical&&mode==='melee')motion('lunge','source',0,1500,.22);
+  if(physical&&mode==='melee'&&!d.flyingWeapon)motion('lunge','source',0,1500,.22);
   const kind=source?'aura':d.delivery==='contact'?'impact':'aura';
   add(kind,source||!physical&&kind==='aura'?'aura':'hit',d.followup?'Follow-up contact':physical?'Physical contact':source?'Activation bloom':'Recipient bloom',{delay:physical?600:350,subject:source?'source':'targets',scale:physical?1.35:1.8});
   if(!physical&&!d.followup)gesture(source?'source':'targets',300);
@@ -145,6 +175,7 @@ function finiteRecipe(entry,row,raw,mode){
   // performer beats, distinguishing basic and heightened Flurry activations.
   const beat=stages.find(s=>s.kind==='motion');if(beat){beat.motion='lunge';beat.distance=.1;beat.repeats=d.nativeCounts.illustrativeBeats;beat.repeatInterval=1100;beat.duration=1100;beat.label=`${beat.repeats} illustrative flurry beats`;}
  }
+ for(const s of stages)capOneShot(s);
  const recipe=validateRecipe({id:`animater-${entry.id}-${id}`,name:entry.name,systemId:'dnd5e',catalogEntry:entry.id,activityId:raw._id,...(mode?{weaponMode:mode}:{}),itemUuid:row.uuid,match:entry.slug,description:d.note,category:entry.group,color:SPELL_THEMES[d.theme]?.color,trigger:delegated?'manual':d.trigger,previewArea:d.area,playbackRoles:roles,stages});
  const soundProfile=d.sound===null?null:d.nativeMaterialProfile??elementalSound??(d.physicalThrow||d.nativeEnergy?d.sound:mode?weaponSound(row.source,mode):physical?ABILITY_SOUND_PROFILES[d.sound]?d.sound:weaponSound(row.source,mode):d.sound);
  const soundNamespace=!d.nativeMaterialProfile&&!d.nativeEnergy&&!d.physicalThrow&&(mode||d.theme==='weapon')&&ABILITY_SOUND_PROFILES[soundProfile]?'ability':'spell';

@@ -23,7 +23,8 @@ const sleepAnchors={
 export const CONDITION_PLANS={
  blinded:plan('vision','symbolic',art('darkness.black','black',{offsetY:-.1,scale:.9,opacity:.8})),
  broken:plan('broken','themed',glyph('shield_cracked','orange',{scale:1})),
- clumsy:plan('coordination','symbolic',rim(3,'orange',{tracks:[track('rotation',-5,5,1500)]})),
+ // Off-balance: wobbling motes over a tilting rim.
+ clumsy:plan('coordination','symbolic',art('particles.swirl','orange',{scale:1.2,opacity:.75,playbackRate:.6,tracks:[track('rotation',-14,14,900)]}),rim(3,'orange',{opacity:.7,tracks:[track('rotation',-5,5,1500)]})),
  concealed:plan('fog','themed',art('fog_cloud.01.white','grey',{scale:1.45,opacity:.8})),
  confused:plan('mind','symbolic',glyph('circle_of_stars','purple',{scale:1.05,offsetY:-.15,tracks:[track('rotation',-25,25,2400)]})),
  controlled:plan('mind','symbolic',glyph('runes02','blue',{scale:1.05,tracks:[track('alpha',.65,.95,2600)]})),
@@ -33,23 +34,29 @@ export const CONDITION_PLANS={
  doomed:plan('death','symbolic',glyph('skull','purple',{scale:.8}),rim(7,'purple',{opacity:.8})),
  drained:plan('health','symbolic',glyph('heart','grey',{scale:.85,brightness:.8})),
  dying:plan('death','symbolic',glyph('heart','red',{scale:1.05,tracks:[track('alpha',.55,.95,2000)]})),
- encumbered:plan('slow','symbolic',rim(5,'orange',{scale:1.4,offsetY:.3,tracks:flatten(.6)})),
- enfeebled:plan('weakness','symbolic',rim(2,'grey',{scale:1.35,opacity:.85,tracks:[track('scale.y',.8,.95,4200)]})),
+ // Overburdened: a heavy, slow metal orbit pressed flat at the feet.
+ encumbered:plan('slow','symbolic',art('aura_themed.01.orbit.loop.metal','grey',{scale:1.35,offsetY:.3,below:true,playbackRate:.35,opacity:.85,tracks:flatten(.45)}),rim(5,'orange',{scale:1.4,offsetY:.3,tracks:flatten(.6)})),
+ // Strength draining away: inward motes over a drooping rim.
+ enfeebled:plan('weakness','symbolic',art('particles.inward','red',{scale:1.2,opacity:.7,playbackRate:.6}),rim(2,'grey',{scale:1.35,opacity:.85,tracks:[track('scale.y',.8,.95,4200)]})),
  fascinated:plan('mind','symbolic',glyph('light_orb.loop','blue',{scale:.65,offsetY:-.2,tracks:[track('scale.x',.9,1.1,3000),track('scale.y',.9,1.1,3000)]})),
- fatigued:plan('slow','symbolic',rim(4,'grey',{opacity:.8,tracks:[track('alpha',.55,.85,4000)]})),
+ // Weary: a small, fading sleep cue (Unconscious uses the full blue symbol).
+ fatigued:plan('slow','symbolic',art('sleep.symbol','pink',{style:'.dark_pink',scale:.6,offsetY:-.2,opacity:.7,playbackRate:.5,mediaAnchors:sleepAnchors,tracks:[track('alpha',.35,.7,3500)]}),rim(4,'grey',{opacity:.75,tracks:[track('alpha',.55,.85,4000)]})),
  fleeing:plan('fear','symbolic',art('particles.outward','white',{scale:1.35,below:true,opacity:.85})),
  friendly:plan('attitude','symbolic',glyph('heart','pink',{scale:.65})),
  frightened:plan('fear','themed',glyph('fear','purple',{scale:1})),
  grabbed:plan('chains','themed',art('markers.chain.standard.loop.01','grey',{scale:1.6})),
  helpful:plan('attitude','symbolic',glyph('heart','pink',{scale:.65}),glyph('heart','pink',{scale:.55,mirrorX:true})),
  hidden:plan('invisible','symbolic',veil('grey'),rim(6,'grey',{opacity:.85})),
- hostile:plan('attitude','symbolic',rim(7,'red',{scale:1.4})),
- immobilized:plan('slow','symbolic',rim(1,'grey',{scale:1.4,tracks:flatten(.7),offsetY:.25})),
+ // Aggression: a targeting sigil over the dark red attitude rim.
+ hostile:plan('attitude','symbolic',rim(7,'red',{scale:1.4}),art('hunters_mark.loop','red',{scale:.6,opacity:.8})),
+ // Held in place: the binding motif of Grabbed/Restrained, shackled flat at the feet.
+ immobilized:plan('chains','symbolic',art(['markers.chain.square.loop.01','markers.chain.standard.loop.01'],'grey',{scale:1.45,offsetY:.25,tracks:flatten(.55)})),
  indifferent:plan('attitude','symbolic',rim(1,'grey')),
  invisible:plan('invisible','symbolic',art('condition.boon.02.001.refraction','white',{scale:1.35,opacity:.8})),
  observed:plan('neutral','symbolic',rim(2,'white',{scale:1.3})),
  'off-guard':plan('broken','symbolic',glyph('shield_cracked','red',{scale:.75})),
- paralyzed:plan('slow','symbolic',rim(6,'white',{below:false,scale:1.3})),
+ // Rigid stasis: a nearly frozen dome, distinct from Unconscious sleep and from bindings.
+ paralyzed:plan('slow','symbolic',art('energy_field.02.above','white',{scale:1.25,opacity:.5,playbackRate:.2}),rim(6,'white',{below:false,scale:1.3})),
  'persistent-damage':plan('neutral','symbolic',rim(4,'red',{scale:1.4,tracks:[track('alpha',.7,.95,2200)]})),
  petrified:plan('stone','symbolic',art('aura_themed.01.orbit.loop.metal.01','grey',{scale:1.4,playbackRate:.4,below:false})),
  prone:plan('slow','symbolic',rim(2,'grey',{scale:1.4,offsetY:.28,tracks:flatten(.4)})),

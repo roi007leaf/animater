@@ -32,9 +32,16 @@ export function auraStateEntry(uuid){
  const found=match?PF2E_EFFECTS.filter(e=>e.pack===match[1]&&e.name===match[2]):[];
  return found.length===1?found[0]:null;
 }
-export function stateRecipe(entry,{damageType,catalog,auraVariant,aura=entry?.auras?.[0]??entry?.auraSources?.[0],fx=true,fxCatalog}={}){
+// The element or resistance type an effect's ChoiceSet (or its origin) selected.
+export function stateElement(entry,item){
+ if(!entry?.elementVariants||!item)return null;
+ const ref=entry.elementChoice??{},selections=item.flags?.system?.rulesSelections??{};
+ const value=ref.origin?ref.origin.split('.').reduce((v,k)=>v?.[k],item.origin?.flags?.system):selections[ref.flag];
+ return entry.elementVariants[value]?value:Object.values(selections).find(v=>typeof v==='string'&&entry.elementVariants[v])??null;
+}
+export function stateRecipe(entry,{damageType,element,catalog,auraVariant,aura=entry?.auras?.[0]??entry?.auraSources?.[0],fx=true,fxCatalog}={}){
  if(!entry)throw Error('Choose a condition or effect first.');
- const variantBase=entry.damageVariants?.[damageType]??entry;
+ const variantBase=entry.damageVariants?.[damageType]??(entry.elementVariants?.[element]?{...entry,...entry.elementVariants[element]}:entry);
  const base=aura?{...variantBase,assets:entry.auraAssets??variantBase.assets}:variantBase;
  const key=catalog?.length?resolveAsset(base,catalog):null;
  const design=key&&!base.conditionDesign?{...base,...statePresentation({assets:[key]})}:base;
@@ -63,13 +70,13 @@ export function resolveStateRecipe(item,state,saved=[],catalog){
  if(entry&&!stateEntryEnabled(entry.id,state))return null;
  if(!entry&&state?.enabled!==true)return null;
  const aura=item.animaterAura??null;
- if(entry&&state.selected?.includes(entry.id)&&!state.customized?.includes(entry.id))return stateRecipe(entry,{damageType:item.system?.persistent?.damageType,catalog,aura});
+ if(entry&&state.selected?.includes(entry.id)&&!state.customized?.includes(entry.id))return stateRecipe(entry,{damageType:item.system?.persistent?.damageType,element:stateElement(entry,item),catalog,aura});
  if(custom&&!custom.enabled)return null;
  if(custom)return validateRecipe({...custom,stages:custom.stages.map(s=>{
   const {auraRadius,auraSlug,...stage}=s;
   return aura?{...stage,auraRadius:aura.radius,auraSlug:aura.slug}:stage;
  })});
- return entry?stateRecipe(entry,{damageType:item.system?.persistent?.damageType,catalog,aura}):null;
+ return entry?stateRecipe(entry,{damageType:item.system?.persistent?.damageType,element:stateElement(entry,item),catalog,aura}):null;
 }
 export function filterStateCatalog(kind,{search='',group='all',theme='all',quality='all'}={}){
  const query=normalize(search);return (kind==='condition'?PF2E_CONDITIONS:PF2E_EFFECTS).filter(e=>(group==='all'||e.group===group)&&(theme==='all'||e.theme===theme)&&(quality==='all'||e.quality===quality)&&(!query||normalize(`${e.name} ${e.slug} ${e.group} ${e.theme}`).includes(query)));

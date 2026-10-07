@@ -321,6 +321,22 @@ export function featRecipe(feat, options = {}) {
     stages=[copy("Grappling takeoff echo",0,{copies:1}),rise,foe,blows,
       effect("impact","landing","Final successful-branch ground slam",0,2000,{afterStage:rise.stageId,timingAnchor:"end",targetSelection:"first",scale:1.4,below:true,oneShot:true,fadeIn:0,scaleInDuration:0})];
   }
+  // 2026-10-07 audit: melee in a line is one blade contact per enemy, not a ray.
+  if(feat.slug==="snakebirds-shadow"){
+    const cuts=impact("One blade Strike per enemy in the line",450,1300,{repeats:1,repeatScope:"perTarget",targetSelection:"all",targetStagger:280,scale:.9});
+    stages=[cast("Water shadows surge from the blade",0,1000,{scale:.7}),motion("lunge","source","Darting line of cuts",150,1100,{distance:.18}),cuts,
+      aura("targets","Water-shadow wake",0,1400,{afterStage:cuts.stageId,timingAnchor:"start",startOffset:300,targetSelection:"all",targetStagger:280,scale:.7,opacity:.6})];
+  }
+  if(feat.slug==="belly-flop")stages.push(motion("shake","targets","Crushing armored weight",900,900,{intensity:.25}));
+  if(feat.slug==="walk-the-plank")stages.push(motion("rush","targets","Successful Demoralize forces a Stride",1500,2800,{motionRange:"distance",distance:1.5,motionHeading:"away",motionArrival:40,motionHold:20,intensity:.35,targetSelection:"first"}));
+  if(feat.slug==="smoke-curtain")stages.push(aura("source","Black-powder smoke cloud fills the emanation",350,2600,{scale:2.4,opacity:.75,below:false}));
+  if(feat.slug==="celestial-cacophony")stages.push(aura("targets","Sonic crackle of the fireworks",900,1500,{scale:.8,opacity:.75,targetStagger:130}));
+  if(feat.slug==="ride-the-tsunami")for(const stage of stages.filter(s=>s.kind==="impact"))stage.scale=2.2;
+  // Size-changing forms read their new size; a tiny rat and a Large giant differ.
+  if(["form","transform"].includes(feat.motif)){
+    const shape=`${feat.name} ${direction.shape??""}`,size=/\b(?:giant|giants|towering|huge|gargantuan|enlarge|swell|swells|grow|grows|oni)\b/i.test(shape)?1.45:/\b(?:shrink|shrinks|tiny|rat|mouse|small)\b/i.test(shape)?.65:1;
+    if(size!==1)for(const stage of stages.filter(s=>["cast","impact","aura","sprite"].includes(s.kind)))stage.scale=(stage.scale??1)*size;
+  }
   if(["strike","unarmed","heavyStrike","doubleStrike","feintStrike","drawStrike","fearStrike","bindStrike","tripStrike","charge","tumbleStrike","smite","mixedStrike","restorativeStrike"].includes(feat.motif)){
     const split=/different|split|distinct targets|multiple foes/.test(direction.contacts?.distribution??"");let contactIndex=0;
     for(const stage of stages.filter(s=>s.kind==="impact"||s.kind==="aura"&&s.subject==="targets"))stage.targetSelection??=split&&stage.kind==="impact"&&contactIndex++>0?"second":"first";

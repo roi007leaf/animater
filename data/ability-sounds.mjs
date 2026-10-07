@@ -26186,7 +26186,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "YnPYSKCQBLIOtm0J:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 223,
     "descriptionHash": "b2020420c9bf4645"
   },
@@ -26312,13 +26312,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "MlKNR5Q784mgmU0C:melee": {
     "profile": "dagger",
-    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1260,
     "descriptionHash": "b3ca9a821a52f02f"
   },
   "MlKNR5Q784mgmU0C:thrown": {
     "profile": "thrownDagger",
-    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 10 ft increments. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 10 ft increments. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1260,
     "descriptionHash": "b3ca9a821a52f02f"
   },
@@ -26330,7 +26330,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "6qqsyhVHPo8LQH8Z:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1454,
     "descriptionHash": "cf6ea552d3732fb0"
   },
@@ -26366,25 +26366,25 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "CPZC4rAHGkQqPLJ9:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 529,
     "descriptionHash": "a9d5ea83c39d80af"
   },
   "SKKVjloic8hQbYo7:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 554,
     "descriptionHash": "a23502794942cb05"
   },
   "HarOsJI1p5oHt2Vd:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 519,
     "descriptionHash": "116828bac1cbf4bc"
   },
   "YMz8ZKeOmSU9VuKp:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 581,
     "descriptionHash": "223e1a2830ba22b2"
   },
@@ -26444,7 +26444,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "KoyxJDibsKJh24am:melee": {
     "profile": "rapier",
-    "reason": "melee rapier cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee rapier cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 4106,
     "descriptionHash": "312250e246ea2749"
   },
@@ -26576,19 +26576,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "4oOmIQQTJW88JfU3:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 462,
     "descriptionHash": "8dfe5458a6ebc423"
   },
   "8qCrpn4pAjfSwRgm:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 476,
     "descriptionHash": "302460c1dacd4d69"
   },
   "bnkQ7zSAmuW0azf1:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 488,
     "descriptionHash": "32a007af1692519b"
   },
@@ -26618,7 +26618,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "o9IErbpmItz9NZT3:melee": {
     "profile": "enchanted-axe-acid",
-    "reason": "melee axe cue follows native usage and physical construction. Two-handed slashing contact. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee axe cue follows native usage and physical construction. Two-handed slashing contact. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. unholy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1375,
     "descriptionHash": "7a5a9e8790d4bbbd"
   },
@@ -26636,13 +26636,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "AUJfvrouapAeC4Mg:melee": {
     "profile": "sword",
-    "reason": "melee sword cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee sword cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + cold + electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 934,
     "descriptionHash": "9e618742514e9d06"
   },
   "AWUzApS5PPwt3TCI:melee": {
     "profile": "sword",
-    "reason": "melee sword cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee sword cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + cold + electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 964,
     "descriptionHash": "e9d21924e1ca078b"
   },
@@ -26666,7 +26666,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "0lCXehyFlXdYxDfA:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 40 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown thrown cue follows native usage and physical construction. chakram throw across 40 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 241,
     "descriptionHash": "2d727884dfbd6c9a"
   },
@@ -26696,13 +26696,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "qLhb5ZvIDOmbwvc9:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1091,
     "descriptionHash": "a5cca9112e8b0471"
   },
   "RijrZ8lnaYrGTeMV:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1100,
     "descriptionHash": "305dcad3560f7c02"
   },
@@ -26732,13 +26732,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "eGcYnfO7MkQ646E9:melee": {
     "profile": "flail",
-    "reason": "melee flail cue follows native usage and physical construction. One-handed bludgeoning contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee flail cue follows native usage and physical construction. One-handed bludgeoning contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 961,
     "descriptionHash": "e1d2043090f7cd89"
   },
   "UFAIquTmQcgqSl7s:melee": {
     "profile": "hammer",
-    "reason": "melee hammer cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee hammer cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1222,
     "descriptionHash": "031729885b8c9f7d"
   },
@@ -26906,7 +26906,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "YUzPv0i8d8p2J9yx:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown bola cue follows native usage and physical construction. bola throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 107,
     "descriptionHash": "fab3f56f2f67a3b2"
   },
@@ -26918,7 +26918,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "tU4PKaoo1XuPkKg1:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. cold flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 636,
     "descriptionHash": "078fef4894cfb4cd"
   },
@@ -26984,7 +26984,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "DGehMCf2XViTvBDu:melee": {
     "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee club cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1469,
     "descriptionHash": "f6236e839fba2886"
   },
@@ -27002,7 +27002,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "RdJg2iIQx8lJyPWe:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 140,
     "descriptionHash": "9e2a443747ca0014"
   },
@@ -27062,7 +27062,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "kCN0QxUbJrvidysF:melee": {
     "profile": "enchanted-rapier-fire",
-    "reason": "melee rapier cue follows native usage and physical construction. One-handed fire contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee rapier cue follows native usage and physical construction. One-handed fire contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 334,
     "descriptionHash": "7404db28df3a7272"
   },
@@ -27122,7 +27122,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "h2UebueRKfVLwKOa:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Successful-hit Warpwave is illustrated by a finite distortion field; its random rules outcome is not applied. Patreon has multicolored footage; Free uses a blue approximation. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Successful-hit Warpwave is illustrated by a finite distortion field; its random rules outcome is not applied. Patreon has multicolored footage; Free uses a blue approximation. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1887,
     "descriptionHash": "50cafb5dbbd750bb"
   },
@@ -27140,7 +27140,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "UnTUQ9w8yswupr9m:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 116,
     "descriptionHash": "dc9f75331b008863"
   },
@@ -27158,25 +27158,25 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "0liiZqvhcM69tKl9:melee": {
     "profile": "axe",
-    "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1143,
     "descriptionHash": "0e7e6571de5bc9d0"
   },
   "MNx8UznusoyRy06k:melee": {
     "profile": "axe",
-    "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1151,
     "descriptionHash": "5a97e95188142d40"
   },
   "O5PgCWNhFtTFL7S5:melee": {
     "profile": "axe",
-    "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1156,
     "descriptionHash": "d381082dc72cf4ce"
   },
   "ePmUVkh4NgM4eGdR:melee": {
     "profile": "axe",
-    "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1156,
     "descriptionHash": "ae1f08da84b3d1bf"
   },
@@ -27266,7 +27266,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "0GEXLXh8M5Ce6oYT:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown thrown cue follows native usage and physical construction. chakram throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 70,
     "descriptionHash": "a824511f7377165d"
   },
@@ -27356,7 +27356,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "c58wczIzH2gzeXQL:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 174,
     "descriptionHash": "05e365ec2e4ee27e"
   },
@@ -27380,7 +27380,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "d11vAXNTniXKWXIx:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown weight cue follows native usage and physical construction. weight throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 810,
     "descriptionHash": "51f2e210818a10a8"
   },
@@ -27392,7 +27392,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "3T3ayvgw9HDn05Mz:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown hook cue follows native usage and physical construction. hook throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 190,
     "descriptionHash": "49aa88def1c4dfde"
   },
@@ -27404,7 +27404,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "5qW06ylMkJ0wToDd:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown weight cue follows native usage and physical construction. weight throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 182,
     "descriptionHash": "aba124f1db6f1aaf"
   },
@@ -27464,19 +27464,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "2BErYoyOCnRBQGEj:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 348,
     "descriptionHash": "486b6492df8d07e1"
   },
   "QIyNSdh4v2vmGdH0:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 360,
     "descriptionHash": "66ef7d30b8d388d1"
   },
   "dmnwpn8Ot9OVW7wY:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 381,
     "descriptionHash": "20a4b673a9c0ec11"
   },
@@ -27536,7 +27536,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "v8C4hkqMNeUk60Db:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 154,
     "descriptionHash": "75f042232c278651"
   },
@@ -27799,20 +27799,20 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "d72b9f573e4b2858"
   },
   "QwRTK0x9L04xKyU5:melee": {
-    "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "polearmBlade",
+    "reason": "melee polearmBlade cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1086,
     "descriptionHash": "b6478940f2d30a3c"
   },
   "sq33MLggeM8D7Zz3:melee": {
-    "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "polearmBlade",
+    "reason": "melee polearmBlade cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1095,
     "descriptionHash": "9f84aa5aa35d1a2e"
   },
   "fukrqsWzFeRbiLbi:melee": {
-    "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "polearmBlade",
+    "reason": "melee polearmBlade cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1096,
     "descriptionHash": "07c8f0b73e5925cb"
   },
@@ -28010,13 +28010,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "FCA7CE4mK85SVLz3:melee": {
     "profile": "dagger",
-    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1007,
     "descriptionHash": "ea58801eb212edcb"
   },
   "FCA7CE4mK85SVLz3:thrown": {
     "profile": "thrownDagger",
-    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1007,
     "descriptionHash": "ea58801eb212edcb"
   },
@@ -28280,19 +28280,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "B71BgdfFApkYmAjc:melee": {
     "profile": "ironStaff",
-    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 385,
     "descriptionHash": "44f1ba09b7706521"
   },
   "bQynfb23iexSu8zU:melee": {
     "profile": "ironStaff",
-    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 399,
     "descriptionHash": "362e33b407a0682e"
   },
   "smrNvKVL976JNEab:melee": {
     "profile": "ironStaff",
-    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 413,
     "descriptionHash": "b7a91aa09f18d7ee"
   },
@@ -28304,7 +28304,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "ucz1WdBA0Ma34OsS:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown hook cue follows native usage and physical construction. hook throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 268,
     "descriptionHash": "e2db0c6c14b3972d"
   },
@@ -28322,13 +28322,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "05L6c6B8XuU8imfM:melee": {
     "profile": "sword",
-    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1886,
     "descriptionHash": "6f5f82cabd76b8ee"
   },
   "3oexArva2aEm69WV:melee": {
     "profile": "sword",
-    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. cold + electricity + fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 739,
     "descriptionHash": "f78fa23a6656b4b4"
   },
@@ -28346,7 +28346,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "8YijFaakOFWjddJO:melee": {
     "profile": "polearmBlade",
-    "reason": "melee polearmBlade cue follows native usage and physical construction. Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee polearmBlade cue follows native usage and physical construction. Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. cold flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 747,
     "descriptionHash": "46b30b661dfda9f3"
   },
@@ -28382,13 +28382,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "KQRrAVdcRqtd0Lq2:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 663,
     "descriptionHash": "58bd647161fc5ce2"
   },
   "KQRrAVdcRqtd0Lq2:thrown": {
     "profile": "thrownSpear",
-    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 663,
     "descriptionHash": "58bd647161fc5ce2"
   },
@@ -28544,19 +28544,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "7haFJ3s6G6K1TQFj:melee": {
     "profile": "sword",
-    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 699,
     "descriptionHash": "8cdebfd18c862436"
   },
   "HWVORFebjWAPQ2NI:melee": {
     "profile": "dagger",
-    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 666,
     "descriptionHash": "dad54ebb0873f46b"
   },
   "HWVORFebjWAPQ2NI:thrown": {
     "profile": "thrownDagger",
-    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 10 ft increments. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 666,
     "descriptionHash": "dad54ebb0873f46b"
   },
@@ -28634,13 +28634,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "dIUmjoLjlcrKgXbH:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1795,
     "descriptionHash": "f9845311088aad05"
   },
   "dIUmjoLjlcrKgXbH:thrown": {
     "profile": "thrownSpear",
-    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. fire + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1795,
     "descriptionHash": "f9845311088aad05"
   },
@@ -28760,25 +28760,25 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "atB2ewbcBMWvhjNT:melee": {
     "profile": "dagger",
-    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 875,
     "descriptionHash": "397d9d38d34a7ca8"
   },
   "atB2ewbcBMWvhjNT:thrown": {
     "profile": "thrownDagger",
-    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 875,
     "descriptionHash": "397d9d38d34a7ca8"
   },
   "dNrfbRe2S51q8Fja:melee": {
     "profile": "dagger",
-    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 915,
     "descriptionHash": "1df1f26d499c7f70"
   },
   "dNrfbRe2S51q8Fja:thrown": {
     "profile": "thrownDagger",
-    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 915,
     "descriptionHash": "1df1f26d499c7f70"
   },
@@ -28814,7 +28814,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "zakdImp4CqahnFfc:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 573,
     "descriptionHash": "5cd1d3f2d5065010"
   },
@@ -28928,7 +28928,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "QbEkoFL1EYNGsOom:melee": {
     "profile": "enchanted-ironStaff-fire",
-    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. fire + unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 945,
     "descriptionHash": "94b3dc6881108ce9"
   },
@@ -28946,7 +28946,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "z9T4c1hXwOotsMCp:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown vial cue follows native usage and physical construction. vial throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 321,
     "descriptionHash": "a6a52d9f01881a27"
   },
@@ -29018,7 +29018,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "nWUx4zEGOE8Uot1g:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 950,
     "descriptionHash": "f11a9d6a242b3434"
   },
@@ -29156,7 +29156,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "RhfhVSfiH23v4U7k:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 230,
     "descriptionHash": "17466f05db004f45"
   },
@@ -29240,7 +29240,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "TgP5Rwzrampv1sDU:melee": {
     "profile": "hammer",
-    "reason": "melee hammer cue follows native usage and physical construction. Two-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee hammer cue follows native usage and physical construction. Two-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 742,
     "descriptionHash": "18343f66847f3793"
   },
@@ -29306,7 +29306,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "TG8DO0YsLiguZJW3:melee": {
     "profile": "greatsword",
-    "reason": "melee greatsword cue follows native usage and physical construction. Two-handed slashing contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee greatsword cue follows native usage and physical construction. Two-handed slashing contact. unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1730,
     "descriptionHash": "708c938db706831a"
   },
@@ -29318,7 +29318,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "mVjHOSH8ydCmqRQ7:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 947,
     "descriptionHash": "d9296901343f4596"
   },
@@ -29372,13 +29372,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "1gi4mdZYNgPrzWHc:melee": {
     "profile": "sword",
-    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 874,
     "descriptionHash": "84aa2ba8535ecf1b"
   },
   "2NDH3AX5Ewu4MLT6:melee": {
     "profile": "polearmBlade",
-    "reason": "melee polearmBlade cue follows native usage and physical construction. Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee polearmBlade cue follows native usage and physical construction. Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 310,
     "descriptionHash": "3286630c724dc24b"
   },
@@ -29420,25 +29420,25 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "ZbZMaY8B8dinYhHK:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 629,
     "descriptionHash": "ca8880dfd6fad494"
   },
   "ZbZMaY8B8dinYhHK:thrown": {
     "profile": "thrownSpear",
-    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 629,
     "descriptionHash": "ca8880dfd6fad494"
   },
   "R4nk2W7rTvMDqyUR:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 701,
     "descriptionHash": "d69576c90a296d6a"
   },
   "R4nk2W7rTvMDqyUR:thrown": {
     "profile": "thrownSpear",
-    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 701,
     "descriptionHash": "d69576c90a296d6a"
   },
@@ -29576,7 +29576,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "6dizJBq0Dqevbf3L:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 15 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown bola cue follows native usage and physical construction. bola throw across 15 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 978,
     "descriptionHash": "41ae51534a6bcb6b"
   },
@@ -29648,19 +29648,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "xwiZBOjispKVZzGA:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 394,
     "descriptionHash": "5d414b7ad19622e3"
   },
   "0RCC0fOg1Lp7f79I:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 426,
     "descriptionHash": "85bfdbfa4c3d8721"
   },
   "DTIBj6Yhy73G5P6j:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 458,
     "descriptionHash": "92a27aa629526c43"
   },
@@ -29708,13 +29708,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "jVDSXbfq0ukHeSkK:melee": {
     "profile": "dagger",
-    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 449,
     "descriptionHash": "8755bcb189a3eb19"
   },
   "jVDSXbfq0ukHeSkK:thrown": {
     "profile": "thrownDagger",
-    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 449,
     "descriptionHash": "8755bcb189a3eb19"
   },
@@ -29852,7 +29852,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "yMbMbPW2WfjOIrmJ:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 691,
     "descriptionHash": "c6ad1a63d593fe3a"
   },
@@ -30188,19 +30188,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "SeZfwtBYwmxKrphR:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 472,
     "descriptionHash": "4fced62329a427d7"
   },
   "xr99pbmKLO2eDMk5:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 484,
     "descriptionHash": "096b007824457d31"
   },
   "YMwlSFUoIEPIyctl:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 495,
     "descriptionHash": "a4d99502e6f339a2"
   },
@@ -30296,7 +30296,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "fLqRH3XpvDZEMxOO:melee": {
     "profile": "enchanted-spear-fire",
-    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 811,
     "descriptionHash": "ac4c0b2d74646f78"
   },
@@ -30344,7 +30344,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "Il75ytwHrdwAAOwe:melee": {
     "profile": "sword",
-    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 520,
     "descriptionHash": "6c7518b9611a1e37"
   },
@@ -30362,7 +30362,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "HofVPZ0eimPVK9jb:melee": {
     "profile": "polearmBlade",
-    "reason": "melee polearmBlade cue follows native usage and physical construction. Two-handed slashing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee polearmBlade cue follows native usage and physical construction. Two-handed slashing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 546,
     "descriptionHash": "dc231f7cd7302390"
   },
@@ -30578,7 +30578,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "QT1H3f9u44IZ3TmT:melee": {
     "profile": "unarmed",
-    "reason": "melee unarmed cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee unarmed cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 606,
     "descriptionHash": "0568bbe88890aa2b"
   },
@@ -30986,19 +30986,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "SatFUtE2UaPvC394:melee": {
     "profile": "enchanted-greatsword-electricity",
-    "reason": "melee greatsword cue follows native usage and physical construction. Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee greatsword cue follows native usage and physical construction. Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 898,
     "descriptionHash": "aa529efeb1007435"
   },
   "y49tnkAWZqJRMkba:melee": {
     "profile": "enchanted-greatsword-electricity",
-    "reason": "melee greatsword cue follows native usage and physical construction. Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee greatsword cue follows native usage and physical construction. Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 862,
     "descriptionHash": "034c6c1a5da86559"
   },
   "mQyhSg9M3VdGEUrN:melee": {
     "profile": "dagger",
-    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 117,
     "descriptionHash": "5af3a2303e45a0c2"
   },
@@ -31286,37 +31286,37 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "CH2t4lYE6IbE3F3Q:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 844,
     "descriptionHash": "8fd1f6da9b562f79"
   },
   "CH2t4lYE6IbE3F3Q:thrown": {
     "profile": "thrownSpear",
-    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 844,
     "descriptionHash": "8fd1f6da9b562f79"
   },
   "K07yZnXG1DQwFjX7:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 855,
     "descriptionHash": "8162958d7e8bcb27"
   },
   "K07yZnXG1DQwFjX7:thrown": {
     "profile": "thrownSpear",
-    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 855,
     "descriptionHash": "8162958d7e8bcb27"
   },
   "iQM5xKCkfpfdPrzL:melee": {
     "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 853,
     "descriptionHash": "e77427c45b30d19f"
   },
   "iQM5xKCkfpfdPrzL:thrown": {
     "profile": "thrownSpear",
-    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown spear cue follows native usage and physical construction. spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 853,
     "descriptionHash": "e77427c45b30d19f"
   },
@@ -31388,37 +31388,37 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "8TEundYBdonchDj1:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 435,
     "descriptionHash": "46e245eb27d18ca3"
   },
   "9GUSQFJZarLs5tQC:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 454,
     "descriptionHash": "09adf13e2be79522"
   },
   "2wUR0XVYONWrBVa8:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 466,
     "descriptionHash": "eafcb2cf5e7bcf63"
   },
   "0mCj6HZcwFzVxVyM:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 688,
     "descriptionHash": "d5fba514d6d18632"
   },
   "L7FuscHIuzQ7FjnB:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 732,
     "descriptionHash": "fe7b25b3d8fbbe85"
   },
   "w2AxS7q8bjh77pp2:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 747,
     "descriptionHash": "87a6461fb97e9c30"
   },
@@ -31442,19 +31442,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "pX3rpVDBLqClcL9M:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 508,
     "descriptionHash": "cf45d0eadc7b41a4"
   },
   "jaM12dWpIozRiIhk:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 529,
     "descriptionHash": "de8e03adaa571367"
   },
   "a8YCTjKnXySKpU5C:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 543,
     "descriptionHash": "21ecd2c85dacdf63"
   },
@@ -31478,19 +31478,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "kC4GmC5IVxO24tbH:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 406,
     "descriptionHash": "c6b2149f238e62cb"
   },
   "4ANdxkBpdBVOUa7r:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 447,
     "descriptionHash": "d7db87491f510a1a"
   },
   "AUcS3DusEWtmxZOM:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 472,
     "descriptionHash": "9f782d69e11d5116"
   },
@@ -31514,49 +31514,49 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "opfpl1JmKgrfds9P:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 384,
     "descriptionHash": "10779514671f4e51"
   },
   "KcjaeMgrsBGgwUWL:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 405,
     "descriptionHash": "931f101cbc42a4f5"
   },
   "qx4Cq99vng6GhzEh:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 433,
     "descriptionHash": "fb76c5e8febf5b58"
   },
   "3OkOKxCee9WruGU5:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 463,
     "descriptionHash": "3718473cf7a3e2e7"
   },
   "XSwEE8wjHr6UXzpw:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 481,
     "descriptionHash": "b8792ed86abfae44"
   },
   "FTVap8IjoKgCexH7:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 494,
     "descriptionHash": "941076c966a07a2a"
   },
   "WbcQqXrUytXkCMK3:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 523,
     "descriptionHash": "9bc1ee810b586133"
   },
   "8No84rsBOCVCkXJK:melee": {
     "profile": "ironStaff",
-    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 459,
     "descriptionHash": "128895cf2a8f1e09"
   },
@@ -31604,37 +31604,37 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "jwa10xel66Wc7U3p:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 397,
     "descriptionHash": "2c28c5cdcfdc5358"
   },
   "xt4sb8vz8VRlJoKm:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 409,
     "descriptionHash": "343049d2f081b010"
   },
   "1yZRZeVAVxrb5HM2:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 421,
     "descriptionHash": "d988d565d9779940"
   },
   "aPbDAb6cJKPvCHk2:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 403,
     "descriptionHash": "4011ff4c6a703081"
   },
   "gca5Pgt9Pg8G23VA:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 415,
     "descriptionHash": "3fbde357179ef778"
   },
   "hnx3dOQrYLBtsu3V:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 445,
     "descriptionHash": "4bb639caa8cee5c9"
   },
@@ -31658,7 +31658,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "6m9niDjhA6tBfp5x:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 942,
     "descriptionHash": "99f92e78c346f4a6"
   },
@@ -31748,43 +31748,43 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "1uWytZ76MwVQYIO9:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 414,
     "descriptionHash": "cf418edb9d0443a5"
   },
   "Ab5EjJyoRSec5YrW:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 426,
     "descriptionHash": "a8877f7d302bdbb4"
   },
   "E30OrRp0StKLQwbQ:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 440,
     "descriptionHash": "0060b377687690c8"
   },
   "0yp4hAgJKt9Al2lz:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 485,
     "descriptionHash": "f1e4e204d84b2d8a"
   },
   "uqbvXACABUJG0ifJ:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 518,
     "descriptionHash": "f21c3a9e55f18381"
   },
   "FkT0UkXdNEmKRhRx:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 554,
     "descriptionHash": "37ba495cbc39957b"
   },
   "IEmYcavVfSy58aYx:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 583,
     "descriptionHash": "d690cc07d906b839"
   },
@@ -31826,7 +31826,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "nI9shR1EG3P09I8r:melee": {
     "profile": "ironStaff",
-    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1354,
     "descriptionHash": "02939960f15fd8c0"
   },
@@ -31838,19 +31838,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "0S8lZFSEP7ZlLFqA:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 620,
     "descriptionHash": "c06826c550a3a25b"
   },
   "8Ia2jOo23XoArpJm:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 632,
     "descriptionHash": "5d4a808b9cd885fc"
   },
   "RDoxgjEFsherGA5x:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 644,
     "descriptionHash": "cb7c92bec1a1e3fc"
   },
@@ -31874,19 +31874,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "frCSW1zLFYiYpjdR:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 424,
     "descriptionHash": "e728fc012e614377"
   },
   "DwNELc8YIKTb2uj1:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 440,
     "descriptionHash": "7651bb834f2ba279"
   },
   "QMqPGk7oL4kESGc3:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 460,
     "descriptionHash": "8a9f95ea98200dee"
   },
@@ -31922,7 +31922,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "mkFrHOwWJaHF0aGp:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown club cue follows native usage and physical construction. club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 600,
     "descriptionHash": "b8b7cccb9a297db1"
   },
@@ -31994,13 +31994,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "Hh3F4DEP6aVulwQN:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown thrownDagger cue follows native usage and physical construction. dart throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 313,
     "descriptionHash": "4dc88bd7b7b327fe"
   },
   "ud3pqCquYA5UecaS:thrown": {
     "profile": "thrownSpear",
-    "reason": "thrown spear cue follows native usage and physical construction. javelin throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown spear cue follows native usage and physical construction. javelin throw across 30 ft increments. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1303,
     "descriptionHash": "5d8a6b852de78429"
   },
@@ -32125,8 +32125,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "d0e8a5b6503f5344"
   },
   "kedgBVNDRAdmseRe:melee": {
-    "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "thrown",
+    "reason": "melee thrown cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 228,
     "descriptionHash": "994a8bb1cdf36cd7"
   },
@@ -32300,19 +32300,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "oKq9ClcnLQZi1EPF:ranged": {
     "profile": "crossbow",
-    "reason": "ranged crossbow cue follows native usage and physical construction. crossbow shot across 120 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "ranged crossbow cue follows native usage and physical construction. crossbow shot across 120 ft increments. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1101,
     "descriptionHash": "90c7d853adfe5fc4"
   },
   "YCGMVbqlWT8f1F6v:melee": {
     "profile": "flail",
-    "reason": "melee flail cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee flail cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 964,
     "descriptionHash": "23c2c87b63a5e145"
   },
   "YCGMVbqlWT8f1F6v:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown hook cue follows native usage and physical construction. hook throw across 20 ft increments. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 964,
     "descriptionHash": "23c2c87b63a5e145"
   },
@@ -32377,14 +32377,14 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "78d85d27081789ec"
   },
   "las0qvpBOfYp5yND:melee": {
-    "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "polearmBlade",
+    "reason": "melee polearmBlade cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 319,
     "descriptionHash": "0acff49a1f1bb61b"
   },
   "jpZWi0zkXM8rVYqW:melee": {
-    "profile": "spear",
-    "reason": "melee spear cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "polearmBlade",
+    "reason": "melee polearmBlade cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 327,
     "descriptionHash": "f30b708f840f8b77"
   },
@@ -32444,7 +32444,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "pjUACbrAXNIy9O7S:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 786,
     "descriptionHash": "f343716a0b94a44f"
   },
@@ -32486,7 +32486,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "EGhUorZhB7nV73Ev:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown vial cue follows native usage and physical construction. vial throw across 20 ft increments. unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 328,
     "descriptionHash": "b8ee83b102ce42c6"
   },
@@ -32522,13 +32522,13 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "sQFQlglhORQsxBKS:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 389,
     "descriptionHash": "19ab3a6cdab04fa8"
   },
   "ylRk8NvpK2kA8bjw:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 407,
     "descriptionHash": "18a220420006ba4c"
   },
@@ -32564,7 +32564,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "ZiaAFSG9zQY0CXdL:melee": {
     "profile": "flail",
-    "reason": "melee flail cue follows native usage and physical construction. Two-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee flail cue follows native usage and physical construction. Two-handed slashing contact. Physical weapon footage and restrained contact finish. holy + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 769,
     "descriptionHash": "3ac13755bece5ba7"
   },
@@ -32750,7 +32750,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "hvMIJKY1mKXDmg1V:thrown": {
     "profile": "thrown",
-    "reason": "thrown thrown cue follows native usage and physical construction. thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "thrown bola cue follows native usage and physical construction. bola throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 597,
     "descriptionHash": "7b35c0aaf63874f4"
   },
@@ -32834,19 +32834,19 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "JtCO2nielwAg1x9m:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 546,
     "descriptionHash": "67493ba9a435bd8c"
   },
   "5B8sBxQ7IeKVI6TO:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 562,
     "descriptionHash": "d50747d3ed84dbd7"
   },
   "kJzp8I0rAmcucHuw:melee": {
     "profile": "staff",
-    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 585,
     "descriptionHash": "5ebeb37e3040a891"
   },

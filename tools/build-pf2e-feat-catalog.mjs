@@ -40,7 +40,7 @@ for (const entry of source.feats) {
   // An updated pack may remove an alias. Cached media must still have a key
   // for every edition and slot before its contact analysis can be reused.
   const cacheAvailable=compatible&&Object.values(databases).every(rows=>Object.values(cached.assets).every(keys=>!keys.length||keys.some(key=>rows.some(row=>row.key===key))));
-  const resolved=cacheAvailable && (design.slug!=="running-reload" || cached.assets.reload) ? {assets:cached.assets,selections:cached.selections} : resolveFeatMedia(databases,design.theme,profile,theme,{name:item.name,slug:design.slug,motif:design.motif,rationale:design.rationale,direction:design.direction,description:plainFeatDescription(s.description?.value)});
+  const resolved=cacheAvailable && (design.slug!=="running-reload" || cached.assets.reload) ? {assets:cached.assets,selections:cached.selections} : resolveFeatMedia(databases,design.theme,profile,theme,{name:item.name,slug:design.slug,motif:design.motif,rationale:design.rationale,direction:design.direction,traits:s.traits?.value??[],description:plainFeatDescription(s.description?.value)});
   const assets=resolved.assets;selections.push(...resolved.selections);
   const traits=s.traits?.value??[];
   feats.push({id:item._id,name:item.name,img:item.img,slug:design.slug,level:s.level?.value??0,actionType:s.actionType?.value,actions:s.actions?.value,

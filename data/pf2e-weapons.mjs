@@ -12,7 +12,7 @@ export const PF2E_WEAPON_SOURCE = {
   "missingDescriptions": [
     "IF6qUrR3i030v0dH"
   ],
-  "probedKeys": 124,
+  "probedKeys": 137,
   "missingTiming": [],
   "modes": {
     "melee": 695,
@@ -59,6 +59,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -168,6 +169,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -277,6 +279,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -392,6 +395,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -571,6 +575,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -750,6 +755,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -929,6 +935,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -1108,6 +1115,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -1217,6 +1225,7 @@ export const PF2E_WEAPONS = [
         "family": "greataxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -1333,6 +1342,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -1446,6 +1456,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "force"
         ],
+        "flavor": [],
         "payload": {
           "style": "force",
           "element": "force",
@@ -1597,6 +1608,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "force"
         ],
+        "flavor": [],
         "payload": {
           "style": "force",
           "element": "force",
@@ -1748,6 +1760,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "force"
         ],
+        "flavor": [],
         "payload": {
           "style": "force",
           "element": "force",
@@ -1893,6 +1906,7 @@ export const PF2E_WEAPONS = [
         "family": "airgun",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -2006,6 +2020,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -2084,9 +2099,10 @@ export const PF2E_WEAPONS = [
           "trip"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -2094,11 +2110,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -2111,7 +2127,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -2127,7 +2143,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -2138,7 +2154,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -2159,7 +2175,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -2201,6 +2219,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -2319,6 +2338,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -2329,6 +2349,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -2342,7 +2363,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -2369,6 +2390,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -2434,6 +2459,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -2582,6 +2608,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -2730,6 +2757,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -2878,6 +2906,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -3018,6 +3047,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -3131,6 +3161,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -3141,7 +3172,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -3155,7 +3186,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -3182,8 +3213,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -3200,7 +3231,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -3252,6 +3283,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -3262,7 +3294,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -3276,7 +3308,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -3303,8 +3335,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -3321,7 +3353,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -3373,6 +3405,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -3482,6 +3515,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -3617,6 +3651,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -3627,6 +3662,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -3640,7 +3676,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -3667,6 +3703,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -3726,6 +3766,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -3806,6 +3847,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -3926,6 +3968,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -4035,6 +4078,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -4144,6 +4188,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -4259,6 +4304,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -4395,6 +4441,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -4507,6 +4554,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -4620,11 +4668,12 @@ export const PF2E_WEAPONS = [
         ],
         "range": 0,
         "family": "dagger",
-        "element": "spirit",
+        "element": "unholy",
         "elements": [
-          "spirit",
+          "unholy",
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -4632,15 +4681,15 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.dagger.melee.02.white"
           ],
           "flight": [],
           "accent": [
-            "jb2a.divine_smite.target.yellowwhite",
-            "jb2a.divine_smite.target.blueyellow"
+            "jb2a.divine_smite.target.dark_purple",
+            "jb2a.smoke.puff.centered.grey"
           ],
           "return": [],
           "residue": [
@@ -4662,7 +4711,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.yellowwhite",
+            "key": "jb2a.divine_smite.target.dark_purple",
             "geometry": "radial",
             "approximation": false
           },
@@ -4690,7 +4739,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.blueyellow",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           },
@@ -4714,12 +4763,12 @@ export const PF2E_WEAPONS = [
             "duration": 1600,
             "baked": false
           },
-          "jb2a.divine_smite.target.yellowwhite": {
+          "jb2a.divine_smite.target.dark_purple": {
             "duration": 2333,
             "baked": false
           },
-          "jb2a.divine_smite.target.blueyellow": {
-            "duration": 2333,
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           },
           "jb2a.liquid.splash02.red": {
@@ -4749,11 +4798,12 @@ export const PF2E_WEAPONS = [
         ],
         "range": 10,
         "family": "dagger",
-        "element": "spirit",
+        "element": "unholy",
         "elements": [
-          "spirit",
+          "unholy",
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -4761,15 +4811,15 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "dagger throw across 10 ft increments. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "dagger throw across 10 ft increments. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
-            "jb2a.divine_smite.target.yellowwhite",
-            "jb2a.divine_smite.target.blueyellow"
+            "jb2a.divine_smite.target.dark_purple",
+            "jb2a.smoke.puff.centered.grey"
           ],
           "return": [],
           "residue": [
@@ -4791,7 +4841,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.yellowwhite",
+            "key": "jb2a.divine_smite.target.dark_purple",
             "geometry": "radial",
             "approximation": false
           },
@@ -4819,7 +4869,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.blueyellow",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           },
@@ -4845,12 +4895,12 @@ export const PF2E_WEAPONS = [
             "contact": 850,
             "contactMethod": "alpha-weighted-estimate"
           },
-          "jb2a.divine_smite.target.yellowwhite": {
+          "jb2a.divine_smite.target.dark_purple": {
             "duration": 2333,
             "baked": false
           },
-          "jb2a.divine_smite.target.blueyellow": {
-            "duration": 2333,
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           },
           "jb2a.liquid.splash02.red": {
@@ -4904,6 +4954,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -5026,6 +5077,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -5033,7 +5087,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -5043,7 +5097,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -5061,6 +5119,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -5071,6 +5136,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -5086,6 +5158,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -5137,6 +5217,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -5265,6 +5346,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -5383,6 +5465,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -5513,6 +5596,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -5618,6 +5702,7 @@ export const PF2E_WEAPONS = [
         "family": "dart",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -5740,6 +5825,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -5747,7 +5835,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -5757,7 +5845,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -5775,6 +5866,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -5785,6 +5883,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -5800,6 +5905,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -5851,6 +5960,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -5858,7 +5970,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -5868,7 +5980,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -5886,6 +6001,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -5896,6 +6018,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -5911,6 +6040,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -5962,6 +6095,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -5969,7 +6105,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -5979,7 +6115,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -5997,6 +6136,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -6007,6 +6153,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -6022,6 +6175,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -6073,6 +6230,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -6080,7 +6240,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -6090,7 +6250,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -6108,6 +6271,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -6118,6 +6288,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -6133,6 +6310,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -6188,6 +6369,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -6341,6 +6523,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -6494,6 +6677,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -6647,6 +6831,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -6792,6 +6977,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -6901,6 +7087,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -7004,6 +7191,7 @@ export const PF2E_WEAPONS = [
         "family": "greataxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -7122,6 +7310,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -7204,6 +7393,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -7366,6 +7556,9 @@ export const PF2E_WEAPONS = [
         "family": "rapier",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "holy"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -7373,7 +7566,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.rapier.melee.01.white"
@@ -7383,7 +7576,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ]
         },
         "selections": [
           {
@@ -7401,6 +7598,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.rapier.melee.01.white",
@@ -7411,6 +7615,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -7426,6 +7637,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -7477,6 +7696,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -7578,6 +7798,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -7692,6 +7913,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -7816,6 +8038,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -7944,6 +8167,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -8053,6 +8277,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -8153,6 +8378,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -8260,6 +8486,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -8369,6 +8596,7 @@ export const PF2E_WEAPONS = [
         "family": "greataxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -8483,6 +8711,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -8592,6 +8821,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -8701,6 +8931,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -8810,6 +9041,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -8921,6 +9153,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -9028,6 +9261,7 @@ export const PF2E_WEAPONS = [
         "family": "halberd",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -9135,6 +9369,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -9242,6 +9477,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -9359,6 +9595,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -9461,6 +9698,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -9591,6 +9829,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -9725,6 +9964,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "light",
           "element": "light",
@@ -9898,6 +10138,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -9905,7 +10148,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -9915,7 +10158,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -9933,6 +10180,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -9943,6 +10197,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -9958,6 +10219,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -10007,6 +10276,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -10014,7 +10286,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -10024,7 +10296,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -10042,6 +10318,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -10052,6 +10335,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -10067,6 +10357,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -10116,6 +10414,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -10123,7 +10424,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -10133,7 +10434,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -10151,6 +10456,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -10161,6 +10473,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -10176,6 +10495,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -10227,6 +10554,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -10361,6 +10689,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -10464,6 +10793,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -10474,6 +10804,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -10487,7 +10818,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -10514,6 +10845,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -10573,6 +10908,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -10688,6 +11024,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [
+          "unholy"
+        ],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -10695,7 +11034,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed slashing contact. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed slashing contact. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. unholy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.03.greataxe.02.white",
@@ -10706,7 +11045,11 @@ export const PF2E_WEAPONS = [
             "jb2a.liquid.splash.green",
             "jb2a.liquid.splash.blue"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.dark_purple",
+            "jb2a.smoke.puff.centered.grey"
+          ]
         },
         "selections": [
           {
@@ -10724,6 +11067,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.dark_purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.greataxe.melee.standard.white",
@@ -10734,6 +11084,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.liquid.splash.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -10753,6 +11110,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.dark_purple": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -10804,6 +11169,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -10910,6 +11276,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -11021,6 +11388,11 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire",
+          "cold",
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -11028,7 +11400,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + cold + electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.shortsword.melee.01.white"
@@ -11038,7 +11410,16 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ],
+          "flavor2": [
+            "jb2a.impact.frost.white.01"
+          ],
+          "flavor3": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -11056,6 +11437,27 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor2",
+            "key": "jb2a.impact.frost.white.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor3",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.shortsword.melee.01.white",
@@ -11066,6 +11468,27 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor2",
+            "key": "jb2a.impact.frost.white.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor3",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -11081,6 +11504,18 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
+            "baked": false
+          },
+          "jb2a.impact.frost.white.01": {
+            "duration": 5900,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -11132,6 +11567,11 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire",
+          "cold",
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -11139,7 +11579,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + cold + electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.shortsword.melee.01.white"
@@ -11149,7 +11589,16 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ],
+          "flavor2": [
+            "jb2a.impact.frost.white.01"
+          ],
+          "flavor3": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -11167,6 +11616,27 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor2",
+            "key": "jb2a.impact.frost.white.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor3",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.shortsword.melee.01.white",
@@ -11177,6 +11647,27 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor2",
+            "key": "jb2a.impact.frost.white.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor3",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -11192,6 +11683,18 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
+            "baked": false
+          },
+          "jb2a.impact.frost.white.01": {
+            "duration": 5900,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -11243,6 +11746,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -11354,6 +11858,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -11467,6 +11972,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -11546,9 +12052,10 @@ export const PF2E_WEAPONS = [
           "trip"
         ],
         "range": 40,
-        "family": "thrown",
+        "family": "chakram",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -11556,11 +12063,11 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 40 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "chakram throw across 40 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.chakram.01.throw.01",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -11573,7 +12080,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.chakram.01.throw.01",
             "geometry": "projectile",
             "approximation": false
           },
@@ -11589,7 +12096,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -11600,10 +12107,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
-            "duration": 2100,
+          "jb2a.chakram.01.throw.01": {
+            "duration": 1933,
             "baked": true,
-            "contact": 800,
+            "contact": 750,
             "contactMethod": "alpha-weighted-estimate"
           },
           "jb2a.dagger.throw.01.white": {
@@ -11621,7 +12128,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -11669,6 +12178,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -11679,6 +12189,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -11692,7 +12203,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -11719,6 +12230,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -11778,6 +12293,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -11891,6 +12407,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -12002,6 +12519,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -12120,6 +12638,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -12127,7 +12648,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -12137,7 +12658,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -12155,6 +12679,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -12165,6 +12696,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -12180,6 +12718,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -12233,6 +12775,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -12240,7 +12785,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -12250,7 +12795,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -12268,6 +12816,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -12278,6 +12833,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -12293,6 +12855,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -12348,6 +12914,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": {
           "style": "sonic",
           "element": "sonic",
@@ -12475,6 +13042,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": {
           "style": "sonic",
           "element": "sonic",
@@ -12602,6 +13170,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": {
           "style": "sonic",
           "element": "sonic",
@@ -12729,6 +13298,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": {
           "style": "sonic",
           "element": "sonic",
@@ -12858,6 +13428,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -12865,7 +13438,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.01.flail.01"
@@ -12875,7 +13448,10 @@ export const PF2E_WEAPONS = [
             "jb2a.divine_smite.target.yellowwhite",
             "jb2a.divine_smite.target.blueyellow"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -12893,6 +13469,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.melee_attack.01.flail.01",
@@ -12903,6 +13486,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.divine_smite.target.blueyellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -12918,6 +13508,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.divine_smite.target.blueyellow": {
             "duration": 2333,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -12967,6 +13561,9 @@ export const PF2E_WEAPONS = [
         "family": "warhammer",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "holy"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -12974,7 +13571,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.warhammer.melee.01.white"
@@ -12984,7 +13581,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ]
         },
         "selections": [
           {
@@ -13002,6 +13603,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.warhammer.melee.01.white",
@@ -13012,6 +13620,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -13027,6 +13642,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -13082,6 +13705,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "poison",
@@ -13235,6 +13859,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "poison",
@@ -13388,6 +14013,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "poison",
@@ -13541,6 +14167,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "poison",
@@ -13696,6 +14323,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiation",
           "element": "poison",
@@ -13877,6 +14505,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiation",
           "element": "poison",
@@ -14056,6 +14685,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -14139,6 +14769,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -14252,6 +14883,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -14417,6 +15049,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -14582,6 +15215,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -14747,6 +15381,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -14912,6 +15547,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -15023,6 +15659,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -15136,6 +15773,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -15262,6 +15900,7 @@ export const PF2E_WEAPONS = [
         "family": "scythe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -15380,6 +16019,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -15390,6 +16030,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -15406,7 +16047,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -15447,6 +16088,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -15508,6 +16153,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -15623,6 +16269,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -15755,6 +16402,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -15856,6 +16504,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -15982,6 +16631,7 @@ export const PF2E_WEAPONS = [
         "family": "blowgun",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -16100,6 +16750,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -16234,6 +16885,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -16345,6 +16997,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -16452,6 +17105,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -16563,6 +17217,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -16692,9 +17347,10 @@ export const PF2E_WEAPONS = [
           "thrown"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "bola",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -16702,11 +17358,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "bola throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -16719,7 +17375,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -16735,7 +17391,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -16746,7 +17402,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -16767,7 +17423,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -16811,6 +17469,7 @@ export const PF2E_WEAPONS = [
         "family": "boomerang",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -16933,6 +17592,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "cold"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -16940,7 +17602,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. cold flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -16950,7 +17612,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.frost.white.01"
+          ]
         },
         "selections": [
           {
@@ -16968,6 +17633,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.frost.white.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -16978,6 +17650,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.frost.white.01",
             "geometry": "radial",
             "approximation": false
           }
@@ -16993,6 +17672,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.frost.white.01": {
+            "duration": 5900,
             "baked": false
           }
         },
@@ -17046,6 +17729,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -17154,6 +17838,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -17264,6 +17949,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": {
           "style": "lightning",
           "element": "electricity",
@@ -17412,6 +18098,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": {
           "style": "lightning",
           "element": "electricity",
@@ -17560,6 +18247,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": {
           "style": "lightning",
           "element": "electricity",
@@ -17708,6 +18396,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": {
           "style": "lightning",
           "element": "electricity",
@@ -17861,6 +18550,7 @@ export const PF2E_WEAPONS = [
           "vitality",
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiance",
           "element": "vitality",
@@ -18040,6 +18730,7 @@ export const PF2E_WEAPONS = [
           "vitality",
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiance",
           "element": "vitality",
@@ -18219,6 +18910,7 @@ export const PF2E_WEAPONS = [
           "vitality",
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiance",
           "element": "vitality",
@@ -18398,6 +19090,7 @@ export const PF2E_WEAPONS = [
           "vitality",
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiance",
           "element": "vitality",
@@ -18568,6 +19261,9 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "earth"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -18575,7 +19271,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.club.melee.01.white"
@@ -18585,7 +19281,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.ground_crack.01.orange"
+          ]
         },
         "selections": [
           {
@@ -18603,6 +19302,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.club.melee.01.white",
@@ -18613,6 +19319,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -18628,6 +19341,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.ground_crack.01.orange": {
+            "duration": 5900,
             "baked": false
           }
         },
@@ -18679,6 +19396,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "foam",
           "element": "foam",
@@ -18833,6 +19551,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "foam",
           "element": "foam",
@@ -18989,6 +19708,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -18996,7 +19718,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -19006,7 +19728,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -19024,6 +19749,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -19034,6 +19766,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -19049,6 +19788,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -19104,6 +19847,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -19217,6 +19961,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -19300,6 +20045,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -19415,6 +20161,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -19425,7 +20172,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -19439,7 +20186,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -19466,8 +20213,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -19484,7 +20231,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -19532,6 +20279,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -19639,6 +20387,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -19769,6 +20518,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -19899,6 +20649,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -20031,6 +20782,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -20150,6 +20902,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [
+          "holy"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -20157,7 +20912,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed fire contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed fire contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.rapier.melee.fire.orange",
@@ -20167,7 +20922,11 @@ export const PF2E_WEAPONS = [
           "accent": [
             "jb2a.impact.fire.01.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ]
         },
         "selections": [
           {
@@ -20185,6 +20944,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.rapier.melee.01.white",
@@ -20195,6 +20961,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -20210,6 +20983,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.fire.01.orange": {
             "duration": 2267,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -20259,6 +21040,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -20368,6 +21150,7 @@ export const PF2E_WEAPONS = [
         "family": "greataxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -20488,6 +21271,7 @@ export const PF2E_WEAPONS = [
         "family": "butterflysword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -20599,6 +21383,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -20706,6 +21491,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -20813,6 +21599,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -20920,6 +21707,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -21027,6 +21815,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -21143,6 +21932,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -21249,9 +22039,10 @@ export const PF2E_WEAPONS = [
           "thrown-10"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -21259,11 +22050,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "warpwave",
         "returning": false,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Successful-hit Warpwave is illustrated by a finite distortion field; its random rules outcome is not applied. Patreon has multicolored footage; Free uses a blue approximation. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Successful-hit Warpwave is illustrated by a finite distortion field; its random rules outcome is not applied. Patreon has multicolored footage; Free uses a blue approximation. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -21280,7 +22071,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -21303,7 +22094,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -21321,7 +22112,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -21351,6 +22142,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
+          "free flight: jb2a.dagger.throw.01.white",
           "free onHit: jb2a.energy_field.01.blue"
         ]
       }
@@ -21400,6 +22192,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -21503,6 +22296,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -21580,9 +22374,10 @@ export const PF2E_WEAPONS = [
           "thrown-10"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -21590,11 +22385,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -21607,7 +22402,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -21623,7 +22418,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -21634,7 +22429,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -21655,7 +22450,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -21703,6 +22500,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -21812,6 +22610,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -21822,7 +22621,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -21836,7 +22635,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -21863,8 +22662,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -21881,7 +22680,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -21929,6 +22728,9 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -21936,7 +22738,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.handaxe.melee.standard.white"
@@ -21946,7 +22748,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -21964,6 +22770,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.handaxe.melee.standard.white",
@@ -21974,6 +22787,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -21989,6 +22809,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -22038,6 +22866,9 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -22045,7 +22876,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.handaxe.melee.standard.white"
@@ -22055,7 +22886,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -22073,6 +22908,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.handaxe.melee.standard.white",
@@ -22083,6 +22925,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -22098,6 +22947,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -22147,6 +23004,9 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -22154,7 +23014,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.handaxe.melee.standard.white"
@@ -22164,7 +23024,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -22182,6 +23046,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.handaxe.melee.standard.white",
@@ -22192,6 +23063,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -22207,6 +23085,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -22256,6 +23142,9 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -22263,7 +23152,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.handaxe.melee.standard.white"
@@ -22273,7 +23162,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -22291,6 +23184,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.handaxe.melee.standard.white",
@@ -22301,6 +23201,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -22316,6 +23223,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -22369,6 +23284,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -22476,6 +23392,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -22596,6 +23513,7 @@ export const PF2E_WEAPONS = [
         "family": "maul",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -22707,6 +23625,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -22820,6 +23739,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -22898,6 +23818,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -23051,6 +23972,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -23164,6 +24086,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -23275,6 +24198,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -23384,6 +24308,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -23491,6 +24416,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -23605,6 +24531,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -23717,6 +24644,7 @@ export const PF2E_WEAPONS = [
         "family": "chakram",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -23835,6 +24763,7 @@ export const PF2E_WEAPONS = [
         "family": "chakram",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -23952,9 +24881,10 @@ export const PF2E_WEAPONS = [
           "thrown"
         ],
         "range": 30,
-        "family": "thrown",
+        "family": "chakram",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -23962,11 +24892,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "chakram throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.chakram.01.throw.01",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -23979,7 +24909,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.chakram.01.throw.01",
             "geometry": "projectile",
             "approximation": false
           },
@@ -23995,7 +24925,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -24006,10 +24936,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
-            "duration": 2100,
+          "jb2a.chakram.01.throw.01": {
+            "duration": 1933,
             "baked": true,
-            "contact": 800,
+            "contact": 750,
             "contactMethod": "alpha-weighted-estimate"
           },
           "jb2a.dagger.throw.01.white": {
@@ -24027,7 +24957,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -24075,6 +25007,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -24182,6 +25115,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -24297,6 +25231,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -24408,6 +25343,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -24513,6 +25449,7 @@ export const PF2E_WEAPONS = [
         "family": "warhammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -24622,6 +25559,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -24733,6 +25671,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -24743,6 +25682,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -24756,7 +25696,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -24783,6 +25723,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -24844,6 +25788,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -24953,6 +25898,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -25091,6 +26037,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -25202,6 +26149,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -25283,6 +26231,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -25433,6 +26382,7 @@ export const PF2E_WEAPONS = [
         "family": "greatclub",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -25538,6 +26488,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -25613,9 +26564,10 @@ export const PF2E_WEAPONS = [
           "thrown-10"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -25623,11 +26575,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -25640,7 +26592,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -25656,7 +26608,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -25667,7 +26619,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -25688,7 +26640,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -25734,6 +26688,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -25873,6 +26828,7 @@ export const PF2E_WEAPONS = [
           "fire",
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -26023,6 +26979,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -26101,9 +27058,10 @@ export const PF2E_WEAPONS = [
           "versatile-p"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "weight",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -26111,11 +27069,11 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "weight throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -26128,7 +27086,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -26144,7 +27102,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -26155,7 +27113,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -26176,7 +27134,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -26224,6 +27184,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -26302,9 +27263,10 @@ export const PF2E_WEAPONS = [
           "thrown-20"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "hook",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -26312,11 +27274,11 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "hook throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.kunai.throw.01",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -26329,7 +27291,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.kunai.throw.01",
             "geometry": "projectile",
             "approximation": false
           },
@@ -26356,10 +27318,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
-            "duration": 2100,
+          "jb2a.kunai.throw.01": {
+            "duration": 1933,
             "baked": true,
-            "contact": 800,
+            "contact": 850,
             "contactMethod": "alpha-weighted-estimate"
           },
           "jb2a.dagger.throw.01.white": {
@@ -26425,6 +27387,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -26503,9 +27466,10 @@ export const PF2E_WEAPONS = [
           "training"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "weight",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -26513,11 +27477,11 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "weight throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -26530,7 +27494,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -26546,7 +27510,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -26557,7 +27521,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -26578,7 +27542,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -26624,6 +27590,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -26733,6 +27700,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -26842,6 +27810,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -26951,6 +27920,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -27060,6 +28030,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -27171,6 +28142,7 @@ export const PF2E_WEAPONS = [
         "family": "greatclub",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -27284,6 +28256,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -27393,6 +28366,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -27498,6 +28472,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -27607,6 +28582,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "acid"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -27614,7 +28592,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -27624,7 +28602,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.liquid.splash.green",
+            "jb2a.liquid.splash.blue"
+          ]
         },
         "selections": [
           {
@@ -27642,6 +28624,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.green",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -27652,6 +28641,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -27667,6 +28663,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.liquid.splash.green": {
+            "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -27716,6 +28720,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "acid"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -27723,7 +28730,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -27733,7 +28740,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.liquid.splash.green",
+            "jb2a.liquid.splash.blue"
+          ]
         },
         "selections": [
           {
@@ -27751,6 +28762,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.green",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -27761,6 +28779,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -27776,6 +28801,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.liquid.splash.green": {
+            "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -27825,6 +28858,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "acid"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -27832,7 +28868,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. acid flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -27842,7 +28878,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.liquid.splash.green",
+            "jb2a.liquid.splash.blue"
+          ]
         },
         "selections": [
           {
@@ -27860,6 +28900,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.green",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -27870,6 +28917,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -27885,6 +28939,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.liquid.splash.green": {
+            "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -27936,6 +28998,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -28017,6 +29080,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -28128,6 +29192,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -28209,6 +29274,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -28322,6 +29388,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -28431,6 +29498,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -28557,6 +29625,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -28658,6 +29727,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -28776,6 +29846,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -28853,9 +29924,10 @@ export const PF2E_WEAPONS = [
           "tripkee"
         ],
         "range": 30,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -28863,11 +29935,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -28880,7 +29952,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -28896,7 +29968,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -28907,7 +29979,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -28928,7 +30000,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -28978,6 +30052,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "crystal",
           "element": "crystal",
@@ -29145,6 +30220,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "crystal",
           "element": "crystal",
@@ -29312,6 +30388,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "crystal",
           "element": "crystal",
@@ -29477,6 +30554,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -29588,6 +30666,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -29669,6 +30748,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -29786,6 +30866,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -29869,6 +30950,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -29980,6 +31062,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -30085,6 +31168,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -30167,6 +31251,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -30276,6 +31361,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -30391,6 +31477,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -30498,6 +31585,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -30605,6 +31693,7 @@ export const PF2E_WEAPONS = [
         "family": "javelin",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -30725,6 +31814,7 @@ export const PF2E_WEAPONS = [
         "family": "blowgun",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -30847,6 +31937,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -30977,6 +32068,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -31092,6 +32184,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -31218,6 +32311,7 @@ export const PF2E_WEAPONS = [
         "family": "dart",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -31370,6 +32464,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -31451,6 +32546,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -31571,6 +32667,7 @@ export const PF2E_WEAPONS = [
         "family": "greatclub",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -31686,6 +32783,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -31839,6 +32937,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -31992,6 +33091,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -32145,6 +33245,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -32288,6 +33389,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -32393,6 +33495,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -32471,6 +33574,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -32625,6 +33729,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -32632,7 +33739,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "firearm shot across 30 ft increments. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "firearm shot across 30 ft increments. acid native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -32646,6 +33753,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "muzzle": [
             "jb2a.muzzle_flash.single.01.yellow"
+          ],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
           ]
         },
         "selections": [
@@ -32671,6 +33782,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.bullet.01.orange",
@@ -32688,6 +33806,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.liquid.splash.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -32715,6 +33840,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.muzzle_flash.single.01.yellow": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -32766,6 +33899,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -32847,6 +33981,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -32960,6 +34095,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -33071,6 +34207,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -33152,6 +34289,7 @@ export const PF2E_WEAPONS = [
         "family": "chakram",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -33270,6 +34408,7 @@ export const PF2E_WEAPONS = [
         "family": "halberd",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -33379,6 +34518,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -33511,6 +34651,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -33643,6 +34784,7 @@ export const PF2E_WEAPONS = [
         "family": "warhammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -33763,6 +34905,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -33870,6 +35013,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -33998,6 +35142,7 @@ export const PF2E_WEAPONS = [
         "family": "shield",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -34096,9 +35241,10 @@ export const PF2E_WEAPONS = [
         "persistent": "",
         "traits": [],
         "range": 0,
-        "family": "spear",
+        "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -34109,7 +35255,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.spear.melee.01.white"
+            "jb2a.glaive.melee.01.white"
           ],
           "flight": [],
           "accent": [
@@ -34122,7 +35268,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -34136,7 +35282,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -34149,7 +35295,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.spear.melee.01.white": {
+          "jb2a.glaive.melee.01.white": {
             "duration": 2867,
             "baked": false
           },
@@ -34197,9 +35343,10 @@ export const PF2E_WEAPONS = [
         "persistent": "",
         "traits": [],
         "range": 0,
-        "family": "spear",
+        "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -34210,7 +35357,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.spear.melee.01.white"
+            "jb2a.glaive.melee.01.white"
           ],
           "flight": [],
           "accent": [
@@ -34223,7 +35370,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -34237,7 +35384,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -34250,7 +35397,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.spear.melee.01.white": {
+          "jb2a.glaive.melee.01.white": {
             "duration": 2867,
             "baked": false
           },
@@ -34298,9 +35445,10 @@ export const PF2E_WEAPONS = [
         "persistent": "",
         "traits": [],
         "range": 0,
-        "family": "spear",
+        "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -34311,7 +35459,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.spear.melee.01.white"
+            "jb2a.glaive.melee.01.white"
           ],
           "flight": [],
           "accent": [
@@ -34324,7 +35472,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -34338,7 +35486,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -34351,7 +35499,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.spear.melee.01.white": {
+          "jb2a.glaive.melee.01.white": {
             "duration": 2867,
             "baked": false
           },
@@ -34412,6 +35560,9 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -34419,7 +35570,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "bow shot across 60 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "bow shot across 60 ft increments. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -34429,7 +35580,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -34447,6 +35601,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.arrow.physical.white.01",
@@ -34457,6 +35618,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -34474,6 +35642,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -34523,6 +35695,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -34632,6 +35805,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -34743,6 +35917,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -34854,6 +36029,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -34961,6 +36137,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -35068,6 +36245,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -35175,6 +36353,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -35296,6 +36475,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -35400,6 +36580,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -35412,7 +36593,7 @@ export const PF2E_WEAPONS = [
           "contact": [],
           "flight": [
             "jb2a.bolt.lightning.blue",
-            "jb2a.eldritch_blast.purple"
+            "jb2a.lightning_bolt.narrow.blue"
           ],
           "accent": [
             "jb2a.lightning_ball.blue"
@@ -35424,7 +36605,10 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "flight",
             "key": "jb2a.bolt.lightning.blue",
-            "geometry": "projectile",
+            "geometry": [
+              "projectile",
+              "beam"
+            ],
             "approximation": true
           },
           {
@@ -35437,9 +36621,12 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "flight",
-            "key": "jb2a.eldritch_blast.purple",
-            "geometry": "projectile",
-            "approximation": true
+            "key": "jb2a.lightning_bolt.narrow.blue",
+            "geometry": [
+              "projectile",
+              "beam"
+            ],
+            "approximation": false
           },
           {
             "edition": "free",
@@ -35456,10 +36643,10 @@ export const PF2E_WEAPONS = [
             "contact": 950,
             "contactMethod": "alpha-weighted-estimate"
           },
-          "jb2a.eldritch_blast.purple": {
-            "duration": 4367,
+          "jb2a.lightning_bolt.narrow.blue": {
+            "duration": 4000,
             "baked": true,
-            "contact": 1250,
+            "contact": 650,
             "contactMethod": "alpha-weighted-estimate"
           },
           "jb2a.lightning_ball.blue": {
@@ -35468,8 +36655,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon flight: jb2a.bolt.lightning.blue",
-          "free flight: jb2a.eldritch_blast.purple"
+          "patreon flight: jb2a.bolt.lightning.blue"
         ]
       }
     ],
@@ -35514,6 +36700,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -35618,6 +36805,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -35738,6 +36926,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -35859,6 +37048,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "mental",
@@ -36013,6 +37203,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "mental",
@@ -36167,6 +37358,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "mental",
@@ -36321,6 +37513,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "mental",
@@ -36461,6 +37654,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -36574,6 +37768,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -36701,6 +37896,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -36833,6 +38029,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -36948,6 +38145,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "poison",
@@ -37101,6 +38299,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "poison",
@@ -37254,6 +38453,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "poison",
@@ -37407,6 +38607,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "poison",
@@ -37560,6 +38761,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "firework",
           "element": "fire",
@@ -37687,6 +38889,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "firework",
           "element": "fire",
@@ -37808,6 +39011,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -37919,6 +39123,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -38049,6 +39254,7 @@ export const PF2E_WEAPONS = [
         "family": "warhammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -38158,6 +39364,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -38269,6 +39476,7 @@ export const PF2E_WEAPONS = [
         "family": "hammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -38386,6 +39594,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -38393,7 +39604,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.dagger.melee.02.white"
@@ -38403,7 +39614,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -38421,6 +39635,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.dagger.melee.02.white",
@@ -38431,6 +39652,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -38446,6 +39674,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -38470,6 +39702,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -38477,7 +39712,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -38489,6 +39724,9 @@ export const PF2E_WEAPONS = [
           ],
           "return": [
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
           ]
         },
         "selections": [
@@ -38503,6 +39741,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           },
@@ -38524,6 +39769,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           },
@@ -38555,6 +39807,10 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
+            "baked": false
           }
         },
         "approximations": []
@@ -38605,6 +39861,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -38714,6 +39971,7 @@ export const PF2E_WEAPONS = [
         "family": "scimitar",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -38821,6 +40079,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -38957,6 +40216,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -39062,6 +40322,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -39180,6 +40441,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -39291,6 +40553,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -39396,6 +40659,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -39503,6 +40767,7 @@ export const PF2E_WEAPONS = [
         "family": "falchion",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -39612,6 +40877,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -39727,6 +40993,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -39737,6 +41004,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -39750,7 +41018,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -39777,6 +41045,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -39838,6 +41110,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -39951,6 +41224,7 @@ export const PF2E_WEAPONS = [
         "family": "hammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40058,6 +41332,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40175,6 +41450,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40284,6 +41560,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40393,6 +41670,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40502,6 +41780,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40615,6 +41894,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40697,6 +41977,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40812,6 +42093,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -40935,6 +42217,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41042,6 +42325,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41121,6 +42405,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41245,6 +42530,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41352,6 +42638,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -41463,6 +42750,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41578,6 +42866,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41661,6 +42950,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41779,6 +43069,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41894,6 +43185,7 @@ export const PF2E_WEAPONS = [
         "family": "rapier",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -41999,6 +43291,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -42133,6 +43426,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -42242,6 +43536,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -42353,6 +43648,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -42469,6 +43765,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -42585,6 +43882,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -42705,6 +44003,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -42806,6 +44105,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -42936,6 +44236,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -43047,6 +44348,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -43177,6 +44479,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -43307,6 +44610,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -43439,6 +44743,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -43446,7 +44753,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -43456,7 +44763,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
+          ]
         },
         "selections": [
           {
@@ -43474,6 +44784,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -43484,6 +44801,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -43499,6 +44823,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -43548,6 +44876,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -43555,7 +44886,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -43565,7 +44896,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
+          ]
         },
         "selections": [
           {
@@ -43583,6 +44917,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -43593,6 +44934,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -43608,6 +44956,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -43657,6 +45009,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -43664,7 +45019,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -43674,7 +45029,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
+          ]
         },
         "selections": [
           {
@@ -43692,6 +45050,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -43702,6 +45067,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -43717,6 +45089,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -43774,6 +45150,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -43855,9 +45232,10 @@ export const PF2E_WEAPONS = [
           "trip"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "hook",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -43865,11 +45243,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "hook throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.kunai.throw.01",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -43882,7 +45260,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.kunai.throw.01",
             "geometry": "projectile",
             "approximation": false
           },
@@ -43909,10 +45287,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
-            "duration": 2100,
+          "jb2a.kunai.throw.01": {
+            "duration": 1933,
             "baked": true,
-            "contact": 800,
+            "contact": 850,
             "contactMethod": "alpha-weighted-estimate"
           },
           "jb2a.dagger.throw.01.white": {
@@ -43976,6 +45354,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -44085,6 +45464,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -44192,6 +45572,9 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -44199,7 +45582,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.sword.melee.01.white"
@@ -44209,7 +45592,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -44227,6 +45613,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.sword.melee.01.white",
@@ -44237,6 +45630,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -44252,6 +45652,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -44311,6 +45715,11 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "cold",
+          "electricity",
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -44318,7 +45727,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. cold + electricity + fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.sword.melee.01.white"
@@ -44328,7 +45737,16 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.frost.white.01"
+          ],
+          "flavor2": [
+            "jb2a.lightning_ball.blue"
+          ],
+          "flavor3": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -44346,6 +45764,27 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.frost.white.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor2",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor3",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.sword.melee.01.white",
@@ -44356,6 +45795,27 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.frost.white.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor2",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor3",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -44371,6 +45831,18 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.frost.white.01": {
+            "duration": 5900,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -44426,6 +45898,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -44537,6 +46010,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -44650,6 +46124,9 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "cold"
+        ],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -44657,7 +46134,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. cold flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.glaive.melee.01.white"
@@ -44667,7 +46144,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.frost.white.01"
+          ]
         },
         "selections": [
           {
@@ -44685,6 +46165,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.frost.white.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.glaive.melee.01.white",
@@ -44695,6 +46182,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.frost.white.01",
             "geometry": "radial",
             "approximation": false
           }
@@ -44710,6 +46204,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.frost.white.01": {
+            "duration": 5900,
             "baked": false
           }
         },
@@ -44765,6 +46263,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": {
           "style": "frost",
           "element": "cold",
@@ -44913,6 +46412,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": {
           "style": "frost",
           "element": "cold",
@@ -45061,6 +46561,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": {
           "style": "frost",
           "element": "cold",
@@ -45209,6 +46710,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": {
           "style": "frost",
           "element": "cold",
@@ -45349,6 +46851,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -45460,6 +46963,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -45467,7 +46973,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -45477,7 +46983,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -45495,6 +47004,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -45505,6 +47021,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -45520,6 +47043,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -45541,6 +47068,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -45548,7 +47078,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -45562,6 +47092,9 @@ export const PF2E_WEAPONS = [
           "return": [
             "jb2a.spear.return.01",
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
           ]
         },
         "selections": [
@@ -45576,6 +47109,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -45597,6 +47137,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -45640,6 +47187,10 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
+            "baked": false
           }
         },
         "approximations": [
@@ -45693,6 +47244,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -45792,6 +47344,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -45901,6 +47454,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46008,6 +47562,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46117,6 +47672,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46228,6 +47784,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46335,6 +47892,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46345,6 +47903,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -46358,7 +47917,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -46385,6 +47944,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -46444,6 +48007,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46564,6 +48128,7 @@ export const PF2E_WEAPONS = [
         "family": "greatclub",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -46673,6 +48238,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46779,6 +48345,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46860,6 +48427,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -46977,6 +48545,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "vitality"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiance",
           "element": "vitality",
@@ -47109,6 +48678,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "vitality"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiance",
           "element": "vitality",
@@ -47241,6 +48811,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "vitality"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiance",
           "element": "vitality",
@@ -47373,6 +48944,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "vitality"
         ],
+        "flavor": [],
         "payload": {
           "style": "radiance",
           "element": "vitality",
@@ -47507,6 +49079,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "force"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -47648,6 +49221,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -47729,6 +49303,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -47848,6 +49423,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -47858,7 +49434,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -47875,7 +49451,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -47916,8 +49492,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -47934,7 +49510,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -47982,6 +49558,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -48089,6 +49666,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -48191,6 +49769,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -48300,6 +49879,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -48413,6 +49993,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -48524,6 +50105,9 @@ export const PF2E_WEAPONS = [
         "family": "scimitar",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "shadow"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -48531,7 +50115,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.scimitar.melee.01.white"
@@ -48541,7 +50125,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.smoke.puff.centered.dark_black",
+            "jb2a.smoke.puff.centered.grey"
+          ]
         },
         "selections": [
           {
@@ -48559,6 +50147,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.dark_black",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.scimitar.melee.01.white",
@@ -48569,6 +50164,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -48584,6 +50186,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.dark_black": {
+            "duration": 2433,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -48639,6 +50249,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "shadow"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -48646,7 +50259,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.dagger.melee.02.white"
@@ -48656,7 +50269,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.smoke.puff.centered.dark_black",
+            "jb2a.smoke.puff.centered.grey"
+          ]
         },
         "selections": [
           {
@@ -48674,6 +50291,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.dark_black",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.dagger.melee.02.white",
@@ -48684,6 +50308,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -48699,6 +50330,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.dark_black": {
+            "duration": 2433,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -48722,6 +50361,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "shadow"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -48729,7 +50371,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "dagger throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "dagger throw across 10 ft increments. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -48741,6 +50383,10 @@ export const PF2E_WEAPONS = [
           ],
           "return": [
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.smoke.puff.centered.dark_black",
+            "jb2a.smoke.puff.centered.grey"
           ]
         },
         "selections": [
@@ -48755,6 +50401,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.dark_black",
             "geometry": "radial",
             "approximation": false
           },
@@ -48776,6 +50429,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           },
@@ -48807,6 +50467,14 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.smoke.puff.centered.dark_black": {
+            "duration": 2433,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
+            "baked": false
           }
         },
         "approximations": []
@@ -48857,6 +50525,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -48966,6 +50635,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "glue",
@@ -48994,6 +50664,7 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "residue": [
+            "jb2a.liquid.blob.brown",
             "jb2a.liquid.blob.blue"
           ]
         },
@@ -49015,7 +50686,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "residue",
-            "key": "jb2a.liquid.blob.blue",
+            "key": "jb2a.liquid.blob.brown",
             "geometry": "radial",
             "approximation": false
           },
@@ -49060,6 +50731,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.blob.brown": {
+            "duration": 7958,
             "baked": false
           },
           "jb2a.liquid.blob.blue": {
@@ -49113,6 +50788,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "glue",
@@ -49141,6 +50817,7 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "residue": [
+            "jb2a.liquid.blob.brown",
             "jb2a.liquid.blob.blue"
           ]
         },
@@ -49162,7 +50839,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "residue",
-            "key": "jb2a.liquid.blob.blue",
+            "key": "jb2a.liquid.blob.brown",
             "geometry": "radial",
             "approximation": false
           },
@@ -49207,6 +50884,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.blob.brown": {
+            "duration": 7958,
             "baked": false
           },
           "jb2a.liquid.blob.blue": {
@@ -49260,6 +50941,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "glue",
@@ -49288,6 +50970,7 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "residue": [
+            "jb2a.liquid.blob.brown",
             "jb2a.liquid.blob.blue"
           ]
         },
@@ -49309,7 +50992,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "residue",
-            "key": "jb2a.liquid.blob.blue",
+            "key": "jb2a.liquid.blob.brown",
             "geometry": "radial",
             "approximation": false
           },
@@ -49354,6 +51037,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.blob.brown": {
+            "duration": 7958,
             "baked": false
           },
           "jb2a.liquid.blob.blue": {
@@ -49407,6 +51094,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "glue",
@@ -49435,6 +51123,7 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "residue": [
+            "jb2a.liquid.blob.brown",
             "jb2a.liquid.blob.blue"
           ]
         },
@@ -49456,7 +51145,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "residue",
-            "key": "jb2a.liquid.blob.blue",
+            "key": "jb2a.liquid.blob.brown",
             "geometry": "radial",
             "approximation": false
           },
@@ -49501,6 +51190,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.blob.brown": {
+            "duration": 7958,
             "baked": false
           },
           "jb2a.liquid.blob.blue": {
@@ -49554,6 +51247,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -49634,6 +51328,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -49786,6 +51481,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -49891,6 +51587,7 @@ export const PF2E_WEAPONS = [
         "family": "hammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -50000,6 +51697,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -50111,6 +51809,7 @@ export const PF2E_WEAPONS = [
         "family": "hammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -50218,6 +51917,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -50333,6 +52033,10 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire",
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -50340,7 +52044,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -50350,7 +52054,13 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ],
+          "flavor2": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -50368,6 +52078,20 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor2",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -50378,6 +52102,20 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor2",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -50393,6 +52131,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -50415,6 +52161,10 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire",
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -50422,7 +52172,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. fire + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -50436,6 +52186,12 @@ export const PF2E_WEAPONS = [
           "return": [
             "jb2a.spear.return.01",
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ],
+          "flavor2": [
+            "jb2a.impact.007.yellow"
           ]
         },
         "selections": [
@@ -50450,6 +52206,20 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor2",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           },
@@ -50471,6 +52241,20 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor2",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           },
@@ -50514,6 +52298,14 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
+            "baked": false
           }
         },
         "approximations": [
@@ -50569,6 +52361,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -50746,6 +52539,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -50923,6 +52717,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -51100,6 +52895,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -51269,6 +53065,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -51380,6 +53177,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -51390,6 +53188,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -51403,7 +53202,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -51430,6 +53229,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -51493,6 +53296,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -51600,6 +53404,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -51728,6 +53533,7 @@ export const PF2E_WEAPONS = [
         "family": "greataxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -51840,6 +53646,7 @@ export const PF2E_WEAPONS = [
         "family": "greatclub",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -51945,6 +53752,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -52057,6 +53865,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -52169,6 +53978,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -52280,6 +54090,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -52412,6 +54223,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -52514,6 +54326,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -52646,6 +54459,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -52755,6 +54569,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -52864,6 +54679,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -52981,6 +54797,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "holy"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -52988,7 +54807,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.dagger.melee.02.white"
@@ -52998,7 +54817,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ]
         },
         "selections": [
           {
@@ -53016,6 +54839,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.dagger.melee.02.white",
@@ -53026,6 +54856,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -53041,6 +54878,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -53065,6 +54910,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "holy"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -53072,7 +54920,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -53084,6 +54932,10 @@ export const PF2E_WEAPONS = [
           ],
           "return": [
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
           ]
         },
         "selections": [
@@ -53098,6 +54950,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
             "geometry": "radial",
             "approximation": false
           },
@@ -53119,6 +54978,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           },
@@ -53150,6 +55016,14 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
+            "baked": false
           }
         },
         "approximations": []
@@ -53204,6 +55078,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -53211,7 +55088,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.dagger.melee.02.white"
@@ -53221,7 +55098,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -53239,6 +55119,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.dagger.melee.02.white",
@@ -53249,6 +55136,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -53264,6 +55158,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -53287,6 +55185,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -53294,7 +55195,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -53306,6 +55207,9 @@ export const PF2E_WEAPONS = [
           ],
           "return": [
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
           ]
         },
         "selections": [
@@ -53320,6 +55224,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           },
@@ -53341,6 +55252,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           },
@@ -53372,6 +55290,10 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
+            "baked": false
           }
         },
         "approximations": []
@@ -53418,6 +55340,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -53527,6 +55450,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -53629,6 +55553,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -53745,6 +55670,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -53859,6 +55785,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -53935,9 +55862,10 @@ export const PF2E_WEAPONS = [
           "thrown-10"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -53945,11 +55873,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -53962,7 +55890,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -53978,7 +55906,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -53989,7 +55917,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -54010,7 +55938,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -54054,6 +55984,7 @@ export const PF2E_WEAPONS = [
         "family": "halberd",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -54161,6 +56092,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -54281,6 +56213,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -54383,6 +56316,7 @@ export const PF2E_WEAPONS = [
         "family": "hammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -54496,6 +56430,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -54578,6 +56513,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -54694,6 +56630,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -54818,6 +56755,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -54939,6 +56877,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -54949,6 +56888,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -54962,7 +56902,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -54989,6 +56929,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -55048,6 +56992,7 @@ export const PF2E_WEAPONS = [
         "family": "contact",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -55058,7 +57003,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.bludgeoning.one_handed",
+            "jb2a.melee_generic.piercing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -55072,7 +57017,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.bludgeoning.one_handed",
+            "key": "jb2a.melee_generic.piercing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -55099,8 +57044,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.bludgeoning.one_handed": {
-            "duration": 800,
+          "jb2a.melee_generic.piercing.one_handed": {
+            "duration": 733,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -55117,7 +57062,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.bludgeoning.one_handed",
+          "patreon contact: jb2a.melee_generic.piercing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -55161,6 +57106,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -55291,6 +57237,7 @@ export const PF2E_WEAPONS = [
         "family": "javelin",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -55411,6 +57358,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -55491,6 +57439,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -55615,6 +57564,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -55697,6 +57647,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -55820,6 +57771,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -55921,6 +57873,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -56042,8 +57995,9 @@ export const PF2E_WEAPONS = [
         "element": "fire",
         "elements": [
           "fire",
-          "spirit"
+          "unholy"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -56051,7 +58005,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. fire + unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -56062,8 +58016,8 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "accent2": [
-            "jb2a.divine_smite.target.yellowwhite",
-            "jb2a.divine_smite.target.blueyellow"
+            "jb2a.divine_smite.target.dark_purple",
+            "jb2a.smoke.puff.centered.grey"
           ]
         },
         "selections": [
@@ -56084,7 +58038,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "accent2",
-            "key": "jb2a.divine_smite.target.yellowwhite",
+            "key": "jb2a.divine_smite.target.dark_purple",
             "geometry": "radial",
             "approximation": false
           },
@@ -56105,7 +58059,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "accent2",
-            "key": "jb2a.divine_smite.target.blueyellow",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -56119,12 +58073,12 @@ export const PF2E_WEAPONS = [
             "duration": 2267,
             "baked": false
           },
-          "jb2a.divine_smite.target.yellowwhite": {
+          "jb2a.divine_smite.target.dark_purple": {
             "duration": 2333,
             "baked": false
           },
-          "jb2a.divine_smite.target.blueyellow": {
-            "duration": 2333,
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -56178,6 +58132,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -56292,6 +58247,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -56425,11 +58381,12 @@ export const PF2E_WEAPONS = [
           "thrown"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "vial",
         "element": "spirit",
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -56437,12 +58394,12 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "vial throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
-            "jb2a.dagger.throw.01.white"
+            "jb2a.throwable.throw.flask.01.white",
+            "jb2a.throwable.throw.flask.01.orange"
           ],
           "accent": [
             "jb2a.divine_smite.target.yellowwhite",
@@ -56454,7 +58411,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.throwable.throw.flask.01.white",
             "geometry": "projectile",
             "approximation": false
           },
@@ -56468,7 +58425,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "flight",
-            "key": "jb2a.dagger.throw.01.white",
+            "key": "jb2a.throwable.throw.flask.01.orange",
             "geometry": "projectile",
             "approximation": false
           },
@@ -56481,16 +58438,16 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
-            "duration": 2100,
+          "jb2a.throwable.throw.flask.01.white": {
+            "duration": 3533,
             "baked": true,
-            "contact": 800,
+            "contact": 1080,
             "contactMethod": "alpha-weighted-estimate"
           },
-          "jb2a.dagger.throw.01.white": {
-            "duration": 1933,
+          "jb2a.throwable.throw.flask.01.orange": {
+            "duration": 3533,
             "baked": true,
-            "contact": 850,
+            "contact": 1080,
             "contactMethod": "alpha-weighted-estimate"
           },
           "jb2a.divine_smite.target.yellowwhite": {
@@ -56546,6 +58503,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -56661,6 +58619,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -56772,6 +58731,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -56881,6 +58841,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -56992,6 +58953,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -57126,6 +59088,7 @@ export const PF2E_WEAPONS = [
         "family": "scythe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -57233,6 +59196,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -57342,6 +59306,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -57453,6 +59418,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -57533,6 +59499,7 @@ export const PF2E_WEAPONS = [
         "family": "javelin",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -57653,6 +59620,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -57730,9 +59698,10 @@ export const PF2E_WEAPONS = [
           "thrown-10"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -57740,11 +59709,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -57757,7 +59726,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -57773,7 +59742,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -57784,7 +59753,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -57805,7 +59774,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -57849,6 +59820,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -57956,6 +59928,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -58086,6 +60059,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -58213,6 +60187,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -58323,6 +60298,9 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -58330,7 +60308,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "firearm shot across 80 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "firearm shot across 80 ft increments. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -58343,6 +60321,9 @@ export const PF2E_WEAPONS = [
           "return": [],
           "muzzle": [
             "jb2a.muzzle_flash.single.01.yellow"
+          ],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
           ]
         },
         "selections": [
@@ -58368,6 +60349,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.bullet.01.orange",
@@ -58385,6 +60373,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -58406,6 +60401,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.muzzle_flash.single.01.yellow": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -58459,6 +60458,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -58576,6 +60576,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -58731,6 +60732,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -58886,6 +60888,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -59041,6 +61044,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -59186,6 +61190,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -59293,6 +61298,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -59421,6 +61427,7 @@ export const PF2E_WEAPONS = [
         "family": "javelin",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -59547,6 +61554,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -59651,6 +61659,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -59763,6 +61772,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -59893,6 +61903,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -60000,6 +62011,7 @@ export const PF2E_WEAPONS = [
         "family": "maul",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -60107,6 +62119,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -60221,6 +62234,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -60326,6 +62340,7 @@ export const PF2E_WEAPONS = [
         "family": "greataxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -60440,6 +62455,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -60517,9 +62533,10 @@ export const PF2E_WEAPONS = [
           "thrown-20"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -60527,11 +62544,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -60544,7 +62561,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -60560,7 +62577,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -60571,7 +62588,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -60592,7 +62609,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -60640,6 +62659,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -60784,6 +62804,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -60928,6 +62949,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -61072,6 +63094,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -61216,6 +63239,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "force"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -61353,6 +63377,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -61462,6 +63487,7 @@ export const PF2E_WEAPONS = [
         "family": "sickle",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -61573,6 +63599,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -61682,6 +63709,7 @@ export const PF2E_WEAPONS = [
         "family": "katana",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -61791,6 +63819,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -61898,6 +63927,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -62018,6 +64048,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -62123,6 +64154,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -62234,6 +64266,9 @@ export const PF2E_WEAPONS = [
         "family": "greatclub",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "earth"
+        ],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -62241,7 +64276,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.greatclub.standard.white"
@@ -62251,7 +64286,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.ground_crack.01.orange"
+          ]
         },
         "selections": [
           {
@@ -62269,6 +64307,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.greatclub.standard.white",
@@ -62279,6 +64324,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -62294,6 +64346,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.ground_crack.01.orange": {
+            "duration": 5900,
             "baked": false
           }
         },
@@ -62341,6 +64397,7 @@ export const PF2E_WEAPONS = [
         "family": "greataxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -62457,6 +64514,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -62566,6 +64624,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -62576,6 +64635,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -62589,7 +64649,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -62616,6 +64676,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -62675,6 +64739,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -62784,6 +64849,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -62893,6 +64959,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -63006,6 +65073,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -63119,6 +65187,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -63201,6 +65270,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -63338,6 +65408,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -63348,7 +65419,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -63362,7 +65433,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -63389,8 +65460,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -63407,7 +65478,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -63457,10 +65528,11 @@ export const PF2E_WEAPONS = [
         ],
         "range": 0,
         "family": "greatsword",
-        "element": "spirit",
+        "element": "unholy",
         "elements": [
-          "spirit"
+          "unholy"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -63468,7 +65540,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed slashing contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed slashing contact. unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.03.greatsword.02",
@@ -63476,8 +65548,8 @@ export const PF2E_WEAPONS = [
           ],
           "flight": [],
           "accent": [
-            "jb2a.divine_smite.target.yellowwhite",
-            "jb2a.divine_smite.target.blueyellow"
+            "jb2a.divine_smite.target.dark_purple",
+            "jb2a.smoke.puff.centered.grey"
           ],
           "return": []
         },
@@ -63492,7 +65564,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.yellowwhite",
+            "key": "jb2a.divine_smite.target.dark_purple",
             "geometry": "radial",
             "approximation": false
           },
@@ -63506,7 +65578,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.blueyellow",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -63520,12 +65592,12 @@ export const PF2E_WEAPONS = [
             "duration": 2400,
             "baked": false
           },
-          "jb2a.divine_smite.target.yellowwhite": {
+          "jb2a.divine_smite.target.dark_purple": {
             "duration": 2333,
             "baked": false
           },
-          "jb2a.divine_smite.target.blueyellow": {
-            "duration": 2333,
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -63575,6 +65647,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -63688,6 +65761,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -63695,7 +65771,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -63705,7 +65781,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -63723,6 +65802,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -63733,6 +65819,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -63748,6 +65841,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -63795,6 +65892,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -63876,6 +65974,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -63983,6 +66082,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -64090,6 +66190,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -64199,6 +66300,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -64335,6 +66437,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -64469,6 +66572,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -64580,6 +66684,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -64689,11 +66794,12 @@ export const PF2E_WEAPONS = [
         ],
         "range": 0,
         "family": "sword",
-        "element": "spirit",
+        "element": "unholy",
         "elements": [
-          "spirit",
+          "unholy",
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -64701,15 +66807,15 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. spirit + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. unholy + bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.sword.melee.01.white"
           ],
           "flight": [],
           "accent": [
-            "jb2a.divine_smite.target.yellowwhite",
-            "jb2a.divine_smite.target.blueyellow"
+            "jb2a.divine_smite.target.dark_purple",
+            "jb2a.smoke.puff.centered.grey"
           ],
           "return": [],
           "residue": [
@@ -64731,7 +66837,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.yellowwhite",
+            "key": "jb2a.divine_smite.target.dark_purple",
             "geometry": "radial",
             "approximation": false
           },
@@ -64759,7 +66865,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.blueyellow",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           },
@@ -64783,12 +66889,12 @@ export const PF2E_WEAPONS = [
             "duration": 2867,
             "baked": false
           },
-          "jb2a.divine_smite.target.yellowwhite": {
+          "jb2a.divine_smite.target.dark_purple": {
             "duration": 2333,
             "baked": false
           },
-          "jb2a.divine_smite.target.blueyellow": {
-            "duration": 2333,
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           },
           "jb2a.liquid.splash02.red": {
@@ -64852,6 +66958,9 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -64859,7 +66968,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.glaive.melee.01.white"
@@ -64869,7 +66978,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -64887,6 +67000,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.glaive.melee.01.white",
@@ -64897,6 +67017,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -64912,6 +67039,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -64959,6 +67094,7 @@ export const PF2E_WEAPONS = [
         "family": "warhammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65038,6 +67174,7 @@ export const PF2E_WEAPONS = [
         "family": "hammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65158,6 +67295,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65265,6 +67403,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65381,6 +67520,7 @@ export const PF2E_WEAPONS = [
         "family": "sickle",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65490,6 +67630,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65601,6 +67742,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65608,7 +67752,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -65621,6 +67765,9 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
           ]
         },
         "selections": [
@@ -65646,6 +67793,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -65665,6 +67819,13 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash02.red",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
           }
         ],
         "mediaTiming": {
@@ -65678,6 +67839,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -65700,6 +67865,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65707,7 +67875,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "spear throw across 20 ft increments. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "spear throw across 20 ft increments. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -65721,6 +67889,9 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
           ]
         },
         "selections": [
@@ -65746,6 +67917,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
@@ -65763,6 +67941,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "residue",
             "key": "jb2a.liquid.splash02.red",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -65786,6 +67971,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -65840,6 +68029,9 @@ export const PF2E_WEAPONS = [
           "bleed",
           "poison"
         ],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65847,7 +68039,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -65864,6 +68056,9 @@ export const PF2E_WEAPONS = [
           "accent2": [
             "jb2a.impact_themed.poison.greenyellow",
             "jb2a.liquid.splash.blue"
+          ],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
           ]
         },
         "selections": [
@@ -65896,6 +68091,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -65922,6 +68124,13 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
           }
         ],
         "mediaTiming": {
@@ -65943,6 +68152,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -65966,6 +68179,9 @@ export const PF2E_WEAPONS = [
           "bleed",
           "poison"
         ],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -65973,7 +68189,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "spear throw across 20 ft increments. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "spear throw across 20 ft increments. bleed + poison native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -65991,6 +68207,9 @@ export const PF2E_WEAPONS = [
           "accent2": [
             "jb2a.impact_themed.poison.greenyellow",
             "jb2a.liquid.splash.blue"
+          ],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
           ]
         },
         "selections": [
@@ -66023,6 +68242,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
@@ -66047,6 +68273,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent2",
             "key": "jb2a.liquid.splash.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -66078,6 +68311,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -66131,6 +68368,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -66212,6 +68450,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -66327,6 +68566,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -66442,6 +68682,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "force"
         ],
+        "flavor": [],
         "payload": {
           "style": "force",
           "element": "force",
@@ -66574,6 +68815,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "force"
         ],
+        "flavor": [],
         "payload": {
           "style": "force",
           "element": "force",
@@ -66698,6 +68940,7 @@ export const PF2E_WEAPONS = [
         "family": "airgun",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -66813,6 +69056,7 @@ export const PF2E_WEAPONS = [
         "family": "hammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -66920,6 +69164,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -67027,6 +69272,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -67132,6 +69378,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -67247,6 +69494,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -67360,6 +69608,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -67467,6 +69716,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -67576,6 +69826,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -67685,6 +69936,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -67794,6 +70046,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -67899,6 +70152,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68010,6 +70264,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68113,6 +70368,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68220,6 +70476,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68331,6 +70588,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -68457,6 +70715,7 @@ export const PF2E_WEAPONS = [
         "family": "scimitar",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68563,9 +70822,10 @@ export const PF2E_WEAPONS = [
           "thrown"
         ],
         "range": 15,
-        "family": "thrown",
+        "family": "bola",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68573,11 +70833,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 15 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "bola throw across 15 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -68590,7 +70850,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -68606,7 +70866,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -68617,7 +70877,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -68638,7 +70898,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -68688,6 +70950,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68797,6 +71060,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68877,6 +71141,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -68999,6 +71264,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -69108,6 +71374,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -69215,6 +71482,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -69327,6 +71595,7 @@ export const PF2E_WEAPONS = [
         "family": "maul",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -69436,6 +71705,7 @@ export const PF2E_WEAPONS = [
         "family": "greatclub",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -69549,6 +71819,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -69664,6 +71935,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -69792,6 +72064,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -69901,6 +72174,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "mental"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -69908,7 +72184,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -69918,7 +72194,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.explosion.02.purple",
+            "jb2a.explosion.02.blue"
+          ]
         },
         "selections": [
           {
@@ -69936,6 +72216,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -69946,6 +72233,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -69961,6 +72255,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.explosion.02.purple": {
+            "duration": 1367,
+            "baked": false
+          },
+          "jb2a.explosion.02.blue": {
+            "duration": 1367,
             "baked": false
           }
         },
@@ -70010,6 +72312,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "mental"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -70017,7 +72322,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -70027,7 +72332,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.explosion.02.purple",
+            "jb2a.explosion.02.blue"
+          ]
         },
         "selections": [
           {
@@ -70045,6 +72354,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -70055,6 +72371,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -70070,6 +72393,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.explosion.02.purple": {
+            "duration": 1367,
+            "baked": false
+          },
+          "jb2a.explosion.02.blue": {
+            "duration": 1367,
             "baked": false
           }
         },
@@ -70119,6 +72450,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "mental"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -70126,7 +72460,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. mental flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -70136,7 +72470,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.explosion.02.purple",
+            "jb2a.explosion.02.blue"
+          ]
         },
         "selections": [
           {
@@ -70154,6 +72492,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -70164,6 +72509,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -70179,6 +72531,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.explosion.02.purple": {
+            "duration": 1367,
+            "baked": false
+          },
+          "jb2a.explosion.02.blue": {
+            "duration": 1367,
             "baked": false
           }
         },
@@ -70230,6 +72590,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -70341,6 +72702,7 @@ export const PF2E_WEAPONS = [
         "family": "hammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -70450,6 +72812,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -70533,6 +72896,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -70650,6 +73014,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -70785,6 +73150,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -70892,6 +73258,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -71011,6 +73378,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -71018,7 +73388,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.dagger.melee.02.white"
@@ -71028,7 +73398,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -71046,6 +73419,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.dagger.melee.02.white",
@@ -71056,6 +73436,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -71071,6 +73458,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -71096,6 +73487,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -71103,7 +73497,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "dagger throw across 20 ft increments. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -71115,6 +73509,9 @@ export const PF2E_WEAPONS = [
           ],
           "return": [
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
           ]
         },
         "selections": [
@@ -71129,6 +73526,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -71150,6 +73554,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -71181,6 +73592,10 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
+            "baked": false
           }
         },
         "approximations": []
@@ -71229,6 +73644,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -71340,6 +73756,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -71450,6 +73867,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -71557,6 +73975,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -71693,6 +74112,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "mud",
@@ -71721,6 +74141,7 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "residue": [
+            "jb2a.liquid.blob.brown",
             "jb2a.liquid.blob.blue"
           ]
         },
@@ -71742,7 +74163,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "residue",
-            "key": "jb2a.liquid.blob.blue",
+            "key": "jb2a.liquid.blob.brown",
             "geometry": "radial",
             "approximation": false
           },
@@ -71787,6 +74208,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.blob.brown": {
+            "duration": 7958,
             "baked": false
           },
           "jb2a.liquid.blob.blue": {
@@ -71844,6 +74269,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "mud",
@@ -71872,6 +74298,7 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "residue": [
+            "jb2a.liquid.blob.brown",
             "jb2a.liquid.blob.blue"
           ]
         },
@@ -71893,7 +74320,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "residue",
-            "key": "jb2a.liquid.blob.blue",
+            "key": "jb2a.liquid.blob.brown",
             "geometry": "radial",
             "approximation": false
           },
@@ -71938,6 +74365,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.blob.brown": {
+            "duration": 7958,
             "baked": false
           },
           "jb2a.liquid.blob.blue": {
@@ -71995,6 +74426,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "mud",
@@ -72023,6 +74455,7 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "residue": [
+            "jb2a.liquid.blob.brown",
             "jb2a.liquid.blob.blue"
           ]
         },
@@ -72044,7 +74477,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "residue",
-            "key": "jb2a.liquid.blob.blue",
+            "key": "jb2a.liquid.blob.brown",
             "geometry": "radial",
             "approximation": false
           },
@@ -72089,6 +74522,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.blob.brown": {
+            "duration": 7958,
             "baked": false
           },
           "jb2a.liquid.blob.blue": {
@@ -72146,6 +74583,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "mud",
@@ -72174,6 +74612,7 @@ export const PF2E_WEAPONS = [
           ],
           "return": [],
           "residue": [
+            "jb2a.liquid.blob.brown",
             "jb2a.liquid.blob.blue"
           ]
         },
@@ -72195,7 +74634,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "residue",
-            "key": "jb2a.liquid.blob.blue",
+            "key": "jb2a.liquid.blob.brown",
             "geometry": "radial",
             "approximation": false
           },
@@ -72240,6 +74679,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash.blue": {
             "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.blob.brown": {
+            "duration": 7958,
             "baked": false
           },
           "jb2a.liquid.blob.blue": {
@@ -72297,6 +74740,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -72433,6 +74877,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -72565,6 +75010,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -72676,6 +75122,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -72799,6 +75246,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -72922,6 +75370,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -73045,6 +75494,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -73172,6 +75622,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -73304,6 +75755,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -73436,6 +75888,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -73568,6 +76021,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "void"
         ],
+        "flavor": [],
         "payload": {
           "style": "void",
           "element": "void",
@@ -73694,6 +76148,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -73803,6 +76258,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -73912,6 +76368,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -73989,9 +76446,10 @@ export const PF2E_WEAPONS = [
           "thrown-10"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -73999,11 +76457,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -74016,7 +76474,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -74032,7 +76490,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -74043,7 +76501,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -74064,7 +76522,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -74112,6 +76572,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -74211,6 +76672,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -74322,6 +76784,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -74431,6 +76894,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -74551,6 +77015,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -74657,6 +77122,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -74768,6 +77234,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -74879,6 +77346,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -74996,6 +77464,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75095,6 +77564,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75210,6 +77680,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75309,6 +77780,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75424,6 +77896,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75523,6 +77996,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75638,6 +78112,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75737,6 +78212,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75844,6 +78320,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -75964,6 +78441,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -76073,6 +78551,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -76182,6 +78661,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -76293,6 +78773,7 @@ export const PF2E_WEAPONS = [
         "family": "maul",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -76404,6 +78885,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -76515,6 +78997,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -76626,6 +79109,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -76741,6 +79225,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -76880,6 +79365,10 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire",
+          "unholy"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -76887,7 +79376,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "firearm shot across 60 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "firearm shot across 60 ft increments. Physical weapon footage and restrained contact finish. fire + unholy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -76900,6 +79389,13 @@ export const PF2E_WEAPONS = [
           "return": [],
           "muzzle": [
             "jb2a.muzzle_flash.single.01.yellow"
+          ],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ],
+          "flavor2": [
+            "jb2a.divine_smite.target.dark_purple",
+            "jb2a.smoke.puff.centered.grey"
           ]
         },
         "selections": [
@@ -76925,6 +79421,20 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor2",
+            "key": "jb2a.divine_smite.target.dark_purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.bullet.01.orange",
@@ -76942,6 +79452,20 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor2",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -76963,6 +79487,18 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.muzzle_flash.single.01.yellow": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.dark_purple": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -77008,6 +79544,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -77117,6 +79654,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -77228,6 +79766,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -77238,6 +79777,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -77251,7 +79791,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -77278,6 +79818,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -77337,6 +79881,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -77475,6 +80020,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "spores",
           "element": "poison",
@@ -77649,6 +80195,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "spores",
           "element": "poison",
@@ -77823,6 +80370,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "spores",
           "element": "poison",
@@ -77997,6 +80545,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "spores",
           "element": "poison",
@@ -78167,6 +80716,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "needles",
           "element": "plant",
@@ -78295,6 +80845,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "needles",
           "element": "plant",
@@ -78423,6 +80974,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "needles",
           "element": "plant",
@@ -78551,6 +81103,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "needles",
           "element": "plant",
@@ -78679,6 +81232,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -78815,6 +81369,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -78928,6 +81483,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79037,6 +81593,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79118,6 +81675,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79248,6 +81806,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79353,6 +81912,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79465,6 +82025,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79581,6 +82142,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79684,6 +82246,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79799,6 +82362,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -79908,6 +82472,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -80017,6 +82582,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -80126,6 +82692,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -80260,6 +82827,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -80398,6 +82966,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -80509,6 +83078,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -80618,6 +83188,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "poison"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -80625,7 +83198,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -80635,7 +83208,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact_themed.poison.greenyellow",
+            "jb2a.liquid.splash.blue"
+          ]
         },
         "selections": [
           {
@@ -80653,6 +83230,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact_themed.poison.greenyellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -80663,6 +83247,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -80678,6 +83269,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact_themed.poison.greenyellow": {
+            "duration": 1800,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -80727,6 +83326,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "poison"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -80734,7 +83336,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -80744,7 +83346,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact_themed.poison.greenyellow",
+            "jb2a.liquid.splash.blue"
+          ]
         },
         "selections": [
           {
@@ -80762,6 +83368,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact_themed.poison.greenyellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -80772,6 +83385,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -80787,6 +83407,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact_themed.poison.greenyellow": {
+            "duration": 1800,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -80836,6 +83464,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "poison"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -80843,7 +83474,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. poison flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -80853,7 +83484,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact_themed.poison.greenyellow",
+            "jb2a.liquid.splash.blue"
+          ]
         },
         "selections": [
           {
@@ -80871,6 +83506,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact_themed.poison.greenyellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -80881,6 +83523,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -80896,6 +83545,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact_themed.poison.greenyellow": {
+            "duration": 1800,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -80951,6 +83608,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -81034,6 +83692,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -81147,6 +83806,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -81249,6 +83909,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -81360,6 +84021,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -81441,6 +84103,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -81565,6 +84228,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "pressure",
           "element": "physical",
@@ -81690,6 +84354,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "pressure",
           "element": "physical",
@@ -81815,6 +84480,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "pressure",
           "element": "physical",
@@ -81940,6 +84606,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "pressure",
           "element": "physical",
@@ -82059,6 +84726,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -82170,6 +84838,7 @@ export const PF2E_WEAPONS = [
         "family": "rapier",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -82281,6 +84950,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -82390,6 +85060,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -82499,6 +85170,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -82621,6 +85293,9 @@ export const PF2E_WEAPONS = [
           "fire",
           "spirit"
         ],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -82628,7 +85303,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed piercing contact, extended reach. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed piercing contact, extended reach. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.fire.orange",
@@ -82642,6 +85317,9 @@ export const PF2E_WEAPONS = [
           "accent2": [
             "jb2a.divine_smite.target.yellowwhite",
             "jb2a.divine_smite.target.blueyellow"
+          ],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
           ]
         },
         "selections": [
@@ -82667,6 +85345,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -82684,6 +85369,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent2",
             "key": "jb2a.divine_smite.target.blueyellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -82707,6 +85399,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.divine_smite.target.blueyellow": {
             "duration": 2333,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -82758,6 +85454,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -82865,6 +85562,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -82974,6 +85672,7 @@ export const PF2E_WEAPONS = [
         "family": "rapier",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -83085,6 +85784,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -83189,6 +85889,7 @@ export const PF2E_WEAPONS = [
         "family": "rapier",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -83296,6 +85997,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -83375,6 +86077,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -83497,6 +86200,9 @@ export const PF2E_WEAPONS = [
         "family": "sickle",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -83504,7 +86210,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.01.sickle.01"
@@ -83514,7 +86220,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -83532,6 +86241,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.melee_attack.01.sickle.01",
@@ -83542,6 +86258,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -83557,6 +86280,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -83606,6 +86333,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -83746,6 +86474,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -83861,6 +86590,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -83868,7 +86600,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed slashing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed slashing contact. bleed native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.05.scythe.01"
@@ -83881,6 +86613,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
           ]
         },
         "selections": [
@@ -83906,6 +86642,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.melee_attack.05.scythe.01",
@@ -83925,6 +86668,13 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash02.red",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
+            "geometry": "radial",
+            "approximation": false
           }
         ],
         "mediaTiming": {
@@ -83938,6 +86688,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -83987,6 +86745,7 @@ export const PF2E_WEAPONS = [
         "family": "scythe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -84102,6 +86861,9 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "holy"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -84109,7 +86871,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "firearm shot across 60 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "firearm shot across 60 ft increments. Physical weapon footage and restrained contact finish. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -84122,6 +86884,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "muzzle": [
             "jb2a.muzzle_flash.single.01.yellow"
+          ],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
           ]
         },
         "selections": [
@@ -84147,6 +86913,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.bullet.01.orange",
@@ -84164,6 +86937,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -84185,6 +86965,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.muzzle_flash.single.01.yellow": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -84240,6 +87028,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -84388,6 +87177,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -84536,6 +87326,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -84684,6 +87475,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -84826,6 +87618,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -84935,6 +87728,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -85040,6 +87834,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -85154,6 +87949,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -85268,6 +88064,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -85387,6 +88184,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -85397,6 +88195,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -85410,7 +88209,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -85437,6 +88236,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -85504,6 +88307,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -85628,6 +88432,7 @@ export const PF2E_WEAPONS = [
         "family": "greataxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -85744,6 +88549,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -85825,6 +88631,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -85964,6 +88771,7 @@ export const PF2E_WEAPONS = [
         "family": "sickle",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -86071,6 +88879,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -86178,6 +88987,7 @@ export const PF2E_WEAPONS = [
         "family": "greatsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -86294,6 +89104,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -86405,6 +89216,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -86511,6 +89323,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -86622,6 +89435,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -86733,6 +89547,7 @@ export const PF2E_WEAPONS = [
         "family": "halberd",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -86848,6 +89663,7 @@ export const PF2E_WEAPONS = [
         "family": "contact",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -86858,7 +89674,7 @@ export const PF2E_WEAPONS = [
         "rationale": "Two-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.bludgeoning.two_handed",
+            "jb2a.melee_generic.piercing.two_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -86872,7 +89688,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.bludgeoning.two_handed",
+            "key": "jb2a.melee_generic.piercing.two_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -86899,8 +89715,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.bludgeoning.two_handed": {
-            "duration": 1233,
+          "jb2a.melee_generic.piercing.two_handed": {
+            "duration": 700,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -86917,7 +89733,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.bludgeoning.two_handed",
+          "patreon contact: jb2a.melee_generic.piercing.two_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       },
@@ -86939,6 +89755,7 @@ export const PF2E_WEAPONS = [
         "family": "dart",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -87055,6 +89872,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -87177,6 +89995,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -87310,6 +90129,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -87425,6 +90245,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -87538,6 +90359,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -87649,6 +90471,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -87756,6 +90579,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -87871,6 +90695,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -87997,6 +90822,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -88110,6 +90936,9 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -88117,9 +90946,10 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -88127,13 +90957,16 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -88141,6 +90974,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -88157,9 +90997,20 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -88170,6 +91021,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -88225,6 +91080,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -88340,6 +91196,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -88455,6 +91312,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -88568,6 +91426,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -88667,6 +91526,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -88769,6 +91629,7 @@ export const PF2E_WEAPONS = [
         "family": "scimitar",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -88876,6 +91737,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -88985,6 +91847,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -89096,6 +91959,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -89106,7 +91970,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -89120,7 +91984,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -89147,8 +92011,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -89165,7 +92029,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -89217,6 +92081,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -89324,6 +92189,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -89456,6 +92322,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -89590,6 +92457,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -89722,6 +92590,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -89852,6 +92721,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -89959,6 +92829,7 @@ export const PF2E_WEAPONS = [
         "family": "scythe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -90070,6 +92941,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -90181,6 +93053,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -90294,6 +93167,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -90407,6 +93281,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -90522,6 +93397,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -90605,6 +93481,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -90720,6 +93597,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -90730,7 +93608,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -90744,7 +93622,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -90771,8 +93649,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -90789,7 +93667,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -90841,6 +93719,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -90923,6 +93802,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -91036,6 +93916,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -91149,6 +94030,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -91231,6 +94113,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -91349,6 +94232,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -91456,6 +94340,7 @@ export const PF2E_WEAPONS = [
         "family": "boomerang",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -91582,6 +94467,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": {
           "style": "sonic",
           "element": "sonic",
@@ -91709,6 +94595,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": {
           "style": "sonic",
           "element": "sonic",
@@ -91832,6 +94719,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -91941,6 +94829,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -91951,7 +94840,7 @@ export const PF2E_WEAPONS = [
         "rationale": "Two-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -91965,7 +94854,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -91992,8 +94881,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -92010,7 +94899,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -92058,6 +94947,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -92163,6 +95053,7 @@ export const PF2E_WEAPONS = [
         "family": "shield",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -92270,6 +95161,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -92381,6 +95273,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -92509,6 +95402,7 @@ export const PF2E_WEAPONS = [
         "family": "shield",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -92622,6 +95516,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -92750,6 +95645,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -92861,6 +95757,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -92972,6 +95869,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -93083,6 +95981,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -93192,6 +96091,7 @@ export const PF2E_WEAPONS = [
         "family": "shuriken",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -93312,6 +96212,7 @@ export const PF2E_WEAPONS = [
         "family": "sickle",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -93419,6 +96320,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -93528,6 +96430,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "silver",
@@ -93696,6 +96599,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "silver",
@@ -93864,6 +96768,7 @@ export const PF2E_WEAPONS = [
         "family": "flask",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "silver",
@@ -94034,6 +96939,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "silver",
@@ -94157,6 +97063,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "silver",
@@ -94280,6 +97187,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "silver",
@@ -94407,6 +97315,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "silverLight",
           "element": "silver",
@@ -94539,6 +97448,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "silverLight",
           "element": "silver",
@@ -94671,6 +97581,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "silverLight",
           "element": "silver",
@@ -94801,6 +97712,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -94907,6 +97819,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -95015,6 +97928,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -95121,6 +98035,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -95238,6 +98153,7 @@ export const PF2E_WEAPONS = [
         "family": "claw",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -95360,6 +98276,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "poison",
@@ -95489,6 +98406,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "poison",
@@ -95618,6 +98536,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "poison",
@@ -95747,6 +98666,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "poison",
@@ -95869,6 +98789,7 @@ export const PF2E_WEAPONS = [
           "fire",
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -95994,6 +98915,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -96107,6 +99029,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -96114,7 +99039,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.03.greatsword.02",
@@ -96124,7 +99049,10 @@ export const PF2E_WEAPONS = [
           "accent": [
             "jb2a.lightning_ball.blue"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -96142,6 +99070,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.greatsword.melee.standard.white",
@@ -96152,6 +99087,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -96167,6 +99109,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.lightning_ball.blue": {
             "duration": 2033,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -96218,6 +99164,9 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -96225,7 +99174,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed slashing contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.03.greatsword.02",
@@ -96235,7 +99184,10 @@ export const PF2E_WEAPONS = [
           "accent": [
             "jb2a.lightning_ball.blue"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -96253,6 +99205,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.greatsword.melee.standard.white",
@@ -96263,6 +99222,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -96278,6 +99244,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.lightning_ball.blue": {
             "duration": 2033,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -96335,6 +99305,9 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -96342,7 +99315,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.dagger.melee.02.white"
@@ -96352,7 +99325,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -96370,6 +99346,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.dagger.melee.02.white",
@@ -96380,6 +99363,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -96395,6 +99385,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -96444,6 +99438,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -96582,6 +99577,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -96592,7 +99588,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -96606,7 +99602,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -96633,8 +99629,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -96651,7 +99647,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -96695,6 +99691,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -96817,6 +99814,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -96930,6 +99928,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -97034,6 +100033,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -97143,6 +100143,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -97278,6 +100279,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -97393,6 +100395,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -97503,6 +100506,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -97613,6 +100617,7 @@ export const PF2E_WEAPONS = [
         "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -97724,6 +100729,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -97837,6 +100843,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -97963,6 +100970,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -98081,6 +101089,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -98191,6 +101200,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -98320,6 +101330,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -98427,6 +101438,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -98506,6 +101518,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -98626,6 +101639,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -98737,6 +101751,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -98818,6 +101833,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -98929,6 +101945,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -99042,6 +102059,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -99124,6 +102142,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -99263,6 +102282,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -99372,6 +102392,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -99493,6 +102514,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "shrapnel",
           "element": "physical",
@@ -99614,6 +102636,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -99723,6 +102746,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -99832,6 +102856,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -99939,6 +102964,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -100076,6 +103102,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -100213,6 +103240,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -100358,6 +103386,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "insects",
           "element": "darkInsects",
@@ -100508,6 +103537,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "insects",
           "element": "darkInsects",
@@ -100658,6 +103688,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "insects",
           "element": "darkInsects",
@@ -100808,6 +103839,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "insects",
           "element": "darkInsects",
@@ -100952,6 +103984,7 @@ export const PF2E_WEAPONS = [
         "family": "spike",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -101072,6 +104105,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -101179,6 +104213,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -101189,6 +104224,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -101202,7 +104238,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -101229,6 +104265,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -101292,6 +104332,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -101374,6 +104415,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -101485,6 +104527,7 @@ export const PF2E_WEAPONS = [
         "family": "rapier",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -101598,6 +104641,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -101707,6 +104751,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -101814,6 +104859,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -101934,6 +104980,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -101941,7 +104990,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -101954,6 +105003,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
           ]
         },
         "selections": [
@@ -101979,6 +105032,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -101998,6 +105058,13 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash02.red",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
+            "geometry": "radial",
+            "approximation": false
           }
         ],
         "mediaTiming": {
@@ -102015,6 +105082,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -102036,6 +105111,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -102043,7 +105121,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -102057,6 +105135,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
           ]
         },
         "selections": [
@@ -102082,6 +105164,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
@@ -102099,6 +105188,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "residue",
             "key": "jb2a.liquid.splash02.red",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -102126,6 +105222,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -102179,6 +105283,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -102186,7 +105293,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -102199,6 +105306,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
           ]
         },
         "selections": [
@@ -102224,6 +105335,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -102243,6 +105361,13 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash02.red",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
+            "geometry": "radial",
+            "approximation": false
           }
         ],
         "mediaTiming": {
@@ -102260,6 +105385,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -102281,6 +105414,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -102288,7 +105424,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -102302,6 +105438,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
           ]
         },
         "selections": [
@@ -102327,6 +105467,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
@@ -102344,6 +105491,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "residue",
             "key": "jb2a.liquid.splash02.red",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -102371,6 +105525,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -102424,6 +105586,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -102431,7 +105596,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.spear.melee.01.white"
@@ -102444,6 +105609,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
           ]
         },
         "selections": [
@@ -102469,6 +105638,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.spear.melee.01.white",
@@ -102488,6 +105664,13 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash02.red",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
+            "geometry": "radial",
+            "approximation": false
           }
         ],
         "mediaTiming": {
@@ -102505,6 +105688,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -102526,6 +105717,9 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -102533,7 +105727,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "spear throw across 20 ft increments. Physical weapon footage and restrained contact finish. Brief native persistent-damage cue follows contact. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -102547,6 +105741,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "residue": [
             "jb2a.liquid.splash02.red"
+          ],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
           ]
         },
         "selections": [
@@ -102572,6 +105770,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
@@ -102589,6 +105794,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "residue",
             "key": "jb2a.liquid.splash02.red",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -102616,6 +105828,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.liquid.splash02.red": {
             "duration": 1133,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -102667,6 +105887,7 @@ export const PF2E_WEAPONS = [
         "family": "bow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -102780,6 +106001,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -102914,6 +106136,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103023,6 +106246,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103132,6 +106356,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103241,6 +106466,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103350,6 +106576,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103472,6 +106699,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103583,6 +106811,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103694,6 +106923,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103801,6 +107031,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103910,6 +107141,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -103917,7 +107151,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -103927,7 +107161,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -103945,6 +107182,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -103955,6 +107199,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -103970,6 +107221,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -104019,6 +107274,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104026,7 +107284,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -104036,7 +107294,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -104054,6 +107315,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -104064,6 +107332,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -104079,6 +107354,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -104128,6 +107407,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104135,7 +107417,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -104145,7 +107427,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -104163,6 +107448,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -104173,6 +107465,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -104188,6 +107487,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -104237,6 +107540,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "force"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104244,7 +107550,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -104254,7 +107560,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.explosion.02.purple",
+            "jb2a.explosion.02.blue"
+          ]
         },
         "selections": [
           {
@@ -104272,6 +107582,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -104282,6 +107599,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -104297,6 +107621,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.explosion.02.purple": {
+            "duration": 1367,
+            "baked": false
+          },
+          "jb2a.explosion.02.blue": {
+            "duration": 1367,
             "baked": false
           }
         },
@@ -104346,6 +107678,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "force"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104353,7 +107688,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -104363,7 +107698,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.explosion.02.purple",
+            "jb2a.explosion.02.blue"
+          ]
         },
         "selections": [
           {
@@ -104381,6 +107720,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -104391,6 +107737,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -104406,6 +107759,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.explosion.02.purple": {
+            "duration": 1367,
+            "baked": false
+          },
+          "jb2a.explosion.02.blue": {
+            "duration": 1367,
             "baked": false
           }
         },
@@ -104455,6 +107816,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "force"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104462,7 +107826,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -104472,7 +107836,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.explosion.02.purple",
+            "jb2a.explosion.02.blue"
+          ]
         },
         "selections": [
           {
@@ -104490,6 +107858,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -104500,6 +107875,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -104515,6 +107897,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.explosion.02.purple": {
+            "duration": 1367,
+            "baked": false
+          },
+          "jb2a.explosion.02.blue": {
+            "duration": 1367,
             "baked": false
           }
         },
@@ -104564,6 +107954,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104673,6 +108064,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104782,6 +108174,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104891,6 +108284,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "earth"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -104898,7 +108294,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -104908,7 +108304,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.ground_crack.01.orange"
+          ]
         },
         "selections": [
           {
@@ -104926,6 +108325,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -104936,6 +108342,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -104951,6 +108364,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.ground_crack.01.orange": {
+            "duration": 5900,
             "baked": false
           }
         },
@@ -105000,6 +108417,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "earth"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105007,7 +108427,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -105017,7 +108437,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.ground_crack.01.orange"
+          ]
         },
         "selections": [
           {
@@ -105035,6 +108458,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -105045,6 +108475,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -105060,6 +108497,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.ground_crack.01.orange": {
+            "duration": 5900,
             "baked": false
           }
         },
@@ -105109,6 +108550,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "earth"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105116,7 +108560,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -105126,7 +108570,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.ground_crack.01.orange"
+          ]
         },
         "selections": [
           {
@@ -105144,6 +108591,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -105154,6 +108608,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -105169,6 +108630,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.ground_crack.01.orange": {
+            "duration": 5900,
             "baked": false
           }
         },
@@ -105218,6 +108683,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105327,6 +108793,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105436,6 +108903,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105545,6 +109013,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "shadow"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105552,7 +109023,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -105562,7 +109033,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.smoke.puff.centered.dark_black",
+            "jb2a.smoke.puff.centered.grey"
+          ]
         },
         "selections": [
           {
@@ -105580,6 +109055,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.dark_black",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -105590,6 +109072,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -105605,6 +109094,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.dark_black": {
+            "duration": 2433,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -105654,6 +109151,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "shadow"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105661,7 +109161,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -105671,7 +109171,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.smoke.puff.centered.dark_black",
+            "jb2a.smoke.puff.centered.grey"
+          ]
         },
         "selections": [
           {
@@ -105689,6 +109193,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.dark_black",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -105699,6 +109210,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -105714,6 +109232,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.dark_black": {
+            "duration": 2433,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -105763,6 +109289,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "shadow"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105770,7 +109299,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. shadow flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -105780,7 +109309,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.smoke.puff.centered.dark_black",
+            "jb2a.smoke.puff.centered.grey"
+          ]
         },
         "selections": [
           {
@@ -105798,6 +109331,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.dark_black",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -105808,6 +109348,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
@@ -105823,6 +109370,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.dark_black": {
+            "duration": 2433,
+            "baked": false
+          },
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -105872,6 +109427,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -105981,6 +109537,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106090,6 +109647,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106199,6 +109757,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106206,7 +109767,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -106216,7 +109777,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -106234,6 +109798,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -106244,6 +109815,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -106259,6 +109837,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -106308,6 +109890,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106315,7 +109900,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -106325,7 +109910,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -106343,6 +109931,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -106353,6 +109948,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -106368,6 +109970,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -106417,6 +110023,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "fire"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106424,7 +110033,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. fire flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -106434,7 +110043,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.fire.01.orange"
+          ]
         },
         "selections": [
           {
@@ -106452,6 +110064,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -106462,6 +110081,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -106477,6 +110103,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.fire.01.orange": {
+            "duration": 2267,
             "baked": false
           }
         },
@@ -106526,6 +110156,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "vitality"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106533,7 +110166,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -106543,7 +110176,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ]
         },
         "selections": [
           {
@@ -106561,6 +110198,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -106571,6 +110215,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -106586,6 +110237,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -106635,6 +110294,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "vitality"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106642,7 +110304,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -106652,7 +110314,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ]
         },
         "selections": [
           {
@@ -106670,6 +110336,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -106680,6 +110353,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -106695,6 +110375,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -106744,6 +110432,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "vitality"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106751,7 +110442,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -106761,7 +110452,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ]
         },
         "selections": [
           {
@@ -106779,6 +110474,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -106789,6 +110491,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -106804,6 +110513,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -106853,6 +110570,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "vitality"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106860,7 +110580,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. vitality flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -106870,7 +110590,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ]
         },
         "selections": [
           {
@@ -106888,6 +110612,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -106898,6 +110629,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -106913,6 +110651,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
             "baked": false
           }
         },
@@ -106962,6 +110708,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "light"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -106969,7 +110718,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -106979,7 +110728,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -106997,6 +110749,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -107007,6 +110766,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -107022,6 +110788,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -107071,6 +110841,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107180,6 +110951,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107289,6 +111061,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107398,6 +111171,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107509,6 +111283,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107620,6 +111395,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107731,6 +111507,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107842,6 +111619,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107849,7 +111629,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -107859,7 +111639,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -107877,6 +111661,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -107887,6 +111678,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -107902,6 +111700,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -107953,6 +111759,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -107960,7 +111769,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -107970,7 +111779,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -107988,6 +111801,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -107998,6 +111818,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -108013,6 +111840,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -108064,6 +111899,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -108071,7 +111909,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -108081,7 +111919,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -108099,6 +111941,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -108109,6 +111958,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -108124,6 +111980,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -108173,6 +112037,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -108180,7 +112047,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -108190,7 +112057,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -108208,6 +112079,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -108218,6 +112096,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -108233,6 +112118,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -108282,6 +112175,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -108289,7 +112185,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -108299,7 +112195,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -108317,6 +112217,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -108327,6 +112234,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -108342,6 +112256,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -108391,6 +112313,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -108398,7 +112323,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -108408,7 +112333,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -108426,6 +112355,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -108436,6 +112372,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -108451,6 +112394,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -108500,6 +112451,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -108609,6 +112561,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -108718,6 +112671,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -108829,6 +112783,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "force"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -108836,7 +112793,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -108846,7 +112803,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.explosion.02.purple",
+            "jb2a.explosion.02.blue"
+          ]
         },
         "selections": [
           {
@@ -108864,6 +112825,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -108874,6 +112842,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -108889,6 +112864,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.explosion.02.purple": {
+            "duration": 1367,
+            "baked": false
+          },
+          "jb2a.explosion.02.blue": {
+            "duration": 1367,
             "baked": false
           }
         },
@@ -108938,6 +112921,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109047,6 +113031,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109156,6 +113141,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109265,6 +113251,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109374,6 +113361,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109483,6 +113471,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109592,6 +113581,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109701,6 +113691,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109810,6 +113801,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -109919,6 +113911,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110028,6 +114021,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110143,6 +114137,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -110252,6 +114247,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110361,6 +114357,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110470,6 +114467,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "void"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110477,7 +114477,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -110487,7 +114487,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.toll_the_dead.purple.skull_smoke",
+            "jb2a.toll_the_dead.green.skull_smoke"
+          ]
         },
         "selections": [
           {
@@ -110505,6 +114509,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.purple.skull_smoke",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -110515,6 +114526,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.green.skull_smoke",
             "geometry": "radial",
             "approximation": false
           }
@@ -110530,6 +114548,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.purple.skull_smoke": {
+            "duration": 1867,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.green.skull_smoke": {
+            "duration": 1867,
             "baked": false
           }
         },
@@ -110579,6 +114605,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "void"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110586,7 +114615,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -110596,7 +114625,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.toll_the_dead.purple.skull_smoke",
+            "jb2a.toll_the_dead.green.skull_smoke"
+          ]
         },
         "selections": [
           {
@@ -110614,6 +114647,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.purple.skull_smoke",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -110624,6 +114664,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.green.skull_smoke",
             "geometry": "radial",
             "approximation": false
           }
@@ -110639,6 +114686,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.purple.skull_smoke": {
+            "duration": 1867,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.green.skull_smoke": {
+            "duration": 1867,
             "baked": false
           }
         },
@@ -110688,6 +114743,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "void"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110695,7 +114753,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -110705,7 +114763,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.toll_the_dead.purple.skull_smoke",
+            "jb2a.toll_the_dead.green.skull_smoke"
+          ]
         },
         "selections": [
           {
@@ -110723,6 +114785,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.purple.skull_smoke",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -110733,6 +114802,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.green.skull_smoke",
             "geometry": "radial",
             "approximation": false
           }
@@ -110748,6 +114824,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.purple.skull_smoke": {
+            "duration": 1867,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.green.skull_smoke": {
+            "duration": 1867,
             "baked": false
           }
         },
@@ -110797,6 +114881,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110804,7 +114891,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -110814,7 +114901,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -110832,6 +114922,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -110842,6 +114939,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -110857,6 +114961,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -110906,6 +115014,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -110913,7 +115024,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -110923,7 +115034,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -110941,6 +115055,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -110951,6 +115072,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -110966,6 +115094,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -111015,6 +115147,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111022,7 +115157,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -111032,7 +115167,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -111050,6 +115188,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -111060,6 +115205,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -111075,6 +115227,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -111124,6 +115280,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "air"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111131,7 +115290,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. air flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -111141,7 +115300,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.wind_lines.01.01.white"
+          ]
         },
         "selections": [
           {
@@ -111159,6 +115321,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -111169,6 +115338,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
           }
@@ -111184,6 +115360,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.01.white": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -111235,6 +115415,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111346,6 +115527,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111457,6 +115639,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111566,6 +115749,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111675,6 +115859,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111784,6 +115969,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111895,6 +116081,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "force"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -111902,7 +116091,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. force flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -111912,7 +116101,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.explosion.02.purple",
+            "jb2a.explosion.02.blue"
+          ]
         },
         "selections": [
           {
@@ -111930,6 +116123,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.purple",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -111940,6 +116140,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.explosion.02.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -111955,6 +116162,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.explosion.02.purple": {
+            "duration": 1367,
+            "baked": false
+          },
+          "jb2a.explosion.02.blue": {
+            "duration": 1367,
             "baked": false
           }
         },
@@ -112006,6 +116221,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112115,6 +116331,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112122,7 +116341,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -112132,7 +116351,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -112150,6 +116372,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -112160,6 +116389,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -112175,6 +116411,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -112224,6 +116464,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112231,7 +116474,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -112241,7 +116484,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -112259,6 +116505,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -112269,6 +116522,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -112284,6 +116544,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -112333,6 +116597,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "electricity"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112340,7 +116607,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -112350,7 +116617,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.lightning_ball.blue"
+          ]
         },
         "selections": [
           {
@@ -112368,6 +116638,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -112378,6 +116655,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.lightning_ball.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -112393,6 +116677,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.lightning_ball.blue": {
+            "duration": 2033,
             "baked": false
           }
         },
@@ -112442,6 +116730,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112551,6 +116840,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112660,6 +116950,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112769,6 +117060,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112776,7 +117070,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -112786,7 +117080,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
+          ]
         },
         "selections": [
           {
@@ -112804,6 +117101,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -112814,6 +117118,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -112829,6 +117140,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -112878,6 +117193,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112885,7 +117203,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -112895,7 +117213,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
+          ]
         },
         "selections": [
           {
@@ -112913,6 +117234,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -112923,6 +117251,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -112938,6 +117273,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -112987,6 +117326,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -112994,7 +117336,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -113004,7 +117346,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
+          ]
         },
         "selections": [
           {
@@ -113022,6 +117367,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -113032,6 +117384,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -113047,6 +117406,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -113102,6 +117465,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "crossFire",
           "element": "fire",
@@ -113229,6 +117593,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "crossFire",
           "element": "fire",
@@ -113356,6 +117721,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "crossFire",
           "element": "fire",
@@ -113483,6 +117849,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "crossFire",
           "element": "fire",
@@ -113606,6 +117973,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -113684,9 +118052,10 @@ export const PF2E_WEAPONS = [
           "thrown-10"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -113694,11 +118063,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "club throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -113713,7 +118082,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -113736,7 +118105,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -113754,7 +118123,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -113783,6 +118152,7 @@ export const PF2E_WEAPONS = [
         },
         "approximations": [
           "patreon return: jb2a.dagger.return.01.white",
+          "free flight: jb2a.dagger.throw.01.white",
           "free return: jb2a.dagger.return.01.white"
         ]
       }
@@ -113834,6 +118204,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -113916,6 +118287,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -114031,6 +118403,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -114208,6 +118581,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -114385,6 +118759,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -114562,6 +118937,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -114741,6 +119117,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "algae",
           "element": "poison",
@@ -114899,6 +119276,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "algae",
           "element": "poison",
@@ -115057,6 +119435,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "algae",
           "element": "poison",
@@ -115215,6 +119594,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "algae",
           "element": "poison",
@@ -115369,6 +119749,7 @@ export const PF2E_WEAPONS = [
         "family": "contact",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -115379,7 +119760,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.bludgeoning.one_handed",
+            "jb2a.melee_generic.piercing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -115393,7 +119774,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.bludgeoning.one_handed",
+            "key": "jb2a.melee_generic.piercing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -115420,8 +119801,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.bludgeoning.one_handed": {
-            "duration": 800,
+          "jb2a.melee_generic.piercing.one_handed": {
+            "duration": 733,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -115438,7 +119819,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.bludgeoning.one_handed",
+          "patreon contact: jb2a.melee_generic.piercing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       },
@@ -115455,9 +119836,10 @@ export const PF2E_WEAPONS = [
           "thrown-10"
         ],
         "range": 10,
-        "family": "thrown",
+        "family": "dart",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -115465,11 +119847,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "dart throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.dart.01.throw.physical.white",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -115482,7 +119864,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.dart.01.throw.physical.white",
             "geometry": "projectile",
             "approximation": false
           },
@@ -115498,7 +119880,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -115509,10 +119891,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
-            "duration": 2100,
+          "jb2a.dart.01.throw.physical.white": {
+            "duration": 1933,
             "baked": true,
-            "contact": 800,
+            "contact": 900,
             "contactMethod": "alpha-weighted-estimate"
           },
           "jb2a.dagger.throw.01.white": {
@@ -115530,7 +119912,9 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": []
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
       }
     ],
     "notes": [
@@ -115576,6 +119960,9 @@ export const PF2E_WEAPONS = [
         "family": "javelin",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "earth"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -115583,7 +119970,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "javelin throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "javelin throw across 30 ft increments. Physical weapon footage and restrained contact finish. earth flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -115597,6 +119984,9 @@ export const PF2E_WEAPONS = [
           "return": [
             "jb2a.javelin.01.return",
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.impact.ground_crack.01.orange"
           ]
         },
         "selections": [
@@ -115611,6 +120001,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -115632,6 +120029,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.impact.ground_crack.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -115675,6 +120079,10 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.impact.ground_crack.01.orange": {
+            "duration": 5900,
+            "baked": false
           }
         },
         "approximations": [
@@ -115732,6 +120140,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -115842,6 +120251,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -115948,6 +120358,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "electricity"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -116065,6 +120476,7 @@ export const PF2E_WEAPONS = [
           "electricity",
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -116186,6 +120598,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -116312,13 +120725,14 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "light",
           "residue": false,
           "residueElement": "",
           "fracture": true,
-          "secondary": "",
+          "secondary": "acid",
           "note": "Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint."
         },
         "hands": 1,
@@ -116340,6 +120754,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "fracture": [
             "jb2a.explosion.top_fracture.flask.01"
+          ],
+          "accent2": [
+            "jb2a.liquid.splash.green",
+            "jb2a.liquid.splash.blue"
           ]
         },
         "selections": [
@@ -116365,6 +120783,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "accent2",
+            "key": "jb2a.liquid.splash.green",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.throwable.throw.flask.01.orange",
@@ -116382,6 +120807,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "fracture",
             "key": "jb2a.explosion.top_fracture.flask.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "accent2",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -116405,6 +120837,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.explosion.top_fracture.flask.01": {
             "duration": 4800,
+            "baked": false
+          },
+          "jb2a.liquid.splash.green": {
+            "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -116462,13 +120902,14 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "light",
           "residue": false,
           "residueElement": "",
           "fracture": true,
-          "secondary": "",
+          "secondary": "acid",
           "note": "Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint."
         },
         "hands": 1,
@@ -116490,6 +120931,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "fracture": [
             "jb2a.explosion.top_fracture.flask.01"
+          ],
+          "accent2": [
+            "jb2a.liquid.splash.green",
+            "jb2a.liquid.splash.blue"
           ]
         },
         "selections": [
@@ -116515,6 +120960,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "accent2",
+            "key": "jb2a.liquid.splash.green",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.throwable.throw.flask.01.orange",
@@ -116532,6 +120984,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "fracture",
             "key": "jb2a.explosion.top_fracture.flask.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "accent2",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -116555,6 +121014,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.explosion.top_fracture.flask.01": {
             "duration": 4800,
+            "baked": false
+          },
+          "jb2a.liquid.splash.green": {
+            "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -116612,13 +121079,14 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "light",
           "residue": false,
           "residueElement": "",
           "fracture": true,
-          "secondary": "",
+          "secondary": "acid",
           "note": "Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint."
         },
         "hands": 1,
@@ -116640,6 +121108,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "fracture": [
             "jb2a.explosion.top_fracture.flask.01"
+          ],
+          "accent2": [
+            "jb2a.liquid.splash.green",
+            "jb2a.liquid.splash.blue"
           ]
         },
         "selections": [
@@ -116665,6 +121137,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "accent2",
+            "key": "jb2a.liquid.splash.green",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.throwable.throw.flask.01.orange",
@@ -116682,6 +121161,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "fracture",
             "key": "jb2a.explosion.top_fracture.flask.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "accent2",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -116705,6 +121191,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.explosion.top_fracture.flask.01": {
             "duration": 4800,
+            "baked": false
+          },
+          "jb2a.liquid.splash.green": {
+            "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -116762,13 +121256,14 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "light",
           "residue": false,
           "residueElement": "",
           "fracture": true,
-          "secondary": "",
+          "secondary": "acid",
           "note": "Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint."
         },
         "hands": 1,
@@ -116790,6 +121285,10 @@ export const PF2E_WEAPONS = [
           "return": [],
           "fracture": [
             "jb2a.explosion.top_fracture.flask.01"
+          ],
+          "accent2": [
+            "jb2a.liquid.splash.green",
+            "jb2a.liquid.splash.blue"
           ]
         },
         "selections": [
@@ -116815,6 +121314,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "accent2",
+            "key": "jb2a.liquid.splash.green",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.throwable.throw.flask.01.orange",
@@ -116832,6 +121338,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "fracture",
             "key": "jb2a.explosion.top_fracture.flask.01",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "accent2",
+            "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -116855,6 +121368,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.explosion.top_fracture.flask.01": {
             "duration": 4800,
+            "baked": false
+          },
+          "jb2a.liquid.splash.green": {
+            "duration": 3542,
+            "baked": false
+          },
+          "jb2a.liquid.splash.blue": {
+            "duration": 3542,
             "baked": false
           }
         },
@@ -116902,6 +121423,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -117024,6 +121546,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -117156,6 +121679,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -117272,6 +121796,7 @@ export const PF2E_WEAPONS = [
         "family": "rapier",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -117387,6 +121912,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -117535,6 +122061,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -117683,6 +122210,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -117831,6 +122359,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": {
           "style": "fire",
           "element": "fire",
@@ -117971,6 +122500,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -118078,6 +122608,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -118187,6 +122718,7 @@ export const PF2E_WEAPONS = [
         "family": "scimitar",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -118295,9 +122827,10 @@ export const PF2E_WEAPONS = [
           "thrown-20"
         ],
         "range": 0,
-        "family": "contact",
+        "family": "chakram",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -118308,8 +122841,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.bludgeoning.one_handed",
-            "jb2a.melee_generic.slash.01.orange"
+            "jb2a.melee_attack.01.chakram.01"
           ],
           "flight": [],
           "accent": [
@@ -118322,9 +122854,9 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.bludgeoning.one_handed",
+            "key": "jb2a.melee_attack.01.chakram.01",
             "geometry": "radial",
-            "approximation": true
+            "approximation": false
           },
           {
             "edition": "patreon",
@@ -118336,9 +122868,9 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.orange",
+            "key": "jb2a.melee_attack.01.chakram.01",
             "geometry": "radial",
-            "approximation": true
+            "approximation": false
           },
           {
             "edition": "free",
@@ -118349,12 +122881,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.bludgeoning.one_handed": {
-            "duration": 800,
-            "baked": false
-          },
-          "jb2a.melee_generic.slash.01.orange": {
-            "duration": 1467,
+          "jb2a.melee_attack.01.chakram.01": {
+            "duration": 1533,
             "baked": false
           },
           "jb2a.impact.005.white": {
@@ -118366,10 +122894,7 @@ export const PF2E_WEAPONS = [
             "baked": false
           }
         },
-        "approximations": [
-          "patreon contact: jb2a.melee_generic.bludgeoning.one_handed",
-          "free contact: jb2a.melee_generic.slash.01.orange"
-        ]
+        "approximations": []
       },
       {
         "mode": "thrown",
@@ -118387,6 +122912,7 @@ export const PF2E_WEAPONS = [
         "family": "chakram",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -118507,6 +123033,7 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -118631,6 +123158,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -118641,6 +123169,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -118654,7 +123183,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -118681,6 +123210,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -118742,6 +123275,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -118849,6 +123383,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -118966,6 +123501,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -119100,6 +123636,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -119234,6 +123771,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -119368,6 +123906,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -119496,6 +124035,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -119607,6 +124147,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -119741,6 +124282,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -119875,6 +124417,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -120007,6 +124550,7 @@ export const PF2E_WEAPONS = [
         "family": "greatclub",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -120118,6 +124662,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -120231,6 +124776,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -120241,6 +124787,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -120254,7 +124801,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -120281,6 +124828,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -120344,6 +124895,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -120448,6 +125000,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -120529,6 +125082,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -120651,6 +125205,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -120760,6 +125315,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -120840,6 +125396,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -120953,6 +125510,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -121034,6 +125592,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -121145,6 +125704,7 @@ export const PF2E_WEAPONS = [
         "family": "dart",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -121265,6 +125825,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -121401,6 +125962,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "sonic"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -121506,6 +126068,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -121613,6 +126176,9 @@ export const PF2E_WEAPONS = [
         "family": "crossbow",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -121620,7 +126186,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "crossbow shot across 120 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "crossbow shot across 120 ft increments. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -121631,7 +126197,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
+          ]
         },
         "selections": [
           {
@@ -121649,6 +126218,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.bolt.physical.orange",
@@ -121659,6 +126235,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -121682,6 +126265,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -121735,6 +126322,9 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -121742,7 +126332,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.01.flail.01"
@@ -121752,7 +126342,10 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
+          ]
         },
         "selections": [
           {
@@ -121770,6 +126363,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.melee_attack.01.flail.01",
@@ -121780,6 +126380,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           }
@@ -121795,6 +126402,10 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
             "baked": false
           }
         },
@@ -121814,9 +126425,12 @@ export const PF2E_WEAPONS = [
           "water"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "hook",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "water"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -121824,11 +126438,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "hook throw across 20 ft increments. Physical weapon footage and restrained contact finish. water flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.kunai.throw.01",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -121837,13 +126451,16 @@ export const PF2E_WEAPONS = [
           ],
           "return": [
             "jb2a.dagger.return.01.white"
+          ],
+          "flavor1": [
+            "jb2a.water_splash.circle.01.blue"
           ]
         },
         "selections": [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.kunai.throw.01",
             "geometry": "projectile",
             "approximation": false
           },
@@ -121851,6 +126468,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
           },
@@ -121877,6 +126501,13 @@ export const PF2E_WEAPONS = [
           },
           {
             "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.water_splash.circle.01.blue",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
             "slot": "return",
             "key": "jb2a.dagger.return.01.white",
             "geometry": "projectile",
@@ -121884,10 +126515,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
-            "duration": 2100,
+          "jb2a.kunai.throw.01": {
+            "duration": 1933,
             "baked": true,
-            "contact": 800,
+            "contact": 850,
             "contactMethod": "alpha-weighted-estimate"
           },
           "jb2a.dagger.throw.01.white": {
@@ -121909,6 +126540,10 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.water_splash.circle.01.blue": {
+            "duration": 5208,
+            "baked": false
           }
         },
         "approximations": [
@@ -121962,6 +126597,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -122043,6 +126679,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -122167,6 +126804,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -122301,6 +126939,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -122414,6 +127053,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -122424,6 +127064,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -122437,7 +127078,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -122464,6 +127105,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -122532,6 +127177,7 @@ export const PF2E_WEAPONS = [
           "spirit",
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -122662,6 +127308,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -122773,6 +127420,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -122885,6 +127533,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -122963,6 +127612,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -123078,9 +127728,10 @@ export const PF2E_WEAPONS = [
           "magical"
         ],
         "range": 0,
-        "family": "spear",
+        "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -123091,7 +127742,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.spear.melee.01.white"
+            "jb2a.glaive.melee.01.white"
           ],
           "flight": [],
           "accent": [
@@ -123104,7 +127755,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -123118,7 +127769,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -123131,7 +127782,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.spear.melee.01.white": {
+          "jb2a.glaive.melee.01.white": {
             "duration": 2867,
             "baked": false
           },
@@ -123185,9 +127836,10 @@ export const PF2E_WEAPONS = [
           "magical"
         ],
         "range": 0,
-        "family": "spear",
+        "family": "glaive",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -123198,7 +127850,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.spear.melee.01.white"
+            "jb2a.glaive.melee.01.white"
           ],
           "flight": [],
           "accent": [
@@ -123211,7 +127863,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -123225,7 +127877,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "contact",
-            "key": "jb2a.spear.melee.01.white",
+            "key": "jb2a.glaive.melee.01.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -123238,7 +127890,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.spear.melee.01.white": {
+          "jb2a.glaive.melee.01.white": {
             "duration": 2867,
             "baked": false
           },
@@ -123297,6 +127949,7 @@ export const PF2E_WEAPONS = [
         "family": "firearm",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -123400,6 +128053,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -123507,6 +128161,7 @@ export const PF2E_WEAPONS = [
         "family": "pick",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -123629,6 +128284,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "poison",
@@ -123782,6 +128438,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "poison"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "poison",
@@ -123931,6 +128588,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "thorns",
           "element": "plant",
@@ -124075,6 +128733,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "thorns",
           "element": "plant",
@@ -124219,6 +128878,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "thorns",
           "element": "plant",
@@ -124363,6 +129023,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "thorns",
           "element": "plant",
@@ -124505,6 +129166,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -124512,7 +129176,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -124522,7 +129186,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -124540,6 +129208,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -124550,6 +129225,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -124565,6 +129247,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -124618,6 +129308,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -124727,6 +129418,7 @@ export const PF2E_WEAPONS = [
         "family": "unarmed",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -124737,6 +129429,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
+            "jb2a.unarmed_strike.physical.01.orange",
             "jb2a.unarmed_strike.physical.01.blue"
           ],
           "flight": [],
@@ -124750,7 +129443,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.unarmed_strike.physical.01.blue",
+            "key": "jb2a.unarmed_strike.physical.01.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -124777,6 +129470,10 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
+          "jb2a.unarmed_strike.physical.01.orange": {
+            "duration": 1033,
+            "baked": false
+          },
           "jb2a.unarmed_strike.physical.01.blue": {
             "duration": 1033,
             "baked": false
@@ -124834,6 +129531,7 @@ export const PF2E_WEAPONS = [
         "family": "handaxe",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -124945,6 +129643,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125056,6 +129755,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125137,6 +129837,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125249,11 +129950,12 @@ export const PF2E_WEAPONS = [
           "unholy"
         ],
         "range": 20,
-        "family": "thrown",
-        "element": "spirit",
+        "family": "vial",
+        "element": "unholy",
         "elements": [
-          "spirit"
+          "unholy"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125261,16 +129963,16 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "thrown throw across 20 ft increments. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "vial throw across 20 ft increments. unholy native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
-            "jb2a.dagger.throw.01.white"
+            "jb2a.throwable.throw.flask.01.black",
+            "jb2a.throwable.throw.flask.01.orange"
           ],
           "accent": [
-            "jb2a.divine_smite.target.yellowwhite",
-            "jb2a.divine_smite.target.blueyellow"
+            "jb2a.divine_smite.target.dark_purple",
+            "jb2a.smoke.puff.centered.grey"
           ],
           "return": []
         },
@@ -125278,51 +129980,51 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.throwable.throw.flask.01.black",
             "geometry": "projectile",
             "approximation": false
           },
           {
             "edition": "patreon",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.yellowwhite",
+            "key": "jb2a.divine_smite.target.dark_purple",
             "geometry": "radial",
             "approximation": false
           },
           {
             "edition": "free",
             "slot": "flight",
-            "key": "jb2a.dagger.throw.01.white",
+            "key": "jb2a.throwable.throw.flask.01.orange",
             "geometry": "projectile",
             "approximation": false
           },
           {
             "edition": "free",
             "slot": "accent",
-            "key": "jb2a.divine_smite.target.blueyellow",
+            "key": "jb2a.smoke.puff.centered.grey",
             "geometry": "radial",
             "approximation": false
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
-            "duration": 2100,
+          "jb2a.throwable.throw.flask.01.black": {
+            "duration": 3533,
             "baked": true,
-            "contact": 800,
+            "contact": 1080,
             "contactMethod": "alpha-weighted-estimate"
           },
-          "jb2a.dagger.throw.01.white": {
-            "duration": 1933,
+          "jb2a.throwable.throw.flask.01.orange": {
+            "duration": 3533,
             "baked": true,
-            "contact": 850,
+            "contact": 1080,
             "contactMethod": "alpha-weighted-estimate"
           },
-          "jb2a.divine_smite.target.yellowwhite": {
+          "jb2a.divine_smite.target.dark_purple": {
             "duration": 2333,
             "baked": false
           },
-          "jb2a.divine_smite.target.blueyellow": {
-            "duration": 2333,
+          "jb2a.smoke.puff.centered.grey": {
+            "duration": 2433,
             "baked": false
           }
         },
@@ -125370,6 +130072,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125380,7 +130083,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -125394,7 +130097,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -125421,8 +130124,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -125439,7 +130142,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -125485,6 +130188,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125617,6 +130321,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "bleed"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -125745,6 +130450,7 @@ export const PF2E_WEAPONS = [
         "family": "katana",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125858,6 +130564,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125868,7 +130575,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -125882,7 +130589,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -125909,8 +130616,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -125927,7 +130634,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -125975,6 +130682,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -125982,7 +130692,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -125992,7 +130702,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -126010,6 +130724,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -126020,6 +130741,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -126035,6 +130763,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -126084,6 +130820,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "plant"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -126091,7 +130830,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. plant flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -126101,7 +130840,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.swirling_leaves.outburst.01.greenorange",
+            "jb2a.wind_lines.01.leaves.01.green"
+          ]
         },
         "selections": [
           {
@@ -126119,6 +130862,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -126129,6 +130879,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.wind_lines.01.leaves.01.green",
             "geometry": "radial",
             "approximation": false
           }
@@ -126144,6 +130901,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.swirling_leaves.outburst.01.greenorange": {
+            "duration": 2233,
+            "baked": false
+          },
+          "jb2a.wind_lines.01.leaves.01.green": {
+            "duration": 5000,
             "baked": false
           }
         },
@@ -126201,6 +130966,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "acid"
         ],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "acid",
@@ -126358,6 +131124,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "redPowder",
@@ -126510,6 +131277,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "redPowder",
@@ -126662,6 +131430,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "redPowder",
@@ -126814,6 +131583,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "mental"
         ],
+        "flavor": [],
         "payload": {
           "style": "gas",
           "element": "redPowder",
@@ -126964,6 +131734,10 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "holy",
+          "light"
+        ],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -126971,7 +131745,7 @@ export const PF2E_WEAPONS = [
         "heavy": true,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "Two-handed slashing contact. Physical weapon footage and restrained contact finish. holy + light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.melee_attack.01.flail.01"
@@ -126981,7 +131755,14 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ],
+          "flavor2": [
+            "jb2a.impact.007.yellow"
+          ]
         },
         "selections": [
           {
@@ -126999,6 +131780,20 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "flavor2",
+            "key": "jb2a.impact.007.yellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.melee_attack.01.flail.01",
@@ -127009,6 +131804,20 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.divine_smite.target.blueyellow",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor2",
+            "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
           }
@@ -127024,6 +131833,18 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.impact.007.yellow": {
+            "duration": 400,
             "baked": false
           }
         },
@@ -127077,6 +131898,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -127087,7 +131909,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -127101,7 +131923,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -127128,8 +131950,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -127146,7 +131968,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -127198,6 +132020,7 @@ export const PF2E_WEAPONS = [
         "family": "rapier",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -127311,6 +132134,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -127422,6 +132246,7 @@ export const PF2E_WEAPONS = [
         "family": "sickle",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -127533,6 +132358,7 @@ export const PF2E_WEAPONS = [
         "family": "shortsword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -127642,6 +132468,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -127751,6 +132578,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -127856,6 +132684,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -127965,6 +132794,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -128070,6 +132900,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -128177,6 +133008,7 @@ export const PF2E_WEAPONS = [
         "family": "contact",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -128187,7 +133019,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.bludgeoning.one_handed",
+            "jb2a.melee_generic.piercing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -128201,7 +133033,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.bludgeoning.one_handed",
+            "key": "jb2a.melee_generic.piercing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -128228,8 +133060,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.bludgeoning.one_handed": {
-            "duration": 800,
+          "jb2a.melee_generic.piercing.one_handed": {
+            "duration": 733,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -128246,7 +133078,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.bludgeoning.one_handed",
+          "patreon contact: jb2a.melee_generic.piercing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       },
@@ -128264,6 +133096,7 @@ export const PF2E_WEAPONS = [
         "family": "javelin",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -128386,6 +133219,7 @@ export const PF2E_WEAPONS = [
         "family": "spear",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -128497,6 +133331,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -128602,6 +133437,7 @@ export const PF2E_WEAPONS = [
         "family": "warhammer",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -128709,6 +133545,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -128816,6 +133653,7 @@ export const PF2E_WEAPONS = [
         "family": "mace",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -128931,6 +133769,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "water",
@@ -129058,6 +133897,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "water",
@@ -129185,6 +134025,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "water",
@@ -129312,6 +134153,7 @@ export const PF2E_WEAPONS = [
         "family": "bomb",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": {
           "style": "liquid",
           "element": "water",
@@ -129433,6 +134275,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -129542,6 +134385,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -129655,6 +134499,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -129665,7 +134510,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -129679,7 +134524,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -129706,8 +134551,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -129724,7 +134569,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -129774,6 +134619,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -129784,7 +134630,7 @@ export const PF2E_WEAPONS = [
         "rationale": "Two-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -129798,7 +134644,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -129825,8 +134671,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -129843,7 +134689,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -129897,6 +134743,7 @@ export const PF2E_WEAPONS = [
         "family": "whip",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": true,
@@ -129907,7 +134754,7 @@ export const PF2E_WEAPONS = [
         "rationale": "One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
-            "jb2a.melee_generic.slash.01.bluepurple",
+            "jb2a.melee_generic.slashing.one_handed",
             "jb2a.melee_generic.slash.01.orange"
           ],
           "flight": [],
@@ -129921,7 +134768,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "contact",
-            "key": "jb2a.melee_generic.slash.01.bluepurple",
+            "key": "jb2a.melee_generic.slashing.one_handed",
             "geometry": "radial",
             "approximation": true
           },
@@ -129948,8 +134795,8 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.melee_generic.slash.01.bluepurple": {
-            "duration": 1467,
+          "jb2a.melee_generic.slashing.one_handed": {
+            "duration": 900,
             "baked": false
           },
           "jb2a.melee_generic.slash.01.orange": {
@@ -129966,7 +134813,7 @@ export const PF2E_WEAPONS = [
           }
         },
         "approximations": [
-          "patreon contact: jb2a.melee_generic.slash.01.bluepurple",
+          "patreon contact: jb2a.melee_generic.slashing.one_handed",
           "free contact: jb2a.melee_generic.slash.01.orange"
         ]
       }
@@ -130010,6 +134857,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -130134,6 +134982,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -130249,6 +135098,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "fire"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -130357,6 +135207,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -130465,9 +135316,10 @@ export const PF2E_WEAPONS = [
           "thrown"
         ],
         "range": 20,
-        "family": "thrown",
+        "family": "bola",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -130475,11 +135327,11 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "thrown throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "bola throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
-            "jb2a.hammer.throw",
+            "jb2a.mace.throw",
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
@@ -130494,7 +135346,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "flight",
-            "key": "jb2a.hammer.throw",
+            "key": "jb2a.mace.throw",
             "geometry": "projectile",
             "approximation": false
           },
@@ -130517,7 +135369,7 @@ export const PF2E_WEAPONS = [
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
             "geometry": "projectile",
-            "approximation": false
+            "approximation": true
           },
           {
             "edition": "free",
@@ -130535,7 +135387,7 @@ export const PF2E_WEAPONS = [
           }
         ],
         "mediaTiming": {
-          "jb2a.hammer.throw": {
+          "jb2a.mace.throw": {
             "duration": 2100,
             "baked": true,
             "contact": 800,
@@ -130564,6 +135416,7 @@ export const PF2E_WEAPONS = [
         },
         "approximations": [
           "patreon return: jb2a.dagger.return.01.white",
+          "free flight: jb2a.dagger.throw.01.white",
           "free return: jb2a.dagger.return.01.white"
         ]
       }
@@ -130613,6 +135466,7 @@ export const PF2E_WEAPONS = [
         "elements": [
           "cold"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -130739,6 +135593,7 @@ export const PF2E_WEAPONS = [
           "cold",
           "spirit"
         ],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -130880,6 +135735,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -130995,6 +135851,7 @@ export const PF2E_WEAPONS = [
         "family": "dagger",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -131106,6 +135963,7 @@ export const PF2E_WEAPONS = [
         "family": "sickle",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -131215,6 +136073,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -131324,6 +136183,7 @@ export const PF2E_WEAPONS = [
         "family": "club",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -131435,6 +136295,7 @@ export const PF2E_WEAPONS = [
         "family": "sling",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": false,
@@ -131526,6 +136387,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 2,
         "reach": true,
@@ -131635,6 +136497,7 @@ export const PF2E_WEAPONS = [
         "family": "dart",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -131755,6 +136618,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -131864,6 +136728,7 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -131975,6 +136840,7 @@ export const PF2E_WEAPONS = [
         "family": "flail",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -132084,6 +136950,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "void"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -132091,7 +136960,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -132101,7 +136970,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.toll_the_dead.purple.skull_smoke",
+            "jb2a.toll_the_dead.green.skull_smoke"
+          ]
         },
         "selections": [
           {
@@ -132119,6 +136992,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.purple.skull_smoke",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -132129,6 +137009,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.green.skull_smoke",
             "geometry": "radial",
             "approximation": false
           }
@@ -132144,6 +137031,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.purple.skull_smoke": {
+            "duration": 1867,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.green.skull_smoke": {
+            "duration": 1867,
             "baked": false
           }
         },
@@ -132193,6 +137088,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "void"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -132200,7 +137098,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -132210,7 +137108,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.toll_the_dead.purple.skull_smoke",
+            "jb2a.toll_the_dead.green.skull_smoke"
+          ]
         },
         "selections": [
           {
@@ -132228,6 +137130,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.purple.skull_smoke",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -132238,6 +137147,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.green.skull_smoke",
             "geometry": "radial",
             "approximation": false
           }
@@ -132253,6 +137169,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.purple.skull_smoke": {
+            "duration": 1867,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.green.skull_smoke": {
+            "duration": 1867,
             "baked": false
           }
         },
@@ -132302,6 +137226,9 @@ export const PF2E_WEAPONS = [
         "family": "quarterstaff",
         "element": "physical",
         "elements": [],
+        "flavor": [
+          "void"
+        ],
         "payload": null,
         "hands": 1,
         "reach": false,
@@ -132309,7 +137236,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. void flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -132319,7 +137246,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "flavor1": [
+            "jb2a.toll_the_dead.purple.skull_smoke",
+            "jb2a.toll_the_dead.green.skull_smoke"
+          ]
         },
         "selections": [
           {
@@ -132337,6 +137268,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.purple.skull_smoke",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "contact",
             "key": "jb2a.quarterstaff.melee.01.white",
@@ -132347,6 +137285,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flavor1",
+            "key": "jb2a.toll_the_dead.green.skull_smoke",
             "geometry": "radial",
             "approximation": false
           }
@@ -132362,6 +137307,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.purple.skull_smoke": {
+            "duration": 1867,
+            "baked": false
+          },
+          "jb2a.toll_the_dead.green.skull_smoke": {
+            "duration": 1867,
             "baked": false
           }
         },
@@ -132413,6 +137366,7 @@ export const PF2E_WEAPONS = [
         "family": "sword",
         "element": "physical",
         "elements": [],
+        "flavor": [],
         "payload": null,
         "hands": 1,
         "reach": false,

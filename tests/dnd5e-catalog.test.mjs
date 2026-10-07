@@ -139,3 +139,15 @@ test('native semantics distinguish actual rays, healing, unlit Oil and follow-up
   }
  }
 });
+
+test('audit fixes: art families match the fiction and one-shot stages stay short',()=>{
+ const keys=(e,label)=>e.variants.filter(v=>!label||v.label===label).flatMap(v=>v.recipe.stages.flatMap(s=>s.assets));
+ assert.ok(keys(find('Hellish Rebuke')).some(k=>/green/.test(k)),'2024 Hellish Rebuke flames are green');
+ for(const ed of ['2014','2024'])assert.ok(!keys(find('Wall of Stone','spell',ed)).some(k=>/breath_weapons/.test(k)),'Wall of Stone is not fire breath');
+ assert.ok(!keys(find('Web','feat','2014'),'attack').some(k=>/spell_projectile/.test(k)),'web shot is not a skull projectile');
+ for(const e of dndEntries().filter(e=>['spell','feat','item'].includes(e.kind)))for(const v of e.variants)for(const s of v.recipe.stages){
+  if(!s.persist&&!['travel','motion','sound'].includes(s.kind))assert.ok(s.duration<=4500,`${e.name} / ${v.label} / ${s.label} ${s.duration}ms`);
+  assert.ok(!s.assets.some(k=>/sphere_of_annihilation/.test(k))||/annihilation/i.test(e.name),`${e.name} uses an annihilation sphere`);
+ }
+ for(const name of ['Multiattack','Parry','Uncanny Dodge'])for(const v of find(name,'feat','2014').variants)assert.ok(!v.recipe.stages.some(s=>s.kind==='cast'),name+' has no casting circle');
+});

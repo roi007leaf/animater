@@ -55,7 +55,11 @@ export function colorAffinity(key, wanted) {
   }
   if (want.neutral.length && have.neutral.length)
     return 1 - Math.min(...want.neutral.flatMap(w => have.neutral.map(h => Math.abs(w - h))));
-  // Neutral vs hue: plausible but never preferred over a near hue.
+  // Neutral vs hue: plausible but never preferred over a near hue. When a
+  // neutral (mundane) look is wanted but only hued films exist, warm sparks
+  // read as physical impact while blue/purple reads as magic.
+  if (want.neutral.length && have.hues.length)
+    return 0.35 + (have.hues.every(h => h >= 15 && h <= 60) ? 0.05 : 0);
   return 0.35;
 }
 // Comparator helper: higher affinity first.

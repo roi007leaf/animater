@@ -105,7 +105,7 @@ export function soundDirection(spell, source) {
     return choose("metalResonance", "The full description explicitly strikes a tuning fork and repeats its resonant note; a brief chime replaces an unrelated anvil smash.");
   if (spell.slug === "restraining-chains")
     return choose("chainBinding", "A steel chain weaves around the target and pulls on it; a finite moving-chain cue follows formation, without another physical Strike.");
-  if (["needles", "metalShot"].includes(motif))
+  if (["needles", "metalShot", "fixMetalNeedles", "fixMetalShot"].includes(motif))
     return choose("metalProjectile", "Metal needles or a small metal object fly toward the target. A neutral flight cue follows release; metal contact follows the landing sample, rather than an anvil sound during casting.");
   if (name === "roar of the dragon")
     return choose(

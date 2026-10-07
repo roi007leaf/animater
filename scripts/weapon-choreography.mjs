@@ -7,7 +7,8 @@ export function weaponRecipe(weapon,modeName=weapon?.modes?.[0]?.mode,options={}
  if(!mode?.assets)throw Error('Choose a supported weapon use from the catalog.');
  const systemId=weapon.systemId??'pf2e';
  const id=`${systemId}-weapon-${weapon.id}-${mode.mode}`,color=colors[mode.element]??colors.physical;
- const stage=(kind,slot,label,delay,extra={})=>({kind,stageId:`${id}-${slot}`,assets:mode.assets[slot],label,delay,duration:Math.max(1300,...(mode.assets[slot]??[]).map(k=>mode.mediaTiming?.[k]?.duration??0))+150,scale:1,oneShot:true,fadeIn:0,fadeOut:120,scaleInDuration:0,targetSelection:'first',...extra});
+ const stage=(kind,slot,label,delay,extra={})=>{const film=Math.max(1300,...(mode.assets[slot]??[]).map(k=>mode.mediaTiming?.[k]?.duration??0))+150,long=kind==='impact'&&film>4650;
+  return {kind,stageId:`${id}-${slot}`,assets:mode.assets[slot],label,delay,duration:long?4650:film,...(long?{clipEnd:4050}:{}),scale:1,oneShot:true,fadeIn:0,fadeOut:long?600:120,scaleInDuration:0,targetSelection:'first',...extra};};
  const firing=mode.mode==='ranged'&&['firearm','airgun'].includes(mode.family);
  const duration=mode.heavy?1500:mode.agile?1000:1250;
  const start=firing?(mode.heavy?520:420):duration/2;
@@ -16,7 +17,7 @@ export function weaponRecipe(weapon,modeName=weapon?.modes?.[0]?.mode,options={}
  let contactStage;
  if(options.motion!==false)stages.push(gesture);
  if(mode.mode==='melee'){
-  const contact=stage('impact','contact',`${mode.family} contact`,start,{scale:mode.family==='dagger'?.85:mode.heavy?1.2:1,rotation:mode.family==='axe'?-25:mode.family==='whip'?25:0});
+  const contact=stage('impact','contact',mode.family==='contact'?'Weapon contact':`${mode.family} contact`,start,{scale:mode.family==='dagger'?.85:mode.heavy?1.2:1,rotation:mode.family==='axe'?-25:mode.family==='whip'?25:0});
   stages.push(contact);
   contactStage=contact;
   if(mode.element!=='physical')stages.push(stage('impact','accent',`${mode.element} finish`,start+180,{scale:.9,afterStage:contact.stageId,timingAnchor:'start',startOffset:180,...payloadAppearance(mode.element,mode.assets.accent)}));
@@ -39,6 +40,8 @@ export function weaponRecipe(weapon,modeName=weapon?.modes?.[0]?.mode,options={}
  if(mode.onHitCue==='warpwave'&&mode.assets.onHit?.length)stages.push(stage('aura','onHit','Successful-hit Warpwave · visual cue',contactStage.delay+250,{subject:'targets',requiresHit:true,afterStage:contactStage.stageId,timingAnchor:'start',startOffset:250,duration:2200,oneShot:false,fadeIn:150,fadeOut:450,scale:1.15,opacity:.8,persist:false}));
  const secondary=[...new Set([...(mode.elements??[]).filter(e=>e!==mode.element),mode.payload?.secondary].filter(Boolean))];
  for(const [index,element]of secondary.entries())stages.push(stage('impact',`accent${index+2}`,`${element} additional finish`,contactStage.delay+180+index*100,{afterStage:contactStage.stageId,timingAnchor:'start',startOffset:180+index*100,scale:.85,...payloadAppearance(element,mode.assets[`accent${index+2}`])}));
+ // Item-trait/construction flourishes (Staff of Fire, holy starknives): visual only, never damage.
+ for(const [index,flavor]of (mode.flavor??[]).entries())if(mode.assets[`flavor${index+1}`]?.length)stages.push(stage('impact',`flavor${index+1}`,`${flavor} flourish`,contactStage.delay+220+index*110,{afterStage:contactStage.stageId,timingAnchor:'start',startOffset:220+index*110,scale:.8,opacity:.9,...payloadAppearance(flavor,mode.assets[`flavor${index+1}`])}));
  if(mode.assets.residue?.length)stages.push(stage('aura','residue',`${mode.payload?.style==='spores'?'Fungal growth':mode.payload?.style==='foam'?'Hardening debris':mode.persistent||mode.payload?.element||mode.element} residue · brief visual cue`,contactStage.delay+300,{subject:'targets',afterStage:contactStage.stageId,timingAnchor:'start',startOffset:300,duration:2400,oneShot:false,fadeIn:180,fadeOut:500,scale:.85,opacity:.75,persist:false,...payloadAppearance(mode.payload?.style==='spores'?'poison':mode.payload?.style==='insects'?'darkInsects':mode.persistent||mode.payload?.element||mode.element,mode.assets.residue)}));
  stages=addAbilitySounds(weapon,stages,{...options,mode:mode.mode});
  return withCatalogFx(validateRecipe({id,name:`${weapon.name} · ${mode.mode}`,description:mode.rationale,category:'Weapons',color,trigger:'attack',match:`${weapon.name},${weapon.slug}`,itemUuid:weapon.uuid??`Compendium.${systemId}.${systemId==='sf2e'?'equipment':'equipment-srd'}.Item.${weapon.id}`,weaponMode:mode.mode,stages}),weapon,{...options,mode});

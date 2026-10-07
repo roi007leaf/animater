@@ -1,4 +1,5 @@
 import { normalizeOptions, validateSoundFile } from "./stage-options.mjs";
+import { fallbackColorParity } from "./color-parity.mjs";
 import { OPTIONAL_FX_KINDS, normalizeFxStage } from './optional-fx.mjs';
 import { visualReference, safeMediaFile, mediaType } from './media-library-model.mjs';
 import { coneFanPoints } from "./cone-fan.mjs";
@@ -331,6 +332,7 @@ function buildPlan(recipe, catalog, context, requireMedia) {
     if (areaFan && s.travelOrigin !== "source") throw Error("Cone fans travel outward from their area origin.");
     if (requireMedia && s.kind === "sound") validateSoundFile(o.soundFile);
     const asset = resolveAsset(s, catalog);
+    const parity = fallbackColorParity(s, asset);
     if (
       requireMedia &&
       !asset &&
@@ -492,6 +494,7 @@ function buildPlan(recipe, catalog, context, requireMedia) {
             ...s,
             ...timed,
             ...o,
+            ...parity,
             ...(areaFan && o.fanColors?.length ? { tintEnabled: true, colorize: true, tint: o.fanColors[targetIndex % o.fanColors.length] } : {}),
             duration: timed.duration,
             index,

@@ -1,4 +1,4 @@
-import {profiles,classify,selectStateMedia} from './twoe-state-design.mjs';
+import {profiles,classify,selectStateMedia,elementDesign} from './twoe-state-design.mjs';
 import {readFile,readdir,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve} from 'node:path';
@@ -6,7 +6,7 @@ import {assetDatabases,variantFiles} from './asset-databases.mjs';
 import {ensureStateSources,STATE_SOURCE_SHA,STATE_SOURCE_PACKS,AURA_SOURCE_PACKS} from './pf2e-state-source.mjs';
 import {statePresentation} from '../scripts/state-presentation.mjs';
 import {buildAuraDesign} from './pf2e-aura-designs.mjs';
-import {buildConditionDesign} from './pf2e-condition-designs.mjs';
+import {buildConditionDesign,CONDITION_PLANS} from './pf2e-condition-designs.mjs';
 
 const sha=STATE_SOURCE_SHA;
 const base=await ensureStateSources();
@@ -40,18 +40,21 @@ for(const pack of packs){
   const item=JSON.parse(await readFile(`${base}/${pack}/${file}`,'utf8'));if(!['condition','effect'].includes(item.type))continue;
   if(item.system.description?.value)item.system.description.value=localize(item.system.description.value);
   if(pack!=='conditions'&&item.type==='condition')continue;
-  const slug=file.split('/').at(-1).replace(/\.json$/,''),design=item.type==='condition'?{theme:'neutral',quality:'symbolic'}:classify(item),profile=profiles[design.theme];
+  const slug=file.split('/').at(-1).replace(/\.json$/,'');let design=item.type==='condition'?{theme:'neutral',quality:'symbolic'}:classify(item);
+  const element=item.type==='effect'?elementDesign(item,design.theme):null;
+  if(element)design={...design,...element.base};
+  if(design.theme==='fog'&&!design.color)design={...design,...fogLook(`${item.name} ${plain(item.system.description?.value)}`)};
+  const profile=profiles[design.theme];
   const condition=item.type==='condition';const nativePack=condition?'conditionitems':pack;
-  const entry={id:`${pack}-${item._id}`,documentId:item._id,pack:nativePack,sourcePack:pack,uuid:`Compendium.pf2e.${nativePack}.Item.${item._id}`,slug,name:item.name,img:item.img,kind:condition?'condition':'effect',group:condition?'Conditions':({'spell-effects':'Spell effects','equipment-effects':'Item effects','feat-effects':'Feat effects','bestiary-effects':'Creature effects','campaign-effects':'Campaign effects','other-effects':'Other effects','boons-and-curses':'Boons and curses'}[pack]),description:item.system.description?.value??'',descriptionHash:hash(item.system.description?.value??''),sourceUrl:`https://github.com/foundryvtt/pf2e/blob/${sha}/packs/pf2e/${pack}/${file}`,theme:design.theme,color:profile.hex,quality:design.quality,evidence:design.evidence,rationale:design.rationale??profile.note,...select(design.theme,slug),scale:1.15,opacity:0.5,below:['slow','speed','stone','rage','neutral','boon'].includes(design.theme),private:design.theme==='cooldown'||['hidden','undetected','unnoticed','invisible','friendly','helpful','indifferent','hostile','unfriendly','observed'].includes(slug),nativeDuration:item.system.duration??null};
-  if(design.theme==='shield'){
-   const types=[...new Set((item.system.rules??[]).filter(r=>r.key==='Resistance'&&typeof r.type==='string'&&!r.type.includes('{')).map(r=>r.type))];
-   const colors={fire:['orange','#ffad64'],cold:['blue','#8cdcff'],acid:['green','#a6df71'],poison:['green','#8cd894'],electricity:['yellow','#f7df8d'],mental:['purple','#bb8fff'],void:['purple','#ab91df'],vitality:['green','#91e4b5'],sonic:['blue','#c4adf0']};
-   if(types.length===1&&colors[types[0]]){
-    const [wardColor,wardTint]=colors[types[0]];
-    Object.assign(entry,select(design.theme,slug,wardColor),{wardColor,wardTint,color:wardTint});
-   }
+  const entry={id:`${pack}-${item._id}`,documentId:item._id,pack:nativePack,sourcePack:pack,uuid:`Compendium.pf2e.${nativePack}.Item.${item._id}`,slug,name:item.name,img:item.img,kind:condition?'condition':'effect',group:condition?'Conditions':({'spell-effects':'Spell effects','equipment-effects':'Item effects','feat-effects':'Feat effects','bestiary-effects':'Creature effects','campaign-effects':'Campaign effects','other-effects':'Other effects','boons-and-curses':'Boons and curses'}[pack]),description:item.system.description?.value??'',descriptionHash:hash(item.system.description?.value??''),sourceUrl:`https://github.com/foundryvtt/pf2e/blob/${sha}/packs/pf2e/${pack}/${file}`,theme:design.theme,color:design.hex??profile.hex,quality:design.quality,evidence:design.evidence,rationale:design.rationale??profile.note,...select(design.theme,slug,design.color),...(design.wardColor?{wardColor:design.wardColor,wardTint:design.hex}:{}),scale:1.15,opacity:0.5,below:['slow','speed','stone','rage','neutral','boon'].includes(design.theme),private:design.theme==='cooldown'||['hidden','undetected','unnoticed','invisible','friendly','helpful','indifferent','hostile','unfriendly','observed'].includes(slug),nativeDuration:item.system.duration??null};
+  // A chosen element or resistance type resolves at runtime from the item's rule selection.
+  if(element?.choice){
+   entry.elementChoice=element.choice;
+   entry.elementVariants=Object.fromEntries(Object.entries(element.variants).map(([type,look])=>{const media=select(look.theme,slug,look.color);return [type,{theme:look.theme,color:look.hex??profiles[look.theme].hex,rationale:profiles[look.theme].note,...media,...(look.wardColor?{wardColor:look.wardColor,wardTint:look.hex}:{}),...statePresentation(media)}];}));
   }
-  Object.assign(entry,condition?buildConditionDesign(entry,db):statePresentation(entry));
+  // Timed variants of a core condition reuse that condition's reviewed look.
+  const parent=/^Effect: (.+) until (?:the )?end of your next turn$/.exec(item.name)?.[1]?.toLowerCase().replace(/[^a-z]+/g,'-');
+  Object.assign(entry,condition?buildConditionDesign(entry,db):CONDITION_PLANS[parent]?{...buildConditionDesign({...entry,slug:parent},db),evidence:`Timed variant of the native ${parent} condition`}:statePresentation(entry));
   const auras=(item.system.rules??[]).filter(r=>r.key==='Aura').map(r=>({slug:auraSlug(r,item,file),radius:typeof r.radius==='number'?r.radius:null}));
   const sources=[...new Map([...(auraSources.get(entry.uuid)??[]),...(auraSources.get(`Compendium.pf2e.${nativePack}.Item.${item.name}`)??[])].map(s=>[`${s.uuid}:${s.slug}`,s])).values()];
   if(auras.length)entry.auras=auras;
@@ -68,8 +71,13 @@ for(const pack of packs){
 }
 rows.sort((a,b)=>a.name.localeCompare(b.name)||a.pack.localeCompare(b.pack));
 const conditionsData=rows.filter(r=>r.kind==='condition'),effects=rows.filter(r=>r.kind==='effect');
+function fogLook(text){
+ if(/\b(?:dust|sand|silt)\b/i.test(text))return {color:'orangeyellow',hex:'#d8c294'};
+ if(/fetid|noxious|toxic|poison|stench|smog|miasma|putrid|reek/i.test(text))return {color:'greenyellow',hex:'#b8d48c'};
+ return {};
+}
 const fieldLayers=r=>[...(r.auraDesign?.layers??[]),...Object.values(r.auraDesign?.variants??{}).flatMap(v=>v.layers),...(r.conditionDesign?.layers??[]),...Object.values(r.damageVariants??{}).flatMap(v=>v.conditionDesign?.layers??[])];
-const coverage=Object.fromEntries(Object.entries(db).map(([edition,assets])=>{const keys=[...new Set(rows.flatMap(r=>[r.editions[edition].key,...fieldLayers(r).map(l=>l.editions[edition].key),...Object.values(r.damageVariants??{}).map(v=>v.editions[edition].key)]))];return[edition,{available:assets.length,selected:keys.length,families:[...new Set(keys.map(k=>k.split('.')[1]))],missing:keys.filter(k=>!assets.some(r=>r.key===k))}]}));
+const coverage=Object.fromEntries(Object.entries(db).map(([edition,assets])=>{const keys=[...new Set(rows.flatMap(r=>[r.editions[edition].key,...fieldLayers(r).map(l=>l.editions[edition].key),...Object.values(r.damageVariants??{}).map(v=>v.editions[edition].key),...Object.values(r.elementVariants??{}).map(v=>v.editions[edition].key)]))];return[edition,{available:assets.length,selected:keys.length,families:[...new Set(keys.map(k=>k.split('.')[1]))],missing:keys.filter(k=>!assets.some(r=>r.key===k))}]}));
 const auraEntries=effects.filter(e=>e.auraDesign);
 const fingerprint=(e,edition)=>JSON.stringify(e.auraDesign.layers.map(l=>[l.editions[edition].files.slice().sort(),l.tint,l.below]).sort((a,b)=>JSON.stringify(a).localeCompare(JSON.stringify(b))));
 const structure=(e,edition)=>JSON.stringify(e.auraDesign.layers.map(l=>l.editions[edition].key.replace(/\.(?:blue|grey|green|white|black|dark_black|orange|purple|red|yellow|pink|bluepurple|blueteal|greenpurple|greenyellow|purplered|orangeyellow|bluepink|pinkpurple|pinkyellow|orangepurple)$/,'')).sort());
@@ -78,5 +86,5 @@ const auraReview={entries:auraEntries.length,emitters:auraEntries.filter(e=>e.au
 if(Object.values(auraReview.editions).some(e=>e.unrelatedDuplicates.length||e.unrelatedStructuralDuplicates.length))throw Error(`Unrelated native aura compositions still duplicate: ${JSON.stringify(auraReview.editions)}`);
 const source={version:'8.5.1',sha,conditions:conditionsData.length,effects:effects.length,packs:Object.fromEntries(packs.map(p=>[p,rows.filter(r=>r.sourcePack===p).length])),coverage,localizationSource:`https://github.com/foundryvtt/pf2e/blob/${sha}/static/lang/en.json`,unresolvedLocalizations:rows.filter(r=>r.description.includes('@Localize[')).map(r=>r.id),missingDescriptions:rows.filter(r=>!r.description).map(r=>({id:r.id,name:r.name})),scope:'Core PF2e condition, spell, equipment, feat, creature, other, campaign, boon and curse effect Item documents. Application/removal remains native PF2e.'};
 await mkdir('data',{recursive:true});await writeFile('data/pf2e-state-catalog.mjs',`// Generated from pinned native PF2e descriptions; no JB2A media bundled.\nexport const PF2E_STATE_SOURCE=${JSON.stringify(source,null,2)};\nexport const PF2E_CONDITIONS=${JSON.stringify(conditionsData)};\nexport const PF2E_EFFECTS=${JSON.stringify(effects)};\n`);
-await writeFile('data/pf2e-state-catalog-audit.json',JSON.stringify({source,auraReview,entries:rows.map(r=>({id:r.id,name:r.name,kind:r.kind,theme:r.theme,quality:r.quality,evidence:r.evidence,descriptionHash:r.descriptionHash,editions:r.editions,auras:r.auras,auraSources:r.auraSources,auraEditions:r.auraEditions,auraDesign:r.auraDesign,conditionDesign:r.conditionDesign,damageVariants:r.damageVariants,presentationRole:r.presentationRole,scale:r.scale,opacity:r.opacity,below:r.below,offsetY:r.offsetY})),issues:[]},null,2)+'\n');
+await writeFile('data/pf2e-state-catalog-audit.json',JSON.stringify({source,auraReview,entries:rows.map(r=>({id:r.id,name:r.name,kind:r.kind,theme:r.theme,quality:r.quality,evidence:r.evidence,descriptionHash:r.descriptionHash,editions:r.editions,auras:r.auras,auraSources:r.auraSources,auraEditions:r.auraEditions,auraDesign:r.auraDesign,conditionDesign:r.conditionDesign,damageVariants:r.damageVariants,elementChoice:r.elementChoice,elementVariants:r.elementVariants,presentationRole:r.presentationRole,scale:r.scale,opacity:r.opacity,below:r.below,offsetY:r.offsetY})),issues:[]},null,2)+'\n');
 console.log(JSON.stringify({source,auraReview},null,2));

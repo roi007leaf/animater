@@ -38,17 +38,22 @@ test('optional sound attenuation survives save/load and invalid gains stay bound
  assert.equal(invalid.optionalSound.gain,1);assert.equal(invalid.optionalSound.candidates[0].gain,1);
 });
 test('protective effects are wards; word fragments do not invent cold or mental visuals',()=>{
- for(const name of ['Effect: Blood Booster','Spell Effect: Blood Ward','Effect: Ironblood Stance','Effect: Potion of Acid Resistance','Effect: Potion of Cold Resistance','Effect: Potion of Fire Resistance'])assert.equal(state(name).theme,'shield',name);
- for(const name of ['Spell Effect: Resist Energy','Spell Effect: Elemental Gift','Spell Effect: Primal Summons'])assert.ok(['shield','boon'].includes(state(name).theme),name);
+ // Typed resistances are wards themed by their damage type (e.g. ice-ward); never a cold/fire aura.
+ for(const name of ['Effect: Blood Booster','Spell Effect: Blood Ward','Effect: Ironblood Stance','Effect: Potion of Acid Resistance','Effect: Potion of Cold Resistance','Effect: Potion of Fire Resistance'])assert.match(state(name).theme,/^(?:shield|[a-z]+-ward)$/,name);
+ // Chosen-type effects resolve their element at runtime (choice-ward/elemental), multi-type ones are prismatic wards.
+ for(const name of ['Spell Effect: Resist Energy','Spell Effect: Elemental Gift','Spell Effect: Primal Summons'])assert.match(state(name).theme,/^(?:shield|boon|elemental|[a-z]+-ward)$/,name);
+ assert.notEqual(state('Spell Effect: Elemental Gift').theme,'fire-ward');
  assert.equal(state('Effect: Harrow-Chosen').theme,'boon');
  assert.equal(state('Effect: Featherlight Fletching').theme,'speed');
  assert.notEqual(state('Effect: Balisse Feather').theme,'flight');
  assert.equal(state('Effect: Potion of Acid Resistance').wardColor,'green');
- assert.equal(state('Effect: Potion of Fire Resistance').wardColor,'orange');
+ // Fire resistance now uses the native fiery shield (already orange) instead of a tinted blue one.
+ assert.match(state('Effect: Potion of Fire Resistance').assets[0],/shield_themed\.above\.fire/);
  const fireWard=stateRecipe(state('Effect: Potion of Fire Resistance')).stages[0];
  const acidWard=stateRecipe(state('Effect: Potion of Acid Resistance')).stages[0];
  assert.ok(fireWard.assets[0].includes('.orange')||fireWard.colorize&&fireWard.tint==='#ffad64');
- assert.notEqual(fireWard.tint,acidWard.tint);
+ // Distinct by native footage or by tint.
+ assert.ok(fireWard.assets[0]!==acidWard.assets[0]||fireWard.tint!==acidWard.tint);
 });
 test('persistent rings, shields and chains are readable; markers and damage have their own presentation',()=>{
  const slowed=PF2E_CONDITIONS.find(e=>e.slug==='slowed'),grabbed=PF2E_CONDITIONS.find(e=>e.slug==='grabbed');

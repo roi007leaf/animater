@@ -293,6 +293,7 @@ export const SPELL_ASSETS = {
   },
   "metal": {
     "cast": [
+      "jb2a.cast_shape.circle.01.yellow",
       "jb2a.cast_shape.circle.01.blue"
     ],
     "bolt": [
@@ -304,11 +305,10 @@ export const SPELL_ASSETS = {
       "jb2a.impact.frost.white.01"
     ],
     "aura": [
-      "jb2a.glint.blue.few",
       "jb2a.glint.yellow.few"
     ],
     "area": [
-      "jb2a.cloud_of_daggers.daggers.blue"
+      "jb2a.cloud_of_daggers.daggers.orange"
     ]
   },
   "shadow": {

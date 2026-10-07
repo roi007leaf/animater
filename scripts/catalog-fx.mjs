@@ -61,7 +61,7 @@ function bodyProfile(recipe, entry, anchor, options) {
   if (!damaging&&!persistent)return null;
   const materials={fire:/jb2a\.(?:fire|flames|burning|scorching|explosion)/,cold:/jb2a\.(?:ice|frost|cold|snow|sleet|ray_of_frost)/,
     electricity:/jb2a\.(?:lightning|electric|chain_lightning|static_electricity)/,acid:/jb2a\.(?:acid|liquid|drop|splash)/,
-    poison:/jb2a\.(?:poison|smoke|gas|liquid|drop|splash)/,force:/jb2a\.(?:impact|magic_missile|eldritch|force|energy_field)/};
+    poison:/jb2a\.(?:poison|smoke|gas|liquid|drop|splash)/,force:/jb2a\.(?:impact|magic_missile|eldritch|force|energy_field|explosion)/};
   return materials[theme].test(art)?theme:null;
 }
 const sceneProfiles={

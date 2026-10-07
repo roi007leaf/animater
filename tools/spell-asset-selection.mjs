@@ -3,7 +3,7 @@
 import {colorAffinity} from './color-affinity.mjs';
 import {reviewedUpgradeRoots} from './jb2a-reviewed-upgrades.mjs';
 const split = (value = "") => value.split(",").filter(Boolean);
-export const SPELL_SELECTION_REVISION=3;
+export const SPELL_SELECTION_REVISION=4;
 const words = (value) =>
   String(value ?? "")
     .replace(/([a-z])([A-Z])/g, "$1 $2")

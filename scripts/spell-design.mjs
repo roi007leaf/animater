@@ -15,6 +15,7 @@ import { BROAD_VARIETY_MOTIFS, BROAD_VARIETY_DESIGNS, broadVarietyLayers } from 
 import {SPECIFIC_FALLBACK_MOTIFS,SPECIFIC_FALLBACK_DESIGNS,specificFallbackLayers} from './spell-specific-fallbacks.mjs';
 import {GAP_SPELL_MOTIFS,GAP_SPELL_DESIGNS,gapSpellLayers} from './spell-gap-designs.mjs';
 import {FIRE_SPELL_MOTIFS,FIRE_SPELL_DESIGNS,fireSpellLayers} from './spell-fire-designs.mjs';
+import {FIX_SPELL_MOTIFS,FIX_SPELL_DESIGNS,fixSpellLayers,applyFixStyle,capSpellStages} from './spell-fix-designs.mjs';
 const motif = (label, pattern, roots = {}) => ({ label, pattern, ...roots });
 export const SPELL_MOTIFS = {
   smolder: motif("Finger snap and smolder", "smolder", {
@@ -261,7 +262,7 @@ export const SPELL_MOTIFS = {
     aura: "ward",
   }),
   fireShield: motif("Hovering flame shield", "fireShield", {
-    hit: "shield.01.intro",
+    hit: "shield_themed.above.fire,shield.01.intro",
     aura: "fire_ring,flames",
   }),
   swiftTime: motif("Accelerating time echoes", "haste", {
@@ -284,7 +285,7 @@ export const SPELL_MOTIFS = {
   }),
   blurred: motif("Blurry target echoes", "blur", {
     hit: "shimmer",
-    aura: "smoke",
+    aura: "shimmer",
   }),
   lightBend: motif("Light bends around target", "vanish", {
     hit: "shimmer",
@@ -324,7 +325,7 @@ export const SPELL_MOTIFS = {
     aura: "bless,magic_signs",
   }),
   doubt: motif("Inward rings of doubt", "bane", {
-    aura: "energy_field,magic_signs",
+    aura: "magic_signs.circle.02.enchantment,energy_field",
   }),
   grease: motif("Glossy slick surface", "slick", {
     hit: "grease",
@@ -506,6 +507,7 @@ export const SPELL_MOTIFS = {
   ...SPECIFIC_FALLBACK_MOTIFS,
   ...GAP_SPELL_MOTIFS,
   ...FIRE_SPELL_MOTIFS,
+  ...FIX_SPELL_MOTIFS,
 };
 
 // Reviewed against complete PF2e descriptions. Aliases share only when their
@@ -1012,6 +1014,7 @@ export const AUTHORED_SPELL_DESIGNS = {
   ...SPECIFIC_FALLBACK_DESIGNS,
   ...GAP_SPELL_DESIGNS,
   ...FIRE_SPELL_DESIGNS,
+  ...FIX_SPELL_DESIGNS,
 };
 
 const track = (property, from, to, duration, extra = {}) => ({
@@ -1117,7 +1120,8 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
     });
   const hit = (label = "Contact", delay = charge, duration = 850, extra = {}) =>
     at("hit", label, delay, duration, { scale: impactScale, ...extra });
-  let layers = fireSpellLayers(spell,{cast,hit,aura,pose,copy,fx,track,charge,subject,pattern});
+  let layers = fixSpellLayers(spell,{cast,hit,aura,pose,copy,fx,track,charge,subject,pattern});
+  layers ??= fireSpellLayers(spell,{cast,hit,aura,pose,copy,fx,track,charge,subject,pattern});
   layers ??= gapSpellLayers(spell, { cast, hit, aura, pose, copy, fx, track, charge, subject, pattern });
   layers ??= fearSpellLayers(spell, { cast, hit, aura, pose, copy, fx, track, charge, subject, pattern });
   layers ??= broadVarietyLayers(spell, { cast, hit, aura, pose, copy, fx, track, charge, subject, pattern });
@@ -1623,7 +1627,7 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
           charge,
           700,
           {
-            scale: d.motif === "thunderSphere" ? 0.8 : 0.45,
+            scale: d.motif === "thunderSphere" ? 0.8 : 0.55,
             moveEase: "easeInQuad",
             fadeIn: 50,
             fadeOut: 60,
@@ -2381,7 +2385,8 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
     case "jolt":
       layers = [
         cast("Mental pressure"),
-        hit("Mental stars", charge, 850, { offsetY: -0.35, scale: 0.85 }),
+        // Severity reads in scale: a 1d6 cantrip stays small, 6d6+ grows.
+        hit("Mental stars", charge, 850, { offsetY: -0.35, scale: 0.85 + Math.min(0.45, (d.damageDice || 0) * 0.05) }),
         pose("shake", "Mental jolt", charge + 100, 400, "targets", 0.07, 0.4),
       ];
       break;
@@ -2999,9 +3004,10 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
         "Lingering residue",
         Math.max(...layers.map((s) => s.delay + s.duration)) - 500,
         1100,
-        { opacity: 0.3, scale: 1.1 },
+        { opacity: 0.4, scale: 1.1 },
       ),
     );
+  layers = capSpellStages(spell, applyFixStyle(spell, SPELL_MOTIFS[d.motif], layers));
   if(!FIRE_SPELL_MOTIFS[d.motif])layers = applySpellVisualIdentity(spell, layers, stage);
   let paced = paceDeliveryEffects(layers, GAP_SPELL_MOTIFS[d.motif]||FIRE_SPELL_MOTIFS[d.motif]?{...d,preserveStageTiming:true}:d).map(paceGeneratedMotion);
   let reviewedMotion = SPELL_MOTION_REVIEWS[spell.slug];
