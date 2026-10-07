@@ -39,6 +39,10 @@ export function stateRecipe(entry,{damageType,catalog,auraVariant,aura=entry?.au
  const key=catalog?.length?resolveAsset(base,catalog):null;
  const design=key&&!base.conditionDesign?{...base,...statePresentation({assets:[key]})}:base;
  const wardTint=base.wardColor&&!(key??base.assets[0]).split('.').includes(base.wardColor)?{tintEnabled:true,colorize:true,tint:base.wardTint}:{};
+ // Single-stage markers record whether the edition had to substitute a color;
+ // honor it so a "green boon" or "red penalty" never renders as a stock blue ring.
+ const chosenKey=key??base.assets[0],chosenEdition=Object.values(base.editions??{}).find(e=>e.key===chosenKey)??Object.values(base.editions??{})[0];
+ const markerTint=!wardTint.tint&&chosenEdition?.colorSubstitution&&/^#[0-9a-f]{6}$/i.test(base.color??entry.color??'')?{tintEnabled:true,colorize:true,tint:base.color??entry.color}:{};
  const variant=entry.damageVariants?.[damageType]?damageType:null;
  const source=aura?.source,flags=source?.actor?.flags?.system??{},selections=source?.flags?.system?.rulesSelections??{};
  const choice=auraVariant??(entry.auraDesign?.choice==='thermal'?(flags.kineticist?.thermalNimbus??selections.thermalNimbus):entry.auraDesign?.choice==='tradition'?(flags.manifestWillTradition??selections.manifestWillTradition):null);
@@ -49,7 +53,7 @@ export function stateRecipe(entry,{damageType,catalog,auraVariant,aura=entry?.au
  const stages=layers?layers.map(l=>{
   const selected=catalog?.length?resolveAsset(l,catalog):null,edition=selected?Object.values(l.editions??{}).find(e=>e.key===selected):null;
   return {...l,...lifetime,...area,...(edition?{tintEnabled:edition.colorSubstitution,colorize:edition.colorSubstitution}:{}),...(edition?.anchor?{customAnchor:true,anchorX:edition.anchor.x,anchorY:edition.anchor.y}:{})};
- }):[{stageId:'sustained',label:'Sustained visual',...lifetime,assets:design.assets,scale:design.scale??entry.scale,opacity:design.opacity??entry.opacity,below:design.below??entry.below,offsetX:design.offsetX??entry.offsetX,offsetY:design.offsetY??entry.offsetY,offsetUnits:design.offsetUnits??entry.offsetUnits,...area,...(aura?{below:true}:{}),...wardTint}];
+ }):[{stageId:'sustained',label:'Sustained visual',...lifetime,assets:design.assets,scale:design.scale??entry.scale,opacity:design.opacity??entry.opacity,below:design.below??entry.below,offsetX:design.offsetX??entry.offsetX,offsetY:design.offsetY??entry.offsetY,offsetUnits:design.offsetUnits??entry.offsetUnits,...area,...(aura?{below:true}:{}),...markerTint,...wardTint}];
  return withCatalogFx(validateRecipe({id:`${entry.systemId??'pf2e'}-state-${entry.id}${variant?`-${variant}`:''}`,name:entry.name,description:field?.rationale??design.rationale??entry.rationale,category:entry.group,color:design.color??entry.color,trigger:'effect',itemUuid:entry.uuid,match:entry.name,lifecycle:'document',stateEntry:entry.id,...(variant?{stateDamageType:variant}:{}),stages}),entry,{damageType,fx,fxCatalog});
 }
 export function resolveStateRecipe(item,state,saved=[],catalog){

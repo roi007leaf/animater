@@ -62,6 +62,7 @@ export const OPTION_GROUPS = {
     ["customAnchor", "Override artwork anchor", false],
     ["mirrorX", "Mirror horizontally", false],
     ["mirrorY", "Mirror vertically", false],
+    ["faceTarget", "Face the first target", false],
     ["attach", "Follow token", false],
     ["bindRotation", "Follow token rotation", false],
     ["bindAlpha", "Follow token opacity", true],

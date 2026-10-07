@@ -47,23 +47,33 @@ const named={
  'dimension door':{theme:'teleport',delivery:'source',sound:'teleport'},
  'teleport':{theme:'teleport',delivery:'source',sound:'teleport'},
  'second wind':{theme:'healing',delivery:'source',sound:'healing'},
- 'sneak attack':{theme:'weapon',delivery:'contact',sound:'dagger',note:'An extra damage contact on the existing victim, never an invented second weapon strike.'},
  'divine smite':{theme:'light',delivery:'contact',hit:'divine_smite',sound:'holy'},
  'rage':{theme:'blood',delivery:'source',sound:null},
  'wild shape':{theme:'transform',delivery:'source',sound:'transform'},
- 'flurry of blows':{theme:'weapon',delivery:'contact',sound:'unarmed',note:'Native individual attacks supply contacts; using the feature does not invent hit results.'},
  'oil':{theme:'water',delivery:'missile',sound:'water',note:'Unlit oil coating. Later fire damage does not make every thrown flask ignite.'},
  'acid':{theme:'acid',delivery:'missile',sound:'acidSplash'},
  'holy water':{theme:'light',delivery:'missile',sound:'holy'},
  "alchemist's fire":{theme:'fire',delivery:'missile',sound:'fireIgnition'},
+ 'daylight':{theme:'light',area:'markers.light,divine_smite.caster',cast:'divine_smite.caster',hit:'markers.light',sound:'light',note:'Bright sunlight spreads from the point; it dispels magical darkness rather than creating it.'},
+ 'continual flame':{theme:'fire',area:'flames',hit:'flames',cast:'cast_generic.fire',sound:'fireIgnition',note:'A heatless flame settles on the object; no detonation.'},
+ 'faerie fire':{theme:'light',area:'fairies,swirling_sparkles',hit:'fairies,swirling_sparkles',cast:'fairies',sound:'light',note:'Colored light outlines creatures; the spell involves no actual fire.'},
+ 'lamp':{theme:'fire',area:'flames',hit:'flames',cast:'cast_generic.fire',sound:'fireIgnition',note:'Lighting a lamp: a small steady flame, not an explosion.'},
+ 'hooded lantern':{theme:'fire',area:'flames',hit:'flames',cast:'cast_generic.fire',sound:'fireIgnition',note:'Lighting a lantern: a small steady flame, not an explosion.'},
+ 'bullseye lantern':{theme:'fire',area:'flames',hit:'flames',cast:'cast_generic.fire',sound:'fireIgnition',note:'Lighting a lantern: a small steady flame, not an explosion.'},
+ 'torch':{theme:'fire',area:'flames',hit:'flames',cast:'cast_generic.fire',sound:'fireIgnition',note:'Lighting a torch: a small steady flame, not an explosion.'},
+ 'caltrops':{theme:'weapon',area:'caltrops.01',hit:'caltrops.01',sound:null,note:'Caltrops scatter across the native square.'},
+ 'ball bearings':{theme:'weapon',area:'ball_bearing',hit:'ball_bearing',sound:null,note:'Ball bearings spill across the native square.'},
+ 'flurry of blows':{theme:'weapon',delivery:'contact',hit:'flurry_of_blows,unarmed_strike',sound:'unarmed',note:'Native individual attacks supply contacts; using the feature does not invent hit results.'},
+ 'sneak attack':{theme:'weapon',delivery:'contact',hit:'sneak_attack,melee_attack.01.magic_sword',sound:'dagger',note:'An extra damage contact on the existing victim, never an invented second weapon strike.'},
+ 'boulder toss':{theme:'earth',delivery:'missile',bolt:'boulder.toss',hit:'impact.boulder',sound:'earth'},
  'net':{theme:'web',delivery:'missile',sound:'chainBinding'},
 };
-const nameThemes=[['healing',/heal|cure|restor|reviv|resurrect|regener|lay on hands|second wind/],['ward',/shield|armor|armour|protection|resistance|immun|sanctuary|death ward/],['teleport',/teleport|misty step|dimension door|blink/],['illusion',/illusion|disguise|mirror image|invisib|blur/],['divination',/detect|scry|locate|clairvoy|identify|commune/],['plant',/thorn|vine|plant|bark|entangl|nature/],['fire',/fire|flame|burn|scorch|meteor/],['cold',/\bice\b|cold|frost|snow|sleet/],['electricity',/lightning|electric|witch bolt/],['sonic',/thunder|sound|shatter/],['acid',/acid|corros/],['poison',/poison|venom|toxic/],['water',/water|ocean|tidal|grease|oil/],['earth',/earth|stone|rock|meld/],['wind',/wind|gust|whirlwind/],['fear',/fear|fright|terror/],['mind',/psychic|mind|charm|sleep|confus/],['shadow',/darkness|shadow/],['light',/sun|radiant|holy|divine|bless/],['void',/necrotic|death|wither|blight|vampir/],['summon',/summon|conjure|animate dead/],['transform',/polymorph|shape|enlarge|reduce|alter self/],['flight',/\bfly\b|levitat|feather fall/],['time',/haste|slow/]];
+const nameThemes=[['healing',/heal|cure|restor|reviv|resurrect|regener|lay on hands|second wind/],['ward',/shield|armor|armour|protection|resistance|immun|sanctuary|death ward/],['teleport',/teleport|misty step|dimension door|blink/],['illusion',/illusion|disguise|mirror image|invisib|blur/],['divination',/detect|scry|locate|clairvoy|identify|commune/],['plant',/thorn|vine|plant|bark|entangl|nature/],['fire',/fire|flame|burn|scorch|meteor/],['cold',/\bice\b|cold|frost|snow|sleet/],['electricity',/lightning|electric|witch bolt/],['sonic',/thunder|sound|shatter/],['acid',/acid|corros/],['poison',/poison|venom|toxic/],['water',/water|ocean|tidal|grease|oil/],['earth',/earth|(?<!ioun )stone(?! of)|rock|meld/],['wind',/wind|gust|whirlwind/],['fear',/fear|fright|terror/],['mind',/psychic|mind|charm|sleep|confus/],['shadow',/(?<!dispels? (?:magical )?)darkness|shadow/],['light',/sun|daylight|radiant|holy|divine|bless|\bglow|\blight\b/],['void',/necrotic|death|wither|blight|vampir/],['summon',/summon|conjure|animate dead/],['transform',/polymorph|shape|enlarge|reduce|alter self/],['flight',/\bfly\b|levitat|feather fall/],['time',/haste|slow/]];
 export function nativeDirection(row,activity,mode){
  const item=row.source,a=effectiveActivity(item,activity),name=item.name.toLowerCase().replace(/\s*\((?:vial|flask)\)$/, ''),act=(a.name??'').toLowerCase(),desc=row.description.toLowerCase();
- const author=named[name],base=structuredClone(author??{});
+ const author=named[name]??(/^ioun stone|enhanced (?:agility|awareness|fortitude|insight|intellect|leadership|mastery|protection|strength)/.test(name)?{theme:'light',cast:'dancing_light',hit:'dancing_light',aura:'dancing_light',sound:'light',note:'A small gem begins orbiting the wearer\'s head.'}:undefined),base=structuredClone(author??{});
  const types=[...(a.damage?.parts??[]).flatMap(p=>p.types??[]),...(a.healing?.types??[])];
- const theme=base.theme??(a.type==='heal'?'healing':nameThemes.find(([,re])=>re.test(name))?.[0]??types.map(t=>damageThemes[t]??t).find(t=>!['weapon',''].includes(t))??nameThemes.find(([,re])=>re.test(desc.replace(/(?:immune|resistan)[^.]+\./g,'')))?.[0]??(item.type==='weapon'?'weapon':'arcane'));
+ const theme=base.theme??(a.type==='heal'?'healing':nameThemes.find(([,re])=>re.test(name))?.[0]??types.map(t=>damageThemes[t]??t).find(t=>!['weapon',''].includes(t))??nameThemes.filter(([t])=>t!=="healing").find(([,re])=>re.test(desc.replace(/(?:immune|resistan)[^.]+\./g,'')))?.[0]??(item.type==='weapon'?'weapon':'arcane'));
  const template=a.target?.template,shape=template?.type,size=Number(template?.size);
  let area=shape&&Number.isFinite(size)&&size>0?{type:['sphere','radius'].includes(shape)?'circle':shape==='wall'?'line':shape,value:size}:null;
  const followup=item.flags?.dnd5e?.riders?.activity?.includes(a._id)||/follow.?up|ongoing|subsequent|lethargy|burn save|sustain|failure|mishap/.test(act)||a.activation?.type==='special'&&a.type==='damage'&&!/cast|throw|strike|attack/.test(act);
@@ -97,6 +107,14 @@ export function nativeDirection(row,activity,mode){
  // Using a native tool/ability check does not promise a magical manifestation
  // or successful outcome. Keep its optional symbolic cue manual and quiet.
  if(a.type==='check'){trigger='manual';delivery='source';area=null;base.sound=null;base.motion='none';base.note='Native ability or tool check. No magical effect or successful outcome is assumed; this optional symbolic cue is manual and quiet.';}
+ // Mundane martial features and monster traits (Multiattack, Parry, Action
+ // Surge, Uncanny Dodge…) are not spellcasting: no magic circle, no floating
+ // spectral weapon. A brisk motion cue replaces the arcane fallback.
+ const magical=/\b(?:spells?|magic(?:al)?|arcane|psionic|eldritch|innate|divine|radiant|necrotic|psychic|curse|ki|focus points?)\b/.test(desc+' '+name);
+ if(!author&&!review&&item.type==='feat'&&!magical&&['arcane','weapon'].includes(nativeTheme)&&!['missile','ray','fork','areaMissile','rayFan'].includes(delivery)&&!area){
+  base.cast??='wind_lines.01.01';base.hit??='impact.005.white,melee_generic.slashing';base.aura??='wind_lines.01.01';
+ }
+ if(a.type==='check'){base.cast='impact.005.white';base.hit='glint';base.aura='glint';}
  const silent=/silence|invisible|invisibility|telepath|detect thoughts|pass without trace/.test(name)||base.sound===null;
  const profile=base.sound??({electricity:'electric',sonic:'sonic',vitality:'holy',spirit:'holy',light:'light',void:'void',mind:'psychic',plant:'growth',ward:'shield',arcane:'force',weapon:'sword',divination:'detect',illusion:'transform',flight:'wind',fear:'fear',curse:'void',web:'vines'}[nativeTheme]??nativeTheme);
  return {...base,areaAsset:typeof base.area==='string'?base.area:undefined,theme:nativeTheme,delivery,area,trigger,followup:review?.followup??followup,self,activity:a,reviewed:Boolean(review),sound:silent?null:profile,

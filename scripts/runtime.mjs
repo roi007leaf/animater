@@ -205,6 +205,7 @@ export class AnimaterRuntime {
           if (s.overlayFit) e.screenSpaceScale({ fitX: true, fitY: true });
         } else {
           e.atLocation(s.landing ?? s.destination, location);
+          if (s.facing) e.rotateTowards(s.facing, { cacheLocation: true });
           // copySprite already captures mesh dimensions, texture scale and
           // mirroring. Sizing it to the footprint loses those properties.
           if (s.kind === "sprite") e.scale(s.scale);

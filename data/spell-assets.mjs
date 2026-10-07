@@ -49,7 +49,7 @@ export const SPELL_ASSETS = {
       "jb2a.impact.001.blue"
     ],
     "aura": [
-      "jb2a.lightning_orb.01.loop.bluepurple"
+      "jb2a.static_electricity.01.blue"
     ],
     "area": [
       "jb2a.call_lightning.high_res.blue"
@@ -61,7 +61,7 @@ export const SPELL_ASSETS = {
       "jb2a.cast_generic.earth.01.browngreen"
     ],
     "bolt": [
-      "jb2a.energy_beam.normal.bluegreen.01",
+      "jb2a.energy_beam.normal.dark_green.01",
       "jb2a.energy_beam.normal.blue.01"
     ],
     "hit": [
@@ -200,7 +200,7 @@ export const SPELL_ASSETS = {
   "blood": {
     "cast": [
       "jb2a.cast_generic.dark.01.red",
-      "jb2a.cast_generic.01.yellow"
+      "jb2a.cast_generic.fire.01.orange"
     ],
     "bolt": [
       "jb2a.eldritch_blast.dark_red",
@@ -221,22 +221,18 @@ export const SPELL_ASSETS = {
   },
   "earth": {
     "cast": [
-      "jb2a.ground_cracks.01.blue",
       "jb2a.ground_cracks.01.orange"
     ],
     "bolt": [
       "jb2a.boulder.toss.02.01.stone.brown"
     ],
     "hit": [
-      "jb2a.ground_cracks.01.blue",
       "jb2a.ground_cracks.01.orange"
     ],
     "aura": [
-      "jb2a.ground_cracks.01.blue",
       "jb2a.ground_cracks.01.orange"
     ],
     "area": [
-      "jb2a.eruption.blue.01",
       "jb2a.eruption.orange.01"
     ]
   },
@@ -281,7 +277,7 @@ export const SPELL_ASSETS = {
       "jb2a.swirling_leaves.complete.01.green"
     ],
     "bolt": [
-      "jb2a.energy_beam.normal.bluegreen.01",
+      "jb2a.energy_beam.normal.dark_green.01",
       "jb2a.energy_beam.normal.blue.01"
     ],
     "hit": [
@@ -291,7 +287,7 @@ export const SPELL_ASSETS = {
       "jb2a.swirling_leaves.loop.01.green"
     ],
     "area": [
-      "jb2a.plant_growth.02.ring.4x4.complete.greenred",
+      "jb2a.plant_growth.04.ring.4x4.complete.greenwhite",
       "jb2a.plant_growth.03.ring.4x4.complete.greenyellow"
     ]
   },
@@ -300,7 +296,7 @@ export const SPELL_ASSETS = {
       "jb2a.cast_shape.circle.01.blue"
     ],
     "bolt": [
-      "jb2a.magic_missile.blue",
+      "jb2a.magic_missile.grey",
       "jb2a.magic_missile.purple"
     ],
     "hit": [
@@ -361,7 +357,7 @@ export const SPELL_ASSETS = {
       "jb2a.magic_missile.purple"
     ],
     "hit": [
-      "jb2a.sleep.target.dark_orangepurple",
+      "jb2a.sleep.target.dark_purple",
       "jb2a.sleep.target.pink"
     ],
     "aura": [
@@ -376,7 +372,7 @@ export const SPELL_ASSETS = {
   "fear": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.01.yellow"
+      "jb2a.cast_generic.sound.01.pinkteal"
     ],
     "bolt": [
       "jb2a.eldritch_blast.purple"
@@ -396,7 +392,7 @@ export const SPELL_ASSETS = {
   "curse": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.01.yellow"
+      "jb2a.cast_generic.sound.01.pinkteal"
     ],
     "bolt": [
       "jb2a.eldritch_blast.purple"
@@ -437,7 +433,7 @@ export const SPELL_ASSETS = {
   "illusion": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.01.yellow"
+      "jb2a.cast_generic.sound.01.pinkteal"
     ],
     "bolt": [
       "jb2a.magic_missile.purple"
@@ -474,7 +470,7 @@ export const SPELL_ASSETS = {
     ],
     "area": [
       "jb2a.energy_field.02.above.purple",
-      "jb2a.energy_field.01.blue"
+      "jb2a.particle_burst.01.circle.bluepurple"
     ]
   },
   "teleport": {
@@ -567,16 +563,17 @@ export const SPELL_ASSETS = {
   "transform": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.01.yellow"
+      "jb2a.cast_generic.sound.01.pinkteal"
     ],
     "bolt": [
       "jb2a.energy_beam.normal.purple.01",
-      "jb2a.energy_beam.normal.blue.01"
+      "jb2a.energy_conduit.bluepurple.circle.01"
     ],
     "hit": [
       "jb2a.particle_burst.01.circle.bluepurple"
     ],
     "aura": [
+      "jb2a.swirling_leaves.loop.01.pink",
       "jb2a.swirling_leaves.loop.01.green"
     ],
     "area": [
@@ -591,7 +588,7 @@ export const SPELL_ASSETS = {
     ],
     "bolt": [
       "jb2a.energy_beam.normal.purple.01",
-      "jb2a.energy_beam.normal.blue.01"
+      "jb2a.energy_beam.normal.bluepink.02"
     ],
     "hit": [
       "jb2a.swirling_feathers.outburst.01.purple",
@@ -613,11 +610,11 @@ export const SPELL_ASSETS = {
     ],
     "bolt": [
       "jb2a.energy_beam.normal.purple.01",
-      "jb2a.energy_beam.normal.blue.01"
+      "jb2a.energy_conduit.bluepurple.circle.01"
     ],
     "hit": [
       "jb2a.ground_cracks.01.purple",
-      "jb2a.ground_cracks.01.orange"
+      "jb2a.particle_burst.01.circle.bluepurple"
     ],
     "aura": [
       "jb2a.energy_field.02.above.purple",
@@ -635,7 +632,7 @@ export const SPELL_ASSETS = {
     ],
     "bolt": [
       "jb2a.sword.throw.blue",
-      "jb2a.energy_beam.normal.blue.01"
+      "jb2a.energy_beam.normal.bluepink.02"
     ],
     "hit": [
       "jb2a.divine_smite.target.dark_purple",
@@ -643,7 +640,7 @@ export const SPELL_ASSETS = {
     ],
     "aura": [
       "jb2a.spiritual_weapon.club.01.astral.01.purple",
-      "jb2a.spiritual_weapon.club.01.spectral.02.green"
+      "jb2a.spiritual_weapon.mace.spectral.blue"
     ],
     "area": [
       "jb2a.cloud_of_daggers.daggers.purple"
@@ -652,7 +649,7 @@ export const SPELL_ASSETS = {
   "web": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.01.yellow"
+      "jb2a.cast_generic.sound.01.pinkteal"
     ],
     "bolt": [
       "jb2a.energy_beam.normal.purple.01",
@@ -678,7 +675,7 @@ export const SPELL_ASSETS = {
     ],
     "bolt": [
       "jb2a.energy_beam.normal.purple.01",
-      "jb2a.energy_beam.normal.blue.01"
+      "jb2a.energy_conduit.bluepurple.circle.01"
     ],
     "hit": [
       "jb2a.detect_magic.circle.purple",
@@ -722,7 +719,7 @@ export const SPELL_ASSETS = {
       "jb2a.magic_missile.purple"
     ],
     "hit": [
-      "jb2a.sleep.target.dark_orangepurple",
+      "jb2a.sleep.target.dark_purple",
       "jb2a.sleep.target.pink"
     ],
     "aura": [
@@ -759,7 +756,7 @@ export const SPELL_ASSETS = {
   "arcane": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.01.yellow"
+      "jb2a.cast_generic.sound.01.pinkteal"
     ],
     "bolt": [
       "jb2a.magic_missile.purple"

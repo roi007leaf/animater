@@ -2,7 +2,8 @@
 // conditions, persistent damage, splash targeting or terrain rules.
 export const WEAPON_COLORS = {physical:'#d8bf8a',fire:'#ff875f',cold:'#82d8ff',electricity:'#acb0ff',acid:'#b8e580',poison:'#8dd998',void:'#9366bf',negative:'#9366bf',vitality:'#fff0ab',positive:'#fff0ab',sonic:'#b9cff5',mental:'#c591e5',force:'#c9b8ff',spirit:'#fff0cf',bleed:'#c53750',water:'#7dcced',mud:'#b48b60',glue:'#ddd49e',light:'#fff5b3',silver:'#cbd5eb',foam:'#cbbfac'};
 export const WEAPON_ACCENTS = {
- physical:['impact.001.white','impact.001'],
+ // impact.001 has no white film; 005/007/009 do. Never fall through to impact.001.blue.
+ physical:['impact.005.white','impact.007.white','impact.001.orange','impact.005','impact.001'],
  fire:['impact.fire.01.orange','fireball.explosion.orange'],
  cold:['impact.frost.white.01','impact_themed.ice_shard.blue'],
  electricity:['lightning_ball.blue','lightning_orb.01.complete.blue'],

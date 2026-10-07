@@ -2126,6 +2126,24 @@
       ]
     },
     {
+      "id": "fgmxDC2PH2TEYGKG",
+      "name": "Life Tap",
+      "layout": "fold",
+      "finish": "settle",
+      "method": "shared-family-composition-variation",
+      "prosePreferenceApplied": true,
+      "evidence": [
+        {
+          "layout": "fold",
+          "phrase": "siphon"
+        },
+        {
+          "layout": "bloom",
+          "phrase": "restore"
+        }
+      ]
+    },
+    {
       "id": "lOZhcvtej10TqlQm",
       "name": "Lifelink Surge",
       "layout": "weave",
@@ -2398,20 +2416,6 @@
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
       "evidence": []
-    },
-    {
-      "id": "2BV2yYPfVJ5zirZt",
-      "name": "Mountain Resilience",
-      "layout": "diagonal",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": true,
-      "evidence": [
-        {
-          "layout": "diagonal",
-          "phrase": "piercing"
-        }
-      ]
     },
     {
       "id": "4EmLum6EdvXxbxCj",
@@ -2742,20 +2746,6 @@
         {
           "layout": "bloom",
           "phrase": "heals"
-        }
-      ]
-    },
-    {
-      "id": "qr0HOiiuqj5LKlDt",
-      "name": "Pillars of Sand",
-      "layout": "fold",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": [
-        {
-          "layout": "bloom",
-          "phrase": "create"
         }
       ]
     },
@@ -3332,6 +3322,20 @@
       "evidence": []
     },
     {
+      "id": "avEutOjF2ox947fp",
+      "name": "Sliding Blocks",
+      "layout": "bloom",
+      "finish": "settle",
+      "method": "shared-family-composition-variation",
+      "prosePreferenceApplied": true,
+      "evidence": [
+        {
+          "layout": "bloom",
+          "phrase": "conjure"
+        }
+      ]
+    },
+    {
       "id": "hWtB81P2KGzGHKAJ",
       "name": "Slime Spit",
       "layout": "fold",
@@ -3537,20 +3541,6 @@
       ]
     },
     {
-      "id": "3xD8DYrr8YDVYGg7",
-      "name": "Spike Stones",
-      "layout": "diagonal",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": true,
-      "evidence": [
-        {
-          "layout": "diagonal",
-          "phrase": "piercing"
-        }
-      ]
-    },
-    {
       "id": "nDgrpbKICpjUz372",
       "name": "Spiked Carapace",
       "layout": "diagonal",
@@ -3698,6 +3688,20 @@
         {
           "layout": "bloom",
           "phrase": "create"
+        }
+      ]
+    },
+    {
+      "id": "Pr1ruNTbzGn3H9w5",
+      "name": "Stone to Flesh",
+      "layout": "rise",
+      "finish": "settle",
+      "method": "shared-family-composition-variation",
+      "prosePreferenceApplied": false,
+      "evidence": [
+        {
+          "layout": "bloom",
+          "phrase": "restore"
         }
       ]
     },
@@ -4850,8 +4854,8 @@
         "file": "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedInwardCompleteWood01_01_Regular_Green_700x700.webm"
       },
       {
-        "key": "jb2a.aura_themed.01.inward.loop.metal.01.green",
-        "file": "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedInwardLoopMetal01_01_Regular_Green_700x700.webm"
+        "key": "jb2a.aura_themed.01.inward.loop.metal.01.grey",
+        "file": "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedInwardLoopMetal01_01_Regular_Grey_700x700.webm"
       },
       {
         "key": "jb2a.aura_themed.01.orbit.complete.metal.01.grey",
@@ -4876,10 +4880,6 @@
       {
         "key": "jb2a.bats.complete.01.red",
         "file": "modules/jb2a_patreon/Library/Generic/Creature/BatsComplete01_01_Regular_Red_600x600.webm"
-      },
-      {
-        "key": "jb2a.bite.200px.blue",
-        "file": "modules/jb2a_patreon/Library/Generic/Creature/Bite_01_Regular_Blue_200x200.webm"
       },
       {
         "key": "jb2a.bite.200px.green",
@@ -5173,6 +5173,10 @@
         "file": "modules/jb2a_patreon/Library/2nd_Level/Darkness/Darkness_01_Black_600x600.webm"
       },
       {
+        "key": "jb2a.darkness.green",
+        "file": "modules/jb2a_patreon/Library/2nd_Level/Darkness/Darkness_01_Green_600x600.webm"
+      },
+      {
         "key": "jb2a.dart.01.throw.physical.white",
         "file": "modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Ranged/Dart01_01_Regular_White_15ft_1000x400.webm",
         "distanceFiles": {
@@ -5197,6 +5201,10 @@
       {
         "key": "jb2a.detect_magic.circle.greenorange",
         "file": "modules/jb2a_patreon/Library/1st_Level/Detect_Magic/DetectMagicCircle_01_Regular_GreenOrange_1200x1200.webm"
+      },
+      {
+        "key": "jb2a.detect_magic.circle.grey",
+        "file": "modules/jb2a_patreon/Library/1st_Level/Detect_Magic/DetectMagicCircle_01_Regular_Grey_1200x1200.webm"
       },
       {
         "key": "jb2a.detect_magic.circle.purple",
@@ -5263,12 +5271,12 @@
         }
       },
       {
-        "key": "jb2a.divine_smite.caster.blueyellow",
-        "file": "modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_BlueYellow_Caster_400x400.webm"
+        "key": "jb2a.divine_smite.caster.standard.yellowwhite",
+        "file": "modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_YellowWhite_Caster_400x400.webm"
       },
       {
-        "key": "jb2a.divine_smite.target.blueyellow",
-        "file": "modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_BlueYellow_Target_400x400.webm"
+        "key": "jb2a.divine_smite.target.yellowwhite",
+        "file": "modules/jb2a_patreon/Library/2nd_Level/Divine_Smite/DivineSmite_01_Regular_YellowWhite_Target_400x400.webm"
       },
       {
         "key": "jb2a.dizzy_stars.200px.purple",
@@ -5306,16 +5314,6 @@
           "30ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyBeam_01_Regular_Blue_30ft_1600x400.webm",
           "60ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyBeam_01_Regular_Blue_60ft_2800x400.webm",
           "90ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyBeam_01_Regular_Blue_90ft_4000x400.webm"
-        }
-      },
-      {
-        "key": "jb2a.energy_beam.normal.bluegreen.01",
-        "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyBeam_01_Regular_BlueGreen_15ft_1000x400.webm",
-        "distanceFiles": {
-          "15ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyBeam_01_Regular_BlueGreen_15ft_1000x400.webm",
-          "30ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyBeam_01_Regular_BlueGreen_30ft_1600x400.webm",
-          "60ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyBeam_01_Regular_BlueGreen_60ft_2800x400.webm",
-          "90ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyBeam_01_Regular_BlueGreen_90ft_4000x400.webm"
         }
       },
       {
@@ -5389,6 +5387,10 @@
         "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyField_01_Regular_Green_600x600.webm"
       },
       {
+        "key": "jb2a.energy_field.01.multicolored",
+        "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyField_01_Regular_Rainbow_600x600.webm"
+      },
+      {
         "key": "jb2a.energy_field.01.yellow",
         "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyField_01_Regular_Yellow_600x600.webm"
       },
@@ -5413,6 +5415,10 @@
         "file": "modules/jb2a_patreon/Library/Generic/Marker/EnergyStrands02_01_Regular_Green_400x400.webm"
       },
       {
+        "key": "jb2a.energy_strands.02.marker.greenorange",
+        "file": "modules/jb2a_patreon/Library/Generic/Marker/EnergyStrands02_01_Regular_GreenOrange_400x400.webm"
+      },
+      {
         "key": "jb2a.energy_strands.complete.blue.01",
         "file": "modules/jb2a_patreon/Library/Generic/Marker/EnergyStrands_01_Regular_Blue_600x600.webm"
       },
@@ -5423,6 +5429,10 @@
       {
         "key": "jb2a.energy_strands.complete.dark_red.01",
         "file": "modules/jb2a_patreon/Library/Generic/Marker/EnergyStrands_01_Dark_Red_600x600.webm"
+      },
+      {
+        "key": "jb2a.energy_strands.complete.grey.01",
+        "file": "modules/jb2a_patreon/Library/Generic/Marker/EnergyStrands_01_Regular_Grey_600x600.webm"
       },
       {
         "key": "jb2a.energy_strands.complete.purple.01",
@@ -5473,14 +5483,14 @@
         }
       },
       {
-        "key": "jb2a.energy_strands.range.multiple.dark_greenpurple.02",
-        "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple02_Dark_GreenPurple_15ft_1000x400.webm",
+        "key": "jb2a.energy_strands.range.multiple.dark_purple.01",
+        "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple01_Dark_Purple_15ft_1000x400.webm",
         "distanceFiles": {
-          "05ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple02_Dark_GreenPurple_05ft_600x400.webm",
-          "15ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple02_Dark_GreenPurple_15ft_1000x400.webm",
-          "30ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple02_Dark_GreenPurple_30ft_1600x400.webm",
-          "60ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple02_Dark_GreenPurple_60ft_2800x400.webm",
-          "90ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple02_Dark_GreenPurple_90ft_4000x400.webm"
+          "05ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple01_Dark_Purple_05ft_600x400.webm",
+          "15ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple01_Dark_Purple_15ft_1000x400.webm",
+          "30ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple01_Dark_Purple_30ft_1600x400.webm",
+          "60ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple01_Dark_Purple_60ft_2800x400.webm",
+          "90ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_Multiple01_Dark_Purple_90ft_4000x400.webm"
         }
       },
       {
@@ -5506,17 +5516,6 @@
         }
       },
       {
-        "key": "jb2a.energy_strands.range.standard.blue.01",
-        "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Blue_15ft_1000x400.webm",
-        "distanceFiles": {
-          "05ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Blue_05ft_600x400.webm",
-          "15ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Blue_15ft_1000x400.webm",
-          "30ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Blue_30ft_1600x400.webm",
-          "60ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Blue_60ft_2800x400.webm",
-          "90ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Blue_90ft_4000x400.webm"
-        }
-      },
-      {
         "key": "jb2a.energy_strands.range.standard.dark_green.01",
         "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Dark_Green_15ft_1000x400.webm",
         "distanceFiles": {
@@ -5536,6 +5535,17 @@
           "30ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Dark_Purple02_30ft_1600x400.webm",
           "60ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Dark_Purple02_60ft_2800x400.webm",
           "90ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Dark_Purple02_90ft_4000x400.webm"
+        }
+      },
+      {
+        "key": "jb2a.energy_strands.range.standard.orange.01",
+        "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Orange_15ft_1000x400.webm",
+        "distanceFiles": {
+          "05ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Orange_05ft_600x400.webm",
+          "15ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Orange_15ft_1000x400.webm",
+          "30ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Orange_30ft_1600x400.webm",
+          "60ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Orange_60ft_2800x400.webm",
+          "90ft": "modules/jb2a_patreon/Library/Generic/Energy/EnergyStrand_01_Regular_Orange_90ft_4000x400.webm"
         }
       },
       {
@@ -5583,8 +5593,8 @@
         }
       },
       {
-        "key": "jb2a.energy_wall.01.05x05ft.01.complete.blue",
-        "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyWall01_01_Regular_Blue_05x05ft_Complete_400x400.webm"
+        "key": "jb2a.energy_wall.01.05x05ft.01.complete.orange",
+        "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyWall01_01_Regular_Orange_05x05ft_Complete_400x400.webm"
       },
       {
         "key": "jb2a.energy_wall.01.05x05ft.01.complete.purple",
@@ -5593,10 +5603,6 @@
       {
         "key": "jb2a.entangle.02.complete.02.green",
         "file": "modules/jb2a_patreon/Library/1st_Level/Entangle/Entangle02_02_Regular_Green_500x500.webm"
-      },
-      {
-        "key": "jb2a.eruption.blue.01",
-        "file": "modules/jb2a_patreon/Library/Generic/Fire/Eruption_01_Regular_Blue_600x600.webm"
       },
       {
         "key": "jb2a.eruption.orange.01",
@@ -5670,11 +5676,19 @@
         ]
       },
       {
-        "key": "jb2a.falling_rocks.side.1x1.black",
-        "file": "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_01_Regular_Black_05x05ft_600x600.webm",
+        "key": "jb2a.falling_rocks.side.1x1.orange",
+        "file": "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_01_Regular_Orange_05x05ft_600x600.webm",
         "files": [
-          "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_01_Regular_Black_05x05ft_600x600.webm",
-          "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_02_Regular_Black_05x05ft_600x600.webm"
+          "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_01_Regular_Orange_05x05ft_600x600.webm",
+          "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_02_Regular_Orange_05x05ft_600x600.webm"
+        ]
+      },
+      {
+        "key": "jb2a.falling_rocks.side.1x1.sandstone",
+        "file": "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_01_Regular_Sandstone_05x05ft_600x600.webm",
+        "files": [
+          "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_01_Regular_Sandstone_05x05ft_600x600.webm",
+          "modules/jb2a_patreon/Library/Generic/Traps/Falling_Rocks/FallingRocks01Side_02_Regular_Sandstone_05x05ft_600x600.webm"
         ]
       },
       {
@@ -5697,20 +5711,20 @@
         }
       },
       {
-        "key": "jb2a.fire_ring.500px.blue",
-        "file": "modules/jb2a_patreon/Library/Generic/Fire/FireRing_01_Circle_Blue_500.webm"
-      },
-      {
         "key": "jb2a.fire_ring.500px.red",
         "file": "modules/jb2a_patreon/Library/Generic/Fire/FireRing_01_Circle_Red_500.webm"
+      },
+      {
+        "key": "jb2a.fire_ring.500px.yellow",
+        "file": "modules/jb2a_patreon/Library/Generic/Fire/FireRing_01_Circle_Yellow_500x500.webm"
       },
       {
         "key": "jb2a.fire_ring.900px.yellow",
         "file": "modules/jb2a_patreon/Library/Generic/Fire/FireRing_01_Circle_Yellow_900x900.webm"
       },
       {
-        "key": "jb2a.fire_trap.01.green",
-        "file": "modules/jb2a_patreon/Library/Generic/Traps/FireTrap01_01_Regular_Green_1000x1000.webm"
+        "key": "jb2a.fire_trap.01.orange",
+        "file": "modules/jb2a_patreon/Library/Generic/Traps/FireTrap01_01_Regular_Orange_1000x1000.webm"
       },
       {
         "key": "jb2a.fireball.explosion.orange",
@@ -5785,12 +5799,16 @@
         "file": "modules/jb2a_patreon/Library/Generic/Fire/Flame/Flames04_01_Regular_Orange_Loop_400x600.webm"
       },
       {
-        "key": "jb2a.flaming_sphere.200px.blue.01",
-        "file": "modules/jb2a_patreon/Library/2nd_Level/Flaming_Sphere/FlamingSphere_01_Blue_200x200.webm"
-      },
-      {
         "key": "jb2a.flaming_sphere.200px.orange.01",
         "file": "modules/jb2a_patreon/Library/2nd_Level/Flaming_Sphere/FlamingSphere_01_Orange_200x200.webm"
+      },
+      {
+        "key": "jb2a.flaming_sphere.200px.orange.02",
+        "file": "modules/jb2a_patreon/Library/2nd_Level/Flaming_Sphere/FlamingSphere_02_Orange_200x200.webm"
+      },
+      {
+        "key": "jb2a.flaming_sphere.200px.rainbow",
+        "file": "modules/jb2a_patreon/Library/2nd_Level/Flaming_Sphere/Multicoloured/FlamingSphere_01_Rainbow_200x200.webm"
       },
       {
         "key": "jb2a.fog_cloud.01.white",
@@ -5801,12 +5819,20 @@
         "file": "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_02_Regular_Green_800x800.webm"
       },
       {
+        "key": "jb2a.fog_cloud.02.green02",
+        "file": "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_02_Regular_Green02_800x800.webm"
+      },
+      {
         "key": "jb2a.fog_cloud.02.white",
         "file": "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_02_Regular_White_800x800.webm"
       },
       {
-        "key": "jb2a.footprints.human.black",
-        "file": "modules/jb2a_patreon/Library/Generic/FootPrint/HumanFootPrint_01_Black_200x200.webm"
+        "key": "jb2a.fog_cloud.03.green02",
+        "file": "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_03_Regular_Green02_800x800.webm"
+      },
+      {
+        "key": "jb2a.footprints.human.teal",
+        "file": "modules/jb2a_patreon/Library/Generic/FootPrint/HumanFootPrint_01_Teal_200x200.webm"
       },
       {
         "key": "jb2a.footprints.shoe.grey",
@@ -5927,8 +5953,8 @@
         "file": "modules/jb2a_patreon/Library/1st_Level/Grease/Grease_Dark_Green_600x600.webm"
       },
       {
-        "key": "jb2a.ground_cracks.01.blue",
-        "file": "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_01_Regular_Blue_600x600.webm"
+        "key": "jb2a.grease.dark_purple.loop",
+        "file": "modules/jb2a_patreon/Library/1st_Level/Grease/Grease_Dark_Purple_600x600.webm"
       },
       {
         "key": "jb2a.ground_cracks.01.dark_red",
@@ -5951,20 +5977,12 @@
         "file": "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_01_Regular_White_600x600.webm"
       },
       {
-        "key": "jb2a.ground_cracks.02.blue",
-        "file": "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_02_Regular_Blue_600x600.webm"
-      },
-      {
         "key": "jb2a.ground_cracks.02.orange",
         "file": "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_02_Regular_Orange_600x600.webm"
       },
       {
         "key": "jb2a.ground_cracks.02.purple",
         "file": "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_02_Regular_Purple_600x600.webm"
-      },
-      {
-        "key": "jb2a.ground_cracks.03.blue",
-        "file": "modules/jb2a_patreon/Library/Generic/Fire/GroundCrackLoop_03_Regular_Blue_600x600.webm"
       },
       {
         "key": "jb2a.ground_cracks.03.orange",
@@ -6014,12 +6032,8 @@
         "file": "modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_02_Regular_GreenOrange_Burst_600x600.webm"
       },
       {
-        "key": "jb2a.healing_generic.burst.tealyellow",
-        "file": "modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_02_Regular_TealYellow_Burst_600x600.webm"
-      },
-      {
-        "key": "jb2a.healing_generic.loop.bluewhite",
-        "file": "modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_02_Regular_BlueWhite_Loop_600x600.webm"
+        "key": "jb2a.healing_generic.burst.yellowwhite",
+        "file": "modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_02_Regular_YellowWhite_Burst_600x600.webm"
       },
       {
         "key": "jb2a.healing_generic.loop.greenorange",
@@ -6050,6 +6064,10 @@
         "file": "modules/jb2a_patreon/Library/Generic/Ice/IceSpikesRadialBurst_01_Regular_White_1000x1000.webm"
       },
       {
+        "key": "jb2a.ice_spikes.radial.burst.yellow",
+        "file": "modules/jb2a_patreon/Library/Generic/Ice/IceSpikesRadialBurst_01_Regular_Yellow_1000x1000.webm"
+      },
+      {
         "key": "jb2a.ice_spikes.radial.loop.blue",
         "file": "modules/jb2a_patreon/Library/Generic/Ice/IceSpikesRadialLoop_01_Regular_Blue_1000x1000.webm"
       },
@@ -6068,6 +6086,10 @@
       {
         "key": "jb2a.icon.heart.pink",
         "file": "modules/jb2a_patreon/Library/Generic/UI/IconHeart_01_Regular_Pink_200x200.webm"
+      },
+      {
+        "key": "jb2a.icon.heart.teal",
+        "file": "modules/jb2a_patreon/Library/Generic/UI/IconHeart_01_Regular_Teal_200x200.webm"
       },
       {
         "key": "jb2a.icon.horror.purple",
@@ -6253,6 +6275,10 @@
         ]
       },
       {
+        "key": "jb2a.impact.ground_crack.01.orange",
+        "file": "modules/jb2a_patreon/Library/Generic/Impact/GroundCrackImpact_01_Regular_Orange_600x600.webm"
+      },
+      {
         "key": "jb2a.ioun_stones.01.blue.insight",
         "file": "modules/jb2a_patreon/Library/Generic/Item/IounStone_01_Insight_Blue_200x200.webm"
       },
@@ -6306,6 +6332,18 @@
         ]
       },
       {
+        "key": "jb2a.lightning_strike.yellow",
+        "file": "modules/jb2a_patreon/Library/Generic/Lightning/LightningStrike01_01_Regular_Yellow_800x800.webm",
+        "files": [
+          "modules/jb2a_patreon/Library/Generic/Lightning/LightningStrike01_01_Regular_Yellow_800x800.webm",
+          "modules/jb2a_patreon/Library/Generic/Lightning/LightningStrike01_02_Regular_Yellow_800x800.webm",
+          "modules/jb2a_patreon/Library/Generic/Lightning/LightningStrike01_03_Regular_Yellow_800x800.webm",
+          "modules/jb2a_patreon/Library/Generic/Lightning/LightningStrike01_04_Regular_Yellow_800x800.webm",
+          "modules/jb2a_patreon/Library/Generic/Lightning/LightningStrike01_05_Regular_Yellow_800x800.webm",
+          "modules/jb2a_patreon/Library/Generic/Lightning/LightningStrike01_06_Regular_Yellow_800x800.webm"
+        ]
+      },
+      {
         "key": "jb2a.liquid.blob.blue",
         "file": "modules/jb2a_patreon/Library/Generic/Liquid/LiquidBlob01_01_Regular_Blue_400x400.webm"
       },
@@ -6348,42 +6386,6 @@
       {
         "key": "jb2a.liquid.splash_side02.red",
         "file": "modules/jb2a_patreon/Library/Generic/Liquid/LiquidSplashSide02_01_Regular_Red_600x600.webm"
-      },
-      {
-        "key": "jb2a.magic_missile.blue",
-        "file": "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_15ft_01_1000x400.webm",
-        "distanceFiles": {
-          "05ft": [
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_05ft_01_600x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_05ft_02_600x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_05ft_03_600x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_05ft_04_600x400.webm"
-          ],
-          "15ft": [
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_15ft_01_1000x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_15ft_02_1000x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_15ft_03_1000x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_15ft_04_1000x400.webm"
-          ],
-          "30ft": [
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_30ft_01_1600x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_30ft_02_1600x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_30ft_03_1600x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_30ft_04_1600x400.webm"
-          ],
-          "60ft": [
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_60ft_01_2800x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_60ft_02_2800x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_60ft_03_2800x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_60ft_04_2800x400.webm"
-          ],
-          "90ft": [
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_90ft_01_4000x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_90ft_02_4000x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_90ft_03_4000x400.webm",
-            "modules/jb2a_patreon/Library/1st_Level/Magic_Missile/MagicMissile_01_Regular_Blue_90ft_04_4000x400.webm"
-          ]
-        }
       },
       {
         "key": "jb2a.magic_missile.dark_red",
@@ -6610,6 +6612,10 @@
         "file": "modules/jb2a_patreon/Library/Generic/Magic_Signs/Runes/DivinationRuneComplete_01_Regular_Purple_400x400.webm"
       },
       {
+        "key": "jb2a.magic_signs.rune.divination.loop.grey",
+        "file": "modules/jb2a_patreon/Library/Generic/Magic_Signs/Runes/DivinationRuneLoop_01_Regular_Grey_400x400.webm"
+      },
+      {
         "key": "jb2a.magic_signs.rune.divination.loop.orange",
         "file": "modules/jb2a_patreon/Library/Generic/Magic_Signs/Runes/DivinationRuneLoop_01_Regular_Orange_400x400.webm"
       },
@@ -6780,6 +6786,10 @@
         "file": "modules/jb2a_patreon/Library/Generic/Music_Notation/BassClef_01_Regular_Green_200x200.webm"
       },
       {
+        "key": "jb2a.music_notations.bass_clef.orange",
+        "file": "modules/jb2a_patreon/Library/Generic/Music_Notation/BassClef_01_Regular_Orange_200x200.webm"
+      },
+      {
         "key": "jb2a.music_notations.bass_clef.purple",
         "file": "modules/jb2a_patreon/Library/Generic/Music_Notation/BassClef_01_Regular_Purple_200x200.webm"
       },
@@ -6861,10 +6871,6 @@
         "file": "modules/jb2a_patreon/Library/Generic/Particles/Particles002/ParticlesComplete002_001_Many_Blue_600x600.webm"
       },
       {
-        "key": "jb2a.particles.inward.blue.01.01",
-        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward01_01_Regular_Blue_400x400.webm"
-      },
-      {
         "key": "jb2a.particles.inward.greenyellow.01.01",
         "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward01_01_Regular_GreenYellow_400x400.webm"
       },
@@ -6897,12 +6903,24 @@
         "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward02_04_Regular_GreenYellow_400x400.webm"
       },
       {
-        "key": "jb2a.particles.inward.orange.01.01",
-        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward01_01_Regular_Orange_400x400.webm"
-      },
-      {
         "key": "jb2a.particles.inward.orange.01.02",
         "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward01_02_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.inward.orange.01.03",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward01_03_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.inward.orange.01.04",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward01_04_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.inward.orange.01.05",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward01_05_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.inward.orange.02.02",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward02_02_Regular_Orange_400x400.webm"
       },
       {
         "key": "jb2a.particles.inward.purple.01.01",
@@ -6957,26 +6975,6 @@
         "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesInward01_01_Regular_White_400x400.webm"
       },
       {
-        "key": "jb2a.particles.outward.blue.01.01",
-        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_01_Regular_Blue_400x400.webm"
-      },
-      {
-        "key": "jb2a.particles.outward.blue.01.02",
-        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_02_Regular_Blue_400x400.webm"
-      },
-      {
-        "key": "jb2a.particles.outward.blue.01.04",
-        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_04_Regular_Blue_400x400.webm"
-      },
-      {
-        "key": "jb2a.particles.outward.blue.02.01",
-        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward02_01_Regular_Blue_400x400.webm"
-      },
-      {
-        "key": "jb2a.particles.outward.blue.02.03",
-        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward02_03_Regular_Blue_400x400.webm"
-      },
-      {
         "key": "jb2a.particles.outward.greenyellow.01.01",
         "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_01_Regular_GreenYellow_400x400.webm"
       },
@@ -7011,6 +7009,26 @@
       {
         "key": "jb2a.particles.outward.orange.01.02",
         "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_02_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.outward.orange.01.03",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_03_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.outward.orange.01.04",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_04_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.outward.orange.02.01",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward02_01_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.outward.orange.02.03",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward02_03_Regular_Orange_400x400.webm"
+      },
+      {
+        "key": "jb2a.particles.outward.orange.02.05",
+        "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward02_05_Regular_Orange_400x400.webm"
       },
       {
         "key": "jb2a.particles.outward.purple.01.01",
@@ -7077,10 +7095,6 @@
         "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesSwirl01_01_Regular_White_400x400.webm"
       },
       {
-        "key": "jb2a.plant_growth.02.ring.4x4.complete.greenred",
-        "file": "modules/jb2a_patreon/Library/Generic/Nature/PlantGrowthRing02_01_Regular_GreenRed_500x500.webm"
-      },
-      {
         "key": "jb2a.plant_growth.03.ring.4x4.complete.greenyellow",
         "file": "modules/jb2a_patreon/Library/Generic/Nature/PlantGrowthRing03_01_Regular_GreenYellow_500x500.webm"
       },
@@ -7095,6 +7109,10 @@
       {
         "key": "jb2a.plant_growth.03.square.4x4.complete.greenyellow",
         "file": "modules/jb2a_patreon/Library/Generic/Nature/PlantGrowthSquare03_01_Regular_GreenYellow_500x500.webm"
+      },
+      {
+        "key": "jb2a.plant_growth.04.ring.4x4.complete.greenwhite",
+        "file": "modules/jb2a_patreon/Library/Generic/Nature/PlantGrowthRing04_01_Regular_GreenWhite_500x500.webm"
       },
       {
         "key": "jb2a.plant_growth.04.round.4x4.complete.greenwhite",
@@ -7125,12 +7143,12 @@
         "file": "modules/jb2a_patreon/Library/Generic/Portals/Portal_Vortex_Purple_H_400x400.webm"
       },
       {
-        "key": "jb2a.portals.vertical.ring.blue",
-        "file": "modules/jb2a_patreon/Library/Generic/Portals/Portal_Bright_Blue_V_400x250.webm"
-      },
-      {
         "key": "jb2a.portals.vertical.ring.dark_purple",
         "file": "modules/jb2a_patreon/Library/Generic/Portals/Portal_Dark_Purple_V_400x250.webm"
+      },
+      {
+        "key": "jb2a.portals.vertical.ring.orange",
+        "file": "modules/jb2a_patreon/Library/Generic/Portals/Portal_Bright_Orange_V_400x250.webm"
       },
       {
         "key": "jb2a.portals.vertical.ring.purple",
@@ -7244,10 +7262,6 @@
         "file": "modules/jb2a_patreon/Library/Cantrip/Sacred_Flame/SacredFlameSource_01_Regular_Yellow_400x400.webm"
       },
       {
-        "key": "jb2a.sacred_flame.target.blue",
-        "file": "modules/jb2a_patreon/Library/Cantrip/Sacred_Flame/SacredFlameTarget_01_Regular_Blue_400x400.webm"
-      },
-      {
         "key": "jb2a.sacred_flame.target.yellow",
         "file": "modules/jb2a_patreon/Library/Cantrip/Sacred_Flame/SacredFlameTarget_01_Regular_Yellow_400x400.webm"
       },
@@ -7358,8 +7372,8 @@
         "file": "modules/jb2a_patreon/Library/1st_Level/Sleep/SleepSymbol01_01_Regular_Purple_400x400.webm"
       },
       {
-        "key": "jb2a.sleep.target.dark_orangepurple",
-        "file": "modules/jb2a_patreon/Library/1st_Level/Sleep/SleepMarker01_01_Dark_OrangePurple_400x400.webm"
+        "key": "jb2a.sleep.target.dark_purple",
+        "file": "modules/jb2a_patreon/Library/1st_Level/Sleep/SleepMarker01_01_Dark_Purple_400x400.webm"
       },
       {
         "key": "jb2a.sleet_storm.01.blue",
@@ -7370,12 +7384,12 @@
         "file": "modules/jb2a_patreon/Library/3rd_Level/Sleet_Storm/SleetStorm_02_Blue_800x800.webm"
       },
       {
-        "key": "jb2a.smoke.plumes.01.dark_green",
-        "file": "modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumes01_01_Dark_Green_400x400.webm",
+        "key": "jb2a.smoke.plumes.01.dark_red",
+        "file": "modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumes01_01_Dark_Red_400x400.webm",
         "files": [
-          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumes01_01_Dark_Green_400x400.webm",
-          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumes01_02_Dark_Green_400x400.webm",
-          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumes01_03_Dark_Green_400x400.webm"
+          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumes01_01_Dark_Red_400x400.webm",
+          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumes01_02_Dark_Red_400x400.webm",
+          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumes01_03_Dark_Red_400x400.webm"
         ]
       },
       {
@@ -7442,19 +7456,12 @@
         ]
       },
       {
-        "key": "jb2a.smoke.puff.ring.01.dark_black",
-        "file": "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing01_01_Dark_Black_400x400.webm",
+        "key": "jb2a.smoke.puff.ring.01.multicolored",
+        "file": "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing01_01_Regular_MultiColor01_400x400.webm",
         "files": [
-          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing01_01_Dark_Black_400x400.webm",
-          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing01_02_Dark_Black_400x400.webm",
-          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing01_03_Dark_Black_400x400.webm"
-        ]
-      },
-      {
-        "key": "jb2a.smoke.puff.ring.02.dark_black",
-        "file": "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing02_01_Dark_Black_400x400.webm",
-        "files": [
-          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing02_01_Dark_Black_400x400.webm"
+          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing01_01_Regular_MultiColor01_400x400.webm",
+          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing01_02_Regular_MultiColor01_400x400.webm",
+          "modules/jb2a_patreon/Library/Generic/Smoke/SmokePuffRing01_03_Regular_MultiColor01_400x400.webm"
         ]
       },
       {
@@ -7477,6 +7484,14 @@
         "file": "modules/jb2a_patreon/Library/Generic/Energy/Soundwave01_01_Regular_Green_600x600.webm"
       },
       {
+        "key": "jb2a.soundwave.01.multicolored01",
+        "file": "modules/jb2a_patreon/Library/Generic/Energy/Soundwave01_01_Regular_MultiColor01_600x600.webm"
+      },
+      {
+        "key": "jb2a.soundwave.01.orangepurple",
+        "file": "modules/jb2a_patreon/Library/Generic/Energy/Soundwave01_01_Regular_OrangePurple_600x600.webm"
+      },
+      {
         "key": "jb2a.soundwave.01.orangeyellow",
         "file": "modules/jb2a_patreon/Library/Generic/Energy/Soundwave01_01_Regular_OrangeYellow_600x600.webm"
       },
@@ -7491,6 +7506,14 @@
       {
         "key": "jb2a.soundwave.02.green",
         "file": "modules/jb2a_patreon/Library/Generic/Energy/Soundwave01_02_Regular_Green_600x600.webm"
+      },
+      {
+        "key": "jb2a.soundwave.02.multicolored01",
+        "file": "modules/jb2a_patreon/Library/Generic/Energy/Soundwave01_02_Regular_MultiColor01_600x600.webm"
+      },
+      {
+        "key": "jb2a.soundwave.02.orangepurple",
+        "file": "modules/jb2a_patreon/Library/Generic/Energy/Soundwave01_02_Regular_OrangePurple_600x600.webm"
       },
       {
         "key": "jb2a.soundwave.02.orangeyellow",
@@ -7555,12 +7578,8 @@
         "file": "modules/jb2a_patreon/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_Club01_01_Astral_Purple_400x400.webm"
       },
       {
-        "key": "jb2a.spiritual_weapon.dagger.02.spectral.02.green",
-        "file": "modules/jb2a_patreon/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_Dagger02_02_Spectral_Green_400x400.webm"
-      },
-      {
-        "key": "jb2a.spiritual_weapon.longsword.01.astral.01.blue",
-        "file": "modules/jb2a_patreon/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_LongSword01_01_Astral_Blue_400x400.webm"
+        "key": "jb2a.spiritual_weapon.dagger.02.spectral.02.orange",
+        "file": "modules/jb2a_patreon/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_Dagger02_02_Spectral_Orange_400x400.webm"
       },
       {
         "key": "jb2a.spiritual_weapon.longsword.01.astral.01.purple",
@@ -7675,8 +7694,20 @@
         ]
       },
       {
+        "key": "jb2a.swirling_leaves.loop.01.pink",
+        "file": "modules/jb2a_patreon/Library/Generic/Nature/SwirlingLeavesLoop01_01_Regular_Pink_400x400.webm",
+        "files": [
+          "modules/jb2a_patreon/Library/Generic/Nature/SwirlingLeavesLoop01_01_Regular_Pink_400x400.webm",
+          "modules/jb2a_patreon/Library/Generic/Nature/SwirlingLeavesLoop01_02_Regular_Pink_400x400.webm"
+        ]
+      },
+      {
         "key": "jb2a.swirling_leaves.loop.02.green",
         "file": "modules/jb2a_patreon/Library/Generic/Nature/SwirlingLeavesLoop02_01_Regular_Green_400x400.webm"
+      },
+      {
+        "key": "jb2a.swirling_leaves.loop.02.pink",
+        "file": "modules/jb2a_patreon/Library/Generic/Nature/SwirlingLeavesLoop02_01_Regular_Pink_400x400.webm"
       },
       {
         "key": "jb2a.swirling_leaves.outburst.01.bluepurple",
@@ -7815,8 +7846,8 @@
         }
       },
       {
-        "key": "jb2a.token_border.circle.spinning.blue.001",
-        "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircleSpin_01_Regular_Blue_400x400.webm"
+        "key": "jb2a.token_border.circle.spinning.orange.001",
+        "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircleSpin_01_Regular_Orange_400x400.webm"
       },
       {
         "key": "jb2a.token_border.circle.spinning.purple.001",
@@ -7938,10 +7969,6 @@
         "file": "modules/jb2a_patreon/Library/Generic/Marker/WardStar_02_Regular_Yellow_600x600.webm"
       },
       {
-        "key": "jb2a.water_splash.circle.01.black",
-        "file": "modules/jb2a_patreon/Library/Generic/Liquid/WaterSplashLoop_01_01_Regular_Black_600x600.webm"
-      },
-      {
         "key": "jb2a.water_splash.circle.01.blue",
         "file": "modules/jb2a_patreon/Library/Generic/Liquid/WaterSplashLoop_01_01_Regular_Blue_600x600.webm"
       },
@@ -7952,6 +7979,10 @@
       {
         "key": "jb2a.water_splash.circle.01.purple",
         "file": "modules/jb2a_patreon/Library/Generic/Liquid/WaterSplashLoop_01_01_Regular_Purple_600x600.webm"
+      },
+      {
+        "key": "jb2a.water_splash.circle.01.red",
+        "file": "modules/jb2a_patreon/Library/Generic/Liquid/WaterSplashLoop_01_01_Regular_Red_600x600.webm"
       },
       {
         "key": "jb2a.water_splash.cone.01.blue",
@@ -7982,6 +8013,10 @@
         "file": "modules/jb2a_patreon/Library/7th_Level/Whirlwind/Whirlwind_01_Purple_400x400.webm"
       },
       {
+        "key": "jb2a.whirlwind.red",
+        "file": "modules/jb2a_patreon/Library/7th_Level/Whirlwind/Whirlwind_01_Red_400x400.webm"
+      },
+      {
         "key": "jb2a.wind_lines.01.01.white",
         "file": "modules/jb2a_patreon/Library/Generic/Wind/WindLines01_01_Regular_White_500x500.webm"
       },
@@ -7990,12 +8025,28 @@
         "file": "modules/jb2a_patreon/Library/Generic/Wind/WindLines01_02_Regular_White_500x500.webm"
       },
       {
+        "key": "jb2a.wind_lines.01.leaves.01.green",
+        "file": "modules/jb2a_patreon/Library/Generic/Wind/WindLinesLeaves01_01_Regular_Green_500x500.webm"
+      },
+      {
         "key": "jb2a.wind_lines.01.leaves.01.greenorange",
         "file": "modules/jb2a_patreon/Library/Generic/Wind/WindLinesLeaves01_01_Regular_GreenOrange_500x500.webm"
       },
       {
+        "key": "jb2a.wind_lines.01.leaves.01.pink",
+        "file": "modules/jb2a_patreon/Library/Generic/Wind/WindLinesLeaves01_01_Regular_Pink_500x500.webm"
+      },
+      {
+        "key": "jb2a.wind_lines.01.leaves.02.green",
+        "file": "modules/jb2a_patreon/Library/Generic/Wind/WindLinesLeaves01_02_Regular_Green_500x500.webm"
+      },
+      {
         "key": "jb2a.wind_lines.01.leaves.02.greenorange",
         "file": "modules/jb2a_patreon/Library/Generic/Wind/WindLinesLeaves01_02_Regular_GreenOrange_500x500.webm"
+      },
+      {
+        "key": "jb2a.wind_lines.01.leaves.02.pink",
+        "file": "modules/jb2a_patreon/Library/Generic/Wind/WindLinesLeaves01_02_Regular_Pink_500x500.webm"
       },
       {
         "key": "jb2a.wind_stream.1200.white",
@@ -8220,6 +8271,13 @@
         ]
       },
       {
+        "key": "jb2a.cast_generic.sound.01.pinkteal",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Cast/CastSound01_01_Regular_PinkTeal_600x600.webm",
+        "files": [
+          "modules/JB2A_DnD5e/Library/Generic/Cast/CastSound01_01_Regular_PinkTeal_600x600.webm"
+        ]
+      },
+      {
         "key": "jb2a.cast_shape.circle.01.blue",
         "file": "modules/JB2A_DnD5e/Library/Generic/Cast/CastShapeCircle01_01_Regular_Blue_600x600.webm"
       },
@@ -8289,6 +8347,10 @@
       {
         "key": "jb2a.darkness.black",
         "file": "modules/JB2A_DnD5e/Library/2nd_Level/Darkness/Darkness_01_Black_600x600.webm"
+      },
+      {
+        "key": "jb2a.darkness.green",
+        "file": "modules/JB2A_DnD5e/Library/2nd_Level/Darkness/Darkness_01_Green_600x600.webm"
       },
       {
         "key": "jb2a.detect_magic.circle.blue",
@@ -8369,6 +8431,17 @@
           "30ft": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_02_Regular_BluePink_30ft_1600x400.webm",
           "60ft": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_02_Regular_BluePink_60ft_2800x400.webm",
           "90ft": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_02_Regular_BluePink_90ft_4000x400.webm"
+        }
+      },
+      {
+        "key": "jb2a.energy_beam.normal.bluepink.03",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_03_Regular_BluePink_15ft_1000x400.webm",
+        "distanceFiles": {
+          "05ft": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_03_Regular_BluePink_05ft_600x400.webm",
+          "15ft": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_03_Regular_BluePink_15ft_1000x400.webm",
+          "30ft": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_03_Regular_BluePink_30ft_1600x400.webm",
+          "60ft": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_03_Regular_BluePink_60ft_2800x400.webm",
+          "90ft": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyBeam_03_Regular_BluePink_90ft_4000x400.webm"
         }
       },
       {
@@ -8609,12 +8682,16 @@
         "file": "modules/JB2A_DnD5e/Library/Generic/Fire/Flame/Flames04_01_Regular_Orange_Loop_400x600.webm"
       },
       {
-        "key": "jb2a.flaming_sphere.200px.blue",
-        "file": "modules/JB2A_DnD5e/Library/2nd_Level/Flaming_Sphere/FlamingSphere_01_Blue_200x200.webm"
-      },
-      {
         "key": "jb2a.flaming_sphere.200px.orange.01",
         "file": "modules/JB2A_DnD5e/Library/2nd_Level/Flaming_Sphere/FlamingSphere_01_Orange_200x200.webm"
+      },
+      {
+        "key": "jb2a.flaming_sphere.200px.orange.02",
+        "file": "modules/JB2A_DnD5e/Library/2nd_Level/Flaming_Sphere/FlamingSphere_02_Orange_200x200.webm"
+      },
+      {
+        "key": "jb2a.flaming_sphere.200px.rainbow",
+        "file": "modules/JB2A_DnD5e/Library/2nd_Level/Flaming_Sphere/Multicoloured/FlamingSphere_01_Rainbow_200x200.webm"
       },
       {
         "key": "jb2a.fog_cloud.01.white",
@@ -8879,6 +8956,14 @@
       {
         "key": "jb2a.impact.ground_crack.03.orange",
         "file": "modules/JB2A_DnD5e/Library/Generic/Impact/GroundCrackImpact_03_Regular_Orange_600x600.webm"
+      },
+      {
+        "key": "jb2a.impact.yellow",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Impact/Impact_06_Regular_Yellow_400x400.webm",
+        "files": [
+          "modules/JB2A_DnD5e/Library/Generic/Impact/Impact_06_Regular_Yellow_400x400.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Impact/Impact_07_Regular_Yellow_400x400.webm"
+        ]
       },
       {
         "key": "jb2a.ioun_stones.01.blue.insight",
@@ -9176,13 +9261,13 @@
         ]
       },
       {
-        "key": "jb2a.melee_generic.creature_attack.claw.001.red",
-        "file": "modules/JB2A_DnD5e/Library/Generic/Creature/Claw/CreatureAttackClaw_001_001_Red_800x600.webm",
+        "key": "jb2a.melee_generic.creature_attack.fist.002.blue",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Creature/Fist/CreatureAttackFist_002_001_Blue_800x600.webm",
         "files": [
-          "modules/JB2A_DnD5e/Library/Generic/Creature/Claw/CreatureAttackClaw_001_001_Red_800x600.webm",
-          "modules/JB2A_DnD5e/Library/Generic/Creature/Claw/CreatureAttackClaw_001_002_Red_800x600.webm",
-          "modules/JB2A_DnD5e/Library/Generic/Creature/Claw/CreatureAttackClaw_001_003_Red_800x600.webm",
-          "modules/JB2A_DnD5e/Library/Generic/Creature/Claw/CreatureAttackClaw_001_004_Red_800x600.webm"
+          "modules/JB2A_DnD5e/Library/Generic/Creature/Fist/CreatureAttackFist_002_001_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Creature/Fist/CreatureAttackFist_002_002_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Creature/Fist/CreatureAttackFist_002_003_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Creature/Fist/CreatureAttackFist_002_004_Blue_800x600.webm"
         ]
       },
       {
@@ -9192,6 +9277,26 @@
           "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/GenericSlash01_01_Regular_Orange_800x600.webm",
           "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/GenericSlash01_02_Regular_Orange_800x600.webm",
           "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/GenericSlash01_03_Regular_Orange_800x600.webm"
+        ]
+      },
+      {
+        "key": "jb2a.melee_generic.slash.02.001.blue",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_001_001_Blue_800x600.webm",
+        "files": [
+          "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_001_001_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_001_002_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_001_003_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_001_004_Blue_800x600.webm"
+        ]
+      },
+      {
+        "key": "jb2a.melee_generic.slash.02.002.blue",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_002_001_Blue_800x600.webm",
+        "files": [
+          "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_002_001_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_002_002_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_002_003_Blue_800x600.webm",
+          "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Slash02/GenericSlash02_002_004_Blue_800x600.webm"
         ]
       },
       {
@@ -9576,10 +9681,6 @@
         "file": "modules/JB2A_DnD5e/Library/3rd_Level/Spirit_Guardians/SpiritGuardians_01_Light_BlueYellow_600x600.webm"
       },
       {
-        "key": "jb2a.spiritual_weapon.club.01.spectral.02.green",
-        "file": "modules/JB2A_DnD5e/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_Club01_02_Spectral_Green_400x400.webm"
-      },
-      {
         "key": "jb2a.spiritual_weapon.dagger.02.spectral.02.green",
         "file": "modules/JB2A_DnD5e/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_Dagger02_02_Spectral_Green_400x400.webm"
       },
@@ -9590,6 +9691,10 @@
       {
         "key": "jb2a.spiritual_weapon.mace.flaming.yellow",
         "file": "modules/JB2A_DnD5e/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_Mace01_01_Flaming_Yellow_200x200.webm"
+      },
+      {
+        "key": "jb2a.spiritual_weapon.mace.spectral.blue",
+        "file": "modules/JB2A_DnD5e/Library/2nd_Level/Spiritual_Weapon/SpiritualWeapon_Mace01_01_Spectral_Blue_200x200.webm"
       },
       {
         "key": "jb2a.spiritual_weapon.spear.01.spectral.02.green",
@@ -9711,19 +9816,33 @@
         ]
       },
       {
-        "key": "jb2a.throwable.launch.cannon_ball.01.black",
-        "file": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/LaunchCannonBall01_01_Regular_Black_15ft_1000x400.webm",
+        "key": "jb2a.throwable.launch.missile.01.blue",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/Missile01_01_Regular_Blue_15ft_1000x400.webm",
         "distanceFiles": {
-          "05ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/LaunchCannonBall01_01_Regular_Black_05ft_600x400.webm",
-          "15ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/LaunchCannonBall01_01_Regular_Black_15ft_1000x400.webm",
-          "30ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/LaunchCannonBall01_01_Regular_Black_30ft_1600x400.webm",
-          "60ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/LaunchCannonBall01_01_Regular_Black_60ft_2800x400.webm",
-          "90ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/LaunchCannonBall01_01_Regular_Black_90ft_4000x400.webm"
+          "15ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/Missile01_01_Regular_Blue_15ft_1000x400.webm",
+          "30ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/Missile01_01_Regular_Blue_30ft_1600x400.webm",
+          "60ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/Missile01_01_Regular_Blue_60ft_2800x400.webm",
+          "90ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/Missile01_01_Regular_Blue_90ft_4000x400.webm"
+        }
+      },
+      {
+        "key": "jb2a.throwable.throw.flask.01.orange",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/ThrowFlask01_01_Regular_Orange_15ft_1000x400.webm",
+        "distanceFiles": {
+          "05ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/ThrowFlask01_01_Regular_Orange_05ft_600x400.webm",
+          "15ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/ThrowFlask01_01_Regular_Orange_15ft_1000x400.webm",
+          "30ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/ThrowFlask01_01_Regular_Orange_30ft_1600x400.webm",
+          "60ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/ThrowFlask01_01_Regular_Orange_60ft_2800x400.webm",
+          "90ft": "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Ranged/ThrowFlask01_01_Regular_Orange_90ft_4000x400.webm"
         }
       },
       {
         "key": "jb2a.token_border.circle.spinning.blue.001",
         "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircleSpin_01_Regular_Blue_400x400.webm"
+      },
+      {
+        "key": "jb2a.token_border.circle.spinning.blue.002",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircleSpin_02_Regular_Blue_400x400.webm"
       },
       {
         "key": "jb2a.toll_the_dead.green.bell",
@@ -9836,6 +9955,14 @@
         "file": "modules/JB2A_DnD5e/Library/Generic/Wind/WindLines01_02_Regular_White_500x500.webm"
       },
       {
+        "key": "jb2a.wind_lines.01.leaves.01.green",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Wind/WindLinesLeaves01_01_Regular_Green_500x500.webm"
+      },
+      {
+        "key": "jb2a.wind_lines.01.leaves.02.green",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Wind/WindLinesLeaves01_02_Regular_Green_500x500.webm"
+      },
+      {
         "key": "jb2a.wind_stream.white",
         "file": "modules/JB2A_DnD5e/Library/Generic/Wind/WindStreams_01_White_20OPA_1200x1200.webm"
       },
@@ -9869,12 +9996,12 @@
     ]
   },
   "distinct": {
-    "patreon": 1969,
+    "patreon": 1968,
     "free": 1963
   },
   "methodology": "Selected movie variants and visible effect layouts; excludes sounds, motions, display labels, fine timing and rank scaling. Casting seals differentiate shared families; these are compositions of shared artwork, not bespoke assets. Native material-only fields without casting seals report their shared compositions.",
   "mediaVariety": {
-    "changed": 1022,
+    "changed": 999,
     "variants": [
       {
         "id": "9h9YCncqah6VNsKf",
@@ -9904,7 +10031,7 @@
         "id": "6XscENSWyYRHqK0A",
         "name": "Airlift",
         "edition": "patreon",
-        "slot": "hit",
+        "slot": "aura",
         "from": "jb2a.wind_lines.01.01.white",
         "to": "jb2a.wind_lines.01.02.white"
       },
@@ -9937,8 +10064,8 @@
         "name": "Ancestral Winds",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.pink",
+        "to": "jb2a.wind_lines.01.leaves.02.pink"
       },
       {
         "id": "rVANhQgB8Uqi9PTl",
@@ -9981,14 +10108,6 @@
         "to": "jb2a.particles.inward.purple.01.03"
       },
       {
-        "id": "23cv1p49NFd0Onng",
-        "name": "Ash Cloud",
-        "edition": "patreon",
-        "slot": "area",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
-      },
-      {
         "id": "QqMlN9VSHfD2v4Qv",
         "name": "Ash-Strewn Ending",
         "edition": "patreon",
@@ -10009,8 +10128,8 @@
         "name": "Athletic Rush",
         "edition": "patreon",
         "slot": "hit",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.pink",
+        "to": "jb2a.wind_lines.01.leaves.02.pink"
       },
       {
         "id": "6P2fzrYkaiiptxlY",
@@ -10281,30 +10400,14 @@
         "name": "Cloud Current",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
-      },
-      {
-        "id": "s7kVnr0EdljCamuR",
-        "name": "Cloud Current",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.fog_cloud.02.green02",
+        "to": "jb2a.fog_cloud.03.green02"
       },
       {
         "id": "D5ZAWGqxml5xOiZb",
         "name": "Cloud Dragon's Cloak",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
-      },
-      {
-        "id": "D5ZAWGqxml5xOiZb",
-        "name": "Cloud Dragon's Cloak",
-        "edition": "patreon",
-        "slot": "area",
+        "slot": "hit",
         "from": "jb2a.fog_cloud.01.white",
         "to": "jb2a.fog_cloud.02.white"
       },
@@ -10313,8 +10416,8 @@
         "name": "Commune with Corazal",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.swirling_leaves.loop.01.green",
-        "to": "jb2a.swirling_leaves.loop.02.green"
+        "from": "jb2a.swirling_leaves.loop.01.pink",
+        "to": "jb2a.swirling_leaves.loop.02.pink"
       },
       {
         "id": "t6vJnkyAYLXrOjQI",
@@ -10331,14 +10434,6 @@
         "slot": "bolt",
         "from": "jb2a.energy_strands.range.standard.purple.01",
         "to": "jb2a.energy_strands.range.standard.purple.02"
-      },
-      {
-        "id": "t6vJnkyAYLXrOjQI",
-        "name": "Connective Current",
-        "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "WG91Z5TiR6oO5FOw",
@@ -10392,17 +10487,25 @@
         "id": "AiWtiVmyasyL42J8",
         "name": "Crushing Ground",
         "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
+      },
+      {
+        "id": "AiWtiVmyasyL42J8",
+        "name": "Crushing Ground",
+        "edition": "patreon",
         "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "AiWtiVmyasyL42J8",
         "name": "Crushing Ground",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "IDkEuq5jLEDhJ31C",
@@ -10483,6 +10586,22 @@
         "slot": "bolt",
         "from": "jb2a.guiding_bolt.01.purplepink",
         "to": "jb2a.guiding_bolt.02.purplepink"
+      },
+      {
+        "id": "f9m9DayyGy3meqUX",
+        "name": "Dehydrate",
+        "edition": "patreon",
+        "slot": "area",
+        "from": "jb2a.particles.inward.orange.01.01",
+        "to": "jb2a.particles.inward.orange.01.02"
+      },
+      {
+        "id": "8fEfjvC01gNclDKJ",
+        "name": "Deluge",
+        "edition": "patreon",
+        "slot": "aura",
+        "from": "jb2a.fog_cloud.02.green02",
+        "to": "jb2a.fog_cloud.03.green02"
       },
       {
         "id": "7d4DUTDIlzDa8OvX",
@@ -10645,14 +10764,6 @@
         "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
-        "id": "S6Kkk15MWGqzC00a",
-        "name": "Draconic Barrage",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.swirling_leaves.loop.01.green",
-        "to": "jb2a.swirling_leaves.loop.02.green"
-      },
-      {
         "id": "JcobNl4iE9HmMYtE",
         "name": "Dragon Breath",
         "edition": "patreon",
@@ -10667,14 +10778,6 @@
         "slot": "bolt",
         "from": "jb2a.guiding_bolt.01.greenorange",
         "to": "jb2a.guiding_bolt.02.greenorange"
-      },
-      {
-        "id": "1QMjWGq1DPOQr4VL",
-        "name": "Dread Ambience",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
       },
       {
         "id": "XOs8C2eZJAO3go0N",
@@ -10705,6 +10808,14 @@
         "name": "Electric Arc",
         "edition": "patreon",
         "slot": "cast",
+        "from": "jb2a.static_electricity.01.blue",
+        "to": "jb2a.static_electricity.02.blue"
+      },
+      {
+        "id": "kBhaPuzLUSwS6vVf",
+        "name": "Electric Arc",
+        "edition": "patreon",
+        "slot": "aura",
         "from": "jb2a.static_electricity.01.blue",
         "to": "jb2a.static_electricity.02.blue"
       },
@@ -10777,8 +10888,8 @@
         "name": "Elemental Motion",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.pink",
+        "to": "jb2a.wind_lines.01.leaves.02.pink"
       },
       {
         "id": "vfHr1N8Rf2bBpdgn",
@@ -10869,20 +10980,20 @@
         "to": "jb2a.swirling_leaves.complete.02.green"
       },
       {
-        "id": "QpjHqxwTGdILLvjD",
-        "name": "Ephemeral Tracking",
+        "id": "J6vNvrUT3b1hx2iA",
+        "name": "Entangling Flora",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.swirling_leaves.loop.01.green",
+        "to": "jb2a.swirling_leaves.loop.02.green"
       },
       {
         "id": "XlQBVvlDWGrGlApl",
         "name": "Establish Ward",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.swirling_leaves.loop.01.green",
-        "to": "jb2a.swirling_leaves.loop.02.green"
+        "from": "jb2a.swirling_leaves.loop.01.pink",
+        "to": "jb2a.swirling_leaves.loop.02.pink"
       },
       {
         "id": "D2nPKbIS67m9199U",
@@ -10899,6 +11010,14 @@
         "slot": "aura",
         "from": "jb2a.particles.outward.purple.01.01",
         "to": "jb2a.particles.outward.purple.02.03"
+      },
+      {
+        "id": "v89KwyaBd6g5rWVS",
+        "name": "Exploding Earth",
+        "edition": "patreon",
+        "slot": "aura",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "GBgPeMNGW4SnFxxo",
@@ -10937,8 +11056,8 @@
         "name": "Fallow Field",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
+        "from": "jb2a.fog_cloud.02.green02",
+        "to": "jb2a.fog_cloud.03.green02"
       },
       {
         "id": "e4vxRJ4sjUXMEIGP",
@@ -11041,8 +11160,8 @@
         "name": "Fleet Step",
         "edition": "patreon",
         "slot": "hit",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.pink",
+        "to": "jb2a.wind_lines.01.leaves.02.pink"
       },
       {
         "id": "aZHjRVBDV9dyo1ro",
@@ -11074,7 +11193,7 @@
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.static_electricity.01.blue",
-        "to": "jb2a.static_electricity.02.blue"
+        "to": "jb2a.static_electricity.03.blue"
       },
       {
         "id": "mtxMpGWpwwWSbySj",
@@ -11090,7 +11209,7 @@
         "edition": "patreon",
         "slot": "hit",
         "from": "jb2a.static_electricity.01.blue",
-        "to": "jb2a.static_electricity.03.blue"
+        "to": "jb2a.static_electricity.02.blue"
       },
       {
         "id": "mtxMpGWpwwWSbySj",
@@ -11098,7 +11217,7 @@
         "edition": "patreon",
         "slot": "aura",
         "from": "jb2a.static_electricity.01.blue",
-        "to": "jb2a.static_electricity.02.blue"
+        "to": "jb2a.static_electricity.03.blue"
       },
       {
         "id": "gKKqvLohtrSJj3BM",
@@ -11149,20 +11268,12 @@
         "to": "jb2a.token_border.circle.spinning.purple.002"
       },
       {
-        "id": "cCFDnmFB1EGeQUeA",
-        "name": "Friendly Push",
-        "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
-      },
-      {
         "id": "vFkz0gVBUT2gGnm1",
         "name": "Frigid Flurry",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.green",
+        "to": "jb2a.wind_lines.01.leaves.02.green"
       },
       {
         "id": "vFkz0gVBUT2gGnm1",
@@ -11177,8 +11288,8 @@
         "name": "Frog Tongue",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "Q690d3mw3TUrKX7E",
@@ -11249,8 +11360,16 @@
         "name": "Glass Form",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
+      },
+      {
+        "id": "dgMauNKWeRIu8pMN",
+        "name": "Glass Sand",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "Vt4DwrWIgo5vcyex",
@@ -11385,8 +11504,8 @@
         "name": "Haste",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.pink",
+        "to": "jb2a.wind_lines.01.leaves.02.pink"
       },
       {
         "id": "3MzuRDc7ccylpW2e",
@@ -11395,14 +11514,6 @@
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
-        "id": "Zmh4ynfnCtwKeAYl",
-        "name": "Heal Animal",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.swirling_leaves.loop.01.green",
-        "to": "jb2a.swirling_leaves.loop.02.green"
       },
       {
         "id": "rhJyqB9g3ziImQgM",
@@ -11417,8 +11528,8 @@
         "name": "Healing Plaster",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "dZV8nZUKRhGIr6g9",
@@ -11522,15 +11633,15 @@
         "edition": "patreon",
         "slot": "aura",
         "from": "jb2a.static_electricity.01.blue",
-        "to": "jb2a.static_electricity.03.blue"
+        "to": "jb2a.static_electricity.02.blue"
       },
       {
         "id": "pRKaEXnjGJXbPHPC",
         "name": "Hurtling Stone",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "6ZIKB0151LUR19Rw",
@@ -11595,6 +11706,14 @@
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
+      },
+      {
+        "id": "u8ve6wRt7VlHKP64",
+        "name": "Incarnate Wild Rose",
+        "edition": "patreon",
+        "slot": "aura",
+        "from": "jb2a.swirling_leaves.loop.01.green",
+        "to": "jb2a.swirling_leaves.loop.02.green"
       },
       {
         "id": "OTd17oXwJH9qb1cS",
@@ -11786,7 +11905,7 @@
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.static_electricity.01.blue",
-        "to": "jb2a.static_electricity.02.blue"
+        "to": "jb2a.static_electricity.03.blue"
       },
       {
         "id": "JyT346VmGtRLsDnV",
@@ -11802,15 +11921,15 @@
         "edition": "patreon",
         "slot": "aura",
         "from": "jb2a.static_electricity.01.blue",
-        "to": "jb2a.static_electricity.03.blue"
+        "to": "jb2a.static_electricity.02.blue"
       },
       {
         "id": "JyT346VmGtRLsDnV",
         "name": "Lightning Storm",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
+        "from": "jb2a.fog_cloud.02.green02",
+        "to": "jb2a.fog_cloud.03.green02"
       },
       {
         "id": "2hMy9ROM2dOZB8Jq",
@@ -11834,7 +11953,7 @@
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.static_electricity.01.blue",
-        "to": "jb2a.static_electricity.02.blue"
+        "to": "jb2a.static_electricity.03.blue"
       },
       {
         "id": "Vbj8bTQ1nwrOBbYF",
@@ -11845,12 +11964,28 @@
         "to": "jb2a.electric_arc.blue.02"
       },
       {
+        "id": "Vbj8bTQ1nwrOBbYF",
+        "name": "Live Wire",
+        "edition": "patreon",
+        "slot": "aura",
+        "from": "jb2a.static_electricity.01.blue",
+        "to": "jb2a.static_electricity.02.blue"
+      },
+      {
+        "id": "cBUuG1yJHGeKffpg",
+        "name": "Localized Quake",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
+      },
+      {
         "id": "cBUuG1yJHGeKffpg",
         "name": "Localized Quake",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "Azoh0BSoCASrA1lr",
@@ -11905,16 +12040,16 @@
         "name": "Magic Hide",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.swirling_leaves.loop.01.green",
-        "to": "jb2a.swirling_leaves.loop.02.green"
+        "from": "jb2a.swirling_leaves.loop.01.pink",
+        "to": "jb2a.swirling_leaves.loop.02.pink"
       },
       {
         "id": "115Xp9E38CJENhNS",
         "name": "Magic Passage",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "Tx8OqkBFA2QlaldW",
@@ -12216,9 +12351,25 @@
         "id": "mS3p6BR3LcG1WmHs",
         "name": "Pave Ground",
         "edition": "patreon",
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
+      },
+      {
+        "id": "mS3p6BR3LcG1WmHs",
+        "name": "Pave Ground",
+        "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
+      },
+      {
+        "id": "mS3p6BR3LcG1WmHs",
+        "name": "Pave Ground",
+        "edition": "patreon",
+        "slot": "area",
+        "from": "jb2a.particles.inward.orange.01.01",
+        "to": "jb2a.particles.inward.orange.01.03"
       },
       {
         "id": "GQopUYTuhmtb7WMG",
@@ -12425,8 +12576,16 @@
         "name": "Proximal Shift",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
+      },
+      {
+        "id": "KESXD0D8XNDGzHBM",
+        "name": "Proximal Shift",
+        "edition": "patreon",
+        "slot": "aura",
+        "from": "jb2a.particles.outward.orange.01.01",
+        "to": "jb2a.particles.outward.orange.01.03"
       },
       {
         "id": "pt3gEnzA159uHcJC",
@@ -12440,9 +12599,17 @@
         "id": "Rn2LkoSq1XhLsODV",
         "name": "Pummeling Rubble",
         "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
+      },
+      {
+        "id": "Rn2LkoSq1XhLsODV",
+        "name": "Pummeling Rubble",
+        "edition": "patreon",
         "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "wi405lBjPcbF1DeR",
@@ -12499,14 +12666,6 @@
         "slot": "hit",
         "from": "jb2a.ward.rune.yellow.01",
         "to": "jb2a.ward.rune.yellow.02"
-      },
-      {
-        "id": "ps0nmhclT6aIXgd8",
-        "name": "Qi Rush",
-        "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "F23T5tHPo3WsFiHW",
@@ -12661,28 +12820,20 @@
         "to": "jb2a.ground_cracks.03.purple"
       },
       {
-        "id": "ew4ToaTU3o8ahKio",
-        "name": "River Carving Mountains",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
-      },
-      {
         "id": "RgVlYrn5mu8wNHK4",
         "name": "Rolling Boulders",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "FFBYPZEmAQoll09t",
         "name": "Rubble Step",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.particles.outward.blue.01.01",
-        "to": "jb2a.particles.outward.blue.01.02"
+        "from": "jb2a.particles.outward.orange.01.01",
+        "to": "jb2a.particles.outward.orange.01.04"
       },
       {
         "id": "yy2K51kK3a60rRIe",
@@ -12737,24 +12888,32 @@
         "name": "Sand Form",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.particles.outward.blue.01.01",
-        "to": "jb2a.particles.outward.blue.01.03"
+        "from": "jb2a.particles.outward.orange.01.01",
+        "to": "jb2a.particles.outward.orange.01.05"
       },
       {
         "id": "KjC2ya8HD5AENeHI",
         "name": "Sand Form",
         "edition": "patreon",
         "slot": "hit",
-        "from": "jb2a.particles.outward.blue.01.01",
-        "to": "jb2a.particles.outward.blue.01.04"
+        "from": "jb2a.particles.outward.orange.01.01",
+        "to": "jb2a.particles.outward.orange.02.01"
       },
       {
         "id": "KjC2ya8HD5AENeHI",
         "name": "Sand Form",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.particles.outward.blue.01.01",
-        "to": "jb2a.particles.outward.blue.01.05"
+        "from": "jb2a.particles.outward.orange.01.01",
+        "to": "jb2a.particles.outward.orange.02.02"
+      },
+      {
+        "id": "zA0jNIBRgLsyTpbm",
+        "name": "Scatter Scree",
+        "edition": "patreon",
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "5QD75UbyB5EiG3yz",
@@ -12769,8 +12928,8 @@
         "name": "Scouring Sand",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.particles.outward.blue.01.01",
-        "to": "jb2a.particles.outward.blue.02.01"
+        "from": "jb2a.particles.outward.orange.01.01",
+        "to": "jb2a.particles.outward.orange.02.03"
       },
       {
         "id": "XcMObj2p9nIBp53b",
@@ -12849,16 +13008,16 @@
         "name": "Shockwave",
         "edition": "patreon",
         "slot": "bolt",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "7c3wzL3jj3E8zRsT",
         "name": "Shroud of the Provinces",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
+        "from": "jb2a.fog_cloud.02.green02",
+        "to": "jb2a.fog_cloud.03.green02"
       },
       {
         "id": "AUctDF2fqPZN2w4W",
@@ -12873,16 +13032,8 @@
         "name": "Sky Laughs at Waves",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
-      },
-      {
-        "id": "2C0ftvzTwYgzb3Qt",
-        "name": "Sky Laughs at Waves",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.pink",
+        "to": "jb2a.wind_lines.01.leaves.02.pink"
       },
       {
         "id": "sYd3hqv2ZQqa0PSc",
@@ -12897,6 +13048,14 @@
         "name": "Sky Signs",
         "edition": "patreon",
         "slot": "hit",
+        "from": "jb2a.fog_cloud.01.white",
+        "to": "jb2a.fog_cloud.02.white"
+      },
+      {
+        "id": "sYd3hqv2ZQqa0PSc",
+        "name": "Sky Signs",
+        "edition": "patreon",
+        "slot": "area",
         "from": "jb2a.fog_cloud.01.white",
         "to": "jb2a.fog_cloud.02.white"
       },
@@ -13037,12 +13196,12 @@
         "to": "jb2a.wind_lines.01.02.white"
       },
       {
-        "id": "XYhU3Wi94n1RKxTa",
-        "name": "Storm Lord",
+        "id": "ECApRjIIxD0JogOa",
+        "name": "Stone Lance",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
+        "slot": "aura",
+        "from": "jb2a.particles.inward.orange.01.01",
+        "to": "jb2a.particles.inward.orange.01.04"
       },
       {
         "id": "XYhU3Wi94n1RKxTa",
@@ -13065,8 +13224,8 @@
         "name": "Storm of Vengeance",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
+        "from": "jb2a.fog_cloud.02.green02",
+        "to": "jb2a.fog_cloud.03.green02"
       },
       {
         "id": "r4HLQcYwB62bTayl",
@@ -13085,30 +13244,6 @@
         "to": "jb2a.static_electricity.02.blue"
       },
       {
-        "id": "P9bqJsF3WkxGAJKJ",
-        "name": "Sudden Shift",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
-      },
-      {
-        "id": "aVqsE5OedOwdHQvF",
-        "name": "Summerland Spell",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.flaming_sphere.200px.blue.01",
-        "to": "jb2a.flaming_sphere.200px.blue.02"
-      },
-      {
-        "id": "aVqsE5OedOwdHQvF",
-        "name": "Summerland Spell",
-        "edition": "patreon",
-        "slot": "area",
-        "from": "jb2a.flaming_sphere.200px.blue.01",
-        "to": "jb2a.flaming_sphere.200px.blue.02"
-      },
-      {
         "id": "lTDixrrNKaCvLKwX",
         "name": "Summon Celestial",
         "edition": "patreon",
@@ -13121,8 +13256,24 @@
         "name": "Summon Giant",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
+      },
+      {
+        "id": "e9UJoVYUd5kJWUpi",
+        "name": "Summon Giant",
+        "edition": "patreon",
+        "slot": "aura",
+        "from": "jb2a.particles.inward.orange.01.01",
+        "to": "jb2a.particles.inward.orange.01.05"
+      },
+      {
+        "id": "XWqxMJpCT95A0dZs",
+        "name": "Summon Stampede",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "l2YoqVPoFE7jpTLe",
@@ -13139,6 +13290,14 @@
         "slot": "hit",
         "from": "jb2a.swirling_leaves.complete.01.green",
         "to": "jb2a.swirling_leaves.complete.02.green"
+      },
+      {
+        "id": "a3aQxCpoj1q1NQxC",
+        "name": "Sunburst",
+        "edition": "patreon",
+        "slot": "area",
+        "from": "jb2a.flaming_sphere.200px.orange.01",
+        "to": "jb2a.flaming_sphere.200px.orange.02"
       },
       {
         "id": "BCuHKrDeJ4eq53M6",
@@ -13161,8 +13320,8 @@
         "name": "Swampcall",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "DgcSiOCR1uDXGaEA",
@@ -13185,8 +13344,8 @@
         "name": "Synchronize Steps",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.pink",
+        "to": "jb2a.wind_lines.01.leaves.02.pink"
       },
       {
         "id": "KcLVELhCUcKXxiKE",
@@ -13241,8 +13400,16 @@
         "name": "Telekinetic Bombardment",
         "edition": "patreon",
         "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
+      },
+      {
+        "id": "uc4I1diSSX6XYzb3",
+        "name": "Telekinetic Bombardment",
+        "edition": "patreon",
+        "slot": "aura",
+        "from": "jb2a.particles.inward.orange.01.01",
+        "to": "jb2a.particles.inward.orange.02.01"
       },
       {
         "id": "60sgbuMWN0268dB7",
@@ -13267,14 +13434,6 @@
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
-        "id": "zhqnMOVPzVvWSUbC",
-        "name": "Tempest Form",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.smoke.puff.ring.01.dark_black",
-        "to": "jb2a.smoke.puff.ring.02.dark_black"
       },
       {
         "id": "ho1jSoYKrHUNnM90",
@@ -13352,9 +13511,9 @@
         "id": "a0MfDnUa33oWM74s",
         "name": "Tomorrow's Dawn",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.flaming_sphere.200px.blue.01",
-        "to": "jb2a.flaming_sphere.200px.blue.02"
+        "slot": "hit",
+        "from": "jb2a.flaming_sphere.200px.orange.01",
+        "to": "jb2a.flaming_sphere.200px.orange.02"
       },
       {
         "id": "nsWSe5ssxAPn0j8t",
@@ -13393,16 +13552,16 @@
         "name": "Unbreaking Wave Vapor",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
+        "from": "jb2a.fog_cloud.02.green02",
+        "to": "jb2a.fog_cloud.03.green02"
       },
       {
         "id": "ZQk2cGBCkATO25w0",
         "name": "Unbreaking Wave Vapor",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
+        "from": "jb2a.fog_cloud.02.green02",
+        "to": "jb2a.fog_cloud.03.green02"
       },
       {
         "id": "19V9aVrn8OAHsn4Q",
@@ -13433,14 +13592,6 @@
         "name": "Unfolding Wind Blitz",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
-      },
-      {
-        "id": "gwOYh5zMVZB0HNcT",
-        "name": "Unimpeded Stride",
-        "edition": "patreon",
-        "slot": "hit",
         "from": "jb2a.wind_lines.01.01.white",
         "to": "jb2a.wind_lines.01.02.white"
       },
@@ -13485,6 +13636,14 @@
         "to": "jb2a.wind_lines.01.02.white"
       },
       {
+        "id": "8eOMAIvT7S1CJSit",
+        "name": "Untwisting Iron Augmentation",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
+      },
+      {
         "id": "QozxgBbcmktLKdBs",
         "name": "Updraft",
         "edition": "patreon",
@@ -13515,14 +13674,6 @@
         "slot": "aura",
         "from": "jb2a.particles.outward.purple.01.01",
         "to": "jb2a.particles.outward.purple.02.03"
-      },
-      {
-        "id": "lQbfgAu9uVJQC7x4",
-        "name": "Veil of Spirits",
-        "edition": "patreon",
-        "slot": "area",
-        "from": "jb2a.fog_cloud.01.white",
-        "to": "jb2a.fog_cloud.02.white"
       },
       {
         "id": "Juk3cD5385Ftybct",
@@ -13594,15 +13745,15 @@
         "edition": "patreon",
         "slot": "hit",
         "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "kOa055FIrO9Smnya",
         "name": "Wall of Stone",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "3SzuMGusGKg8nw5A",
@@ -13889,16 +14040,16 @@
         "name": "Burrow Ward",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "bgX4Zfhavahu8lyN",
         "name": "Burrow Ward",
         "edition": "patreon",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "3JQPqtE7fkscP3f6",
@@ -13930,7 +14081,7 @@
         "edition": "patreon",
         "slot": "aura",
         "from": "jb2a.particles.inward.orange.01.01",
-        "to": "jb2a.particles.inward.orange.01.02"
+        "to": "jb2a.particles.inward.orange.02.02"
       },
       {
         "id": "7OFKYR1VY6EXDuiR",
@@ -13977,24 +14128,24 @@
         "name": "Control Sand",
         "edition": "patreon",
         "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "oahqARSgOGDRybBQ",
         "name": "Control Sand",
         "edition": "patreon",
         "slot": "aura",
-        "from": "jb2a.particles.outward.blue.01.01",
-        "to": "jb2a.particles.outward.blue.02.02"
+        "from": "jb2a.particles.outward.orange.01.01",
+        "to": "jb2a.particles.outward.orange.02.04"
       },
       {
         "id": "oahqARSgOGDRybBQ",
         "name": "Control Sand",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.particles.outward.blue.01.01",
-        "to": "jb2a.particles.outward.blue.02.03"
+        "from": "jb2a.particles.outward.orange.01.01",
+        "to": "jb2a.particles.outward.orange.02.05"
       },
       {
         "id": "h2DLv8TQV0Z83tQp",
@@ -14096,17 +14247,17 @@
         "id": "8OWA91bgm5r6QPaH",
         "name": "Dividing Trench",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "8OWA91bgm5r6QPaH",
         "name": "Dividing Trench",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "cqdmSmQnM0q6wbWG",
@@ -14136,33 +14287,33 @@
         "id": "uZmUhjgqiX6d0Dv6",
         "name": "Earthbreaker Stride",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "uZmUhjgqiX6d0Dv6",
         "name": "Earthbreaker Stride",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "x7SPrsRxGb2Vy2nu",
         "name": "Earthquake",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "x7SPrsRxGb2Vy2nu",
         "name": "Earthquake",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "vQMAdnIwnV9prPiG",
@@ -14192,17 +14343,17 @@
         "id": "ddqmGnShyoRBKFkZ",
         "name": "Engrave Memory",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "ddqmGnShyoRBKFkZ",
         "name": "Engrave Memory",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "8rj45fKzCFcB0fxs",
@@ -14248,17 +14399,17 @@
         "id": "aXoh6OQAL57lgh0a",
         "name": "Expeditious Excavation",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "aXoh6OQAL57lgh0a",
         "name": "Expeditious Excavation",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "CLThxp8Qf43IQ3Sb",
@@ -14384,17 +14535,17 @@
         "id": "YZiPAxdZFYXu6BvA",
         "name": "Garden of Stone",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "YZiPAxdZFYXu6BvA",
         "name": "Garden of Stone",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "x2Gf3lt64eoMocMd",
@@ -14432,17 +14583,17 @@
         "id": "Wpgt5TYcTHLDei6J",
         "name": "Grasping Earth",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "Wpgt5TYcTHLDei6J",
         "name": "Grasping Earth",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "Xrz6wPXDBUr27izR",
@@ -14472,17 +14623,17 @@
         "id": "yWySiasyPZcRoe4d",
         "name": "Heaving Earth",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "yWySiasyPZcRoe4d",
         "name": "Heaving Earth",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "kcYCWMd1NVCJ5Zbu",
@@ -14571,6 +14722,14 @@
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
+      },
+      {
+        "id": "HokKyQl5g655xx9U",
+        "name": "Interposing Earth",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "SXmEI4kVWVSagK4H",
@@ -14680,17 +14839,17 @@
         "id": "2BV2yYPfVJ5zirZt",
         "name": "Mountain Resilience",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "2BV2yYPfVJ5zirZt",
         "name": "Mountain Resilience",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "mnhuvqTIELcpJOFX",
@@ -14776,17 +14935,17 @@
         "id": "znv4ECL7ZtuiagtA",
         "name": "Petrify",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "znv4ECL7ZtuiagtA",
         "name": "Petrify",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "0XP2XOxT9VSiXFDr",
@@ -14800,17 +14959,17 @@
         "id": "qr0HOiiuqj5LKlDt",
         "name": "Pillars of Sand",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "qr0HOiiuqj5LKlDt",
         "name": "Pillars of Sand",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "v4QHuVOhFD1JMAqu",
@@ -14856,17 +15015,17 @@
         "id": "Pmhlv3fzPTuIhTrT",
         "name": "Ranage's Circle",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "Pmhlv3fzPTuIhTrT",
         "name": "Ranage's Circle",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "KktHf7zIAWOr499h",
@@ -14984,17 +15143,17 @@
         "id": "McnPlLFvKtQVXNcG",
         "name": "Shape Stone",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "McnPlLFvKtQVXNcG",
         "name": "Shape Stone",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "ZL97DcoJ8us6EwAF",
@@ -15024,17 +15183,17 @@
         "id": "avEutOjF2ox947fp",
         "name": "Sliding Blocks",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "avEutOjF2ox947fp",
         "name": "Sliding Blocks",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "IGXGs9PlqUCvODcH",
@@ -15072,17 +15231,17 @@
         "id": "YIMampGpij4Y30yE",
         "name": "Speak with Stones",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "YIMampGpij4Y30yE",
         "name": "Speak with Stones",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "Zvg0FWzClGbzucFd",
@@ -15096,17 +15255,17 @@
         "id": "3xD8DYrr8YDVYGg7",
         "name": "Spike Stones",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "3xD8DYrr8YDVYGg7",
         "name": "Spike Stones",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "wgAsL86ji5hulh7x",
@@ -15136,17 +15295,17 @@
         "id": "Pr1ruNTbzGn3H9w5",
         "name": "Stone to Flesh",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "Pr1ruNTbzGn3H9w5",
         "name": "Stone to Flesh",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "m4Mc5XbdML92BKOE",
@@ -15301,14 +15460,6 @@
         "to": "jb2a.wind_lines.01.02.white"
       },
       {
-        "id": "T8Ymeig4Fv2HrzjF",
-        "name": "Tiny Wings",
-        "edition": "patreon",
-        "slot": "aura",
-        "from": "jb2a.swirling_leaves.loop.01.green",
-        "to": "jb2a.swirling_leaves.loop.02.green"
-      },
-      {
         "id": "HnykPqaCEPk3d2n3",
         "name": "Tracking Mayflies",
         "edition": "patreon",
@@ -15336,25 +15487,17 @@
         "id": "LzfrBDxxPTiuN7uL",
         "name": "Transmute Rock And Mud",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "hit",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "LzfrBDxxPTiuN7uL",
         "name": "Transmute Rock And Mud",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
-      },
-      {
-        "id": "EAYViUegegttJF1u",
-        "name": "Tremorsense",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "area",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "2wT21v3NjLXdmE5W",
@@ -15401,24 +15544,24 @@
         "name": "Untwisting Iron Pillar",
         "edition": "patreon",
         "slot": "cast",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "9o5aG5025ZczjkPb",
         "name": "Untwisting Iron Roots",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "9o5aG5025ZczjkPb",
         "name": "Untwisting Iron Roots",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "ddKBoCjmSyPSHcws",
@@ -15432,17 +15575,17 @@
         "id": "xxhS66k68u5iIOHC",
         "name": "Upheaval",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "xxhS66k68u5iIOHC",
         "name": "Upheaval",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "kk7JKox6MdGAWmCH",
@@ -15459,6 +15602,14 @@
         "slot": "area",
         "from": "jb2a.wind_lines.01.01.white",
         "to": "jb2a.wind_lines.01.02.white"
+      },
+      {
+        "id": "V8wXOsoejQhe6CyG",
+        "name": "Vapor Form",
+        "edition": "patreon",
+        "slot": "aura",
+        "from": "jb2a.swirling_leaves.loop.01.pink",
+        "to": "jb2a.swirling_leaves.loop.02.pink"
       },
       {
         "id": "nnSipUPNd3sm5vYL",
@@ -15512,17 +15663,17 @@
         "id": "eyKkLp8V55ydA64J",
         "name": "Weaken Earth",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.02.blue"
+        "slot": "cast",
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "eyKkLp8V55ydA64J",
         "name": "Weaken Earth",
         "edition": "patreon",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.blue",
-        "to": "jb2a.ground_cracks.03.blue"
+        "from": "jb2a.ground_cracks.01.orange",
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "idcBYnj4DUHL0IJt",
@@ -15557,12 +15708,28 @@
         "to": "jb2a.hunters_mark.pulse.05.purple"
       },
       {
+        "id": "cOjlzWerBwbPWVkX",
+        "name": "Agile Feet",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
+      },
+      {
         "id": "nplNt08TvokZUxtR",
         "name": "Agonizing Despair",
         "edition": "free",
         "slot": "cast",
         "from": "jb2a.particles.inward.greenyellow.01.01",
         "to": "jb2a.particles.inward.greenyellow.01.02"
+      },
+      {
+        "id": "Z4X5whSqSvgiiJ05",
+        "name": "Ancestral Winds",
+        "edition": "free",
+        "slot": "area",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "WqPhJNzLa8vSjrH6",
@@ -15573,12 +15740,20 @@
         "to": "jb2a.impact.ground_crack.02.orange"
       },
       {
+        "id": "WqPhJNzLa8vSjrH6",
+        "name": "Animated Assault",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.particles.inward.greenyellow.01.01",
+        "to": "jb2a.particles.inward.greenyellow.01.03"
+      },
+      {
         "id": "5JGSo1tgDEehqbWm",
         "name": "Antlion Trap",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.03"
+        "to": "jb2a.particles.inward.greenyellow.01.04"
       },
       {
         "id": "LX4pCagYLpc9hEji",
@@ -15586,7 +15761,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.04"
+        "to": "jb2a.particles.inward.greenyellow.01.05"
       },
       {
         "id": "LX4pCagYLpc9hEji",
@@ -15597,10 +15772,26 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
+        "id": "KG7amdeXWc7MjGXe",
+        "name": "Asterism",
+        "edition": "free",
+        "slot": "area",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
         "id": "UGJzJRJDoonfWqqI",
         "name": "Athletic Rush",
         "edition": "free",
         "slot": "cast",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
+      },
+      {
+        "id": "UGJzJRJDoonfWqqI",
+        "name": "Athletic Rush",
+        "edition": "free",
+        "slot": "hit",
         "from": "jb2a.wind_lines.01.01.white",
         "to": "jb2a.wind_lines.01.02.white"
       },
@@ -15629,30 +15820,6 @@
         "to": "jb2a.impact.002.blue"
       },
       {
-        "id": "KEkPxx7Sm6Xf4W3s",
-        "name": "Blazing Dive",
-        "edition": "free",
-        "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
-      },
-      {
-        "id": "7yWXx3qC4eFNHhxD",
-        "name": "Blight",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.swirling_leaves.complete.01.green",
-        "to": "jb2a.swirling_leaves.complete.02.green"
-      },
-      {
-        "id": "7yWXx3qC4eFNHhxD",
-        "name": "Blight",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.swirling_leaves.complete.01.green",
-        "to": "jb2a.swirling_leaves.complete.02.green"
-      },
-      {
         "id": "HTzrWoYokIEqxD9t",
         "name": "Blood Chestnuts",
         "edition": "free",
@@ -15669,12 +15836,12 @@
         "to": "jb2a.shield_attack.ranged.throw.01.white.02"
       },
       {
-        "id": "zPVJI8Jltt3ERkaU",
-        "name": "Boomerang Shot",
+        "id": "S708JF3E0kuhuRzG",
+        "name": "Bone Spray",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.004.blue"
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "IN46qySRdMdpcd0y",
@@ -15693,12 +15860,20 @@
         "to": "jb2a.particles.outward.greenyellow.01.03"
       },
       {
+        "id": "BH3sUerzMb2bWnv1",
+        "name": "Call of the Grave",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
         "id": "qlxM7Ik3uUeUIOcv",
         "name": "Canticle of Everlasting Grief",
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.05"
+        "to": "jb2a.particles.inward.greenyellow.02.01"
       },
       {
         "id": "UirEIHILQgip87qv",
@@ -15717,6 +15892,14 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
+        "id": "Hb8GdAhP0zBCv3zU",
+        "name": "Chromatic Ray",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
         "id": "EfFMLVbmkBWmzoLF",
         "name": "Clear Mind",
         "edition": "free",
@@ -15730,7 +15913,15 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.011.blue"
+        "to": "jb2a.impact.004.blue"
+      },
+      {
+        "id": "zIAvj7V6BTuQMAIi",
+        "name": "Commune with Corazal",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.swirling_leaves.loop.01.green",
+        "to": "jb2a.swirling_leaves.loop.02.green"
       },
       {
         "id": "53Kw9WQtvrEtABEu",
@@ -15741,36 +15932,28 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
+        "id": "t6vJnkyAYLXrOjQI",
+        "name": "Connective Current",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
+      },
+      {
+        "id": "h7RtKSKGViNtD5o4",
+        "name": "Coral Eruption",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
         "id": "TUj8eugNqAvB1vVR",
         "name": "Creation",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.01"
-      },
-      {
-        "id": "AiWtiVmyasyL42J8",
-        "name": "Crushing Ground",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "AiWtiVmyasyL42J8",
-        "name": "Crushing Ground",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "AiWtiVmyasyL42J8",
-        "name": "Crushing Ground",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "to": "jb2a.particles.inward.greenyellow.02.02"
       },
       {
         "id": "4gBIw4IDrSfFHik4",
@@ -15786,7 +15969,7 @@
         "edition": "free",
         "slot": "cast",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.02"
+        "to": "jb2a.particles.inward.greenyellow.02.03"
       },
       {
         "id": "AvUDguV71UG7srSj",
@@ -15802,7 +15985,7 @@
         "edition": "free",
         "slot": "area",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.03"
+        "to": "jb2a.particles.inward.greenyellow.02.04"
       },
       {
         "id": "rerNA6YZsdxuJYt3",
@@ -15850,7 +16033,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.012.blue"
+        "to": "jb2a.impact.011.blue"
       },
       {
         "id": "5p9Y4ACrtRM4gTpN",
@@ -15866,15 +16049,23 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.blue"
+        "to": "jb2a.impact.012.blue"
       },
       {
-        "id": "1QMjWGq1DPOQr4VL",
-        "name": "Dread Ambience",
+        "id": "S6Kkk15MWGqzC00a",
+        "name": "Draconic Barrage",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.swirling_leaves.complete.01.green",
-        "to": "jb2a.swirling_leaves.complete.02.green"
+        "slot": "aura",
+        "from": "jb2a.swirling_leaves.loop.01.green",
+        "to": "jb2a.swirling_leaves.loop.02.green"
+      },
+      {
+        "id": "HWJODX2zPg5cg34F",
+        "name": "Dragon Wings",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "2Z958D1lcWtA3zyE",
@@ -15883,6 +16074,14 @@
         "slot": "bolt",
         "from": "jb2a.electric_arc.01",
         "to": "jb2a.electric_arc.02"
+      },
+      {
+        "id": "B8aCUMCHCIMUCEVK",
+        "name": "Elemental Motion",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "5NReCnDFFuThEAHB",
@@ -15898,7 +16097,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.002.blue"
+        "to": "jb2a.impact.blue"
       },
       {
         "id": "oPVyu2a0K3aTVIR8",
@@ -15917,12 +16116,20 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "XlQBVvlDWGrGlApl",
-        "name": "Establish Ward",
+        "id": "eexkxcqnkXazsGfK",
+        "name": "Enervation",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.swirling_leaves.complete.01.green",
-        "to": "jb2a.swirling_leaves.complete.02.green"
+        "slot": "area",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
+        "id": "QpjHqxwTGdILLvjD",
+        "name": "Ephemeral Tracking",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "GurWFDj4IjKv73kL",
@@ -15941,22 +16148,6 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "v89KwyaBd6g5rWVS",
-        "name": "Exploding Earth",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.impact.ground_crack.01.orange",
-        "to": "jb2a.impact.ground_crack.03.orange"
-      },
-      {
-        "id": "v89KwyaBd6g5rWVS",
-        "name": "Exploding Earth",
-        "edition": "free",
-        "slot": "aura",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
         "id": "GBgPeMNGW4SnFxxo",
         "name": "Explosive Dust",
         "edition": "free",
@@ -15970,7 +16161,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "ddYqkCoMWbuS3lgo",
@@ -15994,7 +16185,7 @@
         "edition": "free",
         "slot": "cast",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.04"
+        "to": "jb2a.particles.inward.greenyellow.02.05"
       },
       {
         "id": "0qA4MfMkFklOz2Lk",
@@ -16002,7 +16193,7 @@
         "edition": "free",
         "slot": "cast",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.05"
+        "to": "jb2a.particles.inward.greenyellow.02.01"
       },
       {
         "id": "0qA4MfMkFklOz2Lk",
@@ -16013,12 +16204,20 @@
         "to": "jb2a.particles.outward.greenyellow.01.05"
       },
       {
-        "id": "kuoYff1csM5eAcAP",
-        "name": "Fire Seeds",
+        "id": "aEM2cttJ2eYcLssW",
+        "name": "Fleet Step",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.swirling_leaves.complete.01.green",
-        "to": "jb2a.swirling_leaves.complete.02.green"
+        "slot": "hit",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
+      },
+      {
+        "id": "K8vvrOgW4bGakXxm",
+        "name": "Flurry of Claws",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "mtxMpGWpwwWSbySj",
@@ -16034,7 +16233,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.003.blue"
+        "to": "jb2a.impact.002.blue"
       },
       {
         "id": "Hu38hoAUSYeFpkVa",
@@ -16042,31 +16241,31 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.004.blue"
+        "to": "jb2a.impact.003.blue"
       },
       {
-        "id": "cnRltZAjU9aCklqz",
-        "name": "Frog Tongue",
+        "id": "TjrZGl8z2INgf3vi",
+        "name": "Friendfetch",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
-        "id": "3qz32XdiugYhsr32",
-        "name": "Glass Form",
+        "id": "cCFDnmFB1EGeQUeA",
+        "name": "Friendly Push",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "hit",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
       },
       {
-        "id": "dgMauNKWeRIu8pMN",
-        "name": "Glass Sand",
+        "id": "5KobTMrZeZxuXMgl",
+        "name": "Gecko Grip",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "slot": "aura",
+        "from": "jb2a.swirling_leaves.loop.01.green",
+        "to": "jb2a.swirling_leaves.loop.02.green"
       },
       {
         "id": "mcck9womUsTf07nP",
@@ -16075,6 +16274,14 @@
         "slot": "area",
         "from": "jb2a.sleep.cloud.01.pink",
         "to": "jb2a.sleep.cloud.02.pink"
+      },
+      {
+        "id": "MPxbKoR54gkYkqLO",
+        "name": "Gouging Claw",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "MPxbKoR54gkYkqLO",
@@ -16114,7 +16321,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.012.blue"
+        "to": "jb2a.impact.004.blue"
       },
       {
         "id": "o6YCGx4lycsYpww4",
@@ -16122,15 +16329,15 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.blue"
+        "to": "jb2a.impact.012.blue"
       },
       {
-        "id": "m5QS8q5M6K0euKcT",
-        "name": "Healing Plaster",
+        "id": "o6YCGx4lycsYpww4",
+        "name": "Haste",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "slot": "aura",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "1B8BLEQBQn9aEMoY",
@@ -16138,7 +16345,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.01"
+        "to": "jb2a.particles.inward.greenyellow.02.02"
       },
       {
         "id": "4j0FQ1mkidBAXuQV",
@@ -16149,12 +16356,20 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
+        "id": "DyiD239dNS7RIxZE",
+        "name": "Holy Light",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
         "id": "pRKaEXnjGJXbPHPC",
         "name": "Hurtling Stone",
         "edition": "free",
-        "slot": "aura",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "hit",
+        "from": "jb2a.impact.ground_crack.01.orange",
+        "to": "jb2a.impact.ground_crack.03.orange"
       },
       {
         "id": "P7AToTm0ulueRk63",
@@ -16186,7 +16401,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "3LPFReFtMPiO0pAk",
@@ -16256,6 +16471,14 @@
         "id": "sbTxe4CGP4tn6y51",
         "name": "Lashing Rope",
         "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
+        "id": "sbTxe4CGP4tn6y51",
+        "name": "Lashing Rope",
+        "edition": "free",
         "slot": "hit",
         "from": "jb2a.vine.complete.nature.group.01.green",
         "to": "jb2a.vine.complete.nature.group.03.green"
@@ -16293,22 +16516,6 @@
         "to": "jb2a.static_electricity.03.blue"
       },
       {
-        "id": "cBUuG1yJHGeKffpg",
-        "name": "Localized Quake",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "cBUuG1yJHGeKffpg",
-        "name": "Localized Quake",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
         "id": "fRUxp4G9kG816XAt",
         "name": "Lure Dream",
         "edition": "free",
@@ -16317,12 +16524,12 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "115Xp9E38CJENhNS",
-        "name": "Magic Passage",
+        "id": "10VcmSYNBrvBphu1",
+        "name": "Massacre",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "area",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "6TudR1rDkxWMj1cv",
@@ -16424,17 +16631,9 @@
         "id": "mS3p6BR3LcG1WmHs",
         "name": "Pave Ground",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "mS3p6BR3LcG1WmHs",
-        "name": "Pave Ground",
-        "edition": "free",
-        "slot": "aura",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "area",
+        "from": "jb2a.particles.inward.greenyellow.01.01",
+        "to": "jb2a.particles.inward.greenyellow.02.03"
       },
       {
         "id": "N91EI7H1p7YXKX0o",
@@ -16443,6 +16642,14 @@
         "slot": "hit",
         "from": "jb2a.impact.ground_crack.01.orange",
         "to": "jb2a.impact.ground_crack.03.orange"
+      },
+      {
+        "id": "5gophZ4AOKW4VW27",
+        "name": "Phase Bolt",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.impact.001.blue",
+        "to": "jb2a.impact.blue"
       },
       {
         "id": "wU6hNzK8Yfqdmc8m",
@@ -16464,41 +16671,17 @@
         "id": "KESXD0D8XNDGzHBM",
         "name": "Proximal Shift",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "KESXD0D8XNDGzHBM",
-        "name": "Proximal Shift",
-        "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.outward.greenyellow.01.01",
         "to": "jb2a.particles.outward.greenyellow.02.03"
-      },
-      {
-        "id": "Rn2LkoSq1XhLsODV",
-        "name": "Pummeling Rubble",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "Rn2LkoSq1XhLsODV",
-        "name": "Pummeling Rubble",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "xnh2NBOGs4hcH9B3",
         "name": "Pyrefowl Rebuke",
         "edition": "free",
         "slot": "aura",
-        "from": "jb2a.wind_lines.01.01.white",
-        "to": "jb2a.wind_lines.01.02.white"
+        "from": "jb2a.wind_lines.01.leaves.01.green",
+        "to": "jb2a.wind_lines.01.leaves.02.green"
       },
       {
         "id": "ps0nmhclT6aIXgd8",
@@ -16509,12 +16692,36 @@
         "to": "jb2a.wind_lines.01.02.white"
       },
       {
+        "id": "ps0nmhclT6aIXgd8",
+        "name": "Qi Rush",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
+      },
+      {
+        "id": "5LGDygjRxURUOKGR",
+        "name": "Radiant Beam",
+        "edition": "free",
+        "slot": "area",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
+        "id": "nXoc5YbcynmhZcQs",
+        "name": "Radiant Globe",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.token_border.circle.spinning.blue.001",
+        "to": "jb2a.token_border.circle.spinning.blue.002"
+      },
+      {
         "id": "fTK6ysisGhy3hRvz",
         "name": "Rapid Adaptation",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.02"
+        "to": "jb2a.particles.inward.greenyellow.02.04"
       },
       {
         "id": "onvFdBWAsQp0CsAy",
@@ -16538,7 +16745,7 @@
         "edition": "free",
         "slot": "cast",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.03"
+        "to": "jb2a.particles.inward.greenyellow.02.05"
       },
       {
         "id": "dMKP4fkWx8V2cqAy",
@@ -16546,7 +16753,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.04"
+        "to": "jb2a.particles.inward.greenyellow.01.02"
       },
       {
         "id": "dMKP4fkWx8V2cqAy",
@@ -16554,7 +16761,7 @@
         "edition": "free",
         "slot": "area",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.05"
+        "to": "jb2a.particles.inward.greenyellow.01.03"
       },
       {
         "id": "RGmPRCBFcWVUoiZz",
@@ -16578,23 +16785,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.02"
-      },
-      {
-        "id": "37ESlJzUvVbOudOT",
-        "name": "Reverse Gravity",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "RgVlYrn5mu8wNHK4",
-        "name": "Rolling Boulders",
-        "edition": "free",
-        "slot": "aura",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "to": "jb2a.particles.inward.greenyellow.01.04"
       },
       {
         "id": "FFBYPZEmAQoll09t",
@@ -16653,14 +16844,6 @@
         "to": "jb2a.particles.outward.greenyellow.02.03"
       },
       {
-        "id": "zA0jNIBRgLsyTpbm",
-        "name": "Scatter Scree",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
         "id": "8E97SA9KAWCNdXfO",
         "name": "Schadenfreude",
         "edition": "free",
@@ -16685,14 +16868,6 @@
         "to": "jb2a.particles.outward.greenyellow.02.04"
       },
       {
-        "id": "8cuqRFB3mWBOgy61",
-        "name": "Shadow Projectile",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.002.blue"
-      },
-      {
         "id": "nXmC2Xx9WmS5NsAo",
         "name": "Share Lore",
         "edition": "free",
@@ -16709,12 +16884,12 @@
         "to": "jb2a.particles.outward.greenyellow.02.05"
       },
       {
-        "id": "dgCH2E0gMLMUgyFl",
-        "name": "Shockwave",
+        "id": "wdb4XIZw1xmki5nr",
+        "name": "Siege Weapon's Blessing",
         "edition": "free",
         "slot": "bolt",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "ZrRhweQ7KQ0wKN3m",
@@ -16723,6 +16898,30 @@
         "slot": "aura",
         "from": "jb2a.particles.outward.greenyellow.01.01",
         "to": "jb2a.particles.outward.greenyellow.01.02"
+      },
+      {
+        "id": "2C0ftvzTwYgzb3Qt",
+        "name": "Sky Laughs at Waves",
+        "edition": "free",
+        "slot": "cast",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
+      },
+      {
+        "id": "2C0ftvzTwYgzb3Qt",
+        "name": "Sky Laughs at Waves",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.melee_generic.slash.02.001.blue",
+        "to": "jb2a.melee_generic.slash.02.002.blue"
+      },
+      {
+        "id": "2C0ftvzTwYgzb3Qt",
+        "name": "Sky Laughs at Waves",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "o4lRVTwSxnOOn5vl",
@@ -16746,7 +16945,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.003.blue"
+        "to": "jb2a.impact.002.blue"
       },
       {
         "id": "Et8RSCLx8w7uOLvo",
@@ -16755,6 +16954,14 @@
         "slot": "aura",
         "from": "jb2a.particles.outward.greenyellow.01.01",
         "to": "jb2a.particles.outward.greenyellow.01.04"
+      },
+      {
+        "id": "wzwmvdBjqRSSvfG7",
+        "name": "Spectral Blade",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.impact.006.yellow",
+        "to": "jb2a.impact.007.yellow"
       },
       {
         "id": "yHujiDQPdtXW797e",
@@ -16770,15 +16977,31 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.004.blue"
+        "to": "jb2a.impact.003.blue"
+      },
+      {
+        "id": "Fq9yCbqI2RDt6Orw",
+        "name": "Spiritual Weapon",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "Bc6QqTmFV4q7G7L0",
         "name": "Splinter Volley",
         "edition": "free",
         "slot": "hit",
-        "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.011.blue"
+        "from": "jb2a.impact.006.yellow",
+        "to": "jb2a.impact.yellow"
+      },
+      {
+        "id": "ECApRjIIxD0JogOa",
+        "name": "Stone Lance",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.particles.inward.greenyellow.01.01",
+        "to": "jb2a.particles.inward.greenyellow.01.05"
       },
       {
         "id": "aMvjaIuPIWN7pbc3",
@@ -16808,25 +17031,9 @@
         "id": "e9UJoVYUd5kJWUpi",
         "name": "Summon Giant",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "e9UJoVYUd5kJWUpi",
-        "name": "Summon Giant",
-        "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.03"
-      },
-      {
-        "id": "XWqxMJpCT95A0dZs",
-        "name": "Summon Stampede",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "to": "jb2a.particles.inward.greenyellow.02.01"
       },
       {
         "id": "BCuHKrDeJ4eq53M6",
@@ -16837,14 +17044,6 @@
         "to": "jb2a.particles.outward.greenyellow.01.05"
       },
       {
-        "id": "lbrWMnS2pecKaSVB",
-        "name": "Swampcall",
-        "edition": "free",
-        "slot": "aura",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
         "id": "BRtKFk0PKfWIlCAB",
         "name": "Sweet Dream",
         "edition": "free",
@@ -16853,12 +17052,12 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "s7ILzY2xh1tc9U1v",
-        "name": "Tame",
+        "id": "EeEgzWYcAY7ZQkS6",
+        "name": "Synchronize Steps",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.swirling_leaves.complete.01.green",
-        "to": "jb2a.swirling_leaves.complete.02.green"
+        "slot": "aura",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "avT46uIH3xYJPSv4",
@@ -16866,7 +17065,15 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.04"
+        "to": "jb2a.particles.inward.greenyellow.02.02"
+      },
+      {
+        "id": "uc4I1diSSX6XYzb3",
+        "name": "Telekinetic Bombardment",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.particles.inward.greenyellow.01.01",
+        "to": "jb2a.particles.inward.greenyellow.02.03"
       },
       {
         "id": "60sgbuMWN0268dB7",
@@ -16874,7 +17081,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.012.blue"
+        "to": "jb2a.impact.011.blue"
       },
       {
         "id": "OhgfPzB5gymZ0IZM",
@@ -16890,7 +17097,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.05"
+        "to": "jb2a.particles.inward.greenyellow.02.04"
       },
       {
         "id": "Jvyy6oVIQsD34MHB",
@@ -16906,7 +17113,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "Ww4cPZ3QHTSpaM1m",
@@ -16917,18 +17124,18 @@
         "to": "jb2a.wind_lines.01.02.white"
       },
       {
-        "id": "XjNROFtWnwovhCsq",
-        "name": "Unfolding Wind Crash",
+        "id": "gwOYh5zMVZB0HNcT",
+        "name": "Unimpeded Stride",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "cast",
+        "from": "jb2a.wind_lines.01.01.white",
+        "to": "jb2a.wind_lines.01.02.white"
       },
       {
         "id": "gwOYh5zMVZB0HNcT",
         "name": "Unimpeded Stride",
         "edition": "free",
-        "slot": "cast",
+        "slot": "hit",
         "from": "jb2a.wind_lines.01.01.white",
         "to": "jb2a.wind_lines.01.02.white"
       },
@@ -16946,7 +17153,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.02"
+        "to": "jb2a.particles.inward.greenyellow.02.05"
       },
       {
         "id": "sbhjhvWaqyXJKvpH",
@@ -16954,7 +17161,7 @@
         "edition": "free",
         "slot": "cast",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.03"
+        "to": "jb2a.particles.inward.greenyellow.01.02"
       },
       {
         "id": "sbhjhvWaqyXJKvpH",
@@ -16962,7 +17169,15 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.04"
+        "to": "jb2a.particles.inward.greenyellow.01.03"
+      },
+      {
+        "id": "tvUfRH7q4NSvTFTx",
+        "name": "Vanish Weapon",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "zlnXpME1T2uvn8Lr",
@@ -16986,7 +17201,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.05"
+        "to": "jb2a.particles.inward.greenyellow.01.04"
       },
       {
         "id": "OmhnoYOzFhrp6rXv",
@@ -16995,22 +17210,6 @@
         "slot": "cast",
         "from": "jb2a.sleep.cloud.01.pink",
         "to": "jb2a.sleep.cloud.02.pink"
-      },
-      {
-        "id": "kOa055FIrO9Smnya",
-        "name": "Wall of Stone",
-        "edition": "free",
-        "slot": "aura",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "3SzuMGusGKg8nw5A",
-        "name": "Warshard Shot",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.impact.006.yellow",
-        "to": "jb2a.impact.007.yellow"
       },
       {
         "id": "k9x6bXXpIgAXMDsx",
@@ -17061,14 +17260,6 @@
         "to": "jb2a.sleet_storm.02.blue"
       },
       {
-        "id": "P1iqzEIidRagUs7W",
-        "name": "Zero Gravity",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
         "id": "IQchIYUwbsVTa9Mc",
         "name": "Allegro",
         "edition": "free",
@@ -17083,6 +17274,14 @@
         "slot": "hit",
         "from": "jb2a.misty_step.01.blue",
         "to": "jb2a.misty_step.02.blue"
+      },
+      {
+        "id": "kRsmUlSWhi6PJvZ7",
+        "name": "Angelic Wings",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "1HfusQ8NDWutGvMx",
@@ -17104,6 +17303,14 @@
         "id": "ES6FkwXXqYr4ujQH",
         "name": "Blood Feast",
         "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
+        "id": "ES6FkwXXqYr4ujQH",
+        "name": "Blood Feast",
+        "edition": "free",
         "slot": "hit",
         "from": "jb2a.melee_attack.01.trail.01.pinkpurple",
         "to": "jb2a.melee_attack.04.trail.01.pinkpurple"
@@ -17114,7 +17321,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.02"
+        "to": "jb2a.particles.inward.greenyellow.01.05"
       },
       {
         "id": "dFejDNEmVj3CwYLL",
@@ -17130,7 +17337,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.03"
+        "to": "jb2a.particles.inward.greenyellow.02.04"
       },
       {
         "id": "k2QrUk7jWMAWozMh",
@@ -17138,7 +17345,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.blue"
+        "to": "jb2a.impact.012.blue"
       },
       {
         "id": "k2QrUk7jWMAWozMh",
@@ -17149,20 +17356,12 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "bgX4Zfhavahu8lyN",
-        "name": "Burrow Ward",
+        "id": "BItahht2hEHvR9Bt",
+        "name": "Buzzing Bites",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "bgX4Zfhavahu8lyN",
-        "name": "Burrow Ward",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "BItahht2hEHvR9Bt",
@@ -17181,12 +17380,12 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "ANtTpeXo9nw7BnEb",
-        "name": "Chosen Gravity",
+        "id": "bVvGpSOg2WaTUItS",
+        "name": "Cinder Swarm",
         "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "aura",
+        "from": "jb2a.particles.inward.greenyellow.01.01",
+        "to": "jb2a.particles.inward.greenyellow.02.05"
       },
       {
         "id": "4DaHIgtMBTyxebY3",
@@ -17234,47 +17433,31 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.011.blue"
+        "to": "jb2a.impact.blue"
       },
       {
-        "id": "PnZQsPSYFtTQFiU1",
-        "name": "Dimensional Drop",
+        "id": "MFPvs0ARxtThYPFq",
+        "name": "Dimensional Excision",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.misty_step.01.blue",
         "to": "jb2a.misty_step.02.blue"
       },
       {
-        "id": "zjG6NncHyAKqSF7m",
-        "name": "Dimensional Steps",
+        "id": "jSJz4vx0fXPHa3d6",
+        "name": "Disruptive Transfer",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.misty_step.01.blue",
         "to": "jb2a.misty_step.02.blue"
       },
       {
-        "id": "1xM9muPRa8hiyJtI",
-        "name": "Dive and Breach",
+        "id": "iMmexY6ZosLS4I5R",
+        "name": "Door to Beyond",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
-      },
-      {
-        "id": "8OWA91bgm5r6QPaH",
-        "name": "Dividing Trench",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "8OWA91bgm5r6QPaH",
-        "name": "Dividing Trench",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "cqdmSmQnM0q6wbWG",
@@ -17282,7 +17465,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.012.blue"
+        "to": "jb2a.impact.011.blue"
       },
       {
         "id": "yM3KTTSAIHhyuP14",
@@ -17293,80 +17476,24 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "uZmUhjgqiX6d0Dv6",
-        "name": "Earthbreaker Stride",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "uZmUhjgqiX6d0Dv6",
-        "name": "Earthbreaker Stride",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "x7SPrsRxGb2Vy2nu",
-        "name": "Earthquake",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "x7SPrsRxGb2Vy2nu",
-        "name": "Earthquake",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "ddqmGnShyoRBKFkZ",
-        "name": "Engrave Memory",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "ddqmGnShyoRBKFkZ",
-        "name": "Engrave Memory",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "aXoh6OQAL57lgh0a",
-        "name": "Expeditious Excavation",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "aXoh6OQAL57lgh0a",
-        "name": "Expeditious Excavation",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
         "id": "CLThxp8Qf43IQ3Sb",
         "name": "Extract Poison",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.blue"
+        "to": "jb2a.impact.012.blue"
       },
       {
-        "id": "O6BIfXsbiisKfLTe",
-        "name": "Far-Flung Fetch",
+        "id": "JFGOsnTeYOhaOa8f",
+        "name": "Familiar's Call",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.misty_step.01.blue",
+        "to": "jb2a.misty_step.02.blue"
+      },
+      {
+        "id": "zLtu2ipfuJECS4gq",
+        "name": "Far Reach",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.misty_step.01.blue",
@@ -17381,12 +17508,12 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "tcJqieDJgyrVavKu",
-        "name": "Fetch",
+        "id": "bIz6QnUIxu5Z7vEH",
+        "name": "Final Fate of the Locust Host",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "WV2aMNN9DO5ZBjSv",
@@ -17395,6 +17522,14 @@
         "slot": "hit",
         "from": "jb2a.melee_attack.01.trail.01.pinkpurple",
         "to": "jb2a.melee_attack.02.trail.01.pinkpurple"
+      },
+      {
+        "id": "zR67Rt3UMHKC5evy",
+        "name": "Flicker",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.misty_step.01.blue",
+        "to": "jb2a.misty_step.02.blue"
       },
       {
         "id": "lpoWfblSMLcJfxsZ",
@@ -17413,14 +17548,6 @@
         "to": "jb2a.shield_attack.ranged.throw.01.white.02"
       },
       {
-        "id": "oKC36WjFD1jgqUN5",
-        "name": "Forest of Gates",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
-      },
-      {
         "id": "fxRaWoeOGyi6THYH",
         "name": "Frenzied Revelry",
         "edition": "free",
@@ -17434,23 +17561,23 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.04"
+        "to": "jb2a.particles.inward.greenyellow.01.02"
       },
       {
-        "id": "YZiPAxdZFYXu6BvA",
-        "name": "Garden of Stone",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "YZiPAxdZFYXu6BvA",
-        "name": "Garden of Stone",
+        "id": "U13bC0tNgrlHoeTK",
+        "name": "Gate",
         "edition": "free",
         "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "from": "jb2a.misty_step.01.blue",
+        "to": "jb2a.misty_step.02.blue"
+      },
+      {
+        "id": "AMEu5zzLN7uCX645",
+        "name": "Ghostly Weapon",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "AMEu5zzLN7uCX645",
@@ -17461,28 +17588,12 @@
         "to": "jb2a.melee_attack.03.trail.01.pinkpurple"
       },
       {
-        "id": "Wpgt5TYcTHLDei6J",
-        "name": "Grasping Earth",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "Wpgt5TYcTHLDei6J",
-        "name": "Grasping Earth",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
         "id": "F1fQC9SarAkjNxpP",
         "name": "Gravitational Pull",
         "edition": "free",
         "slot": "area",
         "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "to": "jb2a.ground_cracks.03.orange"
       },
       {
         "id": "d9sBzPOXX3KT8uTu",
@@ -17493,30 +17604,6 @@
         "to": "jb2a.melee_attack.04.trail.01.pinkpurple"
       },
       {
-        "id": "yWySiasyPZcRoe4d",
-        "name": "Heaving Earth",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "yWySiasyPZcRoe4d",
-        "name": "Heaving Earth",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "FArzEHTSaeZsuOaH",
-        "name": "Hop, Skip, Jump",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
-      },
-      {
         "id": "gMbrNFKz9NP3TR4s",
         "name": "Inexhaustible Cynicism",
         "edition": "free",
@@ -17525,12 +17612,20 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "HokKyQl5g655xx9U",
-        "name": "Interposing Earth",
+        "id": "U5dw9SiuVcLmdHoi",
+        "name": "Infiltrator's Tunnel",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "hit",
+        "from": "jb2a.misty_step.01.blue",
+        "to": "jb2a.misty_step.02.blue"
+      },
+      {
+        "id": "Q7QQ91vQtyi1Ux36",
+        "name": "Jump",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "T90ij2uu6ZaBaSXV",
@@ -17541,12 +17636,12 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "f9duI5d8xNYqxI8d",
-        "name": "Magic Mailbox",
+        "id": "fgmxDC2PH2TEYGKG",
+        "name": "Life Tap",
         "edition": "free",
         "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
+        "from": "jb2a.impact.001.blue",
+        "to": "jb2a.impact.blue"
       },
       {
         "id": "MT8usUfwudDVUm5H",
@@ -17562,23 +17657,15 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.01.05"
+        "to": "jb2a.particles.inward.greenyellow.01.03"
       },
       {
-        "id": "2BV2yYPfVJ5zirZt",
-        "name": "Mountain Resilience",
+        "id": "BWvGBx51RevizICD",
+        "name": "Mutilate",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "2BV2yYPfVJ5zirZt",
-        "name": "Mountain Resilience",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "BWvGBx51RevizICD",
@@ -17605,38 +17692,6 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "znv4ECL7ZtuiagtA",
-        "name": "Petrify",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "znv4ECL7ZtuiagtA",
-        "name": "Petrify",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "qr0HOiiuqj5LKlDt",
-        "name": "Pillars of Sand",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "qr0HOiiuqj5LKlDt",
-        "name": "Pillars of Sand",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
         "id": "m3lcOFm400lQCUps",
         "name": "Power Word Kill",
         "edition": "free",
@@ -17653,6 +17708,14 @@
         "to": "jb2a.shield_attack.ranged.throw.01.white.02"
       },
       {
+        "id": "Oj1PJBMQD9vuwCv7",
+        "name": "Quandary",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.misty_step.01.blue",
+        "to": "jb2a.misty_step.02.blue"
+      },
+      {
         "id": "bH0kPuf7UKxRvi2P",
         "name": "Rallying Anthem",
         "edition": "free",
@@ -17661,36 +17724,20 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "Pmhlv3fzPTuIhTrT",
-        "name": "Ranage's Circle",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "Pmhlv3fzPTuIhTrT",
-        "name": "Ranage's Circle",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "6sNjsNPipZvQ3BGe",
-        "name": "Rapid Retreat",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
-      },
-      {
         "id": "5p8naLYjFcG13OkU",
         "name": "Rebounding Barrier",
         "edition": "free",
         "slot": "bolt",
         "from": "jb2a.shield_attack.ranged.throw.01.white.01",
         "to": "jb2a.shield_attack.ranged.throw.01.white.02"
+      },
+      {
+        "id": "lsR3RLEdBG4rcSzd",
+        "name": "Reclined Apport",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.misty_step.01.blue",
+        "to": "jb2a.misty_step.02.blue"
       },
       {
         "id": "xn0V2HDrmDWNzPEt",
@@ -17704,25 +17751,9 @@
         "id": "tcwT97RWKxsJiefG",
         "name": "Shadow Siphon",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.002.blue"
-      },
-      {
-        "id": "McnPlLFvKtQVXNcG",
-        "name": "Shape Stone",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "McnPlLFvKtQVXNcG",
-        "name": "Shape Stone",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "HcIAQZjNXHemoXSU",
@@ -17733,28 +17764,12 @@
         "to": "jb2a.ground_cracks.02.orange"
       },
       {
-        "id": "Az3PmWnlWSb5ELX9",
-        "name": "Shrink the Span",
+        "id": "dDt8VFuLuhznT19v",
+        "name": "Snare Hopping",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.misty_step.01.blue",
         "to": "jb2a.misty_step.02.blue"
-      },
-      {
-        "id": "avEutOjF2ox947fp",
-        "name": "Sliding Blocks",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "avEutOjF2ox947fp",
-        "name": "Sliding Blocks",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
       },
       {
         "id": "Xxdwkt0EEDgP1LGc",
@@ -17763,6 +17778,14 @@
         "slot": "area",
         "from": "jb2a.sleep.cloud.01.pink",
         "to": "jb2a.sleep.cloud.02.pink"
+      },
+      {
+        "id": "CzMCiFbgLj1irnP4",
+        "name": "Songbird's Call",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "CzMCiFbgLj1irnP4",
@@ -17778,31 +17801,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.003.blue"
-      },
-      {
-        "id": "CVyAG7mXrs868UyB",
-        "name": "Space Fold Gate",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
-      },
-      {
-        "id": "YIMampGpij4Y30yE",
-        "name": "Speak with Stones",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "YIMampGpij4Y30yE",
-        "name": "Speak with Stones",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "to": "jb2a.impact.002.blue"
       },
       {
         "id": "VrhCpCIQB8PFax77",
@@ -17813,22 +17812,6 @@
         "to": "jb2a.shield_attack.ranged.throw.01.white.02"
       },
       {
-        "id": "3xD8DYrr8YDVYGg7",
-        "name": "Spike Stones",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "3xD8DYrr8YDVYGg7",
-        "name": "Spike Stones",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
         "id": "lXxP1ziyf4ozkpmv",
         "name": "Split the Tongue",
         "edition": "free",
@@ -17837,20 +17820,12 @@
         "to": "jb2a.melee_attack.03.trail.01.pinkpurple"
       },
       {
-        "id": "Pr1ruNTbzGn3H9w5",
-        "name": "Stone to Flesh",
+        "id": "gSFg9zKwgcNZLMEs",
+        "name": "Stormwind Flight",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "Pr1ruNTbzGn3H9w5",
-        "name": "Stone to Flesh",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "iQD8OhhkwhvD8Blw",
@@ -17858,7 +17833,7 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.01"
+        "to": "jb2a.particles.inward.greenyellow.01.04"
       },
       {
         "id": "LVwmAH5NGvTuuQSU",
@@ -17866,11 +17841,11 @@
         "edition": "free",
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
-        "to": "jb2a.particles.inward.greenyellow.02.04"
+        "to": "jb2a.particles.inward.greenyellow.01.05"
       },
       {
-        "id": "qTr2oCgIXl703Whb",
-        "name": "Thoughtful Gift",
+        "id": "bfdiKEZQLVvslcDi",
+        "name": "Take Your Places",
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.misty_step.01.blue",
@@ -17882,7 +17857,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.011.blue"
+        "to": "jb2a.impact.003.blue"
       },
       {
         "id": "mMgLHTLHjjGa206q",
@@ -17893,36 +17868,28 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
+        "id": "T8Ymeig4Fv2HrzjF",
+        "name": "Tiny Wings",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.swirling_leaves.loop.01.green",
+        "to": "jb2a.swirling_leaves.loop.02.green"
+      },
+      {
         "id": "4U2ZV1v38D0y2CRl",
         "name": "Trade Death for Life",
         "edition": "free",
         "slot": "hit",
-        "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.012.blue"
+        "from": "jb2a.impact.006.yellow",
+        "to": "jb2a.impact.007.yellow"
       },
       {
-        "id": "LzfrBDxxPTiuN7uL",
-        "name": "Transmute Rock And Mud",
+        "id": "rSpGzCyYrTMiWQoG",
+        "name": "Trade Items",
         "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "LzfrBDxxPTiuN7uL",
-        "name": "Transmute Rock And Mud",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "EAYViUegegttJF1u",
-        "name": "Tremorsense",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "slot": "hit",
+        "from": "jb2a.misty_step.01.blue",
+        "to": "jb2a.misty_step.02.blue"
       },
       {
         "id": "PaHxcqXihXkkXPsB",
@@ -17933,40 +17900,8 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "9DtuMEyHhtHFRp5a",
-        "name": "Untwisting Iron Pillar",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "9o5aG5025ZczjkPb",
-        "name": "Untwisting Iron Roots",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "9o5aG5025ZczjkPb",
-        "name": "Untwisting Iron Roots",
-        "edition": "free",
-        "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "xxhS66k68u5iIOHC",
-        "name": "Upheaval",
-        "edition": "free",
-        "slot": "cast",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
-      },
-      {
-        "id": "xxhS66k68u5iIOHC",
-        "name": "Upheaval",
+        "id": "gC3oEJ4WByq1LRO8",
+        "name": "Unrelenting Gravity",
         "edition": "free",
         "slot": "area",
         "from": "jb2a.ground_cracks.01.orange",
@@ -17986,7 +17921,15 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.blue"
+        "to": "jb2a.impact.004.blue"
+      },
+      {
+        "id": "V8wXOsoejQhe6CyG",
+        "name": "Vapor Form",
+        "edition": "free",
+        "slot": "aura",
+        "from": "jb2a.swirling_leaves.loop.01.green",
+        "to": "jb2a.swirling_leaves.loop.02.green"
       },
       {
         "id": "DcmWrD0V5PWQQyDm",
@@ -18000,33 +17943,17 @@
         "id": "sX2g6WFSQPNW9jzx",
         "name": "Warp Step",
         "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
-      },
-      {
-        "id": "UtINSoEJ0u630ia4",
-        "name": "Warping Pull",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.misty_step.01.blue",
-        "to": "jb2a.misty_step.02.blue"
-      },
-      {
-        "id": "eyKkLp8V55ydA64J",
-        "name": "Weaken Earth",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.02.orange"
-      },
-      {
-        "id": "eyKkLp8V55ydA64J",
-        "name": "Weaken Earth",
-        "edition": "free",
         "slot": "area",
-        "from": "jb2a.ground_cracks.01.orange",
-        "to": "jb2a.ground_cracks.03.orange"
+        "from": "jb2a.misty_step.01.blue",
+        "to": "jb2a.misty_step.02.blue"
+      },
+      {
+        "id": "8M03UxGXjYyDFAoy",
+        "name": "Weapon Storm",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       },
       {
         "id": "8M03UxGXjYyDFAoy",
@@ -18045,12 +17972,28 @@
         "to": "jb2a.melee_attack.05.trail.01.pinkpurple"
       },
       {
+        "id": "RpGB961b8FjXbGHi",
+        "name": "Weapon Trance",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
         "id": "HqZ1VWIcXXZXWm3K",
         "name": "Web of Influence",
         "edition": "free",
         "slot": "area",
         "from": "jb2a.web.01",
         "to": "jb2a.web.02"
+      },
+      {
+        "id": "H4oF5szC7aogqtvw",
+        "name": "Worm's Repast",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.energy_beam.normal.bluepink.02",
+        "to": "jb2a.energy_beam.normal.bluepink.03"
       }
     ],
     "methodology": "Numbered movie variants within the same selected semantic family, color, role and geometry. Explicit numeric authored roots are retained; keys sharing exactly the same movie inventory are not different variants."

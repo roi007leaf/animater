@@ -2,6 +2,7 @@
 // feat/equipment providers. These are field compositions, not status markers.
 // Aliases describe one underlying ability's emitter and recipient documents.
 import {assetGeometry} from './spell-asset-selection.mjs';
+import {colorAffinity} from './color-affinity.mjs';
 import {variantFiles} from './asset-databases.mjs';
 
 const colors={gold:['yellow','#ffe2a0'],silver:['white','#dbe9ff'],ruby:['red','#c95370'],violet:['purple','#b28ce8'],green:['green','#94dca8'],amber:['orange','#ffb978'],blue:['blue','#9ccff9'],pink:['pink','#eeaddd'],grey:['grey','#b7bdc8'],black:['black','#646577'],teal:['blueteal','#8fded7']};
@@ -139,7 +140,7 @@ export function buildAuraDesign(entry,db){
    for(const root of roots){candidates=rows.filter(r=>(r.key===`jb2a.${root}`||r.key.startsWith(`jb2a.${root}.`))&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst/.test(r.key));if(candidates.length)break;}
    if(!candidates.length)throw Error(`No continuous radial ${roots.join('/')} field in ${edition}`);
    const colored=candidates.filter(r=>r.key.split('.').includes(color));
-   chosen[edition]=(colored.length?colored:candidates).sort((a,b)=>a.key.localeCompare(b.key))[0];
+   chosen[edition]=(colored.length?colored:candidates).sort((a,b)=>colorAffinity(b.key,color)-colorAffinity(a.key,color)||a.key.localeCompare(b.key))[0];
   }
   return {...options,stageId:`field-${i+1}`,assets:[...new Set([chosen.patreon.key,chosen.free.key])],tintEnabled:true,colorize:true,tint,
    editions:Object.fromEntries(Object.entries(chosen).map(([edition,row])=>[edition,{key:row.key,files:variantFiles(row),colorSubstitution:!row.key.split('.').includes(color)}]))};

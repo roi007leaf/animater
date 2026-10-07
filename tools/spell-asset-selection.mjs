@@ -1,5 +1,6 @@
 // Search the complete edition inventory. Family hints guide intent; geometry
 // gates run first, so a matching name can never turn an impact into a ray.
+import {colorAffinity} from './color-affinity.mjs';
 import {reviewedUpgradeRoots} from './jb2a-reviewed-upgrades.mjs';
 const split = (value = "") => value.split(",").filter(Boolean);
 export const SPELL_SELECTION_REVISION=3;
@@ -446,7 +447,7 @@ export function resolveSpellMedia(
           return { row, score };
         })
         .sort(
-          (a, b) => b.score - a.score || a.row.key.localeCompare(b.row.key),
+          (a, b) => b.score - a.score || colorAffinity(b.row.key, colors[profile.slotThemes?.[slot] ?? theme] ?? "purple") - colorAffinity(a.row.key, colors[profile.slotThemes?.[slot] ?? theme] ?? "purple") || a.row.key.localeCompare(b.row.key),
         );
       const winner = ranked[0]?.row;
       if (!winner)

@@ -42,13 +42,13 @@
         "patreon": 2308,
         "free": 2308
       },
-      "visiblyReframed": 1424,
+      "visiblyReframed": 1415,
       "method": "Edition-specific effects-only comparison at 200ms / 0.1-square / 15-degree precision; IDs, names, labels and inactive tint ignored. Semantic activity cues get discrete visible framing when a shared basis collides."
     },
     "descriptionChars": 1170586,
     "missingDescriptions": [],
     "mediaTiming": {
-      "probed": 549,
+      "probed": 577,
       "missing": []
     },
     "scope": "Native feat actionType action/reaction/free only. Passive grants and uncertain embedded exploration/downtime activities excluded.",
@@ -57,7 +57,7 @@
   "coverage": {
     "patreon": {
       "availableKeys": 7648,
-      "usedKeys": 290,
+      "usedKeys": 299,
       "families": [
         "arms_of_hadar",
         "arrow",
@@ -137,7 +137,7 @@
         "twinkling_stars",
         "unarmed_strike",
         "vine",
-        "wall_of_fire",
+        "wall_of_force",
         "ward",
         "water_splash",
         "whirlwind",
@@ -149,15 +149,15 @@
         "jb2a.arms_of_hadar.dark_purple",
         "jb2a.arrow.fire.purple",
         "jb2a.arrow.lightning.blue",
-        "jb2a.arrow.physical.blue",
+        "jb2a.arrow.physical.orange",
         "jb2a.arrow.physical.purple",
         "jb2a.arrow.physical.white.01",
         "jb2a.arrow.poison.green.01",
         "jb2a.arrow.poison.purple",
-        "jb2a.aura_themed.01.inward.loop.metal.01.green",
+        "jb2a.aura_themed.01.inward.loop.metal.01.grey",
+        "jb2a.aura_themed.01.inward.loop.metal.01.red",
         "jb2a.aura_themed.01.inward.loop.wood.01.purple",
         "jb2a.aura_themed.01.outward.loop.metal.01.red",
-        "jb2a.bardic_inspiration.blueyellow",
         "jb2a.bardic_inspiration.greenorange",
         "jb2a.bardic_inspiration.purplepink",
         "jb2a.bless.200px.loop.green",
@@ -165,6 +165,7 @@
         "jb2a.bubble.001.001.loop.blue",
         "jb2a.bullet.01.blue",
         "jb2a.bullet.01.green",
+        "jb2a.bullet.01.orange",
         "jb2a.bullet.01.purple",
         "jb2a.butterflies.loop.01.white",
         "jb2a.call_lightning.high_res.purple",
@@ -188,19 +189,19 @@
         "jb2a.darkness.black",
         "jb2a.detect_magic.circle.blue",
         "jb2a.detect_magic.circle.green",
+        "jb2a.detect_magic.circle.greenorange",
+        "jb2a.detect_magic.circle.grey",
         "jb2a.detect_magic.circle.purple",
         "jb2a.detect_magic.circle.yellow",
-        "jb2a.divine_smite.target.blueyellow",
         "jb2a.divine_smite.target.dark_purple",
         "jb2a.divine_smite.target.red",
         "jb2a.divine_smite.target.yellowwhite",
-        "jb2a.dizzy_stars.200px.black",
         "jb2a.dizzy_stars.200px.blueorange",
         "jb2a.dizzy_stars.200px.green",
         "jb2a.dizzy_stars.200px.purple",
         "jb2a.dizzy_stars.200px.yellow",
         "jb2a.energy_beam.normal.blue.01",
-        "jb2a.energy_beam.normal.bluegreen.01",
+        "jb2a.energy_beam.normal.dark_green.01",
         "jb2a.energy_beam.normal.purple.01",
         "jb2a.energy_field.01.blue",
         "jb2a.energy_field.01.green",
@@ -208,12 +209,13 @@
         "jb2a.energy_field.01.yellow",
         "jb2a.energy_field.02.above.blue",
         "jb2a.energy_field.02.above.purple",
-        "jb2a.energy_field.02.below.blue",
         "jb2a.energy_field.02.below.purple",
-        "jb2a.energy_strands.02.marker.bluepurple",
+        "jb2a.energy_field.02.below.yellow",
         "jb2a.energy_strands.02.marker.green",
         "jb2a.energy_strands.complete.blue.01",
         "jb2a.energy_strands.complete.dark_purple.01",
+        "jb2a.energy_strands.complete.grey.01",
+        "jb2a.energy_strands.complete.orange.01",
         "jb2a.energy_strands.complete.purple.01",
         "jb2a.energy_strands.in.red.01",
         "jb2a.energy_strands.in.yellow.01",
@@ -224,17 +226,19 @@
         "jb2a.entangle.02.loop.03.dark_orange",
         "jb2a.entangle.dark_purple",
         "jb2a.explosion.01.orange",
-        "jb2a.explosion.shrapnel.bomb.01.black",
+        "jb2a.explosion.shrapnel.bomb.01.blue",
         "jb2a.eyes.01.bluegreen.few",
+        "jb2a.eyes.01.dark_green.few",
         "jb2a.eyes.01.dark_purple.few",
         "jb2a.eyes.01.dark_yellow.few",
         "jb2a.eyes.01.dark_yellow.many",
+        "jb2a.eyes.01.orangered.few",
         "jb2a.eyes.01.purple.few",
         "jb2a.eyes.01.purple.single",
-        "jb2a.falling_rocks.side.1x1.black",
+        "jb2a.falling_rocks.side.1x1.orange",
         "jb2a.fire_bolt.orange",
         "jb2a.fire_jet.blue",
-        "jb2a.fire_ring.500px.blue",
+        "jb2a.fire_ring.500px.yellow",
         "jb2a.fireball.explosion.orange",
         "jb2a.flames.04.loop.orange",
         "jb2a.flaming_sphere.200px.orange.01",
@@ -247,6 +251,7 @@
         "jb2a.glint.yellow.few",
         "jb2a.glint.yellow.many",
         "jb2a.ground_cracks.01.blue",
+        "jb2a.ground_cracks.01.orange",
         "jb2a.ground_cracks.01.purple",
         "jb2a.ground_cracks.01.white",
         "jb2a.guiding_bolt.01.yellow",
@@ -256,7 +261,7 @@
         "jb2a.healing_generic.03.burst.yellow",
         "jb2a.healing_generic.loop.bluewhite",
         "jb2a.healing_generic.loop.greenorange",
-        "jb2a.healing_generic.loop.tealyellow",
+        "jb2a.healing_generic.loop.yellowwhite",
         "jb2a.ice_spikes.radial.burst.blue",
         "jb2a.icosahedron.rune.above.dark_greenpurple",
         "jb2a.impact.001.blue",
@@ -270,9 +275,9 @@
         "jb2a.impact.boulder.01",
         "jb2a.impact.earth.01.browngreen",
         "jb2a.impact.fire.01.orange",
-        "jb2a.impact.ground_crack.01.blue",
         "jb2a.impact.ground_crack.01.dark_red",
         "jb2a.impact.ground_crack.01.green",
+        "jb2a.impact.ground_crack.01.orange",
         "jb2a.impact.ground_crack.01.purple",
         "jb2a.impact.ground_crack.01.white",
         "jb2a.impact.ground_crack.frost.01.blue",
@@ -291,7 +296,6 @@
         "jb2a.magic_signs.circle.02.abjuration.complete.purple",
         "jb2a.magic_signs.circle.02.abjuration.complete.yellow",
         "jb2a.magic_signs.circle.02.abjuration.loop.blue",
-        "jb2a.magic_signs.circle.02.abjuration.loop.dark_blue",
         "jb2a.magic_signs.circle.02.abjuration.loop.dark_purple",
         "jb2a.magic_signs.circle.02.abjuration.loop.dark_yellow",
         "jb2a.magic_signs.circle.02.abjuration.loop.green",
@@ -303,9 +307,11 @@
         "jb2a.magic_signs.circle.02.evocation.loop.purple",
         "jb2a.magic_signs.circle.02.necromancy.loop.purple",
         "jb2a.magic_signs.rune.02.complete.01.blue",
+        "jb2a.magic_signs.rune.02.complete.01.orange",
         "jb2a.magic_signs.rune.02.complete.01.purple",
         "jb2a.magic_signs.rune.02.complete.01.red",
         "jb2a.magic_signs.rune.02.loop.01.blue",
+        "jb2a.magic_signs.rune.02.loop.01.grey",
         "jb2a.magic_signs.rune.02.loop.01.orange",
         "jb2a.magic_signs.rune.02.loop.01.purple",
         "jb2a.magic_signs.rune.02.loop.01.red",
@@ -319,10 +325,10 @@
         "jb2a.melee_generic.creature_attack.claw.002.green",
         "jb2a.melee_generic.creature_attack.fist.002.blue",
         "jb2a.melee_generic.piercing.one_handed",
-        "jb2a.melee_generic.slash.01.bluepurple",
         "jb2a.melee_generic.slash.01.orange",
-        "jb2a.melee_generic.slash.02.001.blue",
+        "jb2a.melee_generic.slash.02.001.orange",
         "jb2a.melee_generic.slash.02.002.blue",
+        "jb2a.melee_generic.slash.02.002.orange",
         "jb2a.melee_generic.slashing.one_handed",
         "jb2a.melee_generic.whirlwind.01.bluepurple",
         "jb2a.melee_generic.whirlwind.01.greenyellow",
@@ -336,12 +342,12 @@
         "jb2a.music_notations.bass_clef.purple",
         "jb2a.music_notations.sharp.purple",
         "jb2a.muzzle_flash.single.01.yellow",
-        "jb2a.particles.002.001.complete.few.blue",
+        "jb2a.particles.002.001.complete.few.bluepurple",
+        "jb2a.particles.002.001.complete.few.purplered",
         "jb2a.particles.002.001.complete.few.white",
         "jb2a.particles.outward.red.01.01",
         "jb2a.plant_growth.01.ring.4x4.complete.bluepurple",
         "jb2a.plant_growth.01.ring.4x4.loop.bluepurple",
-        "jb2a.plant_growth.02.ring.4x4.complete.greenred",
         "jb2a.plant_growth.03.ring.4x4.complete.greenyellow",
         "jb2a.plant_growth.04.ring.4x4.complete.greenwhite",
         "jb2a.portals.horizontal.ring_masked.blue",
@@ -375,15 +381,14 @@
         "jb2a.sleep.cloud.01.blue",
         "jb2a.sleep.symbol.purple",
         "jb2a.sleep.target.blue",
-        "jb2a.sleep.target.dark_orangepurple",
+        "jb2a.sleep.target.dark_purple",
         "jb2a.sleet_storm.01.blue",
         "jb2a.sleet_storm.01.purple",
         "jb2a.smoke.plumes.01.blue",
         "jb2a.smoke.plumes.01.dark_red",
         "jb2a.smoke.plumes.01.purple",
         "jb2a.smoke.plumes.01.yellow",
-        "jb2a.smoke.plumes_loop.01.grey",
-        "jb2a.smoke.puff.centered.blue",
+        "jb2a.smoke.puff.centered.dark_green",
         "jb2a.smoke.puff.centered.dark_purple",
         "jb2a.smoke.puff.centered.green",
         "jb2a.smoke.puff.centered.grey",
@@ -402,30 +407,33 @@
         "jb2a.swirling_feathers.outburst.01.blue",
         "jb2a.swirling_feathers.outburst.01.orange",
         "jb2a.swirling_feathers.outburst.01.purple",
+        "jb2a.swirling_feathers.outburst.01.textured",
         "jb2a.swirling_leaves.complete.01.green",
         "jb2a.swirling_leaves.loop.01.green",
         "jb2a.swirling_leaves.loop.01.greenorange",
+        "jb2a.swirling_leaves.loop.01.pink",
         "jb2a.swirling_leaves.ranged.greenorange",
         "jb2a.sword.throw.blue",
+        "jb2a.sword.throw.white",
         "jb2a.teleport.01.yellow",
-        "jb2a.throwable.throw.bomb.01.black",
+        "jb2a.throwable.throw.bomb.01.blue",
         "jb2a.toll_the_dead.blue.bell",
-        "jb2a.toll_the_dead.blue.skull_smoke",
         "jb2a.toll_the_dead.green.bell",
         "jb2a.toll_the_dead.purple.bell",
+        "jb2a.toll_the_dead.purple.skull_smoke",
         "jb2a.toll_the_dead.red.bell",
         "jb2a.toll_the_dead.yellow.bell",
         "jb2a.twinkling_stars.points04.orange",
         "jb2a.twinkling_stars.points04.white",
-        "jb2a.unarmed_strike.physical.01.blue",
         "jb2a.unarmed_strike.physical.01.green",
+        "jb2a.unarmed_strike.physical.01.orange",
         "jb2a.unarmed_strike.physical.02.blue",
         "jb2a.unarmed_strike.physical.02.dark_purple",
         "jb2a.unarmed_strike.physical.02.green",
         "jb2a.unarmed_strike.physical.02.orange",
         "jb2a.unarmed_strike.physical.02.yellow",
         "jb2a.vine.complete.nature.single.01.green",
-        "jb2a.wall_of_fire.500x100.blue",
+        "jb2a.wall_of_force.sphere.orange",
         "jb2a.ward.rune.dark_purple.01",
         "jb2a.ward.rune.yellow.01",
         "jb2a.ward.star.yellow.01",
@@ -435,12 +443,13 @@
         "jb2a.wind_lines.01.01.white",
         "jb2a.wind_lines.01.02.white",
         "jb2a.wind_lines.01.leaves.01.green",
-        "jb2a.wind_lines.01.leaves.01.greenorange"
+        "jb2a.wind_lines.01.leaves.01.greenorange",
+        "jb2a.wind_lines.01.leaves.01.pink"
       ]
     },
     "free": {
       "availableKeys": 1351,
-      "usedKeys": 170,
+      "usedKeys": 175,
       "families": [
         "arcane_hand",
         "arms_of_hadar",
@@ -521,6 +530,7 @@
         "swirling_leaves",
         "sword",
         "teleport",
+        "template_circle",
         "throwable",
         "toll_the_dead",
         "twinkling_stars",
@@ -541,19 +551,21 @@
         "jb2a.arrow.physical.white.01",
         "jb2a.arrow.poison.green.01",
         "jb2a.aura_themed.01.inward.loop.metal.01.grey",
-        "jb2a.aura_themed.01.outward.loop.metal.01.grey",
+        "jb2a.aura_themed.01.inward.loop.nature.01.green",
         "jb2a.bardic_inspiration.greenorange",
         "jb2a.bats.loop.01.red",
         "jb2a.bless.200px.loop.yellow",
         "jb2a.bonfire.01.orange",
         "jb2a.bubble.001.001.loop.blue",
         "jb2a.bullet.01.orange",
+        "jb2a.bullet.03.blue",
         "jb2a.call_lightning.high_res.purple",
         "jb2a.cast_generic.01.yellow",
         "jb2a.cast_generic.02.blue",
         "jb2a.cast_generic.earth.01.browngreen",
         "jb2a.cast_generic.fire.01.orange",
         "jb2a.cast_generic.fire.side01.orange",
+        "jb2a.cast_generic.sound.01.pinkteal",
         "jb2a.cast_generic.water.02.blue",
         "jb2a.cast_shape.circle.01.blue",
         "jb2a.cast_shape.circle.single01.blue",
@@ -566,6 +578,7 @@
         "jb2a.divine_smite.target.blueyellow",
         "jb2a.dizzy_stars.200px.blueorange",
         "jb2a.energy_beam.normal.blue.01",
+        "jb2a.energy_beam.normal.bluepink.02",
         "jb2a.energy_field.01.blue",
         "jb2a.energy_field.02.above.blue",
         "jb2a.energy_field.02.below.blue",
@@ -601,6 +614,7 @@
         "jb2a.ice_spikes.radial.burst.white",
         "jb2a.icosahedron.roll.blue",
         "jb2a.impact.001.blue",
+        "jb2a.impact.005.orange",
         "jb2a.impact.006.yellow",
         "jb2a.impact.fire.01.orange",
         "jb2a.impact.frost.white.01",
@@ -616,11 +630,9 @@
         "jb2a.magic_signs.circle.01.abjuration",
         "jb2a.magic_signs.circle.01.divination",
         "jb2a.magic_signs.circle.02.abjuration.loop.blue",
-        "jb2a.magic_signs.circle.02.abjuration.loop.dark_blue",
         "jb2a.magic_signs.circle.02.conjuration.complete.yellow",
         "jb2a.magic_signs.circle.02.conjuration.loop.dark_yellow",
         "jb2a.magic_signs.circle.02.conjuration.loop.yellow",
-        "jb2a.magic_signs.circle.02.divination.loop.blue",
         "jb2a.magic_signs.circle.02.evocation.complete.red",
         "jb2a.magic_signs.circle.02.evocation.loop.dark_red",
         "jb2a.magic_signs.circle.02.evocation.loop.red",
@@ -632,6 +644,8 @@
         "jb2a.magic_signs.circle.02.necromancy.loop.green",
         "jb2a.magic_signs.rune.abjuration.complete.blue",
         "jb2a.magic_signs.rune.abjuration.loop.blue",
+        "jb2a.magic_signs.rune.conjuration.complete.yellow",
+        "jb2a.magic_signs.rune.conjuration.loop.yellow",
         "jb2a.magic_signs.rune.evocation.complete.red",
         "jb2a.magic_signs.rune.evocation.loop.red",
         "jb2a.magic_signs.rune.illusion.complete.purple",
@@ -680,8 +694,8 @@
         "jb2a.spell_projectile.ice_shard.blue",
         "jb2a.sphere_of_annihilation.200px.purple",
         "jb2a.spirit_guardians.blueyellow.ring",
-        "jb2a.spiritual_weapon.club.01.spectral.02.green",
         "jb2a.spiritual_weapon.dagger.02.spectral.02.green",
+        "jb2a.spiritual_weapon.mace.spectral.blue",
         "jb2a.static_electricity.01.blue",
         "jb2a.swirling_feathers.outburst.01.textured",
         "jb2a.swirling_leaves.complete.01.green",
@@ -689,6 +703,7 @@
         "jb2a.swirling_leaves.ranged.greenorange",
         "jb2a.sword.melee.01.white",
         "jb2a.teleport.01.blue",
+        "jb2a.template_circle.aura.01.loop.large.bluepurple",
         "jb2a.throwable.throw.bomb.01.black",
         "jb2a.toll_the_dead.green.bell",
         "jb2a.toll_the_dead.green.skull_smoke",
@@ -697,7 +712,7 @@
         "jb2a.unarmed_strike.physical.01.blue",
         "jb2a.unarmed_strike.physical.02.blue",
         "jb2a.vine.complete.nature.single.01.green",
-        "jb2a.wall_of_fire.500x100.blue",
+        "jb2a.wall_of_fire.500x100.yellow",
         "jb2a.ward.rune.yellow.01",
         "jb2a.ward.star.yellow.01",
         "jb2a.water_splash.circle.01.blue",
@@ -714,7 +729,7 @@
       "patreon": 2308,
       "free": 2308
     },
-    "visiblyReframed": 1424,
+    "visiblyReframed": 1415,
     "method": "Edition-specific effects-only comparison at 200ms / 0.1-square / 15-degree precision; IDs, names, labels and inactive tint ignored. Semantic activity cues get discrete visible framing when a shared basis collides."
   },
   "sharedCompositions": [],
@@ -9474,11 +9489,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "fallen spirit echo straightens into standing stance; left crescent, expanding entrance"
+      "visualDirection": "fallen spirit echo straightens into standing stance; centered bloom, expanding entrance"
     },
     {
       "id": "9j90iE61ZToFR8cu",
@@ -11418,11 +11433,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "armor glint rebounds into aggressive advance echo; right crescent, expanding entrance"
+      "visualDirection": "armor glint rebounds into aggressive advance echo; low wide sweep, expanding entrance"
     },
     {
       "id": "R2rDg7sYfinBDKxs",
@@ -11580,11 +11595,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "performed mask dissolves and reforms for second take; centered bloom, expanding entrance"
+      "visualDirection": "performed mask dissolves and reforms for second take; low wide sweep, expanding entrance"
     },
     {
       "id": "gXAAJCnjfCDK7YV2",
@@ -11823,11 +11838,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 2,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "informed lateral exit follows existing critical contact; diagonal ascending, expanding entrance"
+      "visualDirection": "informed lateral exit follows existing critical contact; high narrow rise, expanding entrance"
     },
     {
       "id": "74PGpEAVNS5xUDA3",
@@ -14766,11 +14781,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 4,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "two-beat performance couples advance then contact cue; diagonal settling, expanding entrance"
+      "visualDirection": "two-beat performance couples advance then contact cue; right crescent, expanding entrance"
     },
     {
       "id": "DwnnmTNOvpLbp7jJ",
@@ -14806,11 +14821,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 2,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "failed courteous phrase dissolves into revised flourish; low wide sweep, expanding entrance"
+      "visualDirection": "failed courteous phrase dissolves into revised flourish; high narrow rise, expanding entrance"
     },
     {
       "id": "1GxDzMf32UTTro1d",
@@ -15813,11 +15828,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 5,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "air-water casting currents form nascent guard arc; low wide sweep, expanding entrance"
+      "visualDirection": "air-water casting currents form nascent guard arc; diagonal ascending, expanding entrance"
     },
     {
       "id": "UJcuACMlspc1raL1",
@@ -15933,11 +15948,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 3,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "mount-shaped supporting echo catches low descending source; diagonal settling, expanding entrance"
+      "visualDirection": "mount-shaped supporting echo catches low descending source; left crescent, expanding entrance"
     },
     {
       "id": "6xBu4BewIkOIt9M0",
@@ -16176,11 +16191,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 4,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "lower-body cyclone builds into supported hover; low wide sweep, expanding entrance"
+      "visualDirection": "lower-body cyclone builds into supported hover; right crescent, expanding entrance"
     },
     {
       "id": "2jd9qqXPPXKDxBBZ",
@@ -16502,11 +16517,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 5,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "tail anchor echo supports hanging silhouette; centered bloom, expanding entrance"
+      "visualDirection": "tail anchor echo supports hanging silhouette; diagonal ascending, expanding entrance"
     },
     {
       "id": "PcLqS5h6stRtdioZ",
@@ -16582,11 +16597,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 6,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "death-defying flourish sidesteps enemy focus; high narrow rise, expanding entrance"
+      "visualDirection": "death-defying flourish sidesteps enemy focus; diagonal settling, expanding entrance"
     },
     {
       "id": "FEMXDBCf8gXBYdez",
@@ -16744,11 +16759,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 0,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "passing mount echo catches source at side; left crescent, expanding entrance"
+      "visualDirection": "passing mount echo catches source at side; centered bloom, expanding entrance"
     },
     {
       "id": "g6P1NvbbHpJGgoXU",
@@ -17476,11 +17491,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "projectile; high narrow rise, expanding entrance"
+      "visualDirection": "projectile; centered bloom, expanding entrance"
     },
     {
       "id": "iy9XKih5jIAdv67c",
@@ -18003,11 +18018,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "paired rallying notes outline coordinated shield angles; low wide sweep, sweeping entrance"
+      "visualDirection": "paired rallying notes outline coordinated shield angles; centered bloom, sweeping entrance"
     },
     {
       "id": "aJyNVKbTdpWFoM5z",
@@ -19493,11 +19508,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 1,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "two long determined movement echoes cut rough ground traces; right crescent, expanding entrance"
+      "visualDirection": "two long determined movement echoes cut rough ground traces; low wide sweep, expanding entrance"
     },
     {
       "id": "K5ZONljq5XzS8MQc",
@@ -20945,11 +20960,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 3,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "light water-skimming leap echo exits existing contact; diagonal ascending, expanding entrance"
+      "visualDirection": "light water-skimming leap echo exits existing contact; left crescent, expanding entrance"
     },
     {
       "id": "XPTSCUoA8c4o9RgQ",
@@ -22325,11 +22340,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 6,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "watery droplets coat next casting focus; high narrow rise, expanding entrance"
+      "visualDirection": "watery droplets coat next casting focus; diagonal settling, expanding entrance"
     },
     {
       "id": "fMIHi9AuwZF7DufT",
@@ -22650,11 +22665,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 2,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "small draconic wingbeats lift a short forward echo; diagonal settling, expanding entrance"
+      "visualDirection": "small draconic wingbeats lift a short forward echo; high narrow rise, expanding entrance"
     },
     {
       "id": "WRtf8xhjGM5Dy2RQ",
@@ -22690,11 +22705,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 3,
         "size": 1,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "paired fan cuts create serpentine low-resistance trail; low wide sweep, expanding entrance"
+      "visualDirection": "paired fan cuts create serpentine low-resistance trail; left crescent, expanding entrance"
     },
     {
       "id": "3uavnVbCsqTvzpgt",
@@ -23908,11 +23923,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 2,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "projectile; left crescent, expanding entrance"
+      "visualDirection": "projectile; high narrow rise, expanding entrance"
     },
     {
       "id": "9ABMm2PE3eFSzhTY",
@@ -25959,11 +25974,11 @@
       },
       "framing": {
         "entrance": "breathing",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "one existing battle aura gains layered synchronized focus; high narrow rise, breathing entrance"
+      "visualDirection": "one existing battle aura gains layered synchronized focus; low wide sweep, breathing entrance"
     },
     {
       "id": "m8iP2OCzit9WUrMD",
@@ -26161,11 +26176,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 0,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "leftover breath energy coats jaw outline; centered bloom, sweeping entrance"
+      "visualDirection": "leftover breath energy coats jaw outline; low wide sweep, sweeping entrance"
     },
     {
       "id": "NBDwiz1NDioc2eMP",
@@ -26241,11 +26256,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 0,
         "size": 1,
-        "pause": 0
+        "pause": 400
       },
-      "visualDirection": "destructive casting focus splits off protective barrier crescent; right crescent, expanding entrance"
+      "visualDirection": "destructive casting focus splits off protective barrier crescent; centered bloom, expanding entrance"
     },
     {
       "id": "MgqRwyL8PWyYvoZs",
@@ -26281,11 +26296,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 1,
         "size": 1,
-        "pause": 0
+        "pause": 400
       },
-      "visualDirection": "two distinct energy channels fuse inside casting focus; diagonal ascending, expanding entrance"
+      "visualDirection": "two distinct energy channels fuse inside casting focus; low wide sweep, expanding entrance"
     },
     {
       "id": "lG4dYrnkE42IgnGG",
@@ -26968,11 +26983,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 4,
         "size": 1,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "brief tiny wing flutter carries low lifting echo; centered bloom, expanding entrance"
+      "visualDirection": "brief tiny wing flutter carries low lifting echo; right crescent, expanding entrance"
     },
     {
       "id": "YgbcLfAEdi4xxvX5",
@@ -27453,11 +27468,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 2,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "small arcane shell seats volatile energy into firearm chamber; centered bloom, expanding entrance"
+      "visualDirection": "small arcane shell seats volatile energy into firearm chamber; high narrow rise, expanding entrance"
     },
     {
       "id": "tFrGaa0qI2JvnHsD",
@@ -27493,11 +27508,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 5,
         "size": 1,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "short informed step echo exploits missed enemy angle; high narrow rise, expanding entrance"
+      "visualDirection": "short informed step echo exploits missed enemy angle; diagonal ascending, expanding entrance"
     },
     {
       "id": "FGdKV40UiS6jvBmI",
@@ -27535,11 +27550,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 3,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "projectile; right crescent, expanding entrance"
+      "visualDirection": "projectile; left crescent, expanding entrance"
     },
     {
       "id": "y9lH4EqTGTHvqbNr",
@@ -28338,11 +28353,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 4,
         "size": 1,
-        "pause": 800
+        "pause": 0
       },
-      "visualDirection": "mounted double-stride echo skims unsupported liquid path; left crescent, expanding entrance"
+      "visualDirection": "mounted double-stride echo skims unsupported liquid path; right crescent, expanding entrance"
     },
     {
       "id": "Stydu9VtrhQZFZxt",
@@ -29233,11 +29248,11 @@
       },
       "framing": {
         "entrance": "contracting",
-        "frame": 6,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "heart black hole pulls screaming cone winds inward; diagonal settling, contracting entrance"
+      "visualDirection": "heart black hole pulls screaming cone winds inward; low wide sweep, contracting entrance"
     },
     {
       "id": "7SwpVfxSkPMPMazJ",
@@ -29353,11 +29368,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 3,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "fluid dodge transitions between claw and talon stance echoes; low wide sweep, expanding entrance"
+      "visualDirection": "fluid dodge transitions between claw and talon stance echoes; left crescent, expanding entrance"
     },
     {
       "id": "Ij6BBPzZvOFZ3prs",
@@ -30895,11 +30910,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 6,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "deft stylish side dodge leaves one confident source glint; centered bloom, expanding entrance"
+      "visualDirection": "deft stylish side dodge leaves one confident source glint; diagonal settling, expanding entrance"
     },
     {
       "id": "UuVz1QY7QXD5cnLu",
@@ -30935,11 +30950,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 6,
         "size": 1,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "fledgling wing lift beats carry short air echo; right crescent, expanding entrance"
+      "visualDirection": "fledgling wing lift beats carry short air echo; diagonal settling, expanding entrance"
     },
     {
       "id": "oOicdaf3WvT1i5ft",
@@ -31384,7 +31399,7 @@
         "entrance": "expanding",
         "frame": 5,
         "size": 1,
-        "pause": 800
+        "pause": 0
       },
       "visualDirection": "gentle vertical underwater drift echo; diagonal ascending, expanding entrance"
     },
@@ -34004,11 +34019,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 0,
         "size": 1,
         "pause": 800
       },
-      "visualDirection": "strategic forward echo draws enemy gaze into diversion marker; diagonal settling, expanding entrance"
+      "visualDirection": "strategic forward echo draws enemy gaze into diversion marker; centered bloom, expanding entrance"
     },
     {
       "id": "WcvscJpQhbTiefwn",
@@ -34449,11 +34464,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 3,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "slightly incorporeal stride echo passes through foe outlines; left crescent, sweeping entrance"
+      "visualDirection": "slightly incorporeal stride echo passes through foe outlines; centered bloom, sweeping entrance"
     },
     {
       "id": "ABL4daQ7c65d0tEM",
@@ -35537,8 +35552,8 @@
       "framing": {
         "entrance": "expanding",
         "frame": 1,
-        "size": 0.75,
-        "pause": 0
+        "size": 1,
+        "pause": 800
       },
       "visualDirection": "graceful air-walking dance echo follows sloping path; low wide sweep, expanding entrance"
     },
@@ -35697,11 +35712,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
-        "pause": 0
+        "pause": 400
       },
-      "visualDirection": "vegetation spirit burst pushes source stride echo; low wide sweep, expanding entrance"
+      "visualDirection": "vegetation spirit burst pushes source stride echo; centered bloom, expanding entrance"
     },
     {
       "id": "9EmJElnNVmXQ7Rzn",
@@ -37391,11 +37406,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 4,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "two voice-like note tracks harmonize around next composition focus; diagonal ascending, expanding entrance"
+      "visualDirection": "two voice-like note tracks harmonize around next composition focus; right crescent, expanding entrance"
     },
     {
       "id": "GhzryNTSlTBW808n",
@@ -37716,11 +37731,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 4,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "projectile; diagonal ascending, expanding entrance"
+      "visualDirection": "projectile; right crescent, expanding entrance"
     },
     {
       "id": "Ofk2WfHbj3nWRhJy",
@@ -37916,11 +37931,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
-        "size": 0.75,
-        "pause": 0
+        "frame": 2,
+        "size": 1,
+        "pause": 800
       },
-      "visualDirection": "mercy flourish precedes straight advance toward next enemy; centered bloom, expanding entrance"
+      "visualDirection": "mercy flourish precedes straight advance toward next enemy; high narrow rise, expanding entrance"
     },
     {
       "id": "qJdbK8vgIqeHU7bu",
@@ -37956,11 +37971,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 5,
         "size": 1,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "paired electric and sonic sheaths charge fists and monk weapons; centered bloom, expanding entrance"
+      "visualDirection": "paired electric and sonic sheaths charge fists and monk weapons; diagonal ascending, expanding entrance"
     },
     {
       "id": "m2Gz9y8VhGi0EpFC",
@@ -38117,11 +38132,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 5,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "projectile; diagonal settling, expanding entrance"
+      "visualDirection": "projectile; diagonal ascending, expanding entrance"
     },
     {
       "id": "24LBBYT1op52Pm4J",
@@ -39084,11 +39099,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
-        "size": 0.75,
-        "pause": 0
+        "frame": 3,
+        "size": 1,
+        "pause": 800
       },
-      "visualDirection": "frog-legged recovery echo springs from low to upright; high narrow rise, expanding entrance"
+      "visualDirection": "frog-legged recovery echo springs from low to upright; left crescent, expanding entrance"
     },
     {
       "id": "RkEvEqwc8pCBcusz",
@@ -39124,11 +39139,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
-        "size": 0.75,
-        "pause": 0
+        "frame": 4,
+        "size": 1,
+        "pause": 800
       },
-      "visualDirection": "low vampiric hopping echoes alternate along ground path; left crescent, expanding entrance"
+      "visualDirection": "low vampiric hopping echoes alternate along ground path; right crescent, expanding entrance"
     },
     {
       "id": "dtPXuS8MiWrz5UNK",
@@ -40260,11 +40275,11 @@
       },
       "framing": {
         "entrance": "breathing",
-        "frame": 3,
+        "frame": 2,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "majestic kinetic glow prepares chosen aura stance; left crescent, breathing entrance"
+      "visualDirection": "majestic kinetic glow prepares chosen aura stance; high narrow rise, breathing entrance"
     },
     {
       "id": "fLrwddS607eRFfHA",
@@ -40300,11 +40315,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 4,
+        "frame": 3,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "source outline narrows through tiny wall-seam echo; right crescent, sweeping entrance"
+      "visualDirection": "source outline narrows through tiny wall-seam echo; left crescent, sweeping entrance"
     },
     {
       "id": "72qOqbwShnT2Apaw",
@@ -40501,11 +40516,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 4,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "impossible defensive echo splits enemy hit from failed-save path; high narrow rise, expanding entrance"
+      "visualDirection": "impossible defensive echo splits enemy hit from failed-save path; right crescent, expanding entrance"
     },
     {
       "id": "NY2AkQscVIHEC8hQ",
@@ -40864,11 +40879,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 6,
         "size": 1,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "composition focus routes rhythmic area center toward willing ally; low wide sweep, expanding entrance"
+      "visualDirection": "composition focus routes rhythmic area center toward willing ally; diagonal settling, expanding entrance"
     },
     {
       "id": "LRSTjjBNNlD0XZX8",
@@ -41517,11 +41532,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 0,
         "size": 1,
-        "pause": 400
+        "pause": 800
       },
-      "visualDirection": "dark grave energy threads into next casting focus; right crescent, expanding entrance"
+      "visualDirection": "dark grave energy threads into next casting focus; centered bloom, expanding entrance"
     },
     {
       "id": "DaRfJsWAivah3a07",
@@ -43445,11 +43460,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
-        "size": 0.75,
-        "pause": 0
+        "frame": 5,
+        "size": 1,
+        "pause": 800
       },
-      "visualDirection": "disguise peels away in dramatic reveal then feintward stride echo; right crescent, expanding entrance"
+      "visualDirection": "disguise peels away in dramatic reveal then feintward stride echo; diagonal ascending, expanding entrance"
     },
     {
       "id": "37l9SEvS7X1jHtpD",
@@ -44454,11 +44469,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
-        "size": 0.75,
-        "pause": 0
+        "frame": 6,
+        "size": 1,
+        "pause": 800
       },
-      "visualDirection": "compact grounded recovery echo snaps to upright poise; diagonal ascending, expanding entrance"
+      "visualDirection": "compact grounded recovery echo snaps to upright poise; diagonal settling, expanding entrance"
     },
     {
       "id": "zknpo51jJndv68Ph",
@@ -44784,11 +44799,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 1,
         "size": 1,
-        "pause": 400
+        "pause": 800
       },
-      "visualDirection": "area-casting focus adds outward push-ready rim; diagonal settling, expanding entrance"
+      "visualDirection": "area-casting focus adds outward push-ready rim; low wide sweep, expanding entrance"
     },
     {
       "id": "2OYJOFaEkhc8dFbl",
@@ -45708,11 +45723,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 0,
         "size": 0.75,
         "pause": 0
       },
-      "visualDirection": "source step echo mirrors optional student's trailing step; diagonal settling, expanding entrance"
+      "visualDirection": "source step echo mirrors optional student's trailing step; centered bloom, expanding entrance"
     },
     {
       "id": "Ry8NYQwxPagKnLKW",
@@ -45993,7 +46008,7 @@
         "entrance": "expanding",
         "frame": 2,
         "size": 0.75,
-        "pause": 400
+        "pause": 0
       },
       "visualDirection": "lash anchor tether pivots source echo in broad swing arc; high narrow rise, expanding entrance"
     },
@@ -46393,11 +46408,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 1,
         "size": 0.75,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "toe-balanced long stride echo pairs with short careful step; centered bloom, expanding entrance"
+      "visualDirection": "toe-balanced long stride echo pairs with short careful step; low wide sweep, expanding entrance"
     },
     {
       "id": "8GG4h6DbpAEGGETG",
@@ -47161,11 +47176,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 6,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "projectile; centered bloom, expanding entrance"
+      "visualDirection": "projectile; diagonal settling, expanding entrance"
     },
     {
       "id": "apz0n3Q3gWvQVChT",
@@ -47646,11 +47661,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 3,
         "size": 0.75,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "source echo reflexively follows matching spell energy toward caster; low wide sweep, expanding entrance"
+      "visualDirection": "source echo reflexively follows matching spell energy toward caster; left crescent, expanding entrance"
     },
     {
       "id": "YJCAiNpFbX2MIc0G",
@@ -47766,11 +47781,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 4,
         "size": 0.75,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "two quick stride echoes snatch passing shiny object glint; left crescent, expanding entrance"
+      "visualDirection": "two quick stride echoes snatch passing shiny object glint; right crescent, expanding entrance"
     },
     {
       "id": "0yPbPVEESwB6Bdfw",
@@ -48089,11 +48104,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 5,
         "size": 0.75,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "weapon flexes into leap-supporting pole or hook echo; right crescent, expanding entrance"
+      "visualDirection": "weapon flexes into leap-supporting pole or hook echo; diagonal ascending, expanding entrance"
     },
     {
       "id": "hCEoINqJ75ConqqA",
@@ -48170,11 +48185,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 6,
         "size": 0.75,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "casting energy releases short step leap or upright recovery echo; diagonal ascending, expanding entrance"
+      "visualDirection": "casting energy releases short step leap or upright recovery echo; diagonal settling, expanding entrance"
     },
     {
       "id": "2e2Rv6SN3D2nX5M2",
@@ -48332,11 +48347,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "paired leader-and-follower ground trails burrow through earth; high narrow rise, expanding entrance"
+      "visualDirection": "paired leader-and-follower ground trails burrow through earth; low wide sweep, expanding entrance"
     },
     {
       "id": "8JA6T7XY6bzDQ9E0",
@@ -48613,11 +48628,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "warmask white-hot fury burns into reopened saving focus; left crescent, expanding entrance"
+      "visualDirection": "warmask white-hot fury burns into reopened saving focus; centered bloom, expanding entrance"
     },
     {
       "id": "4xeDjt8eARzAGARP",
@@ -50420,11 +50435,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "thrust; high narrow rise, expanding entrance"
+      "visualDirection": "thrust; centered bloom, expanding entrance"
     },
     {
       "id": "sbAb2a6BzZpcYv8y",
@@ -51740,11 +51755,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 0,
         "size": 0.75,
         "pause": 400
       },
-      "visualDirection": "Low forward pursuit echoes remain level and stop with faint tether cue; diagonal settling, expanding entrance"
+      "visualDirection": "Low forward pursuit echoes remain level and stop with faint tether cue; centered bloom, expanding entrance"
     },
     {
       "id": "nXbczPfLNbuosNLE",
@@ -52646,11 +52661,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 1,
         "size": 0.75,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "Two toe-height preparatory bobs lead to one vertical hop echo; centered bloom, expanding entrance"
+      "visualDirection": "Two toe-height preparatory bobs lead to one vertical hop echo; low wide sweep, expanding entrance"
     },
     {
       "id": "iCNNMJeGvsIzza4A",
@@ -54563,11 +54578,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 5,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Descending dive echo enters cushioning curved wave with soft splash; diagonal ascending, sweeping entrance"
+      "visualDirection": "Descending dive echo enters cushioning curved wave with soft splash; low wide sweep, sweeping entrance"
     },
     {
       "id": "BuaTJxALqxM5EZav",
@@ -54872,11 +54887,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "projectile; low wide sweep, expanding entrance"
+      "visualDirection": "projectile; centered bloom, expanding entrance"
     },
     {
       "id": "MmrE6B5eM1RshXKY",
@@ -54987,11 +55002,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "ghost-projectile; high narrow rise, expanding entrance"
+      "visualDirection": "ghost-projectile; low wide sweep, expanding entrance"
     },
     {
       "id": "axGS5bBJ9vl5AePc",
@@ -55293,11 +55308,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 6,
+        "frame": 4,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Graceful one-foot turn sweeps thin circular evade trail; diagonal settling, sweeping entrance"
+      "visualDirection": "Graceful one-foot turn sweeps thin circular evade trail; right crescent, sweeping entrance"
     },
     {
       "id": "A2EBy2L4acrehiAA",
@@ -55676,11 +55691,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 2,
         "size": 0.75,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "Short dash echo threads alternating narrow planar slits; low wide sweep, expanding entrance"
+      "visualDirection": "Short dash echo threads alternating narrow planar slits; high narrow rise, expanding entrance"
     },
     {
       "id": "xEeCaJsQeDtRAVk1",
@@ -56054,11 +56069,11 @@
       },
       "framing": {
         "entrance": "contracting",
-        "frame": 1,
+        "frame": 2,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Ingested toxin spiral turns inward then becomes nourishing warm pulse; low wide sweep, contracting entrance"
+      "visualDirection": "Ingested toxin spiral turns inward then becomes nourishing warm pulse; high narrow rise, contracting entrance"
     },
     {
       "id": "ALbosSUygdq4T1Yk",
@@ -59080,11 +59095,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 3,
         "size": 0.75,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "Low four-legged source echo rushes through three measured stride streaks; high narrow rise, expanding entrance"
+      "visualDirection": "Low four-legged source echo rushes through three measured stride streaks; left crescent, expanding entrance"
     },
     {
       "id": "9eL7W4rvs4sjhWFT",
@@ -59413,11 +59428,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 4,
         "size": 0.75,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "Rain-scribe mantle carries two clean stride trails with cleared path glints; left crescent, expanding entrance"
+      "visualDirection": "Rain-scribe mantle carries two clean stride trails with cleared path glints; right crescent, expanding entrance"
     },
     {
       "id": "7ZPm0P6vY9FlVtoy",
@@ -59731,11 +59746,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 2,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "projectile; left crescent, expanding entrance"
+      "visualDirection": "projectile; high narrow rise, expanding entrance"
     },
     {
       "id": "4BbywSvO2ByHxdbZ",
@@ -59916,11 +59931,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
-        "pause": 0
+        "pause": 400
       },
-      "visualDirection": "Urgent level stride echoes point toward downed ally then stop at readiness; high narrow rise, expanding entrance"
+      "visualDirection": "Urgent level stride echoes point toward downed ally then stop at readiness; low wide sweep, expanding entrance"
     },
     {
       "id": "yR413t9x7poTHOCH",
@@ -61324,11 +61339,11 @@
       },
       "framing": {
         "entrance": "contracting",
-        "frame": 0,
+        "frame": 6,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "inward-transfer; centered bloom, contracting entrance"
+      "visualDirection": "inward-transfer; diagonal settling, contracting entrance"
     },
     {
       "id": "OOBSMpdAfYuiiQqo",
@@ -61698,11 +61713,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 3,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "ricochet; right crescent, expanding entrance"
+      "visualDirection": "ricochet; left crescent, expanding entrance"
     },
     {
       "id": "wUBodqhXq3n4XbvK",
@@ -63263,11 +63278,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 2,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "counter-thrust; left crescent, expanding entrance"
+      "visualDirection": "counter-thrust; high narrow rise, expanding entrance"
     },
     {
       "id": "y7SYHv0DWkkwjT95",
@@ -63964,11 +63979,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 4,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "ricochet; diagonal ascending, expanding entrance"
+      "visualDirection": "ricochet; right crescent, expanding entrance"
     },
     {
       "id": "tRHjUCl0xqG97nok",
@@ -64502,11 +64517,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 5,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "projectile; diagonal settling, expanding entrance"
+      "visualDirection": "projectile; diagonal ascending, expanding entrance"
     },
     {
       "id": "vwOU1t8Fd5dDEYia",
@@ -64770,11 +64785,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Handful of bone glints tumble into four-way fate wheel; high narrow rise, expanding entrance"
+      "visualDirection": "Handful of bone glints tumble into four-way fate wheel; low wide sweep, expanding entrance"
     },
     {
       "id": "ATiQDz27aiBTAt17",
@@ -64807,11 +64822,11 @@
       },
       "framing": {
         "entrance": "closing",
-        "frame": 5,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Rounded body echo rebounds away through short rubbery arc then settles low; diagonal ascending, closing entrance"
+      "visualDirection": "Rounded body echo rebounds away through short rubbery arc then settles low; low wide sweep, closing entrance"
     },
     {
       "id": "8FxKcuFtOrqsl1FH",
@@ -65192,11 +65207,11 @@
       },
       "framing": {
         "entrance": "closing",
-        "frame": 6,
+        "frame": 5,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Short running trail refills weapon-height spellstrike glyph before settle; diagonal settling, closing entrance"
+      "visualDirection": "Short running trail refills weapon-height spellstrike glyph before settle; diagonal ascending, closing entrance"
     },
     {
       "id": "meQJfsKVar9tm6c9",
@@ -65340,11 +65355,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 5,
         "size": 0.75,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "Pain-red body flare starts straight boar-like rush echo toward foe; right crescent, expanding entrance"
+      "visualDirection": "Pain-red body flare starts straight boar-like rush echo toward foe; diagonal ascending, expanding entrance"
     },
     {
       "id": "BQWGOK0lVmljCunm",
@@ -66018,11 +66033,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 6,
         "size": 0.75,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "Small low scampering echoes fan away from enemy-facing side; diagonal ascending, expanding entrance"
+      "visualDirection": "Small low scampering echoes fan away from enemy-facing side; diagonal settling, expanding entrance"
     },
     {
       "id": "tBWSxVxrojRcEzJt",
@@ -66175,11 +66190,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 6,
         "size": 1,
-        "pause": 800
+        "pause": 400
       },
-      "visualDirection": "fan-projectile; centered bloom, expanding entrance"
+      "visualDirection": "fan-projectile; diagonal settling, expanding entrance"
     },
     {
       "id": "uWGpR5hfYS9znnxr",
@@ -66790,11 +66805,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 0,
         "size": 0.75,
         "pause": 800
       },
-      "visualDirection": "Small instinctive dash echo slips behind faint cover-angle rim; diagonal settling, expanding entrance"
+      "visualDirection": "Small instinctive dash echo slips behind faint cover-angle rim; centered bloom, expanding entrance"
     },
     {
       "id": "CAHJGt535l3Ai4cR",
@@ -67279,11 +67294,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
-        "size": 1.25,
-        "pause": 0
+        "frame": 1,
+        "size": 0.75,
+        "pause": 800
       },
-      "visualDirection": "Student success glint leads source into short lateral reposition trail; centered bloom, expanding entrance"
+      "visualDirection": "Student success glint leads source into short lateral reposition trail; low wide sweep, expanding entrance"
     },
     {
       "id": "Z4fZuktYgozKUxVV",
@@ -67970,11 +67985,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
-        "size": 1.25,
-        "pause": 0
+        "frame": 2,
+        "size": 0.75,
+        "pause": 800
       },
-      "visualDirection": "Paired rhythmic movement echoes follow ally's same short curved trail; low wide sweep, expanding entrance"
+      "visualDirection": "Paired rhythmic movement echoes follow ally's same short curved trail; high narrow rise, expanding entrance"
     },
     {
       "id": "Dezo2txVNhMKDcNz",
@@ -68049,11 +68064,11 @@
       },
       "framing": {
         "entrance": "ascending",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Source shadow detaches during tumble echo then rises on opposing target side; low wide sweep, ascending entrance"
+      "visualDirection": "Source shadow detaches during tumble echo then rises on opposing target side; centered bloom, ascending entrance"
     },
     {
       "id": "nBsd828H7AnVRV6r",
@@ -68201,11 +68216,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
-        "size": 1.25,
-        "pause": 0
+        "frame": 3,
+        "size": 0.75,
+        "pause": 800
       },
-      "visualDirection": "Slow unfaltering body echoes take two deliberate level shamble beats; high narrow rise, expanding entrance"
+      "visualDirection": "Slow unfaltering body echoes take two deliberate level shamble beats; left crescent, expanding entrance"
     },
     {
       "id": "q0SPmS77pNgiQk93",
@@ -68312,11 +68327,11 @@
       },
       "framing": {
         "entrance": "contracting",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "Ally curse thread bends inward into source's dark curse coil; low wide sweep, contracting entrance"
+      "visualDirection": "Ally curse thread bends inward into source's dark curse coil; centered bloom, contracting entrance"
     },
     {
       "id": "vayNZR1bTzU1oUa3",
@@ -68534,11 +68549,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 1,
+        "frame": 2,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Two flowing swim trails release small buoyant ally bubbles along path; low wide sweep, sweeping entrance"
+      "visualDirection": "Two flowing swim trails release small buoyant ally bubbles along path; high narrow rise, sweeping entrance"
     },
     {
       "id": "7U2Iop1Xt9dz4fq0",
@@ -68575,11 +68590,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
-        "size": 0.75,
+        "frame": 0,
+        "size": 1,
         "pause": 0
       },
-      "visualDirection": "single-contact; high narrow rise, expanding entrance"
+      "visualDirection": "single-contact; centered bloom, expanding entrance"
     },
     {
       "id": "jP0D4CIyloiBaEh4",
@@ -68695,11 +68710,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
         "pause": 800
       },
-      "visualDirection": "projectile; low wide sweep, expanding entrance"
+      "visualDirection": "projectile; centered bloom, expanding entrance"
     },
     {
       "id": "0PiyHEuxpB5zPctX",
@@ -68884,11 +68899,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
-        "size": 1.25,
-        "pause": 0
+        "frame": 4,
+        "size": 0.75,
+        "pause": 800
       },
-      "visualDirection": "Small tail-shaped decoy breaks away; source echo slips forward; left crescent, expanding entrance"
+      "visualDirection": "Small tail-shaped decoy breaks away; source echo slips forward; right crescent, expanding entrance"
     },
     {
       "id": "fvXY3RVW4z2OP8Zg",
@@ -69443,11 +69458,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
-        "size": 1.25,
-        "pause": 0
+        "frame": 2,
+        "size": 1,
+        "pause": 400
       },
-      "visualDirection": "Large level stride echo opens small room-making ally gaps; right crescent, expanding entrance"
+      "visualDirection": "Large level stride echo opens small room-making ally gaps; high narrow rise, expanding entrance"
     },
     {
       "id": "SA8rnheHFtjkATrJ",
@@ -70343,11 +70358,11 @@
       },
       "framing": {
         "entrance": "contracting",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "Already-harvested blood magic coils inward to refill one spent arcane bead; high narrow rise, contracting entrance"
+      "visualDirection": "Already-harvested blood magic coils inward to refill one spent arcane bead; low wide sweep, contracting entrance"
     },
     {
       "id": "L0f3c0DkT7FLQF9W",
@@ -70380,11 +70395,11 @@
       },
       "framing": {
         "entrance": "contracting",
-        "frame": 3,
+        "frame": 2,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "Familiar-held patron spark draws inward and reserves one spell glint; left crescent, contracting entrance"
+      "visualDirection": "Familiar-held patron spark draws inward and reserves one spell glint; high narrow rise, contracting entrance"
     },
     {
       "id": "eRSgUQLhGWhICwpT",
@@ -71046,8 +71061,8 @@
       "framing": {
         "entrance": "expanding",
         "frame": 5,
-        "size": 1.25,
-        "pause": 0
+        "size": 0.75,
+        "pause": 800
       },
       "visualDirection": "source-afterimage; diagonal ascending, expanding entrance"
     },
@@ -71197,11 +71212,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
         "pause": 800
       },
-      "visualDirection": "projectile; high narrow rise, expanding entrance"
+      "visualDirection": "projectile; low wide sweep, expanding entrance"
     },
     {
       "id": "2DrvFmrHzHLWS8UD",
@@ -71235,8 +71250,8 @@
       "framing": {
         "entrance": "expanding",
         "frame": 6,
-        "size": 1.25,
-        "pause": 0
+        "size": 0.75,
+        "pause": 800
       },
       "visualDirection": "Gentle stable air cushion sustains lifted echo without forward trail; diagonal settling, expanding entrance"
     },
@@ -71625,11 +71640,11 @@
       },
       "framing": {
         "entrance": "closing",
-        "frame": 0,
+        "frame": 6,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Wing-shaped lift fan carries short soaring echo before soft settle; centered bloom, closing entrance"
+      "visualDirection": "Wing-shaped lift fan carries short soaring echo before soft settle; diagonal settling, closing entrance"
     },
     {
       "id": "ugDZeILVpgLVhvGC",
@@ -71816,7 +71831,7 @@
       "framing": {
         "entrance": "expanding",
         "frame": 1,
-        "size": 0.75,
+        "size": 1,
         "pause": 0
       },
       "visualDirection": "One bounce opens two straight sprint echoes with thin pressure wake; low wide sweep, expanding entrance"
@@ -71926,11 +71941,11 @@
       },
       "framing": {
         "entrance": "contracting",
-        "frame": 4,
+        "frame": 3,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "Recent dead creature's soul wisp contracts into small faceted gem; right crescent, contracting entrance"
+      "visualDirection": "Recent dead creature's soul wisp contracts into small faceted gem; left crescent, contracting entrance"
     },
     {
       "id": "B8MKXr7mMzOHhTQH",
@@ -73986,11 +74001,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
-        "size": 1.25,
+        "frame": 3,
+        "size": 1,
         "pause": 400
       },
-      "visualDirection": "Small poppet silhouette wriggles through loosening grasp arcs; centered bloom, expanding entrance"
+      "visualDirection": "Small poppet silhouette wriggles through loosening grasp arcs; left crescent, expanding entrance"
     },
     {
       "id": "UIMZe4QDJQ9k4npN",
@@ -75221,11 +75236,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 3,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "single-contact; right crescent, expanding entrance"
+      "visualDirection": "single-contact; left crescent, expanding entrance"
     },
     {
       "id": "l3PosipTLXANeoT8",
@@ -75637,11 +75652,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
-        "size": 1.25,
+        "frame": 4,
+        "size": 1,
         "pause": 400
       },
-      "visualDirection": "Stone wall plane becomes translucent as short source trail passes threshold; low wide sweep, expanding entrance"
+      "visualDirection": "Stone wall plane becomes translucent as short source trail passes threshold; right crescent, expanding entrance"
     },
     {
       "id": "gLOLdDj21bTaLHp7",
@@ -75748,11 +75763,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Companion story crest rewinds failed-save fracture into warm resilience rim; low wide sweep, expanding entrance"
+      "visualDirection": "Companion story crest rewinds failed-save fracture into warm resilience rim; centered bloom, expanding entrance"
     },
     {
       "id": "fyN2LDuaFXzZTboA",
@@ -76365,11 +76380,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 2,
         "size": 0.75,
         "pause": 0
       },
-      "visualDirection": "single-contact; left crescent, expanding entrance"
+      "visualDirection": "single-contact; high narrow rise, expanding entrance"
     },
     {
       "id": "pfVTsZ2asd6cnVed",
@@ -76402,11 +76417,11 @@
       },
       "framing": {
         "entrance": "breathing",
-        "frame": 4,
+        "frame": 3,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Regulated breath settles into flexible stunt-ready guarded frame; right crescent, breathing entrance"
+      "visualDirection": "Regulated breath settles into flexible stunt-ready guarded frame; left crescent, breathing entrance"
     },
     {
       "id": "S2YTLXTvqaXhThG6",
@@ -76624,11 +76639,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Contemptuous social ripple prompts renewed ally mental-save glow; high narrow rise, expanding entrance"
+      "visualDirection": "Contemptuous social ripple prompts renewed ally mental-save glow; low wide sweep, expanding entrance"
     },
     {
       "id": "qQt3CMrhLkUV1wCv",
@@ -77128,11 +77143,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 0,
+        "frame": 3,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Land stride trail blends into two swim ripples or reverses at shoreline; centered bloom, sweeping entrance"
+      "visualDirection": "Land stride trail blends into two swim ripples or reverses at shoreline; left crescent, sweeping entrance"
     },
     {
       "id": "flTkVUibGyxkJWHV",
@@ -77615,11 +77630,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
-        "size": 1.25,
+        "frame": 5,
+        "size": 1,
         "pause": 400
       },
-      "visualDirection": "Graceful swan dive arc lands in splash then continues short swim wake; high narrow rise, expanding entrance"
+      "visualDirection": "Graceful swan dive arc lands in splash then continues short swim wake; diagonal ascending, expanding entrance"
     },
     {
       "id": "ossGwqEvC6ifPwgT",
@@ -77763,11 +77778,11 @@
       },
       "framing": {
         "entrance": "closing",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "Elusive close side echo circles around incoming foe's edge; low wide sweep, closing entrance"
+      "visualDirection": "Elusive close side echo circles around incoming foe's edge; centered bloom, closing entrance"
     },
     {
       "id": "tOtrtDR7ftHhPFm4",
@@ -77878,11 +77893,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 1,
         "size": 0.75,
         "pause": 0
       },
-      "visualDirection": "Quick undead spring echo makes one clean leap arc; high narrow rise, expanding entrance"
+      "visualDirection": "Quick undead spring echo makes one clean leap arc; low wide sweep, expanding entrance"
     },
     {
       "id": "IxggfXunfldeVOsQ",
@@ -77952,11 +77967,11 @@
       },
       "framing": {
         "entrance": "closing",
-        "frame": 2,
+        "frame": 0,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Parted earth rim opens low burrowing body echo and closes gently; high narrow rise, closing entrance"
+      "visualDirection": "Parted earth rim opens low burrowing body echo and closes gently; centered bloom, closing entrance"
     },
     {
       "id": "3QmLx5Xv652PhtLf",
@@ -78151,11 +78166,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 1,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Opposed adjacent echoes pivot around shared center, redirected attack lane follows; high narrow rise, expanding entrance"
+      "visualDirection": "Opposed adjacent echoes pivot around shared center, redirected attack lane follows; low wide sweep, expanding entrance"
     },
     {
       "id": "8M7iQfVBRuucR6hJ",
@@ -78272,11 +78287,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 1,
         "size": 1.25,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Low slithering echo follows ally rhythm in half-length trail; left crescent, expanding entrance"
+      "visualDirection": "Low slithering echo follows ally rhythm in half-length trail; low wide sweep, expanding entrance"
     },
     {
       "id": "WAWaew53zpTFVwQM",
@@ -78346,11 +78361,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 2,
+        "frame": 5,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Quiet tactical-entry echo advances behind faint cover-angle line; high narrow rise, sweeping entrance"
+      "visualDirection": "Quiet tactical-entry echo advances behind faint cover-angle line; diagonal ascending, sweeping entrance"
     },
     {
       "id": "pT6r5BVJjALJUmb3",
@@ -78814,11 +78829,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 0,
         "size": 1.25,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Source and eidolon echoes take matching single parallel stride tracks; right crescent, expanding entrance"
+      "visualDirection": "Source and eidolon echoes take matching single parallel stride tracks; centered bloom, expanding entrance"
     },
     {
       "id": "exVjUkpAdbzJsxxg",
@@ -80141,11 +80156,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Source echo tumbles around larger target in one oblique loop; left crescent, expanding entrance"
+      "visualDirection": "Source echo tumbles around larger target in one oblique loop; centered bloom, expanding entrance"
     },
     {
       "id": "OdfEpte6cnGB2EOY",
@@ -81214,11 +81229,11 @@
       },
       "framing": {
         "entrance": "closing",
-        "frame": 3,
+        "frame": 1,
         "size": 1,
         "pause": 400
       },
-      "visualDirection": "Protector echo follows one ally-facing close pursuit trail; left crescent, closing entrance"
+      "visualDirection": "Protector echo follows one ally-facing close pursuit trail; low wide sweep, closing entrance"
     },
     {
       "id": "ILJBC1tFusaHVYQI",
@@ -81251,11 +81266,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 3,
+        "frame": 4,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Birdlike dancing footwork echo twists between two bamboo-like rhythm lines; left crescent, sweeping entrance"
+      "visualDirection": "Birdlike dancing footwork echo twists between two bamboo-like rhythm lines; right crescent, sweeping entrance"
     },
     {
       "id": "aHlcMMNQ85VLK7QT",
@@ -81486,11 +81501,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 3,
         "size": 0.75,
         "pause": 0
       },
-      "visualDirection": "forward; right crescent, expanding entrance"
+      "visualDirection": "forward; left crescent, expanding entrance"
     },
     {
       "id": "kJ3d0aFkddkbsJ0k",
@@ -82174,11 +82189,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 1,
+        "frame": 0,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Centaur double-stride hoof echoes produce ground-level trampling contacts; low wide sweep, expanding entrance"
+      "visualDirection": "Centaur double-stride hoof echoes produce ground-level trampling contacts; centered bloom, expanding entrance"
     },
     {
       "id": "7GGxoXYNA4YrtML9",
@@ -82771,11 +82786,11 @@
       },
       "framing": {
         "entrance": "breathing",
-        "frame": 4,
+        "frame": 3,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Refined breath circulates internal water currents into clear defensive ring; right crescent, breathing entrance"
+      "visualDirection": "Refined breath circulates internal water currents into clear defensive ring; left crescent, breathing entrance"
     },
     {
       "id": "uR62fVC9FyQAMCO1",
@@ -82850,11 +82865,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 2,
         "size": 1,
         "pause": 800
       },
-      "visualDirection": "object-projectile; left crescent, expanding entrance"
+      "visualDirection": "object-projectile; high narrow rise, expanding entrance"
     },
     {
       "id": "POrE3ZgBRdBL9MsW",
@@ -83008,11 +83023,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 2,
         "size": 1.25,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Webbed-feet glide echo descends slowly along shallow forward arc; diagonal ascending, expanding entrance"
+      "visualDirection": "Webbed-feet glide echo descends slowly along shallow forward arc; high narrow rise, expanding entrance"
     },
     {
       "id": "RHLfM9NlIlHTH85w",
@@ -83230,11 +83245,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 2,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Tumble echo passes foe then small decoy gesture glint distracts back; right crescent, expanding entrance"
+      "visualDirection": "Tumble echo passes foe then small decoy gesture glint distracts back; high narrow rise, expanding entrance"
     },
     {
       "id": "iSnstY2UywUdoBRZ",
@@ -83382,11 +83397,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 4,
+        "frame": 5,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Compact tunnel-roll silhouette follows straight descending rock-lined trail; right crescent, sweeping entrance"
+      "visualDirection": "Compact tunnel-roll silhouette follows straight descending rock-lined trail; diagonal ascending, sweeping entrance"
     },
     {
       "id": "zxlbMEaXglMVsLpQ",
@@ -83456,11 +83471,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 0,
+        "frame": 2,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "Salt-like superstition motes flick over shoulder and disperse dark fate strand; centered bloom, expanding entrance"
+      "visualDirection": "Salt-like superstition motes flick over shoulder and disperse dark fate strand; high narrow rise, expanding entrance"
     },
     {
       "id": "3aG0gkHulBIHqqGE",
@@ -83967,11 +83982,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 4,
         "size": 0.75,
         "pause": 0
       },
-      "visualDirection": "crescent; diagonal ascending, expanding entrance"
+      "visualDirection": "crescent; right crescent, expanding entrance"
     },
     {
       "id": "WGGLlrhV8cKFn1v0",
@@ -84402,11 +84417,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 5,
+        "frame": 4,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "counter-thrust; diagonal ascending, expanding entrance"
+      "visualDirection": "counter-thrust; right crescent, expanding entrance"
     },
     {
       "id": "e9H7w0X6yFEhn3h4",
@@ -86199,11 +86214,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 3,
         "size": 1.25,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Short evasive tumble echoes weave sequentially around foe reach edges; diagonal settling, expanding entrance"
+      "visualDirection": "Short evasive tumble echoes weave sequentially around foe reach edges; left crescent, expanding entrance"
     },
     {
       "id": "CwGMDf0akn0VbNPb",
@@ -86581,11 +86596,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 6,
+        "frame": 5,
         "size": 1,
         "pause": 0
       },
-      "visualDirection": "narrow-thrust; diagonal settling, expanding entrance"
+      "visualDirection": "narrow-thrust; diagonal ascending, expanding entrance"
     },
     {
       "id": "fns6SMiYrUeL6cnx",
@@ -86766,11 +86781,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 6,
         "size": 1,
-        "pause": 0
+        "pause": 400
       },
-      "visualDirection": "Swift stride echo leaves one vivacious stationary copy forward or behind; left crescent, expanding entrance"
+      "visualDirection": "Swift stride echo leaves one vivacious stationary copy forward or behind; diagonal settling, expanding entrance"
     },
     {
       "id": "2MHzEh1KUQEbhjUf",
@@ -87914,7 +87929,7 @@
       "framing": {
         "entrance": "expanding",
         "frame": 0,
-        "size": 1.25,
+        "size": 1,
         "pause": 800
       },
       "visualDirection": "Walking echo touches sequential surface water rings with no deep splash; centered bloom, expanding entrance"
@@ -88769,11 +88784,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
+        "frame": 3,
         "size": 1,
         "pause": 800
       },
-      "visualDirection": "projectile; right crescent, expanding entrance"
+      "visualDirection": "projectile; left crescent, expanding entrance"
     },
     {
       "id": "w0nSRBNwexM5Dh0D",
@@ -89177,7 +89192,7 @@
       "framing": {
         "entrance": "expanding",
         "frame": 1,
-        "size": 1.25,
+        "size": 1,
         "pause": 800
       },
       "visualDirection": "Graceful unpredictable dance echo weaves through short wide arc; low wide sweep, expanding entrance"
@@ -89213,11 +89228,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 2,
+        "frame": 4,
         "size": 1.25,
-        "pause": 800
+        "pause": 0
       },
-      "visualDirection": "Two wild animal stride beats leave distinct fast-ready ground trails; high narrow rise, expanding entrance"
+      "visualDirection": "Two wild animal stride beats leave distinct fast-ready ground trails; right crescent, expanding entrance"
     },
     {
       "id": "wKx7BWdQu5sEjL9j",
@@ -89402,11 +89417,11 @@
       },
       "framing": {
         "entrance": "sweeping",
-        "frame": 5,
+        "frame": 6,
         "size": 1,
-        "pause": 400
+        "pause": 0
       },
-      "visualDirection": "Two flowing distinct Stand/Step/Stride echo beats wind gently around source; diagonal ascending, sweeping entrance"
+      "visualDirection": "Two flowing distinct Stand/Step/Stride echo beats wind gently around source; diagonal settling, sweeping entrance"
     },
     {
       "id": "HXjDDIannDMNxMIz",
@@ -89563,11 +89578,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 3,
+        "frame": 5,
         "size": 1.25,
-        "pause": 800
+        "pause": 0
       },
-      "visualDirection": "Sharp wing flap lightens feet, two small level Step echoes follow; left crescent, expanding entrance"
+      "visualDirection": "Sharp wing flap lightens feet, two small level Step echoes follow; diagonal ascending, expanding entrance"
     },
     {
       "id": "kBnsLuh3eBLjwGpN",
@@ -91015,11 +91030,11 @@
       },
       "framing": {
         "entrance": "expanding",
-        "frame": 4,
-        "size": 1.25,
+        "frame": 2,
+        "size": 1,
         "pause": 800
       },
-      "visualDirection": "Self-blessing glow carries short zealous grounded rush echo; right crescent, expanding entrance"
+      "visualDirection": "Self-blessing glow carries short zealous grounded rush echo; high narrow rise, expanding entrance"
     },
     {
       "id": "5uhKRkYDzLP7v3XY",

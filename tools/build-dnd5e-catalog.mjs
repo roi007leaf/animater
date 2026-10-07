@@ -1,3 +1,4 @@
+import {colorAffinity} from './color-affinity.mjs';
 import {writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {dnd5eSources,hasNativeActivation} from './dnd5e-source.mjs';
@@ -27,12 +28,42 @@ function media(direction,row,id){
  return Object.fromEntries(Object.entries(resolved).map(([slot,keys])=>[slot,[...new Set(['patreon','free'].map(edition=>{const key=keys.find(k=>db[edition].some(r=>r.key===k));return siblings(key,id+slot,edition);} ))]]));
 }
 const sustained={blinded:'markers.runes',charmed:'markers.heart',deafened:'markers.mute',exhaustion:'token_border.circle.static',frightened:'markers.fear',grappled:'markers.chain',incapacitated:'markers.stun',invisible:'markers.on_token_mask,markers.smoke',paralyzed:'markers.chain',petrified:'token_border.circle.static',poisoned:'markers.poison',prone:'token_border.circle.static',restrained:'web.loop,markers.chain',stunned:'markers.stun',unconscious:'markers.sleep,token_border.circle.static',dead:'markers.skull',concentrating:'markers.runes',bloodied:'markers.drop'};
+// Marker grammar: icon = category, color = valence or damage type. Variants are
+// chosen deterministically by color affinity (never a random color per entry)
+// and substituted colors are tinted so Advantage/Disadvantage, buffs/penalties
+// and resistance types stay distinguishable.
+const DAMAGE_HEX={acid:'#b8e580',cold:'#8cdcff',fire:'#ffad64',force:'#c9b8ff',lightning:'#acb0ff',necrotic:'#9366bf',poison:'#8dd998',psychic:'#e29be9',radiant:'#fff0ab',thunder:'#b9cff5',bludgeoning:'#d8bf8a',piercing:'#d8bf8a',slashing:'#d8bf8a'};
+const DAMAGE_COLOR={acid:'green',cold:'blue',fire:'orange',force:'purple',lightning:'blue',necrotic:'purple',poison:'green',psychic:'pink',radiant:'yellow',thunder:'blue',bludgeoning:'grey',piercing:'grey',slashing:'grey'};
+const THEME_HEX={fire:'#ffad64',cold:'#8cdcff',electricity:'#acb0ff',acid:'#b8e580',poison:'#8dd998',blood:'#ed859b',light:'#ffe2a0',spirit:'#fff0cf',void:'#9366bf',shadow:'#8c7ab8',plant:'#9de6b0',healing:'#8be6c4',water:'#87d6ee',ward:'#8bbdf4',earth:'#c9a27a'};
 function stateAssets(row,theme){
  const name=row.source.name.toLowerCase(),status=row.statusId??row.source.statuses?.[0];
- const hint=sustained[status]??(/resistan|immun|ward|shield|armor/.test(name)?'shield.01.loop':/haste|speed/.test(name)?'token_border.circle.spinning':/slow|letharg|exhaust/.test(name)?'token_border.circle.static':/rage/.test(name)?'aura_themed.01.orbit.loop.metal':/hunt|mark/.test(name)?'hunters_mark.loop':/invisib/.test(name)?sustained.invisible:SPELL_THEMES[theme]?.aura??'token_border.circle.static');
- const color=({poisoned:'green',bloodied:'red',exhaustion:'yellow',petrified:'grey',dead:'grey',restrained:'white',grappled:'grey',paralyzed:'yellow'}[status]??{fire:'orange',cold:'blue',electricity:'blue',acid:'green',poison:'green',blood:'red',light:'yellow',spirit:'yellow',void:'purple',shadow:'purple',plant:'green',healing:'green',water:'blue',ward:'blue',earth:'brown'}[theme]);
- const choose=options=>{const colored=color?options.filter(r=>r.key.split('.').some(p=>p.includes(color))):[];const pool=colored.length?colored:options;return pool[seed(row.uuid??status)%pool.length].key;};
- return [...new Set(Object.entries(db).map(([edition,inventory])=>{for(const prefix of hint.split(',')){const options=inventory.filter(r=>r.key.startsWith('jb2a.'+prefix)&&assetGeometry(r)==='radial'&&!/intro|outro|complete|pulse|outburst/.test(r.key));if(options.length)return choose(options);}const options=inventory.filter(r=>r.key.startsWith('jb2a.token_border.circle.static'));if(!options.length)throw Error('No sustained media '+edition);return choose(options);} ))];
+ const damage=name.match(/\b(acid|cold|fire|force|lightning|necrotic|poison|psychic|radiant|thunder|bludgeoning|piercing|slashing)\b/)?.[1];
+ const vulnerable=/vulnerab/.test(name),defense=/resistan|immun|ward|shield|armor/.test(name)&&!vulnerable;
+ const negative=vulnerable||/disadvantage|penalt|cursed|lethargy|\bslow|withered|enfeebl|enervat|weaken|-\s*\d|−\s*\d/.test(name);
+ const positive=!negative&&/advantage|bonus|\+\s*\d|blessed|bless|heroism|\baid\b|enhanced|guidance/.test(name);
+ const hint=sustained[status]??(
+  vulnerable?'condition.curse,token_border.circle.static':
+  defense&&damage==='fire'?'shield_themed.above.fire,shield.01.loop':
+  defense&&damage==='cold'?'shield_themed.above.ice,shield.01.loop':
+  defense?'shield.01.loop':
+  /ioun|enhanced (?:agility|awareness|fortitude|insight|intellect|leadership|mastery|protection|strength)/.test(name)?'markers.light_orb,dancing_light':
+  /\bfly|flying|levitat/.test(name)?'token_border.circle.spinning':
+  /haste|speed/.test(name)&&!negative?'token_border.circle.spinning':
+  /slow|letharg|exhaust/.test(name)?'token_border.circle.static':
+  /hunt|mark/.test(name)?'hunters_mark.loop':
+  /chain|manacle|shackle|iron/.test(name)&&/restrain|chain|bound|imprison/.test(name)?'markers.chain':
+  /temporary hit points|temp hp/.test(name)?'markers.heart':
+  /rage/.test(name)?'aura_themed.01.orbit.loop.metal':
+  /invisib/.test(name)?sustained.invisible:
+  negative?'condition.curse,token_border.circle.static':
+  positive?'condition.boon,token_border.circle.static':
+  SPELL_THEMES[theme]?.aura??'token_border.circle.static');
+ const color=({poisoned:'green',bloodied:'red',exhaustion:'yellow',petrified:'grey',dead:'grey',restrained:'white',grappled:'grey',paralyzed:'yellow'}[status]??(damage&&(defense||vulnerable||/hunter/.test(name))?DAMAGE_COLOR[damage]:negative?'dark_red':positive?'green':{fire:'orange',cold:'blue',electricity:'blue',acid:'green',poison:'green',blood:'red',light:'yellow',spirit:'yellow',void:'purple',shadow:'purple',plant:'green',healing:'green',water:'blue',ward:'blue',earth:'brown'}[theme]));
+ const hex=damage&&(defense||vulnerable||/hunter/.test(name))?DAMAGE_HEX[damage]:negative?'#e07a84':positive?'#a9dbb4':THEME_HEX[theme];
+ const choose=options=>[...options].sort((a,b)=>colorAffinity(b.key,color)-colorAffinity(a.key,color)||a.key.localeCompare(b.key))[0].key;
+ const assets=[...new Set(Object.entries(db).map(([edition,inventory])=>{for(const prefix of hint.split(',')){const options=inventory.filter(r=>r.key.startsWith('jb2a.'+prefix)&&assetGeometry(r)==='radial'&&!/intro|outro|complete|pulse|outburst/.test(r.key));if(options.length)return choose(options);}const options=inventory.filter(r=>r.key.startsWith('jb2a.token_border.circle.static'));if(!options.length)throw Error('No sustained media '+edition);return choose(options);} ))];
+ const needsTint=Boolean(color&&hex)&&assets.some(k=>colorAffinity(k,color)<0.9);
+ return {assets,tint:needsTint?{tintEnabled:true,colorize:true,tint:hex}:{}};
 }
 function finiteRecipe(entry,row,raw,mode){
  const d=nativeDirection(row,raw,mode),id=`${raw._id}${mode?'-'+mode:''}`,m=mode?{}:media(d,row,entry.id+id),a=d.activity;
@@ -126,8 +157,8 @@ function entryFor(row,kind){
  const name=s.name??'Effect',slug=(s.system?.identifier??name.toLowerCase().replace(/[^a-z0-9]+/g,'-'));
  const entry={id,uuid:row.uuid,documentId:s._id,pack:row.pack,path:row.path,sourceURL:row.sourceURL,name,slug,identifier:s.system?.identifier??slug,descriptionText:row.description,descriptionHash:hash(row.description),edition:row.edition,kind,img:s.img??row.parent?.img,level:s.system?.level??null,group:kind==='spell'?s.system?.school??'Spell':kind==='feat'?s.system?.type?.value??'Feature':kind==='weapon'?s.system?.type?.baseItem??'Weapon':kind==='condition'?'Condition':kind==='effect'?'Native effect':s.system?.type?.value??s.type,theme:d.theme,quality:d.reviewed?'curated':'symbolic',reviewed:d.reviewed,...(row.statusId?{statusId:row.statusId}:{}),...(row.parent?{parentUuid:row.uuid.split('.ActiveEffect.')[0],parentDocumentId:row.parent._id,transfer:s.transfer===true}:{}),variants:[]};
  if(['condition','effect'].includes(kind)){
-  const assets=stateAssets(row,d.theme),p=statePresentation({assets});
-  entry.variants=[{id:'sustained',label:'Sustained native state',rationale:'Attached visual follows the native active document. Removal, suppression, scene changes and native expiry stop it; no sound loop or token displacement.',artLimit:'Symbolic status cue. Native rules and visibility remain authoritative.',recipe:validateRecipe({id:`animater-${id}-state`,name,systemId:'dnd5e',catalogEntry:id,stateEntry:id,lifecycle:'document',trigger:'effect',itemUuid:row.uuid,category:entry.group,color:SPELL_THEMES[d.theme]?.color,match:name,stages:[{stageId:'sustained',kind:'aura',label:'Sustained visual',assets,...p,subject:'source',persist:true,duration:6000,fadeIn:400,fadeOut:400}]})}];
+  const {assets,tint}=stateAssets(row,d.theme),p=statePresentation({assets});
+  entry.variants=[{id:'sustained',label:'Sustained native state',rationale:'Attached visual follows the native active document. Removal, suppression, scene changes and native expiry stop it; no sound loop or token displacement.',artLimit:'Symbolic status cue. Native rules and visibility remain authoritative.',recipe:validateRecipe({id:`animater-${id}-state`,name,systemId:'dnd5e',catalogEntry:id,stateEntry:id,lifecycle:'document',trigger:'effect',itemUuid:row.uuid,category:entry.group,color:SPELL_THEMES[d.theme]?.color,match:name,stages:[{stageId:'sustained',kind:'aura',label:'Sustained visual',assets,...p,...tint,subject:'source',persist:true,duration:6000,fadeIn:400,fadeOut:400}]})}];
  }else{
   for(const a of row.activities)for(const mode of kind==='weapon'?weaponModes(s,a):[undefined])entry.variants.push(finiteRecipe(entry,row,a,mode));
   if(!entry.variants.length)entry.variants.push(finiteRecipe(entry,row,{_id:'manual',type:'utility',name:'Manual native activation',activation:{type:'special'}},undefined));

@@ -1,7 +1,9 @@
+import {colorAffinity} from './color-affinity.mjs';
 import {assetGeometry} from './spell-asset-selection.mjs';
 import {WEAPON_ACCENTS,BOMB_PAYLOADS} from '../scripts/weapon-payloads.mjs';
 const melee={dagger:['dagger.melee.02','melee_generic.piercing'],sword:['sword.melee.01'],greatsword:['melee_attack.03.greatsword.02','greatsword.melee.standard','melee_attack.03.greatsword'],spear:['spear.melee.01'],hammer:['hammer.melee.01','melee_attack.02.hammer'],club:['club.melee.01','melee_attack.02.club'],flail:['melee_attack.01.flail'],unarmed:['unarmed_strike.physical'],axe:['melee_generic.slashing'],polearm:['melee_generic.piercing'],pick:['melee_attack.02.pickaxe.01','melee_generic.piercing'],shield:['melee_generic.bludgeoning'],whip:['melee_generic.slash'],contact:['melee_generic']};
 const flights={bow:['arrow.physical'],crossbow:['bolt.physical','arrow.physical'],blowgun:['dart.01.throw','dagger.throw.01'],firearm:['bullet.01','bullet.02'],sling:['sling','bullet.02'],spear:['spear.throw.01'],dagger:['dagger.throw.01','kunai.throw'],shuriken:['shuriken.01'],hammer:['hammer.throw'],axe:['axe.throw','dagger.throw.02'],boomerang:['boomerang','hammer.throw'],thrown:['hammer.throw','dagger.throw.01'],bomb:['throwable.throw.bomb'],flask:['throwable.throw.flask'],projectile:['arrow.physical']};
+const r0=row=>row.key;
 export function selectWeaponMedia(databases,weapon,mode){
  const assets={contact:[],flight:[],accent:[],return:[]},selections=[];
  for(const [edition,rows]of Object.entries(databases)){
@@ -14,7 +16,9 @@ export function selectWeaponMedia(databases,weapon,mode){
     if(list.length){
      list.sort((a,b)=>{
       const score=r=>(/\.white\b/.test(r.key)?10:0)+(r.key.includes(mode.hands===2?'two_handed':'one_handed')?8:0)+(r.key.includes('.01')?1:0);
-      return score(b)-score(a)||a.key.localeCompare(b.key);
+      // Mundane gear reads as white/steel; elemental modes take their hue. Never alphabetical blue.
+      const hue={fire:'orange',cold:'blue',electricity:'blue',acid:'green',poison:'green',void:'purple',force:'purple',mental:'purple',spirit:'yellow',vitality:'yellow',sonic:'blue'}[mode.element]??(slot==='flight'&&/bullet/.test(r0(a))?'orange':'white');
+      return score(b)-score(a)||colorAffinity(b.key,hue)-colorAffinity(a.key,hue)||a.key.localeCompare(b.key);
      });chosen=list[0];break;
     }
    }
@@ -32,6 +36,8 @@ export function selectWeaponMedia(databases,weapon,mode){
    const root=mode.family==='bow'?'arrow':mode.family==='crossbow'?'bolt':'';
    const elemental=root&&element?[`${root}.${element}.${color}`]:[];
    pick('flight',mode.flightRoots??[...elemental,...(nativeFlight[mode.family]??flights[mode.family]??flights.projectile)],'projectile',['dagger.throw.01','arrow.physical']);
+   // Black-powder and gun Strikes fire visibly from the muzzle.
+   if(mode.mode==='ranged'&&mode.family==='firearm')pick('muzzle',['muzzle_flash.single.01','muzzle_flash.burst.01'],'radial',['impact.005.orange','impact.001.orange']);
   }
   const payload=mode.payload;
   const liquidColor={acid:'green',poison:'green',water:'blue',mud:'brown',glue:'brown',bleed:'red'}[payload?.element];

@@ -1,4 +1,5 @@
 import { resolveSpellMedia, assetGeometry } from "./spell-asset-selection.mjs";
+import { colorAffinity } from './color-affinity.mjs';
 import { TOSS_MEDIA } from '../scripts/feat-toss.mjs';
 
 const martial = new Set(["strike","heavyStrike","doubleStrike","multiStrike","mixedStrike","restorativeStrike","smite","spellstrike","fearStrike","charge","tumbleStrike","feintStrike","bindStrike","tripStrike","drawStrike","whirlwindStrike"]);
@@ -24,13 +25,14 @@ export function nativeFeatRoots(context) {
   if(/two-handed|greatsword/.test(weapon)&&heavy)return ["melee_attack.03.greatsword.02","greatsword.melee.standard","melee_generic.slashing.two_handed","melee_generic.slash.02.002","melee_generic.slash"];
   if(/wide|cleav|sweep/.test(shape))return ["melee_generic.slash.02.002","melee_generic.slashing.two_handed","melee_generic.slash","sword.melee"];
   if(paired)return ["melee_generic.slash.02.001","melee_generic.slash.02","melee_generic.slash","sword.melee"];
-  return ["melee_generic.slash.01","melee_generic.slashing.one_handed","melee_generic.slash","sword.melee"];
+  return ["melee_generic.slashing.one_handed","melee_generic.slash.01","melee_generic.slash","sword.melee"];
 }
-const contactColors={weapon:["white","grey","bluepurple"],fire:["orange","red","yellow"],cold:["blue","white"],electricity:["purple","blue","yellow"],acid:["green","yellow"],poison:["green","purple"],plant:["green","yellow"],blood:["red","dark_red"],void:["dark_purple","purple","black"],spirit:["white","yellow","blue"],vitality:["yellow","white","green"]};
+const contactColors={weapon:["white","grey","orange"],fire:["orange","red","yellow"],cold:["blue","white"],electricity:["purple","blue","yellow"],acid:["green","yellow"],poison:["green","purple"],plant:["green","yellow"],blood:["red","dark_red"],void:["dark_purple","purple","black"],spirit:["white","yellow","blue"],vitality:["yellow","white","green"]};
 const colorRank=(key,theme)=>{
   const colors=contactColors[theme]??contactColors.weapon;
   const index=colors.findIndex(color=>key.split('.').includes(color));
-  return index<0?colors.length:index;
+  // Unlisted colors fall back by hue distance, never alphabetically (blue).
+  return index<0?colors.length+1-colorAffinity(key,colors[0]):index;
 };
 export function resolveFeatMedia(databases, theme, profile, defaults, context) {
   if(TOSS_MEDIA[context.slug]) {

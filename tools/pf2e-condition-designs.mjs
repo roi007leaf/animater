@@ -1,4 +1,5 @@
 import {assetGeometry} from './spell-asset-selection.mjs';
+import {colorAffinity} from './color-affinity.mjs';
 import {variantFiles} from './asset-databases.mjs';
 
 // Reviewed against the full localized native descriptions. These cues never
@@ -95,7 +96,7 @@ function build(entry,definition,db,id){
    }
    if(!candidates.length)throw Error(`Missing ${id} layer ${index+1}: ${roots} (${edition})`);
    const colored=candidates.filter(r=>r.key.split('.').some(c=>c===color||c===`dark_${color}`));
-   chosen[edition]=(colored.length?colored:candidates).sort((a,b)=>a.key.localeCompare(b.key))[0];
+   chosen[edition]=(colored.length?colored:candidates).sort((a,b)=>colorAffinity(b.key,color)-colorAffinity(a.key,color)||a.key.localeCompare(b.key))[0];
   }
   const editions=Object.fromEntries(Object.entries(chosen).map(([edition,row])=>{
    const files=variantFiles(row),anchor=mediaAnchors?.[files[0]?.split(/[\\/]/).at(-1)];

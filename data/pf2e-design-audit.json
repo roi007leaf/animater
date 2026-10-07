@@ -1512,9 +1512,9 @@
     "dodge": 6,
     "spin": 4
   },
-  "distinctCompositions": 1969,
+  "distinctCompositions": 1968,
   "distinctByEdition": {
-    "patreon": 1969,
+    "patreon": 1968,
     "free": 1963
   },
   "methodology": "Selected movies and visible effect layout per JB2A edition. Excludes names, IDs, sounds, token motion, timing and rank scaling. Casting seals count as visible composition changes; this is not a count of bespoke artwork or independently reviewed spell fiction.",
@@ -1661,6 +1661,19 @@
         {
           "id": "ovx7O2FHvkjXhMcA",
           "name": "Perseis's Precautions"
+        }
+      ]
+    },
+    {
+      "count": 2,
+      "spells": [
+        {
+          "id": "2WNFbvToMsEGxmeK",
+          "name": "Darkened Sight"
+        },
+        {
+          "id": "a5uwCgOe7ayHPtHe",
+          "name": "Enhance Senses"
         }
       ]
     },

@@ -22,6 +22,7 @@ export function weaponRecipe(weapon,modeName=weapon?.modes?.[0]?.mode,options={}
   if(mode.element!=='physical')stages.push(stage('impact','accent',`${mode.element} finish`,start+180,{scale:.9,afterStage:contact.stageId,timingAnchor:'start',startOffset:180,...payloadAppearance(mode.element,mode.assets.accent)}));
  }else{
   const flight=stage('travel','flight',`${mode.family} ${mode.mode==='thrown'?'flight':'shot'}`,start,{scale:mode.family==='sling'?.55:mode.family==='bomb'||mode.family==='flask'?.75:1});
+  if(firing&&mode.family==='firearm'&&mode.assets.muzzle?.length)stages.push(stage('cast','muzzle','Muzzle flash',Math.max(0,start-40),{scale:.55,opacity:.95,faceTarget:true,duration:Math.min(900,Math.max(300,...mode.assets.muzzle.map(k=>mode.mediaTiming?.[k]?.duration??600)))}));
   stages.push(flight);
   const contacts=mode.assets.flight.map(k=>mode.mediaTiming?.[k]?.contact).filter(Number.isFinite);
   const offset=contacts.length?Math.max(...contacts):Math.max(400,flight.duration-200);

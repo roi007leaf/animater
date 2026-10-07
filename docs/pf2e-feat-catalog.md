@@ -12,7 +12,7 @@ The build rejects stale review hashes. Three parallel review areas plus early so
 
 **2,308 distinct complete compositions.** Separate edition checks retain 2,308 Patreon and 2,308 Free effects-only compositions. Comparisons ignore IDs, names, labels, inactive tint, token motions and copies; timing/position/rotation values are quantized so trivial noise cannot establish variety.
 
-Related feats retain shared visual vocabulary. Semantic treatments select current-activation choreography; 1424 colliding shared bases receive discrete ambient framing, footprint and entrance choices. These art choices are recorded separately from the description's mechanics. This establishes visible configuration differences, not 2,308 unrelated asset films or a guarantee that every pair looks wholly unrelated.
+Related feats retain shared visual vocabulary. Semantic treatments select current-activation choreography; 1415 colliding shared bases receive discrete ambient framing, footprint and entrance choices. These art choices are recorded separately from the description's mechanics. This establishes visible configuration differences, not 2,308 unrelated asset films or a guarantee that every pair looks wholly unrelated.
 
 Double Slice plants the caster and crosses two opposing cuts with a 550ms gap. Twin Takedown uses a pursuit echo and alternating cuts with a 300ms gap. Both keep two contacts and full weapon footage. Mixed weapon feats preserve shot/melee ordering. Preparations stay at their source rather than attacking early. Aerial Boomerang's initial activation flies out and whirls at the endpoint; returning is a separate later action. Recovery does not heal a hostile Strike target.
 
@@ -30,6 +30,6 @@ Ordinary token gestures retain a minimum 800ms, maximum 0.25-square displacement
 
 ## Assets and validation
 
-Full JB2A inventory search: 7,648 Patreon / 1,351 Free keys. Localized geometry for source/contact/aura cues, directed geometry for flights. Actual selected use: 290 Patreon keys across 83 families; 170 Free keys across 89 families. Both editions plan all 2,308 recipes: 5,332 effects and 1,195 motion stages per edition; **0 plan/asset/geometry issues**. Edition fallbacks can approximate colors or artwork.
+Full JB2A inventory search: 7,648 Patreon / 1,351 Free keys. Localized geometry for source/contact/aura cues, directed geometry for flights. Actual selected use: 299 Patreon keys across 83 families; 175 Free keys across 90 families. Both editions plan all 2,308 recipes: 5,332 effects and 1,195 motion stages per edition; **0 plan/asset/geometry issues**. Edition fallbacks can approximate colors or artwork.
 
 Audit: [JSON](../data/pf2e-feat-audit.json), [CSV](../data/pf2e-feat-audit.csv). Review datasets: early, martial, support and late `data/feat-*-review.mjs`. Rebuild: `rtk proxy node tools/build-pf2e-feat-catalog.mjs`. Tests include source coverage, hashes, native triggering, current-activation semantics, attack counts, edition-specific effects-only variety, framing and UI previews. Optional feat sounds remain quiet.

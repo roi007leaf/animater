@@ -17,7 +17,7 @@
     "excluded": 2062,
     "descriptionHashes": 1928,
     "variety": {
-      "changed": 93,
+      "changed": 125,
       "variants": [
         {
           "id": "Mt6ZzkVX8Q4xigFq",
@@ -60,12 +60,28 @@
           "to": "jb2a.guiding_bolt.02.yellow"
         },
         {
+          "id": "o6YCGx4lycsYpww4",
+          "name": "Haste",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.wind_lines.01.leaves.02.pink",
+          "to": "jb2a.wind_lines.01.leaves.01.pink"
+        },
+        {
           "id": "UG0SmRYSdbrx2rTA",
           "name": "Indestructibility",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "115Xp9E38CJENhNS",
+          "name": "Magic Passage",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.03.orange",
+          "to": "jb2a.ground_cracks.01.orange"
         },
         {
           "id": "AuIiqc7jjiy1GZ75",
@@ -100,14 +116,6 @@
           "to": "jb2a.cast_generic.01.dark_purple"
         },
         {
-          "id": "wi405lBjPcbF1DeR",
-          "name": "Punishing Winds",
-          "edition": "patreon",
-          "slot": "hit",
-          "from": "jb2a.wind_lines.01.02.white",
-          "to": "jb2a.wind_lines.01.01.white"
-        },
-        {
           "id": "dMKP4fkWx8V2cqAy",
           "name": "Remake",
           "edition": "patreon",
@@ -124,20 +132,20 @@
           "to": "jb2a.guiding_bolt.02.yellow"
         },
         {
+          "id": "e9UJoVYUd5kJWUpi",
+          "name": "Summon Giant",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.03.orange",
+          "to": "jb2a.ground_cracks.01.orange"
+        },
+        {
           "id": "KcLVELhCUcKXxiKE",
           "name": "Tailwind",
           "edition": "patreon",
           "slot": "hit",
           "from": "jb2a.wind_lines.01.02.white",
           "to": "jb2a.wind_lines.01.01.white"
-        },
-        {
-          "id": "zDJS8E66UI0himqV",
-          "name": "Thunderstrike",
-          "edition": "patreon",
-          "slot": "cast",
-          "from": "jb2a.static_electricity.02.blue",
-          "to": "jb2a.static_electricity.03.blue"
         },
         {
           "id": "VlNcjmYyu95vOUe8",
@@ -148,16 +156,48 @@
           "to": "jb2a.misty_step.02.purple"
         },
         {
-          "id": "p83iYWlcJRqe0PxL",
-          "name": "Adaptive Camouflage",
+          "id": "kOa055FIrO9Smnya",
+          "name": "Wall of Stone",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.ground_cracks.03.orange",
+          "to": "jb2a.ground_cracks.02.orange"
+        },
+        {
+          "id": "kGas0LdEAR1WjLGZ",
+          "name": "Absolute Zero",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.sleet_storm.01.blue",
+          "to": "jb2a.sleet_storm.02.blue"
+        },
+        {
+          "id": "RDvWFbAaXtxrhJMD",
+          "name": "Accelerate",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "VynaowCerc7B4yvI",
-          "name": "Akashic Download",
+          "id": "h7IhypLwItepwhou",
+          "name": "Adhere",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "z0Spgrf92nmaqjCW",
+          "name": "Akashic Assistant",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "mAu69GVbFKYzQM5a",
+          "name": "Akashic Fount",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
@@ -180,16 +220,40 @@
           "to": "jb2a.impact.002.orange"
         },
         {
-          "id": "CjVOXjuvvTJqC7AD",
-          "name": "Data Drain",
+          "id": "JIAIyvj4PV84tnFk",
+          "name": "Chill Gaze",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.sleet_storm.01.blue",
+          "to": "jb2a.sleet_storm.02.blue"
+        },
+        {
+          "id": "g58dbrP7FadZhh6j",
+          "name": "Chrono Push",
           "edition": "patreon",
           "slot": "hit",
           "from": "jb2a.impact.005.purple",
           "to": "jb2a.impact.010.purple"
         },
         {
-          "id": "yXD9uU8w8uFD2OBQ",
-          "name": "Delete",
+          "id": "dyDIRdq3QmP2QzBR",
+          "name": "Commune with Tech",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "CjVOXjuvvTJqC7AD",
+          "name": "Data Drain",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.impact.005.purple",
+          "to": "jb2a.impact.012.purple"
+        },
+        {
+          "id": "J9IWyHhvdtMVBjqg",
+          "name": "Deadly Vitality",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
@@ -204,56 +268,72 @@
           "to": "jb2a.electric_arc.blue.02"
         },
         {
-          "id": "FEaM1B4WuiqFO7Uk",
-          "name": "Eldritch Lance",
+          "id": "VIKDSgBRR3Wd1mQx",
+          "name": "Doom Scroll",
           "edition": "patreon",
           "slot": "hit",
-          "from": "jb2a.impact.005.purple",
-          "to": "jb2a.impact.012.purple"
+          "from": "jb2a.impact.001.pinkpurple",
+          "to": "jb2a.impact.002.pinkpurple"
         },
         {
-          "id": "Cbj7tDkb2ZTp10Cg",
-          "name": "Electrotether",
-          "edition": "patreon",
-          "slot": "bolt",
-          "from": "jb2a.electric_arc.blue.01",
-          "to": "jb2a.electric_arc.blue.03"
-        },
-        {
-          "id": "GmeI009NbLbR6sR5",
-          "name": "Enhance Body",
-          "edition": "patreon",
-          "slot": "hit",
-          "from": "jb2a.magic_signs.rune.02.complete.01.purple",
-          "to": "jb2a.magic_signs.rune.02.complete.02.purple"
-        },
-        {
-          "id": "5esP2GVzvxWsMgaX",
-          "name": "Environmental Endurance",
+          "id": "Y8Y0LS6sh4pkxPsq",
+          "name": "Eldritch Bond",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "U13bC0tNgrlHoeTK",
-          "name": "Gate",
+          "id": "FEaM1B4WuiqFO7Uk",
+          "name": "Eldritch Lance",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.impact.005.purple",
+          "to": "jb2a.impact.007.purple"
+        },
+        {
+          "id": "DZOjyZBZUrzkw5q2",
+          "name": "Elemental Nova",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "DZOjyZBZUrzkw5q2",
+          "name": "Elemental Nova",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.impact.001.pinkpurple",
+          "to": "jb2a.impact.003.pinkpurple"
+        },
+        {
+          "id": "1lv6Zmp2eWRIPn1n",
+          "name": "Feline Senses",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "ogEFxmaTBlXcpdoS",
+          "name": "Forge Drift Beacon",
           "edition": "patreon",
           "slot": "hit",
           "from": "jb2a.misty_step.01.purple",
           "to": "jb2a.misty_step.02.purple"
         },
         {
-          "id": "U58aQWJ47VrI36yP",
-          "name": "Hallucination",
+          "id": "2qGqa33E4GPUCbMV",
+          "name": "Humanoid Form",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "Ucf8eynbZMfUucjE",
-          "name": "Illusory Scene",
+          "id": "ZBeKxBcUOsXrfMRo",
+          "name": "Implant Data",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
@@ -268,36 +348,52 @@
           "to": "jb2a.arrow.poison.green.02"
         },
         {
-          "id": "pswdik31kuHEvdno",
-          "name": "Metamorphosis",
+          "id": "bBQ83xDvjQS3W1CG",
+          "name": "Measure",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "2BV2yYPfVJ5zirZt",
-          "name": "Mountain Resilience",
-          "edition": "patreon",
-          "slot": "cast",
-          "from": "jb2a.ground_cracks.02.blue",
-          "to": "jb2a.ground_cracks.01.blue"
-        },
-        {
-          "id": "dileJ0Yxqg76LMvu",
-          "name": "One with Plants",
+          "id": "8AMvNVOUEtxBCDvJ",
+          "name": "Monstrosity Form",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "jon2tSGg7fSTqtk9",
+          "name": "New Game",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.impact.001.pinkpurple",
+          "to": "jb2a.impact.004.pinkpurple"
         },
         {
           "id": "wOjoJjl2ndZKTuFJ",
           "name": "Overheat",
           "edition": "patreon",
-          "slot": "aura",
-          "from": "jb2a.magic_signs.rune.02.loop.01.orange",
-          "to": "jb2a.magic_signs.rune.02.loop.02.orange"
+          "slot": "bolt",
+          "from": "jb2a.scorching_ray.01.orange",
+          "to": "jb2a.scorching_ray.02.orange"
+        },
+        {
+          "id": "wOjoJjl2ndZKTuFJ",
+          "name": "Overheat",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.impact.001.orange",
+          "to": "jb2a.impact.004.orange"
+        },
+        {
+          "id": "5cMDrC3jX1yrxOzh",
+          "name": "Overload Systems",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.static_electricity.01.blue",
+          "to": "jb2a.static_electricity.02.blue"
         },
         {
           "id": "5cMDrC3jX1yrxOzh",
@@ -305,31 +401,15 @@
           "edition": "patreon",
           "slot": "bolt",
           "from": "jb2a.electric_arc.blue.01",
-          "to": "jb2a.electric_arc.blue.04"
+          "to": "jb2a.electric_arc.blue.03"
         },
         {
-          "id": "XoYUZP9OYdDMz4I0",
-          "name": "Parallel Forms",
-          "edition": "patreon",
-          "slot": "hit",
-          "from": "jb2a.magic_signs.rune.02.complete.01.purple",
-          "to": "jb2a.magic_signs.rune.02.complete.03.purple"
-        },
-        {
-          "id": "gfPjmG6Fe6D3MFjl",
-          "name": "Pest Form",
+          "id": "0XP2XOxT9VSiXFDr",
+          "name": "Phantasmal Calamity",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.02.dark_purple",
           "to": "jb2a.cast_generic.01.dark_purple"
-        },
-        {
-          "id": "YAa1StmuYC2QQ043",
-          "name": "Reality Wipe",
-          "edition": "patreon",
-          "slot": "bolt",
-          "from": "jb2a.guiding_bolt.01.yellow",
-          "to": "jb2a.guiding_bolt.02.yellow"
         },
         {
           "id": "t0oFlhMhNOHbb6rG",
@@ -343,21 +423,37 @@
           "id": "BHWG0rQPTgBF5Ye1",
           "name": "Rocket Dash",
           "edition": "patreon",
-          "slot": "aura",
-          "from": "jb2a.magic_signs.rune.02.loop.01.orange",
-          "to": "jb2a.magic_signs.rune.02.loop.03.orange"
+          "slot": "cast",
+          "from": "jb2a.wind_lines.01.leaves.01.greenorange",
+          "to": "jb2a.wind_lines.01.leaves.02.greenorange"
         },
         {
-          "id": "7P4eBdqWcgQJAFCa",
-          "name": "Shifting Surge",
+          "id": "nf8q0zvJDnnkzANe",
+          "name": "Scan Environment",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "McnPlLFvKtQVXNcG",
+          "name": "Shape Stone",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.01.orange",
+          "to": "jb2a.ground_cracks.02.orange"
+        },
+        {
+          "id": "McnPlLFvKtQVXNcG",
+          "name": "Shape Stone",
           "edition": "patreon",
           "slot": "hit",
-          "from": "jb2a.magic_signs.rune.02.complete.01.purple",
-          "to": "jb2a.magic_signs.rune.02.complete.04.purple"
+          "from": "jb2a.ground_cracks.02.orange",
+          "to": "jb2a.ground_cracks.03.orange"
         },
         {
-          "id": "v2S6tlilNbA4uGdM",
-          "name": "Skim Data",
+          "id": "tVTJS07cKDA5rNgc",
+          "name": "Sift the Sphere",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
@@ -367,14 +463,6 @@
           "id": "VmtQlZqeraTv0Eer",
           "name": "Skyfire Wings",
           "edition": "patreon",
-          "slot": "aura",
-          "from": "jb2a.swirling_leaves.loop.01.green",
-          "to": "jb2a.swirling_leaves.loop.02.green"
-        },
-        {
-          "id": "Nf6GqoHkNbfWJDQT",
-          "name": "Speak with Computers",
-          "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
@@ -383,9 +471,9 @@
           "id": "CptKtBneM7od45nc",
           "name": "Subjective Reality",
           "edition": "patreon",
-          "slot": "hit",
-          "from": "jb2a.magic_signs.rune.02.complete.01.purple",
-          "to": "jb2a.magic_signs.rune.02.complete.05.purple"
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
           "id": "JbAcSLu62TU1OgNF",
@@ -404,20 +492,52 @@
           "to": "jb2a.guiding_bolt.02.purplepink"
         },
         {
+          "id": "OudLZtxmg6gI1UEL",
+          "name": "Telekinetic Strangulation",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.magic_signs.rune.02.loop.01.orange",
+          "to": "jb2a.magic_signs.rune.02.loop.02.orange"
+        },
+        {
+          "id": "64DDZxOrmr4ddqs2",
+          "name": "Telekinetic Tantrum",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.impact.001.pinkpurple",
+          "to": "jb2a.impact.pinkpurple"
+        },
+        {
+          "id": "64DDZxOrmr4ddqs2",
+          "name": "Telekinetic Tantrum",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.particles.inward.purple.01.01",
+          "to": "jb2a.particles.inward.purple.02.01"
+        },
+        {
           "id": "H0WECXb2wvTHT9yk",
           "name": "Temporal Bullets",
           "edition": "patreon",
-          "slot": "hit",
-          "from": "jb2a.magic_signs.rune.02.complete.01.purple",
-          "to": "jb2a.magic_signs.rune.02.complete.06.purple"
+          "slot": "aura",
+          "from": "jb2a.wind_lines.01.leaves.01.pink",
+          "to": "jb2a.wind_lines.01.leaves.02.pink"
         },
         {
           "id": "HzFdtjvRCFpb0NrS",
           "name": "Time Loop",
           "edition": "patreon",
-          "slot": "aura",
-          "from": "jb2a.wind_lines.01.01.white",
-          "to": "jb2a.wind_lines.01.02.white"
+          "slot": "hit",
+          "from": "jb2a.impact.005.purple",
+          "to": "jb2a.impact.008.purple"
+        },
+        {
+          "id": "GdlG9a4o0ax0F2HT",
+          "name": "Time's Edge",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.impact.005.purple",
+          "to": "jb2a.impact.009.purple"
         },
         {
           "id": "V8wXOsoejQhe6CyG",
@@ -428,14 +548,6 @@
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
-          "id": "V8wXOsoejQhe6CyG",
-          "name": "Vapor Form",
-          "edition": "patreon",
-          "slot": "aura",
-          "from": "jb2a.swirling_leaves.loop.01.green",
-          "to": "jb2a.swirling_leaves.loop.02.green"
-        },
-        {
           "id": "hk2mTLH9DIvNqDuS",
           "name": "Verdant Code",
           "edition": "patreon",
@@ -452,20 +564,20 @@
           "to": "jb2a.swirling_leaves.complete.02.green"
         },
         {
-          "id": "dRP4Imw3RJNQqEgc",
-          "name": "Wall of Plasma",
-          "edition": "patreon",
-          "slot": "aura",
-          "from": "jb2a.magic_signs.rune.02.loop.01.orange",
-          "to": "jb2a.magic_signs.rune.02.loop.04.orange"
-        },
-        {
-          "id": "tZQpEnaFqwmU4AMZ",
-          "name": "Warp Presence",
+          "id": "FIW0VpGULprL2u8J",
+          "name": "Void Seed",
           "edition": "patreon",
           "slot": "hit",
-          "from": "jb2a.magic_signs.rune.02.complete.01.purple",
-          "to": "jb2a.magic_signs.rune.02.complete.07.purple"
+          "from": "jb2a.impact.005.purple",
+          "to": "jb2a.impact.010.purple"
+        },
+        {
+          "id": "sTpdXXaaKhoGOIxh",
+          "name": "Void Vessel",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
           "id": "KOkGLXwOBAIlczzk",
@@ -476,12 +588,28 @@
           "to": "jb2a.guiding_bolt.02.purplepink"
         },
         {
+          "id": "TN2pHF9l3k4ZJ7di",
+          "name": "Warp Terrain",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "TN2pHF9l3k4ZJ7di",
+          "name": "Warp Terrain",
+          "edition": "patreon",
+          "slot": "hit",
+          "from": "jb2a.ground_cracks.01.purple",
+          "to": "jb2a.ground_cracks.03.purple"
+        },
+        {
           "id": "1gkdgFwKfAoQx163",
           "name": "Warp Time",
           "edition": "patreon",
           "slot": "hit",
           "from": "jb2a.impact.005.purple",
-          "to": "jb2a.impact.007.purple"
+          "to": "jb2a.impact.011.purple"
         },
         {
           "id": "kTzbLqmqPcZwOa5F",
@@ -490,6 +618,22 @@
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
           "to": "jb2a.cast_generic.02.dark_purple"
+        },
+        {
+          "id": "7Ib3qxIC0bFD3ued",
+          "name": "Weight of Ages",
+          "edition": "patreon",
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.01.orange",
+          "to": "jb2a.ground_cracks.02.orange"
+        },
+        {
+          "id": "7Ib3qxIC0bFD3ued",
+          "name": "Weight of Ages",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.magic_signs.rune.02.loop.01.orange",
+          "to": "jb2a.magic_signs.rune.02.loop.03.orange"
         },
         {
           "id": "Sqo1uzSmebVWpqoT",
@@ -508,6 +652,14 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
+          "id": "qwZBXN6zBoB9BHXE",
+          "name": "Divine Lance",
+          "edition": "free",
+          "slot": "bolt",
+          "from": "jb2a.energy_beam.normal.bluepink.02",
+          "to": "jb2a.energy_beam.normal.bluepink.03"
+        },
+        {
           "id": "fI20AVwOzJMHXRdo",
           "name": "Levitate",
           "edition": "free",
@@ -516,27 +668,43 @@
           "to": "jb2a.ground_cracks.01.orange"
         },
         {
-          "id": "115Xp9E38CJENhNS",
-          "name": "Magic Passage",
+          "id": "10VcmSYNBrvBphu1",
+          "name": "Massacre",
+          "edition": "free",
+          "slot": "area",
+          "from": "jb2a.energy_beam.normal.bluepink.03",
+          "to": "jb2a.energy_beam.normal.bluepink.02"
+        },
+        {
+          "id": "dMKP4fkWx8V2cqAy",
+          "name": "Remake",
           "edition": "free",
           "slot": "cast",
-          "from": "jb2a.ground_cracks.03.orange",
-          "to": "jb2a.ground_cracks.02.orange"
+          "from": "jb2a.particles.inward.greenyellow.02.05",
+          "to": "jb2a.particles.inward.greenyellow.01.02"
         },
         {
           "id": "dMKP4fkWx8V2cqAy",
           "name": "Remake",
           "edition": "free",
           "slot": "hit",
-          "from": "jb2a.particles.inward.greenyellow.02.04",
-          "to": "jb2a.particles.inward.greenyellow.01.02"
+          "from": "jb2a.particles.inward.greenyellow.01.02",
+          "to": "jb2a.particles.inward.greenyellow.01.03"
+        },
+        {
+          "id": "dMKP4fkWx8V2cqAy",
+          "name": "Remake",
+          "edition": "free",
+          "slot": "area",
+          "from": "jb2a.particles.inward.greenyellow.01.03",
+          "to": "jb2a.particles.inward.greenyellow.01.04"
         },
         {
           "id": "WsUwpfmhKrKwoIe3",
           "name": "Slow",
           "edition": "free",
           "slot": "hit",
-          "from": "jb2a.impact.003.blue",
+          "from": "jb2a.impact.002.blue",
           "to": "jb2a.impact.001.blue"
         },
         {
@@ -551,17 +719,9 @@
           "id": "e9UJoVYUd5kJWUpi",
           "name": "Summon Giant",
           "edition": "free",
-          "slot": "cast",
-          "from": "jb2a.ground_cracks.03.orange",
-          "to": "jb2a.ground_cracks.01.orange"
-        },
-        {
-          "id": "VlNcjmYyu95vOUe8",
-          "name": "Translocate",
-          "edition": "free",
-          "slot": "hit",
-          "from": "jb2a.misty_step.01.blue",
-          "to": "jb2a.misty_step.02.blue"
+          "slot": "aura",
+          "from": "jb2a.particles.inward.greenyellow.02.01",
+          "to": "jb2a.particles.inward.greenyellow.02.03"
         },
         {
           "id": "Jvyy6oVIQsD34MHB",
@@ -576,8 +736,16 @@
           "name": "Vampiric Exsanguination",
           "edition": "free",
           "slot": "aura",
-          "from": "jb2a.particles.inward.greenyellow.02.02",
-          "to": "jb2a.particles.inward.greenyellow.01.04"
+          "from": "jb2a.particles.inward.greenyellow.02.05",
+          "to": "jb2a.particles.inward.greenyellow.02.04"
+        },
+        {
+          "id": "f98vwzcdxafum8ln",
+          "name": "Akashic Revival",
+          "edition": "free",
+          "slot": "aura",
+          "from": "jb2a.particles.outward.greenyellow.01.01",
+          "to": "jb2a.particles.outward.greenyellow.01.03"
         },
         {
           "id": "FIM54CSlkvBwwzdA",
@@ -588,20 +756,36 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
+          "id": "g58dbrP7FadZhh6j",
+          "name": "Chrono Push",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.impact.001.blue",
+          "to": "jb2a.impact.004.blue"
+        },
+        {
+          "id": "CjVOXjuvvTJqC7AD",
+          "name": "Data Drain",
+          "edition": "free",
+          "slot": "bolt",
+          "from": "jb2a.energy_beam.normal.bluepink.02",
+          "to": "jb2a.energy_beam.normal.bluepink.03"
+        },
+        {
           "id": "CjVOXjuvvTJqC7AD",
           "name": "Data Drain",
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.002.blue"
+          "to": "jb2a.impact.blue"
         },
         {
-          "id": "x7SPrsRxGb2Vy2nu",
-          "name": "Earthquake",
+          "id": "zdzeVZlKHkMAt2Rf",
+          "name": "Death Sentence",
           "edition": "free",
-          "slot": "cast",
-          "from": "jb2a.ground_cracks.02.orange",
-          "to": "jb2a.ground_cracks.01.orange"
+          "slot": "bolt",
+          "from": "jb2a.energy_beam.normal.bluepink.02",
+          "to": "jb2a.energy_beam.normal.bluepink.03"
         },
         {
           "id": "FEaM1B4WuiqFO7Uk",
@@ -609,7 +793,7 @@
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.011.blue"
+          "to": "jb2a.impact.002.blue"
         },
         {
           "id": "FEaM1B4WuiqFO7Uk",
@@ -628,6 +812,14 @@
           "to": "jb2a.shield_attack.ranged.throw.01.white.02"
         },
         {
+          "id": "d5dmu4HZ3YyrwcaF",
+          "name": "Elemental Weapon",
+          "edition": "free",
+          "slot": "bolt",
+          "from": "jb2a.energy_beam.normal.bluepink.02",
+          "to": "jb2a.energy_beam.normal.bluepink.03"
+        },
+        {
           "id": "ahXTkKpQtOTAQOFm",
           "name": "Enhance Weapon",
           "edition": "free",
@@ -636,20 +828,12 @@
           "to": "jb2a.melee_attack.02.trail.01.pinkpurple"
         },
         {
-          "id": "TAbOBvFU8dLzKiWw",
-          "name": "Forget",
+          "id": "c3pohoiOH2qIhDDp",
+          "name": "Ghost Killer Weapon",
           "edition": "free",
-          "slot": "area",
-          "from": "jb2a.sleep.cloud.01.pink",
-          "to": "jb2a.sleep.cloud.02.pink"
-        },
-        {
-          "id": "U13bC0tNgrlHoeTK",
-          "name": "Gate",
-          "edition": "free",
-          "slot": "hit",
-          "from": "jb2a.misty_step.01.blue",
-          "to": "jb2a.misty_step.02.blue"
+          "slot": "bolt",
+          "from": "jb2a.energy_beam.normal.bluepink.02",
+          "to": "jb2a.energy_beam.normal.bluepink.03"
         },
         {
           "id": "c3pohoiOH2qIhDDp",
@@ -676,6 +860,22 @@
           "to": "jb2a.particles.inward.greenyellow.01.02"
         },
         {
+          "id": "sNUvbMoMeLTnYJm8",
+          "name": "Injury Echo",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.melee_attack.01.trail.01.pinkpurple",
+          "to": "jb2a.melee_attack.05.trail.01.pinkpurple"
+        },
+        {
+          "id": "mnoTqz0gjRmuc4oR",
+          "name": "Instant Virus",
+          "edition": "free",
+          "slot": "cast",
+          "from": "jb2a.static_electricity.01.blue",
+          "to": "jb2a.static_electricity.02.blue"
+        },
+        {
           "id": "uBo6g5aW087cLSJR",
           "name": "Mind Skewer",
           "edition": "free",
@@ -692,20 +892,12 @@
           "to": "jb2a.ground_cracks.02.orange"
         },
         {
-          "id": "znv4ECL7ZtuiagtA",
-          "name": "Petrify",
+          "id": "ITzIb93GBvyX8UbJ",
+          "name": "Pocket Vacuum",
           "edition": "free",
-          "slot": "cast",
-          "from": "jb2a.ground_cracks.02.orange",
-          "to": "jb2a.ground_cracks.03.orange"
-        },
-        {
-          "id": "5y70IWhVV6bVjC9N",
-          "name": "Recharge Weapon",
-          "edition": "free",
-          "slot": "hit",
-          "from": "jb2a.melee_attack.01.trail.01.pinkpurple",
-          "to": "jb2a.melee_attack.05.trail.01.pinkpurple"
+          "slot": "area",
+          "from": "jb2a.wind_lines.01.leaves.01.green",
+          "to": "jb2a.wind_lines.01.leaves.02.green"
         },
         {
           "id": "Ii8adgcCejAovsNv",
@@ -714,6 +906,14 @@
           "slot": "area",
           "from": "jb2a.sleep.cloud.01.pink",
           "to": "jb2a.sleep.cloud.02.pink"
+        },
+        {
+          "id": "BHWG0rQPTgBF5Ye1",
+          "name": "Rocket Dash",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.wind_lines.01.leaves.01.green",
+          "to": "jb2a.wind_lines.01.leaves.02.green"
         },
         {
           "id": "EhN3GjdjXChMdiFk",
@@ -732,12 +932,20 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
-          "id": "YIMampGpij4Y30yE",
-          "name": "Speak with Stones",
+          "id": "64DDZxOrmr4ddqs2",
+          "name": "Telekinetic Tantrum",
           "edition": "free",
-          "slot": "cast",
-          "from": "jb2a.ground_cracks.03.orange",
-          "to": "jb2a.ground_cracks.02.orange"
+          "slot": "hit",
+          "from": "jb2a.impact.001.blue",
+          "to": "jb2a.impact.003.blue"
+        },
+        {
+          "id": "H0WECXb2wvTHT9yk",
+          "name": "Temporal Bullets",
+          "edition": "free",
+          "slot": "aura",
+          "from": "jb2a.wind_lines.01.01.white",
+          "to": "jb2a.wind_lines.01.02.white"
         },
         {
           "id": "HzFdtjvRCFpb0NrS",
@@ -745,7 +953,23 @@
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.002.blue"
+          "to": "jb2a.impact.004.blue"
+        },
+        {
+          "id": "GdlG9a4o0ax0F2HT",
+          "name": "Time's Edge",
+          "edition": "free",
+          "slot": "bolt",
+          "from": "jb2a.energy_beam.normal.bluepink.02",
+          "to": "jb2a.energy_beam.normal.bluepink.03"
+        },
+        {
+          "id": "GdlG9a4o0ax0F2HT",
+          "name": "Time's Edge",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.impact.001.blue",
+          "to": "jb2a.impact.011.blue"
         },
         {
           "id": "wRNRWwCEbmSxbHDl",
@@ -756,12 +980,44 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
+          "id": "FIW0VpGULprL2u8J",
+          "name": "Void Seed",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.impact.001.blue",
+          "to": "jb2a.impact.012.blue"
+        },
+        {
+          "id": "fRT0T9sbd8zWc1q9",
+          "name": "Wall of Steel",
+          "edition": "free",
+          "slot": "aura",
+          "from": "jb2a.ground_cracks.01.orange",
+          "to": "jb2a.ground_cracks.02.orange"
+        },
+        {
+          "id": "TN2pHF9l3k4ZJ7di",
+          "name": "Warp Terrain",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.ground_cracks.01.orange",
+          "to": "jb2a.ground_cracks.03.orange"
+        },
+        {
           "id": "1gkdgFwKfAoQx163",
           "name": "Warp Time",
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.003.blue"
+          "to": "jb2a.impact.blue"
+        },
+        {
+          "id": "9w90nlUdV5HBRWFm",
+          "name": "Warp World",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.explosion.02.blue",
+          "to": "jb2a.explosion.04.blue"
         }
       ],
       "methodology": "Numbered movie variants within the same selected semantic family, color, role and geometry. Explicit numeric authored roots are retained; keys sharing exactly the same movie inventory are not different variants."

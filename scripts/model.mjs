@@ -537,6 +537,10 @@ function buildPlan(recipe, catalog, context, requireMedia) {
                         : destination,
                 }
               : {}),
+            // Directional source cues (muzzle flash) turn toward their target.
+            ...(o.faceTarget && !["travel", "projectile", "template"].includes(s.kind) && context.targets?.length
+              ? { facing: context.targets[targetIndex] ?? context.targets[0] }
+              : {}),
             ...(areaFan ? { areaFan: true } : {}),
             landing,
             targetIndex,

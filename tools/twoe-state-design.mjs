@@ -45,6 +45,9 @@ export const profiles={
  sonic:{match:['markers.music','energy_field.01'],color:'blue',hex:'#bfa8ef',note:'A restrained resonance cue denotes sustained sonic energy.'},
  web:{match:['web.loop','markers.chain'],color:'white',hex:'#d3d8e8',note:'A web or binding loop marks entanglement.'},
  rage:{match:['aura_themed.01.orbit.loop.metal','token_border.circle.spinning'],color:'red',hex:'#ed978c',note:'A red orbit suggests a continuing battle state.'},
+ penalty:{match:['condition.curse','token_border.circle.static'],color:'dark_red',hex:'#e07a84',note:'A dim red marker identifies a penalty or hindrance, distinct from beneficial effects.'},
+ temphp:{match:['markers.heart','condition.boon'],color:'green',hex:'#8be6c4',note:'A heart marker identifies temporary Hit Points.'},
+ senses:{match:['markers.light_orb','markers.simple'],color:'yellow',hex:'#f3e7a5',note:'A small light marks an enhanced sense such as darkvision or scent.'},
 }
 // Name first, then full description. Resistances/immunities do not falsely turn
 // a cold-resistant fire shield into an icy aura. Nonvisual bonuses are symbolic.
@@ -59,6 +62,13 @@ export function classify(item){
  if(/droning wings/.test(name))return {theme:'sonic-ward',evidence:'Native effect description and Immunity rule: sonic immunity, not flight',quality:'curated'};
  if(/\bantidote\b|\bantiplague\b|elixir of life|poison resistance|disease resistance/.test(name))return {theme:'antidote',evidence:'Native ongoing effect: protective save bonus or resistance, rather than the immediate consumable use',quality:'curated'};
  if(/\bflight\b|\bwings\b/.test(name))return {theme:'flight',evidence:'Native name and complete description: flight-associated sustained cue',quality:'themed'};
+ // Rule-shaped categories: valence first so penalties never share a buff's look.
+ const mods=rules.filter(r=>r.key==='FlatModifier'&&typeof r.value==='number');
+ const penalty=/\bpenalt(?:y|ies)\b/.test(name)||mods.length>0&&mods.every(r=>r.value<0);
+ if(penalty)return {theme:/speed/.test(name)||rules.some(r=>/speed/i.test(String(r.selector??'')))?'slow':'penalty',evidence:'Native modifiers are penalties; marker uses hindrance colors',quality:'symbolic'};
+ if(rules.some(r=>r.key==='TempHP')&&!/\b(fire|cold|acid|poison|electric|void|vitality)\b/.test(name))return {theme:'temphp',evidence:'Native TempHP rule',quality:'symbolic'};
+ if(rules.some(r=>r.key==='BaseSpeed'&&/fly/.test(String(r.selector??'')))&&!/fire|flame/.test(name))return {theme:'flight',evidence:'Native fly Speed rule',quality:'symbolic'};
+ if(rules.some(r=>r.key==='Sense')&&!/invisib/.test(name))return {theme:'senses',evidence:'Native Sense rule',quality:'symbolic'};
  const patterns=[['fire',/fire|flame|burn|blaz|ember/],['cold',/frost|\bice\b|cold|snow|winter/],['lightning',/lightning|electric|thunderbolt/],['acid',/acid|corros|vitriol/],['poison',/poison|venom|toxic|sicken|pollution/],['blood',/bleed|blood|wound/],['web',/web|entangl/],['chains',/restrain|grabb|immobil|binding|chains/],['invisible',/invisib|undetected|hidden|unnoticed/],['fog',/mist|fog|conceal|blur|smoke/],['illusion',/mirror image|illus|disguise/],['rage',/rage|fury|berserk|feroci/],['curse',/curse|hex|bane|spiteful/],['fear',/fear|fright|terror|horror/],['stun',/stun|daze/],['silence',/silence|deafen|mute/],['music',/anthem|composition|inspire|song|\bsing(?:ing)?\b|dirge|hymn|courage/],['shield',/shield|armor|armour|protect|ward|defens/],['light',/bless|heroism|\blight\b|radiance|halo|sun|holy/],['heal',/heal|regener|recover|restor|vitality/],['flight',/flight|\bfly\b|\bwings\b|levitat/],['speed',/haste|quick|accelerat|fleet|speed/],['slow',/slow|fatigue|encumber/],['stone',/stone|petrif|rock|metal|mineral|titan.*stature/],['nature',/plant|wood|bark|leaf|leaves|vine|animal|beast|wild|nature/],['water',/water|aquatic|swim|sea\b|ocean/],['sonic',/sonic|sound|resonan/],['void',/void|negative|shadow|darkness/],['death',/death|dying|doom|undead|corpse/],['mark',/hunt|mark|prey|target lock/],['mind',/\bmental\b|psychic|\bmind\b|telepath|stupef|confus|charm|overtake soul/]];
  for(const [theme,re] of patterns)if(re.test(name))return {theme,evidence:desc?'Name and complete native description':'Native name and rules; source description absent',quality:desc?'themed':'symbolic'};
  for(const [theme,re] of patterns)if(re.test(desc.replace(/(?:resistan\w*|immun\w*|weakness)[^.]+\./g,'')))return {theme,evidence:'Complete native description',quality:'symbolic'};

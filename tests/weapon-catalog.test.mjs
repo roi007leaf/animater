@@ -124,6 +124,7 @@ test('all elemental weapon uses have meaningful target finishes; residue cues en
   if(residue){assert.equal(residue.persist,false);assert.equal(residue.subject,'targets');assert.ok(residue.duration>=1800&&residue.duration<=3000,'Target residue and successful-hit fields have finite readable windows');assert.equal(residue.oneShot,false);}
   const db=m.selections.filter(s=>s.edition==='free').map(s=>({key:s.key}));
   const p=planRecipe(r,db,context);
-  assert.ok(p.every(s=>s.kind==='motion'||s.destination.id==='t'),w.name);
+  // Firearm muzzle flashes play at the shooter (facing the target); every other stage lands on the first target.
+  assert.ok(p.every(s=>s.kind==='motion'||s.stageId.endsWith('-muzzle')&&s.destination.id==='s'&&s.facing?.id==='t'||s.destination.id==='t'),w.name);
  }
 });
