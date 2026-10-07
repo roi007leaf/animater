@@ -1,0 +1,141 @@
+import {writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {dnd5eSources,hasNativeActivation} from './dnd5e-source.mjs';
+import {nativeDirection,weaponModes,weaponSound,weaponVisualFamily,damageThemes} from './dnd5e-directions.mjs';
+import {assetDatabases} from './asset-databases.mjs';
+import {resolveSpellMedia,assetGeometry} from './spell-asset-selection.mjs';
+import {SPELL_THEMES} from '../scripts/spell-choreography.mjs';
+import {validateRecipe} from '../scripts/model.mjs';
+import {statePresentation} from '../scripts/state-presentation.mjs';
+import {selectWeaponMedia} from './weapon-asset-selection.mjs';
+import {ABILITY_SOUND_PROFILES} from '../data/ability-sounds.mjs';
+import {SOUND_PROFILES} from '../data/spell-sounds.mjs';
+const hash=v=>createHash('sha256').update(String(v)).digest('hex');
+const seed=v=>parseInt(hash(v).slice(0,8),16);
+const data=await dnd5eSources(),db=await assetDatabases(),rows=[];
+const allAssets=new Map(Object.values(db).flat().map(r=>[r.key,r]));
+const mediaCache=new Map();
+const siblingCache=new Map();
+// Rotate genuine sibling variants only: same geometry, family and color.
+function siblings(key,id,edition){const base=allAssets.get(key);if(!base)return key;const identity=k=>k.split('.').map(p=>/^\d+$/.test(p)?'#':p).join('.');const cacheKey=edition+identity(key);if(!siblingCache.has(cacheKey))siblingCache.set(cacheKey,db[edition].filter(r=>identity(r.key)===identity(key)&&assetGeometry(r)===assetGeometry(base)));const options=siblingCache.get(cacheKey);return (options[seed(id)%options.length]??base).key;}
+function media(direction,row,id){
+ const theme=SPELL_THEMES[direction.theme]?direction.theme:'arcane',defaults=SPELL_THEMES[theme];
+ const profile={...defaults,...Object.fromEntries(['bolt','hit','area','aura','cast'].filter(k=>typeof direction[k]==='string').map(k=>[k,direction[k]])),...(direction.areaAsset?{area:direction.areaAsset}:{})};
+ const key=JSON.stringify([theme,profile,row.source.name,direction.delivery]);
+ if(!mediaCache.has(key))mediaCache.set(key,resolveSpellMedia(db,theme,profile,defaults,{system:'dnd5e',name:row.source.name,slug:id,delivery:direction.delivery==='fork'?'chain':direction.delivery==='rayFan'?'coneRayFan':direction.delivery,design:{pattern:['ray','fork','rayFan'].includes(direction.delivery)?'ray':['missile','areaMissile'].includes(direction.delivery)?'missile':'generic',assetIntent:row.source.name}}));
+ const resolved=mediaCache.get(key);
+ return Object.fromEntries(Object.entries(resolved).map(([slot,keys])=>[slot,[...new Set(['patreon','free'].map(edition=>{const key=keys.find(k=>db[edition].some(r=>r.key===k));return siblings(key,id+slot,edition);} ))]]));
+}
+const sustained={blinded:'markers.runes',charmed:'markers.heart',deafened:'markers.mute',exhaustion:'token_border.circle.static',frightened:'markers.fear',grappled:'markers.chain',incapacitated:'markers.stun',invisible:'markers.on_token_mask,markers.smoke',paralyzed:'markers.chain',petrified:'token_border.circle.static',poisoned:'markers.poison',prone:'token_border.circle.static',restrained:'web.loop,markers.chain',stunned:'markers.stun',unconscious:'markers.sleep,token_border.circle.static',dead:'markers.skull',concentrating:'markers.runes',bloodied:'markers.drop'};
+function stateAssets(row,theme){
+ const name=row.source.name.toLowerCase(),status=row.statusId??row.source.statuses?.[0];
+ const hint=sustained[status]??(/resistan|immun|ward|shield|armor/.test(name)?'shield.01.loop':/haste|speed/.test(name)?'token_border.circle.spinning':/slow|letharg|exhaust/.test(name)?'token_border.circle.static':/rage/.test(name)?'aura_themed.01.orbit.loop.metal':/hunt|mark/.test(name)?'hunters_mark.loop':/invisib/.test(name)?sustained.invisible:SPELL_THEMES[theme]?.aura??'token_border.circle.static');
+ const color=({poisoned:'green',bloodied:'red',exhaustion:'yellow',petrified:'grey',dead:'grey',restrained:'white',grappled:'grey',paralyzed:'yellow'}[status]??{fire:'orange',cold:'blue',electricity:'blue',acid:'green',poison:'green',blood:'red',light:'yellow',spirit:'yellow',void:'purple',shadow:'purple',plant:'green',healing:'green',water:'blue',ward:'blue',earth:'brown'}[theme]);
+ const choose=options=>{const colored=color?options.filter(r=>r.key.split('.').some(p=>p.includes(color))):[];const pool=colored.length?colored:options;return pool[seed(row.uuid??status)%pool.length].key;};
+ return [...new Set(Object.entries(db).map(([edition,inventory])=>{for(const prefix of hint.split(',')){const options=inventory.filter(r=>r.key.startsWith('jb2a.'+prefix)&&assetGeometry(r)==='radial'&&!/intro|outro|complete|pulse|outburst/.test(r.key));if(options.length)return choose(options);}const options=inventory.filter(r=>r.key.startsWith('jb2a.token_border.circle.static'));if(!options.length)throw Error('No sustained media '+edition);return choose(options);} ))];
+}
+function finiteRecipe(entry,row,raw,mode){
+ const d=nativeDirection(row,raw,mode),id=`${raw._id}${mode?'-'+mode:''}`,m=mode?{}:media(d,row,entry.id+id),a=d.activity;
+ let elementalSound;
+ if(mode){
+  const sound=weaponSound(row.source,mode),family=weaponVisualFamily(row.source);
+  const type=row.source.system?.damage?.base?.types?.[0]??a.damage?.parts?.find(p=>p.types?.length===1)?.types[0]??'slashing';
+  const material=t=>({lightning:'electricity',thunder:'sonic',necrotic:'void',radiant:'spirit',psychic:'mental'}[t]??t),element=material(type),physical=['slashing','piercing','bludgeoning'].includes(type);
+  // Damage parts belong to this native attack variant. Do not infer a dormant
+  // Flaming or conditional rider from the weapon's name/other activities.
+  const hasDamage=p=>Number(p.number)>0||String(p.bonus??'').trim()&&!/^0+$/.test(String(p.bonus).trim())||p.custom?.enabled&&String(p.custom.formula??'').trim()&&!/^0+$/.test(String(p.custom.formula).trim());
+  const elements=[...new Set([...(physical?[]:[element]),...(a.damage?.parts??[]).filter(p=>p.types?.length===1&&hasDamage(p)).flatMap(p=>p.types).filter(t=>!['slashing','piercing','bludgeoning'].includes(t)).map(material)])];
+  d.nativeEnergy=!physical&&family==='contact';
+  if(d.nativeEnergy){
+   d.theme=damageThemes[type]??type;
+   if(!d.area)d.delivery=mode==='melee'?'contact':/ray|beam/i.test(row.source.name)?'ray':'missile';
+   d.sound=({electricity:'electric',sonic:'sonic',void:'void',mind:'psychic',light:'light'}[d.theme]??d.theme);
+   Object.assign(m,media(d,row,entry.id+id));
+  }else{
+  const native=selectWeaponMedia(db,{name:row.source.name,slug:entry.slug},{mode,family,element:elements[0]??'physical',elements,damage:type,hands:row.source.system?.properties?.includes('two')?2:1,...(['contact','spike'].includes(family)?{contactRoots:[`melee_generic.${physical?type:'piercing'}`]}:family==='boulder'?{contactRoots:['impact.boulder'],flightRoots:['boulder.toss.01','boulder.toss.02'],}:family==='sword'?{flightRoots:['sword.throw.white','greatsword.throw']}:{} )});
+  if(family==='boulder')d.nativeMaterialProfile='earth';
+  for(const [slot,keys]of Object.entries({bolt:native.assets.flight,hit:mode==='melee'?native.assets.contact:native.assets.accent}))m[slot]=[...new Set(['patreon','free'].map(edition=>siblings(keys.find(key=>db[edition].some(r=>r.key===key)),entry.id+id+slot,edition)).filter(Boolean))];
+  // A magical melee material adds a payload layer to its physical contact.
+  if(elements.length&&mode==='melee')m.payload=native.assets.accent;
+  for(const [i,keys]of Object.entries(native.assets).filter(([k])=>/^accent\d+$/.test(k)))m['payload'+i]=keys;
+  const enchanted=`enchanted-${sound}-${elements[0]}`;if(ABILITY_SOUND_PROFILES[enchanted])elementalSound=enchanted;
+  if(d.area)m.area=media(d,row,entry.id+id).area;
+  }
+ }
+ const stages=[],add=(kind,slot,label,extra={})=>{
+  if(!m[slot]?.length)throw Error(`Missing ${slot} for ${entry.name} / ${raw._id} / ${mode??d.delivery}`);
+  const fast=m[slot].some(key=>/jb2a\.(?:teleport\.01|impact\.(?:008|009)|melee_generic\.slash)/.test(key));
+  // Shared physical sound profiles anchor melee blows to contact, ranged
+  // landings and elemental finishes to accent. Preserve these phase IDs.
+  const phase=physical&&kind==='impact'?(slot==='hit'?(mode==='melee'||!mode?'contact':'accent'):slot.startsWith('payload')?'accent':slot):slot;
+  const s={stageId:`${stages.length}-${phase}`,kind,label,assets:m[slot],duration:1400,scale:kind==='travel'?.65:1.65,opacity:1,fadeIn:0,fadeOut:180,oneShot:true,playbackRate:fast?.5:1,delay:0,...extra};stages.push(s);return s;
+ };
+ const motion=(motion,subject,delay,duration=1200,distance=.16)=>stages.push({stageId:'motion-'+stages.length,kind:'motion',label:motion==='pulse'?'Casting breath':motion==='lunge'?'Measured approach':motion==='levitate'?'Illustrative lift':motion==='dodge'?'Wind step':'Guard and settle',assets:[],motion,subject,delay,duration,distance,intensity:.6,...(motion==='dodge'?{motionRange:'distance'}:{})});
+ const gesture=(subject,delay)=>{if(d.motion==='none')return;const [type,duration,distance]=({ 'throw-small':['lunge',1400,.1],'brace-small':['recoil',1500,.06],'reach-small':['lunge',1500,.12],'stride-small':['lunge',1600,.24],'evade-small':['dodge',1600,.15],'lift-illustrative':['levitate',2000,.22],'hop-illustrative':['levitate',1600,.18],'wind-step-small':['dodge',1600,.15],'lash-small':['lunge',1600,.18],'guard-small':['recoil',1500,.06],'native-teleport-cue':['pulse',1600,.04],'transform-cue':['pulse',1800,.1] }[d.motion]??['pulse',1500,.09]);motion(type,subject,delay,duration,distance);};
+ const physical=!d.nativeEnergy&&mode||d.physicalThrow||d.theme==='weapon',source=d.delivery==='source';
+ if(!d.followup&&!physical&&d.motion!=='none')add('cast','cast','Gather '+(SPELL_THEMES[d.theme]?.label??'magic'),{scale:1.2,duration:1600});
+ if(d.delivery==='fork'){
+  const first=add('travel','bolt','Primary arc',{delay:350,targetSelection:'first',scale:.65});
+  add('travel','bolt','Forks from primary',{afterStage:first.stageId,timingAnchor:'start',startOffset:450,travelOrigin:'firstTarget',targetSelection:'secondary',targetLimit:3,scale:.55});
+  add('impact','hit','Electrical contact',{delay:950,scale:1.45,targetLimit:4});
+  gesture('source',0);
+ }else if(d.delivery==='rayFan'){
+  add('travel','bolt','Eight prismatic rays',{delay:350,travelDestination:'area',areaLayout:'fan',fanCount:8,scale:.35,fanColors:['#ff4040','#ff9f38','#ffe166','#62dc85','#73b9ff','#795dce','#b87afa','#ff4040']});
+  gesture('source',0);
+ }else if(['missile','ray','areaMissile'].includes(d.delivery)){
+  const volley=d.count?{repeats:d.count,repeatScope:'total',repeatSimultaneous:entry.slug==='magic-missile',repeatInterval:120}:{};
+  const travel=add('travel','bolt',physical?'Weapon release':d.delivery==='ray'?'Ray to recipient':'Flight to recipient',{delay:physical?250:400,scale:d.delivery==='ray'?.6:.7,...(d.delivery==='areaMissile'?{travelDestination:'area'}:{}),...volley});
+  add(d.area?'template':'impact',d.area?'area':'hit',physical?'Weapon contact':'Payload contact',{afterStage:travel.stageId,timingAnchor:'end',scale:d.area?1:1.55,...volley});
+  if(physical)motion('lunge','source',80,1400,.1);else gesture('source',0);
+ }else if(d.area){
+  const layout=d.area.type==='line'&&m.area.every(key=>assetGeometry(allAssets.get(key))==='radial')?'tiles':'fit';
+  if(d.nativeCounts?.layers===7){
+   const colors=['#ff4040','#ff9f38','#ffe166','#62dc85','#73b9ff','#795dce','#b87afa'];
+   for(const [i,tint]of colors.entries())add('template','area',`Prismatic layer ${i+1}`,{delay:350+i*100,scale:d.area.type==='line'?.2:.72+i*.05,areaLayout:layout,tintEnabled:true,colorize:true,tint,offsetY:d.area.type==='line'?(i-3)*.12:0});
+  }else add('template','area',a.name||'Area manifests',{delay:350,scale:1,areaLayout:layout});
+  gesture('source',0);
+ }else{
+  if(physical&&mode==='melee')motion('lunge','source',0,1500,.22);
+  const kind=source?'aura':d.delivery==='contact'?'impact':'aura';
+  add(kind,source||!physical&&kind==='aura'?'aura':'hit',d.followup?'Follow-up contact':physical?'Physical contact':source?'Activation bloom':'Recipient bloom',{delay:physical?600:350,subject:source?'source':'targets',scale:physical?1.35:1.8});
+  if(!physical&&!d.followup)gesture(source?'source':'targets',300);
+ }
+ const contact=stages.find(s=>s.kind==='impact');
+ if(contact)for(const slot of Object.keys(m).filter(k=>k.startsWith('payload')))add('impact',slot,'Native magical material',{afterStage:contact.stageId,timingAnchor:'start',scale:1.5});
+ const enchantmentTemplate=row.source.type==='weapon'&&!row.source.system?.type?.value&&row.effects?.some(e=>e.type==='enchantment');
+ const missingPhysicalBase=row.source.type==='weapon'&&!row.source.system?.type?.value&&!row.source.system?.type?.baseItem&&!row.source.system?.damage?.base?.number&&a.attack?.type?.classification!=='spell';
+ const weaponNeedsBase=enchantmentTemplate||missingPhysicalBase;
+ const delegated=weaponNeedsBase||['cast','forward','summon'].includes(a.type)||d.trigger==='manual'||raw._id==='manual';
+ const roles=delegated?{automatic:'requires-role-resolution',source:'native performer',targets:['chosen recipient or summon'],requiresSource:true,requiresTargets:false,reason:a.type==='check'?d.note:enchantmentTemplate?'This native enchantment template requires a chosen base weapon in Foundry. Its catalog preview is symbolic; customize the applied weapon before enabling automatic playback.':missingPhysicalBase?'This native item has no physical weapon base or damage. Use its resulting native spells; this symbolic cue remains manual.':'This activity delegates spell casting or creates another performer. Use the native resulting spell/attack animation; this symbolic activation is available for manual preview.'}:undefined;
+ const targetLimit=a.type==='attack'?1:Number(d.nativeCounts?.maxTargets??a.target?.affects?.count);
+ if(targetLimit>0&&d.delivery!=='fork'&&!d.count)for(const s of stages)if(['travel','impact','projectile'].includes(s.kind)||s.subject==='targets')s.targetLimit=targetLimit;
+ if(d.nativeCounts?.illustrativeBeats){
+  // The native attack activities own actual hit contacts. These are cosmetic
+  // performer beats, distinguishing basic and heightened Flurry activations.
+  const beat=stages.find(s=>s.kind==='motion');if(beat){beat.motion='lunge';beat.distance=.1;beat.repeats=d.nativeCounts.illustrativeBeats;beat.repeatInterval=1100;beat.duration=1100;beat.label=`${beat.repeats} illustrative flurry beats`;}
+ }
+ const recipe=validateRecipe({id:`animater-${entry.id}-${id}`,name:entry.name,systemId:'dnd5e',catalogEntry:entry.id,activityId:raw._id,...(mode?{weaponMode:mode}:{}),itemUuid:row.uuid,match:entry.slug,description:d.note,category:entry.group,color:SPELL_THEMES[d.theme]?.color,trigger:delegated?'manual':d.trigger,previewArea:d.area,playbackRoles:roles,stages});
+ const soundProfile=d.sound===null?null:d.nativeMaterialProfile??elementalSound??(d.physicalThrow||d.nativeEnergy?d.sound:mode?weaponSound(row.source,mode):physical?ABILITY_SOUND_PROFILES[d.sound]?d.sound:weaponSound(row.source,mode):d.sound);
+ const soundNamespace=!d.nativeMaterialProfile&&!d.nativeEnergy&&!d.physicalThrow&&(mode||d.theme==='weapon')&&ABILITY_SOUND_PROFILES[soundProfile]?'ability':'spell';
+ if(soundProfile&&!(soundNamespace==='ability'?ABILITY_SOUND_PROFILES:SOUND_PROFILES)[soundProfile])throw Error(`Unregistered sound profile ${soundProfile} for ${entry.name}`);
+ return {id,label:`${a.name||a.type}${mode?' · '+mode:''}`,activityId:raw._id,activityName:a.name||'',reviewed:d.reviewed,theme:d.theme,...(mode?{weaponMode:mode}:{}),rationale:d.note,artLimit:d.reviewed?'Native choreography reviewed; edition fallback may substitute color.':'Semantic composition; symbolic artwork where no literal JB2A asset exists.',soundNamespace,soundProfile,soundExcludeRoles:d.followup?['cast','release','chain']:d.physicalThrow?['cast']:[],recipe};
+}
+function entryFor(row,kind){
+ const s=row.source,id=`dnd5e-${row.pack}-${s._id}${row.parent?'-'+row.parent._id:''}`;
+ const dummy=row.parent?{...row,source:row.parent}:row,d=nativeDirection(dummy,{_id:'state',type:'utility',activation:{type:'special'},target:{affects:{type:'self'}}});
+ const name=s.name??'Effect',slug=(s.system?.identifier??name.toLowerCase().replace(/[^a-z0-9]+/g,'-'));
+ const entry={id,uuid:row.uuid,documentId:s._id,pack:row.pack,path:row.path,sourceURL:row.sourceURL,name,slug,identifier:s.system?.identifier??slug,descriptionText:row.description,descriptionHash:hash(row.description),edition:row.edition,kind,img:s.img??row.parent?.img,level:s.system?.level??null,group:kind==='spell'?s.system?.school??'Spell':kind==='feat'?s.system?.type?.value??'Feature':kind==='weapon'?s.system?.type?.baseItem??'Weapon':kind==='condition'?'Condition':kind==='effect'?'Native effect':s.system?.type?.value??s.type,theme:d.theme,quality:d.reviewed?'curated':'symbolic',reviewed:d.reviewed,...(row.statusId?{statusId:row.statusId}:{}),...(row.parent?{parentUuid:row.uuid.split('.ActiveEffect.')[0],parentDocumentId:row.parent._id,transfer:s.transfer===true}:{}),variants:[]};
+ if(['condition','effect'].includes(kind)){
+  const assets=stateAssets(row,d.theme),p=statePresentation({assets});
+  entry.variants=[{id:'sustained',label:'Sustained native state',rationale:'Attached visual follows the native active document. Removal, suppression, scene changes and native expiry stop it; no sound loop or token displacement.',artLimit:'Symbolic status cue. Native rules and visibility remain authoritative.',recipe:validateRecipe({id:`animater-${id}-state`,name,systemId:'dnd5e',catalogEntry:id,stateEntry:id,lifecycle:'document',trigger:'effect',itemUuid:row.uuid,category:entry.group,color:SPELL_THEMES[d.theme]?.color,match:name,stages:[{stageId:'sustained',kind:'aura',label:'Sustained visual',assets,...p,subject:'source',persist:true,duration:6000,fadeIn:400,fadeOut:400}]})}];
+ }else{
+  for(const a of row.activities)for(const mode of kind==='weapon'?weaponModes(s,a):[undefined])entry.variants.push(finiteRecipe(entry,row,a,mode));
+  if(!entry.variants.length)entry.variants.push(finiteRecipe(entry,row,{_id:'manual',type:'utility',name:'Manual native activation',activation:{type:'special'}},undefined));
+  entry.reviewed=entry.variants.some(v=>v.reviewed);entry.quality=entry.reviewed?'curated':'symbolic';entry.theme=entry.variants[0].theme;
+ }
+ return entry;
+}
+for(const [kind,list] of [['spell',data.spells],['feat',data.features.filter(r=>hasNativeActivation(r.source))],['weapon',data.weapons],['item',data.items.filter(r=>hasNativeActivation(r.source))],['condition',data.conditions],['effect',[...data.standaloneEffects,...data.embeddedEffects].filter(r=>r.source.type!=='enchantment')]])for(const row of list)rows.push(entryFor(row,kind));
+const source={version:data.systemVersion,ref:data.ref,sha:data.sha,scope:'Public SRD 5.1 and 5.2, 2014 and 2024 official system packs',license:'SRD text CC-BY-4.0; system code MIT',counts:Object.fromEntries(['spell','feat','weapon','item','condition','effect'].map(k=>[k,rows.filter(r=>r.kind===k).length]))};
+await writeFile(new URL('../data/dnd5e-catalog.mjs',import.meta.url),`// Generated from pinned official public D&D sources. See docs/dnd5e-native-research.md.\nexport const DND5E_SOURCE=${JSON.stringify(source)};\nexport const DND5E_ENTRIES=${JSON.stringify(rows)};\n`);
+console.log(JSON.stringify({...source,variants:rows.reduce((n,r)=>n+r.variants.length,0)}));

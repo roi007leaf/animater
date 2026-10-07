@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-07",
+  "tests": {
+    "tests": 467,
+    "pass": 467,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "testLogSha256": "fdca688de6990485ec4cf77607fdec946719b1559104aa569e98c0d0801a7023",
+  "scope": {
+    "spell": 1994,
+    "feat": 2308,
+    "weapon": 1122,
+    "condition": 43,
+    "effect": 2929,
+    "damageVariant": 11,
+    "starter": 12,
+    "orb": 6
+  },
+  "checks": {
+    "catalogIssues": 0,
+    "missingTimingMeasurements": 0,
+    "earlyCutoffs": 0,
+    "earlyFades": 0,
+    "unintendedEntranceSuppression": 0,
+    "missingFootprintMeasurements": 0,
+    "soundFileIssues": 0
+  },
+  "artifactHashes": {
+    "data/full-catalog-audit-2026-10-07.json": "7c00c318b12596f55c91b5ec0bed183b21659bdd787e8dc8e03ab7d6fe65dc80",
+    "data/pf2e-media-completeness-after.json": "75f4b14d20cef8a1034edcaed34bbe01d9e443ce1eef45adf40a11d29b29d643",
+    "data/media-visibility-audit-after.json": "d28b9b6c980b49fea1a966d4677fd894f56512c15b67ea7df50ec81553720986",
+    "data/media-footprint-audit.json": "6cddb918b64f1343ba996802d0fae6b619c7bab454ffa4fc0013f06c39684288",
+    "data/full-feat-weapon-audit-2026-10-07.json": "17a9ab32f52e722ebc9016c3ff6a220246d3c49b39394d8841e3d8c500b5d0e0",
+    "docs/full-spell-audit-2026-10-07.json": "0bf21a6cef4be9ed4e997bdcbe6ebc8236c04f7b3d1f8b82b5bbbacc9a1c04fb",
+    "docs/full-state-review-2026-10-07.json": "e01e5fa1a7c3ea92b9b6206861075bae81123375c38b4f3f73eb8b5b848d3420",
+    "docs/full-sound-file-audit-2026-10-07.json": "f8e32fd7928efe5c6f754257c130e89c1a0e5a079d013b239bb524cc4492c830",
+    "docs/full-sound-waveform-2026-10-07.json": "fdc7fafc419bf3b1ff43c2aa8644b8eed30b8f87bac01fa4d8ac7cf246db17bc",
+    "scripts/runtime.mjs": "b728c7a28f5224857fda723988ca56c1060576fafe6a798e9ceb859798043b53",
+    "scripts/composition.mjs": "9d21996c8a5cad1669299deba452056a594b735cfe714511248c291ba15ea096",
+    "scripts/model.mjs": "20bb968c73c68b8f6d2326a008bbff8599447c028f457c4f2608dda50644e9e2",
+    "scripts/state-presentation.mjs": "f9ee68b3a1fff42b44ad997c85174bd776917b41ebaa0f88e7edab30a8dfd7b6",
+    "scripts/playback-roles.mjs": "71ae754351d26c038d0d0a227e5dd1f1969a8e767d7a784984c62de1828abceb",
+    "scripts/presets.mjs": "7beae499d7d1cc654844fa079906ab7a44a501d7309bde21a818f8ae90dfca42",
+    "data/pf2e-spells.mjs": "3ab6e69836b3220c1df3cfa3d864f58bb5aae3532a0f623988779dd901fd3fa2",
+    "data/pf2e-feats.mjs": "d488c4a278ec7126d0ac58ff408ab514ecc0a8d0edbb4e83a409dee0a6099865",
+    "data/pf2e-weapons.mjs": "14849820a12388cfb4f59f108c3e7e27b95d91a23febf6ab126ad886b0d63bd2",
+    "data/pf2e-state-catalog.mjs": "e35619d162f05609052b482f9a5342eff9f3c3e9b9736199503de7bd08bb3ef6",
+    "data/spell-sounds.mjs": "ace4212d23f690ffeb0e310ad5420a609c8cfec713d7fd9a3ab1c6e4c72230d7",
+    "data/ability-sounds.mjs": "e008fb3bcc8c2abad14a90fc50a4f532a0c26b0bd87aed7de36d5979b0d0ab8f"
+  },
+  "limits": [
+    "Free media measured using official/matching reference footage; Free module not installed.",
+    "All rows checked programmatically; individual-reading scopes are separate.",
+    "Audio decoded and measured; no every-file listening or live multiplayer claim."
+  ]
+}

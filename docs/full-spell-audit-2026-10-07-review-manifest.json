@@ -1,0 +1,1491 @@
+{
+  "date": "2026-10-07",
+  "source": "563fd52708673ddd4f66c76921efbf6a938fffed",
+  "reviewed": 87,
+  "records": [
+    {
+      "id": "6XscENSWyYRHqK0A",
+      "name": "Airlift",
+      "slug": "airlift",
+      "path": "packs/pf2e/spells/spells/rank-4/airlift.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/airlift.json",
+      "descriptionChars": 856,
+      "descriptionHash": "924f6d70f77474c1e7a974c4fb28aae625aa30ecaf0b2ff3f04492412b57ddb0",
+      "rawDescriptionHash": "274d3ec41f50902c5d0571f11be22ae5239a90bf48b53aab1cd64b0a2c3e8653",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Wind rises in the selected group footprint while caster artwork lifts slightly. Group destination and creature/object transport remain manual; no damage is invented."
+    },
+    {
+      "id": "xEjGEBvTfDJECSki",
+      "name": "Ancestral Form",
+      "slug": "ancestral-form",
+      "path": "packs/pf2e/spells/focus/ancestral-form.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/ancestral-form.json",
+      "descriptionChars": 619,
+      "descriptionHash": "fb6efb57a0560529404aa74bd60de65593836450c80a362b6df4d99c1910d87a",
+      "rawDescriptionHash": "2946f22de6f8e7bb6a90cb7ed798b8afcec83100804e1860a6f9c92040c79165",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A translucent quasi-corporeal silhouette and spirit veil develop around caster. Granted fly capability does not force movement; no damaging arcane impact."
+    },
+    {
+      "id": "My7FvAoLYgGDDBzy",
+      "name": "Antimagic Field",
+      "slug": "antimagic-field",
+      "path": "packs/pf2e/spells/spells/rank-8/antimagic-field.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-8/antimagic-field.json",
+      "descriptionChars": 1119,
+      "descriptionHash": "3781e0805f71f962f2398f21e15e4591ba0b5261de72c5d4a1a183e15ee620d8",
+      "rawDescriptionHash": "bcbd8ecefb14171825bf94f8ea8324eab8872ad5fe4fc4e66abab38ba0a28e51",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "existing-form-appropriate-with-native-choice-limits",
+      "rationale": "Full native description retains its existing direct-delivery art. Counts or conditional outcomes follow selected targets/manual options; no additional change justified."
+    },
+    {
+      "id": "wZ1rsLrWfYtMZfgv",
+      "name": "Beseech Arcanotheign",
+      "slug": "beseech-arcanotheign",
+      "path": "packs/pf2e/spells/spells/rank-9/beseech-arcanotheign.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-9/beseech-arcanotheign.json",
+      "descriptionChars": 1102,
+      "descriptionHash": "4ce0c0c6e21f4680a833405e34c186a8352f66f7ce3577e944b417b193d4e981",
+      "rawDescriptionHash": "b9071591834768fba601277dd8f900235e3fb15d6a4829d829fc5d29f9152d2d",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray",
+        "generic-literal-color"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Remote incarnate location and Arrive/Depart staging need native point/choice integration; current cue remains symbolic at caster. Half-black/white herald art unavailable."
+    },
+    {
+      "id": "bZ8BibvvYOKAbYjn",
+      "name": "Blast of the Bellows",
+      "slug": "blast-of-the-bellows",
+      "path": "packs/pf2e/spells/spells/rank-2/blast-of-the-bellows.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-2/blast-of-the-bellows.json",
+      "descriptionChars": 426,
+      "descriptionHash": "75a0d4b9254fa19e3d9c6713e833bf0181fc07581e4fed917ce6211685a8e5e1",
+      "rawDescriptionHash": "acf2792be0e158615dbfe9178ed1a2c6b7bd0f0894f04ce8f2ef0c0e4539902e",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A warm rotating air eddy occupies the selected burst. Descending flight outcomes depend on later entry/turn checks and are not forced at creation."
+    },
+    {
+      "id": "ZxHC7V7HtjUsB8zH",
+      "name": "Blazing Bolt",
+      "slug": "blazing-bolt",
+      "path": "packs/pf2e/spells/spells/rank-2/blazing-bolt.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-2/blazing-bolt.json",
+      "descriptionChars": 837,
+      "descriptionHash": "69e80e32dc731ca9201c54e9653c6b1885a8041dfaef268be7a45428677f6312",
+      "rawDescriptionHash": "9176102efcccb1e131ae42ceccb2d99b3e4c2bb090644c448f10da3e024c0c3e",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "explicit-count"
+      ],
+      "changed": false,
+      "disposition": "existing-form-appropriate-with-native-choice-limits",
+      "rationale": "Full native description retains its existing direct-delivery art. Counts or conditional outcomes follow selected targets/manual options; no additional change justified."
+    },
+    {
+      "id": "KEkPxx7Sm6Xf4W3s",
+      "name": "Blazing Dive",
+      "slug": "blazing-dive",
+      "path": "packs/pf2e/spells/spells/rank-3/blazing-dive.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/blazing-dive.json",
+      "descriptionChars": 478,
+      "descriptionHash": "1362dfa5580c64246602b74e740721203eccfdde38f8f92827476b0e1ecc0a80",
+      "rawDescriptionHash": "b1992f5c67e631990961e167f8196cbba07c18a02ffcdad5821939df48988d51",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Superheated lift precedes a cosmetic ascent/descent and then fire spreads through the native emanation. Actual empty destination and elevation remain manual; no creature target required."
+    },
+    {
+      "id": "EgkypvUZIZkx1UlQ",
+      "name": "Blightburn Blast",
+      "slug": "blightburn-blast",
+      "path": "packs/pf2e/spells/spells/rank-7/blightburn-blast.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-7/blightburn-blast.json",
+      "descriptionChars": 1435,
+      "descriptionHash": "9d74e3bd54d79663b8b00142851cadaabdf04cc7524a3e52cdc7b393ef49297d",
+      "rawDescriptionHash": "7f6962fb5a8eb84ad0c81685580d0d6a1753a30fd23a4944341e9a8836399531",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": false,
+      "disposition": "existing-form-appropriate-with-native-choice-limits",
+      "rationale": "Full native description retains its existing direct-delivery art. Counts or conditional outcomes follow selected targets/manual options; no additional change justified."
+    },
+    {
+      "id": "UkXTcJAeTOF2inPy",
+      "name": "Burglar's Blind",
+      "slug": "burglars-blind",
+      "path": "packs/pf2e/spells/spells/rank-3/burglars-blind.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/burglars-blind.json",
+      "descriptionChars": 517,
+      "descriptionHash": "c1ebdc08dec9b5f641275810daa616cd351b8cf273d7160f0a8002d7c5450b7d",
+      "rawDescriptionHash": "170c8dae1845ec07976352190383c00a42e6899c0b5abf802e86792243b41430",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A quiet fading silhouette and subdued sound envelope indicate the two stealth illusions. Gold in introductory motivation does not recolor spell as treasure; hostile-action ending remains native."
+    },
+    {
+      "id": "i6GUJCWdNu2278oA",
+      "name": "Call Fluxwraith",
+      "slug": "call-fluxwraith",
+      "path": "packs/pf2e/spells/spells/rank-9/call-fluxwraith.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-9/call-fluxwraith.json",
+      "descriptionChars": 1368,
+      "descriptionHash": "307c6605c74ada78ef7346c68f2f31233b1e046ab7fe0455efeb9a0379d5d433",
+      "rawDescriptionHash": "3f145aab26d021c23bf6ee194908a9bcff42382c8fe4ab6118e1dc982d9c6cb8",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Remote mirror-shard incarnate location and separate Arrive/Depart effects require manual configuration; current generic summon cue remains symbolic."
+    },
+    {
+      "id": "rillrYLb7V2mRyU7",
+      "name": "Call of the Quenching",
+      "slug": "call-of-the-quenching",
+      "path": "packs/pf2e/spells/impossible-spells/call-of-the-quenching.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/impossible-spells/call-of-the-quenching.json",
+      "descriptionChars": 1433,
+      "descriptionHash": "9b49b9d6f074177dc1114c27acec68ecd3d7737f236e59bd5738a5d8b5a31aff",
+      "rawDescriptionHash": "fc47346a60ff8958504576da3ce5aba683b393a2b7d34ef6e034fdeb51600b7c",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Mile-scale implicit area is absent from native area metadata; distant sea creatures and later Fuel summon require manual scene handling. Current source cue remains symbolic."
+    },
+    {
+      "id": "hvV6IruyW4MAr0Ub",
+      "name": "Chrysopoetic Curse",
+      "slug": "chrysopoetic-curse",
+      "path": "packs/pf2e/spells/spells/rank-7/chrysopoetic-curse.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-7/chrysopoetic-curse.json",
+      "descriptionChars": 1272,
+      "descriptionHash": "e697793ec0bb2ada2a4db2db3bdbdbd0db023448695449287dd66d263d9b3938",
+      "rawDescriptionHash": "c81ee8c256d1cfd6374e3a19597d152e6647e03b7245605e9bdd9dcdc732646e",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Gold-colored surface traces illustrate the transforming curse. The gold-terrain critical branch and conditional equipment penalties are not assumed."
+    },
+    {
+      "id": "7dBxguCNWCoPYxIi",
+      "name": "Clad In Metal",
+      "slug": "clad-in-metal",
+      "path": "packs/pf2e/spells/spells/rank-2/clad-in-metal.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-2/clad-in-metal.json",
+      "descriptionChars": 1071,
+      "descriptionHash": "4bef9499023fe358a9ca7e249c10272ba8b3586e4995ce2876e12e613d47e130",
+      "rawDescriptionHash": "b2e7cc2565b4bf2295b30c5896bbc61b8c34fd20f76eb9033ec6f50cdff75fa2",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A silver surface sweep symbolizes precious-metal replacement, not damage or weapon attacks. Metal choice and object surface require configuration or a holder/stand-in token."
+    },
+    {
+      "id": "zEAblSSbfu1246JL",
+      "name": "Clockwork Devotion",
+      "slug": "clockwork-devotion",
+      "path": "packs/pf2e/spells/spells/rank-8/clockwork-devotion.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-8/clockwork-devotion.json",
+      "descriptionChars": 709,
+      "descriptionHash": "67688f81f6fb384e51bd1c6beaac2b65136d8ba753f80c38a5ac8f0dc64e8d6f",
+      "rawDescriptionHash": "fc0f79af895f57b870c136b06b941bf4a935916058fd391b5bbebad53151b757",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Remote clockwork army and timed departure explosion remain manual; current generic caster cue is incomplete. No literal clockwork army art bundled."
+    },
+    {
+      "id": "s7kVnr0EdljCamuR",
+      "name": "Cloud Current",
+      "slug": "cloud-current",
+      "path": "packs/pf2e/spells/spells/rank-4/cloud-current.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/cloud-current.json",
+      "descriptionChars": 726,
+      "descriptionHash": "feefb38e32b26b56130b3583218cfe11680a667003af9ddda377cd776249534d",
+      "rawDescriptionHash": "27494cd174d16fa43e79ad32216a53822c214497a34dfad7a7f9cce9555df916",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Mist and a directional current cue illustrate the high airborne cloud. The 10-mile cloud, altitude, direction and remote starting point require manual scene handling; no water impact."
+    },
+    {
+      "id": "ViqzVEprQVzCXZ9f",
+      "name": "Dancing Blade",
+      "slug": "dancing-blade",
+      "path": "packs/pf2e/spells/focus/dancing-blade.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/dancing-blade.json",
+      "descriptionChars": 901,
+      "descriptionHash": "5e9575c508fd5c25b5f4d2dcf535c4f623445a427643ab51d1b3ba3aff3707a8",
+      "rawDescriptionHash": "7b3551d125823474e03dd5aa74e2a5550f6e8c9d9ea01640e7a7f690eb57bff3",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "The animated weapon flies to the selected creature, Strikes on arrival and remains near it briefly. Later Change Partners/Sustain Strikes are excluded; longsword art is a weapon stand-in."
+    },
+    {
+      "id": "Irlpzl1YBSJ6xF5e",
+      "name": "Deep Sight",
+      "slug": "deep-sight",
+      "path": "packs/pf2e/spells/spells/rank-3/deep-sight.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/deep-sight.json",
+      "descriptionChars": 275,
+      "descriptionHash": "b9015b97bf26e5732eaffce606e5309374e1ac20f9093883b495f0f71d0c4b9b",
+      "rawDescriptionHash": "acf851a976a59b5e980708eaff101e48dd73edef6c274dd969a584e27246a716",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Two pitch-black eye accents form on a cosmetic silhouette, then a quiet vision veil settles. Eye positions are symbolic; no unrelated purple impact or actual vision change."
+    },
+    {
+      "id": "8fEfjvC01gNclDKJ",
+      "name": "Deluge",
+      "slug": "deluge",
+      "path": "packs/pf2e/spells/spells/rank-8/deluge.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-8/deluge.json",
+      "descriptionChars": 762,
+      "descriptionHash": "4d28d6fcdff20169fefabbcc306693ef3e8fb16e3be77567fce6507adec98e2a",
+      "rawDescriptionHash": "03b0c96d51219d7c5324010af30b00dde642d5718f1d087308978813144c9f4c",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A sudden water surge descends into the placed burst and promptly dissipates. Forced descent/push and structure collapse depend on native results, not animation-driven token updates."
+    },
+    {
+      "id": "S6Kkk15MWGqzC00a",
+      "name": "Draconic Barrage",
+      "slug": "draconic-barrage",
+      "path": "packs/pf2e/spells/focus/draconic-barrage.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/draconic-barrage.json",
+      "descriptionChars": 813,
+      "descriptionHash": "abb6d127c474400eaae5ee6439039bdcf19d4d6e72f98bea354079e0b78f5095",
+      "rawDescriptionHash": "2ca6491b353d4ddab1af9aeb502205421bb0166e61fd2803cfd09fe048970a59",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Three orbiting spark shapes symbolize the described small group of tiny dragons; three is visual decoration, not a rule count. Later dragon bombardment requires Sustain and is not fired during cast. Chosen damage remains manual."
+    },
+    {
+      "id": "vtCCVe869shMCJMj",
+      "name": "Echoing Weapon",
+      "slug": "echoing-weapon",
+      "path": "packs/pf2e/spells/spells/rank-1/echoing-weapon.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-1/echoing-weapon.json",
+      "descriptionChars": 761,
+      "descriptionHash": "b6c2707574837f448afdb57bf83543c2eec8f45ee5db2fff5b3a2925f2b404d6",
+      "rawDescriptionHash": "3da2eccb70be2118cc9553f15e574c5debb3770d96c0b4cc4f35687d25e971a3",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "explicit-count"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A quiet humming envelope charges the weapon. Strikes and the end-of-turn sonic discharge happen later, not during casting. Use a stand-in token or holder for the weapon."
+    },
+    {
+      "id": "e36Z2t6tLdW3RUzZ",
+      "name": "Elemental Gift",
+      "slug": "elemental-gift",
+      "path": "packs/pf2e/spells/spells/rank-4/elemental-gift.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/elemental-gift.json",
+      "descriptionChars": 1644,
+      "descriptionHash": "781cb972c9a0133d6467774f693aafdc7eef7f0801b7ad8d5cc855cd82f233ff",
+      "rawDescriptionHash": "9f5f93120a61d4b2ae656fbbf272c2c8afd4d1bc8ea97515d0c4dd48a57b4a13",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A non-damaging elemental blessing settles on the willing recipient. Player chooses the element; no future fire/electricity Strike, automatic flight or recoil occurs during this neutral default."
+    },
+    {
+      "id": "B8aCUMCHCIMUCEVK",
+      "name": "Elemental Motion",
+      "slug": "elemental-motion",
+      "path": "packs/pf2e/spells/focus/elemental-motion.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/elemental-motion.json",
+      "descriptionChars": 556,
+      "descriptionHash": "ac47274e94a853be1c470a1b52a84a64c910578bfb6bde262a40cf80153bf2eb",
+      "rawDescriptionHash": "eff3abf37690bd0777bf629ea56c7893aa73df156cf1661d5c017f645e0c0a62",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Elemental movement capability develops on caster; choosing element and using the granted Speed remain manual. Casting itself does not move or attack."
+    },
+    {
+      "id": "gasOL6a0WhOhUsgL",
+      "name": "Etheric Shards",
+      "slug": "etheric-shards",
+      "path": "packs/pf2e/spells/spells/rank-5/etheric-shards.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-5/etheric-shards.json",
+      "descriptionChars": 461,
+      "descriptionHash": "9421d6fa957f1e191769a27700d93731cbc6445b0af7c3fa2a2b6a2c81fb2209",
+      "rawDescriptionHash": "f2d56a4e14369f8260615588e07accd5f57b071a33cc6123ec3aaf8e86aaa289",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Glittering force splinters spread as a caltrop field. Later damage requires moving through it; no divine-smite hit at creation. Blade art is a symbolic splinter substitute."
+    },
+    {
+      "id": "vm9O7ne48NM72yrJ",
+      "name": "Falling Sky",
+      "slug": "falling-sky",
+      "path": "packs/pf2e/spells/spells/rank-8/falling-sky.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-8/falling-sky.json",
+      "descriptionChars": 969,
+      "descriptionHash": "3785be36d0df42ea9cca7652af93a260d72ac50925b1472bf63582b75ea67005",
+      "rawDescriptionHash": "07f2ffe2870872349bc534607e92943d102175fc840776f589b995d9df6acc5d",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Telekinetic field visibly presses downward and settles into floor pressure. Native cylinder is retained; elevation-dependent fall damage and conditions remain mechanical."
+    },
+    {
+      "id": "2RhZkHNv8ajq0yLq",
+      "name": "Fallow Field",
+      "slug": "fallow-field",
+      "path": "packs/pf2e/spells/focus/fallow-field.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/fallow-field.json",
+      "descriptionChars": 642,
+      "descriptionHash": "4e28324892ac45033874b01960071ef51d579638a521df55e7828da994baa0af",
+      "rawDescriptionHash": "cab4016cf2448f56086afc03534041f4f83e50022bc41b6814cbb3922f5f1e91",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Sickly yellow light fills the native field, suppressing future healing. No dark-purple tentacles, void attack or automatically denied healing at cast."
+    },
+    {
+      "id": "kuoYff1csM5eAcAP",
+      "name": "Fire Seeds",
+      "slug": "fire-seeds",
+      "path": "packs/pf2e/spells/spells/rank-6/fire-seeds.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-6/fire-seeds.json",
+      "descriptionChars": 929,
+      "descriptionHash": "92a14ade677789428c89d0bed484b7e52c3c432eefa5dbd1392585470822b064",
+      "rawDescriptionHash": "fbdc0790b1ea59b9c775452f585ce12d39ae861ab4016f5a7fe9afbb96b1cad7",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Four red-orange hand-held acorn glints grow, using symbolic point art. Later Interact throws, explosions and burning ground are not played at creation."
+    },
+    {
+      "id": "K8vvrOgW4bGakXxm",
+      "name": "Flurry of Claws",
+      "slug": "flurry-of-claws",
+      "path": "packs/pf2e/spells/focus/flurry-of-claws.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/flurry-of-claws.json",
+      "descriptionChars": 557,
+      "descriptionHash": "b0cda37961d231c91cb1193eb2c3c6f5a3e7b246d9bcb1cefafe8b10d27185e4",
+      "rawDescriptionHash": "6e01b847566dc0ddfadecf02788f13e57a9d716dbca65479845b603838b6a6e3",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "explicit-count"
+      ],
+      "changed": false,
+      "disposition": "existing-form-appropriate-with-native-choice-limits",
+      "rationale": "Full native description retains its existing direct-delivery art. Counts or conditional outcomes follow selected targets/manual options; no additional change justified."
+    },
+    {
+      "id": "cd6cVkRwleJvAY68",
+      "name": "Force Fling",
+      "slug": "force-fling",
+      "path": "packs/pf2e/spells/focus/magus/force-fling.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/magus/force-fling.json",
+      "descriptionChars": 614,
+      "descriptionHash": "7c1473076aaf1f643f124b736a3bdf8efe2b396409e1b11f7f77e8d9b8a688cb",
+      "rawDescriptionHash": "b31684a8902a9a2f2fdb148369cb9962e026f9ed3d74d3564f3895d14986a915",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "One spectral weapon echo flies to the selected foe and makes one contact. It does not automatically return like Spiritual Armament; held weapon identity remains symbolic."
+    },
+    {
+      "id": "5KmyO4YSGEAUdgAS",
+      "name": "Funeral Flames",
+      "slug": "funeral-flames",
+      "path": "packs/pf2e/spells/spells/rank-2/funeral-flames.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-2/funeral-flames.json",
+      "descriptionChars": 570,
+      "descriptionHash": "773f2d428802186d3f10f858046026278c41b7ac4496fc1d70ac519f66eac270",
+      "rawDescriptionHash": "c8dd6d459ee2e16ec21928c28bb4a9a87ae2ecb442fdca67c2fc80072b534558",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Blue flame ignites one end of the held club/staff. Weapon attacks and optional dismissal damage happen later; no target shake or orange fireball during this buff."
+    },
+    {
+      "id": "jQgX7zChqjFrU7Q1",
+      "name": "Garden of the Green Man's Growth",
+      "slug": "garden-of-the-green-mans-growth",
+      "path": "packs/pf2e/spells/spells/rank-10/garden-of-the-green-mans-growth.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-10/garden-of-the-green-mans-growth.json",
+      "descriptionChars": 1233,
+      "descriptionHash": "49b53861d88b7d5b9b926a586c7ca272f399211c95cedbf10cd6bcea66d692d1",
+      "rawDescriptionHash": "2cd4eff138e28ed01d0da5db4feee3867a956598c10b6adc870c36172ab1b03b",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Remote green-man arrival, 60-foot ground bloom and later selected vines need manual native point/phase integration; current cue remains generic."
+    },
+    {
+      "id": "v4KzRPol5XQOOmk0",
+      "name": "Heat Metal",
+      "slug": "heat-metal",
+      "path": "packs/pf2e/spells/spells/rank-2/heat-metal.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-2/heat-metal.json",
+      "descriptionChars": 1364,
+      "descriptionHash": "642d5a247b325daa48cca85a67195986a8beaa085bb9f63da66b95ff4b74c647",
+      "rawDescriptionHash": "d86341a48cec92ae157886fe851fb6e714c90200578f9ac7777633c3b33be972",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A localized red-hot sheen develops on the selected metal surface, with a restrained heat shimmer. No external fireball or assumed save-dependent persistent residue; object/holder targeting needs a stand-in."
+    },
+    {
+      "id": "BINaRykHRLGn4Qfm",
+      "name": "Holy Host",
+      "slug": "holy-host",
+      "path": "packs/pf2e/spells/spells/rank-8/holy-host.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-8/holy-host.json",
+      "descriptionChars": 4335,
+      "descriptionHash": "3060297f2ec6bd31607b806a8a5b8c30d9fabdaca4ecd8b4590a664665c99583",
+      "rawDescriptionHash": "01d0d0470a97d6148e32ea1ee7e3d1181216ba42a0f0a53d15667ae714e26101",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Holy squadron choice, remote army location and separate Arrive/Depart phases require customization; current generic caster cue does not faithfully illustrate every choice."
+    },
+    {
+      "id": "oGV6YdpZLIG4G4gH",
+      "name": "Impaling Briars",
+      "slug": "impaling-briars",
+      "path": "packs/pf2e/spells/focus/impaling-briars.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/impaling-briars.json",
+      "descriptionChars": 1223,
+      "descriptionHash": "6d799404cd333659d63110876ba698cad0f7d617ea7f4f591bca7e9ad80b073c",
+      "rawDescriptionHash": "3ae3d00506b12afb1a5eafefac307b806eadfed09050792d855407eaa8798c44",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Dangerous briars grow across the native emanation. Cast/Sustain option, temporary wall and separate directed impale attack remain manual; no default hit against caster."
+    },
+    {
+      "id": "sDUOJoLUEvD5Xe8E",
+      "name": "Incarnate Shadow Minuet",
+      "slug": "incarnate-shadow-minuet",
+      "path": "packs/pf2e/spells/spells/rank-4/incarnate-shadow-minuet.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/incarnate-shadow-minuet.json",
+      "descriptionChars": 1707,
+      "descriptionHash": "490487f569acff6ad6fb49a7978f0a50db960eac912b0a91a0a557e85dfff077",
+      "rawDescriptionHash": "ae488f4138a7def324824fed0d9e4f80a9c82ba4fd52b5a22a0e84ff8e9f16cf",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Native shadow departure location and delayed darkness return require manual phase/location control; current source cue lacks that choreography."
+    },
+    {
+      "id": "NIXXJoGuzvctynBt",
+      "name": "Iron Rain",
+      "slug": "iron-rain",
+      "path": "packs/pf2e/spells/spells/rank-3/iron-rain.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/iron-rain.json",
+      "descriptionChars": 568,
+      "descriptionHash": "6ccc6ad12a996452b2f71c446ea8487c470478ca0bf119310388f72940eb33a2",
+      "rawDescriptionHash": "5e4e70b32d17136e006518ea34a6cbb1c73e88e06004b0b271602940ada42d73",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Silvery blade footage descends into the placed burst, then blades briefly remain as ground litter. No blue spell orb replaces the iron rain; picking up daggers and actual terrain remain native."
+    },
+    {
+      "id": "JEMSVySuS4jvTepQ",
+      "name": "Jassim's Allegiance",
+      "slug": "jassims-allegiance",
+      "path": "packs/pf2e/spells/spells/rank-10/jassims-allegiance.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-10/jassims-allegiance.json",
+      "descriptionChars": 1189,
+      "descriptionHash": "623d94f51b1678d0f1e51b0b4e7cd7b6238258bed033c553fcb3c8200a61402e",
+      "rawDescriptionHash": "e0049e9324a4dd5a74de3632813b1aa74fffdbb3a0d3915f72179915630d17ae",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Remote automaton arrival fire/piercing line and later rust emanation require manual point/phase integration; current generic caster cue remains incomplete."
+    },
+    {
+      "id": "mLAYvbafVKfBgEhz",
+      "name": "Loose Time's Arrow",
+      "slug": "loose-times-arrow",
+      "path": "packs/pf2e/spells/spells/rank-2/loose-times-arrow.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-2/loose-times-arrow.json",
+      "descriptionChars": 183,
+      "descriptionHash": "7ccedf7e6f2b13793ec200b7091fda437a39672a9f0563e7094631bf4d1ee333",
+      "rawDescriptionHash": "b3767fe1be0c2319d07ce4122b805157efaf9ce7c2f467d02bdf6ce20d3e7305",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "existing-form-appropriate-with-native-choice-limits",
+      "rationale": "Full native description retains its existing direct-delivery art. Counts or conditional outcomes follow selected targets/manual options; no additional change justified."
+    },
+    {
+      "id": "7dKtMehJ6YrXwJLR",
+      "name": "Magnetic Attraction",
+      "slug": "magnetic-attraction",
+      "path": "packs/pf2e/spells/spells/rank-2/magnetic-attraction.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-2/magnetic-attraction.json",
+      "descriptionChars": 886,
+      "descriptionHash": "1b8665f8a2cca2fae55343c32311c38669594d2bf3a98c1bffbacda81dc8db00",
+      "rawDescriptionHash": "5e79ba940c80408047d02c755a3f3915ab1d5f6a92535ef7b3bc7da9cf17aab2",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "One symbolic dagger object per selected stand-in flies toward caster, opposing normal outward attack direction. Alternate lodestone and real object Disarm/catch/drop require manual selection."
+    },
+    {
+      "id": "5SDKyUShSMbv0Vh1",
+      "name": "Magnetize",
+      "slug": "magnetize",
+      "path": "packs/pf2e/spells/spells/rank-4/magnetize.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/magnetize.json",
+      "descriptionChars": 486,
+      "descriptionHash": "8e862c338c8e7f56d3f595e7337356fd34578979b37966f5a56d455683bf32d7",
+      "rawDescriptionHash": "cffa7049669941fa93f21fab3c225c8b6880506020a08c2bb109637ec40930bf",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Stationary magnetic polarity surrounds the willing recipient. Redirecting future attacks is not played during casting."
+    },
+    {
+      "id": "Tl1QAqre7H0sQEXt",
+      "name": "Mantis's Grasp",
+      "slug": "mantiss-grasp",
+      "path": "packs/pf2e/spells/spells/rank-4/mantiss-grasp.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/mantiss-grasp.json",
+      "descriptionChars": 604,
+      "descriptionHash": "604bb895e826d877daa0b518098d432df3fe94543be7827d6e3eaec09dc0dc76",
+      "rawDescriptionHash": "e6b60055b5e3c4440b95fe13551beced35d4a2dc4e0872883e8888aea9e2146e",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Paired red spectral claw shapes sprout locally and close around the creature, followed by red force strands. Literal mantis arms are unavailable; immobilized save result is not applied."
+    },
+    {
+      "id": "A7w3YQBrFNH8KYsB",
+      "name": "Mirror's Misfortune",
+      "slug": "mirrors-misfortune",
+      "path": "packs/pf2e/spells/spells/rank-4/mirrors-misfortune.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/mirrors-misfortune.json",
+      "descriptionChars": 1325,
+      "descriptionHash": "cfc82d50e104cffbe9bf6c2e5b0cf1cf1ca39eafb7c2ba2a4973e496399029af",
+      "rawDescriptionHash": "6187e3a0f3c58a8ee261a8eebd382878b6fa5495e5227c13ecb90bdaff2b9772",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "explicit-count"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "One distinct duplicate separates beside caster. Optional Step remains manual; later shattered-mirror curse does not trigger during cast."
+    },
+    {
+      "id": "WPXzPl7YbMEIGWfi",
+      "name": "Mislead",
+      "slug": "mislead",
+      "path": "packs/pf2e/spells/spells/rank-6/mislead.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-6/mislead.json",
+      "descriptionChars": 1335,
+      "descriptionHash": "d120c932dfb95b5194b1d14a4f5ed5f8684195d471b6b24f83d00b40d8d32054",
+      "rawDescriptionHash": "6f64555d58f9f1e698f64fa89aaec2942b7daa409948c160841b175b80a2fffa",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "One duplicate remains while a separate caster silhouette fades. No three Mirror Image duplicates or automatic later attack; actual invisibility stays native."
+    },
+    {
+      "id": "zu40ATlcCjtfWBnj",
+      "name": "Misty Memory",
+      "slug": "misty-memory",
+      "path": "packs/pf2e/spells/spells/rank-4/misty-memory.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/misty-memory.json",
+      "descriptionChars": 1063,
+      "descriptionHash": "a7ce023bc9ff9cc91df6769966415c47df419928bcb0bd5595001253647e12db",
+      "rawDescriptionHash": "dcdcf199f8c0867a510d55431c92b098ff2a1544d303b1e3c653c8424f73f7ee",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "White mist rises from the selected water stand-in into a silent translucent tableau. No water impact or forced target movement; actual recalled scene/history is not invented."
+    },
+    {
+      "id": "Shiuhdb2nO6Qgk3k",
+      "name": "Moonburst",
+      "slug": "moonburst",
+      "path": "packs/pf2e/spells/spells/rank-7/moonburst.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-7/moonburst.json",
+      "descriptionChars": 790,
+      "descriptionHash": "15bbb55371269339d897fe0520f4140acf1aff4d47194653863d9acb03f87b17",
+      "rawDescriptionHash": "68732fb775b9b57b8ec2fcc9a8bb7dd55625303d5d715ff04bc807eb7c9f3f5e",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A chilling silvery globe expands across the native burst and releases white-blue flecks. No yellow sacred flame or purple detection seal; permanent blindness remains save dependent."
+    },
+    {
+      "id": "PtX16vbWzDehj8qc",
+      "name": "Pernicious Poltergeist",
+      "slug": "pernicious-poltergeist",
+      "path": "packs/pf2e/spells/spells/rank-4/pernicious-poltergeist.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/pernicious-poltergeist.json",
+      "descriptionChars": 1252,
+      "descriptionHash": "85a2cb537c1abc9444ca709702d1a52711c006f5773af34d53d47d3357414603",
+      "rawDescriptionHash": "681c13ea48947d79017ced659712a2aba8936c84ed3604b6736fcbc7ad26d254",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A ghostly echo anchors in the placed burst. Deathly Assault/Frighten/Telekinetic Storm selection remains manual; no automatic generic contact. Literal ghost body is symbolic."
+    },
+    {
+      "id": "N91EI7H1p7YXKX0o",
+      "name": "Personal Runewell",
+      "slug": "personal-runewell",
+      "path": "packs/pf2e/spells/focus/personal-runewell.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/personal-runewell.json",
+      "descriptionChars": 1270,
+      "descriptionHash": "22ec9854863ab8cbcc4560a63650bd80b72f1b15c0d5e6559c2a208a64e41b7e",
+      "rawDescriptionHash": "ed6b96a065faf119a7cd60f4f4ca5d3b6627f890d5a013644963065028769da8",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A circle of light carves the personal rune into the selected ground. Later spells trigger empowerment or force bolts; no impact/bolt at rune creation."
+    },
+    {
+      "id": "TAbIOB0jhyKptemK",
+      "name": "Pierce the Sky",
+      "slug": "pierce-the-sky",
+      "path": "packs/pf2e/spells/spells/rank-9/pierce-the-sky.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-9/pierce-the-sky.json",
+      "descriptionChars": 900,
+      "descriptionHash": "a6cacab6cabb817be8c3e0ac74fa35c7aa65942e73e30809ee82797e70a47908",
+      "rawDescriptionHash": "fd9e8d8b147dc946e7b09483ca1c43b0995c67d596f2cb92457d4e900c42ddaf",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "explicit-count"
+      ],
+      "changed": false,
+      "disposition": "existing-form-appropriate-with-native-choice-limits",
+      "rationale": "Full native description retains its existing direct-delivery art. Counts or conditional outcomes follow selected targets/manual options; no additional change justified."
+    },
+    {
+      "id": "APTMURAW1N0Wpk4w",
+      "name": "Precious Metals",
+      "slug": "precious-metals",
+      "path": "packs/pf2e/spells/focus/precious-metals.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/precious-metals.json",
+      "descriptionChars": 945,
+      "descriptionHash": "a3b938b30d4aa8734618223f2440eff0c8d7e44a54dd3e1ce19fe712ef863dcc",
+      "rawDescriptionHash": "7d35781642c8395b27386f1759c3fbe5e2efa3c03494bee6fd5e75d67a774c49",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A silver material sweep illustrates a deity blessing a metal object. Other metal choices remain manual; no attack or structural damage happens at cast."
+    },
+    {
+      "id": "kwlKUxEuT8T15YW6",
+      "name": "Primal Summons",
+      "slug": "primal-summons",
+      "path": "packs/pf2e/spells/focus/primal-summons.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/primal-summons.json",
+      "descriptionChars": 916,
+      "descriptionHash": "b1b36b6cb0549023e977d781626bc2898f593d5008305685a34c203ed3f65f38",
+      "rawDescriptionHash": "201e3104ca3f74ba71f8cd641e939141e6fc5c1930be1e26770b4964512d329b",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Prepare an elemental enhancement for the next summoned creature. This cast does not yet summon, fly, attack or choose the element."
+    },
+    {
+      "id": "d6o52BnjViNz7Gub",
+      "name": "Prismatic Spray",
+      "slug": "prismatic-spray",
+      "path": "packs/pf2e/spells/spells/rank-7/prismatic-spray.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-7/prismatic-spray.json",
+      "descriptionChars": 1038,
+      "descriptionHash": "03a62fdd004175aef1a7e33bd266f8c6dacc13a034178a9e0f42c532584b4ad3",
+      "rawDescriptionHash": "5b514175060062c78adc4f17437df7f18297524268e0802fceb464a6b3403353",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray",
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Seven individually colored ray lanes fan through the native cone: red, orange, yellow, green, blue, indigo, violet. Random creature-specific outcomes remain rules; Free ray recoloring preserves the lane geometry without holy breath."
+    },
+    {
+      "id": "Rn2LkoSq1XhLsODV",
+      "name": "Pummeling Rubble",
+      "slug": "pummeling-rubble",
+      "path": "packs/pf2e/spells/spells/rank-1/pummeling-rubble.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-1/pummeling-rubble.json",
+      "descriptionChars": 464,
+      "descriptionHash": "41ab141e1cafece79a88d94ce664e7f74137fdae666fa9fad68097f6874fc120",
+      "rawDescriptionHash": "0de6d67d2c8e19d9f3ce92869764707800ee4735fc9eff9f595098f84e80d746",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Five illustrative heavy rock objects fan through the native cone before a faint footprint fades. No lightning cone, automatic save-result push or fabricated projectile count."
+    },
+    {
+      "id": "xnh2NBOGs4hcH9B3",
+      "name": "Pyrefowl Rebuke",
+      "slug": "pyrefowl-rebuke",
+      "path": "packs/pf2e/spells/spells/rank-2/pyrefowl-rebuke.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-2/pyrefowl-rebuke.json",
+      "descriptionChars": 602,
+      "descriptionHash": "3a68ec428659afd4ede2a45dd962bb08c9df06905143511e9b052126e92eb5b9",
+      "rawDescriptionHash": "fae71f736cf081102f95f0043dd2bf60ed2f6a9ef4c4ffcf262d81098e0fbd92",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Fiery arm-wing shimmer and one searing cue on the triggering foe accompany a cosmetic retreat directly away. Actual Fly destination and critical-failure dazzled/reaction suppression remain native."
+    },
+    {
+      "id": "nXoc5YbcynmhZcQs",
+      "name": "Radiant Globe",
+      "slug": "radiant-globe",
+      "path": "packs/pf2e/spells/spells/rank-3/radiant-globe.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/radiant-globe.json",
+      "descriptionChars": 492,
+      "descriptionHash": "4679a0e7a240bd9ea5d861de55ed0e0e246592a0776ac8353cf8be6d07c18192",
+      "rawDescriptionHash": "51df8bb6843c36267f1600beb1837cf5b32a04b18fdc36d14bf48b2a01b2c94f",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A brilliant protective light dome forms around the footprint. Later crossing-projectile destruction is conditional, not a sacred-flame target hit at creation."
+    },
+    {
+      "id": "hYK4ByCVN1ALc5gR",
+      "name": "Rainbow's End",
+      "slug": "rainbows-end",
+      "path": "packs/pf2e/spells/spells/rank-1/rainbows-end.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-1/rainbows-end.json",
+      "descriptionChars": 689,
+      "descriptionHash": "3333d6bf21edfaa876f35a354370a8f85d6af69e849a87e0517a4935a7e25c04",
+      "rawDescriptionHash": "689cc3db9f58b97003d709708c1a6d70bf2943db0037a25349fe3367ec7920d0",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A rainbow light destination develops across the selected burst. Native spirit contact is illustrated by settling prismatic flecks; later ally teleport remains manual."
+    },
+    {
+      "id": "ecXhGEAX3PYd6FqK",
+      "name": "Recurring Nightmare",
+      "slug": "recurring-nightmare",
+      "path": "packs/pf2e/spells/focus/necromancer/recurring-nightmare.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/necromancer/recurring-nightmare.json",
+      "descriptionChars": 1079,
+      "descriptionHash": "8fc2267a9f7bdf869ca96965dcb1453b69208fbc7fb07d70776ddbd9a01147d6",
+      "rawDescriptionHash": "b51d2bedc85b767849b8c6d284a7299bbff1fade76277896ec2e718944bb4940",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A spectral skull/veil symbolizes creation of a ghostly thrall, replacing misleading sleep art. The remote native thrall location, share-space fear save, later Strike and resummon remain native/manual; this is a local symbolic preparation cue."
+    },
+    {
+      "id": "pZBovpzdBNLQQQmE",
+      "name": "Repel Metal",
+      "slug": "repel-metal",
+      "path": "packs/pf2e/spells/focus/repel-metal.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/repel-metal.json",
+      "descriptionChars": 382,
+      "descriptionHash": "3a3343d882e8bbb2c19a13724a6a63b5ad1e7670c40cbce4b5857eefaae4bae7",
+      "rawDescriptionHash": "76a23d585834c0bfe6390ccd934891bf442edfbbc12826e02a3f2e225fbdcaae",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A field protects the threatened ally. Attack reflection requires the triggering Strike to miss; no reflected attack or target recoil is assumed."
+    },
+    {
+      "id": "37ESlJzUvVbOudOT",
+      "name": "Reverse Gravity",
+      "slug": "reverse-gravity",
+      "path": "packs/pf2e/spells/spells/rank-7/reverse-gravity.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-7/reverse-gravity.json",
+      "descriptionChars": 893,
+      "descriptionHash": "20a15150631944d0b1ccaa2c323dad59b48406a08e45d3ddb67781d812d1b6d0",
+      "rawDescriptionHash": "e08b68067b3436d0cbc8c9552071d47cdf370ee957bfb6e39f5f47242f609b08",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A field forms while particles move upward, illustrating reversed pull. Native cylinder footprint is preserved; actual falls, ceilings and later falling back remain rules."
+    },
+    {
+      "id": "ew4ToaTU3o8ahKio",
+      "name": "River Carving Mountains",
+      "slug": "river-carving-mountains",
+      "path": "packs/pf2e/spells/focus/river-carving-mountains.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/river-carving-mountains.json",
+      "descriptionChars": 628,
+      "descriptionHash": "b088d3de4bb1c1116b9c565a1504c51d3f6c0cecbbf01c0d9b0cdeaa0f0429ef",
+      "rawDescriptionHash": "4ba0d3f18a7a41a0ce0d853776823219ed58523db7903c5ccbf111917579ef26",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Roaring water and mist surround one cosmetic casting-time move. Manual actual path determines later difficult terrain; no persistent trail is fabricated."
+    },
+    {
+      "id": "yy2K51kK3a60rRIe",
+      "name": "Rust Cloud",
+      "slug": "rust-cloud",
+      "path": "packs/pf2e/spells/spells/rank-4/rust-cloud.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/rust-cloud.json",
+      "descriptionChars": 754,
+      "descriptionHash": "2c0db79c39566d01c435ac2ed90c95493a713694e56397edadbd48faca69e9c3",
+      "rawDescriptionHash": "39294c39300abb6a000318aa8885f00db2e8c211b10fa5ba354b29a2f06d546f",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Red-brown flecks agitate in an obscuring cloud. Symbolic particle footage replaces blue daggers; turn-start damage and metal-driven growth remain later mechanical events."
+    },
+    {
+      "id": "GabRQPc9qD86jDGI",
+      "name": "Sacred Nimbus",
+      "slug": "sacred-nimbus",
+      "path": "packs/pf2e/spells/spells/rank-4/sacred-nimbus.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/sacred-nimbus.json",
+      "descriptionChars": 546,
+      "descriptionHash": "8edc7752b2d729a126c6d8533898a652a4e3424636b91c7e6ae5bd8473ec24c3",
+      "rawDescriptionHash": "41106fd9dec44dbe3c9e9dfd576b0943973ceb86673f1d15e88ec065a2bb62a2",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray",
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A fluffy white cloud forms over the selected square, followed by a faint descending water glimmer. Spirit damage waits until end of turn; no sacred flame impact at creation. Vertical rain is symbolic."
+    },
+    {
+      "id": "aq76wpgsVEENDyau",
+      "name": "Shadow Spy",
+      "slug": "shadow-spy",
+      "path": "packs/pf2e/spells/spells/rank-3/shadow-spy.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/shadow-spy.json",
+      "descriptionChars": 574,
+      "descriptionHash": "553454fbfe3e69a4080538b8459d421b4349fc15775f6e19a02ea72576c18959",
+      "rawDescriptionHash": "054cccefb4241f8704e35053978b4d24c63887456eb09fd0fad87a3929da2330",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Dark bird-like shadow art forms with a small watching-eye accent. JB2A bats stand in for a crow/sparrow; remote homunculus location, outbound scouting route, delayed return and memory revelation remain manual. No magical attack."
+    },
+    {
+      "id": "Y3qZrvZrqPuGJ2hk",
+      "name": "Shock and Awe",
+      "slug": "shock-and-awe",
+      "path": "packs/pf2e/spells/spells/rank-5/shock-and-awe.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-5/shock-and-awe.json",
+      "descriptionChars": 403,
+      "descriptionHash": "4d4ae2eca1fb0c5472bf6dcb952d9b5251ebae3aa529549f20a91319b81199cc",
+      "rawDescriptionHash": "61163a955b58a59f71ca9ad5258cf5c60f3c7d74e119907dc185af9df1875189",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Translucent explosions and flying-blade shapes suggest illusory battlefield ballistics throughout the area. No arms-of-Hadar tentacles or actual creature injury/conditions are assumed."
+    },
+    {
+      "id": "nVfP43Xbs6I1PO8v",
+      "name": "Shooting Star",
+      "slug": "shooting-star",
+      "path": "packs/pf2e/spells/focus/magus/shooting-star.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/magus/shooting-star.json",
+      "descriptionChars": 556,
+      "descriptionHash": "ee8358c84ad7fcfd8c544f7b80eb61080b20c1f124f81aee35809363035626c6",
+      "rawDescriptionHash": "90a47d2d1ee1f680e6316061979b9cf93c240ec9a38beb23450074a21705d459",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A single ranged Strike travels to the chosen foe with a blazing meteor-like trail before contact. Native weapon identity and the hit-dependent lingering trail require customization; no self-only rune cue."
+    },
+    {
+      "id": "2C0ftvzTwYgzb3Qt",
+      "name": "Sky Laughs at Waves",
+      "slug": "sky-laughs-at-waves",
+      "path": "packs/pf2e/spells/focus/sky-laughs-at-waves.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/sky-laughs-at-waves.json",
+      "descriptionChars": 434,
+      "descriptionHash": "f34022657e5266c6d6fb03ab7360159e2c54902c80e91ce5f9393a147ceb9e0b",
+      "rawDescriptionHash": "8be17b4a975eb86ea736184f82a0ca2e9415edaed18d2fec3d41fd1c9ab595cc",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A cosmetic airborne approach reaches the chosen foe before one sword contact, then restores token pose. Actual flight route, destination and falling remain player/rules controlled."
+    },
+    {
+      "id": "ZX8c6ClJtVG6oO4X",
+      "name": "Sky Sight",
+      "slug": "sky-sight",
+      "path": "packs/pf2e/spells/spells/rank-1/sky-sight.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-1/sky-sight.json",
+      "descriptionChars": 293,
+      "descriptionHash": "90500ce4fa49a9e09f31a12c70eb661efa46d07c9a249e85bb37829687c02b75",
+      "rawDescriptionHash": "213e1736091ff76123ff7d767698f22b0eaaa5b0d3e2a8a86dbc7517753ef4d8",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "An upward vision accent and white stars develop quietly above caster. No attack, physical flight or automatic sight/lighting changes."
+    },
+    {
+      "id": "1Yoipc5jNcMehtEW",
+      "name": "Slashing Gust",
+      "slug": "slashing-gust",
+      "path": "packs/pf2e/spells/spells/cantrip/slashing-gust.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/cantrip/slashing-gust.json",
+      "descriptionChars": 758,
+      "descriptionHash": "b831fee91a35100587f73dae37b78acce3534b2f451a64a54f984fea4d18ac52",
+      "rawDescriptionHash": "2a519f5b4ae3872a9a6e53ebd1f606288935fdd773625239651f2b0d73eb5a68",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "explicit-count"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Air ripples reach each selected foe once, then a local wind slice follows. One/two free hands control actual target count; bleed occurs only on critical success and is not automatic residue."
+    },
+    {
+      "id": "IRCUS6oX4SaiSMqF",
+      "name": "Soul Cutter",
+      "slug": "soul-cutter",
+      "path": "packs/pf2e/spells/spells/rank-3/soul-cutter.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/soul-cutter.json",
+      "descriptionChars": 868,
+      "descriptionHash": "a595e81214396894aa37e0b4e7dcf4958341dbba56c7a3a67c6eaf3417c6c2b5",
+      "rawDescriptionHash": "be2343473abe09ab1899101b43146e979a1e00303ad4ff934014c209d1d19c3a",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Default adjacent spiritual sword cut uses local melee footage. Three-action ranged blade form needs configuration; no distant bolt or enfeebled save/result is assumed in the base cast."
+    },
+    {
+      "id": "zoY0fQYTF1NzezTg",
+      "name": "Steal the Sky",
+      "slug": "steal-the-sky",
+      "path": "packs/pf2e/spells/focus/steal-the-sky.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/steal-the-sky.json",
+      "descriptionChars": 575,
+      "descriptionHash": "ba9bb3259833d4f754fade5c5aacd601d18f090194fdc9f78693e5a7505db5b0",
+      "rawDescriptionHash": "59b5cd0e763cc3c9e2913467dc4e51bf9f477779fb0f0409d6eb4c135f89edb7",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Air support narrows and streams downward at the struck flying creature. The preceding successful unarmed Strike is not repeated; actual descent, landing damage and Fly denial remain save-dependent native events."
+    },
+    {
+      "id": "XYhU3Wi94n1RKxTa",
+      "name": "Storm Lord",
+      "slug": "storm-lord",
+      "path": "packs/pf2e/spells/focus/storm-lord.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/storm-lord.json",
+      "descriptionChars": 991,
+      "descriptionHash": "cee7b3baa4a204f8bd2b3bd000ed6ccc0e1b445e8943fff7d3afa64dd0016d9a",
+      "rawDescriptionHash": "7bf6ee21090e410b66ca1de95b05882ccf3509c7fc6f651808cfc5e9fc37b88e",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Ominous clouds and wind form in the native emanation. Calm/fog/rain/wind choice and the separate single-action lightning bolt remain manual; no automatic targeted strike."
+    },
+    {
+      "id": "r4HLQcYwB62bTayl",
+      "name": "Storm of Vengeance",
+      "slug": "storm-of-vengeance",
+      "path": "packs/pf2e/spells/spells/rank-9/storm-of-vengeance.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-9/storm-of-vengeance.json",
+      "descriptionChars": 1320,
+      "descriptionHash": "f33b1edfd0e3d29737b89db646c078cef59ba97663523fed4b263dd1bb666455",
+      "rawDescriptionHash": "8d41884f422b0a305e9877ca404eadc5ce4fc8636db2ba30c84b669da050e921",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray",
+        "explicit-count"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Large storm cloud and gales form over the native burst. The chosen cast/Sustain storm effect is not inferred; no automatic ten bolts, acid damage or thunderclap."
+    },
+    {
+      "id": "7zJxrjhK1LasSjSw",
+      "name": "Under Sunless Skies",
+      "slug": "under-sunless-skies",
+      "path": "packs/pf2e/spells/impossible-spells/under-sunless-skies.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/impossible-spells/under-sunless-skies.json",
+      "descriptionChars": 1116,
+      "descriptionHash": "1ba14195fac7859d1dbb0d95f97ed2ad96d0f28182144e11bae22f322204e5f6",
+      "rawDescriptionHash": "01cef24bf911651c582b6ef53635e4c4270d114474ed481914a6751609572740",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Mile-scale implicit area is absent from native area metadata; actual sun/light/vision and later Fuel command are mechanical/manual. Current local cue remains symbolic."
+    },
+    {
+      "id": "Ww4cPZ3QHTSpaM1m",
+      "name": "Unfolding Wind Blitz",
+      "slug": "unfolding-wind-blitz",
+      "path": "packs/pf2e/spells/focus/unfolding-wind-blitz.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/unfolding-wind-blitz.json",
+      "descriptionChars": 389,
+      "descriptionHash": "2e3c708bb2f8c6a4bc621a05fac75d93777942a7ea7606dfb8f70325eced358f",
+      "rawDescriptionHash": "31d299864ba44fae5703a3ee2f8031028bc40cf0f43c416bb6dde172af00caf7",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A swift cosmetic airborne passage and trailing silhouette illustrate the casting-time Fly. Optional up-to-three unarmed Strikes and the chosen route require customization; no three automatic contacts."
+    },
+    {
+      "id": "HEuvZAjD1q0J8Y5i",
+      "name": "Unholy Army",
+      "slug": "unholy-army",
+      "path": "packs/pf2e/spells/spells/rank-8/unholy-army.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-8/unholy-army.json",
+      "descriptionChars": 6337,
+      "descriptionHash": "87c4d2c66e0b396aa0798c82df7cbfa5d886dc3b0d0e5fb7d0d16e72ad461d42",
+      "rawDescriptionHash": "bf04070224e0c32e5dcfa9b56c5bf89e003d6ff6bd07946fee4d093f10c82044",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray",
+        "generic-literal-color"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Unholy squadron choice, remote army location and separate Arrive/Depart phases require customization; current generic caster cue does not illustrate every choice."
+    },
+    {
+      "id": "TT9owkeMBXJxcERB",
+      "name": "Unseasonable Squall",
+      "slug": "unseasonable-squall",
+      "path": "packs/pf2e/spells/spells/rank-3/unseasonable-squall.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/unseasonable-squall.json",
+      "descriptionChars": 697,
+      "descriptionHash": "c2e8178a9f3eb3a5494735b9db8abbb815e09b4983c146aade76667b471c1645",
+      "rawDescriptionHash": "b4cd35089baa513a636c54290b5a238e742c96afbcf332750182a772a1c93988",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "One outward gust ripples across the placed burst and fades. Save-dependent prone/push and object motion are not imposed."
+    },
+    {
+      "id": "8eOMAIvT7S1CJSit",
+      "name": "Untwisting Iron Augmentation",
+      "slug": "untwisting-iron-augmentation",
+      "path": "packs/pf2e/spells/focus/untwisting-iron-augmentation.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/untwisting-iron-augmentation.json",
+      "descriptionChars": 218,
+      "descriptionHash": "592d58ed9da8df8b5c9ee367c1a3a86ec95c33c2fe5560a4f11a6eef5de7eed8",
+      "rawDescriptionHash": "cb025b4d45d2a4d02a2d7f262489fb3786a9075f68507066668981413f6ea702",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Two silvery hand glints represent cold-iron/silver unarmed capability. No cracks, environmental quake or automatic Strike."
+    },
+    {
+      "id": "CB5TlGv5ZghtMifi",
+      "name": "Wall of Metal",
+      "slug": "wall-of-metal",
+      "path": "packs/pf2e/spells/spells/rank-6/wall-of-metal.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-6/wall-of-metal.json",
+      "descriptionChars": 859,
+      "descriptionHash": "488764f1100390c2ebadf0d23635ed1cd583a8a181ab44b8c99deebd34b7e50c",
+      "rawDescriptionHash": "720bdbb784d20044c4170ebb871e5de04681056c47146ffa133a16010a37b7b2",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-color"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A silver material veil prepares a barrier section. No dagger melee attack; actual 60-foot straight wall, material and placement require manual configuration because native area metadata is absent."
+    },
+    {
+      "id": "LNOwaJAkCfsgTKgV",
+      "name": "Wall of Water",
+      "slug": "wall-of-water",
+      "path": "packs/pf2e/spells/spells/rank-3/wall-of-water.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/wall-of-water.json",
+      "descriptionChars": 1028,
+      "descriptionHash": "3e9b70b92a82a4e7243d438d74712cb0b8a4e6df35a43fe0512ee2dc9ea7d9ca",
+      "rawDescriptionHash": "eae11cd23c295e91b0631189a82cfb5dde418cf79b523a482a41b5ab6ab91d83",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Full straight 60-foot wall is not natively placed from metadata. Current local water material cue needs manual wall layout, dimension and position."
+    },
+    {
+      "id": "it4ZsAi6XgvGcodc",
+      "name": "Wall of Wind",
+      "slug": "wall-of-wind",
+      "path": "packs/pf2e/spells/spells/rank-3/wall-of-wind.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/wall-of-wind.json",
+      "descriptionChars": 1341,
+      "descriptionHash": "8418fd16d8ab66a6092ee19d0805fc10ca087956c74c7596a869fce7f08b81e6",
+      "rawDescriptionHash": "e0334eef2b290eed8b753cbe33c4bf8f765be998509947803ff24d1281cbbe4b",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": false,
+      "disposition": "remaining-manual-or-art-limitation",
+      "rationale": "Flexible 60-foot barrier path is not natively placed from metadata. Current local wind cue needs manual wall layout and position."
+    },
+    {
+      "id": "IV76q50T2pZemxAl",
+      "name": "Weapon Tide",
+      "slug": "weapon-tide",
+      "path": "packs/pf2e/spells/spells/rank-3/weapon-tide.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/weapon-tide.json",
+      "descriptionChars": 1342,
+      "descriptionHash": "de256b5d5bbc3b1f84fa20fd01b94d62d914168baf22fdf98772615af18fdedc",
+      "rawDescriptionHash": "4732babd41e081a486f4edb54d2f11652d8f01d27df5093b9bf5a879f1b4f3de",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Weapon silhouettes surge along the ground through the native cone. A longsword is the default slashing stand-in; bludgeoning/piercing and longer two-round forms need configuration. No later hazardous shooting is automatic."
+    },
+    {
+      "id": "yLJROsQtyrPIKcDx",
+      "name": "Wrathful Storm",
+      "slug": "wrathful-storm",
+      "path": "packs/pf2e/spells/spells/rank-9/wrathful-storm.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-9/wrathful-storm.json",
+      "descriptionChars": 1136,
+      "descriptionHash": "ee966b370a907977542aae50b3f8e4b890b16f5800266006ff4a0fc65ac27bfb",
+      "rawDescriptionHash": "a712b9982b58334713fe9cb0154428c2bcebb8f063c8801bb2f6cb2deb424703",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Clouds and wind form over the native burst. Blizzard/hail/lightning/tornado choices remain manual; no automatic icy spike explosion or thrown targets."
+    },
+    {
+      "id": "FL1OxeOUDzsJYfY4",
+      "name": "Zephyr Slip",
+      "slug": "zephyr-slip",
+      "path": "packs/pf2e/spells/spells/rank-4/zephyr-slip.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-4/zephyr-slip.json",
+      "descriptionChars": 410,
+      "descriptionHash": "5948c930dc0e3dc6b99d1657167523359ee525879997c30026eb9dd42ed40905",
+      "rawDescriptionHash": "3a8083a724a844e0015ad880b3f4a96663732d76a120af4e6f0c55a5ad5ec788",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A short wind veil precedes one cosmetic retreat away from the chosen triggering creature. Actual 15-foot route and heightened allies remain manual; token restores pose."
+    },
+    {
+      "id": "P1iqzEIidRagUs7W",
+      "name": "Zero Gravity",
+      "slug": "zero-gravity",
+      "path": "packs/pf2e/spells/spells/rank-6/zero-gravity.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-6/zero-gravity.json",
+      "descriptionChars": 962,
+      "descriptionHash": "e4d58a0a443de80dd4426e709ce6ab714c089486450e03d8c47e13f8d60fc2c6",
+      "rawDescriptionHash": "2ecaa19364e1808bf8b5e9d9fdc8097f0848e0b895d33ff64db47509ff3f9e81",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "generic-literal-flight-or-ray"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Soft particles float suspended inside the native cylinder footprint. No ground cracks, invented explosion or automatic Push Off."
+    },
+    {
+      "id": "IN46qySRdMdpcd0y",
+      "name": "Boots on the Ground",
+      "slug": "boots-on-the-ground",
+      "path": "packs/pf2e/spells/spells/rank-6/boots-on-the-ground.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-6/boots-on-the-ground.json",
+      "descriptionChars": 1050,
+      "descriptionHash": "9138a54c0bbaf999f914aa4ac60110a0015421dec535ad174f989455a017abc4",
+      "rawDescriptionHash": "f262b73d3dca433ed65c2132bdcb801fc0ba95c9756b8d3d20166ac67f065269",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "sound-crosscheck-or-readable-reference"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "One illusory copy separates from each selected troop token; choose up to three troop stand-ins for the base cast. No music or intelligible speech is created. Gargantuan illustration needs actual troop-sized targets; heightened five duplicates require customization."
+    },
+    {
+      "id": "qlxM7Ik3uUeUIOcv",
+      "name": "Canticle of Everlasting Grief",
+      "slug": "canticle-of-everlasting-grief",
+      "path": "packs/pf2e/spells/spells/rank-8/canticle-of-everlasting-grief.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-8/canticle-of-everlasting-grief.json",
+      "descriptionChars": 758,
+      "descriptionHash": "22866c15b15bb3a38d59755168f2de3a388368d98b33906dee828575b340f9ee",
+      "rawDescriptionHash": "a88813d16aa834b4e567a7a6e03c6d9dbd3b652ffb2a87c97274555a04c44bc7",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "sound-crosscheck-or-readable-reference"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Small private melody imagery wraps the selected recipient, then a grief thread settles around them. No caster-wide performance, public sound, automatic fear or curse transmission."
+    },
+    {
+      "id": "IihxWhRfpsBgQ5jS",
+      "name": "Enthrall",
+      "slug": "enthrall",
+      "path": "packs/pf2e/spells/spells/rank-3/enthrall.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/spells/rank-3/enthrall.json",
+      "descriptionChars": 1258,
+      "descriptionHash": "c265fca62a75456039abbc691018874dc9bb1ab1ce096e64230b32e32b551d5f",
+      "rawDescriptionHash": "fcba9db0889ad8dc76dff6d10836f48fc2069eaa42550086aec079d16a9017bd",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "sound-crosscheck-or-readable-reference"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A quiet attention thread develops around selected listeners. Native speech or song is player-chosen, so the neutral default does not prescribe musical notation or damage."
+    },
+    {
+      "id": "kF0rs9mCPvJGfAZE",
+      "name": "Fortissimo Composition",
+      "slug": "fortissimo-composition",
+      "path": "packs/pf2e/spells/focus/fortissimo-composition.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/fortissimo-composition.json",
+      "descriptionChars": 718,
+      "descriptionHash": "5d0b73d8932c45b2aced56033c9522b85833dcb28fb6258223b388a3aa35bba8",
+      "rawDescriptionHash": "6637830f885d66c5ee9a83bbc82c07ec7d5526e07b8bcb75afe4605fdda6273b",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "sound-crosscheck-or-readable-reference"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "A restrained bardic inspiration spark prepares the caster next composition. It does not perform the upcoming composition, choose its targets or apply Performance results now."
+    },
+    {
+      "id": "4LSf04FFvDgMyDk6",
+      "name": "Rune of Observation",
+      "slug": "rune-of-observation",
+      "path": "packs/pf2e/spells/focus/rune-of-observation.json",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells/focus/rune-of-observation.json",
+      "descriptionChars": 340,
+      "descriptionHash": "31b2f97a593fba4cc43f89879647af757b2ebcdd2273adbf70b056e1b7550a9e",
+      "rawDescriptionHash": "36950e531f908067494d9e0ede16bc5ee4e35178a55962aaddb70a84ff15175c",
+      "fullNativeDescriptionIndividuallyRead": true,
+      "scannerReasons": [
+        "sound-crosscheck-or-readable-reference"
+      ],
+      "changed": true,
+      "disposition": "directed-repair-or-readable-reference-semantic-correction",
+      "rationale": "Readable native reference now retains its eye/sensor meaning."
+    }
+  ]
+}

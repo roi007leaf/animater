@@ -1,0 +1,118 @@
+{
+  "source": {
+    "system": "pf2e",
+    "version": "8.5.1",
+    "ref": "pf2e-8.5.1",
+    "sha": "563fd52708673ddd4f66c76921efbf6a938fffed",
+    "source": "https://github.com/foundryvtt/pf2e/tree/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/spells",
+    "total": 1994,
+    "designs": {
+      "descriptionsAnalyzed": 1991,
+      "individuallyReviewed": 584,
+      "distinctCompositions": 1081,
+      "motionRecipes": 451,
+      "motionStages": 464,
+      "motifCount": 572,
+      "ready": 1096,
+      "unconfigured": 898
+    },
+    "sourceFiles": 1994,
+    "digest": "1c70d1cb64d30c6ca010b66f7cb20bec96b5bff84253813e4d81377b41005a16",
+    "kinds": {
+      "cantrip": 120,
+      "focus": 493,
+      "ritual": 167,
+      "spell": 1214
+    },
+    "editions": {
+      "legacy": 410,
+      "remaster": 1584
+    },
+    "quality": {
+      "signature": 231,
+      "symbolic": 454,
+      "themed": 411,
+      "unconfigured": 898
+    },
+    "themes": {
+      "acid": 13,
+      "arcane": 464,
+      "blood": 11,
+      "cold": 35,
+      "curse": 55,
+      "disease": 14,
+      "dispel": 41,
+      "divination": 36,
+      "dream": 7,
+      "earth": 77,
+      "electricity": 26,
+      "fear": 37,
+      "fire": 81,
+      "flight": 8,
+      "force": 26,
+      "gravity": 11,
+      "healing": 65,
+      "illusion": 113,
+      "light": 38,
+      "luck": 29,
+      "metal": 25,
+      "mind": 188,
+      "plant": 59,
+      "poison": 30,
+      "shadow": 31,
+      "sonic": 21,
+      "spirit": 43,
+      "summon": 15,
+      "teleport": 51,
+      "time": 20,
+      "transform": 79,
+      "vitality": 11,
+      "void": 53,
+      "ward": 30,
+      "water": 53,
+      "weapon": 40,
+      "web": 4,
+      "wind": 54
+    },
+    "deliveries": {
+      "bolt": 67,
+      "burst": 228,
+      "chain": 2,
+      "cone": 51,
+      "emanation": 117,
+      "line": 27,
+      "melee": 24,
+      "mirror": 2,
+      "point": 38,
+      "portal": 41,
+      "ritual": 167,
+      "self": 379,
+      "target": 769,
+      "transform": 64,
+      "vanish": 2,
+      "volley": 2,
+      "wall": 14
+    },
+    "assets": {
+      "patreon": 6870,
+      "free": 1351
+    }
+  },
+  "editions": {
+    "patreon": {
+      "spells": 1096,
+      "unconfigured": 898,
+      "effects": 4194,
+      "uniqueMedia": 441,
+      "missingAssets": 0
+    },
+    "free": {
+      "spells": 1096,
+      "unconfigured": 898,
+      "effects": 4194,
+      "uniqueMedia": 265,
+      "missingAssets": 0
+    }
+  },
+  "missingFiles": []
+}

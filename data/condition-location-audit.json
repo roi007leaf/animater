@@ -1,0 +1,5115 @@
+{
+  "conditions": 43,
+  "damageTypes": 15,
+  "editions": [
+    "patreon",
+    "free"
+  ],
+  "measure": true,
+  "method": "Complete clip union of visible alpha at 12 fps; media center measured relative to selected artwork anchor, independently of authored offsets",
+  "records": [
+    {
+      "condition": "blinded",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.darkness.black",
+      "offset": {
+        "x": 0,
+        "y": -0.1
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.9,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/2nd_Level/Darkness/Darkness_01_Black_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 1,
+            "top": 1,
+            "right": 126,
+            "bottom": 127,
+            "centerShift": {
+              "x": 0,
+              "y": 0.00394
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.00394
+          }
+        }
+      ]
+    },
+    {
+      "condition": "blinded",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.darkness.black",
+      "offset": {
+        "x": 0,
+        "y": -0.1
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.9,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/2nd_Level/Darkness/Darkness_01_Black_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 1,
+            "top": 1,
+            "right": 126,
+            "bottom": 127,
+            "centerShift": {
+              "x": 0,
+              "y": 0.00394
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.00394
+          }
+        }
+      ]
+    },
+    {
+      "condition": "broken",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.shield_cracked.dark_red.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerShieldCracked_03_Dark_Red_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "broken",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.shield_cracked.purple.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerShieldCracked_03_Regular_Purple_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 23,
+            "right": 106,
+            "bottom": 105,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0.00595
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0.00595
+          }
+        }
+      ]
+    },
+    {
+      "condition": "clumsy",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.orange.003",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Orange_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 15,
+            "top": 16,
+            "right": 111,
+            "bottom": 112,
+            "centerShift": {
+              "x": -0.00515,
+              "y": 0.00515
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00515,
+            "y": 0.00515
+          }
+        }
+      ]
+    },
+    {
+      "condition": "clumsy",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.003",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 15,
+            "top": 17,
+            "right": 111,
+            "bottom": 111,
+            "centerShift": {
+              "x": -0.00515,
+              "y": 0.00515
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00515,
+            "y": 0.00515
+          }
+        }
+      ]
+    },
+    {
+      "condition": "concealed",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.fog_cloud.01.white",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 2,
+            "top": 2,
+            "right": 125,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0,
+              "y": 0.004
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.004
+          }
+        }
+      ]
+    },
+    {
+      "condition": "concealed",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.fog_cloud.01.white",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 2,
+            "top": 2,
+            "right": 125,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0,
+              "y": 0.004
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.004
+          }
+        }
+      ]
+    },
+    {
+      "condition": "confused",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.circle_of_stars.blue",
+      "offset": {
+        "x": 0,
+        "y": -0.15
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.05,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerCircleOfStars_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 8,
+            "top": 7,
+            "right": 120,
+            "bottom": 119,
+            "centerShift": {
+              "x": 0.00442,
+              "y": -0.00442
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00442,
+            "y": -0.00442
+          }
+        }
+      ]
+    },
+    {
+      "condition": "confused",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.circle_of_stars.blue",
+      "offset": {
+        "x": 0,
+        "y": -0.15
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.05,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerCircleOfStars_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 8,
+            "top": 7,
+            "right": 120,
+            "bottom": 119,
+            "centerShift": {
+              "x": 0.00442,
+              "y": -0.00442
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00442,
+            "y": -0.00442
+          }
+        }
+      ]
+    },
+    {
+      "condition": "controlled",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.runes02.blue.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.05,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerRunes02_03_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "controlled",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.runes02.dark_orange.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.05,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerRunes02_03_Dark_Orange_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 106,
+            "bottom": 105,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0.0119
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0.0119
+          }
+        }
+      ]
+    },
+    {
+      "condition": "cursebound",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.runes.blue.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.1,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerRunes_03_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 25,
+            "right": 105,
+            "bottom": 102,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "cursebound",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.runes.dark_orange.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.1,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerRunes_03_Dark_Orange_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 22,
+            "right": 106,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.0119,
+              "y": -0.0119
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": -0.0119
+          }
+        }
+      ]
+    },
+    {
+      "condition": "dazzled",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.light.loop.yellow",
+      "offset": {
+        "x": 0,
+        "y": -0.2
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.8,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerLight_01_Regular_Yellow_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 15,
+            "right": 116,
+            "bottom": 110,
+            "centerShift": {
+              "x": -0.02679,
+              "y": -0.00893
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.02679,
+            "y": -0.00893
+          }
+        }
+      ]
+    },
+    {
+      "condition": "dazzled",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.light.loop.blue",
+      "offset": {
+        "x": 0,
+        "y": -0.2
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.8,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerLight_01_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 15,
+            "right": 116,
+            "bottom": 110,
+            "centerShift": {
+              "x": -0.02679,
+              "y": -0.00893
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.02679,
+            "y": -0.00893
+          }
+        }
+      ]
+    },
+    {
+      "condition": "deafened",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.mute.blue.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.75,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerMute_03_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 18,
+            "top": 18,
+            "right": 109,
+            "bottom": 109,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "deafened",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.mute.dark_red.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.75,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerMute_03_Dark_Red_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 18,
+            "top": 18,
+            "right": 109,
+            "bottom": 109,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "doomed",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.skull.purple.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.8,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerSkull_03_Regular_Purple_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 23,
+            "right": 106,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "doomed",
+      "edition": "patreon",
+      "stage": 2,
+      "asset": "jb2a.token_border.circle.static.purple.007",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_07_Regular_Purple_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 14,
+            "top": 16,
+            "right": 112,
+            "bottom": 111,
+            "centerShift": {
+              "x": -0.00505,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00505,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "doomed",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.skull.purple.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.8,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerSkull_03_Regular_Purple_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 23,
+            "right": 106,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "doomed",
+      "edition": "free",
+      "stage": 2,
+      "asset": "jb2a.token_border.circle.static.blue.007",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_07_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 17,
+            "top": 17,
+            "right": 110,
+            "bottom": 109,
+            "centerShift": {
+              "x": 0,
+              "y": -0.00532
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": -0.00532
+          }
+        }
+      ]
+    },
+    {
+      "condition": "drained",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.dark_red.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.85,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Dark_Red_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 25,
+            "right": 104,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0,
+              "y": 0.0061
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.0061
+          }
+        }
+      ]
+    },
+    {
+      "condition": "drained",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.85,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "dying",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.dark_red.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.05,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Dark_Red_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 25,
+            "right": 104,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0,
+              "y": 0.0061
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.0061
+          }
+        }
+      ]
+    },
+    {
+      "condition": "dying",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.05,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "encumbered",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.orange.005",
+      "offset": {
+        "x": 0,
+        "y": 0.3
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_05_Regular_Orange_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 20,
+            "right": 107,
+            "bottom": 106,
+            "centerShift": {
+              "x": 0.01724,
+              "y": -0.00575
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01724,
+            "y": -0.00575
+          }
+        }
+      ]
+    },
+    {
+      "condition": "encumbered",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.005",
+      "offset": {
+        "x": 0,
+        "y": 0.3
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_05_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 22,
+            "top": 18,
+            "right": 108,
+            "bottom": 106,
+            "centerShift": {
+              "x": 0.01685,
+              "y": -0.01685
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01685,
+            "y": -0.01685
+          }
+        }
+      ]
+    },
+    {
+      "condition": "enfeebled",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.002",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 27,
+            "top": 27,
+            "right": 101,
+            "bottom": 101,
+            "centerShift": {
+              "x": 0.00667,
+              "y": 0.00667
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00667,
+            "y": 0.00667
+          }
+        }
+      ]
+    },
+    {
+      "condition": "enfeebled",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.002",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 27,
+            "top": 27,
+            "right": 101,
+            "bottom": 101,
+            "centerShift": {
+              "x": 0.00667,
+              "y": 0.00667
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00667,
+            "y": 0.00667
+          }
+        }
+      ]
+    },
+    {
+      "condition": "fascinated",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.light_orb.loop.blue",
+      "offset": {
+        "x": 0,
+        "y": -0.2
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.65,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerLightOrbLoop_01_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 25,
+            "top": 17,
+            "right": 112,
+            "bottom": 114,
+            "centerShift": {
+              "x": 0.05102,
+              "y": 0.02041
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.05102,
+            "y": 0.02041
+          }
+        }
+      ]
+    },
+    {
+      "condition": "fascinated",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.light_orb.loop.blue",
+      "offset": {
+        "x": 0,
+        "y": -0.2
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.65,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerLightOrbLoop_01_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 25,
+            "top": 17,
+            "right": 112,
+            "bottom": 114,
+            "centerShift": {
+              "x": 0.05102,
+              "y": 0.02041
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.05102,
+            "y": 0.02041
+          }
+        }
+      ]
+    },
+    {
+      "condition": "fatigued",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.004",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_04_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 17,
+            "top": 16,
+            "right": 112,
+            "bottom": 111,
+            "centerShift": {
+              "x": 0.01042,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01042,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "fatigued",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.004",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_04_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 17,
+            "top": 16,
+            "right": 112,
+            "bottom": 111,
+            "centerShift": {
+              "x": 0.01042,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01042,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "fleeing",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.particles.outward.white.01.01",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_01_Regular_White_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 9,
+            "top": 9,
+            "right": 112,
+            "bottom": 117,
+            "centerShift": {
+              "x": -0.02752,
+              "y": -0.00459
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.02752,
+            "y": -0.00459
+          }
+        }
+      ]
+    },
+    {
+      "condition": "fleeing",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.particles.outward.greenyellow.01.01",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Particles/ParticlesOutward01_01_Regular_GreenYellow_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 9,
+            "top": 9,
+            "right": 112,
+            "bottom": 117,
+            "centerShift": {
+              "x": -0.02752,
+              "y": -0.00459
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.02752,
+            "y": -0.00459
+          }
+        }
+      ]
+    },
+    {
+      "condition": "friendly",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.65,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "friendly",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.65,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "frightened",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.fear.dark_purple.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerFear_03_Dark_Purple_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "frightened",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.fear.dark_purple.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerFear_03_Dark_Purple_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "grabbed",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.chain.standard.loop.01.grey",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.6,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerChainStandard01_01_Regular_Grey_Loop_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 11,
+            "top": 9,
+            "right": 116,
+            "bottom": 118,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "grabbed",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.chain.standard.loop.01.red",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.6,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerChainStandard01_01_Regular_Red_Loop_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 11,
+            "top": 9,
+            "right": 116,
+            "bottom": 117,
+            "centerShift": {
+              "x": 0,
+              "y": -0.00459
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": -0.00459
+          }
+        }
+      ]
+    },
+    {
+      "condition": "helpful",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.65,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "helpful",
+      "edition": "patreon",
+      "stage": 2,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.55,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "helpful",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.65,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "helpful",
+      "edition": "free",
+      "stage": 2,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.55,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "hidden",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.fog_cloud.01.white",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.1,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 2,
+            "top": 2,
+            "right": 125,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0,
+              "y": 0.004
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.004
+          }
+        }
+      ]
+    },
+    {
+      "condition": "hidden",
+      "edition": "patreon",
+      "stage": 2,
+      "asset": "jb2a.token_border.circle.static.blue.006",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_06_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 12,
+            "top": 12,
+            "right": 114,
+            "bottom": 113,
+            "centerShift": {
+              "x": -0.00485,
+              "y": -0.00971
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00485,
+            "y": -0.00971
+          }
+        }
+      ]
+    },
+    {
+      "condition": "hidden",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.fog_cloud.01.white",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.1,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 2,
+            "top": 2,
+            "right": 125,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0,
+              "y": 0.004
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.004
+          }
+        }
+      ]
+    },
+    {
+      "condition": "hidden",
+      "edition": "free",
+      "stage": 2,
+      "asset": "jb2a.token_border.circle.static.blue.006",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_06_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 12,
+            "top": 12,
+            "right": 114,
+            "bottom": 113,
+            "centerShift": {
+              "x": -0.00485,
+              "y": -0.00971
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00485,
+            "y": -0.00971
+          }
+        }
+      ]
+    },
+    {
+      "condition": "hostile",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.dark_red.007",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_07_Dark_Red_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 18,
+            "top": 19,
+            "right": 109,
+            "bottom": 108,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "hostile",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.007",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_07_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 17,
+            "top": 17,
+            "right": 110,
+            "bottom": 109,
+            "centerShift": {
+              "x": 0,
+              "y": -0.00532
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": -0.00532
+          }
+        }
+      ]
+    },
+    {
+      "condition": "immobilized",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.001",
+      "offset": {
+        "x": 0,
+        "y": 0.25
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_01_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 26,
+            "top": 26,
+            "right": 103,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.01282,
+              "y": 0.01282
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01282,
+            "y": 0.01282
+          }
+        }
+      ]
+    },
+    {
+      "condition": "immobilized",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.001",
+      "offset": {
+        "x": 0,
+        "y": 0.25
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_01_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 26,
+            "top": 26,
+            "right": 103,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.01282,
+              "y": 0.01282
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01282,
+            "y": 0.01282
+          }
+        }
+      ]
+    },
+    {
+      "condition": "indifferent",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.001",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_01_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 26,
+            "top": 26,
+            "right": 103,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.01282,
+              "y": 0.01282
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01282,
+            "y": 0.01282
+          }
+        }
+      ]
+    },
+    {
+      "condition": "indifferent",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.001",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_01_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 26,
+            "top": 26,
+            "right": 103,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.01282,
+              "y": 0.01282
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01282,
+            "y": 0.01282
+          }
+        }
+      ]
+    },
+    {
+      "condition": "invisible",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.condition.boon.02.001.refraction",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Conditions/Boon02/ConditionBoon02_001_Refraction_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 24,
+            "top": 23,
+            "right": 105,
+            "bottom": 106,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0.0119
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0.0119
+          }
+        }
+      ]
+    },
+    {
+      "condition": "invisible",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.condition.boon.02.001.refraction",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Conditions/Boon02/ConditionBoon02_001_Refraction_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 24,
+            "top": 23,
+            "right": 105,
+            "bottom": 106,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0.0119
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0.0119
+          }
+        }
+      ]
+    },
+    {
+      "condition": "observed",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.002",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.3,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 27,
+            "top": 27,
+            "right": 101,
+            "bottom": 101,
+            "centerShift": {
+              "x": 0.00667,
+              "y": 0.00667
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00667,
+            "y": 0.00667
+          }
+        }
+      ]
+    },
+    {
+      "condition": "observed",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.002",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.3,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 27,
+            "top": 27,
+            "right": 101,
+            "bottom": 101,
+            "centerShift": {
+              "x": 0.00667,
+              "y": 0.00667
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00667,
+            "y": 0.00667
+          }
+        }
+      ]
+    },
+    {
+      "condition": "off-guard",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.shield_cracked.dark_red.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.75,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerShieldCracked_03_Dark_Red_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "off-guard",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.shield_cracked.purple.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.75,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerShieldCracked_03_Regular_Purple_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 23,
+            "right": 106,
+            "bottom": 105,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0.00595
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0.00595
+          }
+        }
+      ]
+    },
+    {
+      "condition": "paralyzed",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.006",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.3,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_06_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 12,
+            "top": 12,
+            "right": 114,
+            "bottom": 113,
+            "centerShift": {
+              "x": -0.00485,
+              "y": -0.00971
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00485,
+            "y": -0.00971
+          }
+        }
+      ]
+    },
+    {
+      "condition": "paralyzed",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.006",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.3,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_06_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 12,
+            "top": 12,
+            "right": 114,
+            "bottom": 113,
+            "centerShift": {
+              "x": -0.00485,
+              "y": -0.00971
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00485,
+            "y": -0.00971
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.dark_red.004",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_04_Dark_Red_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 14,
+            "top": 14,
+            "right": 114,
+            "bottom": 114,
+            "centerShift": {
+              "x": 0.00495,
+              "y": 0.00495
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00495,
+            "y": 0.00495
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.004",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_04_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 17,
+            "top": 16,
+            "right": 112,
+            "bottom": 111,
+            "centerShift": {
+              "x": 0.01042,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01042,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "acid",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.bubble.001.001.loop.green",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Liquid/Bubble/BubbleLoop001_001_Green_2x2_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 10,
+            "top": 8,
+            "right": 123,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0.02521,
+              "y": 0.02941
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.02521,
+            "y": 0.02941
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "acid",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.bubble.001.001.loop.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Liquid/Bubble/BubbleLoop001_001_Blue_2x2_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 8,
+            "top": 8,
+            "right": 123,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0.01681,
+              "y": 0.02941
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01681,
+            "y": 0.02941
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "bleed",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.drop.dark_green.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.85,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerDrop_03_Dark_Green_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 24,
+            "top": 22,
+            "right": 105,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.0122,
+              "y": -0.0122
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0122,
+            "y": -0.0122
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "bleed",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.drop.red.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.85,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerDrop_03_Regular_Red_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 24,
+            "top": 24,
+            "right": 105,
+            "bottom": 102,
+            "centerShift": {
+              "x": 0.0122,
+              "y": -0.0061
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0122,
+            "y": -0.0061
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "bludgeoning",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.shield_cracked.dark_red.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.95,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerShieldCracked_03_Dark_Red_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "bludgeoning",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.shield_cracked.purple.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.95,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerShieldCracked_03_Regular_Purple_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 23,
+            "right": 106,
+            "bottom": 105,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0.00595
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0.00595
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "cold",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.aura_themed.01.orbit.loop.cold.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedOrbitLoopCold01_01_Regular_Blue_700x700.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 22,
+            "top": 22,
+            "right": 105,
+            "bottom": 105,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "cold",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.aura_themed.01.orbit.loop.cold.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Template/Circle/Aura/AuraThemedOrbitLoopCold01_01_Regular_Blue_700x700.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 22,
+            "top": 22,
+            "right": 105,
+            "bottom": 105,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "electricity",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.energy_field.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.5,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyField_01_Regular_Blue_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 2,
+            "right": 123,
+            "bottom": 123,
+            "centerShift": {
+              "x": 0.0041,
+              "y": -0.0082
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0041,
+            "y": -0.0082
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "electricity",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.energy_field.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.5,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyField_01_Regular_Blue_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 2,
+            "right": 123,
+            "bottom": 123,
+            "centerShift": {
+              "x": 0.0041,
+              "y": -0.0082
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0041,
+            "y": -0.0082
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "fire",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.flames.04.loop.orange",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.5,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Fire/Flame/Flames04_01_Regular_Orange_Loop_400x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 26,
+            "top": 18,
+            "right": 93,
+            "bottom": 170,
+            "centerShift": {
+              "x": -0.02614,
+              "y": -0.0098
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.02614,
+            "y": -0.0098
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "fire",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.flames.04.loop.orange",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.5,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Fire/Flame/Flames04_01_Regular_Orange_Loop_400x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 26,
+            "top": 18,
+            "right": 93,
+            "bottom": 170,
+            "centerShift": {
+              "x": -0.02614,
+              "y": -0.0098
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.02614,
+            "y": -0.0098
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "force",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.energy_field.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.3,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyField_01_Regular_Blue_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 2,
+            "right": 123,
+            "bottom": 123,
+            "centerShift": {
+              "x": 0.0041,
+              "y": -0.0082
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0041,
+            "y": -0.0082
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "force",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.energy_field.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.3,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyField_01_Regular_Blue_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 2,
+            "right": 123,
+            "bottom": 123,
+            "centerShift": {
+              "x": 0.0041,
+              "y": -0.0082
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0041,
+            "y": -0.0082
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "mental",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.runes03.blue.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.95,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerRunes03_03_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "mental",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.runes03.dark_orange.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.95,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerRunes03_03_Dark_Orange_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 106,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "piercing",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.simple.001.loop.001.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.9,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Blue_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 32,
+            "top": 32,
+            "right": 95,
+            "bottom": 95,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "piercing",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.simple.001.loop.001.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.9,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Blue_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 32,
+            "top": 32,
+            "right": 95,
+            "bottom": 95,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "poison",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.poison.dark_green.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerPoison_03_Dark_Green_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 23,
+            "right": 105,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.00602,
+              "y": -0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": -0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "poison",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.poison.dark_green.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerPoison_03_Dark_Green_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 23,
+            "right": 105,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.00602,
+              "y": -0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": -0.00602
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "slashing",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.simple.001.loop.001.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.1,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Blue_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 32,
+            "top": 32,
+            "right": 95,
+            "bottom": 95,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "slashing",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.simple.001.loop.001.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.1,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Blue_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 32,
+            "top": 32,
+            "right": 95,
+            "bottom": 95,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "sonic",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.energy_field.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.5,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyField_01_Regular_Blue_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 2,
+            "right": 123,
+            "bottom": 123,
+            "centerShift": {
+              "x": 0.0041,
+              "y": -0.0082
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0041,
+            "y": -0.0082
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "sonic",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.energy_field.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.5,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyField_01_Regular_Blue_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 2,
+            "right": 123,
+            "bottom": 123,
+            "centerShift": {
+              "x": 0.0041,
+              "y": -0.0082
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0041,
+            "y": -0.0082
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "spirit",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.energy_strands.overlay.blue.01",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/EnergyStrandsOverlay_01_Regular_Blue_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 7,
+            "top": 10,
+            "right": 117,
+            "bottom": 108,
+            "centerShift": {
+              "x": -0.01351,
+              "y": -0.04054
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01351,
+            "y": -0.04054
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "spirit",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.energy_strands.overlay.blue.01",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/EnergyStrandsOverlay_01_Regular_Blue_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 7,
+            "top": 10,
+            "right": 117,
+            "bottom": 108,
+            "centerShift": {
+              "x": -0.01351,
+              "y": -0.04054
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01351,
+            "y": -0.04054
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "vitality",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.energy_field.01.yellow",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Energy/EnergyField_01_Regular_Yellow_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 4,
+            "right": 122,
+            "bottom": 123,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "vitality",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.energy_field.01.blue",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Energy/EnergyField_01_Regular_Blue_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 5,
+            "top": 2,
+            "right": 123,
+            "bottom": 123,
+            "centerShift": {
+              "x": 0.0041,
+              "y": -0.0082
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0041,
+            "y": -0.0082
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "void",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.energy_strands.overlay.blue.01",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/EnergyStrandsOverlay_01_Regular_Blue_600x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 7,
+            "top": 10,
+            "right": 117,
+            "bottom": 108,
+            "centerShift": {
+              "x": -0.01351,
+              "y": -0.04054
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01351,
+            "y": -0.04054
+          }
+        }
+      ]
+    },
+    {
+      "condition": "persistent-damage",
+      "damageType": "void",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.energy_strands.overlay.blue.01",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.45,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/EnergyStrandsOverlay_01_Regular_Blue_600x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 7,
+            "top": 10,
+            "right": 117,
+            "bottom": 108,
+            "centerShift": {
+              "x": -0.01351,
+              "y": -0.04054
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01351,
+            "y": -0.04054
+          }
+        }
+      ]
+    },
+    {
+      "condition": "petrified",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.aura_themed.01.orbit.loop.metal.01.grey",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedOrbitLoopMetal01_01_Regular_Grey_700x700.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 22,
+            "top": 20,
+            "right": 105,
+            "bottom": 105,
+            "centerShift": {
+              "x": 0,
+              "y": -0.01163
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": -0.01163
+          }
+        }
+      ]
+    },
+    {
+      "condition": "petrified",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.aura_themed.01.orbit.loop.metal.01.grey",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Template/Circle/Aura/AuraThemedOrbitLoopMetal01_01_Regular_Grey_700x700.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 22,
+            "top": 20,
+            "right": 105,
+            "bottom": 105,
+            "centerShift": {
+              "x": 0,
+              "y": -0.01163
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": -0.01163
+          }
+        }
+      ]
+    },
+    {
+      "condition": "prone",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.002",
+      "offset": {
+        "x": 0,
+        "y": 0.28
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 27,
+            "top": 27,
+            "right": 101,
+            "bottom": 101,
+            "centerShift": {
+              "x": 0.00667,
+              "y": 0.00667
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00667,
+            "y": 0.00667
+          }
+        }
+      ]
+    },
+    {
+      "condition": "prone",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.002",
+      "offset": {
+        "x": 0,
+        "y": 0.28
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 27,
+            "top": 27,
+            "right": 101,
+            "bottom": 101,
+            "centerShift": {
+              "x": 0.00667,
+              "y": 0.00667
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00667,
+            "y": 0.00667
+          }
+        }
+      ]
+    },
+    {
+      "condition": "quickened",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.spinning.blue.001",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircleSpin_01_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 27,
+            "top": 27,
+            "right": 101,
+            "bottom": 102,
+            "centerShift": {
+              "x": 0.00658,
+              "y": 0.01316
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00658,
+            "y": 0.01316
+          }
+        }
+      ]
+    },
+    {
+      "condition": "quickened",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.spinning.blue.001",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircleSpin_01_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 27,
+            "top": 27,
+            "right": 101,
+            "bottom": 102,
+            "centerShift": {
+              "x": 0.00658,
+              "y": 0.01316
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00658,
+            "y": 0.01316
+          }
+        }
+      ]
+    },
+    {
+      "condition": "restrained",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.chain.standard.loop.02.grey",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.65,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerChainStandard01_02_Regular_Grey_Loop_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 24,
+            "top": 24,
+            "right": 103,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "restrained",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.chain.standard.loop.02.red",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.65,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerChainStandard01_02_Regular_Red_Loop_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 24,
+            "top": 24,
+            "right": 103,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "sickened",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.fumes.04.loop.green",
+      "offset": {
+        "x": 0,
+        "y": 0.12
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Smoke/Fumes04_01_Green_Loop_400x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 24,
+            "top": 18,
+            "right": 100,
+            "bottom": 163,
+            "centerShift": {
+              "x": -0.01027,
+              "y": -0.03425
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01027,
+            "y": -0.03425
+          }
+        },
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Smoke/Fumes04_02_Green_Loop_400x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 27,
+            "top": 21,
+            "right": 96,
+            "bottom": 161,
+            "centerShift": {
+              "x": -0.01418,
+              "y": -0.03191
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01418,
+            "y": -0.03191
+          }
+        }
+      ]
+    },
+    {
+      "condition": "sickened",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.fumes.04.loop.grey",
+      "offset": {
+        "x": 0,
+        "y": 0.12
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Smoke/Fumes04_01_Grey_Loop_400x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 23,
+            "top": 18,
+            "right": 100,
+            "bottom": 165,
+            "centerShift": {
+              "x": -0.01351,
+              "y": -0.02703
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01351,
+            "y": -0.02703
+          }
+        },
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Smoke/Fumes04_02_Grey_Loop_400x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 26,
+            "top": 19,
+            "right": 98,
+            "bottom": 163,
+            "centerShift": {
+              "x": -0.01034,
+              "y": -0.03103
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01034,
+            "y": -0.03103
+          }
+        }
+      ]
+    },
+    {
+      "condition": "slowed",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.003",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 15,
+            "top": 17,
+            "right": 111,
+            "bottom": 111,
+            "centerShift": {
+              "x": -0.00515,
+              "y": 0.00515
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00515,
+            "y": 0.00515
+          }
+        }
+      ]
+    },
+    {
+      "condition": "slowed",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.003",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.4,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 15,
+            "top": 17,
+            "right": 111,
+            "bottom": 111,
+            "centerShift": {
+              "x": -0.00515,
+              "y": 0.00515
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00515,
+            "y": 0.00515
+          }
+        }
+      ]
+    },
+    {
+      "condition": "stunned",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.stun.dark_teal.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.05,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerStun_03_Dark_Teal_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 106,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0.00595
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0.00595
+          }
+        }
+      ]
+    },
+    {
+      "condition": "stunned",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.stun.purple.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.05,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerStun_03_Regular_Purple_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 106,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0.00595
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0.00595
+          }
+        }
+      ]
+    },
+    {
+      "condition": "stupefied",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.fumes.04.loop.purple",
+      "offset": {
+        "x": 0,
+        "y": -0.2
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.9,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Smoke/Fumes04_01_Purple_Loop_400x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 23,
+            "top": 17,
+            "right": 101,
+            "bottom": 163,
+            "centerShift": {
+              "x": -0.0102,
+              "y": -0.03741
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.0102,
+            "y": -0.03741
+          }
+        },
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Smoke/Fumes04_02_Purple_Loop_400x600.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 26,
+            "top": 20,
+            "right": 97,
+            "bottom": 161,
+            "centerShift": {
+              "x": -0.01408,
+              "y": -0.03521
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01408,
+            "y": -0.03521
+          }
+        }
+      ]
+    },
+    {
+      "condition": "stupefied",
+      "edition": "patreon",
+      "stage": 2,
+      "asset": "jb2a.markers.runes03.blue.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.65,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerRunes03_03_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "stupefied",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.fumes.04.loop.grey",
+      "offset": {
+        "x": 0,
+        "y": -0.2
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.9,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Smoke/Fumes04_01_Grey_Loop_400x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 23,
+            "top": 18,
+            "right": 100,
+            "bottom": 165,
+            "centerShift": {
+              "x": -0.01351,
+              "y": -0.02703
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01351,
+            "y": -0.02703
+          }
+        },
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Smoke/Fumes04_02_Grey_Loop_400x600.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 192,
+            "left": 26,
+            "top": 19,
+            "right": 98,
+            "bottom": 163,
+            "centerShift": {
+              "x": -0.01034,
+              "y": -0.03103
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.01034,
+            "y": -0.03103
+          }
+        }
+      ]
+    },
+    {
+      "condition": "stupefied",
+      "edition": "free",
+      "stage": 2,
+      "asset": "jb2a.markers.runes03.dark_orange.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.65,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerRunes03_03_Dark_Orange_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 106,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0.0119,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.0119,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "unconscious",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.sleep.symbol.blue",
+      "offset": {
+        "x": 0,
+        "y": -0.2
+      },
+      "anchor": {
+        "x": 0.6796875,
+        "y": 0.30859375
+      },
+      "scale": 0.95,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/1st_Level/Sleep/SleepSymbol01_01_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 66,
+            "top": 15,
+            "right": 107,
+            "bottom": 63,
+            "centerShift": {
+              "x": 0.46939,
+              "y": -0.5
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "unconscious",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.sleep.symbol.dark_pink",
+      "offset": {
+        "x": 0,
+        "y": -0.2
+      },
+      "anchor": {
+        "x": 0.6796875,
+        "y": 0.31640625
+      },
+      "scale": 0.95,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/1st_Level/Sleep/SleepSymbol01_01_Dark_Pink_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 66,
+            "top": 15,
+            "right": 107,
+            "bottom": 65,
+            "centerShift": {
+              "x": 0.45098,
+              "y": -0.46078
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "undetected",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.fog_cloud.01.white",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.1,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 2,
+            "top": 2,
+            "right": 125,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0,
+              "y": 0.004
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.004
+          }
+        }
+      ]
+    },
+    {
+      "condition": "undetected",
+      "edition": "patreon",
+      "stage": 2,
+      "asset": "jb2a.token_border.circle.static.blue.005",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_05_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 22,
+            "top": 18,
+            "right": 108,
+            "bottom": 106,
+            "centerShift": {
+              "x": 0.01685,
+              "y": -0.01685
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01685,
+            "y": -0.01685
+          }
+        }
+      ]
+    },
+    {
+      "condition": "undetected",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.fog_cloud.01.white",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.1,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 2,
+            "top": 2,
+            "right": 125,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0,
+              "y": 0.004
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.004
+          }
+        }
+      ]
+    },
+    {
+      "condition": "undetected",
+      "edition": "free",
+      "stage": 2,
+      "asset": "jb2a.token_border.circle.static.blue.005",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_05_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 22,
+            "top": 18,
+            "right": 108,
+            "bottom": 106,
+            "centerShift": {
+              "x": 0.01685,
+              "y": -0.01685
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01685,
+            "y": -0.01685
+          }
+        }
+      ]
+    },
+    {
+      "condition": "unfriendly",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.orange.003",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Orange_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 15,
+            "top": 16,
+            "right": 111,
+            "bottom": 112,
+            "centerShift": {
+              "x": -0.00515,
+              "y": 0.00515
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00515,
+            "y": 0.00515
+          }
+        }
+      ]
+    },
+    {
+      "condition": "unfriendly",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.token_border.circle.static.blue.003",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 15,
+            "top": 17,
+            "right": 111,
+            "bottom": 111,
+            "centerShift": {
+              "x": -0.00515,
+              "y": 0.00515
+            }
+          },
+          "effectiveCenterShift": {
+            "x": -0.00515,
+            "y": 0.00515
+          }
+        }
+      ]
+    },
+    {
+      "condition": "unnoticed",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.fog_cloud.01.white",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.9,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 2,
+            "top": 2,
+            "right": 125,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0,
+              "y": 0.004
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.004
+          }
+        }
+      ]
+    },
+    {
+      "condition": "unnoticed",
+      "edition": "patreon",
+      "stage": 2,
+      "asset": "jb2a.token_border.circle.static.blue.004",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_04_Regular_Blue_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 17,
+            "top": 16,
+            "right": 112,
+            "bottom": 111,
+            "centerShift": {
+              "x": 0.01042,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01042,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "unnoticed",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.fog_cloud.01.white",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.9,
+      "below": false,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 2,
+            "top": 2,
+            "right": 125,
+            "bottom": 126,
+            "centerShift": {
+              "x": 0,
+              "y": 0.004
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.004
+          }
+        }
+      ]
+    },
+    {
+      "condition": "unnoticed",
+      "edition": "free",
+      "stage": 2,
+      "asset": "jb2a.token_border.circle.static.blue.004",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 1.35,
+      "below": true,
+      "orbit": false,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Token_Border/TokenBorderCircle_04_Regular_Blue_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 17,
+            "top": 16,
+            "right": 112,
+            "bottom": 111,
+            "centerShift": {
+              "x": 0.01042,
+              "y": 0
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.01042,
+            "y": 0
+          }
+        }
+      ]
+    },
+    {
+      "condition": "wounded",
+      "edition": "patreon",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.dark_red.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.75,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Dark_Red_400x400.webm",
+          "source": "installed",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 25,
+            "right": 104,
+            "bottom": 103,
+            "centerShift": {
+              "x": 0,
+              "y": 0.0061
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0,
+            "y": 0.0061
+          }
+        }
+      ]
+    },
+    {
+      "condition": "wounded",
+      "edition": "free",
+      "stage": 1,
+      "asset": "jb2a.markers.heart.pink.03",
+      "offset": {
+        "x": 0,
+        "y": 0
+      },
+      "anchor": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "scale": 0.75,
+      "below": false,
+      "orbit": true,
+      "files": [
+        {
+          "file": "modules/JB2A_DnD5e/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+          "source": "same-filename-reference",
+          "bounds": {
+            "width": 128,
+            "height": 128,
+            "left": 23,
+            "top": 24,
+            "right": 105,
+            "bottom": 104,
+            "centerShift": {
+              "x": 0.00602,
+              "y": 0.00602
+            }
+          },
+          "effectiveCenterShift": {
+            "x": 0.00602,
+            "y": 0.00602
+          }
+        }
+      ]
+    }
+  ],
+  "issues": []
+}

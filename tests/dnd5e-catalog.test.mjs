@@ -1,0 +1,141 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {dndEntries,dndRecipe,useDndEntry,dndVariantForEvent,resolveDndAutomaticRecipe,findDndEntry,filterDndEntries} from '../scripts/dnd5e-catalog.mjs';
+import {catalogNavigation,catalogPageAllowed} from '../scripts/catalog-system.mjs';
+import {dnd5eEvent} from '../scripts/adapters.mjs';
+import {planRecipe,validateRecipe,matchRecipe} from '../scripts/model.mjs';
+import {assetDatabases} from '../tools/asset-databases.mjs';
+import {dndActorStates,findDndState,dndStateVisible,resolveDndStateRecipe} from '../scripts/dnd5e-states.mjs';
+import {nativeDirection,weaponModes,weaponVisualFamily} from '../tools/dnd5e-directions.mjs';
+import {ABILITY_SOUND_PROFILES} from '../data/ability-sounds.mjs';
+const find=(name,kind='spell',edition='2024')=>dndEntries(kind).find(e=>e.name===name&&e.edition===edition);
+const context={source:{id:'caster',center:{x:0,y:0},w:100,h:100},targets:Array.from({length:5},(_,i)=>({id:'target-'+i,center:{x:200+i*200,y:200},w:100,h:100})),gridSize:100,template:{id:'template'},area:{type:'cone',center:{x:0,y:0},endpoint:{x:400,y:0},length:400,angle:90,width:100,diameter:400}};
+test('catalog navigation shows only the native world system, including direct page guards',()=>{
+ for(const systemId of ['pf2e','dnd5e']){const nav=catalogNavigation({systemId});assert.equal(nav.length,systemId==='pf2e'?5:6);assert.ok(nav.every(([, ,label])=>label.startsWith(systemId==='pf2e'?'PF2e':'D&D 5e')));}
+ assert.equal(catalogPageAllowed('items',{systemId:'pf2e'}),false);
+ assert.deepEqual(catalogNavigation({systemId:'unsupported'}),[]);assert.equal(catalogPageAllowed('spells',{systemId:'unsupported'}),false);
+ for(const edition of ['2014','2024'])assert.equal(filterDndEntries('condition',{edition}).length,44,'shared native conditions remain visible in either rules edition');
+});
+test('all D&D entries validate and have real Free and Patreon fallbacks, with motion independently removable',async()=>{
+ const db=await assetDatabases();assert.ok(dndEntries('spell').length>=650);assert.ok(dndEntries('feat').length>=560);assert.ok(dndEntries('condition').length>=14);
+ for(const e of dndEntries())for(const v of e.variants){const r=dndRecipe(e,v.id);assert.equal(r.systemId,'dnd5e');assert.equal(r.catalogEntry,e.id);validateRecipe(r);assert.ok(r.stages.every(s=>s.kind!=='motion'||s.duration>=1000));dndRecipe(e,v.id,{motion:false});
+  const area=e.variants.find(x=>x.id===v.id)?.recipe.previewArea;const c={...context,area:area?.type==='line'?{...context.area,type:'line'}:area?.type==='cone'?context.area:{center:{x:200,y:0},diameter:400}};
+  for(const rows of Object.values(db))assert.ok(planRecipe(r,rows,c).length,e.name+' '+v.label);
+ }
+});
+test('D&D Chain Lightning forks from primary target and never fires a self-directed primary loop',async()=>{
+ const r=dndRecipe(find('Chain Lightning')),db=await assetDatabases();const arcs=planRecipe(r,db.patreon,context).filter(s=>s.kind==='travel');
+ assert.equal(arcs.length,4);assert.equal(arcs[0].origin,context.source);assert.equal(arcs[0].destination,context.targets[0]);
+ for(const arc of arcs.slice(1)){assert.equal(arc.origin,context.targets[0]);assert.notEqual(arc.destination,context.targets[0]);}
+ assert.equal(planRecipe(r,db.free,{...context,targets:context.targets.slice(0,1)}).filter(s=>s.kind==='travel').length,1);
+});
+test('Magic Missile distributes three total darts and upcasting adds total darts, while Eldritch Blast fires one per attack',async()=>{
+ const e=find('Magic Missile'),v=e.variants[0],state=useDndEntry({},e.id),item={type:'spell',name:e.name,_stats:{compendiumSource:e.uuid},system:{level:3}};
+ const r=resolveDndAutomaticRecipe({type:v.recipe.trigger,systemId:'dnd5e',item,activityId:v.activityId,spellLevel:3},()=>state),db=await assetDatabases();
+ assert.equal(planRecipe(r,db.patreon,context).filter(s=>s.kind==='travel').length,5);
+ const darts=planRecipe(r,db.patreon,context).filter(s=>s.kind==='travel');assert.equal(new Set(darts.map(s=>s.delay)).size,1,'native darts launch together');
+ const contacts=planRecipe(r,db.patreon,context).filter(s=>s.kind==='impact');assert.equal(contacts.length,5);assert.equal(new Set(contacts.map(s=>s.delay)).size,1,'native darts share contact timing');
+ assert.equal(planRecipe(dndRecipe(find('Eldritch Blast')),db.free,context).filter(s=>s.kind==='travel'&&s.destination===context.targets[0]).length,1);
+});
+
+test('reviewed status colors, actual weapon footage and native follow-up locality survive generation',()=>{
+ const dagger=find('Dagger','weapon'),bow=find('Longbow','weapon');
+ assert.ok(dagger.variants.find(v=>v.weaponMode==='thrown').recipe.stages.find(s=>s.kind==='travel').assets.every(k=>/dagger|kunai/.test(k)));
+ assert.ok(bow.variants.find(v=>v.weaponMode==='ranged').recipe.stages.find(s=>s.kind==='travel').assets.every(k=>/arrow\.physical/.test(k)));
+ assert.equal(find('Antimagic Field').theme,'dispel');
+ const chill=find('Chill Touch','spell','2014');assert.ok(chill.reviewed);assert.equal(chill.variants[0].recipe.stages.some(s=>s.kind==='travel'),false);
+ const poisoned=dndEntries('condition').find(e=>e.statusId==='poisoned');assert.ok(poisoned.variants[0].recipe.stages[0].assets.every(k=>k.includes('green')));
+});
+
+test('native enchanted attacks preserve actual active damage parts without lighting their ordinary attack',()=>{
+ const entry=find('Flame Tongue Longsword','weapon','2014');assert.ok(entry);
+ const plain=entry.variants.find(v=>v.weaponMode==='melee'&&!/Flaming/i.test(v.label)),flaming=entry.variants.find(v=>v.weaponMode==='melee'&&/Flaming/i.test(v.label));
+ assert.ok(plain&&flaming);assert.equal(plain.recipe.stages.some(s=>s.label==='Native magical material'),false);
+ assert.ok(flaming.recipe.stages.some(s=>s.label==='Native magical material'&&s.assets.some(k=>/fire|orange/.test(k))));
+ assert.equal(flaming.soundProfile,'enchanted-sword-fire');assert.equal(plain.soundProfile,'sword');
+ const energy=find('Energy Bow','weapon');assert.ok(energy.variants.some(v=>v.weaponMode==='ranged'));assert.ok(energy.variants.every(v=>v.recipe.trigger==='manual'&&v.recipe.playbackRoles.reason.includes('base weapon')));
+ const holy=find('Holy Avenger','weapon');assert.ok(holy.variants.filter(v=>v.weaponMode).every(v=>!v.recipe.stages.some(s=>s.label==='Native magical material')),'zero-valued conditional radiant rider stays out of ordinary attacks');
+ const wall=find('Prismatic Wall');assert.ok(wall.variants.filter(v=>v.recipe.previewArea).every(v=>v.recipe.stages.filter(s=>s.kind==='template').length===7));
+});
+
+test('D&D physical bases keep their weapon shape and natural energy attacks use thematic footage and sound',()=>{
+ for(const [base,family]of [['longsword','sword'],['lighthammer','hammer'],['trident','spear'],['warpick','pick']])assert.equal(weaponVisualFamily({name:base,system:{type:{baseItem:base}}}),family);
+ const sword=find('Flame Tongue Longsword','weapon','2014');
+ for(const v of sword.variants.filter(v=>v.weaponMode==='melee'))assert.ok(v.recipe.stages.find(s=>s.label==='Physical contact').assets.every(k=>/sword|slashing|slash/.test(k)),'longsword is never bludgeoning footage');
+ for(const name of ['Necrotic Ray','Force Bolt','Poison Ray']){
+  const entry=find(name,'weapon');assert.ok(entry,name);
+  for(const v of entry.variants.filter(v=>v.weaponMode==='ranged')){assert.equal(v.soundNamespace,'spell');assert.ok(!['ranged','sword','unarmed'].includes(v.soundProfile));assert.ok(v.recipe.stages.find(s=>s.kind==='travel').assets.every(k=>!k.includes('arrow.physical')));}
+ }
+ for(const name of ['Boulder','Rock','Rock Launch']){const entry=find(name,'weapon');assert.ok(entry,name);for(const v of entry.variants.filter(v=>v.weaponMode==='ranged'))assert.ok(v.recipe.stages.find(s=>s.kind==='travel').assets.some(k=>k.includes('boulder')),name+' uses thrown stone footage');}
+ for(const entry of dndEntries('item').filter(e=>/^(Acid|Alchemist's Fire|Oil)( \((vial|flask)\))?$/.test(e.name)))for(const v of entry.variants.filter(v=>v.recipe.stages.some(s=>s.kind==='travel'))){
+  assert.equal(v.soundNamespace,'spell');assert.ok(!['sword','dagger','unarmed'].includes(v.soundProfile),entry.name+' sound matches payload');
+  assert.ok(v.recipe.stages.find(s=>s.kind==='travel').assets.every(k=>k.includes('throwable.throw.flask')));
+ }
+});
+test('D&D native activity and selected attack mode pick melee versus thrown without replaying on use or damage',()=>{
+ const e=find('Dagger','weapon'),state=useDndEntry({},e.id),item={type:'weapon',name:e.name,_stats:{compendiumSource:e.uuid}},subject={id:e.variants[0].activityId,item,attack:{type:{value:'melee'}}};
+ for(const [native,expected]of [['oneHanded','melee'],['thrownTwoHanded','thrown']]){const event=dnd5eEvent('attack',subject,{rolls:[{options:{attackMode:native}}]});const r=resolveDndAutomaticRecipe(event,()=>state);assert.equal(r.weaponMode,expected);}
+ assert.equal(resolveDndAutomaticRecipe(dnd5eEvent('use',subject),()=>state),null);assert.equal(resolveDndAutomaticRecipe(dnd5eEvent('damage',subject),()=>state),null);
+ assert.equal(dndVariantForEvent(e,{type:'attack',activityId:'unknown',activityName:'unknown',weaponMode:'thrown'}),null);
+});
+
+test('every eligible D&D weapon release/contact/material cue has an actual synchronized sound stage',()=>{
+ const sounds={resolve:c=>c};
+ for(const entry of dndEntries('weapon'))for(const variant of entry.variants){
+  if(variant.soundNamespace!=='ability')continue;
+  const recipe=dndRecipe(entry,variant.id,{sounds}),audio=recipe.stages.filter(s=>s.kind==='sound');
+  for(const cue of ABILITY_SOUND_PROFILES[variant.soundProfile]??[]){
+   if(variant.soundExcludeRoles?.includes(cue.role))continue;
+   const hasAnchor=cue.role==='release'?recipe.stages.some(s=>s.kind==='travel'||s.kind==='projectile'):['contact','impact'].includes(cue.role)?recipe.stages.some(s=>s.kind==='impact'):false;
+   if(hasAnchor)assert.ok(audio.some(s=>s.label.startsWith(cue.label)),entry.name+' / '+variant.label+' / '+cue.label);
+  }
+  for(const cue of audio){const anchor=recipe.stages.find(s=>s.stageId===cue.afterStage);assert.ok(anchor);assert.equal(cue.timingAnchor,'start');}
+ }
+ const dagger=find('Dagger','weapon');assert.equal(dndRecipe(dagger,dagger.variants.find(v=>v.weaponMode==='melee').id,{sounds}).stages.filter(s=>s.kind==='sound').length,1);
+ assert.equal(dndRecipe(dagger,dagger.variants.find(v=>v.weaponMode==='thrown').id,{sounds}).stages.filter(s=>s.kind==='sound').length,2);
+ const flame=find('Flame Tongue Longsword','weapon','2014');assert.equal(dndRecipe(flame,flame.variants.find(v=>/Flaming/.test(v.label)).id,{sounds}).stages.filter(s=>s.kind==='sound').length,2);
+});
+test('recorded D&D targets and private roll suppression use native activity data',()=>{
+ const subject={id:'native',item:{type:'spell'},name:'Cast'};const event=dnd5eEvent('use',subject,{results:{message:{id:'m',system:{targets:[{token:'Scene.s.Token.a'},{token:'Scene.s.Token.b'}]}}}});
+ assert.deepEqual(event.targetUuids,['Scene.s.Token.a','Scene.s.Token.b']);assert.equal(event.activityId,'native');
+ assert.equal(dnd5eEvent('use',subject,{results:{message:{data:{blind:true}}}}),null);
+ const spell={...subject,item:{type:'spell',system:{level:1}},getRollData:()=>({item:{level:4}})};
+ const native=dnd5eEvent('damage',spell,{rolls:[{parent:{id:'roll',system:{level:5,targets:[{token:'Scene.s.Token.recorded'}]}}}]});
+ assert.equal(native.spellLevel,5);assert.deepEqual(native.targetUuids,['Scene.s.Token.recorded']);assert.equal(dnd5eEvent('use',spell).spellLevel,4);
+ assert.equal(dnd5eEvent('attack',spell,{rolls:[{parent:{blind:true}}]}),null);
+});
+test('same spell name matches native source and edition; foreign bound recipes never cross systems',()=>{
+ const e=find('Fireball');assert.equal(findDndEntry({item:{type:'spell',name:'Renamed',_stats:{compendiumSource:e.uuid}}}),e);
+ assert.equal(findDndEntry({item:{type:'spell',name:'Fireball',system:{source:{rules:'2014'}}}}).edition,'2014');
+ const r=validateRecipe({id:'foreign',name:'Foreign',trigger:'use',itemUuid:'Compendium.pf2e.spells-srd.Item.x',stages:[{kind:'aura',assets:['jb2a.test']} ]});
+ assert.equal(matchRecipe([r],{type:'use',systemId:'dnd5e',item:{uuid:r.itemUuid}}),null);
+});
+test('D&D native conditions follow active transferred effects and stop for suppression; invisible cues stay private',()=>{
+ const actor={uuid:'Actor.a',statuses:new Set(),appliedEffects:[{uuid:'Actor.a.Item.i.ActiveEffect.e',active:true,statuses:new Set(['poisoned']),target:{documentName:'Actor'}},{uuid:'bad',active:false,statuses:new Set(['stunned'])}]};
+ const states=dndActorStates(actor);assert.equal(states.length,1);assert.equal(states[0].statusId,'poisoned');const e=findDndState(states[0]);assert.ok(e);
+ const r=resolveDndStateRecipe(states[0],useDndEntry({},e.id));assert.equal(r.lifecycle,'document');assert.ok(r.stages.every(s=>s.persist));
+ actor.appliedEffects[0].isSuppressed=true;assert.deepEqual(dndActorStates(actor),[]);
+ for(const statusId of ['invisible','hiding']){
+  assert.equal(dndStateVisible({statusId},{visible:true,document:{},actor:{}},{isGM:false}),false);
+  assert.equal(dndStateVisible({statusId},{visible:true,document:{},actor:{isOwner:true}},{isGM:false}),true);
+  assert.equal(dndStateVisible({statusId},{visible:true,document:{},actor:{}},{isGM:true}),true);
+ }
+});
+test('native semantics distinguish actual rays, healing, unlit Oil and follow-up damage',()=>{
+ const row={source:{name:'Oil',type:'consumable',system:{}},description:'Oil can later ignite after fire damage.',edition:'2024'};
+ assert.equal(nativeDirection(row,{type:'save',_id:'throw',name:'Throw'}).theme,'water');
+ const tool=nativeDirection({...row,source:{name:'Mason’s Tools',type:'tool',system:{}}},{type:'check',_id:'check',activation:{type:'action'}});
+ assert.equal(tool.trigger,'manual');assert.equal(tool.sound,null);assert.equal(tool.motion,'none');
+ for(const e of dndEntries())for(const v of e.variants.filter(v=>v.rationale.startsWith('Native ability or tool check.'))){assert.equal(v.recipe.trigger,'manual');assert.equal(v.soundProfile,null);assert.equal(v.recipe.playbackRoles.reason,v.rationale);assert.ok(v.recipe.stages.every(s=>s.kind!=='motion'));}
+ const acid={...row,source:{name:'Acid Arrow',type:'spell',system:{}}};assert.equal(nativeDirection(acid,{type:'damage',_id:'after',name:'Follow-up'}).delivery,'contact');
+ assert.deepEqual(weaponModes({system:{type:{value:'simpleM'},properties:['thr']}},{type:'attack',attack:{type:{value:'melee'}}}),['melee','thrown']);
+ assert.deepEqual(weaponModes({system:{type:{value:'',baseItem:'longbow'}}},{type:'attack',attack:{type:{}}}),['ranged']);
+ assert.deepEqual(weaponModes({system:{type:{value:'martialR',baseItem:'longbow'}}},{type:'attack',attack:{type:{value:'melee'}}}),['melee']);
+ assert.deepEqual(weaponModes({system:{type:{value:'natural'},range:{value:30,reach:5}}},{type:'attack',attack:{type:{value:'melee'}}}),['melee','ranged']);
+ for(const name of ['Acid',"Alchemist's Fire",'Oil'])for(const entry of dndEntries('item').filter(e=>e.name===name)){
+  for(const variant of entry.variants.filter(v=>v.recipe.stages.some(s=>s.kind==='travel'))){
+   assert.ok(variant.recipe.stages.find(s=>s.kind==='travel').assets.every(k=>k.includes('throwable.throw.flask')),name+' uses flask footage');
+   assert.equal(variant.recipe.stages.some(s=>s.kind==='cast'),false,name+' has no magical casting circle');
+  }
+ }
+});

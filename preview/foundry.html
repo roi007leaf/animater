@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Animater · Foundry CSS regression</title>
+    <link rel="stylesheet" href="/foundry/css/foundry2.css" />
+    <link rel="stylesheet" href="/foundry/fonts/fontawesome/css/all.min.css" />
+    <link rel="stylesheet" href="../styles/animater.css" />
+    <style>
+      body {
+        padding: 16px;
+        background: #090b11;
+        display: block;
+      }
+      #animater-workspace {
+        position: relative;
+        width: calc(100vw - 32px);
+        height: calc(100vh - 32px);
+        margin: 0;
+      }
+      .window-content {
+        flex: 1;
+        min-height: 0;
+      }
+    </style>
+  </head>
+  <body class="theme-dark">
+    <div id="animater-workspace" class="application animater">
+      <header class="window-header">
+        <h1 class="window-title">Animater</h1>
+        <button
+          type="button"
+          class="header-control icon fa-solid fa-ellipsis-vertical"
+          aria-label="Window controls"
+          data-action="toggleControls"
+        ></button>
+        <button
+          type="button"
+          class="header-control icon fa-solid fa-xmark"
+          aria-label="Close window"
+          data-action="close"
+        ></button>
+      </header>
+      <section class="window-content"><div class="an-root"></div></section>
+    </div>
+    <script type="module" src="./preview.mjs"></script>
+  </body>
+</html>

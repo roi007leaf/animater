@@ -1,0 +1,513 @@
+[
+  {
+    "path": "data/ability-sounds.mjs",
+    "sha256": "e008fb3bcc8c2abad14a90fc50a4f532a0c26b0bd87aed7de36d5979b0d0ab8f",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/dnd5e-catalog.mjs",
+    "sha256": "295f829b8b2af912f764989b2bd5989e5c3d9a8d107333e6427328c9cb2c76cc",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/media-durations.mjs",
+    "sha256": "ffd9f64bef004e4bddc4dc283f3efdf0dfdaf52877e87cd2eb46b5f4929244a6",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/media-footprints.mjs",
+    "sha256": "65711d08cb8ee37dd86e504b7949c2763322876ec69575af9c90daaf800cfdff",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/pf2e-feats.mjs",
+    "sha256": "1121f44f211e8831e9ca3189c80bcd28f02e836f608e52d7e911a83885c2dcb6",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/pf2e-spells.mjs",
+    "sha256": "a98cc06904f514dcbab0ff0607152a15feb108ab9fd6a5f3c2bd397dc12f8c12",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/pf2e-state-catalog.mjs",
+    "sha256": "8bfe2b8a76331cafdcd2623729c8769d03b11de8d3e915eef5855d6d50723155",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/pf2e-weapons.mjs",
+    "sha256": "14849820a12388cfb4f59f108c3e7e27b95d91a23febf6ab126ad886b0d63bd2",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/spell-assets.mjs",
+    "sha256": "9aa488c87751be5274a340c649d5038440bf568b0b45e8207389c03bc0f8603e",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/spell-sounds.mjs",
+    "sha256": "96aa5479da559eaf171cd415b8b2206f9e47e9c7534fcc2e6d98be18d54c3c6e",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "data/starter-media-timing.mjs",
+    "sha256": "294ed71c595f4a79987995595c6ef4cf93a465075df85319a17eff31ab9f3ac8",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "module.json",
+    "sha256": "c43d9b06740679f4d806e70c9d2ae19b3a0ac3265f7cf6bcfd5681a1e09eb127",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/ability-sounds-ui.mjs",
+    "sha256": "8ca682821de70ee7bb45428721e14628d66d70b14d525b312cb139fb414745b7",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/ability-sounds.mjs",
+    "sha256": "a7198deeb16e914360cb6b179fb302499fd6ccbaeed6c397e6e99cb0eb9819f6",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/adapters.mjs",
+    "sha256": "4099b77a99d9c95b593ad7db3dbb062377a1959bd1bcc2733d0996ea1d4af667",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/canvas-preview-area.mjs",
+    "sha256": "2db709f6a101be87ce21fb98000c54b5e3bdccddd15ec47f971a8ccaaf1cb920",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/catalog-details.mjs",
+    "sha256": "62d264d7336b3196679e24e16e54e37d462a06c6322bb5f555e648de99e0cc56",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/catalog-motion.mjs",
+    "sha256": "e151529e6e5d8d1d320730de95305551452f97906abe05cce8564265bbb07dbb",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/catalog-system.mjs",
+    "sha256": "866622e7a9b0f1056ac898300139c5bcda5c9e324e789ee6000e71ff8adcc0fe",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/chain-preview.mjs",
+    "sha256": "0c8e66ec3caf82b5620977cca18b6b8d0d4e69c38db3326104e7f5a45645e89f",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/choreography.mjs",
+    "sha256": "ba7549f772007c993e04047a1d07653cd221a886237587330672d20caa9e44a8",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/composition.mjs",
+    "sha256": "9d21996c8a5cad1669299deba452056a594b735cfe714511248c291ba15ea096",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/cone-fan.mjs",
+    "sha256": "1a818f1427a8de3837ae5b6360e35c946fd6043fdc1e8d9bb45a27d69840af8f",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/dnd5e-catalog-ui.mjs",
+    "sha256": "a822f32fde3ae1699f43f125ce03a6e45b6cba7328b3140fd4ca2bc0d4467c72",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/dnd5e-catalog.mjs",
+    "sha256": "81e91fffb1d2a123a830100063ea73e7d420b381a1ad543a3e24a29a99f283e9",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/dnd5e-states.mjs",
+    "sha256": "56b4c95ea1b3df0a5be4e3b3babbda482fc6d6fce1d7bb82d285a22dd24e2441",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/dom-patch.mjs",
+    "sha256": "18197b86f079bfd7b86b20e3cc758657a2a1f9e03b6c81fcf434757eed53d5d4",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/feat-catalog-ui.mjs",
+    "sha256": "5612e3ffacdeaf5839a52d17c8f97a9e34c6d6bd0f29be4a1103bf0060a103ce",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/feat-catalog.mjs",
+    "sha256": "920d0ed797772d2b33b246bd5b2780205205bc56583951f39e3615ffbb33885b",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/feat-choreography.mjs",
+    "sha256": "e35c06053993583f46c9a7de9a48ad65336d6edadf996869aede0bf9fe891ffd",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/feat-direction.mjs",
+    "sha256": "7b8c0e505cf1e030c6a5e014ad8f42324fba6ca103eb4ba51842e29f2533b03f",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/feat-motion.mjs",
+    "sha256": "ecc2c248b0021c3b4b2a0ffd465290e3f735d1d278c83807472f496fe20b5232",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/feat-traversal.mjs",
+    "sha256": "e826db4d5585fc614b9305232a2fb29b85788a65ed965465cf0b32d6b5b77ccd",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/main.mjs",
+    "sha256": "1e20b185068c675324602f482a6c2fa5ec84503c87ffd2c51eb8ae5f3d3982e5",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/media-lifetime.mjs",
+    "sha256": "ad5520f14825d48ef37a39909c1bfd08edf1ba88ce887d8235bbd3dd3ea82d8f",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/media-preview.mjs",
+    "sha256": "4790ab083412882c91a7a1834e1b5c455bed21e6f678ae32961f3d6911cc9b70",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/model.mjs",
+    "sha256": "4e5b3b2b0bf7a48bec064f4dcab47b75ecaf9b8b379f2038200a1c4588595271",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/motion-pacing.mjs",
+    "sha256": "eea6e524f022aa2d05b6971a053bc21cccaca207ea152c467ad19209a40baf2f",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/motion-path.mjs",
+    "sha256": "4dfa3914ffff706e2a1d115c1d0f9de04e070b31c307d306b706298696d5fe1c",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/motion.mjs",
+    "sha256": "3d7b126aad7b710332f1b97b4fa2ffb1594ac04517c4b346b26b1a667b281a5f",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/orb-builder.mjs",
+    "sha256": "71c3a3c3db55e01ed27dfd8771dd4d424fbe4a9ab397230779cb8d17b2831d1d",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/persistent-states.mjs",
+    "sha256": "18a2c22bf7e5d60cbbe10fb643795cecbb8fdf02bbf119e973467c17c8e776e0",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/playback-roles.mjs",
+    "sha256": "71ae754351d26c038d0d0a227e5dd1f1969a8e767d7a784984c62de1828abceb",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/presets.mjs",
+    "sha256": "7beae499d7d1cc654844fa079906ab7a44a501d7309bde21a818f8ae90dfca42",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/preview-media-status.mjs",
+    "sha256": "b9f01a4394765f9382b17c9653c866b7d49fe0176ddbf62ce117feae36e1e60d",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/recipe-preview.mjs",
+    "sha256": "42874ae1c8ca5b83d3312decf8366c9dafedb7db3fc7f0bcabf5de38a388ddbf",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/runtime.mjs",
+    "sha256": "3a324d2b2b7d0168a53a8a2042705694fb2dd44fb645baf17ba24e35f3a1f146",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-broad-variety-designs.mjs",
+    "sha256": "21e0d278a26fde9523e6371baff0d9bbcb92846263f86008205a2f15fedebcef",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-catalog-ui.mjs",
+    "sha256": "26d77e101ebfb31db272781749359119fdd7f332ce8559d483d65139afcc72e0",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-catalog.mjs",
+    "sha256": "2baa5814bf7c9a37944de90f6ab6aa7fd84d12d5de059b66e62e89c9e2f60795",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-choreography.mjs",
+    "sha256": "8be85496dabdd8f8e7c11dc307f884b028d924b21203c070c3c625974d701882",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-deep-designs.mjs",
+    "sha256": "d3fb57d6cca69516c6726a2e102b17446209ec0e86946ec066643f2dc2190749",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-delivery-designs.mjs",
+    "sha256": "9ce30477d5c53a08a12ea5e5b8008b236de3af377f31352ebbc4ed5416be63c8",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-delivery-timing.mjs",
+    "sha256": "724880ad647b512b233e9f89fcb64feb371052823d8d7168aa175abf20c3d53d",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-design.mjs",
+    "sha256": "346814f8681f30337907e61a81a00d4b1cfe32a72801375f79855186fa694df7",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-fear-designs.mjs",
+    "sha256": "3108c0e26613a56083fb6dcdb4109f119f17a980a4495452780eb6922cdaa972",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-sounds.mjs",
+    "sha256": "685040bba19f3335a7d2bb1487873501cd68b752958a7fbe81902ea94acd8c30",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-specific-fallbacks.mjs",
+    "sha256": "13ce5c8fea28f2f32d56e12dd6b8b19b061264f74698213aea52b59949fb8118",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-utility-designs.mjs",
+    "sha256": "8cc1023e9a3b97b78dbc48ce02a889fb87eefe7c4fbdafd1d934216541650215",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/spell-visual-identity.mjs",
+    "sha256": "90a7deabbc50b8611db9aa3aa36224b074a45231c5ebe13a251f0efc979d254e",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/stage-options.mjs",
+    "sha256": "923ed8e5df5336aa8a6c07a99092fc8bcca63ea579337cdc6afdbecda12b0303",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/state-catalog-actions.mjs",
+    "sha256": "1243535caa6fb3324f37988e6db3001713caa1c58c39229686fe7db475225e4d",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/state-catalog-ui.mjs",
+    "sha256": "68af91ca97491ea5bc83cae481389f5d39aec5b120aaee8d739e3746d8ec45e1",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/state-catalog.mjs",
+    "sha256": "a85e5da9873cd91e7a22caadc6577fa7b1bc8075f8f8b02015f2efaa114cfca4",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/state-presentation.mjs",
+    "sha256": "f9ee68b3a1fff42b44ad997c85174bd776917b41ebaa0f88e7edab30a8dfd7b6",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/weapon-catalog-ui.mjs",
+    "sha256": "85d2665658e39fbf363eca9909836ec620b727939fe440862cfc6fa51f67ea6d",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/weapon-catalog.mjs",
+    "sha256": "79c299d3027b630fafe73227428974ecf5689406c0597b41cb948bc4d85f2403",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/weapon-choreography.mjs",
+    "sha256": "e4059296c61026d71a1e8f4e144bc82705f053839c4bd9136d9eb0efad8e071c",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/weapon-payloads.mjs",
+    "sha256": "c5ff92569791210f6e862ea78316e4d030c7ac0d694e3646f9bedeeb5f57779c",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "scripts/workspace.mjs",
+    "sha256": "10496c87de2b5f43aff99d9eb6c74899cab4d67302042b4378d1425599f7bd66",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "styles/animater.css",
+    "sha256": "ec99a1107edf37d6bdedd63549c62c9eb6b9ae4e0a98e8e585df3a8a89e604af",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "styles/spell-catalog.css",
+    "sha256": "73cb06bdd26880e24f112d017f1a7a5a10812a032a1a725c0953ecf46f939c13",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  },
+  {
+    "path": "templates/workspace.hbs",
+    "sha256": "efb09c89a97c0c5ddfa9e858bcabd6ed22f686d9c0164532a7ee378bda66adce",
+    "origin": "pending",
+    "author": "",
+    "evidence": ""
+  }
+]

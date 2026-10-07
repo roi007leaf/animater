@@ -1,0 +1,2054 @@
+{
+  "date": "2026-10-07",
+  "method": "Current-pass complete-description individual reading scope, separate from earlier audit scope and whole-corpus semantic scans. Grade variants are each listed; review does not infer any successful outcome.",
+  "feats": [
+    {
+      "id": "Q1O4P1YIkCfeedHH",
+      "name": "Alchemical Shot",
+      "slug": "alchemical-shot",
+      "descriptionHash": "5949abad35b50518ec48b189519f822db0169f4a2d7bb41388b2fbb4a9101bc2"
+    },
+    {
+      "id": "1esdlPynQo6aCr73",
+      "name": "Anatomical Quartering",
+      "slug": "anatomical-quartering",
+      "descriptionHash": "662d5a49b8a466286f563136bbd8363b4000a29a8232fac490a79a3394f5a36d"
+    },
+    {
+      "id": "L9pd3yyjVK0rgiDc",
+      "name": "Antler Rush",
+      "slug": "antler-rush",
+      "descriptionHash": "39771782053d2601f54c34b15680be35edf43663dd3be4dc733a73e36dce50b8"
+    },
+    {
+      "id": "tan8sBy1tjCggnSu",
+      "name": "Asp Stance",
+      "slug": "asp-stance",
+      "descriptionHash": "214b68b7d79706eb20d599e552628195b0fb0899334bc031d3c53466acbac012"
+    },
+    {
+      "id": "LTcpBbnngfuYTdB0",
+      "name": "Avenge Ally",
+      "slug": "avenge-ally",
+      "descriptionHash": "3be8697bf00e4f37106532727577c2d5fd48208c94f8053711d96290ef019ca8"
+    },
+    {
+      "id": "to6s7QanfhHukW5r",
+      "name": "Barreling Charge",
+      "slug": "barreling-charge",
+      "descriptionHash": "7357d51cba1222f0d72eb37a6f1dfdc32920998cf129d72e3a71eddc41965a57"
+    },
+    {
+      "id": "QA3wy9DCOvn6UU0i",
+      "name": "Bat Around",
+      "slug": "bat-around",
+      "descriptionHash": "942141bf8c34307a7a03db66034d4f11990dfcccb177330bd6a270168a3cd234"
+    },
+    {
+      "id": "e1Dc8fxK8NoSvYdT",
+      "name": "Begin Stampede",
+      "slug": "begin-stampede",
+      "descriptionHash": "da061bb045e850ba9b21d785902f9da9074364d44ca732bb1cf2993a6eebf9d2"
+    },
+    {
+      "id": "YrRlbIzjsFlGGmVN",
+      "name": "Black Powder Blaze",
+      "slug": "black-powder-blaze",
+      "descriptionHash": "c5b987b28aefd538a507b6503b14d17d1a1239e6efe028f496a59d2c27120426"
+    },
+    {
+      "id": "pWbNhfBiskV4n58a",
+      "name": "Black Powder Embodiment",
+      "slug": "black-powder-embodiment",
+      "descriptionHash": "da86c85ce62b6778c40acfa98005f941cb8974c2a143da3b3cd5e2a0e13d0ff7"
+    },
+    {
+      "id": "tBfalnbUZLkG9gs1",
+      "name": "Blade of Law",
+      "slug": "blade-of-law",
+      "descriptionHash": "a8df369cc782f57c083b8f3b6b403c04c2a66eae8eeb0b9ebfdf8aea96962ab5"
+    },
+    {
+      "id": "XLoRtMn48f2KKvsu",
+      "name": "Blast Lock",
+      "slug": "blast-lock",
+      "descriptionHash": "085f090e33651e61297227ca5f39d0ca4ad8ae16ae58d617c3929303c46e5f19"
+    },
+    {
+      "id": "r4ZVpDjX2X0yrmhw",
+      "name": "Blast Tackle",
+      "slug": "blast-tackle",
+      "descriptionHash": "5cc028be6c942fdbf8ad898a9ce8205cc2372db420120c76a15f4f05410632db"
+    },
+    {
+      "id": "hkU92nqUYBQLQSMt",
+      "name": "Blazing Aura",
+      "slug": "blazing-aura",
+      "descriptionHash": "88189c6c5ad72002df2f92bc1e20c39f6abfe44e526d7849d874df72c1311300"
+    },
+    {
+      "id": "oltE3dIYZlM8s5BI",
+      "name": "Blazing Streak",
+      "slug": "blazing-streak",
+      "descriptionHash": "5157670b2d6ad77544046a09c4c2705afc6e745ef34677312a2eaba7bb254428"
+    },
+    {
+      "id": "F2VR4FPL2HdbzfXL",
+      "name": "Bombing Run",
+      "slug": "bombing-run",
+      "descriptionHash": "8c06a8ec309cfa6591fd0bfed576763a32f3e7b52865bd6f673a074b82f94690"
+    },
+    {
+      "id": "zFPWGwYLC0wxqUDg",
+      "name": "Bone Burst",
+      "slug": "bone-burst",
+      "descriptionHash": "c1c9ef97e07e4063f32bd96ca0748c7d2035ca265a58b44e1ee933bf07e7f3c9"
+    },
+    {
+      "id": "6IrNSD0G5AAXPTJq",
+      "name": "Borrow Time",
+      "slug": "borrow-time",
+      "descriptionHash": "28614f662e406014c5b6ed9948aa5cced1d47f8760303a94f2c11e2dc05ba7bc"
+    },
+    {
+      "id": "v4N0tTGjKGMwjqUG",
+      "name": "Borrowed Ability",
+      "slug": "borrowed-ability",
+      "descriptionHash": "62e600385e39a20d1cf57c4f61d8d82f888e556bdaec85858ecf29d2d914d065"
+    },
+    {
+      "id": "zQeglKcmBXvqfABR",
+      "name": "Brain Drain",
+      "slug": "brain-drain",
+      "descriptionHash": "8a1543b072e68df94094c16406fc558f2bc0b68c59ec21075dab4ce78354d2ff"
+    },
+    {
+      "id": "YTZhLWtrEnV9Pjf2",
+      "name": "Bravo's Determination",
+      "slug": "bravos-determination",
+      "descriptionHash": "fe0f0f3a46637f606be6cb8b8a157e71f67d6104f20b739795fed0f7be295416"
+    },
+    {
+      "id": "Id6C7qTQ3EX4ui2o",
+      "name": "Bullet and a Broadside",
+      "slug": "bullet-and-a-broadside",
+      "descriptionHash": "938af90b8cda4db951dc128600a5816c07bb589ce4748d2ce60214db4d1a3e6f"
+    },
+    {
+      "id": "5ZX4btrw5yjBr8IM",
+      "name": "Bullet Dancer Reload",
+      "slug": "bullet-dancer-reload",
+      "descriptionHash": "9ee8aa314e9dce5fb0b2c5cf0586b508d950eef62c068da39936c60c76a7390b"
+    },
+    {
+      "id": "vNIimhmP636VOP01",
+      "name": "Bullet Split",
+      "slug": "bullet-split",
+      "descriptionHash": "febf213389b3280237cfe041c71b7356a7189bb1c8cbd43ef4f16c929819ffd7"
+    },
+    {
+      "id": "oiauCibmdgJ91kNI",
+      "name": "Cascading Ray",
+      "slug": "cascading-ray",
+      "descriptionHash": "c6df49de2372147d13812c73190f2f04ad8182c0082edb312fecdadcc112a95f"
+    },
+    {
+      "id": "9p4oFIn791VAmzUn",
+      "name": "Cauterize",
+      "slug": "cauterize",
+      "descriptionHash": "547d16e8277f98494df4abee7e150f394a0c39e31303b7cd20a3093983287f22"
+    },
+    {
+      "id": "Vab3XIirjs3KQh3t",
+      "name": "Cavalier's Charge",
+      "slug": "cavaliers-charge",
+      "descriptionHash": "eb8697a0999a6c58b57759c0debceefc5ac2c5313291fb9cfebe250307ec1215"
+    },
+    {
+      "id": "AhrwKAPb1LyRxpG4",
+      "name": "Chain of Words",
+      "slug": "chain-of-words",
+      "descriptionHash": "29a5cec381133a3ff2bf8b9857e45e16a9fb32a5658d10c8e3065fa5652e447e"
+    },
+    {
+      "id": "nPwzElPvV29eM5as",
+      "name": "Chain Reaction",
+      "slug": "chain-reaction",
+      "descriptionHash": "4deccc66cd15db73436b366514ca6997c16fb6bedb6bfdb346d5bc6fdd94b4e4"
+    },
+    {
+      "id": "3MzFYTfhoSV6894n",
+      "name": "Channel Divine Spark",
+      "slug": "channel-divine-spark",
+      "descriptionHash": "928197cc4ebd8659463ffa48653684198bf3458407a921ad1b8338a2cd5fc44b"
+    },
+    {
+      "id": "o5q9FBrPsAYqEl5w",
+      "name": "Channel Smite",
+      "slug": "channel-smite",
+      "descriptionHash": "41e825dc0e365bee4426e09e9690cd34a921e73276edb056e38e05dd986d5307"
+    },
+    {
+      "id": "X7wFUWjYjYhzpejU",
+      "name": "Clan's Edge",
+      "slug": "clans-edge",
+      "descriptionHash": "8f8c7058097fb454245958dcce3f72211f498b1d27f448980b7ff0477bc4208b"
+    },
+    {
+      "id": "goFxIDlbWd8GN0kj",
+      "name": "Clear the Way",
+      "slug": "clear-the-way",
+      "descriptionHash": "f39187c159b0289f571966b080e4e1fe236ecca1d9e68289ae3faed5a7e999fa"
+    },
+    {
+      "id": "dxUbA1dUEcVHnU5s",
+      "name": "Clockwork Celerity",
+      "slug": "clockwork-celerity",
+      "descriptionHash": "6dc673bc3349e76bd414140f0419f05446b22bf0caccc7d892af0e6408a44a37"
+    },
+    {
+      "id": "si8FGX2ZRxetdVHp",
+      "name": "Constricting Hold",
+      "slug": "constricting-hold",
+      "descriptionHash": "70584a03146a1214025d022b2d62b8f2db03a661fe15c10b3cd52565ee34a36e"
+    },
+    {
+      "id": "qZzRXAa9mNQPUXoW",
+      "name": "Controlled Bullet",
+      "slug": "controlled-bullet",
+      "descriptionHash": "0d5216bf3f7ae142ce232a9e7b461c875cac79f03974197810381faf837ddd02"
+    },
+    {
+      "id": "KYF9e4oeSjHKgbwM",
+      "name": "Coordinated Charge",
+      "slug": "coordinated-charge",
+      "descriptionHash": "b10294a4dc9834b5873e31bf853f4ff6c4f28dc48512d4a8372dfe3f061ce04e"
+    },
+    {
+      "id": "zeyrLJr6b7hPdx4w",
+      "name": "Core Cannon",
+      "slug": "core-cannon",
+      "descriptionHash": "7c802a5890f8d0e1aa5b6e0b8cfa227c8e616fbf1f7e105d9e8a07053aebde69"
+    },
+    {
+      "id": "Asb0UsQqeATsxqFJ",
+      "name": "Courageous Assault",
+      "slug": "courageous-assault",
+      "descriptionHash": "de571a33c6709e63641bbdc7dc7020de12c7de901020006d83587dbe770259be"
+    },
+    {
+      "id": "8C9qo5LL9J0UTNGc",
+      "name": "Courageous Onslaught",
+      "slug": "courageous-onslaught",
+      "descriptionHash": "36fd77e049ace8369a38165905031409592bbcac52dbbefd8fc1fe1eb0256da2"
+    },
+    {
+      "id": "IzkL60LlKzbKIhY1",
+      "name": "Cover Fire",
+      "slug": "cover-fire",
+      "descriptionHash": "355174598a9809fe3e5fe1c2191fd8b1560b9b59b3a47c83fb120b43eb2d8d71"
+    },
+    {
+      "id": "vCsprcXVTwgtUYAZ",
+      "name": "Cranial Detonation",
+      "slug": "cranial-detonation",
+      "descriptionHash": "a30b3f716b38f782d592bcf7155ae4b66cccd4a17f08d4269c20c219dae20934"
+    },
+    {
+      "id": "8YSwzLNlmBLoEyUj",
+      "name": "Cross the Final Horizon",
+      "slug": "cross-the-final-horizon",
+      "descriptionHash": "f03aaee45b7813cbaabc82e85f7ab323ae09acb167639e5dd9c7bcebdcc37aa7"
+    },
+    {
+      "id": "YXyoBZFpOj3WRX3l",
+      "name": "Cushion Landing",
+      "slug": "cushion-landing",
+      "descriptionHash": "34fa293204de7c324f42c9ab35b9dfe8e3bf34d2e0cd34d297aa7eaeb880ab4c"
+    },
+    {
+      "id": "bSC18SbdaNXfBHu9",
+      "name": "Dance of Thunder",
+      "slug": "dance-of-thunder",
+      "descriptionHash": "02e2b860dca8a26756f1be839b5b35120877ac6ddfe0748d498bd7569c7cb9c6"
+    },
+    {
+      "id": "nV29YjbLgRfEPXMR",
+      "name": "Dashing Pickup",
+      "slug": "dashing-pickup",
+      "descriptionHash": "9c757901594cf25d9129676935931ebca56d819305f0943f86ac9082689e7421"
+    },
+    {
+      "id": "g6P1NvbbHpJGgoXU",
+      "name": "Dashing Pounce",
+      "slug": "dashing-pounce",
+      "descriptionHash": "b9a9dc43c015046582f88ac465e044501cc7446b3cefe5a3b5e1747bdbf9e4fa"
+    },
+    {
+      "id": "d1jQ0HyIOyUdCCaN",
+      "name": "Dashing Strike",
+      "slug": "dashing-strike",
+      "descriptionHash": "74f880c4d7c3debdff84be9725ed218483d59b141a63d473c00ca123b1e2a3ba"
+    },
+    {
+      "id": "8x3wqCZgYzJiSyR1",
+      "name": "Dazzling Bullet",
+      "slug": "dazzling-bullet",
+      "descriptionHash": "2dff6eec93af84dc0a4c079fb3f9475e66a0f1c4ee55b3d9bdfe7aa3a1770eb5"
+    },
+    {
+      "id": "BKdKyftmphU9n3Wq",
+      "name": "Death Dive",
+      "slug": "death-dive",
+      "descriptionHash": "20443a8cc05212a518e1195ddae34d1f5721918d6479b0417fe71439eee6c9bf"
+    },
+    {
+      "id": "jNzjecRGyyAqkkrm",
+      "name": "Deep Freeze",
+      "slug": "deep-freeze",
+      "descriptionHash": "de7ad6bb57547465a8d9d721cc35bfd3a81b02e5d2a28dfb60ea3275df69dfb0"
+    },
+    {
+      "id": "JDF9LWZMReqiXIUi",
+      "name": "Defend Our Union",
+      "slug": "defend-our-union",
+      "descriptionHash": "3485a13ea062abee592dba2d6322ebd79e989f62d2f245c3078f6ea8ec962fd8"
+    },
+    {
+      "id": "xlparPCGhkgjdhx2",
+      "name": "Defend Summoner",
+      "slug": "defend-summoner",
+      "descriptionHash": "c6936033ebe2908d3a9f8277782a54688cd9994411be1f20b53e3a6a9b32e6d5"
+    },
+    {
+      "id": "ehPnY1PuPK7EXkYc",
+      "name": "Demonblood Frenzy",
+      "slug": "demonblood-frenzy",
+      "descriptionHash": "2769011370abea41376ff234fb408421128e0ccf55dbc41ae3153446c163c578"
+    },
+    {
+      "id": "MrBHGo9nmzcVii3k",
+      "name": "Desiccating Inhalation",
+      "slug": "desiccating-inhalation",
+      "descriptionHash": "8c08bb9b73a95291b71f6f8b148758d35a8f25f9cb6a7e84ae806744c4142112"
+    },
+    {
+      "id": "u2gev0bUzDKwtpmI",
+      "name": "Desperate Revival",
+      "slug": "desperate-revival",
+      "descriptionHash": "dd7f6c962f6d341fa88feb934ddcbd1e23a80554bd4f6f70da2e8e4a14a2ada9"
+    },
+    {
+      "id": "ThPpl4QIjKAKFEC4",
+      "name": "Devastating Manifestation",
+      "slug": "devastating-manifestation",
+      "descriptionHash": "790635a401b0757a59f2b9c0d85baacf6e3c92438578c9eeb865d4e55a32a3ac"
+    },
+    {
+      "id": "Cs0hRKBfWn2gOYzK",
+      "name": "Devastating Weaponry",
+      "slug": "devastating-weaponry",
+      "descriptionHash": "653b45c91aa10e42842ca311082f7e2bc9b007929ba1e065a3c45c2f0e061a30"
+    },
+    {
+      "id": "zv1J1SlorWZc4P8U",
+      "name": "Dismounting Strike",
+      "slug": "dismounting-strike",
+      "descriptionHash": "a6a8d64446ca322772352009841cf86e01f73d058dab5edddd72c5242ad6bc4d"
+    },
+    {
+      "id": "OEGhbRgW6wRbccns",
+      "name": "Disruptive Stance",
+      "slug": "disruptive-stance",
+      "descriptionHash": "8860105b81e24eb6aa81442d84d90c80a70e277961ad581f952f27522d428f84"
+    },
+    {
+      "id": "XPTSCUoA8c4o9RgQ",
+      "name": "Distracting Explosion",
+      "slug": "distracting-explosion",
+      "descriptionHash": "ff1141e9dc1ce809124afd057af8b4e4f1541defbe9c7bafbf9c62155efcf226"
+    },
+    {
+      "id": "C10L7NG6dgsCqKG8",
+      "name": "Divide and Conquer",
+      "slug": "divide-and-conquer",
+      "descriptionHash": "926e4a9e01abd8c90c6dc21515ddfe1106c87da5d2af6a51beeafad786b00ce6"
+    },
+    {
+      "id": "iLFK11lcw5hViTBS",
+      "name": "Divine Rebuttal",
+      "slug": "divine-rebuttal",
+      "descriptionHash": "1ff11f48659d32a192afe3837926445a22db86fb5f68a1e08d4906398d2bc944"
+    },
+    {
+      "id": "PwcmmJOLY8C9JHau",
+      "name": "Double Shot",
+      "slug": "double-shot",
+      "descriptionHash": "a7280944f1cfc160b29d5ba7bd1592faba45ac2a2133e9a263e681183b6a0f6b"
+    },
+    {
+      "id": "onde0SxLoxLBTnvm",
+      "name": "Double Slice",
+      "slug": "double-slice",
+      "descriptionHash": "b6edfca8dcd35019d266fe40be52f5d036c2c1512d2c7f20f94d1882f91cc421"
+    },
+    {
+      "id": "X6nwiA2uJ2UQIOKB",
+      "name": "Drive Back",
+      "slug": "drive-back",
+      "descriptionHash": "1d384796f8172587a4f7e435a04916f18407a3bdc532fc1819e7c23dd78b9e37"
+    },
+    {
+      "id": "Eg7YZBmeNJeY9wkD",
+      "name": "Drive-By Attack",
+      "slug": "drive-by-attack",
+      "descriptionHash": "e36dccbd484e0c9fafe87a6d458aa4b5182344cf201a81c0bcbd4999e29818f4"
+    },
+    {
+      "id": "PP1gfRCc1YwnQGxp",
+      "name": "Dual Finisher",
+      "slug": "dual-finisher",
+      "descriptionHash": "2dd6b76441a007e02bdf99e6af6492769b5bd176d1aa6d9bb799f94f16945e07"
+    },
+    {
+      "id": "wOb5YGq1EcRn3lwl",
+      "name": "Duo Dragon Kick",
+      "slug": "duo-dragon-kick",
+      "descriptionHash": "9bcf4e961aca22109119918a3a5d41d13d50f8b8abd6a7c0609cca25c36ec586"
+    },
+    {
+      "id": "588O3jurogttvqgm",
+      "name": "Eidolon's Retort",
+      "slug": "eidolons-retort",
+      "descriptionHash": "f9122adc423c2212592bcea26d5ef333ba7e0012f20b8aa07ce984d123e7d8d2"
+    },
+    {
+      "id": "7GGxxoYNA4YrtML9",
+      "name": "Eidolon's Trample",
+      "slug": "eidolons-trample",
+      "descriptionHash": "f81da32127a9ff21b8b9ffa74376026966ebf0da9d84c1a00c65ca6cb10b3b27"
+    },
+    {
+      "id": "E7j1e8R9FXaFUq0V",
+      "name": "Elemental Artillery",
+      "slug": "elemental-artillery",
+      "descriptionHash": "651ce6cff7e0bb3de6c11d60eb2fe0170fd5aa25366f63f5ee55eb74576801c3"
+    },
+    {
+      "id": "GLHh9MWlcINLC6Q0",
+      "name": "Engine of Destruction",
+      "slug": "engine-of-destruction",
+      "descriptionHash": "4ba1398e8151ee0fb4424f20475f4d6b9eaebce56080858badd9fe64146a9806"
+    },
+    {
+      "id": "J7b0h6t09kS5e0R4",
+      "name": "Essence Overflow",
+      "slug": "essence-overflow",
+      "descriptionHash": "41cad4e7679375fc62533266c3ccefce6402e7e55b179222b902b53a780a231c"
+    },
+    {
+      "id": "3y459uK2qfWtS9q4",
+      "name": "Everstand Strike",
+      "slug": "everstand-strike",
+      "descriptionHash": "13397a8389ccaf79809cb368cd22373715aee564f02f66579a8646c5eeb146da"
+    },
+    {
+      "id": "UVsMJwHpQHjVZLTK",
+      "name": "Explosive Leap",
+      "slug": "explosive-leap",
+      "descriptionHash": "dbcadc696e05f3d724af86b37ffcc973a0dd17d086a7775b461695310be60764"
+    },
+    {
+      "id": "d7qKSoYixczsD5nL",
+      "name": "Exsanguinate",
+      "slug": "exsanguinate",
+      "descriptionHash": "e62eeb7b464ee06fcebb0caaa2f74144c1371e2e66f5509867c78883c8f5c6e2"
+    },
+    {
+      "id": "45L17b1vwUuE8mMc",
+      "name": "Faithful Stride",
+      "slug": "faithful-stride",
+      "descriptionHash": "755500a902975a30e5ada6fe302403cb3aac4b9f9a5a89d11f9455318d4fad87"
+    },
+    {
+      "id": "rdvwYaVN1Cnlm52A",
+      "name": "Ferocious Will",
+      "slug": "ferocious-will",
+      "descriptionHash": "606106224f9568f598ad162aa2708bf0affc96e2c1a320197178a1f29a95158c"
+    },
+    {
+      "id": "DoaqSxIFx5CSgBBE",
+      "name": "Fiend Slayer",
+      "slug": "fiend-slayer",
+      "descriptionHash": "6255215b11fcb86d3af40f86bbc3367448d8ea6b7452797650c8932d12dabd74"
+    },
+    {
+      "id": "aWGwGoodVZjcXkvE",
+      "name": "Five Breaths, One Death",
+      "slug": "five-breaths-one-death",
+      "descriptionHash": "7426235eb4e55cdaec4dfc14381165c5f68176ae195d2063168bde8e7859a71b"
+    },
+    {
+      "id": "yqspSW7eEQVvuYrC",
+      "name": "Flow of War",
+      "slug": "flow-of-war",
+      "descriptionHash": "03bbe4078fc76d41cf6faa1463195febcdab4383429fe8c722aab62be9ccc6b0"
+    },
+    {
+      "id": "1SbwsBbuCkkpgeYN",
+      "name": "Flying Flame",
+      "slug": "flying-flame",
+      "descriptionHash": "1dc0a3f9838a0a22bdbfbd462f1c5d98b3f1cc197aa6f482d8401fe0647368c5"
+    },
+    {
+      "id": "uyZ3gY7gtKCLiywR",
+      "name": "Following Smite",
+      "slug": "following-smite",
+      "descriptionHash": "fb170ccd3d1f6efdb4dacfb5c00ffa8ab0106a5729f057946b4191b940de6028"
+    },
+    {
+      "id": "9cq4j15EbVyrHKFX",
+      "name": "Forge-Blessed Shot",
+      "slug": "forge-blessed-shot",
+      "descriptionHash": "ecd7af9325c8f2822d4905007bd3728976e8eb779d89d132974d58ccce5085d0"
+    },
+    {
+      "id": "Bj0GvPgyPiC2kDH1",
+      "name": "Glider Form",
+      "slug": "glider-form",
+      "descriptionHash": "18a6425265ae84e4f20da7d02ab996f515a426388561a4f82ae077b7d627227b"
+    },
+    {
+      "id": "07TYbc4cOQi5tduT",
+      "name": "Godbreaker",
+      "slug": "godbreaker",
+      "descriptionHash": "e5112c057f3eddfd71e24a1c39fa483341507341d8ff80206fb3f5339b36daec"
+    },
+    {
+      "id": "rFaUJtB46scuAidY",
+      "name": "Graceful Poise",
+      "slug": "graceful-poise",
+      "descriptionHash": "29af62074c0421873b0a3c817e7c08ac32f03e4803576fd65ad3579a61994743"
+    },
+    {
+      "id": "cgHpgpUeZdMXyCY4",
+      "name": "Guardian Lion Roar",
+      "slug": "guardian-lion-roar",
+      "descriptionHash": "0a419b2f7c5b0cd6a6e5976c858f7d5595be38eba6709d8a5f80bcab9cdd72a9"
+    },
+    {
+      "id": "P07YFQCp3hT3OgJE",
+      "name": "Herald's Strike",
+      "slug": "heralds-strike",
+      "descriptionHash": "8c4efb5f321496250489bb4add41a5190e87ded73244c6b6d8afadb15f335cbb"
+    },
+    {
+      "id": "RGkuVy1EmCbKjLPj",
+      "name": "Hindquarter Kick",
+      "slug": "hindquarter-kick",
+      "descriptionHash": "2e41e10f0cf0a8d644894346a7e287eed43980e23790c6e7314408a60b846edb"
+    },
+    {
+      "id": "c3b7DhnDBC7YEgRG",
+      "name": "Hunted Shot",
+      "slug": "hunted-shot",
+      "descriptionHash": "fbc052425fd16dc5b6877f022f60cd932c3bc1bae62e92960d9636bb73b224f5"
+    },
+    {
+      "id": "OqHfUQQorVBkx34j",
+      "name": "Impossible Flurry",
+      "slug": "impossible-flurry",
+      "descriptionHash": "ddc470f911a861ac97956654104d0d0d1146e04387f1ba51dda809b5511b64bd"
+    },
+    {
+      "id": "E7dvSRTr9s2q8TKe",
+      "name": "In the Horde's Grip",
+      "slug": "in-the-hordes-grip",
+      "descriptionHash": "26971db6bec0827529e554f2f8b2f438d8b7caa3a44713f36b36d74b86cc1dff"
+    },
+    {
+      "id": "QcyaUiea6fp8c17U",
+      "name": "Into the Fray",
+      "slug": "into-the-fray",
+      "descriptionHash": "ff01eda2eed47477ee9fce65439a395dce06c953fcd39cf7e3cd384ea9e65894"
+    },
+    {
+      "id": "4l5SeMRn84HKslVA",
+      "name": "Killshot's Report",
+      "slug": "killshots-report",
+      "descriptionHash": "cfce83494cef00a7e36b7b2f4c92f44b7e44135278403bc8bf0885d713583f56"
+    },
+    {
+      "id": "XfCPAoNdF2XMnH7K",
+      "name": "Lethal Finisher",
+      "slug": "lethal-finisher",
+      "descriptionHash": "ba9ea1ead0c35b390b61bd103f94b0d3d9b98bcafc5680b68d5b079655de6796"
+    },
+    {
+      "id": "aUhx6xKOhPuK9fEZ",
+      "name": "Liberating Dive",
+      "slug": "liberating-dive",
+      "descriptionHash": "1c715610848cdebd108e66e9058d8f97aa6a9491594859d97fa798bd5ebac27f"
+    },
+    {
+      "id": "McnLGEZnUbtYCNDW",
+      "name": "Lock On",
+      "slug": "lock-on",
+      "descriptionHash": "77fd433610d359df26197b4db057c7a46e01d013930866d8479c981476f1b3da"
+    },
+    {
+      "id": "SjJ8BOy5sc8p2H5E",
+      "name": "Log Roll",
+      "slug": "log-roll",
+      "descriptionHash": "649236f554173e42158177fd9488c978046590b87ae5397f811dfdb95db6db17"
+    },
+    {
+      "id": "ZghzLmYgeE19GqjP",
+      "name": "Lunging Stance",
+      "slug": "lunging-stance",
+      "descriptionHash": "c4efc572680b447cf275576dc7f5adffd605ebeca3c059d1548a4e1d4ace500a"
+    },
+    {
+      "id": "pfos1p4SurbUgpjQ",
+      "name": "Magical Onslaught",
+      "slug": "magical-onslaught",
+      "descriptionHash": "c6e1226d81f31392845d038279bdd161d2a8423f9ddbd0e659f0543df3321ecf"
+    },
+    {
+      "id": "hCEoINqJ75ConqqA",
+      "name": "Mammoth Charge",
+      "slug": "mammoth-charge",
+      "descriptionHash": "75ea243613c03f29aa582bfb03aecad414fa644687a9fdc92f476c3e86ec9853"
+    },
+    {
+      "id": "awSvRVuAYKrYMDhy",
+      "name": "March of the Dead",
+      "slug": "march-of-the-dead",
+      "descriptionHash": "b89507e16750ff48dd7d3a3381169f3df0166980c98e964fe07d05d646b8509e"
+    },
+    {
+      "id": "y8l4omYxEWH7vihP",
+      "name": "Meddling Futures",
+      "slug": "meddling-futures",
+      "descriptionHash": "284270e363d99b2e1a4c355591fcd00f9be20343343bb5b910ac53038826494e"
+    },
+    {
+      "id": "BEqXsP6UqARzpEFD",
+      "name": "Megaton Strike",
+      "slug": "megaton-strike",
+      "descriptionHash": "39d02454fad076a4f7f2b322ff2b6af4b4d0296b1a3ba334ab585f892a63f5f1"
+    },
+    {
+      "id": "hlX7jYoS1s6srZC2",
+      "name": "Megavolt",
+      "slug": "megavolt",
+      "descriptionHash": "1fdef8c97adcbf797ba515e0d1e1a054bec28511fac5e207374a712329a48783"
+    },
+    {
+      "id": "s97nKj9Uye1KXr7A",
+      "name": "Meld into Eidolon",
+      "slug": "meld-into-eidolon",
+      "descriptionHash": "0e691a13aabef849a0f654603d284a64f4023e02c8b0746ea863af1aaadf62e2"
+    },
+    {
+      "id": "R7EaZPYtsy5H8lwn",
+      "name": "Merciless Rend",
+      "slug": "merciless-rend",
+      "descriptionHash": "4721e8b9942f11447c38640a28b9cab8eaa77c8add6f5df738cdedc16e31e1ed"
+    },
+    {
+      "id": "RzhnxgiAopWILCvs",
+      "name": "Multishot Stance",
+      "slug": "multishot-stance",
+      "descriptionHash": "a5d1acdc3abc91235045b184859b420361b54dcdea1e833f04ebca84ccc668dc"
+    },
+    {
+      "id": "lFc7HTNUCUemzSiV",
+      "name": "Open the Blazing Eye",
+      "slug": "open-the-blazing-eye",
+      "descriptionHash": "24562b304508e07e27b4e043b2e523b38dc058470da97c99bf8fe39d7930a09e"
+    },
+    {
+      "id": "E5ewlRE6Mh9ZqUMu",
+      "name": "Ostentatious Arrival",
+      "slug": "ostentatious-arrival",
+      "descriptionHash": "925eac30a087f202521adee0d9ef2f1b17ab3252e45bceebe66849263f61ee53"
+    },
+    {
+      "id": "eOwjwVAbl99ZTy5D",
+      "name": "Overwhelming Blow",
+      "slug": "overwhelming-blow",
+      "descriptionHash": "cef3172271eaeec421c63958d2c466f886aaf9f0dc4584dabcdce151d76d311b"
+    },
+    {
+      "id": "QBOhIDAIvpHUGSji",
+      "name": "Pack Movement",
+      "slug": "pack-movement",
+      "descriptionHash": "29fc5c5c046ce0a0304b2c9f1b02ff878d8cbeea13cc5402edb5eb990088981d"
+    },
+    {
+      "id": "zgljg4gVI6i1Fpb5",
+      "name": "Paired Shots",
+      "slug": "paired-shots",
+      "descriptionHash": "3844819678147d6a85a00affa14eb9a55e1738193d6fdb4802ba4dd2563a1467"
+    },
+    {
+      "id": "zvbS7gbB9tF7t3qH",
+      "name": "Piercing Jab",
+      "slug": "piercing-jab",
+      "descriptionHash": "c798103c72bba6da4bbc0289d432eaf384db8e81966ac94c14d72eab098815d4"
+    },
+    {
+      "id": "AiV2xFhYB90KHt2x",
+      "name": "Pinning Fire",
+      "slug": "pinning-fire",
+      "descriptionHash": "964d5fe3d2fd3124eedc647b5c09ee8bdaff30c678b2a60cdf9c004f01e078c7"
+    },
+    {
+      "id": "SXXyAwe9FGBwhJIW",
+      "name": "Power Slide",
+      "slug": "power-slide",
+      "descriptionHash": "a3e896aac61b6b3abf962d0125e0b44d63aecbe070bdc07bff97a3c27e3ec3f7"
+    },
+    {
+      "id": "i8MnyasCDo3j65Xd",
+      "name": "Quicken Heartbeat",
+      "slug": "quicken-heartbeat",
+      "descriptionHash": "7c26e18272e530902f69fef9bcd96668fe9c854650317f850fdb3c4b3ad44ba0"
+    },
+    {
+      "id": "l0pcURfMUGwnJgeU",
+      "name": "Quickening Banner",
+      "slug": "quickening-banner",
+      "descriptionHash": "d2ea3567c40145c2c2f5372aef24a3facfd90f5f35febfcd5fc1de78802f71ed"
+    },
+    {
+      "id": "6qIHbbT76zIVmeEt",
+      "name": "Rearing Display",
+      "slug": "rearing-display",
+      "descriptionHash": "3348616cde515a3969788bc963f0f8371adc4e2563fccd54582f616aefbca6c0"
+    },
+    {
+      "id": "PZb9yNbDzqd0QiVk",
+      "name": "Recoiling Relocation",
+      "slug": "recoiling-relocation",
+      "descriptionHash": "dcb66b24678f307f9159774d4e3a9925cd0bd0b52108311b11e280742160b94f"
+    },
+    {
+      "id": "9gEVyUjYrDLUWieq",
+      "name": "Rend Mimicry",
+      "slug": "rend-mimicry",
+      "descriptionHash": "a0dda628b9f8d0d3db4a2758beea20a8fd73e570e71ca473d8ecc259d11e0f53"
+    },
+    {
+      "id": "A1RcZ9mhYBZKzMUU",
+      "name": "Repel Assault",
+      "slug": "repel-assault",
+      "descriptionHash": "129ce927c157bcdd142d74d15f2cf5fd17640a6d7483bf49b6952afb740caf2b"
+    },
+    {
+      "id": "y7SYHv0DWkkwjT95",
+      "name": "Retaliatory Cleansing",
+      "slug": "retaliatory-cleansing",
+      "descriptionHash": "e23a76aa7470665907bd6cde363e05ab9030a940748443e61af134dd249c6910"
+    },
+    {
+      "id": "tRHjUCl0xqG97nok",
+      "name": "Ricochet Stance (Fighter)",
+      "slug": "ricochet-stance-fighter",
+      "descriptionHash": "1a14ae22452a4be4c38768e06ea60f239e006c8003132ce4121d45af1f97a911"
+    },
+    {
+      "id": "RsNvCSrCN7czHC0G",
+      "name": "Ricochet Stance (Rogue)",
+      "slug": "ricochet-stance-rogue",
+      "descriptionHash": "1a14ae22452a4be4c38768e06ea60f239e006c8003132ce4121d45af1f97a911"
+    },
+    {
+      "id": "obGGzuPcgO5Xiz6P",
+      "name": "Searing Restoration",
+      "slug": "searing-restoration",
+      "descriptionHash": "8ddd9012ba6f26ae43c7123258b09edd80731aab06cc042962b60fa1e02b8905"
+    },
+    {
+      "id": "GBFHOgMDZlNas6DF",
+      "name": "Second Sight",
+      "slug": "second-sight",
+      "descriptionHash": "75a5ffc1dd54b4d35bf5fb6bd132f477a8cfe86d83c6df8e424c3e456b3240a6"
+    },
+    {
+      "id": "Dezo2txVNhMKDcNz",
+      "name": "Shadowpiercing Charge",
+      "slug": "shadowpiercing-charge",
+      "descriptionHash": "9059d25a87bce4528678e9ded300b414b83b7a9cedba2d2d6284da99febee80c"
+    },
+    {
+      "id": "AYByEEgPXk3QbCiF",
+      "name": "Silent Sting",
+      "slug": "silent-sting",
+      "descriptionHash": "d3bacd916cc80b60834b94fa0bbc973400c9faf98d6f29018c98a5d5ba99e61a"
+    },
+    {
+      "id": "bI0PWJ4c3AOcFDWN",
+      "name": "Silk Bracelet",
+      "slug": "silk-bracelet",
+      "descriptionHash": "e895de8b2096f6b3224d660d5623965dea8855f3a78e996bf78bf3a84865208e"
+    },
+    {
+      "id": "gepQGtV8Ftr0JJ6O",
+      "name": "Skyseeker",
+      "slug": "skyseeker",
+      "descriptionHash": "c71ea55490884886d5d20e9f8de42ea7aaa3cc91ff67a2a528ef761e112c05f5"
+    },
+    {
+      "id": "O2iFrAt7hyELJlIR",
+      "name": "Slip the Grasp",
+      "slug": "slip-the-grasp",
+      "descriptionHash": "57899203740cc6ddfb9e72d05436f66dfcc56e8c0d3fb85337bfcaca5697de2f"
+    },
+    {
+      "id": "wixpmBQ5dNm3VMFk",
+      "name": "Spear of Doom",
+      "slug": "spear-of-doom",
+      "descriptionHash": "6630e91542ddd112ce00befa867bb472d1e428f5ed3ffec96cb7cf6ba154a4d7"
+    },
+    {
+      "id": "al952tuRDJJY0ENx",
+      "name": "Spinning Stand",
+      "slug": "spinning-stand",
+      "descriptionHash": "8d1171ad241a93ef114f7529b609bc8871ab3814a72c422c2bdc1ac097129a6f"
+    },
+    {
+      "id": "ho5qkbgW4XxvkXuC",
+      "name": "Spirit of the Blade",
+      "slug": "spirit-of-the-blade",
+      "descriptionHash": "b89761220b5b5066cdb0d581a2f9076891ec6f2357d16c9535787d28d0def470"
+    },
+    {
+      "id": "EJvmqVFxR3xn7QiR",
+      "name": "Split Spellstrike",
+      "slug": "split-spellstrike",
+      "descriptionHash": "7572f6e3025be0a026bc470a85a99ad9c2b895a9b80ca8598821b720a828a13b"
+    },
+    {
+      "id": "cW88fH1HBM5AlV4M",
+      "name": "Steed's Toppling Strike",
+      "slug": "steeds-toppling-strike",
+      "descriptionHash": "ae7237d3e0e1414b6ab4293e5a184466186fa87c93c0b2f80f085d77316e520c"
+    },
+    {
+      "id": "pFKfYsxBWdUlmU6A",
+      "name": "Strafing Breath",
+      "slug": "strafing-breath",
+      "descriptionHash": "199fdf2dcf09e37175e5b2cadea3998d2ab74050c0a9097bc2e61362e495f1fd"
+    },
+    {
+      "id": "tqbldgibtisKjfgf",
+      "name": "Surprising Leap",
+      "slug": "surprising-leap",
+      "descriptionHash": "76104d7346991a2018ebf47906a881293eaf64f9d2973a536d09a39a95e5d624"
+    },
+    {
+      "id": "qmx8QwVepqI9FqiD",
+      "name": "Tandem Movement",
+      "slug": "tandem-movement",
+      "descriptionHash": "101f3cd0b57a39f1087dce9209484a80668a99edd5f7ab2b75831a70bf494361"
+    },
+    {
+      "id": "exVjUkpAdbzJsxxg",
+      "name": "Tandem Strike",
+      "slug": "tandem-strike",
+      "descriptionHash": "72d48bbb03054120cca70a6f85d9f1353612aeff6cbbf3f376fd1eb2c6ed3a61"
+    },
+    {
+      "id": "uMnXk55zlwx26zeW",
+      "name": "Tempo Shift",
+      "slug": "tempo-shift",
+      "descriptionHash": "4c7315bada11a69d9353ed218f28dd43962f847b22510efbce7011e8e97b572f"
+    },
+    {
+      "id": "rkViV16nuFbm6hPj",
+      "name": "Thunderous Landing",
+      "slug": "thunderous-landing",
+      "descriptionHash": "edf654fd92ab42d66ac48fe9743e87a72320cea1ffb71c6a91ec54b894f25eed"
+    },
+    {
+      "id": "DS4UpUyUDraaJfIu",
+      "name": "Tidal Wave",
+      "slug": "tidal-wave",
+      "descriptionHash": "2efcfc01f67d942ce6de4d6c693e3d3bb424987f24bbd47d19d173057d533e8b"
+    },
+    {
+      "id": "xM0vwRFLZgmmI4YJ",
+      "name": "Time Dilation Cascade",
+      "slug": "time-dilation-cascade",
+      "descriptionHash": "63296bae7872903fc4475b97881094bb819811057a4ac2c07e5ce12d10f12be1"
+    },
+    {
+      "id": "1fH3M3XaUWWOJZFM",
+      "name": "To War!",
+      "slug": "to-war",
+      "descriptionHash": "142f312f595394004eeeee24cf43033a76c917bbee208ab5ad6034e6c5241ed7"
+    },
+    {
+      "id": "t6sey3cyV8n7a78l",
+      "name": "Trampling Charge",
+      "slug": "trampling-charge",
+      "descriptionHash": "89898bfed715839e588599a5a8a4cf3039db6efb75f32132af3f1a821f15da0d"
+    },
+    {
+      "id": "62glnJI2o0KnHULB",
+      "name": "Triangle Shot",
+      "slug": "triangle-shot",
+      "descriptionHash": "3744ed46ca54dffa56b22c059127ffe7c6012962385f7a3224388094bdc4458f"
+    },
+    {
+      "id": "A7uJCDT9odsuwlqW",
+      "name": "Triggerbrand Blitz",
+      "slug": "triggerbrand-blitz",
+      "descriptionHash": "b0062a457e841953c10b8710d49876f269f13eecd1b8defede626691e35defbf"
+    },
+    {
+      "id": "aWk0JaqVaUf2Cz9a",
+      "name": "Twin Shot Knockdown",
+      "slug": "twin-shot-knockdown",
+      "descriptionHash": "d16ac5e7f50c53e12cedf55f1fa16829074dbea0659d5284a164245ff18e6c21"
+    },
+    {
+      "id": "Gw0wGXikhAhiGoud",
+      "name": "Twin Takedown",
+      "slug": "twin-takedown",
+      "descriptionHash": "edc6d6bab469f7e6c0af02fb7c9b26368563b010f2fd043d4ea7e72fdcef83df"
+    },
+    {
+      "id": "M2fjNnh8yRAnGFyH",
+      "name": "Unified Stance",
+      "slug": "unified-stance",
+      "descriptionHash": "1944b29db3b14168cb70ede280bed7a509d02df18399367377dcc3e668e04ad2"
+    },
+    {
+      "id": "km8ZBNKIlvnJexgc",
+      "name": "Vaulting Gallop",
+      "slug": "vaulting-gallop",
+      "descriptionHash": "055dd85692535971a4a0cb46aadf6990990843d88f71738d311da5b3384e7137"
+    },
+    {
+      "id": "pDkIUYQh5GGW50r3",
+      "name": "Vindictive Thoughts",
+      "slug": "vindictive-thoughts",
+      "descriptionHash": "b833b9c838eabe288ced5954c357a52639233ac2856fe31ca4d1f7724b23f1fd"
+    },
+    {
+      "id": "fns6SMiYrUeL6cnx",
+      "name": "Virulent Strike",
+      "slug": "virulent-strike",
+      "descriptionHash": "8ca12ba684cd69c458037d51c55bc1ff0c6204f6b15a380cd9ae19af99936618"
+    },
+    {
+      "id": "9xcvJn3lWXwbkU52",
+      "name": "Watch This!",
+      "slug": "watch-this",
+      "descriptionHash": "78f705c7922b59be69516e4a3b7c85d7a229f075e35986adaaf47cb9a691cd8b"
+    },
+    {
+      "id": "w0nSRBNwexM5Dh0D",
+      "name": "Whirling Throw",
+      "slug": "whirling-throw",
+      "descriptionHash": "4e1b70057c7f2d02e012c217db3aff6590e30d3c0647d9cfe7fdc1972c54cdaf"
+    },
+    {
+      "id": "XenKYUBMWZQQ7niM",
+      "name": "Whirlwind Toss",
+      "slug": "whirlwind-toss",
+      "descriptionHash": "1d86571fbdd0bf2ef7841dab757bd56f58de9af5a6983353ea6e4a70fae8403c"
+    },
+    {
+      "id": "hmpkzEQV6kTFxPan",
+      "name": "Wither Away",
+      "slug": "wither-away",
+      "descriptionHash": "4976f2a93879fb922122aa33ded3c9e0cc33d18085ebbeaff1b3337e724720f5"
+    },
+    {
+      "id": "4znZkQYxrSg7RMxb",
+      "name": "You Can't Hide From Us",
+      "slug": "you-cant-hide-from-us",
+      "descriptionHash": "9ce7e6e7842de6b4e895c72b2215d8a354a2ae83e3a1c370a597fe3a0be91657"
+    },
+    {
+      "id": "eaw645inkbHNylgC",
+      "name": "Zealous Inevitability",
+      "slug": "zealous-inevitability",
+      "descriptionHash": "6055c5d581f7f83953ae80189ac3941cd82967854e48e43f589604ad2125b137"
+    }
+  ],
+  "weapons": [
+    {
+      "id": "jC8GmH0Un6vDxdMj",
+      "name": "Acid Flask (Greater)",
+      "slug": "acid-flask-greater",
+      "descriptionHash": "f055570adb1d60fe"
+    },
+    {
+      "id": "M1k5QQc1qQLxzyCK",
+      "name": "Acid Flask (Lesser)",
+      "slug": "acid-flask-lesser",
+      "descriptionHash": "87f4844f1883c834"
+    },
+    {
+      "id": "GttLYMT2welSpwCd",
+      "name": "Acid Flask (Major)",
+      "slug": "acid-flask-major",
+      "descriptionHash": "98a0c06d69c1b7ab"
+    },
+    {
+      "id": "SgtqZxt26BdjUmEB",
+      "name": "Acid Flask (Moderate)",
+      "slug": "acid-flask-moderate",
+      "descriptionHash": "ce59e628829d4f15"
+    },
+    {
+      "id": "5XImTvAN58GhnNIE",
+      "name": "Aether Marbles (Greater)",
+      "slug": "aether-marbles-greater",
+      "descriptionHash": "1649175eacc36e42"
+    },
+    {
+      "id": "JMu3VUwhQu1SLSFd",
+      "name": "Aether Marbles (Lesser)",
+      "slug": "aether-marbles-lesser",
+      "descriptionHash": "4b28b33b62bf6a80"
+    },
+    {
+      "id": "67pe75mLVekaVqZH",
+      "name": "Aether Marbles (Moderate)",
+      "slug": "aether-marbles-moderate",
+      "descriptionHash": "398743c2bfb05ee3"
+    },
+    {
+      "id": "n5yTlTs63o53n3k6",
+      "name": "Alchemist's Fire (Greater)",
+      "slug": "alchemists-fire-greater",
+      "descriptionHash": "01ebb197eb2e27a7"
+    },
+    {
+      "id": "yd3kEK21YknZLlcT",
+      "name": "Alchemist's Fire (Lesser)",
+      "slug": "alchemists-fire-lesser",
+      "descriptionHash": "24d8446f97cf424e"
+    },
+    {
+      "id": "cLZrOihPht5M7eTw",
+      "name": "Alchemist's Fire (Major)",
+      "slug": "alchemists-fire-major",
+      "descriptionHash": "6f091c2c52366c8a"
+    },
+    {
+      "id": "gWr4q4HiyGhETA8H",
+      "name": "Alchemist's Fire (Moderate)",
+      "slug": "alchemists-fire-moderate",
+      "descriptionHash": "1469e72ab0e7a4be"
+    },
+    {
+      "id": "Nqy9whrqYrChgkHh",
+      "name": "Atrophy Bomb (Greater)",
+      "slug": "atrophy-bomb-greater",
+      "descriptionHash": "31b8a6d1bdef551b"
+    },
+    {
+      "id": "Ey9g17eK5KxeuOIR",
+      "name": "Atrophy Bomb (Lesser)",
+      "slug": "atrophy-bomb-lesser",
+      "descriptionHash": "832e3c3174f852df"
+    },
+    {
+      "id": "HuVDfEm6U7Quq9Y4",
+      "name": "Atrophy Bomb (Major)",
+      "slug": "atrophy-bomb-major",
+      "descriptionHash": "95289157ecdbf117"
+    },
+    {
+      "id": "Jgi6iWyH9ihgXC7w",
+      "name": "Atrophy Bomb (Moderate)",
+      "slug": "atrophy-bomb-moderate",
+      "descriptionHash": "9a43b3b6964486a9"
+    },
+    {
+      "id": "OUOSAKU1tSipWtty",
+      "name": "Bioluminescence Bomb",
+      "slug": "bioluminescence-bomb",
+      "descriptionHash": "9a6ab4fe5d9a6cfe"
+    },
+    {
+      "id": "dsMkvuLgpOOGLWDy",
+      "name": "Blasting Stone (Greater)",
+      "slug": "blasting-stone-greater",
+      "descriptionHash": "febf1512707fa565"
+    },
+    {
+      "id": "Xnqglykl3Cif8rN9",
+      "name": "Blasting Stone (Lesser)",
+      "slug": "blasting-stone-lesser",
+      "descriptionHash": "49ecba19ab6a6909"
+    },
+    {
+      "id": "IuGydh0En8LbfnWo",
+      "name": "Blasting Stone (Major)",
+      "slug": "blasting-stone-major",
+      "descriptionHash": "2d161a8bfb22c3ca"
+    },
+    {
+      "id": "JOaELkzLWTywhn5Z",
+      "name": "Blasting Stone (Moderate)",
+      "slug": "blasting-stone-moderate",
+      "descriptionHash": "3368f6eaf04eb7a5"
+    },
+    {
+      "id": "LhMXIGelSrFPYild",
+      "name": "Blight Bomb (Greater)",
+      "slug": "blight-bomb-greater",
+      "descriptionHash": "1517a9002a6631ed"
+    },
+    {
+      "id": "j8ajvNqyyQGBpBch",
+      "name": "Blight Bomb (Lesser)",
+      "slug": "blight-bomb-lesser",
+      "descriptionHash": "37727e06cd30b572"
+    },
+    {
+      "id": "sJjuv1991SZ7DWWD",
+      "name": "Blight Bomb (Major)",
+      "slug": "blight-bomb-major",
+      "descriptionHash": "23af4efa5c17b2fd"
+    },
+    {
+      "id": "158vwM1andv8DbRI",
+      "name": "Blight Bomb (Moderate)",
+      "slug": "blight-bomb-moderate",
+      "descriptionHash": "11dc54e687c78727"
+    },
+    {
+      "id": "kIExO59KkiXZUmto",
+      "name": "Blightburn Bomb",
+      "slug": "blightburn-bomb",
+      "descriptionHash": "04ca418c3ae57964"
+    },
+    {
+      "id": "ZrXw7hAH8dQOGAYL",
+      "name": "Blightburn Bomb (Greater)",
+      "slug": "blightburn-bomb-greater",
+      "descriptionHash": "b27610c776ed156c"
+    },
+    {
+      "id": "kuHr6dEOxN0WAnUP",
+      "name": "Blood Bomb (Greater)",
+      "slug": "blood-bomb-greater",
+      "descriptionHash": "c4d13e4f5c0c880b"
+    },
+    {
+      "id": "wdJ0AFtkJVycVRjX",
+      "name": "Blood Bomb (Lesser)",
+      "slug": "blood-bomb-lesser",
+      "descriptionHash": "ddbd86ce27951a13"
+    },
+    {
+      "id": "3SZAUzXG6MWYWoXZ",
+      "name": "Blood Bomb (Major)",
+      "slug": "blood-bomb-major",
+      "descriptionHash": "3a1185c6a4717a3b"
+    },
+    {
+      "id": "ODXNXvcLQGBw6kXj",
+      "name": "Blood Bomb (Moderate)",
+      "slug": "blood-bomb-moderate",
+      "descriptionHash": "3e0aa921a9807d16"
+    },
+    {
+      "id": "y5bkwzClxfs6gpDn",
+      "name": "Boomerang",
+      "slug": "boomerang",
+      "descriptionHash": "8af4672333d9dc9e"
+    },
+    {
+      "id": "r2iTRbt1zpkAqHj2",
+      "name": "Bottled Lightning (Greater)",
+      "slug": "bottled-lightning-greater",
+      "descriptionHash": "13331ac8c2792f32"
+    },
+    {
+      "id": "AFR01HVd7DcZvkpP",
+      "name": "Bottled Lightning (Lesser)",
+      "slug": "bottled-lightning-lesser",
+      "descriptionHash": "5d5e91ef19f39843"
+    },
+    {
+      "id": "rpbbfkexLhtadBDV",
+      "name": "Bottled Lightning (Major)",
+      "slug": "bottled-lightning-major",
+      "descriptionHash": "74d975095635f8a0"
+    },
+    {
+      "id": "97QyNEOAyYLdGaYc",
+      "name": "Bottled Lightning (Moderate)",
+      "slug": "bottled-lightning-moderate",
+      "descriptionHash": "10343b29f68881bd"
+    },
+    {
+      "id": "AH0u9DDvs4napvdh",
+      "name": "Bottled Sunlight (Greater)",
+      "slug": "bottled-sunlight-greater",
+      "descriptionHash": "e35c6d69e3717076"
+    },
+    {
+      "id": "iGT4UeQq3YFcNpEb",
+      "name": "Bottled Sunlight (Lesser)",
+      "slug": "bottled-sunlight-lesser",
+      "descriptionHash": "f9b8d372de856502"
+    },
+    {
+      "id": "xoucExiZTvCbjWMB",
+      "name": "Bottled Sunlight (Major)",
+      "slug": "bottled-sunlight-major",
+      "descriptionHash": "fc38d057bf25978f"
+    },
+    {
+      "id": "wIQjJGLZOKCY1es9",
+      "name": "Bottled Sunlight (Moderate)",
+      "slug": "bottled-sunlight-moderate",
+      "descriptionHash": "963965dc3505306d"
+    },
+    {
+      "id": "sjOkiftTv4KbR2c0",
+      "name": "Boulder Seed",
+      "slug": "boulder-seed",
+      "descriptionHash": "ee659c00859004ee"
+    },
+    {
+      "id": "OHwsumgfO1oyH7KL",
+      "name": "Boulder Seed (Greater)",
+      "slug": "boulder-seed-greater",
+      "descriptionHash": "a8eceb7fec81f6cd"
+    },
+    {
+      "id": "h2UebueRKfVLwKOa",
+      "name": "Cane of the Maelstrom",
+      "slug": "cane-of-the-maelstrom",
+      "descriptionHash": "50cafb5dbbd750bb"
+    },
+    {
+      "id": "ivaL0xt33k6QNwQK",
+      "name": "Crystal Shards (Greater)",
+      "slug": "crystal-shards-greater",
+      "descriptionHash": "9d4514f5f4dd8a10"
+    },
+    {
+      "id": "V2knI4GpdJYLupjg",
+      "name": "Crystal Shards (Major)",
+      "slug": "crystal-shards-major",
+      "descriptionHash": "f7e4b84cce5d2e87"
+    },
+    {
+      "id": "V4wgOWYmHlbSZsVG",
+      "name": "Crystal Shards (Moderate)",
+      "slug": "crystal-shards-moderate",
+      "descriptionHash": "bc8ba2cd2b19a110"
+    },
+    {
+      "id": "tcHzNhjP6BesejWT",
+      "name": "Defoliation Bomb (Greater)",
+      "slug": "defoliation-bomb-greater",
+      "descriptionHash": "388bea8110e15863"
+    },
+    {
+      "id": "M1P2Tn4e9L92Wadw",
+      "name": "Defoliation Bomb (Lesser)",
+      "slug": "defoliation-bomb-lesser",
+      "descriptionHash": "cfe1b3ca5badee6a"
+    },
+    {
+      "id": "Ey3AowmoC3Fo0OJ9",
+      "name": "Defoliation Bomb (Major)",
+      "slug": "defoliation-bomb-major",
+      "descriptionHash": "ecd1873b3cb94c46"
+    },
+    {
+      "id": "bPWqAnZAoDPko7sw",
+      "name": "Defoliation Bomb (Moderate)",
+      "slug": "defoliation-bomb-moderate",
+      "descriptionHash": "1364196f5046c268"
+    },
+    {
+      "id": "kpJmjm843vaMZjIu",
+      "name": "Dread Ampoule (Greater)",
+      "slug": "dread-ampoule-greater",
+      "descriptionHash": "e2bb6fbef68ab1aa"
+    },
+    {
+      "id": "ds0OdA989ZZw9km1",
+      "name": "Dread Ampoule (Lesser)",
+      "slug": "dread-ampoule-lesser",
+      "descriptionHash": "0f23781357f50a89"
+    },
+    {
+      "id": "MCHYtxP8E7njLC3s",
+      "name": "Dread Ampoule (Major)",
+      "slug": "dread-ampoule-major",
+      "descriptionHash": "8227d6b6c871e866"
+    },
+    {
+      "id": "IvFEJqp2MUew65nQ",
+      "name": "Dread Ampoule (Moderate)",
+      "slug": "dread-ampoule-moderate",
+      "descriptionHash": "d6fbefc88da97c01"
+    },
+    {
+      "id": "mE2MpteGPmGeYbOL",
+      "name": "Durian Bomb (Greater)",
+      "slug": "durian-bomb-greater",
+      "descriptionHash": "0abd011c6aa6057a"
+    },
+    {
+      "id": "RIhdmH0yMzht7OD5",
+      "name": "Durian Bomb (Lesser)",
+      "slug": "durian-bomb-lesser",
+      "descriptionHash": "635db378535732af"
+    },
+    {
+      "id": "9crpQ6bymgYcKGjq",
+      "name": "Durian Bomb (Major)",
+      "slug": "durian-bomb-major",
+      "descriptionHash": "6bd47e97c3024a8d"
+    },
+    {
+      "id": "B9BYJQt5Jlwv2cxv",
+      "name": "Durian Bomb (Moderate)",
+      "slug": "durian-bomb-moderate",
+      "descriptionHash": "d37d9560af01bab2"
+    },
+    {
+      "id": "xZFT5JdEvDi7q467",
+      "name": "Dwarven Daisy (Lesser)",
+      "slug": "dwarven-daisy-lesser",
+      "descriptionHash": "72583f7716698572"
+    },
+    {
+      "id": "Do4rJuA1nhr2TTiF",
+      "name": "Dwarven Daisy (Moderate)",
+      "slug": "dwarven-daisy-moderate",
+      "descriptionHash": "881acbfd834ff4c8"
+    },
+    {
+      "id": "intVPcEzbE9o4NQd",
+      "name": "Frost Vial (Greater)",
+      "slug": "frost-vial-greater",
+      "descriptionHash": "0d4bcabe64626ac3"
+    },
+    {
+      "id": "EpxmUtLpCkE8R6KJ",
+      "name": "Frost Vial (Lesser)",
+      "slug": "frost-vial-lesser",
+      "descriptionHash": "96036b9d97204a69"
+    },
+    {
+      "id": "4DJQID8GIlxQ7b9C",
+      "name": "Frost Vial (Major)",
+      "slug": "frost-vial-major",
+      "descriptionHash": "cabc325f8d3b90b9"
+    },
+    {
+      "id": "nVvH1ZcM7OwIVIs8",
+      "name": "Frost Vial (Moderate)",
+      "slug": "frost-vial-moderate",
+      "descriptionHash": "a395feba7a5374d1"
+    },
+    {
+      "id": "28osNZINXLWzqzUL",
+      "name": "Ghost Charge (Greater)",
+      "slug": "ghost-charge-greater",
+      "descriptionHash": "a8add6caff33758b"
+    },
+    {
+      "id": "LNd5u19GqC51ngby",
+      "name": "Ghost Charge (Lesser)",
+      "slug": "ghost-charge-lesser",
+      "descriptionHash": "0802fda7411e01a9"
+    },
+    {
+      "id": "i7bJcib5TUJKOd4Z",
+      "name": "Ghost Charge (Major)",
+      "slug": "ghost-charge-major",
+      "descriptionHash": "ee4ce12c5360e38c"
+    },
+    {
+      "id": "Wf94e8YNhZdIvWc9",
+      "name": "Ghost Charge (Moderate)",
+      "slug": "ghost-charge-moderate",
+      "descriptionHash": "a06d46e31d4d0972"
+    },
+    {
+      "id": "5Qkz4RVJr2Kx3RL6",
+      "name": "Glue Bomb (Greater)",
+      "slug": "glue-bomb-greater",
+      "descriptionHash": "6e65e12ce8b2ce4c"
+    },
+    {
+      "id": "T6Appwwl6nUl56Xj",
+      "name": "Glue Bomb (Lesser)",
+      "slug": "glue-bomb-lesser",
+      "descriptionHash": "7e643df0cba80c48"
+    },
+    {
+      "id": "BxJNWWvpxacDIsdt",
+      "name": "Glue Bomb (Major)",
+      "slug": "glue-bomb-major",
+      "descriptionHash": "24f5480d268656a1"
+    },
+    {
+      "id": "evBPzM1VsuYcoenn",
+      "name": "Glue Bomb (Moderate)",
+      "slug": "glue-bomb-moderate",
+      "descriptionHash": "f083462fb53ce9b4"
+    },
+    {
+      "id": "SAtG9jrqey2y8EGb",
+      "name": "Goo Grenade (Greater)",
+      "slug": "goo-grenade-greater",
+      "descriptionHash": "d9f9838e060843f1"
+    },
+    {
+      "id": "t2A5PzInAqmErLzK",
+      "name": "Goo Grenade (Lesser)",
+      "slug": "goo-grenade-lesser",
+      "descriptionHash": "530cc9800257838b"
+    },
+    {
+      "id": "W0RWd2E0jkF2ZXhf",
+      "name": "Goo Grenade (Major)",
+      "slug": "goo-grenade-major",
+      "descriptionHash": "7cf4a1505c612e96"
+    },
+    {
+      "id": "wi97vRj8IXx3wLmZ",
+      "name": "Goo Grenade (Moderate)",
+      "slug": "goo-grenade-moderate",
+      "descriptionHash": "834d63f14d587d09"
+    },
+    {
+      "id": "zbwV685YkIVxPNWE",
+      "name": "Inflammation Flask (Greater)",
+      "slug": "inflammation-flask-greater",
+      "descriptionHash": "6f4ea94dd3495bdd"
+    },
+    {
+      "id": "IGwM0rPKZt7vZ7zq",
+      "name": "Inflammation Flask (Lesser)",
+      "slug": "inflammation-flask-lesser",
+      "descriptionHash": "826f88da7b0a6e9e"
+    },
+    {
+      "id": "AOGJdyn5J0nB9ThV",
+      "name": "Inflammation Flask (Major)",
+      "slug": "inflammation-flask-major",
+      "descriptionHash": "b0a2afc67b258454"
+    },
+    {
+      "id": "A3uCOubAKyCSRPRv",
+      "name": "Inflammation Flask (Moderate)",
+      "slug": "inflammation-flask-moderate",
+      "descriptionHash": "3a7cc14bcbbd7183"
+    },
+    {
+      "id": "QhUTsTnbehv1ft9u",
+      "name": "Junk Bomb (Greater)",
+      "slug": "junk-bomb-greater",
+      "descriptionHash": "6cd5720cbfb60ac0"
+    },
+    {
+      "id": "WJMHv8xXowLNP2Di",
+      "name": "Junk Bomb (Lesser)",
+      "slug": "junk-bomb-lesser",
+      "descriptionHash": "95a5f89434c6e365"
+    },
+    {
+      "id": "K291ECjrRssmH93Q",
+      "name": "Junk Bomb (Major)",
+      "slug": "junk-bomb-major",
+      "descriptionHash": "a02489ac3eb8737d"
+    },
+    {
+      "id": "1MuIK1TnzdKuqZJO",
+      "name": "Junk Bomb (Moderate)",
+      "slug": "junk-bomb-moderate",
+      "descriptionHash": "ecabfb4af121dfc9"
+    },
+    {
+      "id": "DBQ68Evl8PdLAVmt",
+      "name": "Lodestone Bomb",
+      "slug": "lodestone-bomb",
+      "descriptionHash": "95577a7515a6c1c4"
+    },
+    {
+      "id": "APJ0NWJ4DYUXNpNm",
+      "name": "Lodestone Bomb (Greater)",
+      "slug": "lodestone-bomb-greater",
+      "descriptionHash": "c52bc5faa0f5ac5b"
+    },
+    {
+      "id": "BjSx9EkQNnuHZbvg",
+      "name": "Macuahuitl",
+      "slug": "macuahuitl",
+      "descriptionHash": "468ba8a74d83b850"
+    },
+    {
+      "id": "9j3sqH9sG5mUe6rI",
+      "name": "Mud Bomb (Greater)",
+      "slug": "mud-bomb-greater",
+      "descriptionHash": "1137b781905ba984"
+    },
+    {
+      "id": "HtBqmBFYuxJp2QiZ",
+      "name": "Mud Bomb (Lesser)",
+      "slug": "mud-bomb-lesser",
+      "descriptionHash": "7dc8888402fd0d09"
+    },
+    {
+      "id": "Djp91D21I6QW6dlw",
+      "name": "Mud Bomb (Major)",
+      "slug": "mud-bomb-major",
+      "descriptionHash": "79a43e9b9ae963af"
+    },
+    {
+      "id": "0U4qXSxfZDMIJDtA",
+      "name": "Mud Bomb (Moderate)",
+      "slug": "mud-bomb-moderate",
+      "descriptionHash": "f7a099b152a81637"
+    },
+    {
+      "id": "YZ8WY378H1WFaD6s",
+      "name": "Nail Bomb (Greater)",
+      "slug": "nail-bomb-greater",
+      "descriptionHash": "a822e2302c4c3e8a"
+    },
+    {
+      "id": "2zDOPJy5goJjRREN",
+      "name": "Nail Bomb (Lesser)",
+      "slug": "nail-bomb-lesser",
+      "descriptionHash": "970d0816d1c5220f"
+    },
+    {
+      "id": "qmFVrqzvkGU9g5lt",
+      "name": "Nail Bomb (Major)",
+      "slug": "nail-bomb-major",
+      "descriptionHash": "c2f53279ededff3f"
+    },
+    {
+      "id": "19njoGhqVm3UYsn1",
+      "name": "Nail Bomb (Moderate)",
+      "slug": "nail-bomb-moderate",
+      "descriptionHash": "675f0561a3e7470c"
+    },
+    {
+      "id": "u41wQz3bgu6J1XKo",
+      "name": "Necrotic Bomb (Greater)",
+      "slug": "necrotic-bomb-greater",
+      "descriptionHash": "3388e809586482a5"
+    },
+    {
+      "id": "8JnOYyTdatqRnAV4",
+      "name": "Necrotic Bomb (Lesser)",
+      "slug": "necrotic-bomb-lesser",
+      "descriptionHash": "0c92fb4b57a941fa"
+    },
+    {
+      "id": "RC8EmoFiMITFUopr",
+      "name": "Necrotic Bomb (Major)",
+      "slug": "necrotic-bomb-major",
+      "descriptionHash": "f2620b32dad57ab3"
+    },
+    {
+      "id": "moBSgma1rtJqh7Rp",
+      "name": "Necrotic Bomb (Moderate)",
+      "slug": "necrotic-bomb-moderate",
+      "descriptionHash": "0c961cb3f31f7627"
+    },
+    {
+      "id": "TvEnLYsYjijBe1Cg",
+      "name": "Pernicious Spore Bomb (Greater)",
+      "slug": "pernicious-spore-bomb-greater",
+      "descriptionHash": "1bff19c222d9e0dd"
+    },
+    {
+      "id": "841G24r5ITFYk5zQ",
+      "name": "Pernicious Spore Bomb (Lesser)",
+      "slug": "pernicious-spore-bomb-lesser",
+      "descriptionHash": "b409b9ae873bcb3f"
+    },
+    {
+      "id": "4Thv3O2smZ8AHNjP",
+      "name": "Pernicious Spore Bomb (Major)",
+      "slug": "pernicious-spore-bomb-major",
+      "descriptionHash": "28f4bdda8405de56"
+    },
+    {
+      "id": "cbgJbCMU330TVmmO",
+      "name": "Pernicious Spore Bomb (Moderate)",
+      "slug": "pernicious-spore-bomb-moderate",
+      "descriptionHash": "89c72c5a4ac62fd7"
+    },
+    {
+      "id": "ZVhSxudgfnSO4AMd",
+      "name": "Peshpine Grenade (Greater)",
+      "slug": "peshpine-grenade-greater",
+      "descriptionHash": "724c9899cf5d5235"
+    },
+    {
+      "id": "c124j3cpv8rl5MLp",
+      "name": "Peshpine Grenade (Lesser)",
+      "slug": "peshpine-grenade-lesser",
+      "descriptionHash": "9f26f73cfcc8d12f"
+    },
+    {
+      "id": "b1gx7ZhuFJAyJOo8",
+      "name": "Peshpine Grenade (Major)",
+      "slug": "peshpine-grenade-major",
+      "descriptionHash": "df65deb12c3628ac"
+    },
+    {
+      "id": "AvGZqDfalwwbYFvA",
+      "name": "Peshpine Grenade (Moderate)",
+      "slug": "peshpine-grenade-moderate",
+      "descriptionHash": "5d84bbd316aed460"
+    },
+    {
+      "id": "DheIz1WCPXwUhxQD",
+      "name": "Pressure Bomb (Greater)",
+      "slug": "pressure-bomb-greater",
+      "descriptionHash": "f4eb814a78f68ea1"
+    },
+    {
+      "id": "HYxnpGzoDL70FrVs",
+      "name": "Pressure Bomb (Lesser)",
+      "slug": "pressure-bomb-lesser",
+      "descriptionHash": "51a0e7aa21ed6884"
+    },
+    {
+      "id": "Otd9pV58s2LFK1gW",
+      "name": "Pressure Bomb (Major)",
+      "slug": "pressure-bomb-major",
+      "descriptionHash": "8920f56197100cd0"
+    },
+    {
+      "id": "da6nSPRUwGicvx3c",
+      "name": "Pressure Bomb (Moderate)",
+      "slug": "pressure-bomb-moderate",
+      "descriptionHash": "ac90602e6c06dd8a"
+    },
+    {
+      "id": "CS3mKu9koUfRiHJo",
+      "name": "Redpitch Bomb (Greater)",
+      "slug": "redpitch-bomb-greater",
+      "descriptionHash": "9b7e5e1007764ef6"
+    },
+    {
+      "id": "HtcjYkGS8vuC0e7T",
+      "name": "Redpitch Bomb (Lesser)",
+      "slug": "redpitch-bomb-lesser",
+      "descriptionHash": "5d8ad967cd1b45d8"
+    },
+    {
+      "id": "riHdB9PBAXZUMsWC",
+      "name": "Redpitch Bomb (Major)",
+      "slug": "redpitch-bomb-major",
+      "descriptionHash": "952ca371d9577a70"
+    },
+    {
+      "id": "qWRigVOjyLvSW6UA",
+      "name": "Redpitch Bomb (Moderate)",
+      "slug": "redpitch-bomb-moderate",
+      "descriptionHash": "03824927f08643d8"
+    },
+    {
+      "id": "73JDNoUQPmUqjz97",
+      "name": "Shattered Plan",
+      "slug": "shattered-plan",
+      "descriptionHash": "498c42cd4fc56333"
+    },
+    {
+      "id": "sBtfUPTLuyRPYI7g",
+      "name": "Shatterstone",
+      "slug": "shatterstone",
+      "descriptionHash": "902b0c6d557325cb"
+    },
+    {
+      "id": "CJesyj3lklJVujh0",
+      "name": "Shatterstone (Greater)",
+      "slug": "shatterstone-greater",
+      "descriptionHash": "0e6954d76c7749bb"
+    },
+    {
+      "id": "YBXcse5TSHyv9rvX",
+      "name": "Silver Orb (Greater)",
+      "slug": "silver-orb-greater",
+      "descriptionHash": "386907e0b5f2f71f"
+    },
+    {
+      "id": "CcQDscF79qs9HfJg",
+      "name": "Silver Orb (Lesser)",
+      "slug": "silver-orb-lesser",
+      "descriptionHash": "7a91affc7fbad10a"
+    },
+    {
+      "id": "kG26J0AfQAVe9FYs",
+      "name": "Silver Orb (Powder)",
+      "slug": "silver-orb-powder",
+      "descriptionHash": "f913ba864719ad22"
+    },
+    {
+      "id": "ECqOpC2J3dc6kNjM",
+      "name": "Silverscrap Bomb (Greater)",
+      "slug": "silverscrap-bomb-greater",
+      "descriptionHash": "b286c4ea2eb4f5e3"
+    },
+    {
+      "id": "QvfHp3lgIQqqiCQF",
+      "name": "Silverscrap Bomb (Lesser)",
+      "slug": "silverscrap-bomb-lesser",
+      "descriptionHash": "5a069dd878bf02db"
+    },
+    {
+      "id": "WCA8vovbzZuoHzu9",
+      "name": "Silverscrap Bomb (Moderate)",
+      "slug": "silverscrap-bomb-moderate",
+      "descriptionHash": "3bfaed22fd260e4b"
+    },
+    {
+      "id": "oE3fHS3CUs15bZ4r",
+      "name": "Silversoul Bomb",
+      "slug": "silversoul-bomb",
+      "descriptionHash": "d4b359e2aef6ebcc"
+    },
+    {
+      "id": "mfc9IT94CPnKKBG8",
+      "name": "Silversoul Bomb (Greater)",
+      "slug": "silversoul-bomb-greater",
+      "descriptionHash": "d4a23b76d8361ce3"
+    },
+    {
+      "id": "R7I0KwKM3PNZn0zJ",
+      "name": "Silversoul Bomb (Major)",
+      "slug": "silversoul-bomb-major",
+      "descriptionHash": "5467265858c394d8"
+    },
+    {
+      "id": "7WwKI53IcXVIHbkh",
+      "name": "Skunk Bomb (Greater)",
+      "slug": "skunk-bomb-greater",
+      "descriptionHash": "92470f366ae5cfc6"
+    },
+    {
+      "id": "3Sij5RwC6Z1ZVuFp",
+      "name": "Skunk Bomb (Lesser)",
+      "slug": "skunk-bomb-lesser",
+      "descriptionHash": "21b32b8227912234"
+    },
+    {
+      "id": "Dv1bozSbR39McpWd",
+      "name": "Skunk Bomb (Major)",
+      "slug": "skunk-bomb-major",
+      "descriptionHash": "4c740cb0d3e127a8"
+    },
+    {
+      "id": "m091zbWD9EoH6kWC",
+      "name": "Skunk Bomb (Moderate)",
+      "slug": "skunk-bomb-moderate",
+      "descriptionHash": "e7880af8d5e6d3b4"
+    },
+    {
+      "id": "lBITo8JcWfGxKmYT",
+      "name": "Spellsap Grenade",
+      "slug": "spellsap-grenade",
+      "descriptionHash": "e3ccc6dff33d5430"
+    },
+    {
+      "id": "ry4In8lT0xB8Dc17",
+      "name": "Spellsap Grenade (Greater)",
+      "slug": "spellsap-grenade-greater",
+      "descriptionHash": "025296a0de4d1c1e"
+    },
+    {
+      "id": "r0eGBESoYYiFbhEm",
+      "name": "Spider Satchel (Greater)",
+      "slug": "spider-satchel-greater",
+      "descriptionHash": "3e73a1788199ae30"
+    },
+    {
+      "id": "NDIHtSxYUoQwtP2z",
+      "name": "Spider Satchel (Lesser)",
+      "slug": "spider-satchel-lesser",
+      "descriptionHash": "f7dcf744675acdc0"
+    },
+    {
+      "id": "pEuFCloUo1SdfORL",
+      "name": "Spider Satchel (Major)",
+      "slug": "spider-satchel-major",
+      "descriptionHash": "e04e853758f17166"
+    },
+    {
+      "id": "hOuFviZYTOjN1hxM",
+      "name": "Spider Satchel (Moderate)",
+      "slug": "spider-satchel-moderate",
+      "descriptionHash": "898d39a0854c94ca"
+    },
+    {
+      "id": "CH2t4lYE6IbE3F3Q",
+      "name": "Splintering Spear",
+      "slug": "splintering-spear",
+      "descriptionHash": "8fd1f6da9b562f79"
+    },
+    {
+      "id": "K07yZnXG1DQwFjX7",
+      "name": "Splintering Spear (Greater)",
+      "slug": "splintering-spear-greater",
+      "descriptionHash": "8162958d7e8bcb27"
+    },
+    {
+      "id": "iQM5xKCkfpfdPrzL",
+      "name": "Splintering Spear (Major)",
+      "slug": "splintering-spear-major",
+      "descriptionHash": "e77427c45b30d19f"
+    },
+    {
+      "id": "W1XG0qStVh8fmeJ6",
+      "name": "Star Grenade (Greater)",
+      "slug": "star-grenade-greater",
+      "descriptionHash": "b5bcc8cd4baee1ed"
+    },
+    {
+      "id": "RsCLCgCgGAn67ry5",
+      "name": "Star Grenade (Lesser)",
+      "slug": "star-grenade-lesser",
+      "descriptionHash": "e7fa1d4be4e84fab"
+    },
+    {
+      "id": "PkqzU1Ap3O3IicUv",
+      "name": "Star Grenade (Major)",
+      "slug": "star-grenade-major",
+      "descriptionHash": "8de43ec978fc4baf"
+    },
+    {
+      "id": "KFTkiLXWENatK9XY",
+      "name": "Star Grenade (Moderate)",
+      "slug": "star-grenade-moderate",
+      "descriptionHash": "732ebaac1436d458"
+    },
+    {
+      "id": "jCthkWVsGBfTxSAT",
+      "name": "Steelscour (Greater)",
+      "slug": "steelscour-greater",
+      "descriptionHash": "99abdf1afc5abdd4"
+    },
+    {
+      "id": "1l23ulONSlgc9kFx",
+      "name": "Steelscour (Lesser)",
+      "slug": "steelscour-lesser",
+      "descriptionHash": "6f2261e24ceaf0c8"
+    },
+    {
+      "id": "eYT7T5I0LwnM9doD",
+      "name": "Steelscour (Major)",
+      "slug": "steelscour-major",
+      "descriptionHash": "d48ba418ffb07028"
+    },
+    {
+      "id": "biHvCGfajSjUDGBS",
+      "name": "Steelscour (Moderate)",
+      "slug": "steelscour-moderate",
+      "descriptionHash": "e8e8b5c570ab76b1"
+    },
+    {
+      "id": "cVUhP1qWxe9USvVp",
+      "name": "Sticky Algae Bomb (Greater)",
+      "slug": "sticky-algae-bomb-greater",
+      "descriptionHash": "33c210d5a7ceaec9"
+    },
+    {
+      "id": "S1TrEDE8JNkchMca",
+      "name": "Sticky Algae Bomb (Lesser)",
+      "slug": "sticky-algae-bomb-lesser",
+      "descriptionHash": "85b10a90368acd6f"
+    },
+    {
+      "id": "AAoAQCBwAITvHJSu",
+      "name": "Sticky Algae Bomb (Major)",
+      "slug": "sticky-algae-bomb-major",
+      "descriptionHash": "75c4f7e1ae2e63a6"
+    },
+    {
+      "id": "h6O5uto0Ry1WDjXn",
+      "name": "Sticky Algae Bomb (Moderate)",
+      "slug": "sticky-algae-bomb-moderate",
+      "descriptionHash": "377f5ff3f3dd47e4"
+    },
+    {
+      "id": "2GngLv6m3uHObFGZ",
+      "name": "Sulfur Bomb (Greater)",
+      "slug": "sulfur-bomb-greater",
+      "descriptionHash": "fd4152b1fee6c6c5"
+    },
+    {
+      "id": "ndVATyJ2c8Ka3HKm",
+      "name": "Sulfur Bomb (Lesser)",
+      "slug": "sulfur-bomb-lesser",
+      "descriptionHash": "5b292ab219d3f9c6"
+    },
+    {
+      "id": "yPndyLkx3Nj2GMiz",
+      "name": "Sulfur Bomb (Major)",
+      "slug": "sulfur-bomb-major",
+      "descriptionHash": "3a3744e1bac2dd24"
+    },
+    {
+      "id": "2pfEtA97lpG93kG2",
+      "name": "Sulfur Bomb (Moderate)",
+      "slug": "sulfur-bomb-moderate",
+      "descriptionHash": "cb4f8a873e7cb98b"
+    },
+    {
+      "id": "5IUyrJItXkMASgmq",
+      "name": "Tallow Bomb (Greater)",
+      "slug": "tallow-bomb-greater",
+      "descriptionHash": "1dbfb5077a6f294d"
+    },
+    {
+      "id": "OOqno1OwqJQBEtXe",
+      "name": "Tallow Bomb (Lesser)",
+      "slug": "tallow-bomb-lesser",
+      "descriptionHash": "00d594f34299a083"
+    },
+    {
+      "id": "l29fzEJ6SSIP2wJn",
+      "name": "Tallow Bomb (Major)",
+      "slug": "tallow-bomb-major",
+      "descriptionHash": "5733992ba0346283"
+    },
+    {
+      "id": "4pVGwkVi6izoUuLC",
+      "name": "Tallow Bomb (Moderate)",
+      "slug": "tallow-bomb-moderate",
+      "descriptionHash": "dd3e0336d4055c9c"
+    },
+    {
+      "id": "3W0PWkDuAZFEGQtx",
+      "name": "Tenderizer Grenade (Greater)",
+      "slug": "tenderizer-grenade-greater",
+      "descriptionHash": "fb80ec4084f78ba1"
+    },
+    {
+      "id": "KMfbKiCHmzenEEhQ",
+      "name": "Tenderizer Grenade (Lesser)",
+      "slug": "tenderizer-grenade-lesser",
+      "descriptionHash": "71516d8bed9be04d"
+    },
+    {
+      "id": "bo0HMGgyrp6v5Dn0",
+      "name": "Tenderizer Grenade (Major)",
+      "slug": "tenderizer-grenade-major",
+      "descriptionHash": "e01d736b476fdfb2"
+    },
+    {
+      "id": "V9ZhiUJhemaUDYzq",
+      "name": "Tenderizer Grenade (Moderate)",
+      "slug": "tenderizer-grenade-moderate",
+      "descriptionHash": "02310c16303ef8ea"
+    },
+    {
+      "id": "PNs3SqMhJ3rTxpSI",
+      "name": "Trueshape Bomb",
+      "slug": "trueshape-bomb",
+      "descriptionHash": "05c557e0f6beb48d"
+    },
+    {
+      "id": "wtRDteH3D3ME4FU9",
+      "name": "Trueshape Bomb (Greater)",
+      "slug": "trueshape-bomb-greater",
+      "descriptionHash": "5a60f6abc7829d75"
+    },
+    {
+      "id": "yq5BoByEscKRZsto",
+      "name": "Twigjack Sack (Greater)",
+      "slug": "twigjack-sack-greater",
+      "descriptionHash": "81c71e005c330165"
+    },
+    {
+      "id": "tm5l8uXtQQGMTvgY",
+      "name": "Twigjack Sack (Lesser)",
+      "slug": "twigjack-sack-lesser",
+      "descriptionHash": "ef936d7552253434"
+    },
+    {
+      "id": "8h5UFFk5EodKZh19",
+      "name": "Twigjack Sack (Major)",
+      "slug": "twigjack-sack-major",
+      "descriptionHash": "800dd46936a88cfe"
+    },
+    {
+      "id": "Ix5w4UNElK0ncBm2",
+      "name": "Twigjack Sack (Moderate)",
+      "slug": "twigjack-sack-moderate",
+      "descriptionHash": "4ba4185742b63eee"
+    },
+    {
+      "id": "ljT5pe8D7rudJqus",
+      "name": "Versatile Vial",
+      "slug": "versatile-vial",
+      "descriptionHash": "ace82f6e869147a1"
+    },
+    {
+      "id": "0MPBjp2lOYVCsgeg",
+      "name": "Vexing Vapor (Greater)",
+      "slug": "vexing-vapor-greater",
+      "descriptionHash": "8eea5f49de5e0ff0"
+    },
+    {
+      "id": "Bb3cvysXG8rCM5FM",
+      "name": "Vexing Vapor (Lesser)",
+      "slug": "vexing-vapor-lesser",
+      "descriptionHash": "2a2630575ff57257"
+    },
+    {
+      "id": "RXpM5Kbuf3BYfK6f",
+      "name": "Vexing Vapor (Major)",
+      "slug": "vexing-vapor-major",
+      "descriptionHash": "cfc32fb8974d6b2b"
+    },
+    {
+      "id": "Z9TThSU2KtCX9gfD",
+      "name": "Vexing Vapor (Moderate)",
+      "slug": "vexing-vapor-moderate",
+      "descriptionHash": "1e361df257bdba5e"
+    },
+    {
+      "id": "itn6l0yJGRw7EFwu",
+      "name": "Water Bomb (Greater)",
+      "slug": "water-bomb-greater",
+      "descriptionHash": "f24fc1d4b8aac361"
+    },
+    {
+      "id": "BG04L9GjWerSgWX3",
+      "name": "Water Bomb (Lesser)",
+      "slug": "water-bomb-lesser",
+      "descriptionHash": "a0f945e652acfc87"
+    },
+    {
+      "id": "EjJUCXG4Yr3T6DTM",
+      "name": "Water Bomb (Major)",
+      "slug": "water-bomb-major",
+      "descriptionHash": "d67846450bf75158"
+    },
+    {
+      "id": "hZ0s1gz0Cr0LGOLG",
+      "name": "Water Bomb (Moderate)",
+      "slug": "water-bomb-moderate",
+      "descriptionHash": "aaaa8f73b21f4434"
+    }
+  ]
+}

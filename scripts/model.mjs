@@ -1,0 +1,555 @@
+import { normalizeOptions, validateSoundFile } from "./stage-options.mjs";
+import { OPTIONAL_FX_KINDS, normalizeFxStage } from './optional-fx.mjs';
+import { visualReference, safeMediaFile, mediaType } from './media-library-model.mjs';
+import { coneFanPoints } from "./cone-fan.mjs";
+import { normalizePreviewArea } from "./canvas-preview-area.mjs";
+import { repeatStride } from "./stage-options.mjs";
+import { completeMediaStage } from "./media-lifetime.mjs";
+import { normalizePlaybackRoles } from "./playback-roles.mjs";
+import { isPathMotion, PATH_MOTIONS } from "./motion-path.mjs";
+import {
+  compositionOptions,
+  timedStages,
+  targetDistance,
+  centerOf,
+} from "./composition.mjs";
+export const ID = "animater";
+export const MAX_STAGES = 16;
+export const EVENTS = {
+  manual: "Manual only",
+  use: "Item used / sent to chat",
+  attack: "Attack rolled",
+  damage: "Damage rolled",
+  template: "Area placed",
+  effect: "Effect added",
+};
+export const KINDS = {
+  cast: "Caster",
+  travel: "Source → target",
+  projectile: "Moving orb / projectile",
+  impact: "Target",
+  aura: "Attached aura",
+  template: "Area (circle / cone / square / line)",
+  motion: "Token motion",
+  sprite: "Token copy / shadow",
+  sound: "Sound cue",
+  overlay: "Screen overlay",
+  tokenfx: "Token Magic FX",
+  scenefx: "FXMaster scene effect",
+};
+export const MOTIONS = {
+  rush: "Rush and hold at destination",
+  leap: "Arcing leap and landing",
+  roll: "Rolling approach / evasion",
+  dodge: "Lateral dodge and settle",
+  lunge: "Lunge toward target",
+  recoil: "Recoil from caster",
+  shake: "Impact shake",
+  spin: "Full spin",
+  levitate: "Rise and settle",
+  pulse: "Casting pulse",
+};
+export const clone = (value) => structuredClone(value);
+export const normalize = (value) =>
+  String(value ?? "")
+    .normalize("NFKC")
+    .toLowerCase()
+    .trim()
+    .replace(/[\s_-]+/g, " ");
+export function validateRecipe(input) {
+  if (!input || typeof input !== "object")
+    throw Error("Recipe must be an object.");
+  const text = (v, max = 200) =>
+    typeof v === "string" ? v.slice(0, max).trim() : "";
+  const number = (v, min, max, fallback) =>
+    Number.isFinite(Number(v))
+      ? Math.min(max, Math.max(min, Number(v)))
+      : fallback;
+  const id = text(input.id, 80);
+  if (!/^[a-zA-Z0-9_-]+$/.test(id)) throw Error("Recipe ID is invalid.");
+  if (!text(input.name)) throw Error("Give this recipe a name.");
+  if (!Object.hasOwn(EVENTS, input.trigger))
+    throw Error("Choose a valid trigger.");
+  if (
+    !Array.isArray(input.stages) ||
+    !input.stages.length ||
+    input.stages.length > MAX_STAGES
+  )
+    throw Error(`Recipes need 1–${MAX_STAGES} stages.`);
+  const recipe = {
+    id,
+    name: text(input.name),
+    description: text(input.description, 600),
+    category: text(input.category, 40) || "Custom",
+    color: /^#[\da-f]{6}$/i.test(input.color) ? input.color : "#9e8aff",
+    enabled: input.enabled !== false,
+    trigger: input.trigger,
+    match: text(input.match, 1000),
+    itemUuid: text(input.itemUuid, 300),
+    ...(['pf2e','sf2e','dnd5e'].includes(input.systemId)?{systemId:input.systemId}:/^Compendium\.(pf2e|sf2e|dnd5e)\./.test(input.itemUuid??'')?{systemId:input.itemUuid.split('.')[1]}:{}),
+    ...(text(input.catalogEntry,100)?{catalogEntry:text(input.catalogEntry,100)}:{}),
+    ...(text(input.activityId,100)?{activityId:text(input.activityId,100)}:{}),
+    ...(normalizePlaybackRoles(input.playbackRoles)?{playbackRoles:normalizePlaybackRoles(input.playbackRoles)}:{}),
+    ...(input.lifecycle === "document" && input.trigger === "effect"
+      ? { lifecycle: "document", stateEntry: text(input.stateEntry, 100),
+          ...(/^[a-z-]{1,30}$/.test(input.stateDamageType ?? "") ? {stateDamageType:input.stateDamageType} : {}) } : {}),
+    ...(["melee", "ranged", "thrown"].includes(input.weaponMode)
+      ? { weaponMode: input.weaponMode } : {}),
+    ...(normalizePreviewArea(input.previewArea)
+      ? { previewArea: normalizePreviewArea(input.previewArea) }
+      : {}),
+    stages: input.stages
+      .map((s, index) => {
+        if (!s || !Object.hasOwn(KINDS, s.kind))
+          throw Error("Unknown stage type.");
+        if (input.lifecycle === "document" && input.trigger === "effect" && !['aura','tokenfx'].includes(s.kind))
+          throw Error("Document-linked visuals use attached aura layers or Token Magic filters.");
+        if (input.lifecycle === "document" && input.trigger === "effect" && s.subject === "targets")
+          throw Error("Document-linked layers follow the affected token.");
+        if (s.kind === "sound") validateSoundFile(s.soundFile);
+        if (
+          Number(s.clipEnd) > 0 &&
+          Number(s.clipEnd) <= Number(s.clipStart ?? 0)
+        )
+          throw Error("Clip end must be after its opening skip.");
+        const assets = (OPTIONAL_FX_KINDS.has(s.kind) ? [] : Array.isArray(s.assets) ? s.assets : [])
+          .filter(
+            visualReference,
+          )
+          .slice(0, 8);
+        if (!assets.length && !["motion", "sprite", "sound"].includes(s.kind) && !OPTIONAL_FX_KINDS.has(s.kind))
+          throw Error("Each effect stage needs a database key or relative media file.");
+        return {
+          kind: s.kind,
+          ...compositionOptions(
+            s,
+            index,
+            input.stages.map((p) => p?.stageId),
+          ),
+          assets,
+          delay: number(s.delay, 0, 30000, 0),
+          duration: number(s.duration, 100, 30000, 1500),
+          scale: number(s.scale, 0.1, 5, 1),
+          opacity: number(s.opacity, 0.1, 1, 1),
+          below: s.below === true,
+          persist: (s.kind === "aura" || s.kind==='tokenfx' && input.lifecycle==='document' && input.trigger==='effect') && s.persist === true,
+          ...(s.kind==='aura'&&Number(s.auraRadius)>0?{auraRadius:number(s.auraRadius,0.1,240,5),auraSlug:text(s.auraSlug,100)}:{}),
+          ...normalizeOptions({
+            ...s,
+            duration: number(s.duration, 100, 30000, 1500),
+          }),
+          ...(OPTIONAL_FX_KINDS.has(s.kind) ? normalizeFxStage(s) : {}),
+          ...(["sprite", "aura", "sound", "tokenfx"].includes(s.kind)
+            ? { subject: s.subject === "targets" ? "targets" : "source" }
+            : {}),
+          ...(s.kind === "sound" && s.optionalSound
+            ? {
+                optionalSound: {
+                  profile: text(s.optionalSound.profile, 50),
+                  cue: number(s.optionalSound.cue, 0, 3, 0),
+                  clipStart: number(s.optionalSound.clipStart, 0, 30000, 0),
+                  gain: number(s.optionalSound.gain, 0.05, 1, 1),
+                  candidates: (s.optionalSound.candidates ?? [])
+                    .slice(0, 24)
+                    .filter((c) => {
+                      try {
+                        validateSoundFile(c.file);
+                        return [
+                          "ggg",
+                          "psfx",
+                          "soundfxlibrary",
+                          "pf2e-creature-sounds",
+                        ].includes(c.module);
+                      } catch {
+                        return false;
+                      }
+                    })
+                    .map((c) => ({
+                      module: c.module,
+                      key: text(c.key, 300),
+                      file: text(c.file, 500),
+                      duration: number(c.duration, 100, 30000, 1500),
+                      gain: number(c.gain, 0.05, 1, 1),
+                    })),
+                },
+              }
+            : {}),
+          ...(s.kind === "motion"
+            ? {
+                motion: MOTIONS[s.motion] ? s.motion : "lunge",
+                subject: s.subject === "targets" ? "targets" : "source",
+                intensity: number(s.intensity, 0.1, 3, 1),
+                distance: number(
+                  s.distance,
+                  0.05,
+                  PATH_MOTIONS.has(s.motion) ? 20 : 2,
+                  PATH_MOTIONS.has(s.motion) ? 8 : 0.35,
+                ),
+                ...(PATH_MOTIONS.has(s.motion)
+                  ? {
+                      motionRange:
+                        s.motionRange === "distance" || s.motion === "dodge"
+                          ? "distance"
+                          : "target",
+                      motionEndpoint:
+                        s.motionEndpoint === "past" ? "past" : "near",
+                      motionHeading:
+                        ["away", "up", "down", "left", "right"].includes(s.motionHeading)
+                          ? s.motionHeading
+                          : "toward",
+                      motionArrival: number(s.motionArrival, 15, 70, 45),
+                      motionHold: number(
+                        s.motionHold,
+                        5,
+                        90 - number(s.motionArrival, 15, 70, 45),
+                        Math.min(25, 90 - number(s.motionArrival, 15, 70, 45)),
+                      ),
+                      jumpHeight: number(s.jumpHeight, 0, 3, 0.8),
+                      arrivalLift: number(s.arrivalLift, 0, 2, 0),
+                      stopGap: number(s.stopGap, 0, 2, 0.1),
+                      motionSide: Number(s.motionSide) === -1 ? -1 : 1,
+                    }
+                  : {}),
+              }
+            : {}),
+        };
+      })
+      .map(completeMediaStage),
+  };
+  timedStages(recipe);
+  return recipe;
+}
+export function parseImport(text) {
+  if (text.length > 1_000_000) throw Error("Import too large. Limit: 1 MB.");
+  const data = JSON.parse(text);
+  if (
+    data.schema !== 1 ||
+    !Array.isArray(data.recipes) ||
+    data.recipes.length > 200
+  )
+    throw Error(
+      "Expected Animater recipe export (schema 1, up to 200 recipes).",
+    );
+  const recipes = data.recipes.map(validateRecipe);
+  if (new Set(recipes.map((r) => r.id)).size !== recipes.length)
+    throw Error("Duplicate recipe IDs in import.");
+  return recipes;
+}
+export function matchRecipe(recipes, event) {
+  const names = new Set(
+    [
+      event.item?.name,
+      event.item?.slug,
+      event.item?.system?.slug,
+      event.item?.system?.baseItem,
+      event.item?.system?.group,
+      event.activityName,
+    ]
+      .filter(Boolean)
+      .map(normalize),
+  );
+  const uuids = [
+    event.itemUuid,
+    event.item?.uuid,
+    event.item?.sourceId,
+    event.item?.original?.uuid,
+    event.item?.flags?.core?.sourceId,
+    event.item?._stats?.compendiumSource,
+  ];
+  return (
+    recipes
+      .filter(
+        (r) =>
+          r.enabled &&
+          (!r.systemId || !event.systemId || r.systemId === event.systemId) &&
+          (!r.activityId || r.activityId === event.activityId) &&
+          (!r.weaponMode || r.weaponMode === event.weaponMode) &&
+          r.trigger === event.type &&
+          (r.itemUuid
+            ? uuids.includes(r.itemUuid)
+            : r.match
+                .split(",")
+                .some((n) => n.trim() && names.has(normalize(n)))),
+      )
+      .sort(
+        (a, b) =>
+          Number(Boolean(b.itemUuid)) - Number(Boolean(a.itemUuid)) ||
+          a.id.localeCompare(b.id),
+      )[0] ?? null
+  );
+}
+export function resolveAsset(stage, catalog) {
+  if (["motion", "sprite", "sound"].includes(stage.kind)) return null;
+  const keys = catalog.map((e) => e.key);
+  for (const key of stage.assets) {
+    if (keys.includes(key)) return key;
+    if (safeMediaFile(key) && mediaType(key) !== 'audio') return key;
+    const child = keys.find((k) => k.startsWith(key + "."));
+    if (child) return child;
+  }
+  return null;
+}
+export function planRecipe(recipe, catalog, context) {
+  return buildPlan(recipe, catalog, context, true);
+}
+// Composition uses the same target routing/timing without requiring installed
+// media. Missing files stay visible in the editor; canvas preflight stays strict.
+export function previewPlan(recipe, context) {
+  return buildPlan(recipe, [], context, false);
+}
+function buildPlan(recipe, catalog, context, requireMedia) {
+  const plan = [];
+  const landings = new Map();
+  const motionTargetFor = (s) => {
+    const targets=s.targetLimit>0?context.targets?.slice(0,s.targetLimit):context.targets;
+    return s.targetSelection === "last"
+      ? targets?.at(-1)
+      : s.targetSelection === "second"
+        ? targets?.[1]
+        : s.targetSelection === "third"
+          ? targets?.[2]
+        : targets?.[0];
+  };
+  const stagesFor = (destination, targetIndex, origin = context.source) =>
+    timedStages(
+      recipe,
+      targetDistance(origin, destination, context.gridSize ?? 100),
+      targetIndex,
+      (s) =>
+        targetDistance(
+          s.subject === "source" ? context.source : destination,
+          s.subject === "source" ? motionTargetFor(s) : context.source,
+          context.gridSize ?? 100,
+        ),
+    );
+  for (const [index, s] of recipe.stages.entries()) {
+    const o = normalizeOptions(s);
+    // A chat-card use or unknown/missed attack cannot establish this rider.
+    // Editor and local canvas previews deliberately show the success branch.
+    if(requireMedia && o.requiresHit && !context.preview && !['success','criticalSuccess'].includes(context.outcome))continue;
+    const areaFan = ["travel", "projectile"].includes(s.kind) && s.travelDestination === "area" && o.areaLayout === "fan";
+    if (areaFan && s.travelOrigin !== "source") throw Error("Cone fans travel outward from their area origin.");
+    if (requireMedia && s.kind === "sound") validateSoundFile(o.soundFile);
+    const asset = resolveAsset(s, catalog);
+    if (
+      requireMedia &&
+      !asset &&
+      !["motion", "sprite", "sound"].includes(s.kind) && !OPTIONAL_FX_KINDS.has(s.kind)
+    )
+      throw Error(
+        `Stage ${index + 1}: no installed asset. Open Assets and choose a replacement.`,
+      );
+    let destinations =
+      ["travel", "projectile"].includes(s.kind) &&
+      s.travelDestination === "area"
+        ? areaFan
+          ? coneFanPoints(context.area, o.fanCount).map((point, i) => ({ id: `area-fan-${i}`, ...point, center: point }))
+          : [context.template]
+        : s.kind === "travel" ||
+            s.kind === "projectile" ||
+            s.kind === "impact" ||
+            (["motion", "sprite", "aura", "sound", "tokenfx"].includes(s.kind) &&
+              s.subject === "targets")
+          ? context.targets
+          : [s.kind === "template" ? context.template : context.source];
+    if(destinations===context.targets && o.optionalTargets && !destinations?.length)continue;
+    if(destinations===context.targets&&o.targetSelection==='secondary'){
+      destinations=destinations.slice(1);
+      if(o.targetLimit>0)destinations=destinations.slice(0,o.targetLimit);
+      if(!destinations.length)continue;
+    }
+    if (
+      destinations === context.targets &&
+      o.targetSelection !== "all" &&
+      destinations?.length
+    ) {
+      const selected = motionTargetFor(o);
+      // Secondary contacts are optional when fewer creatures were selected.
+      // Never turn a missing second/third creature into another first hit.
+      if (!selected) continue;
+      destinations = [selected];
+    }
+    if (destinations === context.targets && o.targetLimit > 0)
+      destinations = destinations.slice(0, o.targetLimit);
+    if (s.catalogFx && s.kind==='tokenfx' && !context.source)continue;
+    if (!context.source && !["template", "sound", "overlay", "scenefx"].includes(s.kind))
+      throw Error("Select a source token first.");
+    if (
+      !["sound", "overlay", "scenefx"].includes(s.kind) &&
+      (!destinations?.length || destinations.some((d) => !d))
+    )
+      throw Error(
+        s.kind === "template"
+          ? "Select a supported area first."
+          : "Target at least one token first.",
+      );
+    if (s.kind === "template" && !context.area)
+      throw Error("Select a supported circular, cone, square or line area first.");
+    if (s.travelDestination === "area" && !context.area)
+      throw Error("Select an area for this projectile first.");
+    if (s.kind === "motion" && s.motion === "lunge" && !context.targets?.length)
+      throw Error("Lunge needs a target token for direction.");
+    if (
+      isPathMotion(s) &&
+      s.motionRange === "target" &&
+      !context.targets?.length
+    )
+      throw Error(
+        "This motion needs a target. Select one or use a fixed-distance path.",
+      );
+    const motionTarget = motionTargetFor(s);
+    if (context.targets?.length && !motionTarget && s.kind === "motion" && (isPathMotion(s) || s.motion === "lunge")) continue;
+    for (const [targetIndex, destination] of (
+      destinations ?? [null]
+    ).entries()) {
+      const parent = recipe.stages.find((p) => p.stageId === s.afterStage);
+      const routedParent =
+        parent?.repeatScope === "total"
+          ? parent
+          : recipe.stages.find(
+              (p) =>
+                p.stageId === parent?.afterStage && p.repeatScope === "total",
+            );
+      if (
+        s.subject === "targets" &&
+        routedParent &&
+        targetIndex >= routedParent.repeats
+      )
+        continue;
+      let timed = stagesFor(
+        s.travelDestination === "area" && !areaFan
+          ? { center: context.area.center }
+          : isPathMotion(s) &&
+              s.subject === "source" &&
+              s.motionRange === "target"
+            ? motionTarget
+            : destination,
+        targetIndex,
+        areaFan ? { center: context.area.center } : s.travelOrigin === "firstTarget" ? context.targets[0] : context.source,
+      )[index];
+      const targeted =
+        ["travel", "projectile", "impact"].includes(s.kind) ||
+        s.subject === "targets";
+      if (s.afterStage && !targeted && context.targets?.length) {
+        const pathParent = isPathMotion(parent) && parent.subject === "source";
+        const timingTargets = pathParent ? [motionTarget] : context.targets;
+        timed = timingTargets
+          .map((target, i) => stagesFor(target, i)[index])
+          .reduce((latest, stage) =>
+            s.kind === "sound" && s.timingAnchor === "start"
+              ? stage.delay < latest.delay
+                ? stage
+                : latest
+              : stage.delay > latest.delay
+                ? stage
+                : latest,
+          );
+      }
+      let landing = null;
+      if (
+        s.landingGroup &&
+        ["projectile", "impact"].includes(s.kind) &&
+        !(s.kind === "projectile" && s.travelOrigin === "target")
+      ) {
+        const key = `${s.landingGroup}:${targetIndex}`;
+        if (!landings.has(key)) {
+          // The first stage in a group owns its scatter; every layer reuses it.
+          const owner = recipe.stages.find(
+            (p) => p.landingGroup === s.landingGroup,
+          );
+          const center = centerOf(destination),
+            grid = context.gridSize ?? 100;
+          const random = context.random ?? Math.random;
+          landings.set(key, {
+            x: center.x + (random() * 2 - 1) * (owner.scatter ?? 0) * grid,
+            y: center.y + (random() * 2 - 1) * (owner.scatter ?? 0) * grid,
+          });
+        }
+        landing = landings.get(key);
+      }
+      for (let iteration = 0; iteration < o.repeats; iteration++) {
+        if (
+          o.repeatScope === "total" &&
+          iteration % (destinations?.length || 1) !== targetIndex
+        )
+          continue;
+        const areaTiles =
+          s.kind === "template" &&
+          o.areaLayout === "tiles" &&
+          context.area?.type === "line";
+        const tileCount = areaTiles
+          ? Math.max(
+              1,
+              Math.min(24, Math.ceil(context.area.length / context.area.width)),
+            )
+          : 1;
+        for (
+          let copy = 0;
+          copy < (s.kind === "sprite" ? o.copies : tileCount);
+          copy++
+        )
+          plan.push({
+            ...s,
+            ...timed,
+            ...o,
+            ...(areaFan && o.fanColors?.length ? { tintEnabled: true, colorize: true, tint: o.fanColors[targetIndex % o.fanColors.length] } : {}),
+            duration: timed.duration,
+            index,
+            asset,
+            destination,
+            ...(isPathMotion(s) ? { motionTarget } : {}),
+            ...(areaTiles
+              ? {
+                  areaTile: {
+                    center: {
+                      x:
+                        context.area.center.x +
+                        ((context.area.endpoint.x - context.area.center.x) *
+                          (copy + 0.5)) /
+                          tileCount,
+                      y:
+                        context.area.center.y +
+                        ((context.area.endpoint.y - context.area.center.y) *
+                          (copy + 0.5)) /
+                          tileCount,
+                    },
+                    width: context.area.width,
+                  },
+                }
+              : {}),
+            ...(["travel", "projectile"].includes(s.kind)
+              ? {
+                  origin:
+                    areaFan
+                      ? { ...context.area.center, center: context.area.center, w: context.gridSize ?? 100, h: context.gridSize ?? 100 }
+                      : s.travelOrigin === "firstTarget"
+                      ? context.targets[0]
+                      : s.travelOrigin === "previousTarget"
+                      ? (context.targets[targetIndex - 1] ?? context.source)
+                      : s.travelOrigin === "target"
+                        ? destination
+                        : context.source,
+                  endpoint:
+                    s.travelOrigin === "target"
+                      ? context.source
+                      : s.travelDestination === "area" && !areaFan
+                        ? context.area.center
+                        : destination,
+                }
+              : {}),
+            ...(areaFan ? { areaFan: true } : {}),
+            landing,
+            targetIndex,
+            iteration,
+            offsetX:
+              o.offsetX +
+              (s.kind === "sprite"
+                ? (copy - (o.copies - 1) / 2) * o.copySpread
+                : 0),
+            delay: timed.delay + iteration * repeatStride({ ...timed, ...o }),
+          });
+      }
+    }
+  }
+  return plan;
+}

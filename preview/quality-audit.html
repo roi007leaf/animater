@@ -1,0 +1,218 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>Animater quality audit</title>
+<link rel="stylesheet" href="../styles/animater.css" />
+<style>
+  body {
+    margin: 20px;
+    background: #090b11;
+  }
+  .animater {
+    height: 950px;
+    width: 1450px;
+    border: 1px solid #30374a;
+  }
+</style>
+<div class="animater"><div class="an-root"></div></div>
+<script type="module">
+  import { Workspace } from "../scripts/workspace.mjs";
+  import { starterRecipes } from "../scripts/presets.mjs";
+  import { recipeFrame } from "../scripts/choreography.mjs";
+  import {
+    installedSoundCatalog,
+    SOUND_PROFILES,
+    SOUND_SOURCE,
+  } from "../scripts/spell-sounds.mjs";
+  const audioEntries = new Map();
+  for (const cues of Object.values(SOUND_PROFILES))
+    for (const c of cues)
+      for (const e of c.candidates) {
+        if (!e.key) continue;
+        audioEntries.set(e.key, [...(audioEntries.get(e.key) ?? []), e.file]);
+      }
+  const soundQuery = new URL(location.href).searchParams;
+  // Opt-in, client-local QA traces: actual DOM media and step highlights only.
+  if (soundQuery.has("deliveryAudit"))
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest('[data-action="recipe-preview"]')) return;
+      let last = -1,
+        frames = 0;
+      const sample = () => {
+        const root = document.querySelector(".an-root"),
+          progress = root.querySelector("[data-recipe-progress]");
+        if (!progress || frames++ > 600) return;
+        if (progress.value - last >= 100 || progress.value >= progress.max) {
+          last = progress.value;
+          console.info(
+            "ANIMATER DELIVERY QA " +
+              JSON.stringify({
+                spell: root.querySelector(".an-spell-detail h2")?.textContent,
+                time: progress.value,
+                total: progress.max,
+                active: [
+                  ...root.querySelectorAll("[data-stage-drag].is-playing"),
+                ].map((s) => s.textContent.trim()),
+                media: [...root.querySelectorAll("video[data-preview-stage]")]
+                  .filter((v) => !v.closest(".an-recipe-layer").hidden)
+                  .map((v) => ({
+                    label: v.getAttribute("aria-label"),
+                    plan: v.dataset.previewPlan,
+                    time: v.currentTime,
+                    duration: v.duration,
+                    loop: v.loop,
+                    paused: v.paused,
+                    width: v.videoWidth,
+                    height: v.videoHeight,
+                    error: v.error?.message,
+                    transform: v.style.transform,
+                  })),
+              }),
+          );
+        }
+        if (progress.value < progress.max) requestAnimationFrame(sample);
+      };
+      requestAnimationFrame(sample);
+    });
+  const enabledPacks = soundQuery.has("soundPacks")
+    ? soundQuery.get("soundPacks").split(",")
+    : SOUND_SOURCE.packs.map((p) => p.module);
+  const soundModules = new Map(
+    SOUND_SOURCE.packs.map((p) => [
+      p.module,
+      { active: enabledPacks.includes(p.module) },
+    ]),
+  );
+  if (soundQuery.has("audioAudit"))
+    for (const event of ["loadedmetadata", "playing", "pause", "ended"])
+      document.addEventListener(
+        event,
+        (e) => {
+          if (e.target.tagName === "AUDIO")
+            console.info(
+              "ANIMATER SOUND QA " +
+                JSON.stringify({
+                  event,
+                  src: e.target.getAttribute("src"),
+                  duration: e.target.duration,
+                  time: e.target.currentTime,
+                  volume: e.target.volume,
+                  loop: e.target.loop,
+                  error: e.target.error?.message,
+                }),
+            );
+        },
+        true,
+      );
+  const sounds = () =>
+    installedSoundCatalog(soundModules, {
+      entryExists: (k) => audioEntries.has(k),
+      getAllFileEntries: (k) => audioEntries.get(k),
+    });
+  const catalog = await fetch("/preview-catalog").then((r) => r.json());
+  let recipes = starterRecipes();
+  const usage = new URL(location.href).searchParams.has("usage");
+  let state = { enabled: false, excluded: [], motion: true };
+  const source = {
+    id: "qa-source",
+    name: "Large mirrored caster",
+    img: "/icons/svg/mage-shield.svg",
+    width: 2,
+    height: 1,
+    spriteWidth: 2,
+    spriteHeight: 1,
+    textureScaleX: -1,
+    textureScaleY: 1,
+    rotation: 0,
+  };
+  const target = {
+    id: "qa-target",
+    name: "Medium target",
+    img: "/icons/svg/target.svg",
+    width: 1,
+    height: 1,
+    spriteWidth: 1,
+    spriteHeight: 1,
+  };
+  const workspace = new Workspace(document.querySelector(".an-root"), {
+    recipes: () => structuredClone(recipes),
+    catalog: () => catalog,
+    soundCatalog: sounds,
+    mediaURL: (p) => "/" + p.replace(/^\//, ""),
+    logs: () => [],
+    enabled: () => false,
+    previewTokens: () => ({
+      source,
+      targets: target,
+      targetList: [target],
+      targetCount: 1,
+      gridDistance: 5,
+    }),
+    catalogState: () => state,
+    setCatalogState: async (change) => {
+      state = { ...state, ...change };
+    },
+    imageURL: (p) => "/" + p.replace(/^\//, ""),
+    environment: () => ({
+      ready: true,
+      pack: "JB2A Patreon",
+      system: "QA fixture · memory only",
+      systemId: "pf2e",
+      demo: !usage,
+      motionReady: usage,
+      conflicts: [],
+    }),
+    stop: async () => {},
+    save: async (data) => {
+      if (usage) {
+        recipes = structuredClone(data);
+        return;
+      }
+      throw Error("Read-only QA fixture");
+    },
+    play: async () => {
+      throw Error("Use editor preview");
+    },
+  });
+  // Deterministic visual inspection after actual media loads. Stop/replay keeps
+  // the normal controls; no world settings or documents exist in this fixture.
+  if (soundQuery.has("frame")) {
+    const holdAt = Math.max(0, Number(soundQuery.get("frame")) || 0);
+    const update = workspace.updatePlayback.bind(workspace);
+    let holding = false;
+    workspace.updatePlayback = (frame) => {
+      if (holding || frame.time < holdAt) {
+        update(frame);
+        return;
+      }
+      holding = true;
+      workspace.previewRun.clock.frame = () => 0;
+      workspace.previewRun.draw(
+        recipeFrame(workspace.previewRun.recipe, holdAt),
+      );
+      document
+        .querySelectorAll("video[data-preview-stage],audio[data-preview-stage]")
+        .forEach((media) => {
+          if (
+            media.requestVideoFrameCallback &&
+            !media.closest(".an-recipe-layer")?.hidden
+          ) {
+            const expected = media.currentTime;
+            const hold = (_now, metadata) => {
+              media.dataset.presentedTime = String(metadata.mediaTime);
+              if (Math.abs(metadata.mediaTime - expected) < 0.1) media.pause();
+              else media.requestVideoFrameCallback(hold);
+            };
+            media.requestVideoFrameCallback(hold);
+          } else if (media.seeking)
+            media.addEventListener("seeked", () => media.pause(), {
+              once: true,
+            });
+          else media.pause();
+        });
+    };
+  }
+  if (usage) {
+    workspace.page = "spells";
+    workspace.render();
+  }
+</script>

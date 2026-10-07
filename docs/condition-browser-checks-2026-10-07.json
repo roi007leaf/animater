@@ -1,0 +1,511 @@
+[
+  {
+    "name": "Blinded",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/2nd_Level/Darkness/Darkness_01_Black_600x600.webm",
+        "ready": 4,
+        "time": 0.218779
+      }
+    ]
+  },
+  {
+    "name": "Broken",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerShieldCracked_03_Dark_Red_400x400.webm",
+        "ready": 4,
+        "time": 0.22618
+      }
+    ]
+  },
+  {
+    "name": "Clumsy",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Orange_400x400.webm",
+        "ready": 4,
+        "time": 0.218498
+      }
+    ]
+  },
+  {
+    "name": "Concealed",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Smoke/SmokePlumesLoop01_01_Regular_Grey_400x400.webm",
+        "ready": 4,
+        "time": 0.210019
+      }
+    ]
+  },
+  {
+    "name": "Confused",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerCircleOfStars_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.221336
+      }
+    ]
+  },
+  {
+    "name": "Controlled",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerRunes02_03_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.219545
+      }
+    ]
+  },
+  {
+    "name": "Cursebound",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerRunes_03_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.212087
+      }
+    ]
+  },
+  {
+    "name": "Dazzled",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerLight_01_Regular_Yellow_400x400.webm",
+        "ready": 4,
+        "time": 0.214424
+      }
+    ]
+  },
+  {
+    "name": "Deafened",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerMute_03_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.210549
+      }
+    ]
+  },
+  {
+    "name": "Doomed",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerSkull_03_Regular_Purple_400x400.webm",
+        "ready": 4,
+        "time": 0.224785
+      },
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_07_Regular_Purple_400x400.webm",
+        "ready": 4,
+        "time": 0.224744
+      }
+    ]
+  },
+  {
+    "name": "Drained",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Dark_Red_400x400.webm",
+        "ready": 4,
+        "time": 0.214673
+      }
+    ]
+  },
+  {
+    "name": "Dying",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Dark_Red_400x400.webm",
+        "ready": 4,
+        "time": 0.220784
+      }
+    ]
+  },
+  {
+    "name": "Encumbered",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_05_Regular_Orange_400x400.webm",
+        "ready": 4,
+        "time": 0.222341
+      }
+    ]
+  },
+  {
+    "name": "Enfeebled",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.215843
+      }
+    ]
+  },
+  {
+    "name": "Fascinated",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerLightOrbLoop_01_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.219967
+      }
+    ]
+  },
+  {
+    "name": "Fatigued",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_04_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.218362
+      }
+    ]
+  },
+  {
+    "name": "Fleeing",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Particles/ParticlesOutward01_01_Regular_White_400x400.webm",
+        "ready": 4,
+        "time": 0.216414
+      }
+    ]
+  },
+  {
+    "name": "Friendly",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+        "ready": 4,
+        "time": 0.21872
+      }
+    ]
+  },
+  {
+    "name": "Frightened",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerFear_03_Dark_Purple_400x400.webm",
+        "ready": 4,
+        "time": 0.222925
+      }
+    ]
+  },
+  {
+    "name": "Grabbed",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerChainStandard01_01_Regular_Grey_Loop_400x400.webm",
+        "ready": 4,
+        "time": 0.224826
+      }
+    ]
+  },
+  {
+    "name": "Helpful",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+        "ready": 4,
+        "time": 0.218388
+      },
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Regular_Pink_400x400.webm",
+        "ready": 4,
+        "time": 0.218297
+      }
+    ]
+  },
+  {
+    "name": "Hidden",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+        "ready": 4,
+        "time": 0.231428
+      },
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_06_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.231265
+      }
+    ]
+  },
+  {
+    "name": "Hostile",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_07_Dark_Red_400x400.webm",
+        "ready": 4,
+        "time": 0.223793
+      }
+    ]
+  },
+  {
+    "name": "Immobilized",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_01_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.221389
+      }
+    ]
+  },
+  {
+    "name": "Indifferent",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_01_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.214088
+      }
+    ]
+  },
+  {
+    "name": "Invisible",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Conditions/Boon02/ConditionBoon02_001_Refraction_600x600.webm",
+        "ready": 4,
+        "time": 0.213745
+      }
+    ]
+  },
+  {
+    "name": "Observed",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.215591
+      }
+    ]
+  },
+  {
+    "name": "Off-Guard",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerShieldCracked_03_Dark_Red_400x400.webm",
+        "ready": 4,
+        "time": 0.216138
+      }
+    ]
+  },
+  {
+    "name": "Paralyzed",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_06_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.216428
+      }
+    ]
+  },
+  {
+    "name": "Persistent Damage",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerDrop_03_Dark_Green_400x400.webm",
+        "ready": 4,
+        "time": 0.222367
+      }
+    ]
+  },
+  {
+    "name": "Petrified",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedOrbitLoopMetal01_01_Regular_Grey_700x700.webm",
+        "ready": 4,
+        "time": 0.103438
+      }
+    ]
+  },
+  {
+    "name": "Prone",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_02_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.217279
+      }
+    ]
+  },
+  {
+    "name": "Quickened",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircleSpin_01_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.205543
+      }
+    ]
+  },
+  {
+    "name": "Restrained",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerChainStandard01_02_Regular_Grey_Loop_400x400.webm",
+        "ready": 4,
+        "time": 0.21341
+      }
+    ]
+  },
+  {
+    "name": "Sickened",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Smoke/Fumes04_01_Green_Loop_400x600.webm",
+        "ready": 4,
+        "time": 0.219848
+      }
+    ]
+  },
+  {
+    "name": "Slowed",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.220587
+      }
+    ]
+  },
+  {
+    "name": "Stunned",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerStun_03_Dark_Teal_400x400.webm",
+        "ready": 4,
+        "time": 0.216614
+      }
+    ]
+  },
+  {
+    "name": "Stupefied",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Smoke/Fumes04_01_Purple_Loop_400x600.webm",
+        "ready": 4,
+        "time": 0.218587
+      },
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerRunes03_03_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.218516
+      }
+    ]
+  },
+  {
+    "name": "Unconscious",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/1st_Level/Sleep/SleepSymbol01_01_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.197076
+      }
+    ]
+  },
+  {
+    "name": "Undetected",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+        "ready": 4,
+        "time": 0.225913
+      },
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_05_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.225745
+      }
+    ]
+  },
+  {
+    "name": "Unfriendly",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_03_Regular_Orange_400x400.webm",
+        "ready": 4,
+        "time": 0.213519
+      }
+    ]
+  },
+  {
+    "name": "Unnoticed",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/1st_Level/Fog_Cloud/FogCloud_01_White_800x800.webm",
+        "ready": 4,
+        "time": 0.2161
+      },
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Token_Border/TokenBorderCircle_04_Regular_Blue_400x400.webm",
+        "ready": 4,
+        "time": 0.21594
+      }
+    ]
+  },
+  {
+    "name": "Wounded",
+    "media": [
+      {
+        "error": null,
+        "file": "http://127.0.0.1:4187/modules/jb2a_patreon/Library/Generic/Marker/MarkerHeart_03_Dark_Red_400x400.webm",
+        "ready": 4,
+        "time": 0.215571
+      }
+    ]
+  }
+]

@@ -1,0 +1,61 @@
+{
+  "mode": "Design preview with installed Patreon media; not live Foundry multiplayer",
+  "results": [
+    {
+      "title": "Distracting Toss",
+      "status": [
+        "Recipe complete",
+        "Ready to useUse animation enables this feat directly from catalog data."
+      ]
+    },
+    {
+      "title": "Feral Toss",
+      "status": [
+        "Recipe complete",
+        "Ready to useUse animation enables this feat directly from catalog data."
+      ]
+    },
+    {
+      "title": "Friendly Fling",
+      "status": [
+        "Recipe complete",
+        "Manual token selection neededPlay manually when this ability activates."
+      ]
+    },
+    {
+      "title": "Friendly Toss",
+      "status": [
+        "Recipe complete",
+        "Manual token selection neededPlay manually when this ability activates."
+      ]
+    },
+    {
+      "title": "Jotun's Boost",
+      "status": [
+        "Recipe complete",
+        "Manual token selection neededPlay manually when this ability activates."
+      ]
+    },
+    {
+      "title": "Rebounding Toss",
+      "status": [
+        "Recipe complete",
+        "Ready to useUse animation enables this feat directly from catalog data."
+      ]
+    },
+    {
+      "title": "Whirlwind Toss",
+      "status": [
+        "Recipe complete",
+        "Manual token selection neededPlay manually when this ability activates."
+      ]
+    },
+    {
+      "title": "Wind-Tossed Spell",
+      "status": [
+        "Recipe complete",
+        "Ready to useUse animation enables this feat directly from catalog data."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "animater",
+  "title": "Animater",
+  "description": "Animation module using JB2A animations (Free and Patreon) and Sequencer. PF2e, SF2e, and D&D 5e.",
+  "version": "0.2.0",
+  "authors": [{ "name": "Animater contributors" }],
+  "compatibility": { "minimum": "14" },
+  "esmodules": ["scripts/main.mjs"],
+  "styles": ["styles/animater.css"],
+  "relationships": {
+    "requires": [
+      {
+        "id": "sequencer",
+        "type": "module",
+        "compatibility": { "minimum": "4.2" },
+        "manifest": "https://github.com/fantasycalendar/FoundryVTT-Sequencer/releases/latest/download/module.json"
+      }
+    ]
+  },
+  "socket": true
+}

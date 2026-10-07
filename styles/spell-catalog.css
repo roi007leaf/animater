@@ -1,0 +1,393 @@
+.animater .an-catalog-intro h2 {
+  font:
+    650 22px/1.3 Inter,
+    "Segoe UI",
+    sans-serif;
+  margin: 9px 0;
+}
+.animater .an-feat-work .an-catalog-design p,
+.animater .an-spell-work .an-catalog-design p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--an-muted);
+}
+.animater .an-catalog-intro p {
+  color: var(--an-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 0 22px;
+  max-width: 560px;
+}
+.animater .an-spell-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+.animater .an-spell-filters label {
+  font-size: 11px;
+  color: var(--an-muted);
+  min-width: 0;
+  margin: 0;
+}
+.animater .an-spell-filters select {
+  margin-top: 5px;
+  width: 100%;
+  min-width: 0;
+  font-size: 11px;
+  padding: 8px;
+}
+.animater .an-catalog-automation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border: 1px solid var(--an-line);
+  border-radius: 10px;
+  background: var(--an-panel);
+  padding: 13px 15px;
+  margin: 18px 0;
+}
+.animater .an-catalog-automation b {
+  font-size: 12px;
+}
+.animater .an-catalog-automation small {
+  display: block;
+  font-size: 10px;
+  color: var(--an-muted);
+  margin-top: 5px;
+}
+.animater .an-catalog-automation button {
+  min-width: 70px;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+.animater .an-spell-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.animater .an-spell-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 102px;
+  padding: 14px;
+  text-align: left;
+  background: var(--an-panel);
+  border: 1px solid var(--an-line);
+  border-radius: 10px;
+}
+.animater .an-spell-card img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 7px;
+  flex: none;
+  background: #10141c;
+}
+.animater .an-spell-card > div {
+  min-width: 0;
+}
+.animater .an-spell-card b {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.animater .an-spell-card small {
+  display: block;
+  font-size: 9px;
+  line-height: 1.6;
+  margin-top: 4px;
+  color: var(--an-muted);
+}
+.animater .an-spell-card:hover {
+  border-color: #726483;
+  background: #222536;
+}
+.animater .an-spell-card.is-selected {
+  border-color: var(--effect);
+  box-shadow: 0 0 0 1px var(--effect);
+}
+.animater .an-treatment {
+  display: inline-block;
+  margin-top: 7px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  color: #bfd9ed;
+  background: #233043;
+}
+.animater .an-treatment.is-signature {
+  color: #dcccff;
+  background: #352b49;
+}
+.animater .an-treatment.is-symbolic {
+  color: #e8ce9b;
+  background: #3a3126;
+}
+.animater .an-treatment.is-unconfigured {
+  color: #b7bdca;
+  background: #30333c;
+}
+.animater .an-catalog-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 20px 0;
+}
+.animater .an-catalog-pagination button {
+  padding: 9px 13px;
+  font-size: 11px;
+}
+.animater .an-catalog-pagination span {
+  font-size: 11px;
+  color: var(--an-muted);
+}
+.animater .an-catalog-source {
+  padding-top: 14px;
+  border-top: 1px solid var(--an-line);
+}
+.animater .an-spell-detail-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+.animater .an-spell-detail-title img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  border-radius: 9px;
+  background: #11151d;
+}
+.animater .an-spell-detail-title h2 {
+  font:
+    650 23px/1.3 Inter,
+    "Segoe UI",
+    sans-serif;
+  margin: 0 0 5px;
+  overflow-wrap: anywhere;
+}
+.animater .an-spell-detail-title .an-catalog-name {
+  display: inline;
+  padding: 0;
+  min-height: 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--an-line);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.animater .an-spell-detail-title .an-catalog-name:enabled:hover {
+  color: var(--an-accent);
+  text-decoration-color: currentColor;
+}
+.animater .an-spell-detail-title .an-catalog-name:disabled {
+  opacity: 1;
+  color: inherit;
+  cursor: default;
+  text-decoration: none;
+}
+.animater .an-spell-detail-title small {
+  font-size: 11px;
+  color: var(--an-muted);
+}
+.animater .an-spell-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 17px 0;
+}
+.animater .an-spell-badges span {
+  border: 1px solid var(--an-line);
+  border-radius: 5px;
+  padding: 4px 7px;
+  font-size: 10px;
+  text-transform: capitalize;
+  color: var(--an-muted);
+}
+.animater .an-catalog-direction {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--an-text);
+  margin: 18px 0 12px;
+}
+.animater .an-catalog-steps {
+  display: grid;
+  gap: 8px;
+  margin: 23px 0;
+}
+.animater .an-catalog-steps .an-stage {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 13px;
+  border: 1px solid var(--an-line);
+  border-radius: 8px;
+  background: #141923;
+}
+.animater .an-catalog-steps .an-stage > span {
+  display: grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background: #352c49;
+  font-size: 10px;
+  flex: none;
+}
+.animater .an-catalog-steps b {
+  display: block;
+  font-size: 11px;
+}
+.animater .an-catalog-steps small {
+  color: var(--an-muted);
+  display: block;
+  font-size: 10px;
+  margin-top: 4px;
+}
+.animater .an-catalog-steps .is-playing {
+  border-color: var(--an-accent);
+  background: #30263f;
+}
+.animater .an-catalog-steps .is-done {
+  border-color: #385e50;
+}
+.animater .an-catalog-notes {
+  border-left: 2px solid #b69a65;
+  padding: 3px 0 3px 13px;
+  margin: 20px 0;
+}
+.animater .an-catalog-notes b {
+  font-size: 11px;
+}
+.animater .an-catalog-notes p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--an-muted);
+  margin: 8px 0;
+}
+@container (max-width: 1000px) {
+  .animater .an-spell-grid {
+    grid-template-columns: 1fr;
+  }
+  .animater .an-spell-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.animater .an-catalog-design {
+  margin: 0 0 16px;
+  padding: 12px;
+  background: var(--an-panel, #1a1e2a);
+  border: 1px solid var(--an-border, #30364b);
+  border-radius: 10px;
+}
+.animater .an-catalog-design p {
+  margin: 6px 0 8px;
+  line-height: 1.5;
+}
+.animater .an-catalog-design small {
+  display: block;
+  color: #b8bcd2;
+  line-height: 1.5;
+}
+.animater .an-catalog-use-status {
+  padding: 12px 14px;
+  margin-top: 18px;
+  border: 1px solid var(--an-line);
+  border-radius: 10px;
+  background: var(--an-panel);
+}
+.animater .an-catalog-use-status.is-using {
+  border-color: #487d69;
+}
+.animater .an-catalog-use-status b {
+  display: block;
+  font-size: 12px;
+}
+.animater .an-catalog-use-status small {
+  display: block;
+  color: var(--an-muted);
+  margin-top: 5px;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.animater .an-catalog-canvas-preview {
+  width: 100%;
+  margin: 0 0 18px;
+}
+.animater .an-catalog-choice {
+  margin-top: 10px;
+}
+.animater .an-sound-settings {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.animater .an-sound-settings > div {
+  flex: 1;
+  min-width: 170px;
+}
+.animater .an-sound-settings > label {
+  width: 135px;
+  margin: 0;
+  font-size: 11px;
+}
+.animater .an-sound-settings > label span {
+  float: right;
+  color: var(--an-muted);
+}
+.animater .an-sound-settings input[type="range"] {
+  width: 100%;
+  height: 20px;
+  padding: 0;
+  accent-color: var(--an-accent, #af93ff);
+}
+.animater .an-spell-sounds {
+  margin: 12px 0 18px;
+}
+.animater .an-spell-sounds summary {
+  line-height: 1.6;
+}
+.animater .an-sound-cue {
+  padding: 10px 0;
+  border-top: 1px solid var(--an-line);
+}
+.animater .an-sound-cue b,
+.animater .an-sound-cue small {
+  display: block;
+  font-size: 12px;
+}
+.animater .an-sound-cue small {
+  color: var(--an-muted);
+  margin: 4px 0 8px;
+}
+.animater .an-sound-cue audio {
+  width: 100%;
+  height: 36px;
+  color-scheme: dark;
+}
+.animater .an-sound-cue .an-listen {
+  margin-bottom: 8px;
+  min-height: 32px;
+  font-size: 12px;
+}
+.an-root .an-mode-picker { display: flex; gap: 8px; margin: 18px 0 10px; }
+.an-root .an-mode-picker button { flex: 1; min-width: 0; }
+.an-root .an-weapon-uses { display: block; color: #d8bf8a; font-size: 11px; margin-top: 7px; }
+.animater .an-recipe-scene.is-state-preview .an-recipe-actor.is-source,
+.animater .an-recipe-scene.is-state-preview .an-recipe-layer.is-source { left: 50%; }
+.animater .an-state-variant { display: grid; gap: 8px; margin: 18px 0; }
+.animater .an-state-variant small { color: var(--an-muted); font-size: 11px; }

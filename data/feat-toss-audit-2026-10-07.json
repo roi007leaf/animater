@@ -1,0 +1,701 @@
+{
+  "date": "2026-10-07",
+  "source": "563fd52708673ddd4f66c76921efbf6a938fffed",
+  "scope": "Eight toss-related activities; their complete pinned native descriptions were read individually for this correction.",
+  "validation": "Native recipe planner, three ordered recipients, effects-only edition comparison, hit-gated branches, complete clip and motion reset regressions. Browser design preview uses installed Patreon videos; this report does not claim live multiplayer or installed-Free playback.",
+  "rows": [
+    {
+      "id": "lGuoGim7J8Z97kor",
+      "name": "Distracting Toss",
+      "slug": "distracting-toss",
+      "descriptionChars": 663,
+      "descriptionHash": "4e68d952f1c8718adb9a6da18061039a302a1f05c9f0355b14790e032dbd68ea",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/feats/class/swashbuckler/level-8/distracting-toss.json",
+      "nativeRoles": null,
+      "review": "Upward distraction, one thrown-weapon Strike, then a symbolic catch cue. The airborne glint marks the first weapon; the dagger flight represents the second configurable thrown weapon. Feint and catching outcomes stay with PF2e.",
+      "editions": {
+        "patreon": {
+          "effectsOnlySignature": "4bd4073a102e6301e187c084dd9cb797801f153f4a0e2270f21a2d7510e798a7",
+          "media": [
+            {
+              "label": "Upward weapon distraction marker",
+              "key": "jb2a.glint.yellow.few"
+            },
+            {
+              "label": "Second thrown weapon strikes the distracted foe",
+              "key": "jb2a.dagger.throw.01.white"
+            },
+            {
+              "label": "One thrown-weapon contact",
+              "key": "jb2a.impact.001.blue"
+            },
+            {
+              "label": "Original weapon catch marker (if caught)",
+              "key": "jb2a.glint.yellow.few"
+            }
+          ]
+        },
+        "free": {
+          "effectsOnlySignature": "4bd4073a102e6301e187c084dd9cb797801f153f4a0e2270f21a2d7510e798a7",
+          "media": [
+            {
+              "label": "Upward weapon distraction marker",
+              "key": "jb2a.glint.yellow.few"
+            },
+            {
+              "label": "Second thrown weapon strikes the distracted foe",
+              "key": "jb2a.dagger.throw.01.white"
+            },
+            {
+              "label": "One thrown-weapon contact",
+              "key": "jb2a.impact.001.blue"
+            },
+            {
+              "label": "Original weapon catch marker (if caught)",
+              "key": "jb2a.glint.yellow.few"
+            }
+          ]
+        }
+      },
+      "sound": {
+        "profile": "physicalToss",
+        "reason": "Complete description throws a configurable weapon; neutral physical release and per-contact cues follow its actual flight and rebound, not a bow shot or recipient throw.",
+        "descriptionChars": 663,
+        "descriptionHash": "4e68d952f1c8718adb9a6da18061039a302a1f05c9f0355b14790e032dbd68ea"
+      },
+      "motion": [
+        {
+          "label": "Draw and throw the second weapon",
+          "motion": "lunge",
+          "subject": "source",
+          "distance": 0.2,
+          "duration": 1400
+        }
+      ],
+      "flights": [
+        {
+          "from": "performer",
+          "to": "first",
+          "delay": 1250
+        }
+      ],
+      "contacts": [
+        {
+          "label": "One thrown-weapon contact",
+          "to": "first",
+          "delay": 2100
+        }
+      ]
+    },
+    {
+      "id": "nwHYTpyreUgvxh1z",
+      "name": "Feral Toss",
+      "slug": "feral-toss",
+      "descriptionChars": 272,
+      "descriptionHash": "accbb34c43fb4f1faa44e52f63128856b31ec46a9a5d759d76bc4d5e993d5158",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/feats/archetype/werecreature/feral-toss.json",
+      "nativeRoles": null,
+      "review": "Head shake, one horn/antler/tusk Strike, then a confirmed-hit push cue. Native piercing footage approximates the natural weapon. Preview shows the 5-foot success branch; critical distance and eligible creature size require the resolved native result.",
+      "editions": {
+        "patreon": {
+          "effectsOnlySignature": "ff0629bf469df100194b285b5f2939da6ec2151df7672726bedf34f0bf5369fe",
+          "media": [
+            {
+              "label": "Short head-thrust air trail",
+              "key": "jb2a.wind_lines.01.01.white"
+            },
+            {
+              "label": "One natural piercing Strike",
+              "key": "jb2a.melee_generic.piercing.one_handed"
+            },
+            {
+              "label": "Natural weapon settles",
+              "key": "jb2a.smoke.puff.side.02.white"
+            }
+          ]
+        },
+        "free": {
+          "effectsOnlySignature": "d87501b5e93ed8464434ad20a89a49de8d8d942aeaeba93e078562d0b75fec9c",
+          "media": [
+            {
+              "label": "Short head-thrust air trail",
+              "key": "jb2a.wind_lines.01.01.white"
+            },
+            {
+              "label": "One natural piercing Strike",
+              "key": "jb2a.unarmed_strike.physical.02.blue"
+            },
+            {
+              "label": "Natural weapon settles",
+              "key": "jb2a.smoke.puff.side.02.white"
+            }
+          ]
+        }
+      },
+      "sound": {
+        "profile": "naturalPierce",
+        "reason": "One horn, antler or tusk contact; the conditional push is silent and never treated as another attack.",
+        "descriptionChars": 272,
+        "descriptionHash": "accbb34c43fb4f1faa44e52f63128856b31ec46a9a5d759d76bc4d5e993d5158"
+      },
+      "motion": [
+        {
+          "label": "Feral head shake",
+          "motion": "shake",
+          "subject": "source",
+          "distance": 0.16,
+          "duration": 1300
+        },
+        {
+          "label": "Horn, antler or tusk thrust",
+          "motion": "lunge",
+          "subject": "source",
+          "distance": 0.24,
+          "duration": 1700
+        },
+        {
+          "label": "Confirmed-hit 5-foot push illustration",
+          "motion": "rush",
+          "subject": "targets",
+          "heading": "away",
+          "distance": 1,
+          "duration": 3000,
+          "requiresHit": true
+        }
+      ],
+      "flights": [],
+      "contacts": [
+        {
+          "label": "One natural piercing Strike",
+          "to": "first",
+          "delay": 1100
+        }
+      ]
+    },
+    {
+      "id": "YN0QYUCb8Q3PtUJy",
+      "name": "Friendly Fling",
+      "slug": "friendly-fling",
+      "descriptionChars": 661,
+      "descriptionHash": "3421509d1b805a4049c78679e96e7ee01d0dfdc04ceb01703880e4de4d5ed394",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/feats/ancestry/minotaur/level-9/friendly-fling.json",
+      "nativeRoles": {
+        "source": "caster",
+        "targets": [
+          "willing-adjacent-ally"
+        ],
+        "requiresSource": false,
+        "requiresTargets": true,
+        "automatic": "requires-role-resolution",
+        "reason": "Friendly Fling moves an eligible willing adjacent ally, not the current enemy target. Select that ally first for manual playback; automatic playback requires explicit ally resolution."
+      },
+      "review": "Horn scoop, small piercing contact, then a low 20-foot ally toss and upright landing. The selected first recipient must be a smaller willing adjacent ally. The ally's optional reaction Strike is separate.",
+      "editions": {
+        "patreon": {
+          "effectsOnlySignature": "43f052398f184736257db9f857b8a2a3eda17debd6081acfdff245b88cba9472",
+          "media": [
+            {
+              "label": "Horn scoop airflow",
+              "key": "jb2a.wind_lines.01.01.white"
+            },
+            {
+              "label": "Small piercing contact from the horns",
+              "key": "jb2a.melee_generic.piercing.one_handed"
+            },
+            {
+              "label": "Low forward landing wisp",
+              "key": "jb2a.smoke.puff.side.grey"
+            }
+          ]
+        },
+        "free": {
+          "effectsOnlySignature": "9c87bc61c888efede6e31910ec38cf9b40cfd104e0256181742aa293348e778a",
+          "media": [
+            {
+              "label": "Horn scoop airflow",
+              "key": "jb2a.wind_lines.01.01.white"
+            },
+            {
+              "label": "Small piercing contact from the horns",
+              "key": "jb2a.dagger.melee.02.white"
+            },
+            {
+              "label": "Low forward landing wisp",
+              "key": "jb2a.smoke.puff.side.grey"
+            }
+          ]
+        }
+      },
+      "sound": {
+        "profile": "allyHeave",
+        "reason": "Complete description physically lifts and throws a willing ally. A short movement whoosh follows the source preparation; no music, spell or weapon-impact sound is inferred.",
+        "descriptionChars": 661,
+        "descriptionHash": "3421509d1b805a4049c78679e96e7ee01d0dfdc04ceb01703880e4de4d5ed394"
+      },
+      "motion": [
+        {
+          "label": "Head lowers, then horns scoop upward",
+          "motion": "levitate",
+          "subject": "source",
+          "distance": 0.24,
+          "duration": 1700
+        },
+        {
+          "label": "Low horn-assisted ally arc (20 feet)",
+          "motion": "leap",
+          "subject": "targets",
+          "heading": "away",
+          "distance": 4,
+          "duration": 4100
+        }
+      ],
+      "flights": [],
+      "contacts": [
+        {
+          "label": "Small piercing contact from the horns",
+          "to": "first",
+          "delay": 600
+        }
+      ]
+    },
+    {
+      "id": "V9kShXu84NlORfcg",
+      "name": "Friendly Toss",
+      "slug": "friendly-toss",
+      "descriptionChars": 506,
+      "descriptionHash": "9218e69f9fe98ea4344e6a2952531d2da0b21b27ea13b616e14bfbba1f72ebe3",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/feats/class/barbarian/level-8/friendly-toss.json",
+      "nativeRoles": {
+        "source": "caster",
+        "targets": [
+          "willing-adjacent-ally"
+        ],
+        "requiresSource": false,
+        "requiresTargets": true,
+        "automatic": "requires-role-resolution",
+        "reason": "Friendly Toss moves an eligible willing adjacent ally, not the current enemy target. Select that ally first for manual playback; automatic playback requires explicit ally resolution."
+      },
+      "review": "Backward wind-up and forward heave, then a high 30-foot ally arc with an upright landing. The selected first recipient must be a willing adjacent ally of eligible size. No horn contact or automatic ally Strike.",
+      "editions": {
+        "patreon": {
+          "effectsOnlySignature": "25452629394c9b88e4c99e3acde4308da46f732515d2baac2548a4f9267dcd0a",
+          "media": [
+            {
+              "label": "Feet brace in dust",
+              "key": "jb2a.smoke.puff.centered.grey"
+            },
+            {
+              "label": "Air displacement at release",
+              "key": "jb2a.wind_lines.01.02.white"
+            },
+            {
+              "label": "Wide upright landing dust ring",
+              "key": "jb2a.smoke.puff.ring.01.white"
+            }
+          ]
+        },
+        "free": {
+          "effectsOnlySignature": "25452629394c9b88e4c99e3acde4308da46f732515d2baac2548a4f9267dcd0a",
+          "media": [
+            {
+              "label": "Feet brace in dust",
+              "key": "jb2a.smoke.puff.centered.grey"
+            },
+            {
+              "label": "Air displacement at release",
+              "key": "jb2a.wind_lines.01.02.white"
+            },
+            {
+              "label": "Wide upright landing dust ring",
+              "key": "jb2a.smoke.puff.ring.01.white"
+            }
+          ]
+        }
+      },
+      "sound": {
+        "profile": "allyHeave",
+        "reason": "Complete description physically lifts and throws a willing ally. A short movement whoosh follows the source preparation; no music, spell or weapon-impact sound is inferred.",
+        "descriptionChars": 506,
+        "descriptionHash": "9218e69f9fe98ea4344e6a2952531d2da0b21b27ea13b616e14bfbba1f72ebe3"
+      },
+      "motion": [
+        {
+          "label": "Lean back to gather the ally",
+          "motion": "recoil",
+          "subject": "source",
+          "distance": 0.24,
+          "duration": 1800
+        },
+        {
+          "label": "Forward two-arm heave",
+          "motion": "lunge",
+          "subject": "source",
+          "distance": 0.24,
+          "duration": 1500
+        },
+        {
+          "label": "High barbarian ally throw (30 feet)",
+          "motion": "leap",
+          "subject": "targets",
+          "heading": "away",
+          "distance": 6,
+          "duration": 5200
+        }
+      ],
+      "flights": [],
+      "contacts": []
+    },
+    {
+      "id": "NDnWOqylZZ1a6BZI",
+      "name": "Jotun's Boost",
+      "slug": "jotuns-boost",
+      "descriptionChars": 651,
+      "descriptionHash": "7043bb270fa5450deecc2b2b492ac5b5c43f85a45a10c9bdb32794df006f19da",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/feats/ancestry/jotunborn/level-9/jotuns-boost.json",
+      "nativeRoles": {
+        "source": "caster",
+        "targets": [
+          "willing-adjacent-ally"
+        ],
+        "requiresSource": false,
+        "requiresTargets": true,
+        "automatic": "requires-role-resolution",
+        "reason": "Jotun's Boost moves an eligible willing adjacent ally, not the current enemy target. Select that ally first for manual playback; automatic playback requires explicit ally resolution."
+      },
+      "review": "Brace, vertical ally lift, then a flatter 25-foot outward ally toss and upright landing. Two free hands allow the native 30-foot alternative; customize that branch. The selected first recipient must be a smaller willing adjacent ally.",
+      "editions": {
+        "patreon": {
+          "effectsOnlySignature": "32f48d4ccf22705f2e27eeee6ab62f3a8e186dbeff21ff4ed79e259808749f62",
+          "media": [
+            {
+              "label": "Upward lifting draft",
+              "key": "jb2a.wind_lines.01.02.white"
+            },
+            {
+              "label": "Air lifts the ally",
+              "key": "jb2a.wind_lines.01.01.white"
+            },
+            {
+              "label": "Upright boosted landing trail",
+              "key": "jb2a.smoke.puff.side.02.white"
+            }
+          ]
+        },
+        "free": {
+          "effectsOnlySignature": "32f48d4ccf22705f2e27eeee6ab62f3a8e186dbeff21ff4ed79e259808749f62",
+          "media": [
+            {
+              "label": "Upward lifting draft",
+              "key": "jb2a.wind_lines.01.02.white"
+            },
+            {
+              "label": "Air lifts the ally",
+              "key": "jb2a.wind_lines.01.01.white"
+            },
+            {
+              "label": "Upright boosted landing trail",
+              "key": "jb2a.smoke.puff.side.02.white"
+            }
+          ]
+        }
+      },
+      "sound": {
+        "profile": "allyHeave",
+        "reason": "Complete description physically lifts and throws a willing ally. A short movement whoosh follows the source preparation; no music, spell or weapon-impact sound is inferred.",
+        "descriptionChars": 651,
+        "descriptionHash": "7043bb270fa5450deecc2b2b492ac5b5c43f85a45a10c9bdb32794df006f19da"
+      },
+      "motion": [
+        {
+          "label": "Giant strength braces for the boost",
+          "motion": "pulse",
+          "subject": "source",
+          "distance": 0.12,
+          "duration": 1800
+        },
+        {
+          "label": "Lift the willing ally upright",
+          "motion": "rush",
+          "subject": "targets",
+          "heading": "up",
+          "distance": 1.1,
+          "duration": 3200
+        },
+        {
+          "label": "Flatter outward giant boost (25 feet)",
+          "motion": "leap",
+          "subject": "targets",
+          "heading": "away",
+          "distance": 5,
+          "duration": 4800
+        }
+      ],
+      "flights": [],
+      "contacts": []
+    },
+    {
+      "id": "5SBFayX7JqKYANwa",
+      "name": "Rebounding Toss",
+      "slug": "rebounding-toss",
+      "descriptionChars": 420,
+      "descriptionHash": "732095d555ff80cce5043ea8e17c45dacb3bb9ec546b86e7a1888f65ef19d331",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/feats/class/fighter/level-2/rebounding-toss.json",
+      "nativeRoles": null,
+      "review": "One thrown weapon hits the first foe, then rebounds from that foe to the second only after a confirmed first hit. Preview illustrates the successful branch. Select two ordered enemies; their native 10-foot separation and attack results remain PF2e.",
+      "editions": {
+        "patreon": {
+          "effectsOnlySignature": "fd83addb400ee42267710a91f30229400b76adaf21d46d6798041d2c048c6b41",
+          "media": [
+            {
+              "label": "Throw release air trail",
+              "key": "jb2a.wind_lines.01.02.white"
+            },
+            {
+              "label": "Thrown weapon to the first foe",
+              "key": "jb2a.dagger.throw.01.white"
+            },
+            {
+              "label": "First weapon contact",
+              "key": "jb2a.impact.001.blue"
+            },
+            {
+              "label": "Successful rebound from first foe to second",
+              "key": "jb2a.dagger.throw.01.white"
+            },
+            {
+              "label": "Second weapon contact after successful rebound",
+              "key": "jb2a.impact.001.blue"
+            }
+          ]
+        },
+        "free": {
+          "effectsOnlySignature": "fd83addb400ee42267710a91f30229400b76adaf21d46d6798041d2c048c6b41",
+          "media": [
+            {
+              "label": "Throw release air trail",
+              "key": "jb2a.wind_lines.01.02.white"
+            },
+            {
+              "label": "Thrown weapon to the first foe",
+              "key": "jb2a.dagger.throw.01.white"
+            },
+            {
+              "label": "First weapon contact",
+              "key": "jb2a.impact.001.blue"
+            },
+            {
+              "label": "Successful rebound from first foe to second",
+              "key": "jb2a.dagger.throw.01.white"
+            },
+            {
+              "label": "Second weapon contact after successful rebound",
+              "key": "jb2a.impact.001.blue"
+            }
+          ]
+        }
+      },
+      "sound": {
+        "profile": "physicalToss",
+        "reason": "Complete description throws a configurable weapon; neutral physical release and per-contact cues follow its actual flight and rebound, not a bow shot or recipient throw.",
+        "descriptionChars": 420,
+        "descriptionHash": "732095d555ff80cce5043ea8e17c45dacb3bb9ec546b86e7a1888f65ef19d331"
+      },
+      "motion": [
+        {
+          "label": "Release one rebounding weapon",
+          "motion": "lunge",
+          "subject": "source",
+          "distance": 0.2,
+          "duration": 1500
+        }
+      ],
+      "flights": [
+        {
+          "from": "performer",
+          "to": "first",
+          "delay": 600
+        },
+        {
+          "from": "first",
+          "to": "second",
+          "delay": 2713,
+          "requiresHit": true
+        }
+      ],
+      "contacts": [
+        {
+          "label": "First weapon contact",
+          "to": "first",
+          "delay": 1450
+        },
+        {
+          "label": "Second weapon contact after successful rebound",
+          "to": "second",
+          "delay": 3563,
+          "requiresHit": true
+        }
+      ]
+    },
+    {
+      "id": "XenKYUBMWZQQ7niM",
+      "name": "Whirlwind Toss",
+      "slug": "whirlwind-toss",
+      "descriptionChars": 388,
+      "descriptionHash": "1d86571fbdd0bf2ef7841dab757bd56f58de9af5a6983353ea6e4a70fae8403c",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/feats/class/barbarian/level-18/whirlwind-toss.json",
+      "nativeRoles": {
+        "source": "caster",
+        "targets": [
+          "grabbed-victim",
+          "adjacent-collateral-victims"
+        ],
+        "requiresSource": false,
+        "requiresTargets": true,
+        "automatic": "requires-role-resolution",
+        "reason": "Whirlwind Toss needs the actually grabbed victim first and other adjacent collateral victims afterward. Resolve these roles before automatic playback; only the held victim is thrown."
+      },
+      "review": "Whirl the held victim, Thrash, apply one collateral contact to each other selected adjacent foe, then illustrate the optional 10-foot toss of the held victim. Select the grabbed victim first. No other recipient is thrown; prone and actual movement remain manual.",
+      "editions": {
+        "patreon": {
+          "effectsOnlySignature": "fd9a3ea3ce720fc1390aaa1133977c8795878eea04ec4a64fa34b5fdb8d3db33",
+          "media": [
+            {
+              "label": "Whirling air around the holder",
+              "key": "jb2a.wind_lines.01.02.white"
+            },
+            {
+              "label": "Thrash the held victim once",
+              "key": "jb2a.unarmed_strike.physical.02.blue"
+            },
+            {
+              "label": "Collateral Thrash once per other adjacent foe",
+              "key": "jb2a.unarmed_strike.physical.02.blue"
+            },
+            {
+              "label": "Optional held-victim landing dust",
+              "key": "jb2a.smoke.puff.centered.grey"
+            }
+          ]
+        },
+        "free": {
+          "effectsOnlySignature": "fd9a3ea3ce720fc1390aaa1133977c8795878eea04ec4a64fa34b5fdb8d3db33",
+          "media": [
+            {
+              "label": "Whirling air around the holder",
+              "key": "jb2a.wind_lines.01.02.white"
+            },
+            {
+              "label": "Thrash the held victim once",
+              "key": "jb2a.unarmed_strike.physical.02.blue"
+            },
+            {
+              "label": "Collateral Thrash once per other adjacent foe",
+              "key": "jb2a.unarmed_strike.physical.02.blue"
+            },
+            {
+              "label": "Optional held-victim landing dust",
+              "key": "jb2a.smoke.puff.centered.grey"
+            }
+          ]
+        }
+      },
+      "sound": {
+        "profile": "unarmed",
+        "reason": "Thrash contacts, including collateral victims, receive physical contact cues; the subsequent optional victim throw is not another Strike.",
+        "descriptionChars": 388,
+        "descriptionHash": "1d86571fbdd0bf2ef7841dab757bd56f58de9af5a6983353ea6e4a70fae8403c"
+      },
+      "motion": [
+        {
+          "label": "Whirl the grabbed victim",
+          "motion": "spin",
+          "subject": "targets",
+          "distance": 0.12,
+          "duration": 2400
+        },
+        {
+          "label": "Optional held-victim toss after Thrash",
+          "motion": "roll",
+          "subject": "targets",
+          "heading": "away",
+          "distance": 2,
+          "duration": 3400
+        }
+      ],
+      "flights": [],
+      "contacts": [
+        {
+          "label": "Thrash the held victim once",
+          "to": "first",
+          "delay": 2400
+        },
+        {
+          "label": "Collateral Thrash once per other adjacent foe",
+          "to": "second",
+          "delay": 2400
+        },
+        {
+          "label": "Collateral Thrash once per other adjacent foe",
+          "to": "third",
+          "delay": 2580
+        }
+      ]
+    },
+    {
+      "id": "TdA3oVj79KxOm2Kd",
+      "name": "Wind-Tossed Spell",
+      "slug": "wind-tossed-spell",
+      "descriptionChars": 302,
+      "descriptionHash": "c2727c3f9178b4987a60c7ffb8c58ca3fbe789a7246854d19f187e539d4c883e",
+      "source": "https://github.com/foundryvtt/pf2e/blob/563fd52708673ddd4f66c76921efbf6a938fffed/packs/pf2e/feats/archetype/elementalist/wind-tossed-spell.json",
+      "nativeRoles": null,
+      "review": "Two source wind curls prepare the next spell. No attack, target impact or creature throw happens during this spellshape action.",
+      "editions": {
+        "patreon": {
+          "effectsOnlySignature": "b9cc5b4a5e6e8de016be2f3a285f4d62f453f2ce1e6e9563452dece36cfe4424",
+          "media": [
+            {
+              "label": "Wind curls gather for the next spell",
+              "key": "jb2a.wind_lines.01.01.white"
+            },
+            {
+              "label": "Crosswind holds the spellshape preparation",
+              "key": "jb2a.wind_lines.01.02.white"
+            }
+          ]
+        },
+        "free": {
+          "effectsOnlySignature": "b9cc5b4a5e6e8de016be2f3a285f4d62f453f2ce1e6e9563452dece36cfe4424",
+          "media": [
+            {
+              "label": "Wind curls gather for the next spell",
+              "key": "jb2a.wind_lines.01.01.white"
+            },
+            {
+              "label": "Crosswind holds the spellshape preparation",
+              "key": "jb2a.wind_lines.01.02.white"
+            }
+          ]
+        }
+      },
+      "sound": {
+        "profile": "wind",
+        "reason": "Source wind prepares the next spell; its later attack has separate audio.",
+        "descriptionChars": 302,
+        "descriptionHash": "c2727c3f9178b4987a60c7ffb8c58ca3fbe789a7246854d19f187e539d4c883e"
+      },
+      "motion": [
+        {
+          "label": "Settle the wind preparation",
+          "motion": "pulse",
+          "subject": "source",
+          "distance": 0.12,
+          "duration": 1900
+        }
+      ],
+      "flights": [],
+      "contacts": []
+    }
+  ],
+  "issues": []
+}
