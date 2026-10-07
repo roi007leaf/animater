@@ -1499,11 +1499,11 @@
     "absentGravity": 1,
     "gapC-zombie-horde": 1
   },
-  "motionRecipes": 468,
-  "motionStages": 482,
+  "motionRecipes": 469,
+  "motionStages": 483,
   "motions": {
     "recoil": 75,
-    "pulse": 216,
+    "pulse": 217,
     "rush": 18,
     "shake": 104,
     "levitate": 31,

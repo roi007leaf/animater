@@ -17,7 +17,7 @@
     "excluded": 2062,
     "descriptionHashes": 1928,
     "variety": {
-      "changed": 91,
+      "changed": 93,
       "variants": [
         {
           "id": "Mt6ZzkVX8Q4xigFq",
@@ -103,7 +103,7 @@
           "id": "wi405lBjPcbF1DeR",
           "name": "Punishing Winds",
           "edition": "patreon",
-          "slot": "cast",
+          "slot": "hit",
           "from": "jb2a.wind_lines.01.02.white",
           "to": "jb2a.wind_lines.01.01.white"
         },
@@ -127,7 +127,7 @@
           "id": "KcLVELhCUcKXxiKE",
           "name": "Tailwind",
           "edition": "patreon",
-          "slot": "cast",
+          "slot": "hit",
           "from": "jb2a.wind_lines.01.02.white",
           "to": "jb2a.wind_lines.01.01.white"
         },
@@ -178,14 +178,6 @@
           "slot": "hit",
           "from": "jb2a.impact.001.orange",
           "to": "jb2a.impact.002.orange"
-        },
-        {
-          "id": "J3zMwmhIVgI2yzxm",
-          "name": "Call Cosmos",
-          "edition": "patreon",
-          "slot": "hit",
-          "from": "jb2a.impact.001.orange",
-          "to": "jb2a.impact.003.orange"
         },
         {
           "id": "CjVOXjuvvTJqC7AD",
@@ -300,6 +292,14 @@
           "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
+          "id": "wOjoJjl2ndZKTuFJ",
+          "name": "Overheat",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.magic_signs.rune.02.loop.01.orange",
+          "to": "jb2a.magic_signs.rune.02.loop.02.orange"
+        },
+        {
           "id": "5cMDrC3jX1yrxOzh",
           "name": "Overload Systems",
           "edition": "patreon",
@@ -345,7 +345,7 @@
           "edition": "patreon",
           "slot": "aura",
           "from": "jb2a.magic_signs.rune.02.loop.01.orange",
-          "to": "jb2a.magic_signs.rune.02.loop.02.orange"
+          "to": "jb2a.magic_signs.rune.02.loop.03.orange"
         },
         {
           "id": "7P4eBdqWcgQJAFCa",
@@ -412,6 +412,14 @@
           "to": "jb2a.magic_signs.rune.02.complete.06.purple"
         },
         {
+          "id": "HzFdtjvRCFpb0NrS",
+          "name": "Time Loop",
+          "edition": "patreon",
+          "slot": "aura",
+          "from": "jb2a.wind_lines.01.01.white",
+          "to": "jb2a.wind_lines.01.02.white"
+        },
+        {
           "id": "V8wXOsoejQhe6CyG",
           "name": "Vapor Form",
           "edition": "patreon",
@@ -449,7 +457,7 @@
           "edition": "patreon",
           "slot": "aura",
           "from": "jb2a.magic_signs.rune.02.loop.01.orange",
-          "to": "jb2a.magic_signs.rune.02.loop.03.orange"
+          "to": "jb2a.magic_signs.rune.02.loop.04.orange"
         },
         {
           "id": "tZQpEnaFqwmU4AMZ",
@@ -476,14 +484,6 @@
           "to": "jb2a.impact.007.purple"
         },
         {
-          "id": "1gkdgFwKfAoQx163",
-          "name": "Warp Time",
-          "edition": "patreon",
-          "slot": "aura",
-          "from": "jb2a.wind_lines.01.01.white",
-          "to": "jb2a.wind_lines.01.02.white"
-        },
-        {
           "id": "kTzbLqmqPcZwOa5F",
           "name": "Wave of Warning",
           "edition": "patreon",
@@ -508,52 +508,52 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
+          "id": "fI20AVwOzJMHXRdo",
+          "name": "Levitate",
+          "edition": "free",
+          "slot": "area",
+          "from": "jb2a.ground_cracks.03.orange",
+          "to": "jb2a.ground_cracks.01.orange"
+        },
+        {
           "id": "115Xp9E38CJENhNS",
           "name": "Magic Passage",
           "edition": "free",
           "slot": "cast",
-          "from": "jb2a.ground_cracks.02.orange",
-          "to": "jb2a.ground_cracks.01.orange"
-        },
-        {
-          "id": "dMKP4fkWx8V2cqAy",
-          "name": "Remake",
-          "edition": "free",
-          "slot": "cast",
-          "from": "jb2a.particles.inward.greenyellow.02.02",
-          "to": "jb2a.particles.inward.greenyellow.01.02"
+          "from": "jb2a.ground_cracks.03.orange",
+          "to": "jb2a.ground_cracks.02.orange"
         },
         {
           "id": "dMKP4fkWx8V2cqAy",
           "name": "Remake",
           "edition": "free",
           "slot": "hit",
-          "from": "jb2a.particles.inward.greenyellow.02.03",
-          "to": "jb2a.particles.inward.greenyellow.01.03"
+          "from": "jb2a.particles.inward.greenyellow.02.04",
+          "to": "jb2a.particles.inward.greenyellow.01.02"
         },
         {
-          "id": "WPu3UE3kTXSLqO40",
-          "name": "Spiritual Armament",
+          "id": "WsUwpfmhKrKwoIe3",
+          "name": "Slow",
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.003.blue",
           "to": "jb2a.impact.001.blue"
         },
         {
-          "id": "e9UJoVYUd5kJWUpi",
-          "name": "Summon Giant",
+          "id": "Et8RSCLx8w7uOLvo",
+          "name": "Sound Body",
           "edition": "free",
-          "slot": "cast",
-          "from": "jb2a.ground_cracks.02.orange",
-          "to": "jb2a.ground_cracks.01.orange"
+          "slot": "aura",
+          "from": "jb2a.particles.outward.greenyellow.01.04",
+          "to": "jb2a.particles.outward.greenyellow.01.01"
         },
         {
           "id": "e9UJoVYUd5kJWUpi",
           "name": "Summon Giant",
           "edition": "free",
-          "slot": "aura",
-          "from": "jb2a.particles.inward.greenyellow.01.02",
-          "to": "jb2a.particles.inward.greenyellow.01.04"
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.03.orange",
+          "to": "jb2a.ground_cracks.01.orange"
         },
         {
           "id": "VlNcjmYyu95vOUe8",
@@ -576,16 +576,8 @@
           "name": "Vampiric Exsanguination",
           "edition": "free",
           "slot": "aura",
-          "from": "jb2a.particles.inward.greenyellow.01.05",
-          "to": "jb2a.particles.inward.greenyellow.02.05"
-        },
-        {
-          "id": "kOa055FIrO9Smnya",
-          "name": "Wall of Stone",
-          "edition": "free",
-          "slot": "aura",
-          "from": "jb2a.ground_cracks.02.orange",
-          "to": "jb2a.ground_cracks.03.orange"
+          "from": "jb2a.particles.inward.greenyellow.02.02",
+          "to": "jb2a.particles.inward.greenyellow.01.04"
         },
         {
           "id": "FIM54CSlkvBwwzdA",
@@ -601,7 +593,15 @@
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.004.blue"
+          "to": "jb2a.impact.002.blue"
+        },
+        {
+          "id": "x7SPrsRxGb2Vy2nu",
+          "name": "Earthquake",
+          "edition": "free",
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.02.orange",
+          "to": "jb2a.ground_cracks.01.orange"
         },
         {
           "id": "FEaM1B4WuiqFO7Uk",
@@ -609,7 +609,7 @@
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.blue"
+          "to": "jb2a.impact.011.blue"
         },
         {
           "id": "FEaM1B4WuiqFO7Uk",
@@ -684,6 +684,22 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
+          "id": "0mNmVi9CLXor3McX",
+          "name": "Personal Gravity",
+          "edition": "free",
+          "slot": "area",
+          "from": "jb2a.ground_cracks.01.orange",
+          "to": "jb2a.ground_cracks.02.orange"
+        },
+        {
+          "id": "znv4ECL7ZtuiagtA",
+          "name": "Petrify",
+          "edition": "free",
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.02.orange",
+          "to": "jb2a.ground_cracks.03.orange"
+        },
+        {
           "id": "5y70IWhVV6bVjC9N",
           "name": "Recharge Weapon",
           "edition": "free",
@@ -719,8 +735,8 @@
           "id": "YIMampGpij4Y30yE",
           "name": "Speak with Stones",
           "edition": "free",
-          "slot": "hit",
-          "from": "jb2a.ground_cracks.01.orange",
+          "slot": "cast",
+          "from": "jb2a.ground_cracks.03.orange",
           "to": "jb2a.ground_cracks.02.orange"
         },
         {
