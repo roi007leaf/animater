@@ -7,6 +7,14 @@ import { prepareRecipeSounds } from "./spell-sounds.mjs";
 import { registeredMedia, mediaForReference } from './media-library-model.mjs';
 import { stageTiers } from './quality.mjs';
 const SOUND_PRELOAD_TIMEOUT = 2000;
+// The placed document a lasting area is tied to. Foundry 14 keeps a MeasuredTemplate
+// as a Region with the same id; deleting either removes the Region.
+export function templateDocument(template) {
+  const doc = template?.document ?? template;
+  if (!doc?.documentName || !doc.id) return null;
+  if (doc.documentName === "MeasuredTemplate") return doc.parent?.regions?.get?.(doc.id) ?? doc;
+  return ["Region", "MeasuredTemplate"].includes(doc.documentName) ? doc : null;
+}
 // Weapon hits and residue are sized to the target token; the world setting
 // enlarges them to JB2A's intended swing size. Placed Area Fire keeps its template size.
 export function withWeaponScale(recipe, factor) {
@@ -245,7 +253,13 @@ export class AnimaterRuntime {
         }
         applyEffectOptions(e, s);
         if (s.below) e.belowTokens();
-        if (s.persist && !preview) e.persist();
+        if (s.persist && !preview) {
+          // A lasting area loops until its template (a Region on Foundry 14) is
+          // removed. Without a placed template there is nothing to end it, so it plays once.
+          const doc = s.kind === "template" ? templateDocument(context.template) : null;
+          if (s.kind !== "template") e.persist();
+          else if (doc) e.persist().tieToDocuments(doc);
+        }
       }
       return sequence;
     };

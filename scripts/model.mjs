@@ -149,7 +149,8 @@ export function validateRecipe(input) {
           ...(s.above === true && s.below !== true ? { above: true } : {}),
           // Editor start mode; the link itself lives in afterStage/timingAnchor/startOffset.
           ...(['after', 'with'].includes(s.startMode) && s.afterStage ? { startMode: s.startMode, ...(s.startRef && s.startRef === s.afterStage ? { startRef: text(s.startRef, 100) } : {}) } : {}),
-          persist: (s.kind === "aura" || s.kind==='tokenfx' && input.lifecycle==='document' && input.trigger==='effect') && s.persist === true,
+          // A persistent template stage lives as long as its placed template.
+          persist: (s.kind === "aura" || s.kind === "template" || s.kind==='tokenfx' && input.lifecycle==='document' && input.trigger==='effect') && s.persist === true,
           ...(s.kind==='aura'&&Number(s.auraRadius)>0?{auraRadius:number(s.auraRadius,0.1,240,5),auraSlug:text(s.auraSlug,100)}:{}),
           ...(s.elementTint === true ? { elementTint: true } : {}),
           ...(s.elementAssets && typeof s.elementAssets === "object"

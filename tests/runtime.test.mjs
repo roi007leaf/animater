@@ -744,3 +744,18 @@ test("stop cancels delayed stages so no effects appear after stop", async () => 
   assert.equal(calls.filter((c) => c[0] === "play").length, 1);
   assert.equal(runtime.pending.size, 0);
 });
+
+test("a lasting area loops tied to its placed template and plays once without one", async () => {
+  const recipe = validateRecipe({ id: "fog", name: "Fog", trigger: "manual", stages: [{ kind: "template", assets: ["jb2a.impact.001.orange"], persist: true, oneShot: false }] });
+  const region = { documentName: "Region", id: "r1" };
+  const template = { documentName: "MeasuredTemplate", id: "r1", parent: { regions: new Map([["r1", region]]) } };
+  const area = { center: { x: 300, y: 300 }, diameter: 400 };
+  for (const [placed, tied] of [[template, region], [{}, null]]) {
+    const { runtime, calls } = fixture();
+    runtime.catalog = [{ key: "jb2a.impact.001.orange" }];
+    runtime.wait = async () => true;
+    await runtime.play(recipe, { source: { center: { x: 0, y: 0 } }, targets: [], template: placed, area });
+    assert.equal(calls.some((c) => c[0] === "persist"), Boolean(tied));
+    assert.deepEqual(calls.filter((c) => c[0] === "tieToDocuments").map((c) => c[1]), tied ? [tied] : []);
+  }
+});

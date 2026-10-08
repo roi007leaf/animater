@@ -107,6 +107,9 @@ const overrides=[
  [/\bof wounding$/,{theme:'blood'}],
  // The holy line footage is a thin core in a tall frame: widen it to read as a 5-foot beam.
  [/^sunbeam$/,{areaScale:2.2}],
+ // Lasting clouds loop on their template: a burning cloud and a sleet storm, not a blast.
+ [/^incendiary cloud$/,{area:'fumes.fire.orange,ambient_fog.001.loop.large.orangeyellow'}],
+ [/^sleet storm$/,{area:'sleet_storm.01.blue,sleet_storm.02.blue'}],
  [/^hellish rebuke$/,{hit:'flames.green,flames.04.complete.green',aura:'flames.green,flames.04.loop.green',tints:{hit:'#62dc85',aura:'#62dc85'}},null,'2024'],
  [/^bestow curse$/,{theme:'curse',hit:'condition.curse',aura:'condition.curse'}],
  [/^mending$/,{theme:'transform',hit:'glint,swirling_sparkles',aura:'glint,swirling_sparkles'}],
@@ -232,6 +235,16 @@ const overrides=[
 // token: a reach, throw or stride belongs to the performer, never the target.
 const HOSTILE=new Set(['fire','cold','electricity','sonic','acid','poison','void','curse','fear','disease','force','shadow','blood','web']);
 const NAMED_GESTURES={'drift-gentle':['drift',2400,.3,'targets',.6,'Gentle feather descent'],'flicker':['flicker',1600,.12,'source',.5,'Phase flicker'],'cower-targets':['cower',1500,.25,'targets',.6,'Cowers in fear'],'slam-small':['slam',1400,.2,'source',.6,'Rise and slam'],'sink-small':['sink',1800,.25,'source',.6,'Sinks into the ground'],'stagger-targets':['stagger',1300,.2,'targets',.6,'Staggered by the blow'],'throw-small':['throw',1400,.12,'source',.6,'Wind-up and throw'],'brace-small':['brace',1500,.12,'source',.6,'Brace and settle'],'reach-small':['lunge',1500,.12,'source',.6,'Reach to touch'],'stride-small':['dodge',1600,.15,'source',.6,'Nimble step'],'evade-small':['dodge',1500,.15,'source',.6,'Deflecting sidestep'],'lift-illustrative':['levitate',2000,.22,null,.6,'Illustrative lift'],'hop-illustrative':['levitate',1600,.18,null,.6,'Illustrative hop'],'wind-step-small':['dodge',1600,.15,'source',.6,'Wind step'],'lash-small':['lunge',1600,.18,'source',.6,'Lash and settle'],'guard-small':['brace',1300,.12,'source',.6,'Guard and settle'],'native-teleport-cue':['flicker',1600,.1,'source',.5,'Teleport flicker'],'transform-cue':['pulse',1800,.1,null,.6,'Casting breath'],'breath-small':['recoil',1300,.06,'source',.5,'Exhale and settle'],'subtle-pulse':['pulse',1500,.05,'targets',.35,'Gentle boon']};
+// Spells whose area itself stays on the map for the duration (a cloud, a wall, a
+// zone). Spells that only affect creatures inside the area at casting (Fear,
+// Sleep, Hypnotic Pattern) or whose area is a one-off blast play once.
+export const LASTING_AREAS=new Set(['fog cloud','cloudkill','stinking cloud','insect plague','incendiary cloud','darkness','daylight','silence','web','grease','entangle','spike growth','black tentacles',"evard's black tentacles",'moonbeam','call lightning','sleet storm','blade barrier','wall of fire','wall of ice','wall of thorns','wall of force','wind wall','prismatic wall','hallow','magic circle','forcecage','globe of invulnerability','hallucinatory terrain','major image','silent image','minor illusion','programmed illusion','gust of wind','guards and wards','private sanctum','teleportation circle','alarm','zone of truth','tiny hut',"leomund's tiny hut",'control weather','storm of vengeance','mirage arcane','forbiddance']);
+// Not listed: emanations that move with the caster (Spirit Guardians, Aura of Life,
+// Holy Aura, Antimagic Field, Antilife Shell) would stay behind on a placed template;
+// Wall of Stone, Control Water and Reverse Gravity have no footage that loops well.
+// Activities of a lasting spell that are single events inside it (a bolt from the
+// storm, a fissure, a glyph going off) stay one-shot.
+export const LASTING_EVENT=/lightning bolt|fissure|debris|structure|turn \d|round \d|glyph effect|explosion|bead/;
 export function deliveryGesture(d,{subject='source',physical=false}={}){
  const a=d.activity??{},type=a.type,g=(motion,duration,distance,who,intensity,label)=>({motion,duration,distance,subject:who??subject,intensity,label});
  if(d.motion==='none'||type==='check'||d.followup)return null;

@@ -152,3 +152,15 @@ test('audit fixes: art families match the fiction and one-shot stages stay short
  }
  for(const name of ['Multiattack','Parry','Uncanny Dodge'])for(const v of find(name,'feat','2014').variants)assert.ok(!v.recipe.stages.some(s=>s.kind==='cast'),name+' has no casting circle');
 });
+
+test('lasting areas loop on their template; blasts and cast-time areas play once', () => {
+  const persisted = (name, edition = '2024') => find(name, 'spell', edition).variants.some(v => v.recipe.stages.some(s => s.kind === 'template' && s.persist));
+  for (const name of ['Fog Cloud', 'Web', 'Cloudkill', 'Darkness']) assert.ok(persisted(name), name);
+  for (const name of ['Fireball', 'Fear', 'Hypnotic Pattern', 'Burning Hands', 'Spirit Guardians']) assert.ok(!persisted(name), name);
+  const fog = find('Fog Cloud').variants[0].recipe.stages.find(s => s.kind === 'template');
+  assert.ok(fog.assets.every(k => !k.includes('.complete.')), 'lasting fog uses its loop footage');
+  // Call Lightning's storm lasts; each bolt from it is a single event.
+  const call = find('Call Lightning', 'spell', '2014').variants;
+  assert.ok(call.find(v => v.label === 'Cast').recipe.stages.some(s => s.persist));
+  assert.ok(!call.filter(v => /Lightning Bolt/.test(v.label)).some(v => v.recipe.stages.some(s => s.persist)));
+});

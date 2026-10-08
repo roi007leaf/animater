@@ -88,6 +88,16 @@ export function keepNativeSemantics(recipe, stages, options = {}) {
     }
     return next;
   });
+  // A lasting native area stays on its template: the design's first area layer
+  // carries it (its loop footage when JB2A has one), later layers stay one-shot.
+  if (recipe.stages.some(s => s.kind === 'template' && s.persist)) {
+    const i = out.findIndex(s => s.kind === 'template');
+    const loop = k => {
+      for (const from of ['.complete.', '.burst.']) { const l = k.replace(from, '.loop.'); if (l !== k && globalThis.Sequencer?.Database?.entryExists?.(l)) return l; }
+      return k;
+    };
+    if (i >= 0) out[i] = { ...out[i], persist: true, oneShot: false, assets: (out[i].assets ?? []).map(loop) };
+  }
   // Effects-only playback: the catalog's motion switch removes token motion.
   // Document-linked effects may only attach persistent layers to the bearer.
   if (recipe.lifecycle === 'document') out = out.filter(s => ['aura', 'tokenfx'].includes(s.kind)).map(s => ({ ...s, subject: 'source', persist: true, afterStage: '' }));

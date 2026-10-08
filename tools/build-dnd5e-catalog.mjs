@@ -2,7 +2,7 @@ import {colorAffinity} from './color-affinity.mjs';
 import {writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {dnd5eSources,hasNativeActivation} from './dnd5e-source.mjs';
-import {nativeDirection,weaponModes,weaponSound,weaponVisualFamily,damageThemes,deliveryGesture} from './dnd5e-directions.mjs';
+import {nativeDirection,weaponModes,weaponSound,weaponVisualFamily,damageThemes,deliveryGesture,LASTING_AREAS,LASTING_EVENT} from './dnd5e-directions.mjs';
 import {assetDatabases} from './asset-databases.mjs';
 import {resolveSpellMedia,assetGeometry} from './spell-asset-selection.mjs';
 import {SPELL_THEMES} from '../scripts/spell-choreography.mjs';
@@ -192,6 +192,23 @@ function finiteRecipe(entry,row,raw,mode){
   // The native attack activities own actual hit contacts. These are cosmetic
   // performer beats, distinguishing basic and heightened Flurry activations.
   const beat=stages.find(s=>s.kind==='motion');if(beat){beat.motion='lunge';beat.distance=.1;beat.repeats=d.nativeCounts.illustrativeBeats;beat.repeatInterval=1100;beat.duration=1100;beat.label=`${beat.repeats} illustrative flurry beats`;}
+ }
+ // A lasting area (Fog Cloud, Web, Wall of Fire…) stays on its template: the art
+ // loops until the template is removed. Instantaneous areas play once.
+ const duration=a.duration?.override?a.duration:row.source.system?.duration;
+ const spellName=row.source.name.toLowerCase(),actName=(a.name??'').toLowerCase();
+ const lasting=d.area&&d.trigger==='template'&&!d.followup&&row.source.type==='spell'&&LASTING_AREAS.has(spellName)&&!LASTING_EVENT.test(actName)&&!['inst',''].includes(duration?.units??'');
+ // A lasting ward is a circle on the ground, never a standing hex dome; a shelter or
+ // globe that is a sphere uses the smooth force sphere.
+ const globe=/tiny hut|prismatic wall/.test(spellName);
+ const lasts=k=>{
+  if(/^jb2a\.energy_field\.02\./.test(k))return globe?'jb2a.wall_of_force.sphere.blue':'jb2a.magic_signs.circle.02.abjuration.loop.blue';
+  for(const from of ['.complete.','.burst.']){const l=k.replace(from,'.loop.');if(l!==k&&allAssets.has(l))return l;}
+  return k;
+ };
+ if(lasting)for(const s of stages.filter(s=>s.kind==='template')){
+  s.persist=true;s.oneShot=false;s.fadeOut=Math.max(s.fadeOut??0,800);
+  s.assets=[...new Set(s.assets.map(lasts))];
  }
  for(const s of stages)capOneShot(s);
  const recipe=validateRecipe({id:`animater-${entry.id}-${id}`,name:entry.name,systemId:'dnd5e',catalogEntry:entry.id,activityId:raw._id,...(mode?{weaponMode:mode}:{}),itemUuid:row.uuid,match:entry.slug,description:d.note,category:entry.group,color:SPELL_THEMES[d.theme]?.color,trigger:delegated?'manual':d.trigger,previewArea:d.area,playbackRoles:roles,stages});
