@@ -1096,8 +1096,7 @@ export class Workspace {
     const key = resolveAsset(s, this.host.catalog());
     const file = mediaForReference(this.host.catalog(),key)?.file;
     const assetFree = ["motion", "sprite", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind);
-    return `<div class="an-preview-tabs" role="group" aria-label="Preview mode"><button data-action="preview-mode" data-mode="recipe" class="${this.previewMode === "recipe" ? "is-active" : ""}">Composition</button><button data-action="preview-mode" data-mode="stage" class="${this.previewMode === "stage" ? "is-active" : ""}">Selected stage</button></div>
-      <div class="an-preview ${this.previewMode === "recipe" ? "an-full-preview" : ""}" style="--effect:${esc(r.color)}">${this.previewMode === "recipe" ? this.recipePreviewHTML(r) : `${OPTIONAL_FX_KINDS.has(s.kind) ? `<div class="an-preview-empty"><b>${esc(KINDS[s.kind])}</b><small>${s.kind==='scenefx'?'Play at table · shared scene':'Local canvas preview · token filter'}</small></div>` : s.kind === "motion" ? `<div class="an-motion-scene" aria-label="Token motion schematic preview"><div class="an-demo-token" data-motion-demo>✦</div><div class="an-demo-target">◇</div><small>Token motion · schematic</small></div>` : s.kind === "sound" ? (audioPreview.skipSound ? `<div class="an-preview-empty"><small>Optional sound pack unavailable. Visual stages still play.</small></div>` : `<audio controls src="${esc(this.host.mediaURL?.(audioPreview.soundFile) ?? audioPreview.soundFile)}" aria-label="Selected sound preview" data-cue-volume="${audioPreview.volume}"></audio>`) : s.kind === "sprite" ? `<div class="an-preview-empty">✦<small>Token copies appear in Full recipe preview</small></div>` : file ? this.visualMediaHTML(file,'controls autoplay aria-label="Selected stage asset preview"') : `<div class="an-preview-empty">◇<small>Choose an installed asset</small></div>`}<span class="an-preview-label">STAGE ${index + 1} · ${s.kind === "motion" ? "TOKEN MOTION" : "ASSET PREVIEW"}</span>`}</div>`;
+    return `<div class="an-preview ${this.previewMode === "recipe" ? "an-full-preview" : ""}" style="--effect:${esc(r.color)}">${this.previewMode === "recipe" ? this.recipePreviewHTML(r) : `${OPTIONAL_FX_KINDS.has(s.kind) ? `<div class="an-preview-empty"><b>${esc(KINDS[s.kind])}</b><small>${s.kind==='scenefx'?'Play at table · shared scene':'Local canvas preview · token filter'}</small></div>` : s.kind === "motion" ? `<div class="an-motion-scene" aria-label="Token motion schematic preview"><div class="an-demo-token" data-motion-demo>✦</div><div class="an-demo-target">◇</div><small>Token motion · schematic</small></div>` : s.kind === "sound" ? (audioPreview.skipSound ? `<div class="an-preview-empty"><small>Optional sound pack unavailable. Visual stages still play.</small></div>` : `<audio controls src="${esc(this.host.mediaURL?.(audioPreview.soundFile) ?? audioPreview.soundFile)}" aria-label="Selected sound preview" data-cue-volume="${audioPreview.volume}"></audio>`) : s.kind === "sprite" ? `<div class="an-preview-empty">✦<small>Token copies appear in Full recipe preview</small></div>` : file ? this.visualMediaHTML(file,'controls autoplay aria-label="Selected stage asset preview"') : `<div class="an-preview-empty">◇<small>Choose an installed asset</small></div>`}<span class="an-preview-label">STAGE ${index + 1} · ${s.kind === "motion" ? "TOKEN MOTION" : "ASSET PREVIEW"}</span>`}</div>`;
   }
   inspectorHTML(r) {
     const canvasUnavailable = Boolean(this.host.environment().demo);
@@ -2124,6 +2123,15 @@ export class Workspace {
         if (this.edit().lifecycle === "document") this.edit().stateEntry = "";
       }
       if (action === "preview" || action === "play") {
+        // Check selection before the window tucks away, so the reason stays visible.
+        const tokens = this.host.previewTokens?.() ?? {};
+        const needsCaster = this.recipe()?.stages.some((s) => !["template", "sound", "overlay", "scenefx"].includes(s.kind));
+        if ("source" in tokens && !tokens.source && needsCaster) {
+          this.message = "Select your caster token on the canvas first (and target any creatures), then try again.";
+          globalThis.ui?.notifications?.warn(`Animater: ${this.message}`);
+          this.render();
+          return;
+        }
         this.busy = true;
         this.message = "Preparing animation…";
         this.render();

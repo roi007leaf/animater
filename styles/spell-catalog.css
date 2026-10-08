@@ -391,3 +391,67 @@
 .animater .an-recipe-scene.is-state-preview .an-recipe-layer.is-source { left: 50%; }
 .animater .an-state-variant { display: grid; gap: 8px; margin: 18px 0; }
 .animater .an-state-variant small { color: var(--an-muted); font-size: 11px; }
+
+/* Compact catalog controls: each card is an inline pill, so consecutive
+   cards (Plug & play, Token motion, sounds…) share one wrapping row. */
+.animater .an-catalog-automation {
+  display: inline-flex;
+  vertical-align: top;
+  max-width: 100%;
+  gap: 10px;
+  padding: 6px 6px 6px 12px;
+  margin: 12px 8px 0 0;
+  border-radius: 999px;
+}
+.animater .an-catalog-automation + :not(.an-catalog-automation) { margin-top: 14px; }
+.animater .an-catalog-automation > div { min-width: 0; display: flex; align-items: baseline; gap: 8px; }
+.animater .an-catalog-automation b { white-space: nowrap; }
+.animater .an-catalog-automation small {
+  margin: 0;
+  max-width: 230px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.animater .an-catalog-automation button {
+  min-width: 48px;
+  min-height: 0;
+  height: 26px;
+  line-height: 1;
+  padding: 0 12px;
+  font-size: 11px;
+  border-radius: 999px;
+  flex: none;
+}
+.animater .an-sound-settings { flex-wrap: nowrap; }
+.animater .an-sound-settings > div { flex: 0 1 auto; min-width: 0; }
+.animater .an-sound-settings > label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: auto;
+  white-space: nowrap;
+  padding-right: 6px;
+}
+.animater .an-sound-settings > label span { float: none; order: 2; min-width: 30px; }
+.animater .an-sound-settings input[type="range"] { width: 80px; }
+/* Descriptions show on hover so the controls stay on one row. */
+.animater .an-catalog-automation { position: relative; }
+.animater .an-catalog-automation > div > small {
+  display: none;
+  position: absolute;
+  left: 8px;
+  top: calc(100% + 6px);
+  z-index: 20;
+  max-width: 320px;
+  white-space: normal;
+  padding: 6px 9px;
+  border-radius: 6px;
+  border: 1px solid var(--an-line);
+  background: var(--an-surface);
+  color: var(--an-text);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+.animater .an-catalog-automation:hover > div > small,
+.animater .an-catalog-automation:focus-within > div > small { display: block; }

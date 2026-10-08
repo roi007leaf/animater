@@ -68,12 +68,14 @@ export class RecipePreview {
   stateFor(element, frame) {
     if (element.dataset.previewPlan !== undefined) {
       const s = this.recipe.playbackPlan[Number(element.dataset.previewPlan)];
-      return {
+      const state = {
         ...stageFrame({ ...s, repeats: 1, targetStagger: 0 }, frame.time),
         stage: s,
         targetIndex: s.targetIndex,
         iteration: s.iteration,
       };
+      if (this.muted?.has(s.index)) state.state = "pending";
+      return state;
     }
     return frame.stages[
       Number(element.dataset.previewStage ?? element.dataset.layerStage)
@@ -166,7 +168,14 @@ export class RecipePreview {
       image.addEventListener('load',finish,{once:true});image.addEventListener('error',finish,{once:true});this.abort.signal.addEventListener('abort',finish,{once:true});
     });
   }
+  // Studio mute/solo: muted stages stay silent and hidden in this preview only.
+  setMuted(indices) {
+    this.muted = new Set(indices);
+    this.started.clear();
+  }
   draw(frame) {
+    if (this.muted?.size)
+      frame = { ...frame, stages: frame.stages.map((s) => (this.muted.has(s.index) ? { ...s, state: "pending" } : s)) };
     this.tokenFx?.draw(frame);
     for (const video of [...this.videos, ...this.audio]) {
       const index = Number(video.dataset.previewStage);

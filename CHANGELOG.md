@@ -15,6 +15,9 @@
   - **Right-click menu.** Start at playhead, duplicate after it, or delete.
   - **Shortcuts.** Space plays or pauses, Home/End jump, `,` `.` and the arrow keys step (Shift for larger steps), L loops, Ctrl+D duplicates, Delete removes, Ctrl+S saves. Ctrl+wheel or the slider zooms the timeline, and Fit resets the zoom.
   - **Layout.** The timeline's height and the inspector's width are remembered per browser.
+  - **Mute / Solo.** Each track has **M** and **S** buttons. Muted tracks (or every track but the soloed ones) are hidden and silent in the monitor, so you can check one part of a recipe on its own.
+- Local preview and Play at table tell you to select a caster token before the window minimizes, instead of minimizing and failing quietly.
+- Catalog controls (Plug & play, Token motion, sounds) are compact pills that share one row on every catalog tab; their descriptions show on hover.
 - The recipe library uses the full window width; **← Recipes** (or the Recipes nav item) returns to it.
 
 ## 0.1.0 — prerelease (2026-10-08)

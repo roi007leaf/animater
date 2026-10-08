@@ -19,8 +19,17 @@ export const STUDIO_TRACKS = Object.freeze([
   { id: "fx", icon: "✧", name: "Filters & scene", kind: "tokenfx" },
 ]);
 const LINKED_TRACKS = new Set(["caster", "fx"]);
-const HEAD_WIDTH = 150, MIN_ZOOM = 1, MAX_ZOOM = 16;
+const HEAD_WIDTH = 200, MIN_ZOOM = 1, MAX_ZOOM = 16;
 
+// Tracks hidden in the monitor: everything but the soloed tracks, else the muted ones.
+export function silencedTracks(muted = new Set(), solo = new Set()) {
+  return solo.size ? new Set(STUDIO_TRACKS.map((t) => t.id).filter((id) => !solo.has(id))) : new Set(muted);
+}
+const silenced = (w) => silencedTracks(w.studioMuted, w.studioSolo);
+function mutedStages(w) {
+  const off = silenced(w);
+  return w.recipe().stages.flatMap((s, i) => (off.has(trackOf(s)) ? [i] : []));
+}
 export function trackOf(stage) {
   const k = stage.kind;
   if (k === "cast") return "caster";
@@ -63,7 +72,7 @@ export function studioHTML(w, r) {
   const motionBlocked = w.motionBlocked(r), unconfigured = w.status(r) === "Choose an asset";
   const index = Math.min(w.stageIndex, r.stages.length - 1), dirty = w.dirty.has(r.id), status = w.status(r);
   const duration = w.previewDuration(r), studio = studioTracks(r), zoom = w.studioZoom ?? 1;
-  const busy = w.busy ? "disabled" : "";
+  w.previewMode = "recipe";
   const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" title="Back to all recipes">← Recipes</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}"><span class="an-st-state ${status !== "Ready to play" ? "is-missing" : ""}">● ${esc(dirty ? "Unsaved changes" : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" title="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon" data-action="delete" title="Delete recipe" aria-label="Delete recipe">⌫</button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" title="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? "Save recipe" : "Saved ✓"}</button></div></header>`;
   const transport = `<div class="an-st-transport" role="group" aria-label="Playback">
       <button class="an-st-tbtn" data-action="studio-home" title="Go to start (Home)" aria-label="Go to start">⏮</button><button class="an-st-tbtn an-st-play" data-action="studio-play" title="Play / pause (Space)" aria-label="Play" ${unconfigured ? "disabled" : ""}>▶</button><button class="an-st-tbtn" data-action="studio-stop" title="Stop and rewind" aria-label="Stop">■</button><button class="an-st-tbtn" data-action="studio-end" title="Go to end (End)" aria-label="Go to end">⏭</button><button class="an-st-tbtn ${w.studioLoop ? "is-active" : ""}" data-action="studio-loop" aria-pressed="${!!w.studioLoop}" title="Loop playback (L)" aria-label="Loop">⟲</button>
@@ -76,9 +85,9 @@ export function studioHTML(w, r) {
       ${linked ? `<div class="an-catalog-use-status is-using"><b>Document-linked animation</b><small>Sustained layers and token filters follow the affected token while its native document is active.</small><button data-action="enable-state-custom" ${canvasUnavailable || !env.ready ? "disabled" : ""}>Enable customization</button></div>` : ""}</section>`;
   const tracks = studio.tracks.map((t) => {
     const canAdd = !w.busy && r.stages.length < MAX_STAGES && (!linked || LINKED_TRACKS.has(t.id));
-    return `<div class="an-st-track" data-st-track="${t.id}"><div class="an-st-head"><span class="an-st-head-icon">${t.icon}</span><b>${esc(t.name)}</b><button class="an-st-add" data-action="studio-add" data-st-track="${t.id}" title="Add a ${esc(KINDS[t.kind])} stage at the playhead" aria-label="Add ${esc(t.name)} stage at playhead" ${canAdd ? "" : "disabled"}>+</button></div><div class="an-st-lanes">${t.lanes.map((lane) => `<div class="an-tl-lane"><div class="an-tl-track">${lane.map((row) => w.timelineBarHTML(r, row, index, studio.total)).join("")}</div></div>`).join("")}</div></div>`;
+    return `<div class="an-st-track${silenced(w).has(t.id) ? " is-muted" : ""}" data-st-track="${t.id}"><div class="an-st-head"><span class="an-st-head-icon">${t.icon}</span><b>${esc(t.name)}</b><button class="an-st-ms${w.studioMuted?.has(t.id) ? " is-on" : ""}" data-action="studio-mute" data-st-track="${t.id}" aria-pressed="${!!w.studioMuted?.has(t.id)}" title="Mute: hide this track in the monitor">M</button><button class="an-st-ms is-solo${w.studioSolo?.has(t.id) ? " is-on" : ""}" data-action="studio-solo" data-st-track="${t.id}" aria-pressed="${!!w.studioSolo?.has(t.id)}" title="Solo: show only soloed tracks in the monitor">S</button><button class="an-st-add" data-action="studio-add" data-st-track="${t.id}" title="Add a ${esc(KINDS[t.kind])} stage at the playhead" aria-label="Add ${esc(t.name)} stage at playhead" ${canAdd ? "" : "disabled"}>+</button></div><div class="an-st-lanes">${t.lanes.map((lane) => `<div class="an-tl-lane"><div class="an-tl-track">${lane.map((row) => w.timelineBarHTML(r, row, index, studio.total)).join("")}</div></div>`).join("")}</div></div>`;
   }).join("");
-  const timeline = `<section class="an-st-timeline" aria-label="Timeline"><div class="an-st-toolbar"><b>Timeline</b><button class="an-text-button" data-action="add-stage" ${r.stages.length >= MAX_STAGES || w.busy ? "disabled" : ""}>${linked ? "+ Layer" : "+ Stage"}</button>${linked ? "" : `<button class="an-text-button" data-action="add-motion" ${r.stages.length >= MAX_STAGES || w.busy ? "disabled" : ""}>+ Token motion</button>`}<small class="an-st-hint">Drag clips to move · they snap to other clips and the playhead (Alt = free) · drag the right edge to trim · right-click for more</small><span class="an-st-spacer"></span><label class="an-st-zoom">Zoom<input type="range" min="${MIN_ZOOM}" max="${MAX_ZOOM}" step="0.25" value="${zoom}" data-st-zoom aria-label="Timeline zoom"></label><button class="an-text-button" data-action="studio-fit" title="Fit the whole recipe">Fit</button></div>
+  const timeline = `<section class="an-st-timeline" aria-label="Timeline"><div class="an-st-toolbar"><b>Timeline</b><button class="an-text-button" data-action="add-stage" ${r.stages.length >= MAX_STAGES || w.busy ? "disabled" : ""}>${linked ? "+ Layer" : "+ Stage"}</button>${linked ? "" : `<button class="an-text-button" data-action="add-motion" ${r.stages.length >= MAX_STAGES || w.busy ? "disabled" : ""}>+ Token motion</button>`}<small class="an-st-hint">M / S mute or solo a track in the monitor · drag clips to move · they snap to other clips and the playhead (Alt = free) · drag the right edge to trim · right-click for more</small><span class="an-st-spacer"></span><label class="an-st-zoom">Zoom<input type="range" min="${MIN_ZOOM}" max="${MAX_ZOOM}" step="0.25" value="${zoom}" data-st-zoom aria-label="Timeline zoom"></label><button class="an-text-button" data-action="studio-fit" title="Fit the whole recipe">Fit</button></div>
     <div class="an-st-scroll" data-st-scroll style="--st-zoom:${zoom}"><div class="an-tl an-st-tl" data-tl-total="${studio.total}" data-studio-tl style="--tl-label:${HEAD_WIDTH}px">
       <div class="an-st-ruler-row"><div class="an-st-corner" data-st-time-corner>${seconds(w.studioTime ?? 0)}</div><div class="an-tl-track an-st-ruler" data-st-ruler title="Click or drag to move the playhead">${rulerHTML(studio.total, zoom)}</div></div>
       ${tracks}
@@ -139,6 +148,7 @@ function ensureRun(w) {
     try { recipe = validateRecipe(w.recipe()); } catch { recipe = clone(w.recipe()); }
     recipe = previewRecipeSounds({ ...recipe, previewDistance: 3 }, w.host.soundCatalog?.());
     const next = new RecipePreview(scene, recipe, (frame) => w.updatePlayback(frame), { tokenFx: w.host.createTokenFxPreview });
+    next.setMuted(mutedStages(w));
     w.previewRun = next;
     return next;
   } catch { return null; }
@@ -370,6 +380,20 @@ export async function studioAction(w, action, b) {
     case "studio-home": moveTo(w, 0); return true;
     case "studio-end": moveTo(w, durationOf(w)); return true;
     case "studio-loop": w.studioLoop = !w.studioLoop; syncTransport(w); return true;
+    case "studio-mute":
+    case "studio-solo": {
+      const key = action === "studio-mute" ? "studioMuted" : "studioSolo", id = b.dataset.stTrack;
+      w[key] ??= new Set();
+      if (w[key].has(id)) w[key].delete(id); else w[key].add(id);
+      const off = silenced(w);
+      for (const track of w.root.querySelectorAll(".an-studio .an-st-track")) track.classList.toggle("is-muted", off.has(track.dataset.stTrack));
+      b.classList.toggle("is-on", w[key].has(id));
+      b.setAttribute("aria-pressed", String(w[key].has(id)));
+      const run = ensureRun(w);
+      run?.setMuted(mutedStages(w));
+      if (!w.studioPlaying) queueSeek(w);
+      return true;
+    }
     case "studio-fit": applyZoom(w, 1); el(w, "[data-st-scroll]").scrollLeft = 0; return true;
     case "studio-add": addStage(w, b.dataset.stTrack); return true;
     case "studio-dup-stage": closeMenu(w); duplicateStage(w, Number(b.dataset.index)); return true;

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { trackOf, studioTracks, rulerStep, rulerHTML } from "../scripts/studio.mjs";
+import { trackOf, studioTracks, rulerStep, rulerHTML, silencedTracks } from "../scripts/studio.mjs";
 import { RecipeClock } from "../scripts/choreography.mjs";
 
 const stage = (stageId, kind, extra = {}) => ({ stageId, kind, delay: 0, duration: 1000, assets: ["jb2a.x"], ...extra });
@@ -59,4 +59,10 @@ test("recipe clock can start part-way through", async () => {
   queue.shift()(now);
   assert.ok(await done);
   assert.equal(frames.at(-1), 1000);
+});
+
+test("solo overrides mute; muting alone hides only muted tracks", () => {
+  assert.deepEqual([...silencedTracks(new Set(["sound"]))], ["sound"]);
+  assert.deepEqual([...silencedTracks(new Set(["sound"]), new Set(["target", "sound"]))].sort(), ["caster", "flight", "fx", "motion"]);
+  assert.equal(silencedTracks().size, 0);
 });

@@ -2134,3 +2134,20 @@
   .animater .an-studio { grid-template-columns: minmax(260px, 1fr) 8px var(--an-inspector-width, 320px); }
   .animater .an-st-hint { display: none; }
 }
+
+.animater .an-st-head > .an-st-ms {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  flex: none;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  border-radius: 4px;
+  color: var(--an-muted);
+  background: transparent;
+}
+.animater .an-st-head > .an-st-ms.is-on { background: #ff6b6b; border-color: #ff6b6b; color: #1b1b1b; }
+.animater .an-st-head > .an-st-ms.is-solo.is-on { background: #ffd166; border-color: #ffd166; }
+.animater .an-st-track.is-muted .an-st-lanes { opacity: 0.35; filter: grayscale(0.7); }
+.animater .an-st-track.is-muted .an-st-head b { color: var(--an-muted); }
