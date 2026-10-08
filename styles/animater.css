@@ -2241,3 +2241,21 @@
 .animater .an-volume-field [data-volume-readout] { color: var(--an-muted); font-variant-numeric: tabular-nums; }
 .animater .an-volume-field input[type="range"] { grid-column: 1 / -1; width: 100%; accent-color: var(--an-accent); }
 .animater .an-sound-listen { width: 100%; height: 32px; margin: 2px 0 6px; }
+
+/* Visual asset picker with a small looping preview. */
+.animater .an-asset-picker { display: flex; align-items: center; gap: 10px; }
+.animater .an-asset-picker-text { display: block; min-width: 0; flex: 1; }
+.animater .an-asset-thumb-mini {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse, #282237, #0d1018);
+  border: 1px solid var(--an-line);
+  color: var(--an-muted);
+}
+.animater .an-asset-thumb-mini video,
+.animater .an-asset-thumb-mini img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
