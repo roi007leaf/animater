@@ -41,8 +41,8 @@ test('reviewed sustained effects distinguish flight, protection, shields and reu
   const entries=PF2E_EFFECTS.filter(e=>e.name.includes(word));assert.ok(entries.length,word);assert.ok(entries.every(e=>e.theme==='antidote'));
  }
  const fire=byName('Spell Effect: Fire Shield'),glass=byName('Spell Effect: Glass Shield'),prism=byName('Spell Effect: Prismatic Shield');
- assert.match(fire.assets[0],/shield_themed.above.fire/);assert.match(glass.editions.patreon.key,/shield.01.loop.white/);assert.match(prism.editions.patreon.key,/multicolored/);
- assert.match(glass.editions.free.key,/refraction/);assert.match(prism.editions.free.key,/refraction/);
+ assert.match(fire.assets[0],/shield_themed.above.fire/);assert.match(glass.editions.patreon.key,/markers\.shield/);assert.doesNotMatch(glass.editions.patreon.key,/shield\.01/,'no hex dome on the token');assert.match(prism.editions.patreon.key,/multicolored/);
+ assert.match(glass.editions.free.key,/markers\.shield|refraction/);assert.match(prism.editions.free.key,/refraction/);
  assert.equal(new Set([fire,glass,prism].map(e=>e.editions.patreon.key)).size,3);
 });
 

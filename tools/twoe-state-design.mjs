@@ -4,24 +4,25 @@ import {variantFiles} from './asset-databases.mjs';
 import {STATE_SEMANTIC_REVIEWS} from './state-semantic-reviews.mjs';
 const hash=v=>createHash('sha256').update(v).digest('hex');
 const plain=v=>String(v??'').replace(/@UUID\[[^\]]*\](?:\{([^}]+)\})?/g,(_,label)=>label??'').replace(/<[^>]*>/g,' ').replace(/&[a-z]+;/gi,' ').replace(/\s+/g,' ').trim();
+// Wards use JB2A's compact shield marker; its hex-dome shield (shield.01) swamps the token.
 export const profiles={
  fear:{match:['markers.fear','markers.horror'],color:'purple',hex:'#bb8fff',note:'A hovering fear sigil; sustained anxiety without moving the token.'},
- antidote:{match:['shield.01.loop','token_border.circle.static'],color:'green',hex:'#a7deac',note:'A protective ward marks resistance or a saving-throw bonus against poison or disease; it does not depict being poisoned.'},
+ antidote:{match:['markers.shield','token_border.circle.static'],color:'green',hex:'#a7deac',note:'A protective ward marks resistance or a saving-throw bonus against poison or disease; it does not depict being poisoned.'},
  cooldown:{match:['token_border.circle.static','markers.simple'],color:'blue',hex:'#b3bdd2',note:'A quiet owner-only border marks a temporary reuse restriction; it does not depict the ended ability as still active.'},
  'fire-ward':{match:['shield_themed.above.fire'],color:'orange',hex:'#ffb27b',note:'A sustained fiery shield surrounds its bearer; native Shield Block remains controlled by PF2e.'},
- 'glass-ward':{match:['shield.01.loop.white','condition.boon.02.001.refraction'],color:'white',hex:'#c8e7f5',note:'A clear barrier represents Glass Shield; Free uses a symbolic refractive shimmer.'},
+ 'glass-ward':{match:['markers.shield','condition.boon.02.001.refraction'],color:'white',hex:'#c8e7f5',note:'A clear barrier represents Glass Shield; Free uses a symbolic refractive shimmer.'},
  'prismatic-ward':{match:['energy_field.01.multicolored','condition.boon.02.001.refraction'],color:'multicolored',hex:'#d5acff',note:'A multicolored field represents Prismatic Shield; Free uses a symbolic refractive shimmer.'},
- 'sonic-ward':{match:['shield.01.loop','markers.shield'],color:'blue',hex:'#a7ccec',note:'A protective shield marks sonic immunity from Droning Wings; this effect does not grant flight.'},
+ 'sonic-ward':{match:['markers.shield','markers.shield'],color:'blue',hex:'#a7ccec',note:'A protective shield marks sonic immunity from Droning Wings; this effect does not grant flight.'},
  stun:{match:['markers.stun'],color:'yellow',hex:'#f6d988',note:'Circling stars signal impaired actions.'},
- poison:{match:['markers.poison','fumes.04.loop'],color:'green',hex:'#92d483',note:'A poison sigil or low toxic haze.'},
+ poison:{match:[['markers.poison','fumes.04.loop','icon.poison']],color:'green',hex:'#92d483',note:'A poison sigil or low toxic haze.'},
  curse:{match:['markers.runes','condition.curse'],color:'purple',hex:'#b195d7',note:'An ominous rune marks an ongoing curse or penalty.'},
  blood:{match:['markers.drop'],color:'red',hex:'#ed859b',note:'A blood-drop marker identifies ongoing wounds or bleeding.'},
  chains:{match:['markers.chain'],color:'grey',hex:'#b4c3d8',note:'Bindings encircle the affected creature.'},
- shield:{match:['shield.01.loop','markers.shield'],color:'blue',hex:'#8bbdf4',note:'A translucent shield surrounds the creature.'},
+ shield:{match:['markers.shield','markers.shield'],color:'blue',hex:'#8bbdf4',note:'A translucent shield surrounds the creature.'},
  broken:{match:['markers.shield_cracked'],color:'orange',hex:'#d1a786',note:'A fractured shield marks compromised defenses or equipment.'},
- fire:{match:['flames.04.loop','shield_themed.above.fire'],color:'orange',hex:'#ffb27b',note:'Contained flames follow the bearer while the effect lasts.'},
+ fire:{match:[['flames.04.loop','flames.02','flames.01'],'shield_themed.above.fire'],color:'orange',hex:'#ffb27b',note:'Contained flames follow the bearer while the effect lasts.'},
  cold:{match:['aura_themed.01.orbit.loop.cold','markers.snowflake'],color:'blue',hex:'#8cdcff',note:'An icy orbit or snowflake identifies the cold effect.'},
- lightning:{match:['lightning_orb','energy_field.01'],color:'blue',hex:'#a9caff',note:'A restrained electric field surrounds the bearer.'},
+ lightning:{match:[['lightning_orb','static_electricity','lightning_ball'],'energy_field.01'],color:'blue',hex:'#a9caff',note:'A restrained electric field surrounds the bearer.'},
  acid:{match:['bubble.001.001.loop','fumes.04.loop'],color:'green',hex:'#b5eb78',note:'A bubbling corrosive veil; Free may substitute blue bubbles.'},
  fog:{match:['ambient_fog.001.loop.small','smoke.plumes_loop','fumes.04.loop','markers.smoke'],color:'grey',hex:'#b6bfd0',note:'Soft haze denotes concealment; native visibility remains authoritative.'},
  nature:{match:['swirling_leaves.loop','aura_themed.01.orbit.loop.nature'],color:'green',hex:'#9de6b0',note:'Leaves orbit a sustained natural effect.'},
@@ -47,10 +48,10 @@ export const profiles={
  rage:{match:['aura_themed.01.orbit.loop.metal','token_border.circle.spinning'],color:'red',hex:'#ed978c',note:'A red orbit suggests a continuing battle state.'},
  penalty:{match:['condition.curse','token_border.circle.static'],color:'dark_red',hex:'#e07a84',note:'A dim red marker identifies a penalty or hindrance, distinct from beneficial effects.'},
  temphp:{match:['markers.heart','condition.boon'],color:'green',hex:'#8be6c4',note:'A heart marker identifies temporary Hit Points.'},
- senses:{match:['markers.light_orb','markers.simple'],color:'yellow',hex:'#f3e7a5',note:'A small light marks an enhanced sense such as darkvision or scent.'},
- defense:{match:['markers.shield.','shield.01.loop'],color:'green',hex:'#9fd8a8',note:'A small shield sigil marks a bonus to Armor Class or defenses.'},
- 'ice-ward':{match:['shield_themed.above.ice','shield.01.loop'],color:'blue',hex:'#8cdcff',note:'An icy shield marks protection against cold.'},
- 'choice-ward':{match:['shield.01.loop'],color:'white',hex:'#e6ecf5',note:'A neutral ward marks resistance to an energy chosen when the effect is applied; the chosen type sets its color when known.'},
+ senses:{match:[['eyes.01','markers.light_orb'],'markers.simple'],color:'yellow',hex:'#f3e7a5',note:'A small light marks an enhanced sense such as darkvision or scent.'},
+ defense:{match:['markers.shield.','markers.shield'],color:'green',hex:'#9fd8a8',note:'A small shield sigil marks a bonus to Armor Class or defenses.'},
+ 'ice-ward':{match:['shield_themed.above.ice','markers.shield'],color:'blue',hex:'#8cdcff',note:'An icy shield marks protection against cold.'},
+ 'choice-ward':{match:['markers.shield'],color:'white',hex:'#e6ecf5',note:'A neutral ward marks resistance to an energy chosen when the effect is applied; the chosen type sets its color when known.'},
  elemental:{match:['condition.boon.02'],color:'refraction',hex:'#e0d4f5',note:'A shifting multicolored shimmer marks an element or energy chosen when the effect is applied; it never assumes fire.'},
  air:{match:['particles.swirl'],color:'white',hex:'#e3eef6',note:'Swirling motes suggest air or graceful wind-borne movement.'},
  beast:{match:['claws.200px'],color:'red',hex:'#e7a07e',note:'A faint recurring claw mark represents an animal fighting style or form.'},
@@ -156,20 +157,35 @@ export function classify(item){
  const positive=rules.some(r=>r.key==='FlatModifier'&&typeof r.value==='number'&&r.value>0);
  return {theme:positive?'boon':'neutral',evidence:'Native statistical effect; no literal visual depiction',quality:'symbolic'};
 }
+const turns=new Map(),siblings=new Map();
 export function selectStateMedia(db,theme,seed,color){
  const p={...profiles[theme],...(color?{color}:{})};const chosen={};
  const exact=r=>r.key.includes(`.${p.color}`),hue=r=>exact(r)||r.key.includes(`.dark_${p.color}`);
  for(const [edition,rows] of Object.entries(db)){
   let candidates=[];
-  for(const prefix of p.match){
-   candidates=rows.filter(r=>r.key.startsWith(`jb2a.${prefix}`)&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst|pulse/.test(r.key)&&!r.key.startsWith('jb2a.icon.'));
+  // A match entry is one art family or a pool of equally fitting families
+  // (lightning: an orb, static crackle or a ball of lightning).
+  for(const group of p.match){
+   candidates=rows.filter(r=>[group].flat().some(prefix=>r.key.startsWith(`jb2a.${prefix}`))&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst|pulse/.test(r.key)&&!r.key.startsWith('jb2a.icon.'));
    if(candidates.length)break;
   }
   if(!candidates.length)throw Error(`No sustained localized ${theme} asset in ${edition}`);
   // A missing color falls back to white art (tinted at runtime), never an arbitrary hue.
-  const colored=candidates.filter(exact).length?candidates.filter(exact):candidates.filter(hue),white=candidates.filter(r=>r.key.includes('.white'));candidates=colored.length?colored:white.length?white:candidates;
-  // Numbered variants are picked per category, not per entry, so one mechanic keeps one look.
-  candidates.sort((a,b)=>a.key.localeCompare(b.key));chosen[edition]=candidates[parseInt(hash(`${theme}:${p.color}`).slice(0,8),16)%candidates.length];
+  // Exact and darker shades of the colour are equally on-theme (dark_yellow eyes, yellow orb).
+  const colored=candidates.filter(hue),white=candidates.filter(r=>r.key.includes('.white'));candidates=colored.length?colored:white.length?white:candidates;
+  // Effects of one theme take its variants in turn (the build runs in a fixed order), so
+  // they are told apart and spread evenly instead of all sharing one animation.
+  candidates.sort((a,b)=>a.key.localeCompare(b.key));
+  const turn=`${edition}:${theme}:${p.color}`,n=turns.get(turn)??parseInt(hash(turn).slice(0,8),16);turns.set(turn,n+1);
+  if(seed===undefined){chosen[edition]=candidates[parseInt(hash(turn).slice(0,8),16)%candidates.length];continue;}
+  // Siblings sharing a name stem ("Effect: Lightning Catcher / Rod / Powered") never
+  // share a variant while the theme has enough of them.
+  const stem=`${turn}:${String(seed).replace(/-[^-]+$/,'')}`,taken=siblings.get(stem)??new Set();siblings.set(stem,taken);
+  let pick=candidates[n%candidates.length];
+  // Shades of one animation (static_electricity.03.blue / .blue02) count as the same look.
+  const look=r=>r.key.split(".").slice(0,-1).join(".");
+  for(let i=0;i<candidates.length&&taken.has(look(pick));i++)pick=candidates[(n+i)%candidates.length];
+  taken.add(look(pick));chosen[edition]=pick;
  }
  return {assets:[...new Set([chosen.patreon.key,chosen.free.key])],editions:Object.fromEntries(Object.entries(chosen).map(([e,r])=>[e,{key:r.key,files:variantFiles(r),colorSubstitution:!hue(r)}]))};
 }

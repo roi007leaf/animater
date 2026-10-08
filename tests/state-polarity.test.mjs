@@ -31,12 +31,18 @@ test('chosen-element effects never default to fire and resolve the native select
  const state=useStateEntry({},tunic.id);
  assert.match(resolveStateRecipe(item('fire'),state,[]).stages[0].assets.join(),/shield_themed\.above\.fire/);
  assert.match(resolveStateRecipe(item('cold'),state,[]).stages[0].assets.join(),/shield_themed\.above\.ice/);
- const acid=resolveStateRecipe(item('acid'),state,[]).stages[0];assert.match(acid.assets[0],/shield\.01\.loop\.green/);
+ const acid=resolveStateRecipe(item('acid'),state,[]).stages[0];assert.match(acid.assets[0],/markers\.shield\.green/,'a compact ward marker, never the hex dome');
  const motion=entry('Spell Effect: Elemental Motion');
  assert.match(resolveStateRecipe({type:'effect',name:motion.name,sourceId:motion.uuid,flags:{system:{rulesSelections:{spellEffectElementalMotion:'water'}}},system:{}},useStateEntry({},motion.id),[]).stages[0].assets.join(),/bubble/);
 });
-test('resistance wards take the damage type look and one mechanic keeps one numbered variant',()=>{
+test('resistance wards take the damage type look; effects of one theme are told apart',()=>{
  assert.match(entry('Effect: Potion of Fire Resistance').assets[0],/shield_themed\.above\.fire/);
  assert.match(entry('Effect: Potion of Cold Resistance').assets[0],/shield_themed\.above\.ice/);
- for(const theme of ['boon','neutral','penalty','defense'])assert.equal(new Set(PF2E_EFFECTS.filter(e=>e.theme===theme).map(e=>e.editions.patreon.key)).size,1,theme);
+ // Effects of one theme take its variants in turn instead of all sharing one animation.
+ for(const theme of ['boon','neutral','penalty','defense'])assert.ok(new Set(PF2E_EFFECTS.filter(e=>e.theme===theme).map(e=>e.editions.patreon.key)).size>1,theme);
+ // Siblings sharing a name stem never share an animation (shades of one count as one).
+ const lightning=PF2E_EFFECTS.filter(e=>/^Effect: Lightning (?:Armillary|Catcher|Powered|Rod)$/.test(e.name)).map(e=>e.editions.patreon.key.split('.').slice(0,-1).join('.'));
+ assert.equal(lightning.length,4);
+ assert.equal(new Set(lightning).size,4);
+ assert.ok(!PF2E_EFFECTS.some(e=>/shield\.01\./.test(e.editions.patreon.key)),'no hex-dome wards on tokens');
 });
