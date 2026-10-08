@@ -1680,7 +1680,7 @@ export class Workspace {
           : `${profile.label} catalog paused. Spell settings preserved.`;
       } else await setState(verb === "motion"
         ? { motion: state.motion === false }
-        : { excluded: state.excluded.includes(selected) ? state.excluded.filter((id) => id !== selected) : [...state.excluded, selected] });
+        : { excluded: state.excluded.includes(b.dataset.id ?? selected) ? state.excluded.filter((id) => id !== (b.dataset.id ?? selected)) : [...state.excluded, b.dataset.id ?? selected] });
       this.render(); return true;
     }
     if (verb === "use") {
@@ -1744,7 +1744,7 @@ export class Workspace {
           : action === "weapon-motion" ? { motion: !state.motion }
           : action === "weapon-sound" ? { sound: !state.sound }
           : action === "use-weapon" ? useCatalogWeapon(state, this.selectedWeapon)
-          : { excluded: state.excluded.includes(this.selectedWeapon) ? state.excluded.filter(id => id !== this.selectedWeapon) : [...state.excluded, this.selectedWeapon] };
+          : { excluded: state.excluded.includes(b.dataset.id ?? this.selectedWeapon) ? state.excluded.filter(id => id !== (b.dataset.id ?? this.selectedWeapon)) : [...state.excluded, b.dataset.id ?? this.selectedWeapon] };
         await this.host.setWeaponCatalogState(change);
         this.message = action === "use-weapon" ? "Weapon enabled. The rolled usage selects melee, ranged or thrown automatically." : "Weapon catalog settings updated.";
         this.render(); return;
@@ -1823,9 +1823,9 @@ export class Workspace {
             : action === "catalog-sound"
               ? { sound: state.sound === false }
               : {
-                  excluded: state.excluded.includes(this.selectedSpell)
-                    ? state.excluded.filter((id) => id !== this.selectedSpell)
-                    : [...state.excluded, this.selectedSpell],
+                  excluded: state.excluded.includes(b.dataset.id ?? this.selectedSpell)
+                    ? state.excluded.filter((id) => id !== (b.dataset.id ?? this.selectedSpell))
+                    : [...state.excluded, b.dataset.id ?? this.selectedSpell],
                 },
         );
         this.render();

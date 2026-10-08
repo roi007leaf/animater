@@ -2,7 +2,7 @@ import {normalizeStateCatalogState,useStateEntry,stateRecipe,catalogStateEntry} 
 export async function handleStateCatalogAction(w,action,b){
  if(!['select-state','state-auto','state-pause','state-exclude','state-page','state-reset','use-state','copy-state','enable-state-custom'].includes(action))return false;
  const kind=action==='enable-state-custom'?catalogStateEntry(w.recipe()?.stateEntry)?.kind:w.page==='conditions'?'condition':'effect';
- const id=action==='enable-state-custom'?w.recipe()?.stateEntry:w.selectedState[kind],state=normalizeStateCatalogState(w.host.stateCatalogState?.(kind));
+ const id=action==='enable-state-custom'?w.recipe()?.stateEntry:action==='state-exclude'&&b.dataset.id?b.dataset.id:w.selectedState[kind],state=normalizeStateCatalogState(w.host.stateCatalogState?.(kind));
  if(action==='select-state'){if(w.selectedState[kind]===b.dataset.id)return true;w.selectedState[kind]=b.dataset.id;w.stageIndex=0;}
  else if(action==='state-page')w.statePages[kind]=Math.max(0,Number(b.dataset.index));
  else if(action==='state-reset'){w.stateFilters[kind]={search:'',group:'all',theme:'all',quality:'all'};w.statePages[kind]=0;}

@@ -513,3 +513,44 @@
 .animater .an-catalog-controls > .an-catalog-automation b { overflow: visible; }
 .animater .an-catalog-controls .an-sound-settings > div { flex: 0 0 auto; }
 .animater .an-catalog-controls .an-sound-settings > button { flex: 0 0 auto; }
+
+/* Per-card exclude toggle. */
+.animater .an-card-slot { position: relative; min-width: 0; }
+.animater .an-card-slot > .an-spell-card { width: 100%; height: 100%; margin: 0; }
+.animater .an-card-exclude {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--an-muted);
+  background: #141821e6;
+  border: 1px solid var(--an-line);
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 2;
+}
+.animater .an-card-slot:hover .an-card-exclude,
+.animater .an-card-exclude:focus-visible,
+.animater .an-card-exclude.is-on { opacity: 1; }
+.animater .an-card-exclude:hover { color: #ff8a8a; border-color: #ff8a8a; }
+.animater .an-card-exclude.is-on { color: #1b1b1b; background: #ff8a8a; border-color: #ff8a8a; }
+.animater .an-card-slot.is-excluded > .an-spell-card { opacity: 0.45; filter: grayscale(0.6); }
+.animater .an-card-slot.is-excluded::after {
+  content: "Excluded";
+  position: absolute;
+  top: 8px;
+  right: 36px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #1b1b1b;
+  background: #ff8a8a;
+  pointer-events: none;
+}

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 (2026-10-08)
+
+- **Exclude from the catalog card.** Every catalog card (spells, feats, actions, features, weapons, conditions, effects, and the D&D 5e / SF2e catalogs) has a ⊘ toggle on hover. It excludes that entry from plug & play without selecting it first; click again to include it. Excluded cards are dimmed and marked *Excluded*.
+
 ## 0.2.0 (2026-10-08)
 
 ### Recipe Studio

@@ -16,6 +16,11 @@ const catalogs = {
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
+// Per-card exclude toggle; sits beside the card button (buttons cannot nest).
+export function cardExcludeHTML(action, item, excluded) {
+  const label = `${excluded ? "Include" : "Exclude"} ${item.name} ${excluded ? "in" : "from"} plug & play`;
+  return `<button type="button" class="an-card-exclude${excluded ? " is-on" : ""}" data-action="${esc(action)}" data-id="${esc(item.id)}" aria-pressed="${excluded}" aria-label="${esc(label)}" data-tooltip="${excluded ? "Excluded from plug &amp; play. Click to include it again." : "Exclude from plug &amp; play"}">⊘</button>`;
+}
 export function catalogNameHTML(item, kind, environment = {}) {
   const demo = environment.demo === true;
   return `<button type="button" class="an-catalog-name" data-action="item-details" data-kind="${esc(kind)}" data-id="${esc(item.id)}" aria-label="Open ${esc(item.name)} details" data-tooltip="${demo ? "Item details open inside Foundry" : "Open native Foundry item sheet"}" ${demo ? "disabled" : ""}>${esc(item.name)}</button>`;
