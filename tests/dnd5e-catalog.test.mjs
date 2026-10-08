@@ -156,7 +156,11 @@ test('audit fixes: art families match the fiction and one-shot stages stay short
 test('lasting areas loop on their template; blasts and cast-time areas play once', () => {
   const persisted = (name, edition = '2024') => find(name, 'spell', edition).variants.some(v => v.recipe.stages.some(s => s.kind === 'template' && s.persist));
   for (const name of ['Fog Cloud', 'Web', 'Cloudkill', 'Darkness']) assert.ok(persisted(name), name);
-  for (const name of ['Fireball', 'Fear', 'Hypnotic Pattern', 'Burning Hands', 'Spirit Guardians']) assert.ok(!persisted(name), name);
+  for (const name of ['Fireball', 'Fear', 'Hypnotic Pattern', 'Burning Hands']) assert.ok(!persisted(name), name);
+  // An emanation centred on the caster lasts and moves with them.
+  const guardians = find('Spirit Guardians').variants.flatMap(v => v.recipe.stages).find(s => s.kind === 'template');
+  assert.ok(guardians.persist && guardians.followSource);
+  assert.ok(!find('Fog Cloud').variants[0].recipe.stages.find(s => s.kind === 'template').followSource, 'a placed cloud stays put');
   const fog = find('Fog Cloud').variants[0].recipe.stages.find(s => s.kind === 'template');
   assert.ok(fog.assets.every(k => !k.includes('.complete.')), 'lasting fog uses its loop footage');
   // Call Lightning's storm lasts; each bolt from it is a single event.

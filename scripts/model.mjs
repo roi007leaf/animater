@@ -151,6 +151,8 @@ export function validateRecipe(input) {
           // Editor start mode; the link itself lives in afterStage/timingAnchor/startOffset.
           ...(['after', 'with'].includes(s.startMode) && s.afterStage ? { startMode: s.startMode, ...(s.startRef && s.startRef === s.afterStage ? { startRef: text(s.startRef, 100) } : {}) } : {}),
           // A persistent template stage lives as long as its placed template.
+          // A lasting emanation (Spirit Guardians) moves with the caster.
+          ...(s.kind === "template" && s.followSource === true ? { followSource: true } : {}),
           persist: (s.kind === "aura" || s.kind === "template" || s.kind==='tokenfx' && input.lifecycle==='document' && input.trigger==='effect') && s.persist === true,
           ...(s.kind==='aura'&&Number(s.auraRadius)>0?{auraRadius:number(s.auraRadius,0.1,240,5),auraSlug:text(s.auraSlug,100)}:{}),
           ...(s.elementTint === true ? { elementTint: true } : {}),

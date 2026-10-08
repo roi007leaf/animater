@@ -760,3 +760,20 @@ test("a lasting area loops tied to its placed template and plays once without on
     assert.deepEqual(calls.filter((c) => c[0] === "tieToDocuments").map((c) => c[1]), tied ? [tied] : []);
   }
 });
+
+test("an emanation rides on its caster, and concentration ending ends it", async () => {
+  const recipe = validateRecipe({ id: "guardians", name: "Guardians", trigger: "manual", stages: [{ kind: "template", assets: ["jb2a.impact.001.orange"], persist: true, oneShot: false, followSource: true }] });
+  const region = { documentName: "Region", id: "r1" };
+  const source = { id: "tok", center: { x: 0, y: 0 } };
+  const { runtime, calls } = fixture();
+  runtime.catalog = [{ key: "jb2a.impact.001.orange" }];
+  runtime.wait = async () => true;
+  const context = { source, targets: [], template: region, area: { center: { x: 0, y: 0 }, diameter: 600 }, actor: { id: "cleric" }, item: { id: "sg", system: { properties: new Set(["concentration"]) } } };
+  const session = await runtime.play(recipe, context);
+  assert.ok(calls.some((c) => c[0] === "attachTo" && c[1] === source), "attached to the caster");
+  assert.ok(!calls.some((c) => c[0] === "atLocation"), "not pinned to the placement point");
+  assert.equal(await runtime.endConcentration("someone-else"), 0);
+  assert.equal(await runtime.endConcentration("cleric", "sg"), 1);
+  assert.ok(calls.some((c) => c[0] === "stop" && c[1]?.name === session));
+  assert.equal(await runtime.endConcentration("cleric", "sg"), 0, "ended once");
+});

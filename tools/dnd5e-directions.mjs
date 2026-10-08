@@ -144,6 +144,7 @@ const overrides=[
  // Lasting clouds loop on their template: a burning cloud and a sleet storm, not a blast.
  [/^incendiary cloud$/,{area:'fumes.fire.orange,ambient_fog.001.loop.large.orangeyellow'}],
  [/^sleet storm$/,{area:'sleet_storm.01.blue,sleet_storm.02.blue'}],
+ [/^aura of life$/,{area:'template_circle.out_pulse.01.loop.bluewhite,template_circle.out_pulse.01.loop.greenorange'}],
  [/^hellish rebuke$/,{hit:'flames.green,flames.04.complete.green',aura:'flames.green,flames.04.loop.green',tints:{hit:'#62dc85',aura:'#62dc85'}},null,'2024'],
  [/^bestow curse$/,{theme:'curse',cast:'energy_strands.in.red',hit:'energy_strands.in.purple,condition.curse',aura:'energy_strands.overlay.dark_purple02,energy_strands.overlay.dark_purple,condition.curse'}],
  [/^mending$/,{theme:'transform',hit:'energy_strands.in.purple,glint',aura:'energy_strands.in.purple,glint'}],
@@ -273,12 +274,12 @@ const NAMED_GESTURES={'drift-gentle':['drift',2400,.3,'targets',.6,'Gentle feath
 // zone). Spells that only affect creatures inside the area at casting (Fear,
 // Sleep, Hypnotic Pattern) or whose area is a one-off blast play once.
 export const LASTING_AREAS=new Set(['fog cloud','cloudkill','stinking cloud','insect plague','incendiary cloud','darkness','daylight','silence','web','grease','entangle','spike growth','black tentacles',"evard's black tentacles",'moonbeam','call lightning','sleet storm','blade barrier','wall of fire','wall of ice','wall of thorns','wall of force','wind wall','prismatic wall','hallow','magic circle','forcecage','globe of invulnerability','hallucinatory terrain','major image','silent image','minor illusion','programmed illusion','gust of wind','guards and wards','private sanctum','teleportation circle','alarm','zone of truth','tiny hut',"leomund's tiny hut",'control weather','storm of vengeance','mirage arcane','forbiddance']);
-// Not listed: emanations that move with the caster (Spirit Guardians, Aura of Life,
-// Holy Aura, Antimagic Field, Antilife Shell) would stay behind on a placed template;
 // Wall of Stone, Control Water and Reverse Gravity have no footage that loops well.
+// Emanations centred on the caster last too, and move with them.
+export const LASTING_EMANATIONS=new Set(['spirit guardians','aura of life','holy aura','antimagic field','antilife shell','aura of purity','aura of vitality',"crusader's mantle",'circle of power']);
 // Activities of a lasting spell that are single events inside it (a bolt from the
 // storm, a fissure, a glyph going off) stay one-shot.
-export const LASTING_EVENT=/lightning bolt|fissure|debris|structure|turn \d|round \d|glyph effect|explosion|bead/;
+export const LASTING_EVENT=/lightning bolt|fissure|debris|structure|turn \d|round \d|glyph effect|explosion|bead|blinding light/;
 export function deliveryGesture(d,{subject='source',physical=false}={}){
  const a=d.activity??{},type=a.type,g=(motion,duration,distance,who,intensity,label)=>({motion,duration,distance,subject:who??subject,intensity,label});
  if(d.motion==='none'||type==='check'||d.followup)return null;

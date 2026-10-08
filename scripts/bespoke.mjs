@@ -96,7 +96,8 @@ export function keepNativeSemantics(recipe, stages, options = {}) {
       for (const from of ['.complete.', '.burst.']) { const l = k.replace(from, '.loop.'); if (l !== k && globalThis.Sequencer?.Database?.entryExists?.(l)) return l; }
       return k;
     };
-    if (i >= 0) out[i] = { ...out[i], persist: true, oneShot: false, assets: (out[i].assets ?? []).map(loop) };
+    const follow = recipe.stages.some(s => s.kind === 'template' && s.followSource);
+    if (i >= 0) out[i] = { ...out[i], persist: true, oneShot: false, ...(follow ? { followSource: true } : {}), assets: (out[i].assets ?? []).map(loop) };
   }
   // Effects-only playback: the catalog's motion switch removes token motion.
   // Document-linked effects may only attach persistent layers to the bearer.

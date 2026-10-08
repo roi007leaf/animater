@@ -2,7 +2,7 @@ import {colorAffinity} from './color-affinity.mjs';
 import {writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {dnd5eSources,dnd5eBookSources,hasNativeActivation} from './dnd5e-source.mjs';
-import {nativeDirection,weaponModes,weaponSound,weaponVisualFamily,damageThemes,deliveryGesture,LASTING_AREAS,LASTING_EVENT} from './dnd5e-directions.mjs';
+import {nativeDirection,weaponModes,weaponSound,weaponVisualFamily,damageThemes,deliveryGesture,LASTING_AREAS,LASTING_EVENT,LASTING_EMANATIONS} from './dnd5e-directions.mjs';
 import {assetDatabases} from './asset-databases.mjs';
 import {resolveSpellMedia,assetGeometry} from './spell-asset-selection.mjs';
 import {SPELL_THEMES} from '../scripts/spell-choreography.mjs';
@@ -200,7 +200,8 @@ function finiteRecipe(entry,row,raw,mode){
  // loops until the template is removed. Instantaneous areas play once.
  const duration=a.duration?.override?a.duration:row.source.system?.duration;
  const spellName=row.source.name.toLowerCase(),actName=(a.name??'').toLowerCase();
- const lasting=d.area&&d.trigger==='template'&&!d.followup&&row.source.type==='spell'&&LASTING_AREAS.has(spellName)&&!LASTING_EVENT.test(actName)&&!['inst',''].includes(duration?.units??'');
+ const emanation=LASTING_EMANATIONS.has(spellName);
+ const lasting=d.area&&d.trigger==='template'&&!d.followup&&row.source.type==='spell'&&(LASTING_AREAS.has(spellName)||emanation)&&!LASTING_EVENT.test(actName)&&!['inst',''].includes(duration?.units??'');
  // A lasting ward is a circle on the ground, never a standing hex dome; a shelter or
  // globe that is a sphere uses the smooth force sphere.
  const globe=/tiny hut|prismatic wall/.test(spellName);
@@ -211,6 +212,7 @@ function finiteRecipe(entry,row,raw,mode){
  };
  if(lasting)for(const s of stages.filter(s=>s.kind==='template')){
   s.persist=true;s.oneShot=false;s.fadeOut=Math.max(s.fadeOut??0,800);
+  if(emanation)s.followSource=true;
   s.assets=[...new Set(s.assets.map(lasts))];
  }
  for(const s of stages)capOneShot(s);

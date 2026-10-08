@@ -958,6 +958,15 @@ Hooks.once("ready", () => {
     Hooks.on("dnd5e.rollDamageV2", (rolls, data) => {
       void dispatch(dnd5eEvent("damage", data?.subject, { rolls }));
     });
+    // Concentration ends (broken, dropped or expired): the spell's lasting areas end
+    // on the client that cast them, which is the one that recorded them.
+    Hooks.on("deleteActiveEffect", (effect) => {
+      if (!effect.statuses?.has?.("concentrating")) return;
+      const actor = effect.parent?.documentName === "Actor" ? effect.parent : effect.parent?.actor;
+      if (!actor) return;
+      const itemId = effect.flags?.dnd5e?.item?.id ?? /Item\.([^.]+)/.exec(effect.origin ?? "")?.[1];
+      void runtime.endConcentration(actor.id, itemId);
+    });
     Hooks.on("dnd5e.postUseActivity", (activity, _config, results) => {
       void dispatch(dnd5eEvent("use", activity, { results }));
     });

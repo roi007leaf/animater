@@ -34,6 +34,19 @@ export class AnimaterRuntime {
     this.preparations = new Map();
     this.epoch = 0;
     this.previewAreas = new Set();
+    // Lasting areas that end with their caster's concentration: {session, actorId, itemId}.
+    this.lasting = [];
+  }
+  // The caster stopped concentrating: end the lasting areas of that spell (or, when
+  // the spell is unknown, every concentration area that caster still holds).
+  async endConcentration(actorId, itemId) {
+    const ending = this.lasting.filter((l) => l.actorId === actorId && (!itemId || !l.itemId || l.itemId === itemId));
+    if (!ending.length) return 0;
+    this.lasting = this.lasting.filter((l) => !ending.includes(l));
+    await Promise.allSettled(ending.map((l) => this.host.endEffects({ name: l.session })));
+    for (const l of ending) this.sessions.delete(l.session);
+    this.trace("Ended", `${ending.length} lasting ${ending.length === 1 ? "area" : "areas"}: concentration ended.`);
+    return ending.length;
   }
   trace(status, detail, recipe = null) {
     this.log.unshift({
@@ -227,10 +240,15 @@ export class AnimaterRuntime {
               const mask = this.host.areaMask?.(context.template);
               if (mask) e.mask(mask);
             }
-          } else
-            e.atLocation(context.area.center, location).size({
+          } else {
+            // A lasting emanation (Spirit Guardians) rides on the caster as they move.
+            const follow = s.followSource && context.source ? context.source.object ?? context.source : null;
+            if (follow) e.attachTo(follow, { bindAlpha: false, bindVisibility: true });
+            else e.atLocation(context.area.center, location);
+            e.size({
               ...artworkSize(context.area.diameter * s.scale, media),
             });
+          }
         } else if (s.kind === "overlay") {
           e.screenSpace()
             .screenSpaceAnchor({ x: s.anchorX, y: s.anchorY })
@@ -330,6 +348,15 @@ export class AnimaterRuntime {
           : []),
       ]);
       if (results.some((result) => !result)) return null;
+      // Lasting areas of a concentration spell end with the caster's concentration.
+      if (!preview && context.actor && plan.some((s) => s.kind === "template" && s.persist)) {
+        const sys = context.item?.system;
+        const concentration = Boolean(sys?.properties?.has?.("concentration") || sys?.properties?.includes?.("concentration") || sys?.duration?.concentration);
+        if (concentration) {
+          this.lasting.push({ session, actorId: context.actor.id, itemId: context.item?.id });
+          if (this.lasting.length > 50) this.lasting.shift();
+        }
+      }
       this.trace(
         preview ? "Previewed" : "Played",
         `${plan.length} effects · ${context.targets?.length ?? 0} targets`,
