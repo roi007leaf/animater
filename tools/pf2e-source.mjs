@@ -5,7 +5,11 @@ import { join } from "node:path";
 const repository = "foundryvtt/pf2e";
 export async function fetchJSON(url) {
   const response = await fetch(url, {
-    headers: { "User-Agent": "Animater-catalog" },
+    headers: {
+      "User-Agent": "Animater-catalog",
+      // Anonymous API calls are rate limited; use a token when one is set.
+      ...(process.env.GITHUB_TOKEN && url.startsWith("https://api.github.com/") ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
+    },
   });
   if (!response.ok) throw Error(`${response.status}: ${url}`);
   return response.json();
