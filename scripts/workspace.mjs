@@ -75,6 +75,7 @@ const options = (items, value) =>
         `<option value="${esc(k)}" ${k === value ? "selected" : ""}>${esc(v)}</option>`,
     )
     .join("");
+export const JB2A_MISSING = "Neither JB2A module is active, so built-in animations have no artwork to play. Activate JB2A Free (JB2A_DnD5e) or JB2A Patreon (jb2a_patreon), then reload Foundry.";
 export class Workspace {
   constructor(root, host) {
     this.root = root;
@@ -430,6 +431,11 @@ export class Workspace {
     this.message = included ? "Removed from plug & play." : "Added to plug & play. It plays automatically; other entries stay manual.";
     this.render();
   }
+  // Setup problems shown on every page: Sequencer first, then missing JB2A artwork.
+  envBannerHTML(env) {
+    const message = !env.ready ? env.problem : env.jb2a === false ? JB2A_MISSING : "";
+    return message ? `<div class="an-warning" role="alert">${esc(message)} <button data-action="page" data-page="setup">Open setup →</button></div>` : "";
+  }
   isStudio() { return this.page === "recipes" && !!this.studio && !!this.recipe(); }
   render() {
     if(this.page!=='assets'||this.mediaLibrary?.fxScene)void this.mediaLibrary?.stopTokenPreview();
@@ -502,7 +508,7 @@ export class Workspace {
       <main class="an-main">${this.isStudio() ? "" : `<header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : ""}</div></header>`}
         <div role="status" aria-live="polite" class="an-toast ${this.message ? "is-visible" : ""}">${esc(this.message)}</div>
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
-        ${!env.ready ? `<div class="an-warning">${esc(env.problem)} <button data-action="page" data-page="setup">Open setup →</button></div>` : ""}
+        ${this.envBannerHTML(env)}
         ${this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
       </main>${this.pendingImport !== null ? this.importHTML() : ""}</div>`,
     );

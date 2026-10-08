@@ -7,7 +7,7 @@ import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
 import { registerTriggerEngine } from "./integrations/trigger-engine.mjs";
 import { AnimaterRuntime } from "./runtime.mjs";
 import { installedSoundCatalog, catalogSoundOptions } from "./spell-sounds.mjs";
-import { Workspace } from "./workspace.mjs";
+import { Workspace, JB2A_MISSING } from "./workspace.mjs";
 import { MediaLibraryLoader } from './media-library-sources.mjs';
 import { libraryPreferences } from './media-library.mjs';
 import {TokenFxPreview} from './token-fx-preview.mjs';
@@ -150,6 +150,8 @@ function environment() {
   const ready = Boolean(seq?.active && globalThis.Sequencer);
   return {
     ready,
+    // Built-in animations draw on JB2A artwork: one of the two packs must be active.
+    jb2a: Boolean(patreon?.active || free?.active),
     motionReady: game.modules.get(ID)?.socket === true,
     motionServerVersion: game.modules.get(ID)?.version,
     systemId: game.system.id,
@@ -643,6 +645,8 @@ function eventFrom(input) {
 }
 Hooks.once("ready", () => {
   syncQuality();
+  const env = environment();
+  if (game.user.isGM && env.ready && !env.jb2a) ui.notifications.warn(`Animater: ${JB2A_MISSING}`, { permanent: true });
   motions = new TokenMotionPlayer({ grid: () => canvas.grid?.size ?? 100 });
   optionalFx = new OptionalFxPlayer({catalog:fxCatalog,tokenMagic:()=>globalThis.TokenMagic,
     fxmaster:()=>globalThis.FXMASTER?.api,scene:()=>canvas.scene,

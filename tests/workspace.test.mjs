@@ -476,3 +476,14 @@ test("catalog motion switch changes built-in preview and customization without s
   assert.equal(state.motion, true);
   assert.ok(f.w.recipe().stages.some((s) => s.kind === "motion"));
 });
+
+test("workspace warns when neither JB2A module is active", async () => {
+  const { JB2A_MISSING } = await import("../scripts/workspace.mjs");
+  const w = Object.create(Workspace.prototype);
+  assert.match(w.envBannerHTML({ ready: true, jb2a: false }), /Neither JB2A module is active/);
+  assert.ok(w.envBannerHTML({ ready: true, jb2a: false }).includes('data-page="setup"'));
+  assert.equal(w.envBannerHTML({ ready: true, jb2a: true }), "");
+  assert.match(w.envBannerHTML({ ready: false, jb2a: false, problem: "Activate Sequencer, then reload Foundry." }), /Activate Sequencer/, "Sequencer problems come first");
+  assert.equal(w.envBannerHTML({ ready: true, demo: true }), "", "design preview without the flag shows nothing");
+  assert.match(JB2A_MISSING, /JB2A Free.*JB2A Patreon/);
+});
