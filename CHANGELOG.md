@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Condition and effect layers always stay on the token.** A layer added to a condition or effect animation used to stay invisible until a hidden "keep" box was ticked. These layers now always last while the condition or effect is on the token. The one-choice Subject menu is gone, and a note explains that Duration only sets the preview length.
 - **Tidier Studio stage panel.**
   - Target options (which targets, maximum targets, skip without targets, spread across targets, delay between targets) only show on stages that play on or toward targets, not on Caster, Area or screen stages.
   - Anchor X/Y show only after ticking "Override artwork anchor", and tint colour options only after ticking "Apply tint".
