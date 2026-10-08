@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- **New recipe asks what kind of animation you want.**
+  - **Action animation:** plays once when something happens: a spell, an attack, damage, or an area.
+  - **Lasting animation:** stays on a token while a condition or effect is on it, and stops when it is removed.
+  - Each choice has a one-line explanation and an example. A lasting animation opens its Recipe settings so you can type the condition or effect name first.
+  - Players, and worlds without condition support, go straight to an action animation.
+- **Handmade lasting animations always play.** A lasting animation you made yourself plays while its condition or effect is on a token, even if that condition or effect catalog is off. Catalog copies still follow the catalog.
+- **Duplicating a lasting animation keeps it lasting** instead of turning it into a manual one.
 - **Condition and effect recipes are marked as such.** Their recipe cards carry a teal "◷ Condition · stays while on token" (or Effect) badge. In the Studio, the trigger reads "Effect · while on token", so they no longer look like ordinary one-shot recipes.
 - **Condition and effect layers always stay on the token.** A layer added to a condition or effect animation used to stay invisible until a hidden "keep" box was ticked. These layers now always last while the condition or effect is on the token. The one-choice Subject menu is gone, and a note explains that Duration only sets the preview length.
 - **Tidier Studio stage panel.**

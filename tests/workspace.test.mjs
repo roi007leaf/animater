@@ -522,3 +522,26 @@ test("the GM opens a player's animation in the Studio, edits it for them and app
   assert.equal(f.w.selected, "frost");
   assert.equal(f.w.studio, false);
 });
+
+test("New recipe asks for the kind; a lasting animation follows conditions and effects", async () => {
+  const f = workspace();
+  f.w.host = { recipes: () => [], save: async () => {}, catalog: () => [], environment: () => ({ systemId: "pf2e", ready: true }) };
+  await f.click({ action: "new" });
+  assert.ok(f.w.newChooser);
+  assert.match(f.w.newChooserHTML(), /Action animation[\s\S]*Plays once[\s\S]*Lasting animation[\s\S]*Stays on a token/);
+  await f.click({ action: "new-lasting" });
+  assert.ok(!f.w.newChooser);
+  const lasting = f.w.recipe();
+  assert.equal(lasting.lifecycle, "document");
+  assert.equal(lasting.trigger, "effect");
+  assert.equal(lasting.systemId, "pf2e");
+  assert.deepEqual([lasting.stages[0].kind, lasting.stages[0].persist], ["aura", true]);
+  assert.ok(f.w.studioSettings, "settings open to name the condition");
+  await f.click({ action: "new" });
+  await f.click({ action: "new-action" });
+  assert.equal(f.w.recipe().trigger, "manual");
+  assert.equal(f.w.recipe().lifecycle, undefined);
+  f.w.host.playerMode = true;
+  await f.click({ action: "new" });
+  assert.ok(!f.w.newChooser, "players only make action animations");
+});

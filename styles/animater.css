@@ -2294,3 +2294,13 @@
 @container (max-width: 640px) { .animater .an-review-row { grid-template-columns: 1fr; } }
 /* Condition and effect recipes last while on a token: a teal badge sets them apart from one-shot recipes. */
 .animater .an-lasting-badge { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; color: #7fe0c4; background: rgba(62, 196, 156, 0.12); border: 1px solid rgba(62, 196, 156, 0.4); }
+/* New recipe: two large choices, each with a one-line explanation and an example. */
+.animater .an-new-chooser { max-width: 620px; }
+.animater .an-new-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 4px; }
+.animater .an-new-choice { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 6px; height: auto; padding: 16px; text-align: left; white-space: normal; line-height: 1.35; border-radius: 12px; background: var(--an-surface); border: 1px solid var(--an-line); }
+.animater .an-new-choice:hover, .animater .an-new-choice:focus-visible { border-color: var(--an-accent, #9e8aff); background: rgba(158, 138, 255, 0.1); }
+.animater .an-new-choice b { font-size: 15px; }
+.animater .an-new-choice small { color: var(--an-muted); font-size: 12px; }
+.animater .an-new-choice .an-new-example { font-style: italic; opacity: 0.85; }
+.animater .an-new-icon { font-size: 22px; line-height: 1; }
+@container (max-width: 640px) { .animater .an-new-choices { grid-template-columns: 1fr; } }

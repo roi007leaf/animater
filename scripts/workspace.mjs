@@ -233,6 +233,7 @@ export class Workspace {
           if (e.key === "Escape") {
             e.preventDefault();
             this.pendingImport = null;
+            this.newChooser = false;
             this.render();
             return;
           }
@@ -511,7 +512,7 @@ export class Workspace {
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
         ${this.envBannerHTML(env)}
         ${this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
-      </main>${this.pendingImport !== null ? this.importHTML() : ""}</div>`,
+      </main>${this.pendingImport !== null ? this.importHTML() : ""}${this.newChooser ? this.newChooserHTML() : ""}</div>`,
     );
     this.root.querySelectorAll("details[data-options-group]").forEach((e) => {
       e.open = openGroups.includes(e.dataset.optionsGroup);
@@ -1171,7 +1172,7 @@ export class Workspace {
   motionSyncNoticeHTML() { return motionSyncNoticeHTML(this.host.environment()); }
   recipeSettingsHTML(r) {
     const linked = r.lifecycle === "document";
-    return `<div class="an-editor-section an-binding"><div class="an-section-title"><b>When it plays</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div><label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label><label>Trigger<select data-field="trigger">${options(linked ? {effect: "Native document active"} : EVENTS, r.trigger)}</select></label><label>Item names / slugs<input data-field="match" placeholder="fire bolt, ignition" value="${esc(r.match)}"></label><p class="an-hint">Exact matches. Commas separate alternatives. Drop an item here to bind only that item.</p>${r.itemUuid ? this.boundItemHTML(r.itemUuid) : ""}
+    return `<div class="an-editor-section an-binding"><div class="an-section-title"><b>When it plays</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div><label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>${linked ? "" : `<label>Trigger<select data-field="trigger">${options(EVENTS, r.trigger)}</select></label>`}<label>${linked ? "Condition or effect names" : "Item names / slugs"}<input data-field="match" placeholder="${linked ? "frightened, spell effect: shield" : "fire bolt, ignition"}" value="${esc(r.match)}"></label><p class="an-hint">${linked ? "Plays while any of these is on a token. Exact names; commas separate alternatives. Drop a condition or effect here to bind only that one." : "Exact matches. Commas separate alternatives. Drop an item here to bind only that item."}</p>${r.itemUuid ? this.boundItemHTML(r.itemUuid) : ""}
       ${r.weaponMode || r.category === "Weapons" ? `<label>PF2e weapon use<select data-field="weaponMode">${options({ "": "Any usage", melee: "Melee Strike", ranged: "Ranged Strike", thrown: "Thrown Strike" }, r.weaponMode ?? "")}</select></label><p class="an-hint">PF2e's rolled usage selects this customization. Other uses keep their own animation.</p>` : ""}<div class="an-field-row"><label>Category<input data-field="category" value="${esc(r.category)}"></label><label>Accent<input type="color" aria-label="Recipe accent color" data-field="color" value="${esc(r.color)}"></label></div></div>`;
   }
   inspectorHTML(r) {
@@ -1421,6 +1422,14 @@ export class Workspace {
   catalogFxControlsHTML(env) {
     const state=this.host.catalogFxSettings?.()??{token:true,scene:true},fx=this.host.fxCatalog?.()??{};
     return [['token','catalogTokenFx','Token Magic FX','Token filters',fx.tokenReady],['scene','catalogSceneFx','FXMaster','Scene effects · GM playback',fx.sceneReady]].map(([kind,key,name,detail,ready])=>`<section class="an-settings-card"><div><h3>Catalog: ${name}</h3><p>${detail} · ${ready?'Available':'Provider unavailable'}</p></div><button data-action="catalog-fx-toggle" data-setting="${key}" data-fx-kind="${kind}" class="an-toggle ${state[kind]?'is-on':''}" role="switch" aria-label="Catalog: ${name}" aria-checked="${state[kind]}" ${env.demo||!this.host.setCatalogFxSetting?'disabled':''}>${state[kind]?'On':'Off'}</button></section>`).join('');
+  }
+  // New recipe: the two kinds behave differently, so the author picks one up front.
+  lastingRecipesAvailable() {
+    return !this.host.playerMode && ["pf2e", "sf2e", "dnd5e"].includes(this.host.environment?.()?.systemId);
+  }
+  newChooserHTML() {
+    const choice = (action, icon, title, text, example) => `<button class="an-new-choice" data-action="${action}"><span class="an-new-icon">${icon}</span><b>${title}</b><small>${text}</small><small class="an-new-example">${example}</small></button>`;
+    return `<div class="an-modal-scrim"><section class="an-modal an-new-chooser" role="dialog" aria-modal="true" aria-label="New recipe"><h2>What kind of animation?</h2><div class="an-new-choices">${choice("new-action", "✦", "Action animation", "Plays once when something happens: a spell is cast, an attack or damage is rolled, an area is placed.", "e.g. Fireball, a sword Strike")}${choice("new-lasting", "◷", "Lasting animation", "Stays on a token while a condition or effect is on it, and stops when it is removed.", "e.g. Frightened, Spell Effect: Shield")}</div><footer><button data-action="new-cancel">Cancel</button></footer></section></div>`;
   }
   importHTML() {
     return `<div class="an-modal-scrim"><section class="an-modal" role="dialog" aria-modal="true" aria-label="Import Animater recipes"><h2>Import recipes</h2><p>Paste an Animater export. Existing IDs are replaced only after review.</p><textarea aria-label="Recipe import JSON" data-import rows="10" placeholder='{"schema":1,"recipes":[…]}'></textarea><div data-import-review role="status"></div><footer><button data-action="cancel-import">Cancel</button><button data-action="review-import">Review import</button><button data-action="confirm-import" class="an-primary" disabled>Import reviewed recipes</button></footer></section></div>`;
@@ -2130,23 +2139,29 @@ export class Workspace {
         this.render();
         return;
       }
-      if (action === "new" || action === "new-basic") {
+      if (action === "new" && this.lastingRecipesAvailable()) { this.newChooser = true; this.render(); return; }
+      if (action === "new-cancel") { this.newChooser = false; this.render(); return; }
+      if (action === "new" || action === "new-basic" || action === "new-action" || action === "new-lasting") {
+        const lasting = action === "new-lasting";
+        this.newChooser = false;
         // Normalize neutral stage defaults, then leave asset selection to author.
         // Incomplete drafts stay local; Save uses strict recipe validation.
         const base = validateRecipe({
           id: crypto.randomUUID(),
-          name: "Untitled recipe",
+          name: lasting ? "Untitled lasting animation" : "Untitled recipe",
           description: "",
-          trigger: "manual",
+          trigger: lasting ? "effect" : "manual",
+          ...(lasting ? { lifecycle: "document", systemId: this.host.environment().systemId } : {}),
           category: "Custom",
           color: "#9e8aff",
           stages: [
             {
-              kind: "cast",
+              kind: lasting ? "aura" : "cast",
               assets: ["jb2a.cast_generic"],
               delay: 0,
-              duration: 1000,
+              duration: lasting ? 3000 : 1000,
               scale: 1,
+              ...(lasting ? { subject: "source", persist: true } : {}),
             },
           ],
         });
@@ -2162,8 +2177,10 @@ export class Workspace {
         this.category = "All";
         this.search = "";
         this.stageIndex = 0;
-        this.message =
-          "Choose an asset or token motion, then add stages. Save when ready.";
+        this.studioSettings = lasting;
+        this.message = lasting
+          ? "Type the condition or effect it is for, then choose an asset. Save when ready."
+          : "Choose an asset or token motion, then add stages. Save when ready.";
         this.render();
         return;
       }
@@ -2171,7 +2188,9 @@ export class Workspace {
         const base = clone(this.recipe());
         base.id = crypto.randomUUID();
         base.name = `${base.name} copy`;
-        base.trigger = "manual";
+        // A lasting copy stays lasting, just no longer tied to a catalog entry.
+        if (base.lifecycle === "document") base.stateEntry = "";
+        else base.trigger = "manual";
         base.itemUuid = "";
         base.match = "";
         base.category = "Custom";

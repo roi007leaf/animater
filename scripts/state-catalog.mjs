@@ -67,10 +67,12 @@ export function resolveStateRecipe(item,state,saved=[],catalog){
  const entry=findStateEntry(item);
  const own=saved.filter(r=>r.lifecycle==='document'&&(!r.stateDamageType||r.stateDamageType===item.system?.persistent?.damageType)).sort((a,b)=>Number(Boolean(b.stateDamageType))-Number(Boolean(a.stateDamageType)));
  const custom=(entry?own.find(r=>r.stateEntry===entry.id):null)??matchRecipe(own,{type:'effect',item});
- if(entry&&!stateEntryEnabled(entry.id,state))return null;
- if(!entry&&state?.enabled!==true)return null;
+ // A handmade lasting recipe (not a catalog copy) plays whenever it is enabled, catalog on or off.
+ const handmade=Boolean(custom?.enabled&&!custom.stateEntry);
+ if(!handmade&&entry&&!stateEntryEnabled(entry.id,state))return null;
+ if(!handmade&&!entry&&state?.enabled!==true)return null;
  const aura=item.animaterAura??null;
- if(entry&&state.selected?.includes(entry.id)&&!state.customized?.includes(entry.id))return stateRecipe(entry,{damageType:item.system?.persistent?.damageType,element:stateElement(entry,item),catalog,aura});
+ if(!handmade&&entry&&state.selected?.includes(entry.id)&&!state.customized?.includes(entry.id))return stateRecipe(entry,{damageType:item.system?.persistent?.damageType,element:stateElement(entry,item),catalog,aura});
  if(custom&&!custom.enabled)return null;
  if(custom)return validateRecipe({...custom,stages:custom.stages.map(s=>{
   const {auraRadius,auraSlug,...stage}=s;
