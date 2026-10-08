@@ -13,3 +13,4 @@ data/*.json
 data/*.csv
 .claude/
 .vscode/
+.playwright-mcp/

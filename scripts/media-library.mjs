@@ -1,3 +1,4 @@
+import { linkStartModes } from './choreography.mjs';
 import {libraryItem, mergeMedia, appendMedia, mediaGroups, safeMediaFile, title, mediaType, matchingMediaVariant, mediaVariantChoices, tokenFxAssets} from './media-library-model.mjs';
 import {validateRecipe, MAX_STAGES} from './model.mjs';
 import {patchDOM, reconcileChildren} from './dom-patch.mjs';
@@ -320,7 +321,8 @@ export class MediaLibrary {
           ? {kind:'sound',soundFile:this.file??item.file,duration:1500,volume:this.preview.volume}
           : {kind:'cast',assets:[this.file??item.key??item.file],duration:1500,scale:1}]}).stages[0];
         next.stageId=crypto.randomUUID();next.label=item.label;
-        r.stages.push(next);this.w.stageIndex=r.stages.length-1;stage=next;
+        if(!linked){next.startMode=item.type==='audio'||item.type==='tokenfx'?'with':'after';next.startOffset=0;}
+        r.stages.push(next);linkStartModes(r.stages);this.w.stageIndex=r.stages.length-1;stage=next;
       }
       if(item.type==='tokenfx') {
         if(stage.kind!=='tokenfx')throw Error('Select a Token Magic stage or add a token filter stage.');

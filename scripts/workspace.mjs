@@ -13,7 +13,7 @@ import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
 import { catalogSoundOptions, previewRecipeSounds } from "./spell-sounds.mjs";
 import { starterRecipes } from "./presets.mjs";
-import { reorderStages, recipeDuration, RecipeClock } from "./choreography.mjs";
+import { reorderStages, recipeDuration, RecipeClock, linkStartModes } from "./choreography.mjs";
 import { RecipePreview } from "./recipe-preview.mjs";
 import { previewMediaFailed, markPreviewMediaFailure, clearPreviewMediaFailure } from "./preview-media-status.mjs";
 import { chainPreview, hasChain } from "./chain-preview.mjs";
@@ -556,6 +556,8 @@ export class Workspace {
     if (this.previewMode === "stage") this.startMotionPreview(this.recipe());
   }
   stageStartLabel(stage, recipe) {
+    if (stage.startMode === "with") return "with ↑";
+    if (stage.startMode === "after") return stage.startOffset > 0 ? `after ↑ +${stage.startOffset}ms` : "after ↑";
     if (!stage.afterStage) return `${stage.delay}ms`;
     const resolved = sampleRecipe(recipe).stages.find(
       (s) => s.stageId === stage.stageId,
@@ -951,10 +953,11 @@ export class Workspace {
       <p class="an-hint">${hasChain(r) ? "Chain preview follows targeting order, with three sample targets when fewer than two are targeted." : "Editor composition uses sample spacing. Motion paths show approach, hold and return."} Local preview uses actual canvas placement.</p>
       ${linked ? `<div class="an-catalog-use-status is-using"><b>Document-linked animation</b><small>Sustained layers and token filters follow the affected token while its native document is active.</small><button data-action="enable-state-custom" ${canvasUnavailable || !this.host.environment().ready ? "disabled" : ""}>Enable customization</button></div>` : ""}
       <div class="an-play-actions"><button class="an-primary" data-action="preview" title="${canvasUnavailable ? "Canvas playback requires Foundry" : "Preview privately on your canvas"}" ${this.busy || canvasUnavailable || unconfigured ? "disabled" : ""}>▷ Local preview</button><button data-action="play" title="${canvasUnavailable ? "Canvas playback requires Foundry" : motionBlocked ? "Foundry has not registered the token-motion channel" : "Broadcast this recipe to the table"}" ${this.busy || canvasUnavailable || motionBlocked || unconfigured || linked ? "disabled" : ""}>Play at table</button></div><p class="an-hint">${linked ? "Select the affected token for a temporary preview. Native condition/effect documents control table playback." : canvasUnavailable ? "Canvas playback requires Foundry. Video previews show installed assets." : "Select caster token and target tokens. Preview stays on your screen."}</p>
-      <div class="an-editor-section"><div class="an-section-title"><b>Choreography</b><button class="an-text-button" data-action="add-motion" ${linked || r.stages.length >= MAX_STAGES || this.busy ? "disabled" : ""}>+ Token</button><button class="an-text-button" data-action="add-stage" ${r.stages.length >= MAX_STAGES || this.busy ? "disabled" : ""}>${linked ? "+ Layer" : "+ Stage"}</button></div><p class="an-hint">Drag stages to reorder. Start times follow slots; overlaps stay. ↳ Linked starts follow their reference.</p><div class="an-timeline">${r.stages.map((stage, i) => `<div class="an-stage ${i === index ? "is-selected" : ""}" data-stage-drag="${i}" draggable="${!this.busy}"><span class="an-drag-handle" aria-hidden="true">⠿</span><button data-action="stage" data-index="${i}" class="${i === index ? "is-active" : ""}" aria-pressed="${i === index}"><span>${i + 1}</span><b>${esc(this.stageLabel(stage))}</b><small>${esc(this.stageStartLabel(stage, r))}</small></button></div>`).join("")}</div><div class="an-stage-tools"><button data-action="move-stage" data-dir="-1" ${index === 0 || this.busy ? "disabled" : ""} aria-label="Move selected stage earlier">← Earlier</button><button data-action="move-stage" data-dir="1" ${index === r.stages.length - 1 || this.busy ? "disabled" : ""} aria-label="Move selected stage later">Later →</button><span>Stage ${index + 1} of ${r.stages.length}</span></div>
+      <div class="an-editor-section"><div class="an-section-title"><b>Choreography</b><button class="an-text-button" data-action="add-motion" ${linked || r.stages.length >= MAX_STAGES || this.busy ? "disabled" : ""}>+ Token</button><button class="an-text-button" data-action="add-stage" ${r.stages.length >= MAX_STAGES || this.busy ? "disabled" : ""}>${linked ? "+ Layer" : "+ Stage"}</button></div><p class="an-hint">Drag stages to reorder. Each stage starts after or with the one before it, or at a set time. Joined cards play together.</p><div class="an-timeline">${r.stages.map((stage, i) => `<div class="an-stage ${i === index ? "is-selected" : ""}${stage.startMode === "with" ? " is-with-previous" : ""}" data-stage-drag="${i}" draggable="${!this.busy}"><span class="an-drag-handle" aria-hidden="true">⠿</span><button data-action="stage" data-index="${i}" class="${i === index ? "is-active" : ""}" aria-pressed="${i === index}"><span>${i + 1}</span><b>${esc(this.stageLabel(stage))}</b><small>${esc(this.stageStartLabel(stage, r))}</small></button></div>`).join("")}</div><div class="an-stage-tools"><button data-action="move-stage" data-dir="-1" ${index === 0 || this.busy ? "disabled" : ""} aria-label="Move selected stage earlier">← Earlier</button><button data-action="move-stage" data-dir="1" ${index === r.stages.length - 1 || this.busy ? "disabled" : ""} aria-label="Move selected stage later">Later →</button><span>Stage ${index + 1} of ${r.stages.length}</span></div>
         <label>Stage name<input data-field="label" data-index="${index}" value="${esc(s.label ?? "")}" placeholder="${esc(KINDS[s.kind])}"></label><label>Stage type<select data-field="kind" data-index="${index}">${options(linked ? {aura: "Sustained attached layer",tokenfx:"Token Magic FX"} : KINDS, s.kind)}</select></label>
         ${OPTIONAL_FX_KINDS.has(s.kind) ? this.optionalFxControlsHTML(s,index) : s.kind === "motion" ? this.motionControlsHTML(s, index) : s.kind === "sound" ? `<label>Audio file<input data-field="soundFile" data-index="${index}" placeholder="sounds/spell.ogg" value="${esc(s.soundFile)}"></label>${this.host.soundCatalog || this.host.pickMedia ? `<button data-action="browse-sound">Browse sounds</button>` : ""}<p class="an-hint">Relative Foundry audio path. Sound plays with recipe; Stop ends it too.</p>` : s.kind === "sprite" ? `<p class="an-hint">Copies token artwork into Sequencer. Configure copies, shadows and tracks below.</p>` : `<label>Visual asset<button class="an-asset-picker" data-action="browse">${esc(key ?? s.assets[0] ?? "Choose an asset")}<span>Browse ↗</span></button></label>${key && key !== s.assets[0] ? `<p class="an-hint">Using installed fallback variant. Choose another in Assets anytime.</p>` : ""}`}
         ${["sprite", "aura", "tokenfx"].includes(s.kind) ? `<label>Subject<select data-field="subject" data-index="${index}">${options(linked ? {source: "Affected token"} : { source: "Caster token", targets: "Target tokens" }, s.subject ?? "source")}</select></label>` : ""}
+        ${index > 0 && !linked ? `<div class="an-field-row"><label>Start<select data-field="startMode" data-index="${index}">${options({ after: "After previous", with: "With previous", time: "At a set time", ...(s.afterStage && !s.startMode ? { link: "Linked (custom)" } : {}) }, s.startMode ?? (s.afterStage ? "link" : "time"))}</select></label>${s.startMode === "after" ? `<label>Gap after previous (ms)<input type="number" min="0" max="30000" step="50" data-field="startOffset" data-index="${index}" value="${s.startOffset ?? 0}"></label>` : ""}</div>` : ""}
         <div class="an-field-row"><label>${s.afterStage ? "Linked start (sample ms)" : "Start (ms)"}<input type="number" min="0" max="30000" step="50" data-field="delay" data-index="${index}" value="${s.afterStage ? sampleRecipe(r).stages[index].delay : s.delay}" ${s.afterStage ? "disabled" : ""}></label><label>${linked ? "Preview sample (ms)" : s.kind === "projectile" || isPathMotion(s) && s.motionRange === "target" ? "Base duration (ms)" : "Duration (ms)"}<input type="number" min="100" max="30000" step="100" data-field="duration" data-index="${index}" value="${s.duration}"></label>${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Scale<input type="number" min="0.1" max="5" step="0.1" data-field="scale" data-index="${index}" value="${s.scale}"></label>`}</div>
         ${this.compositionHTML(r, s, index)}
         ${this.stageOptionsHTML(s, index, linked)}
@@ -1275,6 +1278,18 @@ export class Workspace {
     const key = t.dataset.field,
       previous = s[key];
     const before = { ...s };
+    if (key === "startMode" && t.dataset.index !== undefined) {
+      const i = Number(t.dataset.index);
+      if (t.value === "after" || t.value === "with") s.startMode = t.value;
+      else if (t.value === "time") {
+        // Freeze the current resolved start as a plain time.
+        const at = sampleRecipe(r).stages[i]?.delay ?? s.delay ?? 0;
+        delete s.startMode; s.afterStage = ""; s.delay = Math.round(at);
+      }
+      linkStartModes(r.stages);
+      this.message = "Start updated. Save recipe to apply.";
+      return;
+    }
     s[key] =
       t.type === "checkbox"
         ? t.checked
@@ -1861,6 +1876,7 @@ export class Workspace {
           r.stages.push({
             stageId: crypto.randomUUID(),
             kind: "motion",
+            startMode: "with",
             motion: "lunge",
             subject: "source",
             assets: [],
@@ -1873,6 +1889,7 @@ export class Workspace {
             below: false,
             persist: false,
           });
+          linkStartModes(r.stages);
           this.stageIndex = r.stages.length - 1;
         }
       }
@@ -1884,12 +1901,14 @@ export class Workspace {
             stageId: crypto.randomUUID(),
             label: "",
             afterStage: "",
+            ...(r.lifecycle === "document" ? {} : { startMode: "after", startOffset: 0 }),
             kind: r.lifecycle === "document" ? "aura" : "impact",
             assets: r.lifecycle === "document" ? [...r.stages.at(-1).assets] : ["jb2a.impact"],
             subject: r.lifecycle === "document" ? "source" : r.stages.at(-1).subject,
             persist: r.lifecycle === "document",
             delay: r.lifecycle === "document" ? 0 : Math.min(30000, r.stages.at(-1).delay + 800),
           });
+          linkStartModes(r.stages);
           this.stageIndex = r.stages.length - 1;
         }
       }
@@ -1899,12 +1918,13 @@ export class Workspace {
           const resolved = sampleRecipe(r).stages;
           const removedId = r.stages[this.stageIndex].stageId;
           r.stages.forEach((stage, i) => {
-            if (stage.afterStage === removedId) {
+            if (stage.afterStage === removedId && !stage.startMode) {
               stage.delay = resolved[i].delay;
               stage.afterStage = "";
             }
           });
           r.stages.splice(this.stageIndex, 1);
+          linkStartModes(r.stages);
           this.stageIndex = Math.max(0, this.stageIndex - 1);
         }
       }
@@ -1923,7 +1943,9 @@ export class Workspace {
         this.busy = true;
         this.message = "Preparing animation…";
         this.render();
+        let restore = null;
         try {
+          restore = await this.host.tuckWindow?.().catch(() => null);
           const result = await this.host.play(
             validateRecipe(this.recipe()),
             action === "preview",
@@ -1964,6 +1986,7 @@ export class Workspace {
         } finally {
           this.stopEditorPreview();
           this.busy = false;
+          await restore?.().catch(() => {});
         }
       }
       if (action === "stop") {

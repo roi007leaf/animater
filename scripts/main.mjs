@@ -341,6 +341,13 @@ function builtinRecipe(id) {
 }
 function workspaceHost() {
   return {
+    // Tuck the window away while a canvas preview or table playback runs, then restore it.
+    tuckWindow: async () => {
+      let on = true; try { on = game.settings.get(ID, 'tuckDuringPlayback') !== false; } catch {}
+      if (!on || !app?.rendered || app.minimized) return null;
+      await app.minimize();
+      return async () => { if (app?.rendered && app.minimized) await app.maximize(); };
+    },
     mediaPreferences:()=>libraryPreferences(game.settings.get(ID,'mediaLibrary')),
     setMediaPreferences:value=>game.settings.set(ID,'mediaLibrary',libraryPreferences(value)),
     mediaCatalog:()=>mediaLibraryLoader.peek(),
@@ -512,6 +519,9 @@ Hooks.once("init", () => {
       onChange:()=>{persistentStates?.schedule();app?.workspace?.render();}});
   game.settings.register(ID,'weaponScale',{name:'Weapon effect size',hint:'Multiplies the size of weapon hit and residue effects (1 = the target token\'s footprint).',
     scope:'world',config:true,type:Number,range:{min:0.5,max:3,step:0.1},default:1.5});
+  game.settings.register(ID,'tuckDuringPlayback',{name:'Minimize Animater during canvas playback',
+    hint:'Local preview and Play at table minimize the Animater window while the animation runs, then restore it.',
+    scope:'client',config:true,type:Boolean,default:true});
   game.settings.register(ID,'quality',{name:'Animation quality (this device)',
     hint:'Lower this on slower computers. Applies only to what you see; other players keep their own setting.',
     scope:'client',config:true,type:String,choices:{...QUALITY_CHOICES},default:'full',

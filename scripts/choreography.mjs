@@ -4,6 +4,23 @@ import { sampleRecipe } from "./composition.mjs";
 
 // Ordering moves content between chronological timing slots. Durations and all
 // effect settings stay with their stage; simultaneous slots remain simultaneous.
+// Start modes read like slides: "with previous" starts alongside the stage before
+// it, "after previous" when it ends (plus an optional gap in startOffset). They
+// are stored as ordinary stage links, so playback and saved data stay unchanged;
+// re-running this after any reorder/add/remove keeps each link on its neighbour.
+export const START_MODES = Object.freeze({ after: 'After previous', with: 'With previous' });
+export function linkStartModes(stages) {
+  stages.forEach((s, i) => {
+    if (!START_MODES[s.startMode]) { delete s.startMode; return; }
+    if (i === 0) { delete s.startMode; s.afterStage = ''; s.delay = 0; return; }
+    s.afterStage = stages[i - 1].stageId;
+    s.timingAnchor = s.startMode === 'with' ? 'start' : 'end';
+    if (s.startMode === 'with') s.startOffset = 0;
+    else s.startOffset = Math.max(0, Number(s.startOffset) || 0);
+    s.delay = 0;
+  });
+  return stages;
+}
 export function reorderStages(stages, from, to) {
   if (
     !Number.isInteger(from) ||
@@ -22,7 +39,7 @@ export function reorderStages(stages, from, to) {
   result.forEach((s, i) => {
     s.delay = slots[i];
   });
-  return result;
+  return linkStartModes(result);
 }
 
 export const recipeDuration = (recipe) =>

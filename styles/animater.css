@@ -750,6 +750,26 @@
   border: 1px solid transparent;
   border-radius: 8px;
 }
+/* "With previous" stages join the card before them: one group, played together. */
+.animater .an-stage.is-with-previous {
+  margin-left: -5px;
+}
+.animater .an-stage.is-with-previous::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  width: 6px;
+  height: 22px;
+  transform: translateY(-50%);
+  border-radius: 3px;
+  background: var(--an-accent, #b48cff);
+  z-index: 2;
+}
+.animater .an-stage.is-with-previous > button {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
 .animater .an-stage > button {
   width: 100%;
   min-height: 90px;

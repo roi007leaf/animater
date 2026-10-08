@@ -252,3 +252,18 @@ test('device quality routes optional layers per viewer and caps local state laye
 });
 
 
+
+test('stage start modes link to the neighbouring stage and survive reordering', async () => {
+  const { linkStartModes, reorderStages } = await import('../scripts/choreography.mjs');
+  const { validateRecipe } = await import('../scripts/model.mjs');
+  const { timedStages } = await import('../scripts/composition.mjs');
+  const st = (stageId, extra) => ({ stageId, kind: 'impact', assets: ['jb2a.impact'], duration: 1000, delay: 0, ...extra });
+  const stages = linkStartModes([st('a'), st('b', { startMode: 'after' }), st('c', { startMode: 'with' }), st('d', { startMode: 'after', startOffset: 250 })]);
+  const at = list => Object.fromEntries(timedStages(validateRecipe({ id: 't', name: 't', trigger: 'manual', stages: list })).map(s => [s.stageId, Math.round(s.delay)]));
+  assert.deepEqual(at(stages), { a: 0, b: 1000, c: 1000, d: 2250 });
+  const moved = reorderStages(stages, 3, 1); // d becomes second: after a, then b after d
+  assert.deepEqual(moved.map(s => [s.stageId, s.afterStage ?? '']), [['a', ''], ['d', 'a'], ['b', 'd'], ['c', 'b']]);
+  assert.equal(validateRecipe({ id: 't', name: 't', trigger: 'manual', stages: moved }).stages[1].startMode, 'after');
+  const first = linkStartModes([st('x', { startMode: 'after' })]);
+  assert.equal(first[0].startMode, undefined, 'the first stage has nothing to follow');
+});
