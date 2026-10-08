@@ -49,6 +49,50 @@ const named={
  'find steed':{aura:'portals.horizontal.ring_masked.yellow'},
  'floating disk':{aura:'portals.horizontal.ring_masked.blue'},
  'unseen servant':{aura:'portals.horizontal.ring_masked.dark_purple'},
+ // Official-book spells (Player's Handbook). Smites land on the struck creature in
+ // their own colour; areas use the spell's literal footage where JB2A has it.
+ 'banishing smite':{theme:'force',delivery:'contact',cast:'divine_smite.caster.purplepink',hit:'divine_smite.target.purplepink',aura:'portals.horizontal.ring_masked.purple',sound:'holy'},
+ 'blinding smite':{theme:'light',delivery:'contact',cast:'divine_smite.caster.yellowwhite',hit:'divine_smite.target.yellowwhite',aura:'divine_smite.target.yellowwhite',sound:'holy'},
+ 'staggering smite':{theme:'mind',delivery:'contact',cast:'divine_smite.caster.dark_purple',hit:'divine_smite.target.dark_purple',aura:'dizzy_stars.200px.purple',sound:'holy'},
+ 'thunderous smite':{theme:'sonic',delivery:'contact',cast:'divine_smite.caster.blueyellow',hit:'divine_smite.target.blueyellow,thunderwave.center.blue',aura:'thunderwave.center.blue',sound:'holy'},
+ 'wrathful smite':{theme:'fear',delivery:'contact',cast:'divine_smite.caster.dark_red',hit:'divine_smite.target.dark_red',aura:'smoke.plumes.01.purple',sound:'holy'},
+ 'cloud of daggers':{theme:'weapon',area:'cloud_of_daggers.daggers.yellow,cloud_of_daggers.daggers.blue',hit:'cloud_of_daggers.daggers.yellow'},
+ 'hunger of hadar':{theme:'void',area:'darkness.black',cast:'arms_of_hadar.dark_purple',hit:'arms_of_hadar.dark_purple,liquid.blob.green'},
+ 'thunderclap':{theme:'sonic',area:'thunderwave.center.blue',cast:'soundwave.02.blue'},
+ 'destructive wave':{theme:'sonic',area:'thunderwave.center.blue,divine_smite.caster.blueyellow',cast:'divine_smite.caster.blueyellow'},
+ 'word of radiance':{theme:'light',area:'template_circle.out_pulse.01.burst.yellowwhite,divine_smite.caster.yellowwhite',cast:'divine_smite.caster.yellowwhite'},
+ 'arcane gate':{theme:'teleport',area:'portals.vertical.ring.purple,portals.horizontal.ring_masked.purple',cast:'portals.horizontal.ring_masked.purple'},
+ 'conjure barrage':{theme:'weapon',area:'volley_of_projectiles_Cone5e.arrow.001.001,volley_of_projectiles_Cone5e.arrow'},
+ 'conjure volley':{theme:'weapon',area:'volley_of_projectiles_Circle.arrow.001.001,volley_of_projectiles_Circle.arrow'},
+ 'cordon of arrows':{theme:'weapon',area:'volley_of_projectiles_Circle.arrow.001.001',hit:'arrow.physical,impact.001.orange'},
+ 'hail of thorns':{theme:'plant',area:'swirling_leaves.complete.01.green,entangle.02.complete.02.green',hit:'impact.001.green'},
+ 'crown of madness':{theme:'mind',aura:'icon.horror.purple,dizzy_stars.200px.purple'},
+ 'compelled duel':{aura:'markers.chain.spectral_standard.complete.02.red,markers.chain.standard'},
+ 'beast sense':{aura:'eyes.01.dark_green.single,eyes.01.dark_green.few'},
+ 'telepathy':{aura:'eyes.01.dark_purple.single,icon.runes.blue'},
+ 'power word fortify':{aura:'ward.star.yellow,bless.200px.intro'},
+ 'armor of agathys':{theme:'cold',aura:'shield_themed.above.ice.01,shield_themed.above.ice',hit:'ice_spikes.radial.burst.blue'},
+ 'aura of vitality':{theme:'healing',area:'template_circle.out_pulse.01.loop.greenorange,template_circle.out_pulse.01.loop.bluewhite'},
+ "crusader's mantle":{theme:'light',area:'template_circle.aura.01.loop.large.yellow,template_circle.aura.01.loop.yellow'},
+ 'hex (powerful)':{theme:'curse',cast:'energy_strands.in.purple',hit:'energy_strands.in.purple,condition.curse',aura:'energy_strands.overlay.dark_purple,condition.curse'},
+ 'summon aberration':{aura:'portals.horizontal.ring_masked.dark_purple'},
+ 'summon beast':{aura:'portals.horizontal.ring_masked.green'},
+ 'summon celestial':{aura:'portals.horizontal.ring_masked.yellow'},
+ 'summon construct':{aura:'portals.horizontal.ring_masked.blue'},
+ 'summon elemental':{aura:'portals.horizontal.ring_masked.orange'},
+ 'summon fey':{aura:'portals.horizontal.ring_masked.green'},
+ 'summon fiend':{aura:'portals.horizontal.ring_masked.dark_red'},
+ 'summon undead':{aura:'portals.horizontal.ring_masked.dark_purple'},
+ // Monster Manual abilities the generator would otherwise theme from boilerplate text.
+ 'eye rays':{delivery:'ray',bolt:'energy_beam.normal.purple.01,energy_beam.normal'},
+ 'energy drain':{theme:'void',delivery:'contact',hit:'energy_strands.complete.dark_purple,energy_strands.in.purple'},
+ 'extract brain':{theme:'mind',delivery:'contact',hit:'energy_strands.in.purple,melee_generic.piercing'},
+ 'gnash':{theme:'weapon',delivery:'contact',hit:'bite.200px.red,melee_generic.piercing'},
+ 'drop':{theme:'weapon',delivery:'contact',hit:'melee_generic.piercing,impact.ground_crack'},
+ 'jinx':{theme:'curse',delivery:'contact',hit:'condition.curse,energy_strands.in.purple'},
+ 'webs':{theme:'web',delivery:'contact',hit:'web.complete.002.white,web.01'},
+ 'sticky net':{theme:'web',delivery:'contact',hit:'web.complete.002.white,web.01'},
+ 'grasping root':{theme:'plant',area:'vine.complete.nature.group.01.green,entangle.02.complete.02.green',hit:'entangle.02.complete.02.green'},
  // A bell tolls over the target; "Healthy Target" is a damage tier, not healing.
  'toll the dead':{theme:'void',cast:'cast_generic.01.dark_purple',hit:'toll_the_dead.purple.complete,toll_the_dead.purple.bell'},
  'acid splash':{theme:'acid',area:'liquid.splash.bright_green,liquid.splash.green'},
@@ -144,6 +188,15 @@ const overrides=[
  // Lasting clouds loop on their template: a burning cloud and a sleet storm, not a blast.
  [/^incendiary cloud$/,{area:'fumes.fire.orange,ambient_fog.001.loop.large.orangeyellow'}],
  [/^sleet storm$/,{area:'sleet_storm.01.blue,sleet_storm.02.blue'}],
+ // A beholder's ten rays: each lands as its own effect.
+ [/^eye rays$/,{hit:'impact_themed.heart.02.pink,impact_themed.heart.pink'},/charm/],
+ [/^eye rays$/,{hit:'static_electricity.03.dark_purple,static_electricity.03.blue'},/paralyz/],
+ [/^eye rays$/,{hit:'smoke.plumes.01.purple'},/fear/],
+ [/^eye rays$/,{hit:'smoke.puff.ring.01.white'},/slow/],
+ [/^eye rays$/,{area:'breath_weapons02.burst.line.arcana.purple.01'},/telekinetic/],
+ [/^eye rays$/,{hit:'smoke.puff.centered.grey,impact.ground_crack'},/petrif/],
+ [/^eye rays$/,{area:'particle_burst.01.circle.green,smoke.puff.centered.green',hit:'disintegrate.green'},/disintegrat/],
+ [/^eye rays$/,{hit:'toll_the_dead.purple.skull_smoke,toll_the_dead.grey.skull_smoke'},/death/],
  [/^aura of life$/,{area:'template_circle.out_pulse.01.loop.bluewhite,template_circle.out_pulse.01.loop.greenorange'}],
  [/^hellish rebuke$/,{hit:'flames.green,flames.04.complete.green',aura:'flames.green,flames.04.loop.green',tints:{hit:'#62dc85',aura:'#62dc85'}},null,'2024'],
  [/^bestow curse$/,{theme:'curse',cast:'energy_strands.in.red',hit:'energy_strands.in.purple,condition.curse',aura:'energy_strands.overlay.dark_purple02,energy_strands.overlay.dark_purple,condition.curse'}],
@@ -273,10 +326,10 @@ const NAMED_GESTURES={'drift-gentle':['drift',2400,.3,'targets',.6,'Gentle feath
 // Spells whose area itself stays on the map for the duration (a cloud, a wall, a
 // zone). Spells that only affect creatures inside the area at casting (Fear,
 // Sleep, Hypnotic Pattern) or whose area is a one-off blast play once.
-export const LASTING_AREAS=new Set(['fog cloud','cloudkill','stinking cloud','insect plague','incendiary cloud','darkness','daylight','silence','web','grease','entangle','spike growth','black tentacles',"evard's black tentacles",'moonbeam','call lightning','sleet storm','blade barrier','wall of fire','wall of ice','wall of thorns','wall of force','wind wall','prismatic wall','hallow','magic circle','forcecage','globe of invulnerability','hallucinatory terrain','major image','silent image','minor illusion','programmed illusion','gust of wind','guards and wards','private sanctum','teleportation circle','alarm','zone of truth','tiny hut',"leomund's tiny hut",'control weather','storm of vengeance','mirage arcane','forbiddance']);
+export const LASTING_AREAS=new Set(['fog cloud','cloudkill','stinking cloud','insect plague','incendiary cloud','darkness','daylight','silence','web','grease','entangle','spike growth','black tentacles',"evard's black tentacles",'moonbeam','call lightning','sleet storm','blade barrier','wall of fire','wall of ice','wall of thorns','wall of force','wind wall','prismatic wall','hallow','magic circle','forcecage','globe of invulnerability','hallucinatory terrain','major image','silent image','minor illusion','programmed illusion','gust of wind','guards and wards','private sanctum','teleportation circle','alarm','zone of truth','tiny hut',"leomund's tiny hut",'control weather','storm of vengeance','mirage arcane','forbiddance','cloud of daggers','hunger of hadar',"jallarzi's storm of radiance","tasha's bubbling cauldron"]);
 // Wall of Stone, Control Water and Reverse Gravity have no footage that loops well.
 // Emanations centred on the caster last too, and move with them.
-export const LASTING_EMANATIONS=new Set(['spirit guardians','aura of life','holy aura','antimagic field','antilife shell','aura of purity','aura of vitality',"crusader's mantle",'circle of power']);
+export const LASTING_EMANATIONS=new Set(['spirit guardians','aura of life','holy aura','antimagic field','antilife shell','aura of purity','aura of vitality',"crusader's mantle",'circle of power',"yolande's regal presence"]);
 // Activities of a lasting spell that are single events inside it (a bolt from the
 // storm, a fissure, a glyph going off) stay one-shot.
 export const LASTING_EVENT=/lightning bolt|fissure|debris|structure|turn \d|round \d|glyph effect|explosion|bead|blinding light/;
@@ -313,6 +366,10 @@ export function nativeDirection(row,activity,mode){
  // A part listing every damage type ("same type as the weapon/spell") names no
  // element; its first entry (acid) must not theme Brutal Strike or Frenzy.
  const types=[...(a.damage?.parts??[]).flatMap(p=>(p.types?.length??0)>3?[]:p.types??[]),...(a.healing?.types??[])];
+ // Official-book weapon strike riders and maneuvers (Assassinate, Commander's Strike,
+ // Disarming Attack, Great Weapon Master) land on the struck creature as a weapon hit.
+ if(row.book&&['damage','save'].includes(a.type)&&!base.theme&&/\b(?:strikes?|attacks?|assassinate|charger|great weapon master|polearm master)\b/.test(name)&&types.every(t=>['bludgeoning','piercing','slashing'].includes(t)))
+  Object.assign(base,{theme:'weapon',delivery:base.delivery??'contact'});
  const school=item.type==='spell'?item.system?.school:undefined,tempHp=a.type==='heal'&&types.length>0&&types.every(t=>t==='temphp');
  // "Cast and Fire", "Restore Use", "Light Weapon" are verbs/properties, not effects.
  const actText=act.replace(/\b(?:and|to|cast) fire\b|\brestore (?:uses?|slots?)\b|\bplant rod\b|\blight (?:martial )?weapons?\b/g,'');
@@ -337,6 +394,10 @@ export function nativeDirection(row,activity,mode){
  if(name==='oil'&&/douse/.test(act))delivery='burst';
  if(a.type==='cast'||a.type==='forward')delivery='source';
  let trigger=area?'template':a.type==='attack'?'attack':['damage','heal'].includes(a.type)?'damage':'use';
+ // Official-book "Expend Use" steps only spend a use before the attack they call
+ // (Aim, Lunge, Eruption); that attack animates, the bookkeeping step does not.
+ // Reloading a firearm or loading and aiming a siege engine is handling, not a shot.
+ if(row.book&&a.type==='utility'&&/^(?:expend uses?|roll \d+d\d+|reload\b.*|load|aim)$/.test(act))trigger='manual';
  const review=directions.get(`${row.uuid}::${a._id}`);
  let nativeTheme=theme;
  if(review){
@@ -409,7 +470,7 @@ export function nativeDirection(row,activity,mode){
 export function weaponModes(item,a){
  if(a.type!=='attack')return [undefined];
  const explicit=a.attack?.type?.value;
- const ranged=explicit==='ranged'||!explicit&&(/[Rr]$/.test(item.system?.type?.value??'')||['longbow','shortbow','lightcrossbow','heavycrossbow','handcrossbow','blowgun','dart','sling','pistol','musket'].includes(item.system?.type?.baseItem));
+ const ranged=explicit==='ranged'||!explicit&&(item.system?.type?.value==='siege'||/[Rr]$/.test(item.system?.type?.value??'')||['longbow','shortbow','lightcrossbow','heavycrossbow','handcrossbow','blowgun','dart','sling','pistol','musket'].includes(item.system?.type?.baseItem));
  const naturalRanged=item.system?.type?.value==='natural'&&Number(item.system?.range?.value)>Number(item.system?.range?.reach??5);
  return [...new Set([ranged?'ranged':'melee',...(naturalRanged?['ranged']:[]),...(item.system?.properties?.includes('thr')?['thrown']:[])])];
 }
@@ -427,5 +488,6 @@ export function weaponVisualFamily(item){
  const aliases={longsword:'sword',battleaxe:'axe',lighthammer:'hammer',morningstar:'mace',warpick:'pick',pike:'spear',lance:'spear',trident:'spear',longbow:'bow',shortbow:'bow',lightcrossbow:'crossbow',heavycrossbow:'crossbow',handcrossbow:'crossbow',pistol:'firearm',musket:'firearm'};
  if(base)return aliases[base]??base;
  const text=item.name.toLowerCase();
- return [['boulder',/boulder|\brock\b/],['spike',/tail spike|thorn burst|hail of bark/],['claw',/claw|talon|rake|rend|scratch/],['spear',/spear|harpoon|fork/],['hammer',/hammer/],['club',/club|cudgel/],['quarterstaff',/staff/],['sickle',/sickle/],['sword',/sword|blade/],['bow',/\bbow\b/],['whip',/whip/]].find(([,re])=>re.test(text))?.[0]??'contact';
+ // DMG firearms and siege engines carry no base item: gunfire, a ballista bolt, a cannonball.
+ return [['firearm',/revolver|rifle|pistol|musket|shotgun|blunderbuss|\bgun\b/],['crossbow',/ballista/],['cannon',/cannon/],['boulder',/boulder|\brock\b|catapult|trebuchet|mangonel/],['spike',/tail spike|thorn burst|hail of bark/],['claw',/claw|talon|rake|rend|scratch/],['spear',/spear|harpoon|fork/],['hammer',/hammer/],['club',/club|cudgel/],['quarterstaff',/staff/],['sickle',/sickle/],['sword',/sword|blade/],['bow',/\bbow\b/],['whip',/whip/]].find(([,re])=>re.test(text))?.[0]??'contact';
 }

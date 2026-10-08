@@ -307,7 +307,7 @@ function coneMaterialFits(row, theme, roots, context) {
   }
   if (root === "water_splash") return theme === "water";
   // Arrow volleys are not interchangeable with light, sound or mental waves.
-  if (/volley_of_projectiles/i.test(root)) return /\b(?:arrow|arrows)\b/i.test(context.design?.assetIntent ?? context.name ?? "");
+  if (/volley_of_projectiles/i.test(root)) return /\b(?:arrow|arrows|barrage|volley)\b/i.test(context.design?.assetIntent ?? context.name ?? "");
   return true;
 }
 // Per-entry memo (tools/probe-cache.mjs): the selection is a pure function of

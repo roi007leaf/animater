@@ -148,7 +148,7 @@ function finiteRecipe(entry,row,raw,mode){
  // A net has no flight film: the wielder throws, then the binding web settles
  // on the first target (no arrow, no spark).
  const netThrow=Boolean(mode)&&mode!=='melee'&&/^net$/i.test(row.source.name);
- const launcher=/bow|crossbow|sling|blowgun|pistol|musket|rifle|firearm|\bgun\b/i.test(`${row.source.system?.type?.baseItem??''} ${row.source.name}`);
+ const launcher=/bow|crossbow|sling|blowgun|pistol|musket|rifle|revolver|shotgun|firearm|cannon|ballista|\bgun\b/i.test(`${row.source.system?.type?.baseItem??''} ${row.source.name}`);
  if(!d.followup&&!physical&&d.motion!=='none'&&!d.noCast)add('cast','cast','Gather '+(SPELL_THEMES[d.theme]?.label??'magic'),{scale:1.2,duration:1600});
  if(d.delivery==='fork'){
   const first=add('travel','bolt','Primary arc',{delay:350,targetSelection:'first',scale:.65});
