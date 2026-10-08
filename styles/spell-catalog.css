@@ -455,3 +455,15 @@
 }
 .animater .an-catalog-automation:hover > div > small,
 .animater .an-catalog-automation:focus-within > div > small { display: block; }
+/* Slimmer volume control so all catalog pills fit one row. */
+.animater .an-catalog-automation { margin-right: 6px; gap: 8px; }
+.animater .an-sound-settings > label { font-size: 0; gap: 6px; padding-right: 8px; }
+.animater .an-sound-settings > label span { font-size: 11px; }
+.animater .an-sound-settings > label::before { content: "🔊"; font-size: 12px; opacity: 0.7; }
+.animater .an-sound-settings input[type="range"] {
+  width: 76px;
+  height: 16px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
