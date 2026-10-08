@@ -45,7 +45,7 @@ export class AnimaterRuntime {
     this.lasting = this.lasting.filter((l) => !ending.includes(l));
     await Promise.allSettled(ending.map((l) => this.host.endEffects({ name: l.session })));
     for (const l of ending) this.sessions.delete(l.session);
-    this.trace("Ended", `${ending.length} lasting ${ending.length === 1 ? "area" : "areas"}: concentration ended.`);
+    this.trace("Ended", `${ending.length} lasting ${ending.length === 1 ? "area" : "areas"}: the spell ended.`);
     return ending.length;
   }
   trace(status, detail, recipe = null) {
@@ -351,7 +351,8 @@ export class AnimaterRuntime {
       // Lasting areas of a concentration spell end with the caster's concentration.
       if (!preview && context.actor && plan.some((s) => s.kind === "template" && s.persist)) {
         const sys = context.item?.system;
-        const concentration = Boolean(sys?.properties?.has?.("concentration") || sys?.properties?.includes?.("concentration") || sys?.duration?.concentration);
+        // D&D concentration; PF2e/SF2e sustained spells end when their effect on the caster does.
+        const concentration = Boolean(sys?.properties?.has?.("concentration") || sys?.properties?.includes?.("concentration") || sys?.duration?.concentration || sys?.duration?.sustained);
         if (concentration) {
           this.lasting.push({ session, actorId: context.actor.id, itemId: context.item?.id });
           if (this.lasting.length > 50) this.lasting.shift();

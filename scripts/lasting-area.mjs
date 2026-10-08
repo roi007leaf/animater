@@ -16,11 +16,22 @@ export function lastingDuration(text) {
   return Boolean(t) && !/^instant/.test(t) && /round|minute|hour|day|sustain|unlimited|until|permanent/.test(t);
 }
 
+// An emanation centred on the caster. When the spell applies a spell effect, the
+// system draws its aura from that effect (a native aura that follows the token), so
+// the template stays one-shot instead of doubling it.
+export function isEmanation(item) {
+  return item?.system?.area?.type === 'emanation';
+}
+const appliesEffect = (item) => /spell-effects|Item\.[^\]]*[Ee]ffect/.test(String(item?.system?.description?.value ?? ''));
+
 export function isLastingArea(item) {
   if (!item || item.type !== 'spell') return false;
   const name = String(item.name ?? '');
   const duration = item.system?.duration?.value ?? item.system?.duration;
-  return STANDING.test(name) && !BLAST.test(name) && !NOT_AREA.test(name) && lastingDuration(typeof duration === 'object' ? duration?.value : duration);
+  const lasting = lastingDuration(typeof duration === 'object' ? duration?.value : duration) || item.system?.duration?.sustained === true;
+  if (!lasting || BLAST.test(name) || NOT_AREA.test(name)) return false;
+  if (isEmanation(item)) return !appliesEffect(item);
+  return STANDING.test(name);
 }
 
 // Loop footage for an area that stays: JB2A's .loop twin of .complete/.burst art,
@@ -44,6 +55,6 @@ export function withLastingArea(recipe, event, { exists } = {}) {
   if (i < 0) return recipe;
   const stages = recipe.stages.slice();
   const s = stages[i];
-  stages[i] = { ...s, persist: true, oneShot: false, fadeOut: Math.max(s.fadeOut ?? 0, 800), assets: [...new Set((s.assets ?? []).map(k => lastingAsset(k, exists)))] };
+  stages[i] = { ...s, persist: true, oneShot: false, fadeOut: Math.max(s.fadeOut ?? 0, 800), ...(isEmanation(event.item) ? { followSource: true } : {}), assets: [...new Set((s.assets ?? []).map(k => lastingAsset(k, exists)))] };
   return { ...recipe, stages };
 }

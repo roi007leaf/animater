@@ -933,6 +933,14 @@ Hooks.once("ready", () => {
     Hooks.on("createChatMessage", (message) => {
       void dispatch((game.system.id==="sf2e"?sf2eEvent:pf2eEvent)(message, game.user.id));
     });
+    // A sustained spell's effect on its caster ends (expired, dismissed, not
+    // sustained): its lasting area ends on the client that cast it.
+    Hooks.on("deleteItem", (item) => {
+      if (item.type !== "effect" || !item.actor) return;
+      const origin = item.system?.context?.origin?.item ?? item.flags?.pf2e?.origin?.item ?? "";
+      const spellId = /Item\.([^.]+)$/.exec(String(origin))?.[1];
+      if (spellId) void runtime.endConcentration(item.actor.id, spellId);
+    });
     Hooks.on("createItem", (item, _options, userId) => {
       if (
         userId !== game.user.id ||

@@ -39,3 +39,17 @@ test("no template, D&D recipes and already-lasting recipes are left alone", () =
   const lasting = recipe([area(["jb2a.a"], { persist: true })]);
   assert.equal(withLastingArea(lasting, { item, template: {} }), lasting);
 });
+
+test("PF2e/SF2e emanations last and follow the caster unless a spell effect draws the aura", () => {
+  const emanation = (name, description = "", duration = "1 minute") => ({ type: "spell", name, system: { area: { type: "emanation", value: 10 }, duration: { value: duration }, description: { value: description } } });
+  const event = (item) => ({ template: { id: "t" }, item });
+  const out = withLastingArea(recipe([area(["jb2a.a"])]), event(emanation("Angelic Halo")));
+  assert.equal(out.stages[0].persist, true);
+  assert.equal(out.stages[0].followSource, true);
+  // Bless applies "Spell Effect: Bless", whose Aura rule is already drawn natively.
+  const bless = emanation("Bless", '<p>@UUID[Compendium.pf2e.spell-effects.Item.Gqy7K6FnbLtwGpud]{Spell Effect: Bless}</p>');
+  assert.equal(withLastingArea(recipe([area(["jb2a.a"])]), event(bless)).stages[0].persist, undefined);
+  assert.ok(!isLastingArea(emanation("Thunder Burst")), "a blast stays one-shot");
+  assert.ok(!isLastingArea(emanation("Quick Ward", "", "")), "no duration, no loop");
+  assert.ok(isLastingArea({ type: "spell", name: "Wall of Wind", system: { duration: { value: "", sustained: true } } }), "sustained counts as lasting");
+});
