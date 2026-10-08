@@ -369,7 +369,47 @@ function builtinRecipe(id) {
 // FXMaster particles drawn on this client's canvas only (Local preview): FXMaster's
 // own particle class runs in a scoped context over the scene, nothing is saved.
 const LOCAL_PARTICLE_PREWARM = 6;
-function localParticles(stage, effect) {
+// The template's Region document: Foundry 14 keeps a MeasuredTemplate as a Region
+// with the same id. A private preview area is not in the Scene and has none.
+function templateRegion(template) {
+  const doc = template?.document ?? template;
+  const region = doc?.documentName === "MeasuredTemplate" ? doc.parent?.regions?.get?.(doc.id) : doc?.documentName === "Region" ? doc : null;
+  return region?.parent?.regions?.get?.(region.id) === region ? region : null;
+}
+// FXMaster particles or filters kept inside a placed template: a temporary FXMaster
+// region behavior on the template's Region (removed when the stage ends, and with
+// the template). Returns null when the template has no Region in the Scene.
+async function regionFx(stage, effect, template) {
+  const region = templateRegion(template);
+  const category = stage.fxCategory ?? "particle";
+  const type = category === "particle" ? "fxmaster.particleEffectsRegion" : "fxmaster.filterEffectsRegion";
+  const Model = CONFIG.RegionBehavior?.dataModels?.[type];
+  if (!region || !Model || !effect) return null;
+  const fields = new Set(Object.keys(Model.defineSchema()));
+  const system = { [`${stage.fxType}_enabled`]: true };
+  for (const [key, value] of Object.entries(effectOptions(stage, effect))) {
+    // Colors are {value, apply}: FXMaster stores them as <key> and <key>_apply.
+    if (value && typeof value === "object" && "value" in value) {
+      if (fields.has(`${stage.fxType}_${key}`)) system[`${stage.fxType}_${key}`] = value.value;
+      if (fields.has(`${stage.fxType}_${key}_apply`)) system[`${stage.fxType}_${key}_apply`] = value.apply === true;
+    } else if (fields.has(`${stage.fxType}_${key}`)) system[`${stage.fxType}_${key}`] = value;
+  }
+  const [behavior] = await region.createEmbeddedDocuments("RegionBehavior", [{ name: "Animater", type, system }]);
+  return async () => { if (behavior && region.behaviors?.get?.(behavior.id)) await behavior.delete(); };
+}
+// The shape of a placed area or private preview area, as canvas polygons.
+function areaMask(template) {
+  const doc = template?.document ?? template;
+  if (doc?.documentName === "Region") {
+    const polygons = Array.from(doc.shapes ?? []).flatMap(s => s.polygons ?? []);
+    return polygons.length ? polygons.map(p => new PIXI.Polygon(p.points)) : null;
+  }
+  // Preview documents are deliberately not registered in the Scene. Raw
+  // shapes serialize across Sequencer without resolving their temporary UUID.
+  const points = template?.shape?.points;
+  return points?.length ? new PIXI.Polygon(Array.from(points, (n, i) => n + (i % 2 ? doc.y : doc.x))) : null;
+}
+function localParticles(stage, effect, template) {
   const Effect = CONFIG.fxmaster?.particleEffects?.[stage.fxType], PIXI = globalThis.PIXI;
   // Foundry 14's weather layer draws only its own containers; the interface layer
   // draws an added container over the board like scene weather.
@@ -384,6 +424,20 @@ function localParticles(stage, effect) {
   const root = new PIXI.Container();
   root.addChild(particles);
   layer.addChild(root);
+  // With an area, the particles stay inside its shape.
+  const doc = template?.document ?? template;
+  const shape = doc?.documentName !== "Region" ? template?.shape : null;
+  const polygons = template && !shape ? [areaMask(template)].flat().filter(Boolean) : [];
+  if (shape || polygons.length) {
+    const mask = new PIXI.Graphics();
+    mask.beginFill(0xffffff);
+    // A preview template's own shape (circle, rectangle, cone polygon) is relative to it.
+    if (shape) { mask.position.set(doc.x, doc.y); mask.drawShape(shape); }
+    else for (const polygon of polygons) mask.drawPolygon(polygon);
+    mask.endFill();
+    root.addChild(mask);
+    particles.mask = mask;
+  }
   particles.play({ prewarm: true });
   // Particles fade in over several seconds; fast-forward so a short stage shows them
   // at full strength, as on a scene where the weather has been running.
@@ -733,6 +787,7 @@ Hooks.once("ready", () => {
   optionalFx = new OptionalFxPlayer({catalog:fxCatalog,tokenMagic:()=>globalThis.TokenMagic,
     fxmaster:()=>globalThis.FXMASTER?.api,scene:()=>canvas.scene,
     localParticles,
+    regionFx,
     trace:(status,detail)=>runtime?.trace(status,detail)});
   game.socket?.on(`module.${ID}`, (data) => {
     if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); }
@@ -790,7 +845,7 @@ Hooks.once("ready", () => {
         game.socket.emit(`module.${ID}`,{type:'tokenfx',sender:clientId,userId:game.user.id,
           sceneId:canvas.scene?.id,sourceId:context.source.id,tokenId:stage.destination.id,session,stage:portable});
       }
-      return optionalFx.play(stage,{session,userId:game.user.id,preview});
+      return optionalFx.play(stage,{session,userId:game.user.id,preview,template:context.template??null});
     },
     stopOptionalFx: async ({session} = {}) => {
       if(session)game.socket.emit(`module.${ID}`,{type:'fx-stop',sender:clientId,userId:game.user.id,session});
@@ -799,17 +854,7 @@ Hooks.once("ready", () => {
     userId: () => game.user.id,
     gridSize: () => canvas.grid.size,
     gridDistance: () => canvas.scene?.grid?.distance ?? 5,
-    areaMask: (template) => {
-      const doc = template?.document ?? template;
-      if (doc?.documentName === "Region") {
-        const polygons = Array.from(doc.shapes ?? []).flatMap(s => s.polygons ?? []);
-        return polygons.length ? polygons.map(p => new PIXI.Polygon(p.points)) : null;
-      }
-      // Preview documents are deliberately not registered in the Scene. Raw
-      // shapes serialize across Sequencer without resolving their temporary UUID.
-      const points = template?.shape?.points;
-      return points?.length ? new PIXI.Polygon(Array.from(points, (n, i) => n + (i % 2 ? doc.y : doc.x))) : null;
-    },
+    areaMask,
     previewArea: (recipe, context) => {
       const prepared = {
         ...recipe,

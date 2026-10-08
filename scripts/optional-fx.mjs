@@ -146,7 +146,7 @@ export class OptionalFxPlayer {
       return async()=>{entry.cancelled=true;await finish();};
     } catch(error) {await finish();throw error;}
   }
-  async play(stage, {session, userId, preview = false} = {}) {
+  async play(stage, {session, userId, preview = false, template = null} = {}) {
     const catalog=this.host.catalog();
     const unavailable=fxAvailability(stage,catalog,{preview});
     if(unavailable){this.host.trace?.('Skipped',unavailable);return;}
@@ -160,9 +160,16 @@ export class OptionalFxPlayer {
       } else if(preview) {
         // Local preview: the particles run on this canvas only; the scene is untouched.
         const effect=catalog.effects.find(e=>e.category===(stage.fxCategory??'particle') && e.type===stage.fxType);
-        remove=this.host.localParticles?.(stage,effect)??null;
+        remove=this.host.localParticles?.(stage,effect,template)??null;
         if(!remove){this.host.trace?.('Skipped','FXMaster particles unavailable for local preview');}
       } else {
+        // A placed template keeps the effect inside it: a temporary FXMaster behavior
+        // on the template's Region, gone when the stage ends or the template is removed.
+        // Without a placed Region (a private sample area) the effect covers the scene.
+        const effect=catalog.effects.find(e=>e.category===(stage.fxCategory??'particle') && e.type===stage.fxType);
+        if(template)remove=await this.host.regionFx?.(stage,effect,template)??null;
+      }
+      if(stage.kind==='scenefx' && !preview && !remove) {
         const api=this.host.fxmaster().effects;
         const scene=this.host.scene();
         const effect=catalog.effects.find(e=>e.category===stage.fxCategory && e.type===stage.fxType);
