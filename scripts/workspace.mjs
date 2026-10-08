@@ -38,6 +38,7 @@ import { weaponCatalogHTML } from "./weapon-catalog-ui.mjs";
 import { openCatalogDetails } from "./catalog-details.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, catalogStateEntry, stateRecipe, normalizeStateCatalogState, useStateEntry } from "./state-catalog.mjs";
 import { stateCatalogHTML } from "./state-catalog-ui.mjs";
+import { recipeConflicts, unlinked } from "./recipe-conflicts.mjs";
 import { handleStateCatalogAction } from "./state-catalog-actions.mjs";
 import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem} from './catalog-system.mjs';
 import {DndCatalogWorkspace} from './dnd5e-catalog-ui.mjs';
@@ -1086,7 +1087,7 @@ export class Workspace {
             (
               r,
             ) => `<button data-action="select" data-id="${esc(r.id)}" class="an-card ${r.id === this.selected ? "is-selected" : ""}" style="--effect:${esc(r.color)}" aria-pressed="${r.id === this.selected}">
-        <div class="an-art"><div class="an-orbit"></div><span>${icons[r.category] ?? "◎"}</span><small>${esc(r.category)}</small></div><div class="an-card-body"><h2>${esc(r.name)}${this.dirty.has(r.id) ? " <sup>•</sup>" : ""}</h2><p>${esc(r.description)}</p><div class="an-card-meta"><span>${r.stages.length} stage${r.stages.length === 1 ? "" : "s"}</span><span>${r.enabled ? esc(EVENTS[r.trigger]) : "Disabled"}</span></div>${this.lastingLabel(r) ? `<div class="an-lasting-badge" data-tooltip="Plays for as long as the ${esc(this.lastingLabel(r).toLowerCase())} is on a token">◷ ${esc(this.lastingLabel(r))} · stays while on token</div>` : ""}<div class="an-readiness ${this.status(r) !== "Ready to play" ? "is-missing" : ""}"><span>●</span> ${this.status(r)}</div>${this.approvalBadgeHTML(r)}</div></button>`,
+        <div class="an-art"><div class="an-orbit"></div><span>${icons[r.category] ?? "◎"}</span><small>${esc(r.category)}</small></div><div class="an-card-body"><h2>${esc(r.name)}${this.dirty.has(r.id) ? " <sup>•</sup>" : ""}</h2><p>${esc(r.description)}</p><div class="an-card-meta"><span>${r.stages.length} stage${r.stages.length === 1 ? "" : "s"}</span><span>${r.enabled ? esc(EVENTS[r.trigger]) : "Disabled"}</span></div>${this.lastingLabel(r) ? `<div class="an-lasting-badge" data-tooltip="Plays for as long as the ${esc(this.lastingLabel(r).toLowerCase())} is on a token">◷ ${esc(this.lastingLabel(r))} · stays while on token</div>` : ""}<div class="an-readiness ${this.status(r) !== "Ready to play" ? "is-missing" : ""}"><span>●</span> ${this.status(r)}</div>${this.linkNoteHTML(r)}${this.approvalBadgeHTML(r)}</div></button>`,
           )
           .join("") ||
         `<div class="an-empty">No recipes found.<small>Try another search or create your own.</small></div>`
@@ -1100,6 +1101,21 @@ export class Workspace {
     if (r?.lifecycle !== "document") return "";
     const kind = catalogStateEntry(r.stateEntry)?.kind;
     return kind === "condition" ? "Condition" : kind === "effect" ? "Effect" : "Condition / effect";
+  }
+  // Whether a recipe can play: linked to nothing yet, or sharing its link with another recipe.
+  linkNote(r) {
+    const thing = r.lifecycle === "document" ? "condition or effect" : "item";
+    if (unlinked(r)) return { warn: true, short: "Not linked yet", text: `Not linked to anything yet: name the ${thing} in Recipe settings.` };
+    const note = recipeConflicts(this.host.recipes ? this.listedRecipes() : [r], { entryName: (id) => catalogStateEntry(id)?.name }).get(r.id);
+    if (!note) return null;
+    const what = [...note.what].map((w) => w.startsWith("item:") ? `“${this.host.itemSummary?.(w.slice(5))?.name ?? "the same item"}”` : `“${w}”`).join(", ");
+    if (!note.plays) return { warn: true, short: `Not playing: “${note.winner.name}” plays instead`, text: `Not playing: “${note.winner.name}” is also linked to ${what} and plays instead. Disable one, or link this one to something else.` };
+    const others = [...note.others].map((o) => `“${o.name}”`).join(", ");
+    return { warn: false, short: "", text: `Plays instead of ${others}, which ${note.others.size > 1 ? "are" : "is"} also linked to ${what}.` };
+  }
+  linkNoteHTML(r) {
+    const note = this.linkNote(r);
+    return note ? `<div class="an-link-note ${note.warn ? "is-warn" : ""}">${note.warn ? "⚠" : "ⓘ"} ${esc(note.text)}</div>` : "";
   }
   // Player recipes show where they stand with the GM.
   approvalBadgeHTML(r) {

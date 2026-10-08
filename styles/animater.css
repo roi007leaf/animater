@@ -2305,3 +2305,6 @@
 .animater .an-new-choice .an-new-example { font-style: italic; opacity: 0.85; }
 .animater .an-new-icon { font-size: 22px; line-height: 1; }
 @container (max-width: 640px) { .animater .an-new-choices { grid-template-columns: 1fr; } }
+/* Linked to nothing, or sharing its link with another recipe: said on the card. */
+.animater .an-link-note { margin-top: 6px; font-size: 11px; line-height: 1.35; color: var(--an-muted); }
+.animater .an-link-note.is-warn { color: #ffb86b; }
