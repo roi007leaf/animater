@@ -967,7 +967,7 @@ export class Workspace {
       this.root.querySelector("[data-recipe-scene]"),
       recipe,
       (frame) => this.updatePlayback(frame),
-      {tokenFx:this.host.createTokenFxPreview},
+      {tokenFx:this.host.createTokenFxPreview,sceneFx:this.host.createSceneFxPreview},
     );
     this.previewRun = run;
     const complete = await run.play();
@@ -1084,6 +1084,12 @@ export class Workspace {
     }).join('');
     return `<label>FXMaster category<select ${attrs('fxCategory')}>${options({particle:'Scene particles',filter:'Scene filter'},category)}</select></label><label>FXMaster effect<select ${attrs('fxType')} ${catalog.sceneReady?'':'disabled'}>${options({'':'Choose effect',...Object.fromEntries(effects.map(e=>[e.type,e.label]))},stage.fxType ?? '')}</select></label><p class="an-hint">${catalog.sceneReady?'Whole scene · GM playback. Skipped in private preview.':'Enable FXMaster with Effects API support.'}</p>${fields?`<div class="an-options-grid">${fields}</div>`:''}`;
   }
+  boundItemHTML(uuid) {
+    const info = this.host.itemSummary?.(uuid);
+    const name = info?.name ?? "Unavailable item";
+    const meta = info ? [info.type && info.type[0].toUpperCase() + info.type.slice(1), info.source].filter(Boolean).join(" · ") : "Item not found";
+    return `<div class="an-bound"><button type="button" class="an-bound-item" data-action="open-bound" title="Open ${esc(name)}\n${esc(uuid)}" ${info ? "" : "disabled"}><img src="${esc(info?.img || "icons/svg/item-bag.svg")}" alt=""><span><b>${esc(name)}</b><small>Bound · ${esc(meta)}</small></span></button><button type="button" class="an-bound-unbind" data-action="unbind" title="Unbind this item">Unbind</button></div>`;
+  }
   monitorHTML(r) {
     const canvasUnavailable = Boolean(this.host.environment().demo);
     const linked = r.lifecycle === "document";
@@ -1120,7 +1126,7 @@ export class Workspace {
         ${this.compositionHTML(r, s, index)}
         ${this.stageOptionsHTML(s, index, linked)}
         <details class="an-advanced" data-options-group="basic"><summary>Asset & visibility</summary>${assetFree ? "" : `<label>Fallback keys (comma separated)<textarea rows="2" data-field="assets" data-index="${index}">${esc(s.assets.join(","))}</textarea></label>`}${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Opacity<input type="number" min="0.1" max="1" step="0.1" data-field="opacity" data-index="${index}" value="${s.opacity}"></label><label class="an-check"><input type="checkbox" data-field="below" data-index="${index}" ${s.below ? "checked" : ""}> Below tokens</label>`}${(s.kind === "aura" || linked && s.kind === "tokenfx") ? `<label class="an-check"><input type="checkbox" data-field="persist" data-index="${index}" ${s.persist ? "checked" : ""}> ${linked ? "Keep this layer while document active" : "Persist until stopped"}</label>` : ""}<button data-action="remove-stage" ${r.stages.length === 1 || this.busy ? "disabled" : ""}>Remove stage</button></details></div>
-      <div class="an-editor-section an-binding"><div class="an-section-title"><b>Recipe &amp; trigger</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>${motionBlocked ? motionSyncNoticeHTML(this.host.environment()) : ""}<label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label><label>Trigger<select data-field="trigger">${options(linked ? {effect: "Native document active"} : EVENTS, r.trigger)}</select></label><label>Item names / slugs<input data-field="match" placeholder="fire bolt, ignition" value="${esc(r.match)}"></label><p class="an-hint">Exact matches. Commas separate alternatives. Drop an item here to bind only that item.</p>${r.itemUuid ? `<div class="an-bound">Bound: ${esc(r.itemUuid)}<button data-action="unbind">Unbind</button></div>` : ""}
+      <div class="an-editor-section an-binding"><div class="an-section-title"><b>Recipe &amp; trigger</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>${motionBlocked ? motionSyncNoticeHTML(this.host.environment()) : ""}<label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label><label>Trigger<select data-field="trigger">${options(linked ? {effect: "Native document active"} : EVENTS, r.trigger)}</select></label><label>Item names / slugs<input data-field="match" placeholder="fire bolt, ignition" value="${esc(r.match)}"></label><p class="an-hint">Exact matches. Commas separate alternatives. Drop an item here to bind only that item.</p>${r.itemUuid ? this.boundItemHTML(r.itemUuid) : ""}
       ${r.weaponMode || r.category === "Weapons" ? `<label>PF2e weapon use<select data-field="weaponMode">${options({ "": "Any usage", melee: "Melee Strike", ranged: "Ranged Strike", thrown: "Thrown Strike" }, r.weaponMode ?? "")}</select></label><p class="an-hint">PF2e's rolled usage selects this customization. Other uses keep their own animation.</p>` : ""}<div class="an-field-row"><label>Category<input data-field="category" value="${esc(r.category)}"></label><label>Accent<input type="color" aria-label="Recipe accent color" data-field="color" value="${esc(r.color)}"></label></div></div>`;
   }
   builderHTML() {
@@ -2118,6 +2124,12 @@ export class Workspace {
         );
         return;
       }
+      if (action === "open-bound") {
+        const item = await this.host.resolveItem?.(this.recipe().itemUuid);
+        if (!item?.sheet) throw Error("The bound item is unavailable.");
+        await item.sheet.render({ force: true });
+        return;
+      }
       if (action === "unbind") {
         this.edit().itemUuid = "";
         if (this.edit().lifecycle === "document") this.edit().stateEntry = "";
@@ -2153,7 +2165,7 @@ export class Workspace {
                   scene &&
                   new RecipePreview(scene, recipe, (frame) =>
                     this.updatePlayback(frame),
-                  {tokenFx:this.host.createTokenFxPreview});
+                  {tokenFx:this.host.createTokenFxPreview,sceneFx:this.host.createSceneFxPreview});
                 void visual?.prepareTokenFx();
                 this.previewRun = {
                   stop: () => {

@@ -147,7 +147,7 @@ function ensureRun(w) {
     let recipe;
     try { recipe = validateRecipe(w.recipe()); } catch { recipe = clone(w.recipe()); }
     recipe = previewRecipeSounds({ ...recipe, previewDistance: 3 }, w.host.soundCatalog?.());
-    const next = new RecipePreview(scene, recipe, (frame) => w.updatePlayback(frame), { tokenFx: w.host.createTokenFxPreview });
+    const next = new RecipePreview(scene, recipe, (frame) => w.updatePlayback(frame), { tokenFx: w.host.createTokenFxPreview, sceneFx: w.host.createSceneFxPreview });
     next.setMuted(mutedStages(w));
     w.previewRun = next;
     return next;

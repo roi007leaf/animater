@@ -11,6 +11,7 @@ import { Workspace } from "./workspace.mjs";
 import { MediaLibraryLoader } from './media-library-sources.mjs';
 import { libraryPreferences } from './media-library.mjs';
 import {TokenFxPreview} from './token-fx-preview.mjs';
+import { SceneFxPreview } from "./scene-fx-preview.mjs";
 import {
   createCanvasPreviewArea,
   templateArea,
@@ -372,6 +373,11 @@ function workspaceHost() {
     recipes,
     catalog: () => runtime.getCatalog(),
     fxCatalog,
+    createSceneFxPreview:(scene,recipe,grid)=>{
+      const catalog=fxCatalog();
+      if(!catalog.sceneReady||!CONFIG.fxmaster?.particleEffects)return null;
+      return new SceneFxPreview({scene,recipe,grid,PIXI:globalThis.PIXI,fxmaster:CONFIG.fxmaster,catalog});
+    },
     createTokenFxPreview:async(scene,recipe)=>{
       if(!fxCatalog().tokenReady)return null;
       return new TokenFxPreview({scene,recipe,PIXI:globalThis.PIXI,tokenMagic:globalThis.TokenMagic});
@@ -494,6 +500,15 @@ function workspaceHost() {
     pickMedia: (type,current,callback)=>new foundry.applications.apps.FilePicker.implementation({type,current,callback}).browse(),
     refreshCatalog: () => runtime.refreshCatalog(),
     resolveItem: (uuid) => fromUuid(uuid),
+    // Name/icon for a bound item without loading it (compendium index or world doc).
+    itemSummary: (uuid) => {
+      try {
+        const doc = fromUuidSync(uuid);
+        if (!doc) return null;
+        const pack = uuid.startsWith("Compendium.") ? game.packs.get(uuid.split(".").slice(1, 3).join("."))?.title : "";
+        return { name: doc.name, img: doc.img, type: doc.type, source: pack || (doc.parent?.name ?? "World") };
+      } catch { return null; }
+    },
     confirm: (content) => {
       const p = document.createElement("p");
       p.textContent = content;

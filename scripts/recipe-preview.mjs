@@ -20,7 +20,7 @@ import {
 // Editor composition uses installed media and the same motion pose function.
 // Canvas preview remains the authoritative Sequencer rendering on real tokens.
 export class RecipePreview {
-  constructor(scene, recipe, onFrame, {tokenFx} = {}) {
+  constructor(scene, recipe, onFrame, {tokenFx, sceneFx} = {}) {
     this.scene = scene;
     this.chain =
       scene.dataset.chainPreview !== undefined
@@ -58,6 +58,7 @@ export class RecipePreview {
         if(image){image.style.width=`${(info?.spriteWidth??info?.width??1)*this.grid}px`;image.style.height=`${(info?.spriteHeight??info?.height??1)*this.grid}px`;}
       }
     }
+    try { this.sceneFx = sceneFx?.(scene, this.recipe, this.grid) ?? null; } catch (error) { this.sceneFx = null; scene.dataset.fxError = error.message; }
     if (this.chain && recipe.previewArea?.type === "cone" && !recipe.stages.some(s=>s.kind==='motion')) {
       for (const token of this.tokens) {
         const actor = this.chain.actors.find(a => a.subject === token.dataset.previewToken && (a.subject === "source" || a.targetIndex === Number(token.dataset.targetIndex ?? 0)));
@@ -93,6 +94,7 @@ export class RecipePreview {
     await this.prepareTokenFx();
     if (this.abort.signal.aborted) return false;
     let complete;
+    this.sceneFx?.resume();
     do {
       // Re-entering stages mid-way must seek media to the shared clock again.
       this.started.clear();
@@ -111,6 +113,7 @@ export class RecipePreview {
     this.started.clear();
     try { this.draw(recipeFrame(this.recipe, ms)); } finally { this.scrubbing = false; }
     [...this.videos, ...this.audio].forEach((v) => v.pause());
+    this.sceneFx?.freeze();
     // A seek made while its layer was hidden is not painted once the layer
     // shows; nudge visible videos so the browser decodes that frame.
     await new Promise((resolve) => requestAnimationFrame(resolve));
@@ -120,6 +123,7 @@ export class RecipePreview {
   }
   pause() {
     this.clock.stop();
+    this.sceneFx?.freeze();
     [...this.videos, ...this.audio].forEach((v) => v.pause());
   }
   prepareTokenFx() {
@@ -177,6 +181,7 @@ export class RecipePreview {
     if (this.muted?.size)
       frame = { ...frame, stages: frame.stages.map((s) => (this.muted.has(s.index) ? { ...s, state: "pending" } : s)) };
     this.tokenFx?.draw(frame);
+    try { this.sceneFx?.draw(frame, { seek: !!this.scrubbing }); } catch (error) { this.sceneFx?.stop(); this.sceneFx = null; this.scene.dataset.fxError = error.message; }
     for (const video of [...this.videos, ...this.audio]) {
       const index = Number(video.dataset.previewStage);
       const state = this.stateFor(video, frame);
@@ -251,6 +256,8 @@ export class RecipePreview {
         state = this.stateFor(layer, frame),
         stage = state.stage ?? this.recipe.stages[index];
       layer.hidden = state.state !== "playing";
+      // Live FXMaster particles play in the monitor; their cue shrinks to a badge.
+      if (layer.classList?.contains("an-provider-cue")) layer.classList.toggle("is-live", !!this.sceneFx?.handles(index));
       if (layer.hidden) continue;
       const s = { ...stage, ...normalizeOptions(stage) };
       let pose;
@@ -504,6 +511,7 @@ export class RecipePreview {
     this.abort.abort();
     this.clock.stop();
     this.tokenFx?.stop();
+    this.sceneFx?.stop();
     [...this.videos, ...this.audio].forEach((v) => v.pause());
     this.tokens.forEach((t) => {
       t.style.transform = "";
