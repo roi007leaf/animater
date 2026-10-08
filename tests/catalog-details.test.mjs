@@ -23,7 +23,7 @@ test("standalone catalog never replaces native item sheets with internal rule di
     await assert.rejects(openCatalogDetails(w, kind, item.id), /inside Foundry/);
     const html = catalogNameHTML(item, kind, { demo: true });
     assert.match(html, /disabled/);
-    assert.match(html, /title="Item details open inside Foundry"/);
+    assert.match(html, /data-tooltip="Item details open inside Foundry"/);
   }
 });
 

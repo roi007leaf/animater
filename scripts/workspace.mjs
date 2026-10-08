@@ -610,7 +610,7 @@ export class Workspace {
   timelineBarHTML(r, row, index, total) {
     const pct = ms => ((ms / total) * 100).toFixed(3);
     const i = row.index, s = r.stages[i], name = this.stageLabel(s), when = this.timelineWhen(s, r), length = ((row.end - row.start) / 1000).toFixed(2);
-    return `<div class="an-tl-bar kind-${esc(s.kind)}${i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" title="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${esc(name)}</span><small class="an-tl-bar-when">${esc(when)}</small><span class="an-tl-resize" data-tl-resize="${i}" title="Drag to change length"></span></div>`;
+    return `<div class="an-tl-bar kind-${esc(s.kind)}${i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" data-tooltip="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${esc(name)}</span><small class="an-tl-bar-when">${esc(when)}</small><span class="an-tl-resize" data-tl-resize="${i}" data-tooltip="Drag to change length"></span></div>`;
   }
   timelineX(total, ms) { return `calc(var(--tl-label) + (100% - var(--tl-label)) * ${Math.max(0, Math.min(1, ms / total))})`; }
   onTimelinePointer(e) {
@@ -1088,7 +1088,7 @@ export class Workspace {
     const info = this.host.itemSummary?.(uuid);
     const name = info?.name ?? "Unavailable item";
     const meta = info ? [info.type && info.type[0].toUpperCase() + info.type.slice(1), info.source].filter(Boolean).join(" · ") : "Item not found";
-    return `<div class="an-bound"><button type="button" class="an-bound-item" data-action="open-bound" title="Open ${esc(name)}\n${esc(uuid)}" ${info ? "" : "disabled"}><img src="${esc(info?.img || "icons/svg/item-bag.svg")}" alt=""><span><b>${esc(name)}</b><small>Bound · ${esc(meta)}</small></span></button><button type="button" class="an-bound-unbind" data-action="unbind" title="Unbind this item">Unbind</button></div>`;
+    return `<div class="an-bound"><button type="button" class="an-bound-item" data-action="open-bound" data-tooltip="Open ${esc(name)}<br><small>${esc(uuid)}</small>" ${info ? "" : "disabled"}><img src="${esc(info?.img || "icons/svg/item-bag.svg")}" alt=""><span><b>${esc(name)}</b><small>Bound · ${esc(meta)}</small></span></button><button type="button" class="an-bound-unbind" data-action="unbind" data-tooltip="Unbind this item">Unbind</button></div>`;
   }
   monitorHTML(r) {
     const canvasUnavailable = Boolean(this.host.environment().demo);

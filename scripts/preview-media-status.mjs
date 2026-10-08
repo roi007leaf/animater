@@ -13,7 +13,7 @@ export function clearPreviewMediaFailure(video) {
   const layer = video.closest(".an-recipe-layer");
   layer?.classList?.remove?.("is-unavailable");
   layer?.removeAttribute?.("aria-label");
-  layer?.removeAttribute?.("title");
+  layer?.removeAttribute?.("data-tooltip");
 }
 
 export function markPreviewMediaFailure(video, playbackError) {
@@ -21,6 +21,6 @@ export function markPreviewMediaFailure(video, playbackError) {
   const layer = video.closest(".an-recipe-layer");
   layer?.classList?.add("is-unavailable");
   layer?.setAttribute("aria-label", "Asset media unavailable");
-  layer?.setAttribute("title", `Could not load ${video.currentSrc || video.src || "asset media"}. Replay to retry.`);
+  layer?.setAttribute("data-tooltip", `Could not load ${video.currentSrc || video.src || "asset media"}. Replay to retry.`);
   return true;
 }

@@ -18,7 +18,7 @@ const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) =>
 
 export function catalogNameHTML(item, kind, environment = {}) {
   const demo = environment.demo === true;
-  return `<button type="button" class="an-catalog-name" data-action="item-details" data-kind="${esc(kind)}" data-id="${esc(item.id)}" aria-label="Open ${esc(item.name)} details" title="${demo ? "Item details open inside Foundry" : "Open native Foundry item sheet"}" ${demo ? "disabled" : ""}>${esc(item.name)}</button>`;
+  return `<button type="button" class="an-catalog-name" data-action="item-details" data-kind="${esc(kind)}" data-id="${esc(item.id)}" aria-label="Open ${esc(item.name)} details" data-tooltip="${demo ? "Item details open inside Foundry" : "Open native Foundry item sheet"}" ${demo ? "disabled" : ""}>${esc(item.name)}</button>`;
 }
 
 export async function openCatalogDetails(w, kind, id) {
