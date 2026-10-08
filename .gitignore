@@ -14,3 +14,12 @@ data/*.csv
 .claude/
 .vscode/
 .playwright-mcp/
+
+# Local development inspection and research helpers; not build inputs.
+tools/feat-inspect.mjs
+tools/inspect-feat-projectiles.mjs
+tools/inspect-feat-reviews.mjs
+tools/inspect-spell-designs.mjs
+tools/print-feat-descriptions.mjs
+tools/qa-sound-discovery.mjs
+tools/read-eskie-reference.mjs
