@@ -791,3 +791,34 @@ test("players who turned Animater off hear no sounds either", async () => {
     assert.equal(calls.some((c) => c[0] === "forUsers" && c[1] === listeners), filtered);
   }
 });
+
+test("a stay-until-the-effect-ends layer ends with its item's effect", async () => {
+  const recipe = validateRecipe({ id: "shield", name: "Shield", trigger: "manual", stages: [{ kind: "aura", assets: ["jb2a.impact.001.orange"], persist: true }] });
+  const { runtime, calls } = fixture();
+  runtime.catalog = [{ key: "jb2a.impact.001.orange" }];
+  runtime.wait = async () => true;
+  const source = { id: "tok", center: { x: 0, y: 0 }, actor: { id: "wizard" } };
+  const session = await runtime.play(recipe, { source, targets: [], item: { id: "sh", name: "Shield" } });
+  assert.equal(await runtime.endConcentration("wizard"), 0, "not a concentration layer");
+  assert.equal(await runtime.endWithEffect("someone-else", { itemId: "sh" }), 0);
+  assert.equal(await runtime.endWithEffect("wizard", { name: "Spell Effect: Shield" }), 1, "matched by effect name");
+  assert.ok(calls.some((c) => c[0] === "stop" && c[1]?.name === session));
+  assert.equal(await runtime.endWithEffect("wizard", { itemId: "sh" }), 0, "ended once");
+  await runtime.play(recipe, { source, targets: [], item: { id: "sh", name: "Shield" } });
+  assert.equal(await runtime.endWithEffect("wizard", { itemId: "sh" }), 1, "matched by item id");
+});
+
+test("a stay-until-the-effect-ends layer stops if no effect is ever applied", async () => {
+  const recipe = validateRecipe({ id: "shield", name: "Shield", trigger: "manual", stages: [{ kind: "aura", assets: ["jb2a.impact.001.orange"], persist: true }] });
+  for (const applied of [false, true]) {
+    const { runtime } = fixture();
+    runtime.catalog = [{ key: "jb2a.impact.001.orange" }];
+    runtime.wait = async () => true;
+    runtime.effectGrace = 5;
+    runtime.host.hasItemEffect = () => applied;
+    await runtime.play(recipe, { source: { id: "tok", center: { x: 0, y: 0 } }, targets: [], actor: { id: "wizard" }, item: { id: "sh", name: "Shield" } });
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    assert.equal(runtime.lasting.length, applied ? 1 : 0);
+    for (const l of runtime.lasting) clearTimeout(l.grace);
+  }
+});

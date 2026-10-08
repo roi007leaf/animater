@@ -9,6 +9,11 @@ import { stageTiers } from './quality.mjs';
 import { withLastingArea } from './lasting-area.mjs';
 import { withOutcome } from './outcome.mjs';
 const SOUND_PRELOAD_TIMEOUT = 2000;
+// "Stay until the effect ends": if no effect from the item shows up on the token
+// within this time (never applied), the layer ends instead of lingering.
+export const EFFECT_GRACE_MS = 60000;
+// "Spell Effect: Shield", "Effect: Shield" and "Shield" name the same effect.
+export const sameEffectName = (name) => String(name ?? "").replace(/^\s*(?:spell\s+)?effect\s*:\s*/i, "").trim().toLowerCase();
 // The placed document a lasting area is tied to. Foundry 14 keeps a MeasuredTemplate
 // as a Region with the same id; deleting either removes the Region.
 export function templateDocument(template) {
@@ -40,12 +45,20 @@ export class AnimaterRuntime {
   // The caster stopped concentrating: end the lasting areas of that spell (or, when
   // the spell is unknown, every concentration area that caster still holds).
   async endConcentration(actorId, itemId) {
-    const ending = this.lasting.filter((l) => l.actorId === actorId && (!itemId || !l.itemId || l.itemId === itemId));
+    return this.endLasting(this.lasting.filter((l) => !l.effect && l.actorId === actorId && (!itemId || !l.itemId || l.itemId === itemId)), "the spell ended");
+  }
+  // An effect left a token: end the "stay until the effect ends" layers of the item
+  // it came from (matched by the effect's origin item, or its name: "Effect: Shield").
+  async endWithEffect(actorId, { itemId, name } = {}) {
+    const effectName = sameEffectName(name);
+    return this.endLasting(this.lasting.filter((l) => l.effect && l.actorId === actorId && (itemId && l.itemId === itemId || effectName && sameEffectName(l.itemName) === effectName)), "its effect ended");
+  }
+  async endLasting(ending, why) {
     if (!ending.length) return 0;
     this.lasting = this.lasting.filter((l) => !ending.includes(l));
     await Promise.allSettled(ending.map((l) => this.host.endEffects({ name: l.session })));
-    for (const l of ending) this.sessions.delete(l.session);
-    this.trace("Ended", `${ending.length} lasting ${ending.length === 1 ? "area" : "areas"}: the spell ended.`);
+    for (const l of ending) { clearTimeout(l.grace); this.sessions.delete(l.session); }
+    this.trace("Ended", `${ending.length} lasting ${ending.length === 1 ? "animation" : "animations"}: ${why}.`);
     return ending.length;
   }
   trace(status, detail, recipe = null) {
@@ -353,6 +366,17 @@ export class AnimaterRuntime {
           : []),
       ]);
       if (results.some((result) => !result)) return null;
+      // "Stay until the effect ends" layers (Shield's ward) end when the item's effect
+      // leaves the token; never applied within the grace time, they end anyway.
+      const bearer = context.actor ?? context.source?.actor ?? context.source?.document?.actor;
+      if (!preview && recipe.lifecycle !== "document" && bearer && plan.some((s) => s.kind === "aura" && s.persist)) {
+        const entry = { session, actorId: bearer.id, itemId: context.item?.id, itemName: context.item?.name ?? recipe.name, effect: true };
+        entry.grace = setTimeout(() => {
+          if (this.lasting.includes(entry) && this.host.hasItemEffect && !this.host.hasItemEffect(bearer, context.item ?? { name: recipe.name })) void this.endLasting([entry], "no effect was applied");
+        }, this.effectGrace ?? EFFECT_GRACE_MS);
+        this.lasting.push(entry);
+        if (this.lasting.length > 50) void this.endLasting([this.lasting[0]], "too many lasting animations");
+      }
       // Lasting areas of a concentration spell end with the caster's concentration.
       if (!preview && context.actor && plan.some((s) => s.kind === "template" && s.persist)) {
         const sys = context.item?.system;

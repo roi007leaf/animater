@@ -5,7 +5,7 @@ import { applyEventElement } from "./element-choice.mjs";
 import { AA_ID, AA_TAKEOVER, aaCustomized, registerAATakeover } from "./integrations/automated-animations.mjs";
 import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
 import { registerTriggerEngine } from "./integrations/trigger-engine.mjs";
-import { AnimaterRuntime } from "./runtime.mjs";
+import { AnimaterRuntime, sameEffectName } from "./runtime.mjs";
 import { installedSoundCatalog, catalogSoundOptions } from "./spell-sounds.mjs";
 import { Workspace, JB2A_MISSING } from "./workspace.mjs";
 import { MediaLibraryLoader } from './media-library-sources.mjs';
@@ -835,6 +835,13 @@ Hooks.once("ready", () => {
     soundUsers: () => usersForSound(Array.from(game.users?.contents ?? game.users?.values?.() ?? [])),
     recipes,
     riderRecipes: (event, saved) => game.system.id === "pf2e" ? riderRecipes(event, game.settings.get(ID, "featureCatalog"), saved, { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) }) : [],
+    // Does the token still carry an effect from this item ("Effect: Shield")?
+    hasItemEffect: (actor, item) => {
+      const name = sameEffectName(item?.name), id = item?.id;
+      const from = (origin) => Boolean(id && String(origin ?? "").includes(id));
+      const effects = game.system.id === "dnd5e" ? Array.from(actor?.appliedEffects ?? actor?.effects ?? []) : Array.from(actor?.items ?? []).filter((i) => i.type === "effect");
+      return effects.some((e) => from(e.origin ?? e.system?.context?.origin?.item) || (name && sameEffectName(e.name) === name));
+    },
     // A player's GM-approved recipe animates their own characters first.
     resolveRecipe: (event, saved) => ownApprovedRecipe(event) ?? systemRecipe(event, saved),
     ready: () => Boolean(canvas.ready && environment().ready),
@@ -1039,6 +1046,8 @@ Hooks.once("ready", () => {
       const origin = item.system?.context?.origin?.item ?? item.flags?.pf2e?.origin?.item ?? "";
       const spellId = /Item\.([^.]+)$/.exec(String(origin))?.[1];
       if (spellId) void runtime.endConcentration(item.actor.id, spellId);
+      // A "stay until the effect ends" animation of that item (or same-named recipe) ends too.
+      void runtime.endWithEffect(item.actor.id, { itemId: spellId, name: item.name });
     });
     Hooks.on("createItem", (item, _options, userId) => {
       if (
@@ -1075,9 +1084,11 @@ Hooks.once("ready", () => {
     // Concentration ends (broken, dropped or expired): the spell's lasting areas end
     // on the client that cast them, which is the one that recorded them.
     Hooks.on("deleteActiveEffect", (effect) => {
-      if (!effect.statuses?.has?.("concentrating")) return;
       const actor = effect.parent?.documentName === "Actor" ? effect.parent : effect.parent?.actor;
       if (!actor) return;
+      // A "stay until the effect ends" animation of the effect's item ends with it.
+      void runtime.endWithEffect(actor.id, { itemId: /Item\.([^.]+)/.exec(effect.origin ?? "")?.[1], name: effect.name });
+      if (!effect.statuses?.has?.("concentrating")) return;
       const itemId = effect.flags?.dnd5e?.item?.id ?? /Item\.([^.]+)/.exec(effect.origin ?? "")?.[1];
       void runtime.endConcentration(actor.id, itemId);
     });
