@@ -102,7 +102,7 @@ const overrides=[
  [/^hex$/,{theme:'curse',hit:'condition.curse',aura:'condition.curse',cast:'cast_generic'}],
  [/^haste$/,{aura:'wind_lines.01',hit:'wind_lines.01'}],
  [/^(?:thunderwave|shatter)$/,{cast:'cast_generic'}],
- [/of wounding$/,{theme:'blood'}],
+ [/\bof wounding$/,{theme:'blood'}],
  [/^hellish rebuke$/,{hit:'flames.green,flames.04.complete.green',aura:'flames.green,flames.04.loop.green',tints:{hit:'#62dc85',aura:'#62dc85'}},null,'2024'],
  [/^bestow curse$/,{theme:'curse',hit:'condition.curse',aura:'condition.curse'}],
  [/^mending$/,{theme:'transform',hit:'glint,swirling_sparkles',aura:'glint,swirling_sparkles'}],

@@ -59,7 +59,7 @@ function audit(entry, variant) {
   if (entry.kind === "spell" && actTemplate && SHAPE_FITS[actTemplate] && !followupLike) {
     const areaStages = recipe.stages.filter((s) => s.kind === "template");
     if (!areaStages.length) flag("TEMPLATE_NO_AREA", `${actTemplate} template but no area stage`);
-    else for (const s of areaStages) { const geo = geometryOf(s.assets[0]); if (!SHAPE_FITS[actTemplate].includes(geo)) flag("TEMPLATE_SHAPE", `${actTemplate} template drawn with ${geo} art (${(s.assets[0] ?? "").replace(/^jb2a./, "")})`); }
+    else for (const s of areaStages) { const geo = geometryOf(s.assets[0]); if (s.areaLayout !== "tiles" && !SHAPE_FITS[actTemplate].includes(geo)) flag("TEMPLATE_SHAPE", `${actTemplate} template drawn with ${geo} art (${(s.assets[0] ?? "").replace(/^jb2a./, "")})`); }
   }
   // A reviewed ray/beam/missile must actually travel from the caster.
   const review = reviewedBy.get(`${entry.uuid}::${variant.activityId}`);

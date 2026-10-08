@@ -27,6 +27,9 @@ function media(direction,row,id){
  // impact it rang on Finger of Death, Harm or a life-stealing sword. Only spells
  // that name it keep the bell; other necrotic hits drain life inward.
  if(typeof profile.hit==='string'&&/^toll_the_dead/.test(profile.hit)&&typeof direction.hit!=='string'&&!/toll|knell|bell/i.test(row.source.name))profile.hit='energy_strands.in,impact.004.dark_purple,impact.001.purple';
+ // The fire theme's hit is Fireball's whole explosion: only things that explode
+ // keep it; a creature touching Wall of Fire or rammed by Flaming Sphere burns.
+ if(typeof profile.hit==='string'&&/(?:^|,)fireball\.explosion/.test(profile.hit)&&typeof direction.hit!=='string'&&!/fireball|meteor|explo|blast|burst|bomb|grenade/i.test(`${row.source.name} ${direction.activity?.name??''}`))profile.hit='impact.fire,'+profile.hit.split(',').filter(k=>!k.startsWith('fireball.explosion')).join(',');
  const key=JSON.stringify([theme,profile,row.source.name,direction.delivery,direction.areaTiles]);
  if(!mediaCache.has(key))mediaCache.set(key,resolveSpellMedia(db,theme,profile,defaults,{system:'dnd5e',name:row.source.name,slug:id,delivery:direction.delivery==='fork'?'chain':direction.delivery==='rayFan'?'coneRayFan':direction.delivery,design:{...(direction.areaTiles?{areaLayout:'tiles'}:{}),pattern:['ray','fork','rayFan'].includes(direction.delivery)?'ray':['missile','areaMissile'].includes(direction.delivery)?'missile':'generic',assetIntent:row.source.name}}));
  const resolved=mediaCache.get(key);
