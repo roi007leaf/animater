@@ -91,6 +91,18 @@ const breath=tint=>({area:'breath_weapons02.burst.cone.arcana',slotThemes:{area:
 // Audit corrections (docs/animation-fix-plan-2026-10-07.md Part B). Each rule:
 // [item name, fields, activity name?, edition?]. Later rules win.
 const overrides=[
+ // D&D audit batch 1 (tools/audit-dnd5e-catalog.mjs): use the spell's own JB2A
+ // art, keep cantrip impacts small and fix theme misfires.
+ [/^eldritch blast$/,{delivery:'missile',bolt:'eldritch_blast'}],
+ [/^bless$/,{theme:'light',hit:'bless',aura:'bless'}],
+ [/^fog cloud$/,{area:'fog_cloud',aura:'fog_cloud',hit:'fog_cloud'}],
+ [/^gust of wind$/,{area:'gust_of_wind',aura:'gust_of_wind'}],
+ [/^call lightning$/,{hit:'call_lightning',area:'call_lightning'}],
+ [/^(?:fire bolt|produce flame|sorcerous burst)$/,{hit:'impact.fire,explosion.08'}],
+ [/^hex$/,{theme:'curse',hit:'condition.curse',aura:'condition.curse',cast:'cast_generic'}],
+ [/^haste$/,{aura:'wind_lines.01',hit:'wind_lines.01'}],
+ [/^(?:thunderwave|shatter)$/,{cast:'cast_generic'}],
+ [/of wounding$/,{theme:'blood'}],
  [/^hellish rebuke$/,{hit:'flames.green,flames.04.complete.green',aura:'flames.green,flames.04.loop.green',tints:{hit:'#62dc85',aura:'#62dc85'}},null,'2024'],
  [/^bestow curse$/,{theme:'curse',hit:'condition.curse',aura:'condition.curse'}],
  [/^mending$/,{theme:'transform',hit:'glint,swirling_sparkles',aura:'glint,swirling_sparkles'}],
@@ -219,6 +231,8 @@ const NAMED_GESTURES={'drift-gentle':['drift',2400,.3,'targets',.6,'Gentle feath
 export function deliveryGesture(d,{subject='source',physical=false}={}){
  const a=d.activity??{},type=a.type,g=(motion,duration,distance,who,intensity,label)=>({motion,duration,distance,subject:who??subject,intensity,label});
  if(d.motion==='none'||type==='check'||d.followup)return null;
+ // Healing by touch reads as a blessing on the recipient, never a lunge at an ally.
+ if(type==='heal'&&(d.motion==='reach-small'||d.delivery==='contact'))return g('pulse',1500,.05,'targets',.35,'Healing touch');
  const named=NAMED_GESTURES[d.motion];if(named)return g(...named);
  // A shove is a reach followed by the victim staggering back.
  if(d.motion==='reach-stagger')return [g('lunge',1400,.12,'source',.6,'Reach to grapple or shove'),{...g('stagger',1300,.2,'targets',.6,'Shoved off balance'),delay:350}];
