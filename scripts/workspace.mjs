@@ -1125,7 +1125,7 @@ export class Workspace {
     return `<div class="an-inspector-head"><span class="an-eyebrow">STAGE ${index + 1} OF ${r.stages.length}</span><span class="an-st-kind kind-${esc(s.kind)}">${esc(KINDS[s.kind])}</span></div>
       <div class="an-editor-section an-stage-fields">
         <label>Stage name<input data-field="label" data-index="${index}" value="${esc(s.label ?? "")}" placeholder="${esc(KINDS[s.kind])}"></label><label>Stage type<select data-field="kind" data-index="${index}">${options(linked ? {aura: "Sustained attached layer",tokenfx:"Token Magic FX"} : KINDS, s.kind)}</select></label>
-        ${OPTIONAL_FX_KINDS.has(s.kind) ? this.optionalFxControlsHTML(s,index) : s.kind === "motion" ? this.motionControlsHTML(s, index) : s.kind === "sound" ? `<label>Audio file<input data-field="soundFile" data-index="${index}" placeholder="sounds/spell.ogg" value="${esc(s.soundFile)}"></label>${this.host.soundCatalog || this.host.pickMedia ? `<button data-action="browse-sound">Browse sounds</button>` : ""}<p class="an-hint">Relative Foundry audio path. Sound plays with recipe; Stop ends it too.</p>` : s.kind === "sprite" ? `<p class="an-hint">Copies token artwork into Sequencer. Configure copies, shadows and tracks below.</p>` : `<label>Visual asset<button class="an-asset-picker" data-action="browse">${esc(key ?? s.assets[0] ?? "Choose an asset")}<span>Browse ↗</span></button></label>${key && key !== s.assets[0] ? `<p class="an-hint">Using installed fallback variant. Choose another in Assets anytime.</p>` : ""}`}
+        ${OPTIONAL_FX_KINDS.has(s.kind) ? this.optionalFxControlsHTML(s,index) : s.kind === "motion" ? this.motionControlsHTML(s, index) : s.kind === "sound" ? `<label>Audio file<input data-field="soundFile" data-index="${index}" placeholder="sounds/spell.ogg" value="${esc(s.soundFile)}"></label>${this.host.soundCatalog || this.host.pickMedia ? `<button data-action="browse-sound">Browse sounds</button>` : ""}${this.soundVolumeHTML(s, index, audioPreview)}<p class="an-hint">Relative Foundry audio path. Sound plays with recipe; Stop ends it too.</p>` : s.kind === "sprite" ? `<p class="an-hint">Copies token artwork into Sequencer. Configure copies, shadows and tracks below.</p>` : `<label>Visual asset<button class="an-asset-picker" data-action="browse">${esc(key ?? s.assets[0] ?? "Choose an asset")}<span>Browse ↗</span></button></label>${key && key !== s.assets[0] ? `<p class="an-hint">Using installed fallback variant. Choose another in Assets anytime.</p>` : ""}`}
         ${["sprite", "aura", "tokenfx"].includes(s.kind) ? `<label>Subject<select data-field="subject" data-index="${index}">${options(linked ? {source: "Affected token"} : { source: "Caster token", targets: "Target tokens" }, s.subject ?? "source")}</select></label>` : ""}
         ${r.stages.length > 1 && !linked ? `<div class="an-field-row an-start-row"><label>Start<select data-field="startMode" data-index="${index}">${options({ with: "With", after: "After", time: "At a set time", ...(s.afterStage && !s.startMode ? { link: "Linked (custom)" } : {}) }, s.startMode ?? (s.afterStage ? "link" : "time"))}</select></label>${s.startMode ? `<label>Stage<select data-field="startRef" data-index="${index}">${options(Object.fromEntries(r.stages.filter((o, j) => j !== index).map(o => [o.stageId, this.stageLabel(o)])), s.startRef ?? s.afterStage)}</select></label>` : ""}${s.startMode === "after" ? `<label>Gap (ms)<input type="number" min="0" max="30000" step="50" data-field="startOffset" data-index="${index}" value="${s.startOffset ?? 0}"></label>` : ""}</div>` : ""}
         <div class="an-field-row"><label>${s.afterStage ? "Linked start (sample ms)" : "Start (ms)"}<input type="number" min="0" max="30000" step="50" data-field="delay" data-index="${index}" value="${s.afterStage ? sampleRecipe(r).stages[index].delay : s.delay}" ${s.afterStage ? "disabled" : ""}></label><label>${linked ? "Preview sample (ms)" : s.kind === "projectile" || isPathMotion(s) && s.motionRange === "target" ? "Base duration (ms)" : "Duration (ms)"}<input type="number" min="100" max="30000" step="100" data-field="duration" data-index="${index}" value="${s.duration}"></label>${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Scale<input type="number" min="0.1" max="5" step="0.1" data-field="scale" data-index="${index}" value="${s.scale}"></label>`}</div>
@@ -1177,6 +1177,11 @@ export class Workspace {
     );
     return `<details class="an-advanced an-options" data-options-group="composition"><summary>Linked timing & flight ${stage.afterStage || stage.kind === "projectile" ? "· configured" : ""}</summary><label>Start relative to<select data-field="afterStage" data-index="${index}">${options({ "": "Absolute start time", ...refs }, stage.afterStage ?? "")}</select></label>${stage.afterStage ? `<label>Anchor<select data-field="timingAnchor" data-index="${index}">${options({ start: "Stage starts", ...(isPathMotion(recipe.stages.find(s => s.stageId === stage.afterStage)) ? { arrival: "Destination reached" } : {}), end: "Stage finishes" }, stage.timingAnchor ?? "end")}</select></label><label>Offset from stage ${stage.timingAnchor === "start" ? "start" : stage.timingAnchor === "arrival" ? "arrival" : "end"} (ms)<input type="number" data-field="startOffset" data-index="${index}" min="-30000" max="30000" step="50" value="${stage.startOffset}"></label><p class="an-hint">Offset adjusts chosen anchor. Link survives reordering; absolute Start is ignored.</p>` : ""}${stage.kind === "projectile" ? `<div class="an-options-grid"><label>Extra duration / square (ms)<input type="number" min="0" max="2000" data-field="perSquare" data-index="${index}" value="${stage.perSquare ?? 0}"></label><label>Launch pause (ms)<input type="number" min="0" max="10000" data-field="moveDelay" data-index="${index}" value="${stage.moveDelay ?? 0}"></label><label>Flight easing<select data-field="moveEase" data-index="${index}">${options(EASES, stage.moveEase ?? "linear")}</select></label></div><p class="an-hint">Moves the artwork along its travel path. Duration adds actual grid distance.</p>` : ""}${["projectile", "impact"].includes(stage.kind) ? `<label>Shared landing group<input data-field="landingGroup" data-index="${index}" value="${esc(stage.landingGroup ?? "")}" placeholder="e.g. orb-hit"></label><label>Landing scatter (squares)<input type="number" min="0" max="2" step="0.05" data-field="scatter" data-index="${index}" value="${stage.scatter ?? 0}"></label><p class="an-hint">Matching groups share one point. First layer’s scatter controls the group.</p>` : ""}</details>`;
   }
+  soundVolumeHTML(s, index, audioPreview) {
+    const volume = Math.min(1, Math.max(0, Number(s.volume ?? 0.5)));
+    const listen = s.soundFile && !audioPreview?.skipSound ? `<audio class="an-sound-listen" controls preload="none" src="${esc(this.host.mediaURL?.(audioPreview.soundFile) ?? audioPreview.soundFile)}" aria-label="Listen to this sound" data-cue-volume="${volume}"></audio>` : "";
+    return `<label class="an-volume-field">Volume <span data-volume-readout>${Math.round(volume * 100)}%</span><input type="range" min="0" max="1" step="0.05" data-field="volume" data-index="${index}" value="${volume}" aria-label="Sound volume"></label>${listen}`;
+  }
   stageOptionsHTML(stage, index, linked = false) {
     if(OPTIONAL_FX_KINDS.has(stage.kind))return '';
     // Sound path can remain blank while drafting; validation occurs on save/play.
@@ -1204,7 +1209,7 @@ export class Workspace {
     for (const [group, fields] of Object.entries(OPTION_GROUPS)) {
       if (
         (group === "Token copies" && s.kind !== "sprite") ||
-        (group === "Sound" && s.kind !== "sound")
+        group === "Sound"
       )
         continue;
       if (group === "Media playback" && s.kind === "sprite") continue;
@@ -1472,7 +1477,7 @@ export class Workspace {
     s[key] =
       t.type === "checkbox"
         ? t.checked
-        : t.type === "number" ||
+        : t.type === "number" || t.type === "range" ||
             [
               "delay",
               "duration",
@@ -1488,6 +1493,13 @@ export class Workspace {
                 .map((v) => v.trim())
                 .filter(Boolean)
             : t.value;
+    if (key === "volume" && t.type === "range") {
+      const field = t.closest(".an-volume-field");
+      const readout = field?.querySelector("[data-volume-readout]");
+      if (readout) readout.textContent = `${Math.round(Number(t.value) * 100)}%`;
+      const audio = field?.parentElement?.querySelector(".an-sound-listen");
+      if (audio) { audio.volume = Number(t.value); audio.dataset.cueVolume = t.value; }
+    }
     if (t.dataset.fxOption) {
       const option=t.dataset.fxOption;
       s.fxOptions={...(before.fxOptions ?? {})};
