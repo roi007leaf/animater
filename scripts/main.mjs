@@ -591,7 +591,8 @@ Hooks.once("init", () => {
     name: "Wait for Dice So Nice",
     hint: "Attack and damage animations start when the 3D dice for that roll have landed, so a hit or miss plays after you see the result.",
     scope: "client",
-    config: true,
+    // Listed only where Dice So Nice is active; elsewhere there is nothing to wait for.
+    config: Boolean(game.modules.get("dice-so-nice")?.active),
     type: Boolean,
     default: true,
   });
