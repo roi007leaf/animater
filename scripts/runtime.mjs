@@ -100,12 +100,13 @@ export class AnimaterRuntime {
     }));
     globalThis.Hooks?.callAll?.("animater.played", event, recipe);
   }
-  async play(recipe, context, { preview = false, onStart } = {}) {
+  async play(recipe, context, { preview = false, onStart, sampleArea = false } = {}) {
     recipe = validateRecipe(recipe);
     const epoch = this.epoch;
     let area;
     try {
-      if (preview && this.host.ready()) {
+      // A manual table play with no placed template borrows the preview's sample area.
+      if ((preview || (sampleArea && !context.template)) && this.host.ready()) {
         area = await this.host.previewArea?.(recipe, context);
         if (area) this.previewAreas.add(area);
       }

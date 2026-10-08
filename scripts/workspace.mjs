@@ -2365,6 +2365,8 @@ export class Workspace {
     } catch (error) {
       this.busy = false;
       this.message = error.message;
+      // The window may have been tucked away for playback: say why nothing played.
+      if (action === "play" || action === "preview") globalThis.ui?.notifications?.warn(`Animater: ${error.message}`);
       if (action === "review-import") {
         this.root.querySelector("[data-import-review]").textContent =
           error.message;

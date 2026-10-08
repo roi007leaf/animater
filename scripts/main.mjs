@@ -17,7 +17,7 @@ import {
   templateArea,
 } from "./canvas-preview-area.mjs";
 import { TokenMotionPlayer, motionDirection } from "./motion.mjs";
-import { installedFxCatalog, OptionalFxPlayer, fxAvailability, startTokenFxPreview } from './optional-fx.mjs';
+import { installedFxCatalog, OptionalFxPlayer, fxAvailability, startTokenFxPreview, effectOptions } from './optional-fx.mjs';
 import {catalogFxSettings} from './catalog-fx.mjs';
 import {
   resolveAutomaticRecipe,
@@ -366,6 +366,33 @@ function builtinRecipe(id) {
             ),
           }));
 }
+// FXMaster particles drawn on this client's canvas only (Local preview): FXMaster's
+// own particle class runs in a scoped context over the scene, nothing is saved.
+const LOCAL_PARTICLE_PREWARM = 6;
+function localParticles(stage, effect) {
+  const Effect = CONFIG.fxmaster?.particleEffects?.[stage.fxType], PIXI = globalThis.PIXI;
+  // Foundry 14's weather layer draws only its own containers; the interface layer
+  // draws an added container over the board like scene weather.
+  const layer = canvas?.interface;
+  if (!Effect || !effect || !PIXI || !layer || !canvas.dimensions) return null;
+  const d = canvas.dimensions;
+  const context = { scope: "animater-local-preview", dimensions: d, renderer: canvas.app.renderer, ticker: canvas.app.ticker };
+  const options = Object.fromEntries(Object.entries(effectOptions(stage, effect)).map(([key, value]) => [key, { value }]));
+  options.__fxmParticleContext = context;
+  const particles = new Effect(options);
+  particles.__fxmParticleContext = context;
+  const root = new PIXI.Container();
+  root.addChild(particles);
+  layer.addChild(root);
+  particles.play({ prewarm: true });
+  // Particles fade in over several seconds; fast-forward so a short stage shows them
+  // at full strength, as on a scene where the weather has been running.
+  for (const emitter of particles.emitters ?? []) { try { emitter.update(LOCAL_PARTICLE_PREWARM); } catch { /* procedural effect */ } }
+  return () => {
+    try { particles.stop?.(); } catch { /* already stopped */ }
+    root.destroy({ children: true });
+  };
+}
 function workspaceHost() {
   return {
     // Tuck the window away while a canvas preview or table playback runs, then restore it.
@@ -482,8 +509,9 @@ function workspaceHost() {
       if (!game.user.isGM) throw Error("Only a GM can enable automation.");
       await game.settings.set(ID, "automatic", value);
     },
+    // Play at table without a placed template uses the same sample area as Local preview.
     play: (recipe, preview, options = {}) =>
-      runtime.play(recipe, manualContext(), { ...options, preview }),
+      runtime.play(recipe, manualContext(), { ...options, preview, sampleArea: !preview }),
     previewTokens: () => {
       if (!canvas.ready) return {};
       const context = manualContext();
@@ -704,6 +732,7 @@ Hooks.once("ready", () => {
   conditionBody = new ConditionBody({ busy: (token) => motions.active.has(token), enabled: () => allowsMotion(localQuality()) });
   optionalFx = new OptionalFxPlayer({catalog:fxCatalog,tokenMagic:()=>globalThis.TokenMagic,
     fxmaster:()=>globalThis.FXMASTER?.api,scene:()=>canvas.scene,
+    localParticles,
     trace:(status,detail)=>runtime?.trace(status,detail)});
   game.socket?.on(`module.${ID}`, (data) => {
     if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); }

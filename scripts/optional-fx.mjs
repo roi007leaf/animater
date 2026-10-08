@@ -89,7 +89,8 @@ export function fxAvailability(stage, catalog, {preview = false} = {}) {
   } else if (stage.kind === 'scenefx') {
     if (!catalog?.sceneReady) return 'FXMaster unavailable';
     if (!catalog.effects.some(e=>e.type===stage.fxType && e.category===(stage.fxCategory ?? 'particle'))) return 'Choose an FXMaster effect';
-    if (preview) return 'FXMaster skipped in private preview';
+    // A private preview draws particles on this client only; scene filters cannot be local.
+    if (preview) return (stage.fxCategory ?? 'particle') === 'particle' ? '' : 'FXMaster filters skipped in private preview';
     if (!catalog.isGM) return 'FXMaster requires GM playback';
   }
   return '';
@@ -156,6 +157,11 @@ export class OptionalFxPlayer {
     try {
       if(stage.kind==='tokenfx') {
         remove=await this.addTokenFilter(stage);
+      } else if(preview) {
+        // Local preview: the particles run on this canvas only; the scene is untouched.
+        const effect=catalog.effects.find(e=>e.category===(stage.fxCategory??'particle') && e.type===stage.fxType);
+        remove=this.host.localParticles?.(stage,effect)??null;
+        if(!remove){this.host.trace?.('Skipped','FXMaster particles unavailable for local preview');}
       } else {
         const api=this.host.fxmaster().effects;
         const scene=this.host.scene();
