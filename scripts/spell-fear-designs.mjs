@@ -94,7 +94,7 @@ export function fearSpellLayers(spell, { cast, hit, aura, pose, copy, fx, track,
   const target = (slot, label, delay, duration, extra = {}) => fx('aura', slot, label, delay, duration, { subject: 'targets', ...extra });
   const field = (slot, label, delay, duration, extra = {}) => fx('template', slot, label, delay, duration, { scale: 1, ...extra });
   const glyph = (label, extra = {}) => hit(label, charge, 1800, { scale: 0.85, offsetY: -0.25, opacity: 0.85, ...extra });
-  const response = (label = 'Momentary unease', delay = charge + 100) => pose('shake', label, delay, 1500, 'targets', 0.03, 0.2);
+  const response = (label = 'Momentary unease', delay = charge + 100) => pose('cower', label, delay, 1100, 'targets', 0.05, 0.35);
   switch (pattern ?? spell.design?.pattern) {
     case 'despairWell': return [cast('Dread deepens'), hit('A deep well opens', charge, 2400, { scale: 1.3, below: true, tracks: [track('rotation', 0, -100, 2000)] }), aura('aura', 'Depth swallows the light', charge + 300, 2300, { scale: 1.05, below: true, opacity: 0.6, scaleOut: 0.15, scaleOutDuration: 1800 }), response('A restrained sinking shudder')];
     case 'ancestorContact': return [source('cast', 'Ancestor presences at caster', 0, 2400, { scale: 1.25, below: true }), pose('lunge', 'A brief touching gesture', charge - 100, 1500, 'source', 0.12, 0.3), glyph('Ancestral contact', { scale: 0.9, offsetY: 0, opacity: 0.7 }), target('aura', 'Ancestral witnesses around the touched creature', charge + 150, 2300, { scale: 1.2, below: true, opacity: 0.7 })];

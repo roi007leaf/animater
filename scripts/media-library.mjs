@@ -1,4 +1,4 @@
-import {libraryItem, mergeMedia, mediaGroups, safeMediaFile, title, mediaType, matchingMediaVariant, mediaVariantChoices, tokenFxAssets} from './media-library-model.mjs';
+import {libraryItem, mergeMedia, appendMedia, mediaGroups, safeMediaFile, title, mediaType, matchingMediaVariant, mediaVariantChoices, tokenFxAssets} from './media-library-model.mjs';
 import {validateRecipe, MAX_STAGES} from './model.mjs';
 import {patchDOM, reconcileChildren} from './dom-patch.mjs';
 import {RecipePreview} from './recipe-preview.mjs';
@@ -26,24 +26,48 @@ export class MediaLibrary {
     this.w = workspace;
     this.filters = {type:'animation',search:'',source:'all',category:'all',color:'all',loop:'all',collection:'all',grouped:true,sort:'az'};
     this.prefs = libraryPreferences(workspace.host.mediaPreferences?.());
-    this.items = mergeMedia(workspace.host.catalog(), workspace.host.soundCatalog?.()?.entries ?? [], this.prefs.custom,tokenFxAssets(workspace.host.fxCatalog?.()));
+    const cached=workspace.host.mediaCatalog?.();
+    this.items = cached?.normalized
+      ?appendMedia(cached.entries,this.prefs.custom,tokenFxAssets(workspace.host.fxCatalog?.()))
+      :mergeMedia(workspace.host.catalog(), workspace.host.soundCatalog?.()?.entries ?? [], this.prefs.custom,tokenFxAssets(workspace.host.fxCatalog?.()));
+    this.loaded=!!cached?.normalized;
     this.page = 0;
     this.pageSize = 36;
     this.view = 'grid';
     this.preview = {rate:1,volume:.35,loop:true,background:'grid',size:100};
     this.selectedId = null;
     this.file = null;
-    this.error = '';
+    this.error = cached?.warning??'';
     this.tokenFx = {subject:'source',duration:3000,tint:''};
     this.fxPreviewEpoch=0;
     this.fxStatus='';
     this.fxArtwork='sample';
-    this.fxPlayed=false;
   }
-  get selected() { return this.items.find(v=>v.id===this.selectedId); }
+  index() {
+    if(this.indexedItems===this.items&&this.indexedLength===this.items.length)return this.itemIndex;
+    const ids=new Map(),families=new Map(),facets=new Map();
+    for(const item of this.items) {
+      ids.set(item.id,item);
+      const key=`${item.type}:${item.source}:${item.family}`;
+      if(!families.has(key))families.set(key,[]);families.get(key).push(item);
+      for(const type of ['all',item.type]) {
+        if(!facets.has(type))facets.set(type,{count:0,sources:new Set(),categories:new Set(),colors:new Set()});
+        const facet=facets.get(type);facet.count++;facet.sources.add(item.source);facet.categories.add(item.category);if(item.color!=='none')facet.colors.add(item.color);
+      }
+    }
+    this.indexedItems=this.items;this.indexedLength=this.items.length;
+    return this.itemIndex={ids,families,facets};
+  }
+  results() {
+    const index=this.index(),key=JSON.stringify([this.filters,
+      this.filters.collection==='favorites'?this.prefs.favorites:[],this.filters.collection==='recent'?this.prefs.recent:[]]);
+    if(this.resultIndex!==index||this.resultKey!==key){this.resultIndex=index;this.resultKey=key;this.result=mediaGroups(this.items,this.filters,this.prefs);}
+    return this.result;
+  }
+  get selected() { return this.index().ids.get(this.selectedId); }
   familyVariants(item = this.selected, group) {
     return !item ? [] : this.filters.grouped
-      ? this.items.filter(v=>v.type===item.type&&v.source===item.source&&v.family===item.family)
+      ? this.index().families.get(`${item.type}:${item.source}:${item.family}`)??[]
       : group?.variants ?? [item];
   }
   render({resetResults=false} = {}) {
@@ -101,17 +125,36 @@ export class MediaLibrary {
     if (this.loading || this.loaded && !refresh) return;
     this.loading = true;
     this.error = '';
+    let scheduled=null;
     try {
-      const result = await this.w.host.loadMediaCatalog?.(refresh);
+      const result = await this.w.host.loadMediaCatalog?.(refresh,part=>{
+        if(this.w.abort?.signal.aborted||!part?.entries?.length)return;
+        this.items=appendMedia(this.items,part.entries);
+        if(this.w.page!=='assets')return;
+        // New audio needn't replace a visible animation/filter preview.
+        if(this.filters.type!=='all'&&!part.entries.some(item=>item.type===this.filters.type)){this.syncCounts();return;}
+        if(scheduled===null)scheduled=requestAnimationFrame(()=>{
+          scheduled=null;if(!this.w.abort?.signal.aborted&&this.w.page==='assets')this.render();
+        });
+      });
       if (this.w.abort?.signal.aborted) return;
-      this.items = mergeMedia(this.w.host.catalog(), result?.entries ?? result ?? [], this.w.host.soundCatalog?.()?.entries ?? [], this.prefs.custom,tokenFxAssets(this.w.host.fxCatalog?.()));
+      this.items = result?.normalized
+        ?appendMedia(result.entries,this.prefs.custom,tokenFxAssets(this.w.host.fxCatalog?.()))
+        :mergeMedia(this.w.host.catalog(), result?.entries ?? result ?? [], this.w.host.soundCatalog?.()?.entries ?? [], this.prefs.custom,tokenFxAssets(this.w.host.fxCatalog?.()));
       if(this.fxHandle&&!this.items.some(v=>v.id===this.selectedId))void this.stopTokenPreview();
       this.error = result?.warning ?? '';
       this.loaded = true;
     } catch (error) { this.error = error.message; }
     finally {
+      if(scheduled!==null)cancelAnimationFrame(scheduled);
       this.loading = false;
       if (!this.w.abort?.signal.aborted && this.w.page==='assets') this.render();
+    }
+  }
+  syncCounts() {
+    const facets=this.index().facets;
+    for(const button of this.w.root.querySelectorAll?.('[data-action="media-type"]')??[]) {
+      const count=button.querySelector('small');if(count)count.textContent=(facets.get(button.dataset.value)?.count??0).toLocaleString();
     }
   }
   persist() { void Promise.resolve(this.w.host.setMediaPreferences?.(this.prefs)).catch(error=>{this.error=error.message;}); }
@@ -120,7 +163,7 @@ export class MediaLibrary {
     this.persist();
   }
   choose(id) {
-    if (this.selectedId !== id) {this.file = null;this.fxPlayed=false;void this.stopTokenPreview();}
+    if (this.selectedId !== id) {this.file = null;void this.stopTokenPreview();}
     this.selectedId = id;
     if (this.selected) this.remember(this.selected);
   }
@@ -144,7 +187,7 @@ export class MediaLibrary {
   }
   input(target) {
     if(target.dataset.mediaFx) {
-      void this.stopTokenPreview();
+      const before=JSON.stringify([this.tokenFx,this.fxArtwork]);
       const key=target.dataset.mediaFx;
       if(key==='duration')this.tokenFx.duration=Math.min(30000,Math.max(500,Number(target.value)||3000));
       if(key==='subject')this.tokenFx.subject=target.value==='targets'?'targets':'source';
@@ -152,10 +195,14 @@ export class MediaLibrary {
       if(key==='tint'&&/^#[\da-f]{6}$/i.test(target.value))this.tokenFx.tint=target.value;
       if(key==='artwork') {
         this.fxArtwork=['source','targets'].includes(target.value)?target.value:'sample';
+      }
+      if(before===JSON.stringify([this.tokenFx,this.fxArtwork]))return true;
+      void this.stopTokenPreview();
+      if(key==='artwork') {
         const scene=this.w.root.querySelector('[data-media-fx-scene]');
         if(scene)patchDOM(scene,this.tokenFxArtworkHTML());
       }
-      this.syncTokenPreview();return true;
+      this.syncTokenPreview();void this.auditionTokenFx('window');return true;
     }
     if (target.dataset.search==='assets') {
       if(this.filters.search===target.value)return true;
@@ -170,16 +217,17 @@ export class MediaLibrary {
   }
   change(target) {
     if (target.dataset.mediaFilter) {if(this.filters[target.dataset.mediaFilter]!==target.value){this.filter(target.dataset.mediaFilter,target.value);this.render({resetResults:true});}return true;}
-    if (target.hasAttribute('data-media-variant')) {if(this.selectedId!==target.value)this.inspect(target.value,{reveal:true});return true;}
+    if (target.hasAttribute('data-media-variant')) {
+      if(this.selectedId!==target.value){this.inspect(target.value,{reveal:true});if(this.selected?.type==='tokenfx')void this.auditionTokenFx('window');}
+      return true;
+    }
     if (target.hasAttribute('data-media-file')) {if(this.file!==(target.value||null)){this.file=target.value||null;this.inspect(this.selectedId);}return true;}
     return this.input(target);
   }
   async action(action,button) {
     if (!action.startsWith('media-')) return false;
     const value=button.dataset.value;
-    if(action==='media-fx-preview'){void this.auditionTokenFx('window');return true;}
     if(action==='media-fx-canvas'){void this.auditionTokenFx('canvas');return true;}
-    if(action==='media-fx-stop'){await this.stopTokenPreview();return true;}
     if (action==='media-type') {if(this.filters.type===value)return true;this.filter('type',value);}
     if (action==='media-collection') {if(this.filters.collection===value)return true;this.filter('collection',value);}
     if (action==='media-color'||action==='media-size') {
@@ -191,6 +239,7 @@ export class MediaLibrary {
     if (action==='media-inspect') {
       if(this.selectedId!==button.dataset.id)this.inspect(button.dataset.id);
       if(this.selected?.type==='audio')return this.action('media-audition',button);
+      if(this.selected?.type==='tokenfx')void this.auditionTokenFx('window');
       return true;
     }
     if (action==='media-page') this.page+=Number(value);
@@ -309,14 +358,20 @@ export class MediaLibrary {
         delete scene.dataset.fxError;
         const recipe=validateRecipe({id:'media-tokenfx-preview',name:this.selected.label,trigger:'manual',
           stages:[{...stage,subject:'source',persist:false}]});
-        const run=new RecipePreview(scene,recipe,()=>{}, {tokenFx:async(s,r)=>{
+        const run=new RecipePreview(scene,recipe,()=>{
+          // Defer until RecipeClock has registered this frame's handle, so a
+          // failed first draw also cancels cleanly instead of reporting Playing.
+          if(scene.dataset.fxError)queueMicrotask(()=>run.stop());
+        }, {tokenFx:async(s,r)=>{
           const preview=await this.w.host.createTokenFxPreview(s,r);
           if(!preview)throw Error('Token Magic FX is unavailable.');
           return preview;
         }});
         this.fxScene=scene;
-        handle={stop:()=>run.stop()};
+        handle={stop:()=>{if(!run.abort.signal.aborted)run.stop();}};
         this.fxHandle=handle;
+        await run.prepareTokenFx();
+        if(scene.dataset.fxError)throw Error(`${scene.dataset.fxError}. Use canvas preview for this preset.`);
         handle.done=run.play();
       } else handle=await this.w.host.previewTokenFx(stage);
       if(epoch!==this.fxPreviewEpoch||this.w.abort?.signal.aborted){await handle.stop();return;}
@@ -325,7 +380,7 @@ export class MediaLibrary {
       if(epoch===this.fxPreviewEpoch&&mode==='window')await handle.stop();
       if(epoch===this.fxPreviewEpoch&&this.fxScene?.dataset.fxError)
         throw Error(`${this.fxScene.dataset.fxError}. Use canvas preview for this preset.`);
-      if(epoch===this.fxPreviewEpoch){this.fxStatus='Preview finished';this.fxPlayed=true;}
+      if(epoch===this.fxPreviewEpoch)this.fxStatus='Preview finished';
     } catch(error) {if(epoch===this.fxPreviewEpoch)this.fxStatus=error.message;}
     finally {if(epoch===this.fxPreviewEpoch){this.fxHandle=null;this.fxScene=null;this.syncTokenPreview();}}
   }
@@ -336,11 +391,8 @@ export class MediaLibrary {
     }
     const status=root.querySelector('[data-media-fx-status]');if(status)status.textContent=this.fxStatus;
     const playing=!!this.fxHandle||this.fxStatus==='Starting preview…';
-    const play=root.querySelector('[data-action="media-fx-preview"]');
-    if(play){play.disabled=playing||!this.w.host.createTokenFxPreview;play.textContent=this.fxPlayed?'Replay preset':'Preview preset';}
     const canvas=root.querySelector('[data-action="media-fx-canvas"]');
     if(canvas)canvas.disabled=playing||!this.w.host.previewTokenFx||this.w.host.environment?.().demo===true;
-    const stop=root.querySelector('[data-action="media-fx-stop"]');if(stop)stop.disabled=!playing;
     const tint=root.querySelector('[data-media-fx="tint"]');if(tint)tint.disabled=!this.tokenFx.tint||!this.selected?.tintable;
   }
   tokenFxArtworkHTML() {
@@ -360,18 +412,17 @@ export class MediaLibrary {
     const size=this.w.root.querySelector('[data-media-size-value]');if(size)size.textContent=`${this.preview.size}%`;
   }
   html(recipe) {
-    const {groups,count}=mediaGroups(this.items,this.filters,this.prefs);
+    const {groups,count}=this.results();
     this.groups=groups;
     this.page=Math.max(0,Math.min(this.page,Math.ceil(groups.length/this.pageSize)-1));
     const visible=groups.slice(this.page*this.pageSize,(this.page+1)*this.pageSize);
     if(!groups.some(g=>g.variants.some(v=>v.id===this.selectedId))){void this.stopTokenPreview();this.selectedId=visible[0]?.variants[0]?.id??null;this.file=null;}
     const selected=this.selected;
     const group=groups.find(g=>g.variants.some(v=>v.id===selected?.id));
-    const sources=[...new Set(this.items.filter(v=>this.filters.type==='all'||v.type===this.filters.type).map(v=>v.source))].sort();
-    const categories=[...new Set(this.items.filter(v=>this.filters.type==='all'||v.type===this.filters.type).map(v=>v.category))].sort();
-    const palette=[...new Set(this.items.filter(v=>this.filters.type==='all'||v.type===this.filters.type).map(v=>v.color))].filter(v=>v!=='none').sort();
+    const facets=this.index().facets,facet=facets.get(this.filters.type);
+    const sources=[...(facet?.sources??[])].sort(),categories=[...(facet?.categories??[])].sort(),palette=[...(facet?.colors??[])].sort();
     return `<section class="an-media-library" aria-label="Media library">
-      <div class="an-media-toolbar"><div class="an-media-types" role="group" aria-label="Media type">${[['animation','Animations'],['audio','Sounds'],['image','Images'],['tokenfx','Token FX'],['all','All media']].map(([id,label])=>`<button data-action="media-type" data-value="${id}" aria-pressed="${this.filters.type===id}" class="${this.filters.type===id?'is-selected':''}">${svg(id)}${label}<small>${this.items.filter(v=>id==='all'||v.type===id).length.toLocaleString()}</small></button>`).join('')}</div><div class="an-media-tools">${this.filters.type==='tokenfx'?'':`<button data-action="media-import" ${this.w.host.pickMedia?'':'disabled'}>+ Browse files</button>`}<button data-action="media-refresh" ${this.loading?'disabled':''}>${this.loading?'Loading…':'Refresh'}</button></div></div>
+      <div class="an-media-toolbar"><div class="an-media-types" role="group" aria-label="Media type">${[['animation','Animations'],['audio','Sounds'],['image','Images'],['tokenfx','Token FX'],['all','All media']].map(([id,label])=>`<button data-action="media-type" data-value="${id}" aria-pressed="${this.filters.type===id}" class="${this.filters.type===id?'is-selected':''}">${svg(id)}${label}<small>${(facets.get(id)?.count??0).toLocaleString()}</small></button>`).join('')}</div><div class="an-media-tools">${this.filters.type==='tokenfx'?'':`<button data-action="media-import" ${this.w.host.pickMedia?'':'disabled'}>+ Browse files</button>`}<button data-action="media-refresh" ${this.loading?'disabled':''}>${this.loading?'Loading…':'Refresh'}</button></div></div>
       <div class="an-media-search-row"><div class="an-search">${svg('search')}<input data-search="assets" aria-label="Search media" placeholder="Search effects, weapons, creatures, colors, sounds…" value="${esc(this.filters.search)}"></div><div class="an-media-collections" role="group" aria-label="Library collection">${[['all','Library'],['favorites','Favorites'],['recent','Recent']].map(([id,label])=>`<button data-action="media-collection" data-value="${id}" aria-pressed="${this.filters.collection===id}" class="${this.filters.collection===id?'is-selected':''}">${label}</button>`).join('')}</div></div>
       <div class="an-media-filters">${select('source','Source',[['all','All sources'],...sources.map(v=>[v,v])],this.filters.source)}${select('category','Category',[['all','All categories'],...categories.map(v=>[v,v])],this.filters.category)}${['audio','tokenfx'].includes(this.filters.type)?'':select('color','Color',[['all','All colors'],...palette.map(v=>[v,title(v)])],this.filters.color)}${this.filters.type==='tokenfx'?'':select('loop','Playback',[['all','Any playback'],['loop','Loops'],['one','Other clips']],this.filters.loop)}${select('sort','Sort',[['az','Name A–Z'],['za','Name Z–A']],this.filters.sort)}<button data-action="media-clear" class="an-media-reset">Reset</button></div>
       ${this.error?`<div class="an-media-notice" role="status">${esc(this.error)}</div>`:''}
@@ -416,7 +467,7 @@ export class MediaLibrary {
     return `<div class="an-media-detail-body"><div class="an-media-detail-heading"><div><small>Token Magic FX</small><h2>${esc(item.label)}</h2></div><button class="an-media-star ${this.prefs.favorites.includes(item.id)?'is-favorite':''}" data-action="media-favorite" data-id="${esc(item.id)}" aria-label="Favorite selected media" aria-pressed="${this.prefs.favorites.includes(item.id)}">${svg('star')}</button></div>
       <div class="an-media-preview an-tokenfx-scene" data-media-fx-scene data-fit-token-fx data-background="${esc(this.preview.background)}" aria-label="Token filter preview">${this.tokenFxArtworkHTML()}</div>
       <div class="an-media-preview-settings"><label>Artwork<select data-media-fx="artwork" aria-label="Preview token artwork"><option value="sample" ${this.fxArtwork==='sample'?'selected':''}>Sample token</option><option value="source" ${this.fxArtwork==='source'?'selected':''} ${tokens.source?.img?'':'disabled'}>Caster image</option><option value="targets" ${this.fxArtwork==='targets'?'selected':''} ${tokens.targets?.img?'':'disabled'}>Target image</option></select></label><label>Background<select data-media-preview="background" aria-label="Preview background">${['grid','dark','light'].map(v=>`<option value="${v}" ${this.preview.background===v?'selected':''}>${title(v)}</option>`).join('')}</select></label></div>
-      <div class="an-tokenfx-preview-actions"><button class="an-primary" data-action="media-fx-preview" ${windowAvailable?'':'disabled'}>Preview preset</button><button data-action="media-fx-stop" disabled>Stop</button></div><p class="an-tokenfx-status" data-media-fx-status role="status">${esc(this.fxStatus)}</p>
+      <p class="an-tokenfx-status" data-media-fx-status role="status">${esc(this.fxStatus)}</p>
       <div class="an-media-tags">${item.filterTypes.map(type=>`<span>${esc(title(type))}</span>`).join('')}<span>${esc(item.category)}</span></div>
       ${variants.length>1?`<label class="an-media-variant-label">Preset library<select data-media-variant aria-label="Preset library">${variants.map(v=>`<option value="${esc(v.id)}" ${v.id===item.id?'selected':''}>${v.fxLibrary==='tmfx-main'?'Token presets':'Region presets'}</option>`).join('')}</select></label>`:`<p class="an-hint">${item.fxLibrary==='tmfx-main'?'Token presets':'Region presets'}</p>`}
       <div class="an-tokenfx-settings"><strong>Preview & new stage</strong><label>Apply to<select data-media-fx="subject" aria-label="Token filter subject" ${linked?'disabled':''}><option value="source" ${linked||this.tokenFx.subject==='source'?'selected':''}>${linked?'Affected token':'Selected caster'}</option><option value="targets" ${!linked&&this.tokenFx.subject==='targets'?'selected':''}>Targeted tokens</option></select></label><label>Preview duration (ms)<input type="number" data-media-fx="duration" min="500" max="30000" step="100" value="${this.tokenFx.duration}" aria-label="Token filter duration"></label><label class="an-tokenfx-check"><input type="checkbox" data-media-fx="tintEnabled" ${this.tokenFx.tint?'checked':''} ${item.tintable?'':'disabled'}>Override preset color</label><input type="color" data-media-fx="tint" aria-label="Token filter color" value="${esc(this.tokenFx.tint||'#ffffff')}" ${this.tokenFx.tint&&item.tintable?'':'disabled'}>

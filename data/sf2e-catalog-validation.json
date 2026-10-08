@@ -17,7 +17,7 @@
     "excluded": 2062,
     "descriptionHashes": 1928,
     "variety": {
-      "changed": 148,
+      "changed": 150,
       "variants": [
         {
           "id": "gsYEuWv04XTDxe91",
@@ -460,8 +460,8 @@
           "to": "jb2a.markers_scifi.001.complete.002.blueteal"
         },
         {
-          "id": "pswdik31kuHEvdno",
-          "name": "Metamorphosis",
+          "id": "ZXwxs5tRjEGrjAJT",
+          "name": "Nature Incarnate",
           "edition": "patreon",
           "slot": "cast",
           "from": "jb2a.cast_generic.01.dark_purple",
@@ -520,8 +520,8 @@
           "name": "Phantasmal Calamity",
           "edition": "patreon",
           "slot": "cast",
-          "from": "jb2a.cast_generic.02.dark_purple",
-          "to": "jb2a.cast_generic.01.dark_purple"
+          "from": "jb2a.cast_generic.01.dark_purple",
+          "to": "jb2a.cast_generic.02.dark_purple"
         },
         {
           "id": "t0oFlhMhNOHbb6rG",
@@ -852,6 +852,14 @@
           "to": "jb2a.sleep.cloud.01.pink"
         },
         {
+          "id": "WPu3UE3kTXSLqO40",
+          "name": "Spiritual Armament",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.impact.003.blue",
+          "to": "jb2a.impact.001.blue"
+        },
+        {
           "id": "e9UJoVYUd5kJWUpi",
           "name": "Summon Giant",
           "edition": "free",
@@ -892,12 +900,20 @@
           "to": "jb2a.sleep.cloud.02.pink"
         },
         {
+          "id": "g58dbrP7FadZhh6j",
+          "name": "Chrono Push",
+          "edition": "free",
+          "slot": "hit",
+          "from": "jb2a.impact.001.blue",
+          "to": "jb2a.impact.002.blue"
+        },
+        {
           "id": "CjVOXjuvvTJqC7AD",
           "name": "Data Drain",
           "edition": "free",
           "slot": "hit",
           "from": "jb2a.impact.001.blue",
-          "to": "jb2a.impact.012.blue"
+          "to": "jb2a.impact.004.blue"
         },
         {
           "id": "zdzeVZlKHkMAt2Rf",

@@ -19,7 +19,7 @@ export const FIRE_SPELL_MOTIFS={
  fireGeyser:native('Geyser',{area:'water_splash.circle.01.blue',hit:'liquid.splash_side.blue',aura:steam},{delivery:'burst',symbolic:true}),
  fireIgniteFireworks:native('Ignite Fireworks',{area:'firework.01.orangeyellow.01',hit:'soundwave.01.blue',aura:'firework.01.yellow.02'}),
  fireAshes:native('Incendiary Ashes',{area:'particles.outward.grey,particles.outward.greenyellow',aura:'fumes.04.loop.grey',hit:'wind_lines.01.01.white'},{symbolic:true}),
- fireFog:native('Incendiary Fog',{area:'ambient_fog.001.complete.large.black,fumes.04.complete.black,fumes.04.complete.grey',aura:'ambient_fog.001.loop.large.black,fumes.04.loop.black,fumes.04.loop.grey'},{symbolic:true}),
+ fireFog:native('Incendiary Fog',{area:'ambient_fog.001.complete.large.black,fumes.04.complete.black,fumes.04.complete.grey',aura:'ambient_fog.001.loop.large.black,fumes.04.loop.black,fumes.04.loop.grey',hit:'particles.outward.orange,impact.fire.01.orange'},{symbolic:true}),
  fireTruth:native('Pyroclastic Truth',{area:'liquid.splash_side02.red',hit:'ward.rune.yellow',aura:groundFire},{symbolic:true}),
  fireFumarole:native('Rainbow Fumarole',{area:'lava_spout.001.001.complete.multicolored,lava_spout.001.001.complete.orangeyellow',aura:'fumes.04.loop.purple,fumes.04.loop.grey',hit:'firework.01.yellow.02'},{delivery:'burst',symbolic:true}),
  fireRedistribute:native('Redistribute Potential',{area:groundFire,hit:'ice_spikes.radial.burst.white',aura:'energy_strands.complete.blue',slotGeometry:{bolt:'beam'}},{delivery:'burst',previewArea:{type:'square',value:5},symbolic:true}),
@@ -71,7 +71,7 @@ export function fireSpellLayers(spell,{cast:castFx,fx,track,charge,copy}){
   case 'fireGeyser':return [cast(name),area('area',charge,3200,{below:false}),area('hit',charge,3500,{below:false,tracks:[track('scale.y',.25,1.2,1300)]}),area('aura',charge+850,3800,{below:false,tracks:[track('position.y',0,-.15,2400)]})];
   case 'fireIgniteFireworks':return [cast(name),area('area',charge,3500,{below:false}),area('aura',charge+400,3300,{below:false}),area('hit',charge+150,2800,{scale:.9,opacity:.65})];
   case 'fireAshes':return [cast(name),area('area',charge,4400,{...ash,below:false,tracks:[track('position.y',-.3,.2,3400)]}),area('hit',charge+200,3600,{...ash,opacity:.55}),area('aura',charge+900,3300,{...ash,opacity:.45})];
-  case 'fireFog':return [cast(name),area('area',charge,4200,{opacity:.85,below:false,scaleIn:.1,scaleInDuration:1200}),area('aura',charge+900,4000,{opacity:.7,below:false})];
+  case 'fireFog':return [cast(name),area('area',charge,4200,{opacity:.85,below:false,scaleIn:.1,scaleInDuration:1200}),area('aura',charge+900,4000,{opacity:.7,below:false}),{...area('hit',charge+1400,2200,{opacity:.75,below:false,scale:.6}),label:'Embers flicker in the dust'}];
   case 'fireTruth':return [cast(name),area('area',charge,3000,{below:false,tintEnabled:true,colorize:true,tint:'#e67b21'}),area('aura',charge+350,3800,{opacity:.7}),area('hit',charge+500,3500,{scale:.75,opacity:.6,below:false})];
   case 'fireFumarole':return [cast(name),area('area',charge,4000,{below:false}),area('hit',charge+200,3600,{below:false,tracks:[track('rotation',0,120,2600)]}),area('aura',charge+700,4200,{below:false,opacity:.65})];
   case 'fireRedistribute':return [cast(name),area('hit',charge,3400,{offsetX:-.5,scale:1}),area('area',charge+300,3600,{offsetX:.5,scale:1}),area('aura',charge,3400,{tintEnabled:true,colorize:true,tint:'#d8bdf2',tracks:[track('position.x',-.35,.35,2200)]})];

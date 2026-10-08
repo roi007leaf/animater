@@ -6,7 +6,7 @@ import {assetDatabases,variantFiles} from './asset-databases.mjs';
 import {ensureStateSources,STATE_SOURCE_SHA,STATE_SOURCE_PACKS,AURA_SOURCE_PACKS} from './pf2e-state-source.mjs';
 import {statePresentation} from '../scripts/state-presentation.mjs';
 import {buildAuraDesign} from './pf2e-aura-designs.mjs';
-import {buildConditionDesign,CONDITION_PLANS} from './pf2e-condition-designs.mjs';
+import {buildConditionDesign,buildEffectDesign,CONDITION_PLANS} from './pf2e-condition-designs.mjs';
 
 const sha=STATE_SOURCE_SHA;
 const base=await ensureStateSources();
@@ -54,7 +54,7 @@ for(const pack of packs){
   }
   // Timed variants of a core condition reuse that condition's reviewed look.
   const parent=/^Effect: (.+) until (?:the )?end of your next turn$/.exec(item.name)?.[1]?.toLowerCase().replace(/[^a-z]+/g,'-');
-  Object.assign(entry,condition?buildConditionDesign(entry,db):CONDITION_PLANS[parent]?{...buildConditionDesign({...entry,slug:parent},db),evidence:`Timed variant of the native ${parent} condition`}:statePresentation(entry));
+  Object.assign(entry,condition?buildConditionDesign(entry,db):CONDITION_PLANS[parent]?{...buildConditionDesign({...entry,slug:parent},db),evidence:`Timed variant of the native ${parent} condition`}:buildEffectDesign(entry,db)??statePresentation(entry));
   const auras=(item.system.rules??[]).filter(r=>r.key==='Aura').map(r=>({slug:auraSlug(r,item,file),radius:typeof r.radius==='number'?r.radius:null}));
   const sources=[...new Map([...(auraSources.get(entry.uuid)??[]),...(auraSources.get(`Compendium.pf2e.${nativePack}.Item.${item.name}`)??[])].map(s=>[`${s.uuid}:${s.slug}`,s])).values()];
   if(auras.length)entry.auras=auras;

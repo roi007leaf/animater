@@ -1,5 +1,6 @@
 import {installedFxCatalog, OPTIONAL_FX_KINDS} from './optional-fx.mjs';
 import {validateRecipe, MAX_STAGES} from './model.mjs';
+import {applyBespoke} from './bespoke.mjs';
 import {CATALOG_FX_EVIDENCE} from '../data/catalog-fx-evidence.mjs';
 import {fxSemantics} from './catalog-fx-semantics.mjs';
 
@@ -27,6 +28,19 @@ const bodyProfiles = {
   rush:{preset:'zoomblur'},
 };
 const themes={fire:'fire',cold:'cold',ice:'cold',electricity:'electricity',lightning:'electricity',acid:'acid',poison:'poison',force:'force'};
+// Reviewed fiction overrides: a chosen element (freezing breath or sonic scream),
+// hail that deals bludgeoning, or healing that only happens when a form ends.
+const elementVetoes=[[/^storming-breath$/],[/^storm-of-vengeance$/,/hail|gust/i]];
+const healingVetoes=[/^invoke-the-leviathan$/];
+const stealthy=/^(?:hide|sneak|create-a-diversion|avoid-notice|underhanded-assault)$/;
+const variantName=options=>String(options.variant?.label??'')+' '+String(options.variant?.activityName??'');
+// Hexa-field only on a magical barrier: field wording, or a magical source
+// (spell, spell effect, tradition/mythic trait) that is not a raised shield,
+// worn armor or toughened body.
+const magicalSource=entry=>entry.kind==='spell'||entry.rank!=null||!!entry.traditions?.length||/^spell-effect/.test(String(entry.slug??''))||
+  (entry.traits??[]).some(t=>['arcane','divine','occult','primal','magical','mythic','spell'].includes(t));
+const realWard=(entry,meaning)=>!meaning.mundane&&(meaning.field||magicalSource(entry)&&!meaning.body);
+const vetoed=(list,name,options)=>list.some(([n,v])=>n.test(name)&&(!v||v.test(variantName(options))));
 const material = stage => (stage.assets??[]).join(' ');
 const visual = stage => !['sound','motion','sprite',...OPTIONAL_FX_KINDS].includes(stage.kind);
 const onTarget = stage => stage.kind==='impact'||stage.subject==='targets'||stage.kind==='template';
@@ -44,21 +58,33 @@ function bodyProfile(recipe, entry, anchor, options) {
   if (persistent && /^(?:persistent-damage|burning)$/.test(name))
     return themes[options.damageType??recipe.stateDamageType]??null;
   if (/^(?:blur|concealed|concealment|blurred)(?:-|$)/.test(name))return 'blur';
-  if (/^(?:invisible|invisibility|displacement|mirror-image)(?:-|$)/.test(name))return 'distortion';
+  // Concealment of the token itself only: not a suppressed property, an
+  // immunity, or a wall that hides others.
+  if (/^(?:invisible|invisibility|displacement|mirror-image)(?:-|$)/.test(name)&&!/(?:suppressed|immunity|curtain)/.test(name))return 'distortion';
   if (/^(?:ethereal|etherealness|ghostly-form|incorporeal-form|ghost-walk)(?:-|$)/.test(name))return 'spectral';
   if (persistent && name==='petrified')return 'stone';
   if (persistent && name==='poisoned')return 'poison';
-  if (meaning.healing&&/jb2a\.(?:cure_wounds|healing_generic|heal\.)/.test(art))return 'healing';
-  if (meaning.ward&&anchor.kind==='aura'&&/jb2a\.(?:shield|wall_of_force|shield_spell|antilife_shell|protect)/.test(art))return 'ward';
+  if (meaning.healing&&!healingVetoes.some(v=>v.test(name))&&/jb2a\.(?:cure_wounds|healing_generic|heal\.)/.test(art))return 'healing';
+  if (meaning.ward&&realWard(entry,meaning)&&anchor.kind==='aura'&&/jb2a\.(?:shield|wall_of_force|shield_spell|antilife_shell|protect)/.test(art))return 'ward';
   if (anchor.kind==='aura'&&/jb2a\.fire_shield/.test(art))return 'fireWard';
   if (anchor.kind==='aura'&&/jb2a\.stoneskin/.test(art))return 'stone';
   if (anchor.kind==='aura'&&/jb2a\.(?:water_bubble|watery_sphere)/.test(art))return 'water';
   if (!onTarget(anchor))return null;
+  // The element of a play-time choice is unknown when FX are composed; a fixed
+  // element preset would contradict the art chosen at playback.
+  if (recipe.elementChoice)return null;
   const theme=themes[options.mode?.payload?.element??options.mode?.element??options.variant?.theme??entry.theme];
   if (!theme)return null;
   const damaging=!!options.mode&&options.mode.element!=='physical'||meaning.damage||
     ['attack','damage'].includes(recipe.trigger)&&entry.design?.impact!==false;
   if (!damaging&&!persistent)return null;
+  // Weapon modes carry native damage. Elsewhere, when the description names
+  // damage types, the body accent must be one of them (Sacred Flame is radiant).
+  if (!options.mode&&!persistent){
+    if (vetoed(elementVetoes,name,options))return null;
+    const named=Object.keys(meaning).filter(k=>k.startsWith('dmg-'));
+    if (named.length&&!meaning[`dmg-${theme}`])return null;
+  }
   const materials={fire:/jb2a\.(?:fire|flames|burning|scorching|explosion)/,cold:/jb2a\.(?:ice|frost|cold|snow|sleet|ray_of_frost)/,
     electricity:/jb2a\.(?:lightning|electric|chain_lightning|static_electricity)/,acid:/jb2a\.(?:acid|liquid|drop|splash)/,
     poison:/jb2a\.(?:poison|smoke|gas|liquid|drop|splash)/,force:/jb2a\.(?:impact|magic_missile|eldritch|force|energy_field|explosion)/};
@@ -73,8 +99,9 @@ const sceneProfiles={
 export function catalogFxDesign(recipe, entry, options={}) {
   if (!recipe.enabled || entry.design?.unavailable || entry.design?.motif==='generic')return [];
   const stages=recipe.stages.filter(visual),persistent=recipe.lifecycle==='document', additions=[];
-  const bodyStages=recipe.stages.filter(s=>s.kind==='motion'&&s.motion==='rush'&&s.subject==='source');
   const meaning=semantics(entry,recipe);
+  // Speed blur only where the body really travels; stealth moves are not dashes.
+  const bodyStages=meaning.moves&&!stealthy.test(slug(entry))?recipe.stages.filter(s=>s.kind==='motion'&&s.motion==='rush'&&s.subject==='source'):[];
   const teleportStage=!persistent&&meaning.teleport&&stages.find(s=>/jb2a\.(?:misty_step|portals|teleportation)/.test(material(s)));
   const order=persistent?stages:[...bodyStages,...(teleportStage?[teleportStage]:[]),...stages.filter(onTarget),...stages.filter(s=>!onTarget(s))];
   for (const anchor of order) {
@@ -100,6 +127,9 @@ export function catalogFxDesign(recipe, entry, options={}) {
   return additions;
 }
 export function withCatalogFx(recipe, entry, options={}) {
+  // Reviewed bespoke compositions and play-time element choice come first, so they
+  // apply whether or not optional FX providers are installed.
+  recipe=applyBespoke(recipe, entry, options);
   if (options.fx===false)return recipe;
   const catalog=options.fxCatalog??liveCatalogFx();
   if (!catalog.tokenReady&&!catalog.sceneReady)return recipe;

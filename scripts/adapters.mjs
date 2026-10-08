@@ -1,3 +1,4 @@
+import { twoeEventElement, dnd5eEventElement } from "./element-choice.mjs";
 // Normalize system events without changing rolls, items, HP, or system state.
 export const pf2eEvent=(message,userId)=>twoeEvent(message,userId,'pf2e');
 export const sf2eEvent=(message,userId)=>twoeEvent(message,userId,'sf2e');
@@ -50,6 +51,7 @@ export function twoeEvent(message, userId, systemId='pf2e') {
     sceneId: message.speaker?.scene,
     actor: message.actor,
     targetUuid: context?.target?.token ?? flags?.target?.token,
+    ...(twoeEventElement(message, systemId) ? { element: twoeEventElement(message, systemId) } : {}),
     outcome: context?.outcome,
   };
 }
@@ -73,6 +75,7 @@ export function dnd5eEvent(type, subject, { rolls = [], results = {} } = {}) {
     activityId: subject.id ?? subject._id,
     activity: subject,
     activityName: subject.name,
+    ...(dnd5eEventElement(subject, rolls) ? { element: dnd5eEventElement(subject, rolls) } : {}),
     tokenId: subject.getUsageToken?.()?.id,
     sceneId: subject.getUsageToken?.()?.parent?.id,
     targetUuids: Array.from(message?.system?.targets ?? message?.data?.system?.targets ?? rolls[0]?.options?.targets ?? []).map(t=>typeof t==='string'?t:t.token).filter(Boolean),

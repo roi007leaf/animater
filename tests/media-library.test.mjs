@@ -168,7 +168,7 @@ test('native filter detail previews sample artwork in the window and keeps canva
   const html=f.library.html(f.draft);
   assert.match(html,/Token FX/);assert.match(html,/Preview on canvas/);assert.match(html,/Add token filter stage/);
   assert.match(html,/data-media-fx-scene/);assert.match(html,/icons\/svg\/mystery-man.svg/);
-  assert.match(html,/>Preview preset</);assert.match(html,/Sample token/);
+  assert.doesNotMatch(html,/media-fx-preview|media-fx-stop|Replay preset|>Preview preset</);assert.match(html,/Sample token/);
   assert.doesNotMatch(html,/Live token filter|Preview on the Foundry canvas/);
   assert.match(html,/Preset library/);assert.ok(!html.includes('<video')&&!html.includes('<audio'));
   assert.ok(!html.includes('data-media-filter="color"')&&!html.includes('data-media-filter="loop"'));
@@ -218,6 +218,32 @@ function windowTokenFixture(t) {
   return {...f,scene,native,frames,get stops(){return stops;},get canvasCalls(){return canvasCalls;}};
 }
 
+test('Token Magic card click starts window preview; selecting it again replays without rendering workspace',async t=>{
+  const f=windowTokenFixture(t),settle=()=>new Promise(resolve=>setImmediate(resolve));
+  const preset=f.library.selectedId;
+  await f.library.action('media-inspect',{dataset:{id:preset}});await settle();
+  assert.match(f.library.fxStatus,/Playing in window/);assert.equal(f.frames.size,1);assert.equal(f.canvasCalls,0);
+  [...f.frames.values()][0](performance.now()+4000);await settle();
+  assert.equal(f.library.fxStatus,'Preview finished');assert.equal(f.stops,1);
+  await f.library.action('media-inspect',{dataset:{id:preset}});await settle();
+  assert.match(f.library.fxStatus,/Playing in window/);assert.equal(f.renders,0);
+  await f.library.stopTokenPreview();await settle();assert.equal(f.stops,2);
+});
+
+test('changing preview duration and tint restarts card audition once and preserves recipe settings',async t=>{
+  const f=windowTokenFixture(t),settle=()=>new Promise(resolve=>setImmediate(resolve));let starts=0;
+  const create=f.w.host.createTokenFxPreview;f.w.host.createTokenFxPreview=(...args)=>{starts++;return create(...args);};
+  await f.library.action('media-inspect',{dataset:{id:f.library.selectedId}});await settle();
+  f.library.input({dataset:{mediaFx:'duration'},value:'5500'});await settle();
+  assert.equal(starts,2);assert.equal(f.stops,1);assert.match(f.library.fxStatus,/Playing in window/);
+  f.library.input({dataset:{mediaFx:'tintEnabled'},checked:true});await settle();
+  f.library.input({dataset:{mediaFx:'tint'},value:'#11aaff'});await settle();
+  const before=starts;f.library.input({dataset:{mediaFx:'tint'},value:'#11aaff'});await settle();
+  assert.equal(starts,before,'input/change events carrying the same value must not restart twice');
+  assert.equal(f.w.previewRecipe.stages[0].fxTint,'#11aaff');assert.equal(f.original.stages.length,1);assert.equal(f.renders,0);
+  await f.library.stopTokenPreview();await settle();
+});
+
 test('sample-token audition uses native window renderer without a scene or canvas backend, then disposes it',async t=>{
   const f=windowTokenFixture(t);
   f.library.tokenFx.subject='targets';
@@ -241,12 +267,35 @@ test('changing a library preset cancels a pending window renderer before it load
   assert.equal(ready,0);assert.equal(f.stops,1);assert.equal(f.frames.size,0);assert.equal(f.canvasCalls,0);
 });
 
+test('image preparation reports Starting and a canceled card cannot start its clock after loading',async t=>{
+  const f=windowTokenFixture(t);let complete;
+  f.native.ready=()=>new Promise(resolve=>{complete=resolve;});
+  const running=f.library.auditionTokenFx();await new Promise(resolve=>setImmediate(resolve));
+  assert.match(f.library.fxStatus,/Starting preview/);assert.equal(f.frames.size,0);
+  await f.library.stopTokenPreview();complete();await running;
+  assert.equal(f.frames.size,0);assert.equal(f.library.fxHandle,null);assert.equal(f.canvasCalls,0);
+});
+
+test('a shader failing its first draw reports the error immediately and never leaves a scheduled clock',async t=>{
+  const f=windowTokenFixture(t);
+  f.native.draw=()=>{f.scene.dataset.fxError='Unsupported Token Magic filter: missing';};
+  await f.library.auditionTokenFx();
+  assert.match(f.library.fxStatus,/Unsupported Token Magic filter.*Use canvas preview/);
+  assert.equal(f.frames.size,0);assert.equal(f.stops,1);
+});
+
 test('window shader errors release the renderer and offer canvas fallback without applying native filters',async t=>{
   const f=windowTokenFixture(t);
-  f.native.draw=()=>{f.scene.dataset.fxError='Canvas-only Token Magic filter: distortion';};
+  let fail=false;
+  f.native.draw=()=>{if(fail)f.scene.dataset.fxError='Canvas-only Token Magic filter: distortion';};
   const running=f.library.auditionTokenFx();await new Promise(resolve=>setImmediate(resolve));
-  [...f.frames.values()][0](performance.now()+4000);await running;
+  fail=true;
+  // Errors must stop the first failed frame, not wait until the whole duration.
+  const [id,tick]=[...f.frames.entries()][0];f.frames.delete(id);tick(performance.now()+100);
+  await new Promise(resolve=>setImmediate(resolve));
   assert.match(f.library.fxStatus,/Use canvas preview/);assert.equal(f.stops,1);assert.equal(f.canvasCalls,0);
+  assert.equal(f.frames.size,0);
+  await running;
 });
 test('inserting sound adds a draft stage with actual duration; replacing sound removes optional pack binding',async()=>{
   const f=libraryFixture();

@@ -32,7 +32,7 @@ export function tossFeatRecipe(feat,{effect,cast,impact,aura,motion,copy,travel}
   let stages;
   switch(feat.slug){
     case 'friendly-fling': {
-      const scoop=motion('levitate','source','Head lowers, then horns scoop upward',0,1700,{distance:.24,intensity:.6});
+      const scoop=motion('throw','source','Head lowers, then horns scoop and fling',0,1700,{distance:.24,intensity:.6});
       const horns=effect('impact','horn','Small piercing contact from the horns',600,1300,{...first,scale:.65});
       const flight=arc('Low horn-assisted ally arc (20 feet)',0,4100,4,.55,after(horns));
       stages=[scoop,cast('Horn scoop airflow',300,1300,{scale:.8,rotation:-30}),horns,flight,land(flight,'Low forward landing wisp')];break;

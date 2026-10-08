@@ -70,7 +70,8 @@ export function analyzeWeapon(item,path){
  const s=item.system,raw=s.description?.value??'',plain=descriptionText(raw),traits=s.traits?.value??[];
  const unarmedEquipment=s.category==='unarmed'&&s.traits?.otherTags?.includes('handwraps-of-mighty-blows');
  const runes=Object.values(s.runes?.property??{});
- const permanent=[...new Set(runes.flatMap(r=>Object.entries(runeElements).filter(([name])=>String(r).toLowerCase().includes(name)&&!(name==='holy'&&/unholy/i.test(r))).map(([,type])=>type)))];
+ // Exact rune names (optionally greater/major): Shockwave is not Shock.
+ const permanent=[...new Set(runes.flatMap(r=>Object.entries(runeElements).filter(([name])=>String(r).toLowerCase().replace(/^(?:greater|major|true)/,'')===name).map(([,type])=>type)))];
  const strikeRules=unconditionalStrikeRules(s),riders=[...new Set(strikeRules.map(r=>r.damageType))];
  const hands=/two-hands/.test(s.usage?.value??'')?2:1;
  const slug=path.split('/').at(-1).replace(/\.json$/,'');

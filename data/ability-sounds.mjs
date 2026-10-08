@@ -4440,6 +4440,324 @@ export const ABILITY_SOUND_PROFILES = {
       ]
     }
   ],
+  "battleCry": [
+    {
+      "label": "Battle cry",
+      "role": "cast",
+      "candidates": [
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Battle Cry/battle-cry-1.mp3",
+          "nativeDuration": 1482,
+          "meanDb": -13.5,
+          "peakDb": 0,
+          "gain": 0.47315,
+          "duration": 1482
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Battle Cry/battle-cry-2.mp3",
+          "nativeDuration": 1814,
+          "meanDb": -14.5,
+          "peakDb": 0,
+          "gain": 0.53088,
+          "duration": 1814
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Battle Cry/battle-cry-3.mp3",
+          "nativeDuration": 1050,
+          "meanDb": -13,
+          "peakDb": 0,
+          "gain": 0.44668,
+          "duration": 1050
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Battle Cry/battle-cry-4.mp3",
+          "nativeDuration": 1585,
+          "meanDb": -14.3,
+          "peakDb": 0,
+          "gain": 0.5188,
+          "duration": 1585
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Battle Cry/battle-cry-5.mp3",
+          "nativeDuration": 1751,
+          "meanDb": -13.1,
+          "peakDb": 0,
+          "gain": 0.45186,
+          "duration": 1751
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Battle Cry/battle-cry-6.mp3",
+          "nativeDuration": 1632,
+          "meanDb": -15.1,
+          "peakDb": 0,
+          "gain": 0.56885,
+          "duration": 1632
+        }
+      ]
+    }
+  ],
+  "howl": [
+    {
+      "label": "Howl",
+      "role": "cast",
+      "candidates": [
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Animals/Wolf Howl/wolf-howl-1.mp3",
+          "nativeDuration": 6792,
+          "meanDb": -15.5,
+          "peakDb": -2.8,
+          "gain": 0.59566,
+          "duration": 4500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Animals/Wolf Howl/wolf-howl-2.mp3",
+          "nativeDuration": 6444,
+          "meanDb": -17.4,
+          "peakDb": -7,
+          "gain": 0.74131,
+          "duration": 4500
+        }
+      ]
+    }
+  ],
+  "growl": [
+    {
+      "label": "Growl",
+      "role": "cast",
+      "candidates": [
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Monsters/Growl/growl-1.mp3",
+          "nativeDuration": 2084,
+          "meanDb": -18.7,
+          "peakDb": -2.8,
+          "gain": 0.86099,
+          "duration": 2084
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Monsters/Growl/growl-2.mp3",
+          "nativeDuration": 1763,
+          "meanDb": -12.6,
+          "peakDb": -0.2,
+          "gain": 0.42658,
+          "duration": 1763
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Monsters/Growl/growl-3.mp3",
+          "nativeDuration": 2325,
+          "meanDb": -9.4,
+          "peakDb": 0,
+          "gain": 0.29512,
+          "duration": 2325
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Monsters/Growl/growl-4.mp3",
+          "nativeDuration": 3454,
+          "meanDb": -13.4,
+          "peakDb": 0,
+          "gain": 0.46774,
+          "duration": 3454
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Monsters/Growl/growl-5.mp3",
+          "nativeDuration": 2785,
+          "meanDb": -16.3,
+          "peakDb": -1.9,
+          "gain": 0.65313,
+          "duration": 2785
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Monsters/Growl/growl-6.mp3",
+          "nativeDuration": 9525,
+          "meanDb": -12.5,
+          "peakDb": 0,
+          "gain": 0.4217,
+          "duration": 4500
+        }
+      ]
+    }
+  ],
+  "wail": [
+    {
+      "label": "Eerie wail",
+      "role": "cast",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.creatures.shriek.void.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Horror Suspense 2/Impacts And Swooshes/Misc/Void Scream 001.ogg",
+          "nativeDuration": 6003,
+          "meanDb": -23.7,
+          "peakDb": -6.2,
+          "gain": 1,
+          "duration": 4500
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.creatures.shriek.void.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Horror Suspense 2/Impacts And Swooshes/Misc/Void Scream 002.ogg",
+          "nativeDuration": 6003,
+          "meanDb": -23.1,
+          "peakDb": -4.7,
+          "gain": 1,
+          "duration": 4500
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.creatures.shriek.void.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Horror Suspense 2/Impacts And Swooshes/Misc/Void Scream 003.ogg",
+          "nativeDuration": 5502,
+          "meanDb": -22.6,
+          "peakDb": -2.3,
+          "gain": 0.92257,
+          "duration": 4500
+        }
+      ]
+    }
+  ],
+  "spirit": [
+    {
+      "label": "Spirit energy",
+      "role": "effect",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.cast.ghostly.02.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Air/Ghostly/Ghost Breath A.ogg",
+          "nativeDuration": 3367,
+          "meanDb": -20.9,
+          "peakDb": -2.7,
+          "gain": 0.96605,
+          "duration": 3367
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.cast.ghostly.02.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Air/Ghostly/Ghost Breath B.ogg",
+          "nativeDuration": 3474,
+          "meanDb": -21,
+          "peakDb": -2.5,
+          "gain": 0.94406,
+          "duration": 3474
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.cast.ghostly.02.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Air/Ghostly/Ghost Breath C.ogg",
+          "nativeDuration": 3779,
+          "meanDb": -21.1,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 3779
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.cast.ghostly.02.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Air/Ghostly/Ghost Breath D.ogg",
+          "nativeDuration": 3683,
+          "meanDb": -21.4,
+          "peakDb": -2.8,
+          "gain": 0.97724,
+          "duration": 3683
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.cast.ghostly.02.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Air/Ghostly/Ghost Breath E.ogg",
+          "nativeDuration": 4031,
+          "meanDb": -22.3,
+          "peakDb": -3.5,
+          "gain": 1,
+          "duration": 4031
+        }
+      ]
+    }
+  ],
+  "gunshotAir": [
+    {
+      "label": "Shot fired into the air",
+      "role": "cast",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot A.ogg",
+          "nativeDuration": 1648,
+          "meanDb": -23.7,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 1648
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot B.ogg",
+          "nativeDuration": 1631,
+          "meanDb": -22.2,
+          "peakDb": -3.9,
+          "gain": 1,
+          "duration": 1631
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot C.ogg",
+          "nativeDuration": 1526,
+          "meanDb": -20.9,
+          "peakDb": -2.4,
+          "gain": 0.93325,
+          "duration": 1526
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot D.ogg",
+          "nativeDuration": 1431,
+          "meanDb": -21.3,
+          "peakDb": -3.3,
+          "gain": 1,
+          "duration": 1431
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot E.ogg",
+          "nativeDuration": 1538,
+          "meanDb": -22.1,
+          "peakDb": -3.2,
+          "gain": 1,
+          "duration": 1538
+        }
+      ]
+    }
+  ],
   "bomb-void": [
     {
       "label": "Bomb toss",
@@ -6048,7 +6366,7 @@ export const ABILITY_SOUND_PROFILES = {
       "anchorSlot": "accent"
     }
   ],
-  "enchanted-rapier-fire": [
+  "enchanted-rapier-brilliant": [
     {
       "label": "Rapier thrust",
       "role": "contact",
@@ -6166,484 +6484,38 @@ export const ABILITY_SOUND_PROFILES = {
       ]
     },
     {
-      "label": "Flame release",
+      "label": "Radiant light",
       "role": "impact",
       "candidates": [
         {
           "module": "ggg",
-          "key": "ggg-sfx.magic.fire.ignite.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Fire/Combustion.ogg",
-          "nativeDuration": 3851,
-          "meanDb": -20.1,
-          "peakDb": -1.7,
-          "gain": 0.86099,
-          "duration": 3851
+          "key": "ggg-sfx.magic.divine.light.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Light/Illuminate.ogg",
+          "nativeDuration": 4382,
+          "meanDb": -23.5,
+          "peakDb": -2.6,
+          "gain": 0.95499,
+          "duration": 4382
         },
         {
           "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact A.ogg",
-          "nativeDuration": 1817,
-          "meanDb": -22.1,
-          "peakDb": -0.7,
-          "gain": 0.76736,
-          "duration": 1817
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.01.02",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact B.ogg",
-          "nativeDuration": 1933,
-          "meanDb": -21.6,
-          "peakDb": -1.1,
-          "gain": 0.80353,
-          "duration": 1933
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.02.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short A.ogg",
-          "nativeDuration": 1091,
-          "meanDb": -20.7,
-          "peakDb": -0.9,
-          "gain": 0.78524,
-          "duration": 1091
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.02.02",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short B.ogg",
-          "nativeDuration": 1021,
-          "meanDb": -21.1,
-          "peakDb": -1.8,
-          "gain": 0.87096,
-          "duration": 1021
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.02.03",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short C.ogg",
-          "nativeDuration": 1579,
-          "meanDb": -21.9,
-          "peakDb": -0.9,
-          "gain": 0.78524,
-          "duration": 1579
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.cantrips.create-bonfire.v1.001",
-          "file": "modules/psfx/library/cantrips/create-bonfire/v1/create-bonfire-001.ogg",
-          "nativeDuration": 20000,
-          "meanDb": -29,
-          "peakDb": -7,
-          "gain": 1,
+          "key": "ggg-sfx.magic.divine.light.02.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Light/Holy Light.ogg",
+          "nativeDuration": 5404,
+          "meanDb": -22.7,
+          "peakDb": -2.9,
+          "gain": 0.98855,
           "duration": 4500
         },
         {
           "module": "psfx",
-          "key": "psfx.casting.fire-side.001",
-          "file": "modules/psfx/library/casting/fire-side/cast-fire-side-03.ogg",
-          "nativeDuration": 2009,
-          "meanDb": -14.6,
-          "peakDb": -1.7,
-          "gain": 0.53703,
-          "duration": 2009
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.casting.fire.001",
-          "file": "modules/psfx/library/casting/fire/cast-fire-03.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -14.9,
-          "peakDb": -2,
-          "gain": 0.5559,
-          "duration": 2500
-        }
-      ],
-      "anchorSlot": "accent"
-    }
-  ],
-  "enchanted-hammer-electricity": [
-    {
-      "label": "Hammer contact",
-      "role": "contact",
-      "candidates": [
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 001.ogg",
-          "nativeDuration": 958,
-          "meanDb": -19.9,
-          "peakDb": -1.9,
-          "gain": 0.88105,
-          "duration": 958
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.02",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 002.ogg",
-          "nativeDuration": 931,
-          "meanDb": -19.1,
-          "peakDb": -1.8,
-          "gain": 0.87096,
-          "duration": 931
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.03",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 003.ogg",
-          "nativeDuration": 923,
-          "meanDb": -20.5,
-          "peakDb": -1.9,
-          "gain": 0.88105,
-          "duration": 923
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.04",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 004.ogg",
-          "nativeDuration": 975,
-          "meanDb": -19.1,
-          "peakDb": -2,
-          "gain": 0.89125,
-          "duration": 975
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.05",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 005.ogg",
-          "nativeDuration": 981,
-          "meanDb": -20,
-          "peakDb": -1.8,
-          "gain": 0.87096,
-          "duration": 981
-        }
-      ]
-    },
-    {
-      "label": "Electric discharge",
-      "role": "impact",
-      "candidates": [
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.electricity.impact.general.01.01",
-          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 1.ogg",
-          "nativeDuration": 2109,
-          "meanDb": -21.8,
-          "peakDb": -5.7,
-          "gain": 1,
-          "duration": 2109
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.electricity.impact.general.01.02",
-          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 2.ogg",
-          "nativeDuration": 1517,
-          "meanDb": -24,
-          "peakDb": -6.4,
-          "gain": 1,
-          "duration": 1517
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.electricity.impact.general.01.03",
-          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 3.ogg",
-          "nativeDuration": 1655,
-          "meanDb": -22.7,
-          "peakDb": -6,
-          "gain": 1,
-          "duration": 1655
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.electricity.zap.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Simple Magic Sound FX Pack Vol. 3/Electric/Electric Zap.ogg",
-          "nativeDuration": 778,
-          "meanDb": -24.3,
-          "peakDb": -3.7,
-          "gain": 1,
-          "duration": 778
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-00.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.7,
-          "peakDb": -4.6,
-          "gain": 1,
-          "duration": 2500
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-01.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.6,
-          "peakDb": -3.5,
-          "gain": 1,
-          "duration": 2500
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-02.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.2,
-          "peakDb": -0.4,
-          "gain": 0.74131,
-          "duration": 2500
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-03.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.9,
-          "peakDb": -3,
-          "gain": 1,
-          "duration": 2500
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-04.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.7,
-          "peakDb": -4.1,
-          "gain": 1,
-          "duration": 2500
-        },
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-1.mp3",
-          "nativeDuration": 3000,
-          "meanDb": -15.4,
-          "peakDb": -0.1,
-          "gain": 0.58884,
-          "duration": 3000
-        },
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-2.mp3",
-          "nativeDuration": 3862,
-          "meanDb": -16.2,
-          "peakDb": 0,
-          "gain": 0.64565,
-          "duration": 3862
-        },
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-3.mp3",
-          "nativeDuration": 3862,
-          "meanDb": -18.8,
-          "peakDb": 0,
-          "gain": 0.70795,
-          "duration": 3862
-        },
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-4.mp3",
-          "nativeDuration": 3862,
-          "meanDb": -17.5,
-          "peakDb": 0,
-          "gain": 0.70795,
-          "duration": 3862
-        }
-      ],
-      "anchorSlot": "accent"
-    }
-  ],
-  "enchanted-thrown-electricity": [
-    {
-      "label": "Thrown release",
-      "role": "release",
-      "candidates": [
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.thrown.general.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Medieval Fantasy Sound FX Pack Vol. 2/Whooshes/General Throw A.ogg",
-          "nativeDuration": 757,
-          "meanDb": -22.5,
-          "peakDb": -3.3,
-          "gain": 1,
-          "duration": 757
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.thrown.general.01.02",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Medieval Fantasy Sound FX Pack Vol. 2/Whooshes/General Throw B.ogg",
-          "nativeDuration": 894,
-          "meanDb": -24.8,
-          "peakDb": -2.7,
-          "gain": 0.96605,
-          "duration": 894
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.thrown.general.01.03",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Medieval Fantasy Sound FX Pack Vol. 2/Whooshes/General Throw C.ogg",
-          "nativeDuration": 960,
-          "meanDb": -24,
-          "peakDb": -2.1,
-          "gain": 0.90157,
-          "duration": 960
-        }
-      ]
-    },
-    {
-      "label": "Thrown contact",
-      "role": "impact",
-      "candidates": [
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Throw Hit/throw-hit-1.mp3",
-          "nativeDuration": 1041,
-          "meanDb": -24.6,
-          "peakDb": -0.1,
-          "gain": 0.71614,
-          "duration": 1041
-        }
-      ]
-    },
-    {
-      "label": "Electric discharge",
-      "role": "impact",
-      "candidates": [
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.electricity.impact.general.01.01",
-          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 1.ogg",
-          "nativeDuration": 2109,
-          "meanDb": -21.8,
-          "peakDb": -5.7,
-          "gain": 1,
-          "duration": 2109
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.electricity.impact.general.01.02",
-          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 2.ogg",
-          "nativeDuration": 1517,
-          "meanDb": -24,
-          "peakDb": -6.4,
-          "gain": 1,
-          "duration": 1517
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.electricity.impact.general.01.03",
-          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 3.ogg",
-          "nativeDuration": 1655,
-          "meanDb": -22.7,
-          "peakDb": -6,
-          "gain": 1,
-          "duration": 1655
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.electricity.zap.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Simple Magic Sound FX Pack Vol. 3/Electric/Electric Zap.ogg",
-          "nativeDuration": 778,
-          "meanDb": -24.3,
-          "peakDb": -3.7,
-          "gain": 1,
-          "duration": 778
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-00.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.7,
-          "peakDb": -4.6,
-          "gain": 1,
-          "duration": 2500
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-01.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.6,
-          "peakDb": -3.5,
-          "gain": 1,
-          "duration": 2500
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-02.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.2,
-          "peakDb": -0.4,
-          "gain": 0.74131,
-          "duration": 2500
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-03.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.9,
-          "peakDb": -3,
-          "gain": 1,
-          "duration": 2500
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.impacts.magicaleffects.lightning",
-          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-04.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -32.7,
-          "peakDb": -4.1,
-          "gain": 1,
-          "duration": 2500
-        },
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-1.mp3",
-          "nativeDuration": 3000,
-          "meanDb": -15.4,
-          "peakDb": -0.1,
-          "gain": 0.58884,
-          "duration": 3000
-        },
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-2.mp3",
-          "nativeDuration": 3862,
-          "meanDb": -16.2,
-          "peakDb": 0,
-          "gain": 0.64565,
-          "duration": 3862
-        },
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-3.mp3",
-          "nativeDuration": 3862,
-          "meanDb": -18.8,
-          "peakDb": 0,
-          "gain": 0.70795,
-          "duration": 3862
-        },
-        {
-          "module": "soundfxlibrary",
-          "key": "",
-          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-4.mp3",
-          "nativeDuration": 3862,
-          "meanDb": -17.5,
-          "peakDb": 0,
-          "gain": 0.70795,
-          "duration": 3862
+          "key": "psfx.cantrips.sacred-flame.v1.001.caster",
+          "file": "modules/psfx/library/cantrips/sacred-flame/v1/sacred-flame-caster-01.ogg",
+          "nativeDuration": 5000,
+          "meanDb": -14.1,
+          "peakDb": -2.6,
+          "gain": 0.50699,
+          "duration": 4500
         }
       ],
       "anchorSlot": "accent"
@@ -6860,116 +6732,20 @@ export const ABILITY_SOUND_PROFILES = {
       "anchorSlot": "accent"
     }
   ],
-  "enchanted-firearm-acid": [
+  "enchanted-blowgun-acid": [
     {
-      "label": "Black-powder discharge",
+      "label": "Dart release",
       "role": "release",
       "candidates": [
         {
           "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot A.ogg",
-          "nativeDuration": 1648,
-          "meanDb": -23.7,
-          "peakDb": -5.1,
-          "gain": 1,
-          "duration": 1648
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.02",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot B.ogg",
-          "nativeDuration": 1631,
-          "meanDb": -22.2,
-          "peakDb": -3.9,
-          "gain": 1,
-          "duration": 1631
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.03",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot C.ogg",
-          "nativeDuration": 1526,
-          "meanDb": -20.9,
-          "peakDb": -2.4,
-          "gain": 0.93325,
-          "duration": 1526
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.04",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot D.ogg",
-          "nativeDuration": 1431,
-          "meanDb": -21.3,
-          "peakDb": -3.3,
-          "gain": 1,
-          "duration": 1431
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.old_timey.strike.01.05",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Wild West Sound FX Pack Vol. 1/Weapons/Old Timey Gunshot E.ogg",
-          "nativeDuration": 1538,
-          "meanDb": -22.1,
-          "peakDb": -3.2,
-          "gain": 1,
-          "duration": 1538
-        }
-      ]
-    },
-    {
-      "label": "Round contact",
-      "role": "impact",
-      "candidates": [
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.flintlock_pistol.impact.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Firearms/Flintlock Pistol/Flintlock Pistol Impact 001.ogg",
-          "nativeDuration": 621,
-          "meanDb": -21,
-          "peakDb": -0.3,
-          "gain": 0.73282,
-          "duration": 621
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.flintlock_pistol.impact.01.02",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Firearms/Flintlock Pistol/Flintlock Pistol Impact 002.ogg",
-          "nativeDuration": 589,
-          "meanDb": -21.8,
-          "peakDb": -2.3,
-          "gain": 0.92257,
-          "duration": 589
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.flintlock_pistol.impact.01.03",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Firearms/Flintlock Pistol/Flintlock Pistol Impact 003.ogg",
-          "nativeDuration": 661,
-          "meanDb": -21.3,
-          "peakDb": -1.9,
-          "gain": 0.88105,
-          "duration": 661
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.flintlock_pistol.impact.01.04",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Firearms/Flintlock Pistol/Flintlock Pistol Impact 004.ogg",
-          "nativeDuration": 632,
-          "meanDb": -22.5,
-          "peakDb": -2.3,
-          "gain": 0.92257,
-          "duration": 632
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.ranged.firearm.flintlock_pistol.impact.01.05",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Firearms/Flintlock Pistol/Flintlock Pistol Impact 005.ogg",
-          "nativeDuration": 656,
-          "meanDb": -22.5,
-          "peakDb": -3.5,
-          "gain": 1,
-          "duration": 656
+          "key": "ggg-sfx.ranged.blowgun.strike.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Air/Whooshes/Air Whoosh Tiny D.ogg",
+          "nativeDuration": 699,
+          "meanDb": -21.6,
+          "peakDb": -2.6,
+          "gain": 0.95499,
+          "duration": 699
         }
       ]
     },
@@ -9575,7 +9351,7 @@ export const ABILITY_SOUND_PROFILES = {
       "anchorSlot": "accent"
     }
   ],
-  "enchanted-spear-fire": [
+  "enchanted-spear-brilliant": [
     {
       "label": "Spear contact",
       "role": "contact",
@@ -9693,98 +9469,38 @@ export const ABILITY_SOUND_PROFILES = {
       ]
     },
     {
-      "label": "Flame release",
+      "label": "Radiant light",
       "role": "impact",
       "candidates": [
         {
           "module": "ggg",
-          "key": "ggg-sfx.magic.fire.ignite.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Fire/Combustion.ogg",
-          "nativeDuration": 3851,
-          "meanDb": -20.1,
-          "peakDb": -1.7,
-          "gain": 0.86099,
-          "duration": 3851
+          "key": "ggg-sfx.magic.divine.light.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Light/Illuminate.ogg",
+          "nativeDuration": 4382,
+          "meanDb": -23.5,
+          "peakDb": -2.6,
+          "gain": 0.95499,
+          "duration": 4382
         },
         {
           "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.01.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact A.ogg",
-          "nativeDuration": 1817,
-          "meanDb": -22.1,
-          "peakDb": -0.7,
-          "gain": 0.76736,
-          "duration": 1817
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.01.02",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact B.ogg",
-          "nativeDuration": 1933,
-          "meanDb": -21.6,
-          "peakDb": -1.1,
-          "gain": 0.80353,
-          "duration": 1933
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.02.01",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short A.ogg",
-          "nativeDuration": 1091,
-          "meanDb": -20.7,
-          "peakDb": -0.9,
-          "gain": 0.78524,
-          "duration": 1091
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.02.02",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short B.ogg",
-          "nativeDuration": 1021,
-          "meanDb": -21.1,
-          "peakDb": -1.8,
-          "gain": 0.87096,
-          "duration": 1021
-        },
-        {
-          "module": "ggg",
-          "key": "ggg-sfx.magic.fire.impact.general.02.03",
-          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short C.ogg",
-          "nativeDuration": 1579,
-          "meanDb": -21.9,
-          "peakDb": -0.9,
-          "gain": 0.78524,
-          "duration": 1579
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.cantrips.create-bonfire.v1.001",
-          "file": "modules/psfx/library/cantrips/create-bonfire/v1/create-bonfire-001.ogg",
-          "nativeDuration": 20000,
-          "meanDb": -29,
-          "peakDb": -7,
-          "gain": 1,
+          "key": "ggg-sfx.magic.divine.light.02.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Light/Holy Light.ogg",
+          "nativeDuration": 5404,
+          "meanDb": -22.7,
+          "peakDb": -2.9,
+          "gain": 0.98855,
           "duration": 4500
         },
         {
           "module": "psfx",
-          "key": "psfx.casting.fire-side.001",
-          "file": "modules/psfx/library/casting/fire-side/cast-fire-side-03.ogg",
-          "nativeDuration": 2009,
-          "meanDb": -14.6,
-          "peakDb": -1.7,
-          "gain": 0.53703,
-          "duration": 2009
-        },
-        {
-          "module": "psfx",
-          "key": "psfx.casting.fire.001",
-          "file": "modules/psfx/library/casting/fire/cast-fire-03.ogg",
-          "nativeDuration": 2500,
-          "meanDb": -14.9,
-          "peakDb": -2,
-          "gain": 0.5559,
-          "duration": 2500
+          "key": "psfx.cantrips.sacred-flame.v1.001.caster",
+          "file": "modules/psfx/library/cantrips/sacred-flame/v1/sacred-flame-caster-01.ogg",
+          "nativeDuration": 5000,
+          "meanDb": -14.1,
+          "peakDb": -2.6,
+          "gain": 0.50699,
+          "duration": 4500
         }
       ],
       "anchorSlot": "accent"
@@ -11047,6 +10763,376 @@ export const ABILITY_SOUND_PROFILES = {
       "anchorSlot": "accent"
     }
   ],
+  "enchanted-sword-brilliant": [
+    {
+      "label": "Blade contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 001.ogg",
+          "nativeDuration": 609,
+          "meanDb": -23.9,
+          "peakDb": -1.6,
+          "gain": 0.85114,
+          "duration": 609
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 002.ogg",
+          "nativeDuration": 609,
+          "meanDb": -21.2,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 609
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 003.ogg",
+          "nativeDuration": 740,
+          "meanDb": -23.6,
+          "peakDb": -2.1,
+          "gain": 0.90157,
+          "duration": 740
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 004.ogg",
+          "nativeDuration": 557,
+          "meanDb": -21.9,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 557
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 005.ogg",
+          "nativeDuration": 720,
+          "meanDb": -23.9,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 720
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-00.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -29.2,
+          "peakDb": -2.1,
+          "gain": 0.90157,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-01.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -26.7,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-02.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -25.5,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-03.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.1,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-04.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.6,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-05.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.4,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        }
+      ]
+    },
+    {
+      "label": "Radiant light",
+      "role": "impact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.divine.light.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Light/Illuminate.ogg",
+          "nativeDuration": 4382,
+          "meanDb": -23.5,
+          "peakDb": -2.6,
+          "gain": 0.95499,
+          "duration": 4382
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.divine.light.02.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Light/Holy Light.ogg",
+          "nativeDuration": 5404,
+          "meanDb": -22.7,
+          "peakDb": -2.9,
+          "gain": 0.98855,
+          "duration": 4500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.cantrips.sacred-flame.v1.001.caster",
+          "file": "modules/psfx/library/cantrips/sacred-flame/v1/sacred-flame-caster-01.ogg",
+          "nativeDuration": 5000,
+          "meanDb": -14.1,
+          "peakDb": -2.6,
+          "gain": 0.50699,
+          "duration": 4500
+        }
+      ],
+      "anchorSlot": "accent"
+    }
+  ],
+  "enchanted-spear-fire": [
+    {
+      "label": "Spear contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.pierce.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Pierce 001.ogg",
+          "nativeDuration": 470,
+          "meanDb": -19.2,
+          "peakDb": -2.4,
+          "gain": 0.91201,
+          "duration": 470
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.pierce.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Pierce 002.ogg",
+          "nativeDuration": 461,
+          "meanDb": -18.7,
+          "peakDb": -3.1,
+          "gain": 0.86099,
+          "duration": 461
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.pierce.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Pierce 003.ogg",
+          "nativeDuration": 412,
+          "meanDb": -17.8,
+          "peakDb": -1.5,
+          "gain": 0.77625,
+          "duration": 412
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.pierce.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Pierce 004.ogg",
+          "nativeDuration": 493,
+          "meanDb": -19.5,
+          "peakDb": -2.9,
+          "gain": 0.94406,
+          "duration": 493
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.pierce.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Pierce 005.ogg",
+          "nativeDuration": 696,
+          "meanDb": -20.8,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 696
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-00.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -29.9,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-01.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.3,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-02.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.3,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-03.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.9,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-04.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.5,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-05.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.3,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3500
+        }
+      ]
+    },
+    {
+      "label": "Flame release",
+      "role": "impact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.ignite.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Fire/Combustion.ogg",
+          "nativeDuration": 3851,
+          "meanDb": -20.1,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 3851
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact A.ogg",
+          "nativeDuration": 1817,
+          "meanDb": -22.1,
+          "peakDb": -0.7,
+          "gain": 0.76736,
+          "duration": 1817
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact B.ogg",
+          "nativeDuration": 1933,
+          "meanDb": -21.6,
+          "peakDb": -1.1,
+          "gain": 0.80353,
+          "duration": 1933
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.02.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short A.ogg",
+          "nativeDuration": 1091,
+          "meanDb": -20.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 1091
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.02.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short B.ogg",
+          "nativeDuration": 1021,
+          "meanDb": -21.1,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 1021
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.02.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short C.ogg",
+          "nativeDuration": 1579,
+          "meanDb": -21.9,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 1579
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.cantrips.create-bonfire.v1.001",
+          "file": "modules/psfx/library/cantrips/create-bonfire/v1/create-bonfire-001.ogg",
+          "nativeDuration": 20000,
+          "meanDb": -29,
+          "peakDb": -7,
+          "gain": 1,
+          "duration": 4500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.casting.fire-side.001",
+          "file": "modules/psfx/library/casting/fire-side/cast-fire-side-03.ogg",
+          "nativeDuration": 2009,
+          "meanDb": -14.6,
+          "peakDb": -1.7,
+          "gain": 0.53703,
+          "duration": 2009
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.casting.fire.001",
+          "file": "modules/psfx/library/casting/fire/cast-fire-03.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -14.9,
+          "peakDb": -2,
+          "gain": 0.5559,
+          "duration": 2500
+        }
+      ],
+      "anchorSlot": "accent"
+    }
+  ],
   "enchanted-firearm-poison": [
     {
       "label": "Black-powder discharge",
@@ -11352,6 +11438,201 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        }
+      ]
+    },
+    {
+      "label": "Electric discharge",
+      "role": "impact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.electricity.impact.general.01.01",
+          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 1.ogg",
+          "nativeDuration": 2109,
+          "meanDb": -21.8,
+          "peakDb": -5.7,
+          "gain": 1,
+          "duration": 2109
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.electricity.impact.general.01.02",
+          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 2.ogg",
+          "nativeDuration": 1517,
+          "meanDb": -24,
+          "peakDb": -6.4,
+          "gain": 1,
+          "duration": 1517
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.electricity.impact.general.01.03",
+          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 3.ogg",
+          "nativeDuration": 1655,
+          "meanDb": -22.7,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 1655
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.electricity.zap.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Simple Magic Sound FX Pack Vol. 3/Electric/Electric Zap.ogg",
+          "nativeDuration": 778,
+          "meanDb": -24.3,
+          "peakDb": -3.7,
+          "gain": 1,
+          "duration": 778
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-00.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.7,
+          "peakDb": -4.6,
+          "gain": 1,
+          "duration": 2500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-01.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.6,
+          "peakDb": -3.5,
+          "gain": 1,
+          "duration": 2500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-02.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.2,
+          "peakDb": -0.4,
+          "gain": 0.74131,
+          "duration": 2500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-03.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.9,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 2500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-04.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.7,
+          "peakDb": -4.1,
+          "gain": 1,
+          "duration": 2500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-1.mp3",
+          "nativeDuration": 3000,
+          "meanDb": -15.4,
+          "peakDb": -0.1,
+          "gain": 0.58884,
+          "duration": 3000
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-2.mp3",
+          "nativeDuration": 3862,
+          "meanDb": -16.2,
+          "peakDb": 0,
+          "gain": 0.64565,
+          "duration": 3862
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-3.mp3",
+          "nativeDuration": 3862,
+          "meanDb": -18.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 3862
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-4.mp3",
+          "nativeDuration": 3862,
+          "meanDb": -17.5,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 3862
+        }
+      ],
+      "anchorSlot": "accent"
+    }
+  ],
+  "enchanted-hammer-electricity": [
+    {
+      "label": "Hammer contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 001.ogg",
+          "nativeDuration": 958,
+          "meanDb": -19.9,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 958
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 002.ogg",
+          "nativeDuration": 931,
+          "meanDb": -19.1,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 931
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 003.ogg",
+          "nativeDuration": 923,
+          "meanDb": -20.5,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 923
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 004.ogg",
+          "nativeDuration": 975,
+          "meanDb": -19.1,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 975
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.bludgeoning.strike.two-hand.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blunt/Strike Blunt Large 005.ogg",
+          "nativeDuration": 981,
+          "meanDb": -20,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 981
         }
       ]
     },
@@ -12048,6 +12329,161 @@ export const ABILITY_SOUND_PROFILES = {
       "anchorSlot": "accent"
     }
   ],
+  "enchanted-polearmBlade-brilliant": [
+    {
+      "label": "Polearm blade contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.blade.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Blade 001.ogg",
+          "nativeDuration": 365,
+          "meanDb": -17.7,
+          "peakDb": -1.6,
+          "gain": 0.76736,
+          "duration": 365
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.blade.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Blade 002.ogg",
+          "nativeDuration": 351,
+          "meanDb": -17.7,
+          "peakDb": -2.2,
+          "gain": 0.76736,
+          "duration": 351
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.blade.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Blade 003.ogg",
+          "nativeDuration": 409,
+          "meanDb": -20.2,
+          "peakDb": -1.2,
+          "gain": 0.81283,
+          "duration": 409
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.blade.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Blade 004.ogg",
+          "nativeDuration": 421,
+          "meanDb": -18.3,
+          "peakDb": -1.5,
+          "gain": 0.82224,
+          "duration": 421
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.polearm.strike.01.blade.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Polearm/Strike Wooden Blade 005.ogg",
+          "nativeDuration": 522,
+          "meanDb": -19.5,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 522
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-00.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -29.9,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-01.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.3,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-02.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.3,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-03.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.9,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-04.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.5,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.spear.v1",
+          "file": "modules/psfx/library/weapon-attacks/spear/v1/spear-001-05.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.3,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3500
+        }
+      ]
+    },
+    {
+      "label": "Radiant light",
+      "role": "impact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.divine.light.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Light/Illuminate.ogg",
+          "nativeDuration": 4382,
+          "meanDb": -23.5,
+          "peakDb": -2.6,
+          "gain": 0.95499,
+          "duration": 4382
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.divine.light.02.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Light/Holy Light.ogg",
+          "nativeDuration": 5404,
+          "meanDb": -22.7,
+          "peakDb": -2.9,
+          "gain": 0.98855,
+          "duration": 4500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.cantrips.sacred-flame.v1.001.caster",
+          "file": "modules/psfx/library/cantrips/sacred-flame/v1/sacred-flame-caster-01.ogg",
+          "nativeDuration": 5000,
+          "meanDb": -14.1,
+          "peakDb": -2.6,
+          "gain": 0.50699,
+          "duration": 4500
+        }
+      ],
+      "anchorSlot": "accent"
+    }
+  ],
   "restorativeStrike": [
     {
       "label": "Healing glow",
@@ -12241,6 +12677,886 @@ export const ABILITY_SOUND_PROFILES = {
         }
       ]
     }
+  ],
+  "feat-sword-fire": [
+    {
+      "label": "Blade contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 001.ogg",
+          "nativeDuration": 609,
+          "meanDb": -23.9,
+          "peakDb": -1.6,
+          "gain": 0.85114,
+          "duration": 609
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 002.ogg",
+          "nativeDuration": 609,
+          "meanDb": -21.2,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 609
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 003.ogg",
+          "nativeDuration": 740,
+          "meanDb": -23.6,
+          "peakDb": -2.1,
+          "gain": 0.90157,
+          "duration": 740
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 004.ogg",
+          "nativeDuration": 557,
+          "meanDb": -21.9,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 557
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 005.ogg",
+          "nativeDuration": 720,
+          "meanDb": -23.9,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 720
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-00.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -29.2,
+          "peakDb": -2.1,
+          "gain": 0.90157,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-01.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -26.7,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-02.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -25.5,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-03.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.1,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-04.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.6,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-05.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.4,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        }
+      ]
+    },
+    {
+      "label": "Flame release",
+      "role": "effect",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.ignite.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Fire/Combustion.ogg",
+          "nativeDuration": 3851,
+          "meanDb": -20.1,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 3851
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact A.ogg",
+          "nativeDuration": 1817,
+          "meanDb": -22.1,
+          "peakDb": -0.7,
+          "gain": 0.76736,
+          "duration": 1817
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact B.ogg",
+          "nativeDuration": 1933,
+          "meanDb": -21.6,
+          "peakDb": -1.1,
+          "gain": 0.80353,
+          "duration": 1933
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.02.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short A.ogg",
+          "nativeDuration": 1091,
+          "meanDb": -20.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 1091
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.02.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short B.ogg",
+          "nativeDuration": 1021,
+          "meanDb": -21.1,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 1021
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.fire.impact.general.02.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Fire/Fire Impact Short C.ogg",
+          "nativeDuration": 1579,
+          "meanDb": -21.9,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 1579
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.cantrips.create-bonfire.v1.001",
+          "file": "modules/psfx/library/cantrips/create-bonfire/v1/create-bonfire-001.ogg",
+          "nativeDuration": 20000,
+          "meanDb": -29,
+          "peakDb": -7,
+          "gain": 1,
+          "duration": 4500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.casting.fire-side.001",
+          "file": "modules/psfx/library/casting/fire-side/cast-fire-side-03.ogg",
+          "nativeDuration": 2009,
+          "meanDb": -14.6,
+          "peakDb": -1.7,
+          "gain": 0.53703,
+          "duration": 2009
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.casting.fire.001",
+          "file": "modules/psfx/library/casting/fire/cast-fire-03.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -14.9,
+          "peakDb": -2,
+          "gain": 0.5559,
+          "duration": 2500
+        }
+      ]
+    }
+  ],
+  "feat-unarmed-electric": [
+    {
+      "label": "Unarmed contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium A.ogg",
+          "nativeDuration": 432,
+          "meanDb": -20.3,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 432
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium B.ogg",
+          "nativeDuration": 354,
+          "meanDb": -20.3,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 354
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium C.ogg",
+          "nativeDuration": 357,
+          "meanDb": -19.2,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 357
+        }
+      ]
+    },
+    {
+      "label": "Electric discharge",
+      "role": "effect",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.electricity.impact.general.01.01",
+          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 1.ogg",
+          "nativeDuration": 2109,
+          "meanDb": -21.8,
+          "peakDb": -5.7,
+          "gain": 1,
+          "duration": 2109
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.electricity.impact.general.01.02",
+          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 2.ogg",
+          "nativeDuration": 1517,
+          "meanDb": -24,
+          "peakDb": -6.4,
+          "gain": 1,
+          "duration": 1517
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.electricity.impact.general.01.03",
+          "file": "modules/ggg/assets/sounds/KhronStudio/Elemental Spell Vol 1/Lighting_Hits 3.ogg",
+          "nativeDuration": 1655,
+          "meanDb": -22.7,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 1655
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.electricity.zap.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Simple Magic Sound FX Pack Vol. 3/Electric/Electric Zap.ogg",
+          "nativeDuration": 778,
+          "meanDb": -24.3,
+          "peakDb": -3.7,
+          "gain": 1,
+          "duration": 778
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-00.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.7,
+          "peakDb": -4.6,
+          "gain": 1,
+          "duration": 2500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-01.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.6,
+          "peakDb": -3.5,
+          "gain": 1,
+          "duration": 2500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-02.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.2,
+          "peakDb": -0.4,
+          "gain": 0.74131,
+          "duration": 2500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-03.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.9,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 2500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.lightning",
+          "file": "modules/psfx/library/impacts/magicaleffects/lightning/meleeattack-impacts-magicaleffects-lightning-04.ogg",
+          "nativeDuration": 2500,
+          "meanDb": -32.7,
+          "peakDb": -4.1,
+          "gain": 1,
+          "duration": 2500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-1.mp3",
+          "nativeDuration": 3000,
+          "meanDb": -15.4,
+          "peakDb": -0.1,
+          "gain": 0.58884,
+          "duration": 3000
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-2.mp3",
+          "nativeDuration": 3862,
+          "meanDb": -16.2,
+          "peakDb": 0,
+          "gain": 0.64565,
+          "duration": 3862
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-3.mp3",
+          "nativeDuration": 3862,
+          "meanDb": -18.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 3862
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Spell Impact Lightning/spell-impact-lightning-4.mp3",
+          "nativeDuration": 3862,
+          "meanDb": -17.5,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 3862
+        }
+      ]
+    }
+  ],
+  "feat-unarmed-water": [
+    {
+      "label": "Unarmed contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium A.ogg",
+          "nativeDuration": 432,
+          "meanDb": -20.3,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 432
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium B.ogg",
+          "nativeDuration": 354,
+          "meanDb": -20.3,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 354
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium C.ogg",
+          "nativeDuration": 357,
+          "meanDb": -19.2,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 357
+        }
+      ]
+    },
+    {
+      "label": "Water surge",
+      "role": "effect",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.water.impact.general.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Water/Water Impact A.ogg",
+          "nativeDuration": 1056,
+          "meanDb": -20.9,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 1056
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.water.impact.general.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Water/Water Impact D.ogg",
+          "nativeDuration": 1033,
+          "meanDb": -22.5,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 1033
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.water.impact.general.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Water/Water Impact E.ogg",
+          "nativeDuration": 1274,
+          "meanDb": -22.5,
+          "peakDb": -0.7,
+          "gain": 0.76736,
+          "duration": 1274
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.water.impact.general.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Water/Water Impact F.ogg",
+          "nativeDuration": 1039,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 1039
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.water.impact.general.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Water/Water Impact H.ogg",
+          "nativeDuration": 1048,
+          "meanDb": -20.9,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 1048
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.water.impact.general.01.06",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Modular Magic Sound FX Pack Vol. 1/Water/Water Impact I.ogg",
+          "nativeDuration": 734,
+          "meanDb": -18.3,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 734
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.casting.water.001",
+          "file": "modules/psfx/library/casting/water/cast-water-03.ogg",
+          "nativeDuration": 5000,
+          "meanDb": -15.3,
+          "peakDb": -3.3,
+          "gain": 0.5821,
+          "duration": 4500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Water Splash/water-splash-1.mp3",
+          "nativeDuration": 2026,
+          "meanDb": -15.8,
+          "peakDb": 0,
+          "gain": 0.6166,
+          "duration": 2026
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Water Splash/water-splash-2.mp3",
+          "nativeDuration": 2521,
+          "meanDb": -29.4,
+          "peakDb": -0.1,
+          "gain": 0.71614,
+          "duration": 2521
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Water Splash/water-splash-3.mp3",
+          "nativeDuration": 2395,
+          "meanDb": -21.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 2395
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Water Splash/water-splash-4.mp3",
+          "nativeDuration": 2551,
+          "meanDb": -19.9,
+          "peakDb": -1.6,
+          "gain": 0.85114,
+          "duration": 2551
+        }
+      ]
+    }
+  ],
+  "feat-unarmed-cold": [
+    {
+      "label": "Unarmed contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium A.ogg",
+          "nativeDuration": 432,
+          "meanDb": -20.3,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 432
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium B.ogg",
+          "nativeDuration": 354,
+          "meanDb": -20.3,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 354
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.unarmed.fist.strike.01.medium.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Foley Impacts Vol. 1/Punches/Punch Medium C.ogg",
+          "nativeDuration": 357,
+          "meanDb": -19.2,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 357
+        }
+      ]
+    },
+    {
+      "label": "Ice forms",
+      "role": "effect",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.ice.freeze.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Ice/Icy Veins.ogg",
+          "nativeDuration": 4081,
+          "meanDb": -25.1,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 4081
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.ice.freeze.02.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Magic/Ice/Frozen Echo.ogg",
+          "nativeDuration": 2467,
+          "meanDb": -25.3,
+          "peakDb": -2.8,
+          "gain": 0.97724,
+          "duration": 2467
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.ice.freeze.03.01",
+          "file": "modules/ggg/assets/sounds/TomMusic/FreeFantasySFX/Spells/Ice Freeze 1.ogg",
+          "nativeDuration": 831,
+          "meanDb": -24.4,
+          "peakDb": -4.3,
+          "gain": 1,
+          "duration": 831
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.ice.freeze.03.02",
+          "file": "modules/ggg/assets/sounds/TomMusic/FreeFantasySFX/Spells/Ice Freeze 2.ogg",
+          "nativeDuration": 811,
+          "meanDb": -27.4,
+          "peakDb": -6.1,
+          "gain": 1,
+          "duration": 811
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.ice.freeze.04.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Freeze 001.ogg",
+          "nativeDuration": 2005,
+          "meanDb": -25.7,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 2005
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.ice.freeze.04.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Freeze 002.ogg",
+          "nativeDuration": 10010,
+          "meanDb": -26.5,
+          "peakDb": -4.1,
+          "gain": 1,
+          "duration": 4500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.magicaleffects.cold",
+          "file": "modules/psfx/library/impacts/magicaleffects/cold/meleeattack-impacts-magicaleffects-cold-00.ogg",
+          "nativeDuration": 5000,
+          "meanDb": -32.8,
+          "peakDb": -1.4,
+          "gain": 0.83176,
+          "duration": 4500
+        }
+      ]
+    }
+  ],
+  "feat-sword-metal": [
+    {
+      "label": "Blade contact",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 001.ogg",
+          "nativeDuration": 609,
+          "meanDb": -23.9,
+          "peakDb": -1.6,
+          "gain": 0.85114,
+          "duration": 609
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 002.ogg",
+          "nativeDuration": 609,
+          "meanDb": -21.2,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 609
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 003.ogg",
+          "nativeDuration": 740,
+          "meanDb": -23.6,
+          "peakDb": -2.1,
+          "gain": 0.90157,
+          "duration": 740
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 004.ogg",
+          "nativeDuration": 557,
+          "meanDb": -21.9,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 557
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.strike.shortsword.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Strike Blade Medium 005.ogg",
+          "nativeDuration": 720,
+          "meanDb": -23.9,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 720
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-00.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -29.2,
+          "peakDb": -2.1,
+          "gain": 0.90157,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-01.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -26.7,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-02.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -25.5,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-03.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.1,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-04.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.6,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-attacks.sword.v1",
+          "file": "modules/psfx/library/weapon-attacks/sword/v1/sword-001-05.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -27.4,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 3500
+        }
+      ]
+    },
+    {
+      "label": "Metal rings",
+      "role": "effect",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.metal.impact.anvil.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Motion and Impacts Sound FX Pack Vol. 2/Impacts/Impact Anvil 001.ogg",
+          "nativeDuration": 4008,
+          "meanDb": -21.6,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 4008
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.metal.impact.anvil.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Motion and Impacts Sound FX Pack Vol. 2/Impacts/Impact Anvil 002.ogg",
+          "nativeDuration": 4011,
+          "meanDb": -21.2,
+          "peakDb": -1.7,
+          "gain": 0.86099,
+          "duration": 4011
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.metal.impact.anvil.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Motion and Impacts Sound FX Pack Vol. 2/Impacts/Impact Anvil 003.ogg",
+          "nativeDuration": 4011,
+          "meanDb": -21.4,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 4011
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.metal.impact.anvil.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Motion and Impacts Sound FX Pack Vol. 2/Impacts/Impact Anvil 004.ogg",
+          "nativeDuration": 4023,
+          "meanDb": -21.6,
+          "peakDb": -1,
+          "gain": 0.79433,
+          "duration": 4023
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-1.mp3",
+          "nativeDuration": 351,
+          "meanDb": -23.6,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 351
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-10.mp3",
+          "nativeDuration": 301,
+          "meanDb": -22.8,
+          "peakDb": -5.3,
+          "gain": 1,
+          "duration": 301
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-11.mp3",
+          "nativeDuration": 1007,
+          "meanDb": -12.7,
+          "peakDb": 0,
+          "gain": 0.43152,
+          "duration": 1007
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-12.mp3",
+          "nativeDuration": 451,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 451
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-3.mp3",
+          "nativeDuration": 449,
+          "meanDb": -21.9,
+          "peakDb": -1,
+          "gain": 0.79433,
+          "duration": 449
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-4.mp3",
+          "nativeDuration": 359,
+          "meanDb": -22.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 359
+        }
+      ]
+    }
   ]
 };
 export const FEAT_SOUND_DESIGNS = {
@@ -12371,13 +13687,13 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "435eebae846f6ba6a53b42484cda94c55c08302d7dbd6a520d269c912340d95f"
   },
   "NfWNaSD2rwlQcf06": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 560,
     "descriptionHash": "c54f21700b800e4afa5bdf61a8304dbc5a3cec19bfc2922d7a22e1d47948e799"
   },
   "51WYkNw9oSm8vGtp": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 364,
     "descriptionHash": "18ec477ee5e162e44a39aa69900bee286cb7746a910c1fa5e7db64ab32fdd037"
@@ -12444,7 +13760,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "6iDd7CTzxkvMp6lB": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 213,
     "descriptionHash": "d9ac47b1db6155bbb5634675ac2bbea2d040256442007a677e96af5ec0ee9276"
   },
@@ -12491,8 +13807,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "896505094184d26dbcafaea6585babe3e06e92e71805fd811ff3c65ed973b680"
   },
   "AkUvfczLFJcsv3Sp": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 530,
     "descriptionHash": "53a47cc6fb9612dbc684fcdd65a4ff37975fff5800af453a763eab98145b1f0f"
   },
@@ -12521,8 +13837,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b4da778d520c22fe22c98e6c4bd91f7fd229e15a4a2856f99be7fbf9a7c2ffab"
   },
   "BXrnQ8qKf09f3spc": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 922,
     "descriptionHash": "46e73367d65c0e91689aa16d137620c2e4afb01406c37477758fca59f2e65367"
   },
@@ -12569,7 +13885,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "35f9bca7bbd7684faaf11e04eb936bcfc4d9eeec8ea23d7646449c22e81ef0cb"
   },
   "i6ZNmKmJi6UAHZcB": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 812,
     "descriptionHash": "972c202374e0ab264de51a7f5d1de1d7ba6e606f454dfc8021b0f93598ce53c6"
@@ -12593,7 +13909,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "39771782053d2601f54c34b15680be35edf43663dd3be4dc733a73e36dce50b8"
   },
   "KrF4qD1pvQthG3v8": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 438,
     "descriptionHash": "c959d40afe96b939216621d94f56a42ce5d3d40e67e3f19a7b945a89c72c3131"
@@ -12624,7 +13940,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "fMnF8K1o0ow217GP": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 551,
     "descriptionHash": "00d8c5034349a048a99138cac0a3550717595524499d5a63eb940fe75ef85a50"
   },
@@ -12671,20 +13987,20 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b8f1a728fca5690e8d73321b2154bb032196da722e9aeefe2a5ee0bed333ccd6"
   },
   "cg6iASOmkTadIYCd": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 338,
     "descriptionHash": "0724c891558ee3a9bbb4df207d4b55c7127830386b10e36acb99e81518e70048"
   },
   "SqITElkyOMAvYVhh": {
-    "profile": "",
+    "profile": "metal",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 792,
     "descriptionHash": "9d0cc86977257baf2fc1960064380d2c2d680482069550c62d952296b9878056"
   },
   "plEZoAyPwjAOdY4e": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 664,
     "descriptionHash": "71d6501423711b4a33684c8ba1a9a1cc63852203ca233d86a331faf18a8bf860"
   },
@@ -12731,8 +14047,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "7bd6943ab1987988d17a7ff0e832d8a3817b02c507d36a7c6cd385a2d55a3ce4"
   },
   "zIDG7JvwJNxybwyh": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 575,
     "descriptionHash": "c988fb770ba0c8a18ecca002f8bf6eeace667823757cf9297fc34bdafa981dbc"
   },
@@ -12767,8 +14083,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "96755a332185b969acd81f5014bea0724365b51b0eb78ce26c6bf1797e6e67a8"
   },
   "vV0nW9OIJ0VdeVjy": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 743,
     "descriptionHash": "01a6e1315a6925cc02ac027188be2f8471da215c398394d6465ad25f2bff6cb5"
   },
@@ -12839,8 +14155,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "62822731a0da9c15a86bdd5fb0aa1afd1515d032722b4a3c68f0051a145f0115"
   },
   "vLcxJsbNXlxcqi4B": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 511,
     "descriptionHash": "1aca3d583c0f8241dc94c2f49cb6ece082bd84ca8b39f0ea72ac7361cfad1e1a"
   },
@@ -12869,8 +14185,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "7357d51cba1222f0d72eb37a6f1dfdc32920998cf129d72e3a71eddc41965a57"
   },
   "5FVTySSg0uYaLtMA": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "cold",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 401,
     "descriptionHash": "f3f9e864dec52af0d8fbdf908137b2af4f150790749b69ce9dd72688650c534f"
   },
@@ -12911,7 +14227,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e638b42eb28da13ab331eca95fd8e8c533646d5838647873d7b3cc702fc20138"
   },
   "nBlzWZnmYuFHrMyV": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 819,
     "descriptionHash": "541c5b44f1ac2cd00bfccff3428dc2c9e9f3e68fb478d11a4e576dc053b70b6e"
@@ -12953,8 +14269,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "65f06d60d2a3f0950f1fb607ab9b1c428ac49b0d0c234155feeaa1e2f27daea4"
   },
   "ANOXSBs2lm11vsWO": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 897,
     "descriptionHash": "01bba715a571dc7bcd44efd79632e127826faa9b2723d64fdb6f669e175b9a83"
   },
@@ -13019,8 +14335,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "2c3db725c7883bbfb3a0d82ae51d28abdde8e5406e4f8939bf0da71311e1f6a7"
   },
   "nCmsylaV144Pr4TZ": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "growl",
+    "reason": "The source growls or snarls; one growl cue.",
     "descriptionChars": 509,
     "descriptionHash": "e2ac8b0f12d50bf135780ab8e2efc7f338581f0ffe6aef6610fb3f8933b08faa"
   },
@@ -13055,8 +14371,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "c5b987b28aefd538a507b6503b14d17d1a1239e6efe028f496a59d2c27120426"
   },
   "vPZxFpq7XkRmE3Uc": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "gunshotAir",
+    "reason": "Discharges the firearm for kickback during the Leap; one discharge at the source, no projectile contact.",
     "descriptionChars": 479,
     "descriptionHash": "d2ec8c79eab2c5cb89beb01130601c21b1d9bc41fce75b71760954845a372d02"
   },
@@ -13115,13 +14431,13 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5cc028be6c942fdbf8ad898a9ce8205cc2372db420120c76a15f4f05410632db"
   },
   "TtAvM02UvfNaXeXd": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 834,
     "descriptionHash": "58143be0d18aa54c98c75d63de3c537705c2c8c923115487798b5ca00ec5b319"
   },
   "nLidn7L2z61Ktjzk": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 799,
     "descriptionHash": "ec9862c62279534d9eeedb47882dd9a7adef5fa982c1c82f27951288ed8b3ffb"
@@ -13145,8 +14461,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5157670b2d6ad77544046a09c4c2705afc6e745ef34677312a2eaba7bb254428"
   },
   "XYaaj872JOO9CAws": {
-    "profile": "sword",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "feat-sword-fire",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon. Native fire trait adds one elemental finish at the first contact.",
     "descriptionChars": 388,
     "descriptionHash": "49bf61127170c007d3f971c7777173e296f21d96c403d84001730d5cb2e140f5"
   },
@@ -13212,7 +14528,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "cMkpLgadlLCzDOv0": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 456,
     "descriptionHash": "487a711b5198b33aa0de21b0b480670b46fd21a638a5ba2532fada646cf4a681"
   },
@@ -13265,8 +14581,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "045fc40cc2326306a1dc00dca21eaf47c4771e3bc82c3771f2e0781252abc76c"
   },
   "Fe5m807oeqJw3YUd": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 175,
     "descriptionHash": "4f7428e033765fb98b68d3f1c3d08d9eb6d1598389cb7773cd08209a4741ffe6"
   },
@@ -13289,8 +14605,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "f631fe051f3cbbd806c5a5a3a8bd7dd022d4d30743b9bea5a2c51d2d04dda2bd"
   },
   "34mcF1rw3mvntv8Y": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 548,
     "descriptionHash": "896b9fe8ad50cb047cbfbf41ce315a565d97b9ed6c3a98d0438444f1b6d827b9"
   },
@@ -13313,8 +14629,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "6d4b4f7226be4c8c46692a509dda47d51230c02ce02fd706c4d602ed760fa762"
   },
   "f0reqV8eqnCycDWk": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 276,
     "descriptionHash": "3f6c906cd96c59b29602c9044ec60bad159bf3b7ab4029d391bfdf6e424912a3"
   },
@@ -13385,8 +14701,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "8d8f03259fcd8d7d00d5649e3dc93ab1e29c4c2cad1b56b293e301526c46a9c8"
   },
   "MR4X38qgBj5tmkMw": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 214,
     "descriptionHash": "62542107d1f005b26a230ccf9ba32d910d15641069ce8187ae801700d5138439"
   },
@@ -13487,8 +14803,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "6e71d985f69f5bcc88fecfca490a09ca3edbb5e69b4dea6549534dc36534834c"
   },
   "Yzw1v2JLRO0G59bz": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 465,
     "descriptionHash": "bcddc5f6d41397845dc79c0ff842136f056efc56824be428cd3dbabf89c3f20f"
   },
@@ -13529,8 +14845,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "ce6081421080f4963277b3156ff076f31aef6b1709d01ad58b88b3b3689b01a2"
   },
   "vS3GSv6ndGmh8FXz": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 624,
     "descriptionHash": "98b75bb3bc4c4842b837cd7287ca9ab62967f65e572487523c220cc1106e4bbb"
   },
@@ -13565,26 +14881,26 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "051fa6f00166b54c1ea9fff7e1b04e97b12289287ab7b5896c0e2bcfe736cdc5"
   },
   "Cf0CDTZvGaYDAXUN": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "sonic",
+    "reason": "Smashes an instrument or belts a discordant note: a stunning blast of sound.",
     "descriptionChars": 393,
     "descriptionHash": "497b4bdd61f9747a4160afb6ce527aa4a791151ca517a71e84133f51ae3f0fbc"
   },
   "kh0uz44otsdQlpIk": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 636,
     "descriptionHash": "d781f4ef12d9eea9deb9215bff5c8c8007af3eac31d74f1b63c689afcbdb681b"
   },
   "JOq4Xe49A04YycRz": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The composition becomes a sung call-and-response chant.",
     "descriptionChars": 527,
     "descriptionHash": "4c047c4bdff7b53678b8cc71046a5b869ce3185d7737927adec039ba3d38e269"
   },
   "24giyNqSjqrEnhN9": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 290,
     "descriptionHash": "8be0341d3fce6aca47f88301f57814621ede9663e60f1120c45ec7a470f6b20e"
   },
@@ -13625,8 +14941,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "55c678cdc4bd179d29a7fbaf02cc601a3b82b74ebb44f8b86b89b5cce3871e7d"
   },
   "9j90iE61ZToFR8cu": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "teleport",
+    "reason": "Bonded item teleports into the hand; teleport arrival cue.",
     "descriptionChars": 298,
     "descriptionHash": "2b0846a01cde5d5a8f26199fb70192a04a8223a5fd4e67e165b6cd44b21359b3"
   },
@@ -13644,7 +14960,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "XJfUj2o4HdL5waZL": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 502,
     "descriptionHash": "85f4fed59129a29892a0ae629899a53c3585d41b0e34993cbaa7ba02289b950f"
   },
@@ -13662,13 +14978,13 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "56HvICglqH7uR3AY": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 240,
     "descriptionHash": "3da6e3781db4d5efeb37f34eb3ebab9127f8edc3102c407a31840d2f182b943e"
   },
   "Qc9MH7wT182qasSV": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 388,
     "descriptionHash": "819accdf7c46e78e7bf0554aeb14f47e53f5bc7f5e7a24f8cdca322a8d30e4c9"
   },
@@ -13727,14 +15043,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b4bb99d17e32ab018b459b7ff0c64dc8497bc4ec507b7b47e2d6e03e2c9ebb35"
   },
   "ACXWB7a38ETc32Qj": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 425,
     "descriptionHash": "7335393512d159d5db625bcc485cfef50aca2313bad49cd3a3ae0281fd0f1c44"
   },
   "nePEcAp7lTL35uyx": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "growl",
+    "reason": "The source growls or snarls; one growl cue.",
     "descriptionChars": 339,
     "descriptionHash": "8318b1d7063f40a7fafe9cfc64e09bb1b78705212c86620fc9399bfb1f1ef419"
   },
@@ -13770,7 +15086,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "11mW5dOCpwROjyV9": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 369,
     "descriptionHash": "b10240793c7ee56330f6da799dbe3afa670317053eb984e7b7fdf60e86bc7ac8"
   },
@@ -13799,7 +15115,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "311a3a87fa64bbf6a8533b596e4b72e8427f71533e507404cfc79e48611c4e5b"
   },
   "AhrwKAPb1LyRxpG4": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 735,
     "descriptionHash": "29a5cec381133a3ff2bf8b9857e45e16a9fb32a5658d10c8e3065fa5652e447e"
@@ -13937,8 +15253,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "0116d0c3b0fac585b772f5b2300f32fad4b807a6797e6280e708a00c4c4ebdb3"
   },
   "gXAAJCnjfCDK7YV2": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "light",
+    "reason": "Horn bursts with cleansing light (Restoration, dazzle); light cue rather than a healing chime.",
     "descriptionChars": 297,
     "descriptionHash": "9340d80eaa9a0a33fd9faab1cad58e9374329e42b4b06804cbbe4840a66a6ca5"
   },
@@ -14177,8 +15493,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "05ef7e233d72481da2177c44d99a4f48227f45ecfb49b0f42613a5694a26cb49"
   },
   "XUzuDFiQwYqL1dWc": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 494,
     "descriptionHash": "376f57ba9dee9ae3df0b294befa1cb037dda2fc5460a731bfd3ccf4d00667ce9"
   },
@@ -14189,8 +15505,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "fa1171df10d9bb44791d92200accdee45bc90b1cf2d2f69441bf4e2ed412c286"
   },
   "BmngPSf3ZrzcmXcW": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "electric",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 679,
     "descriptionHash": "6b015fac7d5375f977321ffe56e7e5027828471f748da766fda558e57824ebe5"
   },
@@ -14202,19 +15518,19 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "iwBUJ08g0NJ2Emdl": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 581,
     "descriptionHash": "3a3ede1994925af6aa1a44aff42d083815e944c0cc49b89fb080339ebc4227d3"
   },
   "ABPDBNWvhJRWB86m": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 411,
     "descriptionHash": "6cce22f4a38743a2532f664fdece71238b644ae182438c8e6fa82a94e47996a7"
   },
   "hEcKcvcrnL7olmsc": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 622,
     "descriptionHash": "1cc6cc400e6e84cfc59900b65bbb42ab1545220894b8e1e3950d8db621fb2bbb"
   },
@@ -14328,7 +15644,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "uclbKFsrqCW6tQmB": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 670,
     "descriptionHash": "6b16ed96bf982f0df3d2daffd9c1c549c82e4419ed9a9f4fedd4b415ed045022"
   },
@@ -14399,8 +15715,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e4dd9afb9c0de59b8eefae21521af757c01da9d0e6b23db56efbe5d00305d720"
   },
   "Asb0UsQqeATsxqFJ": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 249,
     "descriptionHash": "de571a33c6709e63641bbdc7dc7020de12c7de901020006d83587dbe770259be"
   },
@@ -14471,8 +15787,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "cabb50faf6fb5f3a5f8b4e743a8920f4ed15229063dbd82f279b4e4c879bd91a"
   },
   "rpBHUvBKodPCHaET": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 1084,
     "descriptionHash": "16a4161948f07e6fed4d8fef242ae600ce9d6a736b6a0c4e916190a39f57e5a9"
   },
@@ -14501,8 +15817,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b63f58e29ee83835715fa8ead800f7c35c2e0eae6fa30a5b8c075772e371f6b1"
   },
   "8YSwzLNlmBLoEyUj": {
-    "profile": "unarmed",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "feat-unarmed-electric",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon. Native electric trait adds one elemental finish at the first contact.",
     "descriptionChars": 685,
     "descriptionHash": "f03aaee45b7813cbaabc82e85f7ab323ae09acb167639e5dd9c7bcebdcc37aa7"
   },
@@ -14519,14 +15835,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "c7a5828661aed0ed879dbbb6d8379047d50a1275cbcc042bca7ab5f333649e75"
   },
   "sI4f0xdCVulyK9sn": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 429,
     "descriptionHash": "964f73b202c0156196c81613c17dcc2dde527c101f51a93b5b0c244981654348"
   },
   "8iHpUB0bYaHh86Kk": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "electric",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 621,
     "descriptionHash": "5c32ecaec140cea075b17ae0df158b942e5bbc5e5a74512dd2c5988c325ffd07"
   },
@@ -14555,8 +15871,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "321b1fdb2353b6e84a4c3a792f7d6494b7128cac6b7b6d343a6a2ea9daa933db"
   },
   "AsOVi8AqE3v10ee0": {
-    "profile": "unarmed",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "feat-unarmed-water",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon. Native water trait adds one elemental finish at the first contact.",
     "descriptionChars": 388,
     "descriptionHash": "7e6533638a46fbe572fa248661dddc637a3a3ea0ba01e09617be87d7eb2ac5cb"
   },
@@ -14615,8 +15931,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "db86337271d13b8d30704a2d53e80231cb2f799619bfc16a340e6c18507aecd7"
   },
   "u9ZuPuXj0xA4dHxr": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 643,
     "descriptionHash": "58351d6bd0c2b72d8e488925e1c990a2342f84f8b5389da2653886a5ba229b39"
   },
@@ -14694,7 +16010,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "azyp4nQgAPDI6nKv": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 720,
     "descriptionHash": "24532aade4f6861c5d281fb843446ea64fc7c14a9e683b9f488526c6f8eb1de4"
   },
@@ -14729,7 +16045,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "fb66a8131d2896ced32cfa004af83642834c493c456f279ad05a8dabcf40b3e7"
   },
   "9uvymmdphxsD3yEd": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 597,
     "descriptionHash": "5dd647840fafbad6e5ebb11391d24eda80c0ff825b90d0b9f7efd7b3dce931e3"
@@ -14939,8 +16255,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "75a0a82ceea67155774f5a8469981e80d470da4c2574eaaf8fa54832e0c022ca"
   },
   "BDP3asvoFQihPaG9": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 497,
     "descriptionHash": "d1e5923034a7510e5ed085a7849ade3cc7740559bb016529e862e6d761f7dc38"
   },
@@ -15053,8 +16369,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5fb4439b8d1f15bad54675efda55cfe6f2080ea3c358ad8927efe4c126f76533"
   },
   "ti6rPcSBsCuyEHqy": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 568,
     "descriptionHash": "78756e6c5cc5e3732579a2e93d7ea193eb52083ed5a28aa2deedaa7c9dac3597"
   },
@@ -15078,7 +16394,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "ZO37MZEQVNNtg46b": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 653,
     "descriptionHash": "145a25e51d52b12602c0bf0dd1a82657ed94427610893c939d6f269c3b645a3a"
   },
@@ -15378,7 +16694,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "rljiwL00XW1RcnyL": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 488,
     "descriptionHash": "ac865a0f76fb737ab8318350bf3179baabeb54d2fd414e8cc5495f6f35762f37"
   },
@@ -15467,8 +16783,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "acaf0ea0d13370d1962246779b16e801139f237b1cd9a9e270751c4b592d8644"
   },
   "1Z4ps6u7RtA57ksK": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "A well-timed tirade or attention-getting shout.",
     "descriptionChars": 1000,
     "descriptionHash": "7463b099820fa999fc6bfb2c1ba1f5b7471ca58ce19273e63a4fcce2da1ba9b2"
   },
@@ -15491,7 +16807,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "87ee47bbfb5e434d12bca02cfc57ce27ef17e261de017c510d899524b1cdbfd8"
   },
   "HX12ulixkeYeWZUU": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 556,
     "descriptionHash": "be9539c8f3d0d55de00cd653bef45d7e9232831b216a3f361b6493351d8d8217"
@@ -15509,8 +16825,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "464de7b2ee27c02abb5553ece5c8fa8a22ed00b7b945b9ebed0c860096f5122b"
   },
   "gnwKHXKxMbJ2RoJ2": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 895,
     "descriptionHash": "9b78c19977df1a3fab6942a1a2641fb8c4f10b3c27d57a8aa2210ceb098bec2d"
   },
@@ -15557,8 +16873,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1645f0a53f42d959b3a35a40c58e12ca2f7993ce4b3133cfb81fa500cc3e5665"
   },
   "SELSj1vvVLx5cP72": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "dragonRoar",
+    "reason": "Draconic roar from the source.",
     "descriptionChars": 749,
     "descriptionHash": "97383a1699f2b6ef3a350a2a4a3904b8db39785639ee79f771efdbd2ca33f881"
   },
@@ -15581,8 +16897,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "c0c6670ae7dd6b7751b0f20a4c48344d4e8d57adb992a41f19a15f22ff697553"
   },
   "WRtf8xhjGM5Dy2RQ": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 648,
     "descriptionHash": "1441849a2342b74166835bab8df1878bc675a0e2523702e295b472f46bbc7942"
   },
@@ -15623,8 +16939,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "3aa60db09fa46d6b6d3778fb1cb11eec9657bc267502ec50002f6d81cf729fb0"
   },
   "fFVqsMseN4zA9R24": {
-    "profile": "unarmed",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "feat-unarmed-cold",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon. Native cold trait adds one elemental finish at the first contact.",
     "descriptionChars": 641,
     "descriptionHash": "66cad619b7973c401d248021d504e0ce7e3f2f0310f592095274767c2bde67b2"
   },
@@ -15659,8 +16975,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "de86c7fc5339fbaa6c083f610fb8911d8c7ecddd223b21ae94477eb1ba8a42da"
   },
   "7W5oubPLcxHJdcHX": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 429,
     "descriptionHash": "8c72348ae03d590221b73f269e97f2e552182b53d8f009e9e47379994186d8cd"
   },
@@ -15677,14 +16993,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e36dccbd484e0c9fafe87a6d458aa4b5182344cf201a81c0bcbd4999e29818f4"
   },
   "itn27nKYb8FRsdl3": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 421,
     "descriptionHash": "62e8574bbd4435214b407223771b965c433f53bb38eb380e067fb7ae8915029f"
   },
   "tMIz6B143mLMsTSI": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 997,
     "descriptionHash": "4ba19309a5b400aea12521bc8f60db8fcf43910146637cfdbaca6b42e62fe47c"
   },
@@ -15780,7 +17096,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "bDVx7hVyxjwRAxxG": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 233,
     "descriptionHash": "0a4e900c40100a3213fcf7d9608d2fa9850aac547ca1066feb676051fc94e869"
   },
@@ -15923,20 +17239,20 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "279180725588942ee0e71d6216d97c92ff8cb568e21b875fe7d990cdd1fdf38b"
   },
   "zfnZki2CxmZXdNBO": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "electric",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 443,
     "descriptionHash": "e2d8f4f2e8c9e58007204b382aa984e28992a30e9fe0a979ded2b268f46afbb4"
   },
   "LvmYfUGX3uDCpIHY": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "electric",
+    "reason": "Armor innovation is electrified; one discharge cue.",
     "descriptionChars": 667,
     "descriptionHash": "8761e1b8fb65ddcd9f5a2fadb1809af266c83f3e1f61164eac8c5f068f154786"
   },
   "20JPwspLZ0r28Jnf": {
-    "profile": "unarmed",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "feat-unarmed-electric",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon. Native electric trait adds one elemental finish at the first contact.",
     "descriptionChars": 648,
     "descriptionHash": "e542b2f69267493f8a835b8403906f9296482cea8c3c09805a484aacda90724a"
   },
@@ -16020,7 +17336,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "wlBDcATuqTwjOIY2": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 361,
     "descriptionHash": "fba8602bf43efcf698f31cb488e25f1d7f0fb614849c57d0676c262169aef5c5"
   },
@@ -16182,7 +17498,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "Fzb20MxhHMmKHVtn": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 447,
     "descriptionHash": "b38346be1e1408b4e660b4b49dc80dfc67fb661f3c1b7891d070958e76b2111b"
   },
@@ -16211,8 +17527,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "404b5fa7bee8ecd6fd4c0ea0730a01394b8d2a7bcfe67c9d1b9fce42134ac8ba"
   },
   "MRT8BGiIiVYfVcXh": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 785,
     "descriptionHash": "4e30a094a94829589be5622f6f4f75b4994fa7e0bd82a7bb0d1d9c642201a29b"
   },
@@ -16313,14 +17629,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5256ebd87b0be822d29d455da1c6d5c86ccf166a550f79c522f1313cdb1cadbe"
   },
   "OEwNLolzBarx8icm": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 991,
     "descriptionHash": "9be4191e466e5ea3d499890dfd0f2871d6cd89a74026728d0c68724de87c303d"
   },
   "UVsMJwHpQHjVZLTK": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 482,
     "descriptionHash": "dbcadc696e05f3d724af86b37ffcc973a0dd17d086a7775b461695310be60764"
   },
@@ -16379,7 +17695,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1b9109e5bcb2c64e9590be61e94aa311bb926ad6d453a98c40f59301309ff566"
   },
   "7k8ZR72NzcTdpmz6": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 385,
     "descriptionHash": "3b5ea623f233501168856b478c8dc29c4e97f87dff5d36b0bc79d32026d447fc"
@@ -16553,8 +17869,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e695f824a9e553d08867cf2c3068c47bf45ff829c344340e4801d37034d41122"
   },
   "F8rtjsojGLaRuU5l": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Screaming winds rush into the void at the source.",
     "descriptionChars": 1380,
     "descriptionHash": "ebb41a9dddc6e142dec1804d60fd154d454de1f5d48d953bdfa66cfe13181665"
   },
@@ -16596,7 +17912,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "oHRCNciSjIBz4xqe": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 176,
     "descriptionHash": "f4d0645170685bc3d2e2ae8bd47d39308864bdfeed130a8ac33e19109535a627"
   },
@@ -16614,7 +17930,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "vEpM7qYZmBiwBiNT": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 340,
     "descriptionHash": "21533bca3063e318a97b9a05caf2780d9795482244f95adb5f339473396336f6"
   },
@@ -16680,7 +17996,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "lNIHXCQ0Zc2gY5OH": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 491,
     "descriptionHash": "9df38f0b6083267826260b3192f13276e2cec3d703e5b8f2d015655ab94ba970"
   },
@@ -16697,8 +18013,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "f87c74d54889c416ec3114faf35b212dfa9fbab0361912abbb897c15cd10193c"
   },
   "NIwocFnVpyzjeNUC": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source screams out in rage and defiance as it transforms.",
     "descriptionChars": 1297,
     "descriptionHash": "533b6c0eaaad4341d9b9a15e65601474acfdc9cb9132adf1d8540c2ac006df2b"
   },
@@ -16734,7 +18050,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "tv0TX0DiDg2lDMOl": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 728,
     "descriptionHash": "1933424c5a9710e88b839662c381cf7d0c6feed08fbbdf62d319327214f6a5d1"
   },
@@ -16787,8 +18103,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "f983ea0c22cfaf0414b0a3cc4ba76df648ee6c1fa293534e0f2fbfbc9c0863c5"
   },
   "S3NFO9meH9b08oiN": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 564,
     "descriptionHash": "feebab58a377375eb980d120b68c7de8cae53053f301c4e4d2f167163f98fd06"
   },
@@ -16877,14 +18193,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5c040d377c274dd47e898bb0fe704fca5f18cfaab5c8e01512bb55f59be7629c"
   },
   "lqStZou2d2WMLJxz": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 765,
     "descriptionHash": "991a6e0b2701b97e7fb7ec6a01b59e0ce7939d697a2467cd0e6a89bfdc45daa6"
   },
   "ffLzfZIq7LoNXqWO": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 605,
     "descriptionHash": "daadedf865163f4768a1dc28c739b2b740865d82fd036570d73224fbd5e97a0b"
   },
@@ -16979,7 +18295,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "82d3d5f4ea9b98fa029118f570095542a6befa83784b8c1bb630294613f229c5"
   },
   "uyZ3gY7gtKCLiywR": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 660,
     "descriptionHash": "fb170ccd3d1f6efdb4dacfb5c00ffa8ab0106a5729f057946b4191b940de6028"
@@ -17111,8 +18427,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "f8a35c79ab006945c7a8e48d9bb81c1e4147034d248064f9504acb4bdcb31f7c"
   },
   "iySa8O4NaTdLPKQl": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 322,
     "descriptionHash": "9e623b62dde7bcb86fe08cf2fc25cc5fea8d40b7b02710bb4794afe48e365f7c"
   },
@@ -17135,8 +18451,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "d831f24ca25207b26dab8e229ba47d396ef2c3aa21031cd0dc7ab354a01b03f9"
   },
   "IcAEMf94XoTvtzAO": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 617,
     "descriptionHash": "18ee811e048e77d45c4f525fa6e2e98daf613400df253d5007aca8204b190706"
   },
@@ -17183,8 +18499,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "8c61a93eaf075a6194c43eb1e5f5ad9ad45a13c0030f096bf0641c46bf2ec029"
   },
   "xUaEpnfd1FMGNG1z": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wail",
+    "reason": "The source shrieks or wails; one eerie vocal cue.",
     "descriptionChars": 382,
     "descriptionHash": "21745e8303354006bbc4f4029e8b8a459e5d0f3180b9a283cd0971bc7ca9189c"
   },
@@ -17225,8 +18541,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1e5c4d3d970b33b46c67ef888471d4faecf0e38326dc325e37d49e41999977ed"
   },
   "6vHkvQv0j56nZuR3": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 476,
     "descriptionHash": "a49b48909e0613e59b283f5017a4422273a215bf29309cb9077ec14bdf10a72b"
   },
@@ -17256,7 +18572,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "yg02rHaDPpGSgkrk": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 276,
     "descriptionHash": "5fe016a6b520d758c619388fc5eb76ed73784d3213a3d7dd03d995f78a07f530"
   },
@@ -17267,14 +18583,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b339d584dcab86ba0635841302bac7afceeff3c6d39bc75acab8966f98c9f647"
   },
   "WcvscJpQhbTiefwn": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 572,
     "descriptionHash": "839f72b932549f81c9d266dc7616bcb7f2e9b59d07855f1807f3828b0aac2501"
   },
   "YRanyv890fLiyaOY": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 318,
     "descriptionHash": "1447265b2f60839cb0d7c9c52da5d73db821242435f53110376ab1a47bc46b2a"
   },
@@ -17315,8 +18631,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "edb2454b3fe48bd6f433bbcde143e7c0fa083f960e8efd273e86683d228378bb"
   },
   "NYY7zWZWZ3XlzQgs": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wail",
+    "reason": "The source shrieks or wails; one eerie vocal cue.",
     "descriptionChars": 605,
     "descriptionHash": "78cedb8d8a4454da716e89b8979c11f43566a35534dea801a483aabaa0c84604"
   },
@@ -17333,8 +18649,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "393d6841c20b9435deb15a8da20bbcb8fdf964c8c1e3fb7d8819780c016ae3e8"
   },
   "ABL4daQ7c65d0tEM": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 461,
     "descriptionHash": "532ddf582b289d2ef18b63331aedc9780c61f7b826315b0bf074fb3a217d1f71"
   },
@@ -17351,8 +18667,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "36180768da5aa40c8cea11505544f1b59401744377abbc9ef5b8a7e7a36b2a9f"
   },
   "QfyCxRwvOZfstbj7": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "cold",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 792,
     "descriptionHash": "1be983117b80aeaea2615c0856db8b2f60d67772e328b030886a2d2deef63f05"
   },
@@ -17399,8 +18715,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1252e267edc7a17442a0f77c7b7fc897a39cc0e5bc070698c5abf507a1e878b6"
   },
   "LNyTKhIZlM17026W": {
-    "profile": "sword",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "naturalPierce",
+    "reason": "Jaws chew through an object; natural bite contact, not a blade.",
     "descriptionChars": 142,
     "descriptionHash": "6fdec73ad31c798e35e3d233aedf59ebf799c8a7d7f74c590c747f16e3a48f70"
   },
@@ -17423,8 +18739,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "3f8b263789ba2eccb10a315178351045ff205865ff4a9a331b27b661077fd77a"
   },
   "QZb0Utg0WFPf2Qg0": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 773,
     "descriptionHash": "a04dbe7f22ef2319ba57c4f94c1b84f128f0443353c8048a6bed67129b2bced3"
   },
@@ -17477,7 +18793,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "61002499f76c6d54e6d78dfa3770795e7b53cbcc7beba20a74341f183ff4bf86"
   },
   "JoFHG7NjJ6iUNnAY": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 273,
     "descriptionHash": "35ee3ffb0032b89c8f54985564b292d9e322e4308db2c27c3b1069b10cac3c89"
@@ -17753,8 +19069,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1ecc0c3f76487fd824ada0f9878cb8bae2ce2615bb9b691e3e2114562a1ea21f"
   },
   "REgTwIVgI3j1FQiJ": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 341,
     "descriptionHash": "c50e7b6773126b416a76f587abb09c949543a6e4cea35840d47eda660616cc21"
   },
@@ -17795,8 +19111,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "66b0e8ffab4be202d64e5be030a1a4b8a2e6ba6cf8b23a51a427be9955ffe962"
   },
   "Rb3ndqSyDUa6KvOL": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 605,
     "descriptionHash": "f9d3b6ffe8e973be58159b259395246e49cd5c78afb9e9a2235e593434b594a7"
   },
@@ -17820,13 +19136,13 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "Ofk2WfHbj3nWRhJy": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 344,
     "descriptionHash": "21039068e12e076616c6ae19a3a17a59411ad5b2031d87ed48c409b16203b178"
   },
   "LiBVd5hhn6GyoI5X": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 338,
     "descriptionHash": "604382b0aaa0e4404a2a3ebeb3d8f9abdb72e90db4e4145bdd344622d0942d3f"
   },
@@ -17855,8 +19171,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "0ae1b9ed8867a528246d84b00a8dfb00e1f24746d0fae072394f81d7952bc964"
   },
   "m2Gz9y8VhGi0EpFC": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 550,
     "descriptionHash": "ff5a2c59797f0b1a151f418a1fa84fc70e46e0d4f622e53074864ee6896ea4fd"
   },
@@ -17867,8 +19183,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "4db68b1ab8f638fbd0b91bee7500b3ecbd5f3440256e01d3f46d231fd1e2aaf9"
   },
   "mGGnDgk4wWpCMon8": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 943,
     "descriptionHash": "8fbd76afa5a6dbf6007079e29afe395b9f4351b005c36c5145e57e91860884bb"
   },
@@ -17903,8 +19219,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "ca010ee536ed9f4282fc5f27c7bba18997805fe6f2036fa83d963db705092c05"
   },
   "QpLRaBnuAiVRJOXG": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 661,
     "descriptionHash": "c1c1d813961013bc4948044c879a1529a931a99648abe5f776c164eea1f3dda0"
   },
@@ -17964,7 +19280,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "xDTjr415ZZM8x2WW": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 821,
     "descriptionHash": "af6e877494aa4cb1aab5f3461c118a843b5b3ef987ff4396a9b2d9f12ae1dd83"
   },
@@ -18035,8 +19351,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "8ca2cec5467ad737f5230da1d0c7a287d43e8f8372e3030e50619a8458fed7f4"
   },
   "rb0GCneYEzBi2LGr": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "howl",
+    "reason": "The source howls; one howl cue.",
     "descriptionChars": 533,
     "descriptionHash": "9552d7d208c2b0338e5e8e5fb825b8a7ebc76e13be13c0408321760e47476ff8"
   },
@@ -18095,8 +19411,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e05aee16ff90eb0b17ebd581296eaa3d4ecffb78bb63f2d9a6fcfdb4be317c48"
   },
   "kqRFoXfErUFEndIs": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 170,
     "descriptionHash": "adfa378db3ee1fac226c0cff560e778e25ed2b9c8dc92ec0ae348eb441d3e69f"
   },
@@ -18125,14 +19441,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "c1b42a079a453ced26ba9daa5fefd95f6a1a996f6c67d35d8e11a524777e8f66"
   },
   "zXsJuf8RjBlJ6nJv": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 1048,
     "descriptionHash": "877d38141f0ae3285f6c9350839ef804316ae8e065cd34c398dc1673e9d17515"
   },
   "uKeUPPqV1cNnIy0h": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 1107,
     "descriptionHash": "9a2a783f7ca25b1dd69f3f88f034fa85430fb5b5fb4c034401b5d37143d1125d"
   },
@@ -18281,8 +19597,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "26971db6bec0827529e554f2f8b2f438d8b7caa3a44713f36b36d74b86cc1dff"
   },
   "6FCWkhOo9NqfLKqV": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 372,
     "descriptionHash": "3cdd1e47aae06c5c5c5a6c0c848dc139bea091cf12837ecb33cded2623657a63"
   },
@@ -18371,8 +19687,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b42a1b0d37c9e4c2641e82de701223809a9c0dd77a5c028a8dfb4046096e6f97"
   },
   "fklx5lSy6ZEI3sID": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 1064,
     "descriptionHash": "a3877b0a933d0dfc5352be521336622dc65f04de30ae1d18f8aa08b7da7c339b"
   },
@@ -18407,7 +19723,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "27c56e044525db71d2a093e1d813bfd9b916ae049a26f4a167929bd08a08843d"
   },
   "2NWPxJ23ncTmqP6A": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 544,
     "descriptionHash": "62dc95ede72f0e49e1aa5e70d67da55aba3ae76f826cf63ada753b974e14304b"
@@ -18588,7 +19904,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "23QgyEYjoslBvkra": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 337,
     "descriptionHash": "f2b28a27bc6545f18118d2c8c5fd2bbafc8301dbb9a264fb960c53b857409a2a"
   },
@@ -18672,7 +19988,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "37l9SEvS7X1jHtpD": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 445,
     "descriptionHash": "1597e317a8f449141e8e0d968212c1e2374a3d553a5df640b8567b31a2f1a74d"
   },
@@ -18683,8 +19999,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "432e293d3b98ef3ea976ba10a6d125db1b2510b87778897ce26cf4fab0ed5fb1"
   },
   "9L6c9sxweM4IdOse": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 791,
     "descriptionHash": "2427cf9ec5e4c3aef50caacac8e65245b2f304eb32578e138f21259ec1d36bf4"
   },
@@ -18774,7 +20090,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "8VXYwHE5LqAGRGTB": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 473,
     "descriptionHash": "9702a3c9e7efa239acdc5b7ccf692eca01d0757cb5d0ebc60fd6afdcea45fd62"
   },
@@ -18803,8 +20119,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "cfce83494cef00a7e36b7b2f4c92f44b7e44135278403bc8bf0885d713583f56"
   },
   "ySeT8hrMEPF9AsQu": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 617,
     "descriptionHash": "d85b1fbafca1939a98db79659003f1b870fcc285c9d0ce40e3a528f58eb29eb8"
   },
@@ -18923,8 +20239,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "c7ca70111b31e0e52139f0adb3d2b389fd660351cf3737f2269528d43c425b78"
   },
   "OFCeTaAX99YbXOu0": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 514,
     "descriptionHash": "e06bd58720b90f0039082694ed19aee216f629d5c4864c442ea5ecab056e6e37"
   },
@@ -19025,7 +20341,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "2540f43eb73a3783fe2f319f9e1801734cff6d46a9953003d3209996b91c0803"
   },
   "Xz9jmwwJnx17PjCu": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 356,
     "descriptionHash": "99425673db2dfbaf55760f241ccd3cdd909f58059506ae13da589a39bbe04c40"
@@ -19038,7 +20354,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "7OXTqBA6QgCatNwZ": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 361,
     "descriptionHash": "628a9fa0da13398f331cea1581910ff0be35a44287adb1d476c49eeff2e95053"
   },
@@ -19073,8 +20389,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "dc969edca5bac0a262669f5d406d5f7d6e559cace15273efd80ecb3f72fcaf5d"
   },
   "aUhx6xKOhPuK9fEZ": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 947,
     "descriptionHash": "1c715610848cdebd108e66e9058d8f97aa6a9491594859d97fa798bd5ebac27f"
   },
@@ -19098,7 +20414,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "bebyS7XJ1Z3S4Ud1": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 594,
     "descriptionHash": "84cd3951eb8f28d02cea69d9969a4d9d678a7ac7c055f14c564d835819c1326b"
   },
@@ -19109,8 +20425,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "24469854fc54374c093f3becebdf53ec1744e050c42ce1cfc884ed91c37becd0"
   },
   "8GG4h6DbpAEGGETG": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "electric",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 633,
     "descriptionHash": "ee8ed97036636c2175facb4037d6e2b7463002598d2f091330584a0b4da54136"
   },
@@ -19121,8 +20437,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1e200ab303249a02eaa49c071e37824e9441d05deecedf2b9854728d7d0755e8"
   },
   "GabSQXUprub2eyUm": {
-    "profile": "sword",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "feat-sword-metal",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon. Native metal trait adds one elemental finish at the first contact.",
     "descriptionChars": 591,
     "descriptionHash": "3dfeed9cc69aa9f73f4667412e912817d8a486c6f7e2cdb23cadbddd08245451"
   },
@@ -19157,8 +20473,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "52f1877b6eda27161f1eba9794fe4e37fc19c1db23340f4633dcab530e1c2568"
   },
   "nvahDuuKRE0T8Sh9": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 705,
     "descriptionHash": "a5d384824dd1ae60654df040a797be986be060c3fe2a0db61b60fd40486cd0cd"
   },
@@ -19277,8 +20593,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "7758c9f8ef31f945cb464dfa7a7b867f23131192554e5b5906e1da1ac01c7675"
   },
   "buUSr6Dh9md9WqJx": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 480,
     "descriptionHash": "97422909b56f201e218a3fbdc477736a9ed2bf59f8c2ca7840852507e9249613"
   },
@@ -19295,8 +20611,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "00f9b21ed98712512327615eb72de6a68dd5d58bcf4403e7f8c1f7f1d618f024"
   },
   "YJCAiNpFbX2MIc0G": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 795,
     "descriptionHash": "6fb9a1448c4822fb36c2058f9f96b9fc3b6f959e7f10fc1076cc284ef37cacee"
   },
@@ -19493,8 +20809,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "0e691a13aabef849a0f654603d284a64f4023e02c8b0746ea863af1aaadf62e2"
   },
   "kh4bTBgi3C9CjwHK": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 652,
     "descriptionHash": "51c0fb357751ea0cfeda41df026d5177c384cacfd14b98d02665ef0f21384c25"
   },
@@ -19661,8 +20977,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "533aa33e891bad93ae8065a16c478d3ff967b1f29279adb69d9beeb61168382a"
   },
   "IwETJ7fhszmlNo7X": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 301,
     "descriptionHash": "c4f87447bf1c7b82178b70074eee1bbf9b69fad9f7387f16eeed570dd08bc2e6"
   },
@@ -19673,8 +20989,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "509aa9cd9c639b4619b1a9dac915ad697414e7a6ec5d2d099a6dbe077e28993c"
   },
   "pyaPfKPAN4H7hkLM": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 602,
     "descriptionHash": "a43e0c343ccc51cc470405d340c717f03049d147a192f1041ff6b89174b0da38"
   },
@@ -19775,8 +21091,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5a1919415d36fae2639443f473c0886853d9fb23a3a09b09b37fe767b4c3441e"
   },
   "4Gl55zsGU6TkSKOJ": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 195,
     "descriptionHash": "6bb863a2f0a2d90a6a1128cd0f92d2b558802a08d968165ed8ecbfe78afbf003"
   },
@@ -19835,8 +21151,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "a3fe3708e3d3b9921c6a9657660a56fac62e62f0221bda92e0d245dfbccfcf74"
   },
   "Oef5B7jxmu5nFxLa": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 255,
     "descriptionHash": "9e4f934966d17362afe296d00aa595b368cc859f1e94b2db46b896dbfcf2292c"
   },
@@ -19980,7 +21296,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "acJkVtpX2GUvl90E": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 628,
     "descriptionHash": "62507e6597afdb6020436b64457eaabbd4533cebfc37924fd0de4afba579f7c5"
   },
@@ -19992,7 +21308,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "1gtWb6lKWMw1Wp1q": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 452,
     "descriptionHash": "719cb2c69d55562eb6f59a2c8a9495b482f7a45616d84535a3ad51713d5acd97"
   },
@@ -20141,8 +21457,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "d43f5438974e41b4f521a589428d734f1c7a88c202c10d4bf1116890712899b4"
   },
   "cbEodcnBKzx5ii3B": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 383,
     "descriptionHash": "a4c4c6ef2daae042d6e106ce87970ee8b3ac7b9690baa31220fa8f969bff906f"
   },
@@ -20225,8 +21541,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "ca983dae9fb66cd47ad3601a856b217f459e850eaceada0c18f2208a8c71460a"
   },
   "CGvN4xaahJegFwnX": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 378,
     "descriptionHash": "998e05c5398f93cbfc8413f4d4af633ab42556bf2bd9fc51cb856557fe46bec5"
   },
@@ -20255,7 +21571,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5eeb7bd4908a1623f48dd804455340538d70fbce9a43ba1a67507e5a33648587"
   },
   "uw6xu0H8vZLuizUf": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 525,
     "descriptionHash": "801fc297629f34b2de1f7b55b35dd1387aab37f394b8625683e41a6a0947d208"
@@ -20279,7 +21595,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "35fc02fc2144d35a6e2a89d3cc5e8bb31e510d2e2b48669c6a6bec0f8e661600"
   },
   "lL5MxRUFqbzS6jDm": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 1573,
     "descriptionHash": "cd43bbb720e320d5830991d6a1faf5007689a02504fd8234d0d1002b4ab0833e"
@@ -20609,7 +21925,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "32ce5afee596146f347796e0c84be807bdf7bec7ca631625c3889b3f00c5ab2c"
   },
   "08fKms4aCYR2bujl": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 639,
     "descriptionHash": "71ea45e3cd5ebb0099fdbb45d7da8de8f850f7205af7aca7c5136ab61cd2a325"
@@ -20705,8 +22021,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "758c6b91e44745c00b81cc9c4b58f723113f72b5e66e771a442a34fab715491e"
   },
   "WQa6PxkOgyvRpaaM": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "growl",
+    "reason": "The source growls or snarls; one growl cue.",
     "descriptionChars": 215,
     "descriptionHash": "9f6659da5d305009aff32fa11f254f17d36c43e191ba7c84b9f2961f3d134ac3"
   },
@@ -20789,8 +22105,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "48f471f5a6e1c914e5dfe31d235103b38495e39a201aee9f0c2a3194975eaf23"
   },
   "CCY6VsGjp5fdmM6K": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 271,
     "descriptionHash": "9855bad2c1906c6386fd55189dcdf7095b916ce6e3203452a53b2faa0593e582"
   },
@@ -20915,26 +22231,26 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "42abbbc3d912d652b6048d667f2196e71b42a1102c9f08bce8edd0d1d37c32e7"
   },
   "pFd1TnqkAerGHuX7": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "holy",
+    "reason": "Celestial purge counteracts toxins and disease; no hit points are restored, so a radiant cue replaces the healing chime.",
     "descriptionChars": 301,
     "descriptionHash": "0d109b55272565e1cf26230b5a91265993319d670ca471e93228657af51d5d04"
   },
   "UmedG7XkNp1h6llX": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Internal heating and cooling reduces a poison stage; no magical healing tone.",
     "descriptionChars": 294,
     "descriptionHash": "2d058166569a9811f9aef05f6ed4ecf55c693a41a39e0cd365af144732d5fe37"
   },
   "sPCLWu1JdTFqKZVH": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Purifies one cubic foot of element; quiet, no healing tone.",
     "descriptionChars": 792,
     "descriptionHash": "b583674b6dd3cd4fec44c8ae9b4e837a0a4e861a29031630fb640a061bc3ce6a"
   },
   "k42ntHdg70ZMEKrs": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 480,
     "descriptionHash": "35942ea2de72ea9cdd82f73de427bcd61767e9f2c3da15c4d5139cda01398d60"
   },
@@ -20969,8 +22285,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5019a22a456ddb4822581781e0c0d30c666ce968d9c48055cbf672983a8ebd60"
   },
   "FMjihpGLn9eQ14Gw": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earthquake",
+    "reason": "Stomp creates a minor earthquake; seismic rumble.",
     "descriptionChars": 164,
     "descriptionHash": "ade447d443876c39e62e3e47f93cac5e5b33343bc5c274e49c06b4c5d80522c9"
   },
@@ -20999,8 +22315,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "d691d0b12437fb6b6ae3b80a876fe5883f7b81b67703af05d1a66959ae03a67a"
   },
   "aBbpdmbMGN5ox0WT": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 191,
     "descriptionHash": "56ebc05f18eb2f1fe61cfa24fbf2009cda28cf6ff882bc7d6a206e1a07fdac56"
   },
@@ -21077,7 +22393,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "a162fb0b7d0ee5ce4927a0b1ae71255155a5c2938b3006b3111df167c86c631c"
   },
   "9eL7W4rvs4sjhWFT": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 427,
     "descriptionHash": "eeeb9d07e41f01b0244094e88a370bad2a5770e8cf21a0185a0a0b49c5b3995f"
@@ -21101,26 +22417,26 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "cc6602e70de8b6d87b406deae27379ada710a2dac17cb0a3da51d6676ff32bcb"
   },
   "llWnSLYALh88iRGQ": {
-    "profile": "",
+    "profile": "metal",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 853,
     "descriptionHash": "ace7539dff3a5b01fde82185ea87bf6d7c4448b0135034b4bcb10e454c38ac1b"
   },
   "rbiMK71SvGZGRLJ1": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 499,
     "descriptionHash": "de017cf3948e3991bc1fe52a60283f239dc172c007a2345bed87f960d0543189"
   },
   "879dW5QkNDS66Ue3": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 502,
     "descriptionHash": "f37bc92315769c406c101bd3e7a45b86edcc3dd174fead14f56c2d711b256ff4"
   },
   "t3BPLh4rEInYGJJW": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 645,
     "descriptionHash": "36bf32d9ada1a3051af8a4dc8efa2f93f72662f08937a11da0cb67f7f34984b2"
   },
@@ -21150,7 +22466,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "AQfNFH7jnjdwi4FQ": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 431,
     "descriptionHash": "acaef691d666561c5f052e4b617bf21ee2fa5c2c1515156bcd8777153b7095b4"
   },
@@ -21197,8 +22513,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "f26067515a2ffc14a1da31f8fe6404195ab8bba20bf6e8b471d1918fa8e5b7e9"
   },
   "DZcy4sY07w0zPsDb": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 134,
     "descriptionHash": "34a51e0b11452dcf33c4901f77a6e101d968a5d7c0317e60af275c81326fd61a"
   },
@@ -21233,14 +22549,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "2faa70f6cad1305e43dcfb7a89dea034def03ea8e74a01fe731f6d1bb71df3b7"
   },
   "u2en8XQqxX9mQxkm": {
-    "profile": "earth",
-    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "profile": "earthquake",
+    "reason": "Strikes the ground to cause an earthquake; seismic rumble.",
     "descriptionChars": 538,
     "descriptionHash": "fb9d1bfa39fe913d8256efbd41bdbaae75f33e8ad9a5e3ac4b1dbd5ca6d9db31"
   },
   "mHvkBdBN4gs6CH1g": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 534,
     "descriptionHash": "10e361663fefbc1a02556b1c1612d26cfc4775231507aed436f180b2bafbbf9f"
   },
@@ -21251,7 +22567,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b849d034edef17fca7770d5cca880be2781ae237ce24de67b0801f224236d0c1"
   },
   "VcnOEAM3UR7oS0D5": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 332,
     "descriptionHash": "f05ffc92ff526751c81df1a7afa18bdb0cfd841deab88ed6c4861e20ec12d9e8"
@@ -21383,8 +22699,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "9e0f6c1328c9ebd2b2d1fbc8658809ba4ba5c61d31fbe053e1b7fd9251e9aa60"
   },
   "mNiJvsbyxdLBnTRs": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 606,
     "descriptionHash": "006829626b8c75e0dba3ab3d6c8c6943e6f1056a33d405dc2580353f71b06a29"
   },
@@ -21395,8 +22711,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "c605f81dfb3ac13fdb89e1258d0cd1011362ba6cd444743a4d2578e62dc63859"
   },
   "Q0gFkEoJDmbRaaiU": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 271,
     "descriptionHash": "4b34f7bed78a7c3acf42f7ea8b4ebee638182de0ed49bf9e879d768f495c6c0e"
   },
@@ -21503,14 +22819,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1e6a62f3d4b96d5c786cc26a02fc0f0d5214cc62f4405619500b93071501cd6c"
   },
   "Bi79QIvSE9JxJGkp": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 415,
     "descriptionHash": "a469fd7ce6beb277def9e1cfe2e0bd8f6547da0f6bc7e33369fc1199145f8358"
   },
   "knZUN4sYExIyRC4F": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 634,
     "descriptionHash": "e5e684ac4e28a714fcbb1d45728bb9ef8bff6571b5b06e13d24a7c3195d1e279"
   },
@@ -21575,7 +22891,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "04e008d9f9a1513e19042909255892595ef0883ae140b31f2df245f2083b2e58"
   },
   "SsME16puYnUzga3O": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 739,
     "descriptionHash": "1d970281dcb310d2f48156ed6e62fbf0c5ecbb075b82a91469715777dc416d36"
@@ -21629,7 +22945,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5e691c26a327afdf1f97def857781dc09a108c86885c150ecca73a5f814c9b5d"
   },
   "0wpnyayq9ZXmfv7H": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 543,
     "descriptionHash": "4844e523ce76a40ab1d6f29909522036746788e613b495b9501b6e3c80b5134f"
@@ -21654,7 +22970,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "ZGT7NLpcvREkJsMd": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 275,
     "descriptionHash": "bc181979a52324645e16de2e263b8b4a0eb4d3f5c72e20a882575a18b5dd8490"
   },
@@ -21701,8 +23017,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "0cc486db7b3882b12b79924d460e205ef9d488aa37355960233116459eb9ab94"
   },
   "vdowlFFknihiz5pm": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Body rejects an affliction through a save; no audible restoration.",
     "descriptionChars": 504,
     "descriptionHash": "992e7840c5a6c7fd567cec912dca3c3ac87680f67f49fcf9a7bafd9e4cee482a"
   },
@@ -21726,7 +23042,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "lleedxE6fTDSK6og": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 536,
     "descriptionHash": "42460167b58c9abc9de1bc84586e7e3dd8b798ab8887f78a4f10877447ec42f8"
   },
@@ -21743,7 +23059,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e23a76aa7470665907bd6cde363e05ab9030a940748443e61af134dd249c6910"
   },
   "mFyKBHdX818sDnzO": {
-    "profile": "",
+    "profile": "metal",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 357,
     "descriptionHash": "84d8fa41fd6d3b414b535e15f6a5ddf906bada9b21ba21690e66d7397ca474f3"
@@ -21756,13 +23072,13 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "lT6yLoMfalzxGL8y": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 195,
     "descriptionHash": "89d2dedb5918daabfa05fa5fb543663999c592103d1101dc23cbe79d7dd6f850"
   },
   "FgtUV7SKeq0nTivu": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 497,
     "descriptionHash": "076e14864b2d1448e67233999546ecd1618ed9792a67f2f52e4e7d2c6385aa8e"
   },
@@ -21828,13 +23144,13 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "1lpygRsa487Jto4L": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 367,
     "descriptionHash": "111816d69b0bfeee0a2a973bc6e01e0d5d018893c2fd0677571c930a14f2eca0"
   },
   "2rJP5TqvfazNeNmY": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 195,
     "descriptionHash": "26d6a3aad206f17e98e2b6c915016338355d9e179fd225a20aa0bed191d6a8e6"
   },
@@ -21911,14 +23227,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1a6762e6c4db096e63298251781e76f60cc1819111baa904fd392602549da127"
   },
   "fOwArAHixZsrpUMM": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 342,
     "descriptionHash": "0f2aedaa95b21c7262ad61b9839b8c98bb04e3ebad51467cb6243f5211ff496f"
   },
   "0B8nLDB8gOAxvpkK": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 595,
     "descriptionHash": "9f8c1e9161726a5c1c874c831ca7dda99c6cf4e1d886484ccec8fde1cd0064f2"
   },
@@ -21941,8 +23257,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "cd8f9e8416aa86600eaa904a72165f18cbeb22c5ea351029ed968cb0d4e74e8f"
   },
   "iBSxOOkPYU01rJiV": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 365,
     "descriptionHash": "19d62ed2f150be6bfa826bcf08748232a22e461759856372a6bc1b699da089eb"
   },
@@ -21990,7 +23306,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "oQVp2UhXVBcELma5": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 744,
     "descriptionHash": "22dff9f15cf67f3fcbafdceb8e744047fece9258445d8ebc4cd086a9c2bd5852"
   },
@@ -22007,8 +23323,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "a9da926373f8814723912c10becd2a320f0f0af72d167f34e218f647f0b5ff3a"
   },
   "P0v56G9Hkt87cAKj": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 890,
     "descriptionHash": "411b8352874e981bbb68758efe9f81cedd09fc1ddfdbcee7d489cafd32012751"
   },
@@ -22115,8 +23431,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "d7dc276f949816b137752ecd9a4fb11b85115aefb223ad4bbc5598d3f436440c"
   },
   "40mZVDnIP5qBNhTH": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 783,
     "descriptionHash": "ef2a57b5e07707f0449ea4efbd1563acd1ab0eac4ddca4ec4b1456b694c658c0"
   },
@@ -22127,8 +23443,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "8f52316ff66b086917bca4768d9246e09775deb3db9a0078592034157222b8b2"
   },
   "pHBHQaqI77pYtaCU": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 780,
     "descriptionHash": "226e160a286347db63c6dd16464872619b051068fb98e363735c78900dfc2eea"
   },
@@ -22139,7 +23455,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "48fba152d7b46ab398779d43a3f9cb723ef0fa3edeaa09651d787d5acef6dcf6"
   },
   "UPTQ9oIpz0bTJf3M": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 481,
     "descriptionHash": "934ce1bf3811c92fc181cadc464bd0b5de0425fc625ecb89c128c668f5e3cbdd"
@@ -22223,14 +23539,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "9753adbe4e7fb6d8150567fd5d5329eaea9aa9e120691d904e5f8704236f6aa5"
   },
   "XqtJVBwnxBsSo9Py": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 605,
     "descriptionHash": "975a00e5a7a1f7e48f71d9eefb74795eec5a8017cd54201814d4795720431533"
   },
   "NnpUhj7d4RmfOKTE": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 425,
     "descriptionHash": "7a59ad1619bcb9502f2cc59da0f98b3db71018ffe2a2c4ae47f51588e6253d87"
   },
@@ -22271,8 +23587,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5e865f763e9fd6189bf063ba8ce072582b313e0880d856a4d5b2659d6eb76303"
   },
   "f01ieQOcJFY7Ta7m": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 842,
     "descriptionHash": "c2d9c3f562c0bad0cb8a6db9ffa9de631b5fa0d58b1a43584cb70a4f173f417a"
   },
@@ -22289,8 +23605,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "5013f6385da84b2d914b001a6b5aae67ff1dc9ff44dc3f8e937b32ea7b993063"
   },
   "CAHJGt535l3Ai4cR": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 830,
     "descriptionHash": "9f38d2dd60fcf572a89f552c57d37071159d7b5c9f3b91e8645483ff0dfd2e96"
   },
@@ -22302,7 +23618,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "obGGzuPcgO5Xiz6P": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 752,
     "descriptionHash": "8ddd9012ba6f26ae43c7123258b09edd80731aab06cc042962b60fa1e02b8905"
   },
@@ -22343,7 +23659,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "520426936cf3693711f370453e26cd63026beacb12d48105892cb0fa9881a721"
   },
   "D5atazp26amNzoqO": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 478,
     "descriptionHash": "fc81863bb295424c5ee559ac2d7ea6184b6e77c3269fcc1107e76b3277347cc9"
@@ -22517,7 +23833,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "f9a7436310c72586ef3470f1c988d5313f5f30a5ff6b22dee8fec093a939b9ed"
   },
   "ECH7BEQQEq3pCQaS": {
-    "profile": "",
+    "profile": "metal",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 577,
     "descriptionHash": "ced526951d21dfe4368f746e7ddcc1996a189e56f8a84548b99716aafd8c211f"
@@ -22607,8 +23923,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "634b782eba0af08a6d51a8ef21c259d0df7c0312ff3bbbf55781047fe293581f"
   },
   "QOnyOjncnw4tkTQp": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "metal",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 464,
     "descriptionHash": "a13b859f80dcc90dba8d17ea6d051e1d1a13403a35c4621730f67fb177f3ad57"
   },
@@ -22685,8 +24001,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e45b8eb236654b9d857a68cb9e04f8838e086cc6ef8646c882c1a5d863a339be"
   },
   "qD5At83TIxznCwPg": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "shield",
+    "reason": "Bangs loudly on the shield before the Taunt.",
     "descriptionChars": 210,
     "descriptionHash": "a11076e321326717629e790fa6ef86e3589abf0b87e4b76fb4c28196bbd86870"
   },
@@ -22829,8 +24145,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "d17ca6e847a9daa39f7cc03cd7ab65aa37f8cca8cc81acf05c77302313723523"
   },
   "cV2CZxD6HB7HFeFv": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 733,
     "descriptionHash": "91da984070aa4d32b56e1722445989766069519624a1fa3507b5a1f5358e29ba"
   },
@@ -22853,8 +24169,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "de15935a46c1e91e8ac510881b62a038ca0c331e63f1f2d4f59e650332a73bc0"
   },
   "eRSgUQLhGWhICwpT": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 806,
     "descriptionHash": "6ae68eeed5f93144318cfec9d867691843a3edfd6a3d9cf08dae957acee82168"
   },
@@ -22883,8 +24199,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "6127d8c141d269b2630b745ff17509f11ca487d89644c99d41a0651c96b24777"
   },
   "HEvk4ja8nJ3RVEqi": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Peeling off a premature shed is a physical, quiet act; no healing chime.",
     "descriptionChars": 491,
     "descriptionHash": "f34890a6d10e8439d2295bc658d7ee9f908e8241b89fccc20e5ffe19254aacbe"
   },
@@ -22901,8 +24217,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "244480a8bee1db1957bfcd4dd9447a5ebda60e49f1bc69127f0a8a8eb3ca4204"
   },
   "gepQGtV8Ftr0JJ6O": {
-    "profile": "unarmed",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "feat-unarmed-electric",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon. Native electric trait adds one elemental finish at the first contact.",
     "descriptionChars": 738,
     "descriptionHash": "c71ea55490884886d5d20e9f8de42ea7aaa3cc91ff67a2a528ef761e112c05f5"
   },
@@ -23009,8 +24325,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "869b8a2e78f69db54e9989d957601e2eddf0a904dedea516adf6cfe93248af2b"
   },
   "zbnL5OP4zVaNFcq8": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 575,
     "descriptionHash": "a0295468821b855a7c736ee8089dfdaaface41d86eea40e6427946b49a60a63f"
   },
@@ -23052,19 +24368,19 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "BiPUUNGoJIj1mqjO": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 762,
     "descriptionHash": "a41899738eb2f4459bb3cdfb08e97201dbf5efdcd1baff99aca98cad579c7f21"
   },
   "W9neE7zrIl3tqRZW": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 395,
     "descriptionHash": "0e307e978de10b918490eeb2c0ff13be4bc0bd12d866b460dcb93de21b216098"
   },
   "WoUwDqhA6i6abwen": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 171,
     "descriptionHash": "c49d80c287d7858cbb61d448d98c899403c11ebf5a91d6b38d0269d848009fb8"
   },
@@ -23075,8 +24391,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "59b5e4b54bd5b55ef0643b2f2fce7b6ad9ea09e117d6448c73e4020cbc5fd5ee"
   },
   "D1uVM4fif8Y0FYu1": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "sonic",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 341,
     "descriptionHash": "ea67c361e8317f6133f5468f02ac902bcc363ae454b4793274922556cf733a3b"
   },
@@ -23147,7 +24463,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "497961ef8794bb45012c630214662888a01e24f46b945381a7bc6fcd378eb5d9"
   },
   "l0VB9sqKxmkWvvaA": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 1040,
     "descriptionHash": "df76256067db57cd9ffd220138364e2b304d89d19660322d296c19d1c5c649c2"
@@ -23177,8 +24493,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "13edbf3de9fe85287300a7fe4e04b73e03c51f7bd939946f0cb2e04f371f7c4e"
   },
   "F3FJal7SffTQlmFm": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "drain",
+    "reason": "Recharges Spellstrike by harnessing an enemy spell; energy-siphon cue, not healing.",
     "descriptionChars": 345,
     "descriptionHash": "d8823916ac5d5d06fc362ad181a2481cb923272eed67719200a6100c161f1eb6"
   },
@@ -23225,8 +24541,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "a32e2ff05688fcdae9444a47483b950b13ad74d65fe93b8b7e9a86ced64b1756"
   },
   "9p28s0zg4Vv4r5i2": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 608,
     "descriptionHash": "b37925a434eba1250617bce16522fcb576e54943c728a0d86ac306b22c75d7e2"
   },
@@ -23268,7 +24584,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "03mVGvudDLyGEpTZ": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 487,
     "descriptionHash": "52ebab42d4187e7157296ceade99efd5d77a11722e92c88458470bd2055f0818"
   },
@@ -23280,12 +24596,12 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "ONUvHtEccDmNEcVu": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 567,
     "descriptionHash": "f9a0084c3b91d15404cac1c18262a6b1feb459b86724514ba2383eebd4f902a1"
   },
   "gO729iC9b5ypes2K": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 866,
     "descriptionHash": "5af35efaae5645bbd959bdacdd94177969144f1d408350d2c30ca167cb7826b0"
@@ -23357,14 +24673,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "7572f6e3025be0a026bc470a85a99ad9c2b895a9b80ca8598821b720a828a13b"
   },
   "a32r2n9j36khV0Cp": {
-    "profile": "",
-    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "profile": "poison",
+    "reason": "A released cloud of spores and pollen; gas-release cue rather than growing roots.",
     "descriptionChars": 502,
     "descriptionHash": "4cc865b76d6241904d60b1aa4b6b3bdc12f30e2990ed9096a1cc4fbd04df8810"
   },
   "F4LlHjLjubbBkWRT": {
-    "profile": "poison",
-    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "profile": "swarm",
+    "reason": "Insect swarm crawls down throats; swarm cue, not a poison gas.",
     "descriptionChars": 957,
     "descriptionHash": "2089ce4636e8214a212b2e5798f0016c943151925d2ed5ccaeec8f39477168ca"
   },
@@ -23453,20 +24769,20 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "0855aea941f2fe79895add89e5ef9e2cfd4a38b0a375f8d1a69079055e2b3032"
   },
   "UPgxAYArllEBcuGS": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "song",
+    "reason": "The source sings or plays; musical flourish.",
     "descriptionChars": 493,
     "descriptionHash": "38fc7c660664604f1977e261d99835e9cb32eec723a55b56579b3f86bfa5c8e3"
   },
   "cQziPqmbo353bq7S": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 967,
     "descriptionHash": "cdae265ddbdd01440546cb373757bd734a8487b2b716395134e3f051ec4446a1"
   },
   "OJLGFnmbT418dC18": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 986,
     "descriptionHash": "838418833ce8384c8d39b24a7ff071fee41e5ffefbe4f7c35a8c30181c3cc054"
   },
@@ -23573,8 +24889,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "59cd73bb887ae324a1ea5f53e93b54b28d8632a057d33a3ca2d67ab47e56cad1"
   },
   "7PjBANpMMoBxTYq3": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 873,
     "descriptionHash": "13b8e23d436de0e1a42c0b2166e11bf9786f4c92344da9278f545a3890d82681"
   },
@@ -23592,7 +24908,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "jFmdevE4nKevovzo": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 125,
     "descriptionHash": "90c120730f9fa0fbf2a0ac7942db58a7941a62c2d882033d071160d572ee5225"
   },
@@ -23615,14 +24931,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "7676cc926b0520a622b318efc610282fce9459b39f0ba16ed2475786270a225e"
   },
   "CB6UwS2g9ramyOEV": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 733,
     "descriptionHash": "d746699c4fb7c78da466ae6561d2b0ddc728da5a7ff1e9c9c9b350a455a4fef8"
   },
   "lMIh84yjIA7f7xG8": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 157,
     "descriptionHash": "13666ae2e08f3ee0d6e206d63115a347579e8efd1d0ff7e8e5677ab56dd2df91"
   },
@@ -23633,8 +24949,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "113e39c19cd91d31f598bc10544224e2029ddadd8f6b8d380989490d41f0e046"
   },
   "GuEdTz1VMEptQnOd": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 780,
     "descriptionHash": "01e4957f6d0e7ebd332ec02ce2724f4c457121d3a6b0d7ed1192100d6fb90cee"
   },
@@ -23663,8 +24979,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e04faad27676d3e1bbd302b75c57a88f2bfdfd3259717c7c2e50123aba47f865"
   },
   "uEOQ5PAJOqfkZxIb": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 576,
     "descriptionHash": "9627c302749e75af4c905507f34a65dbd0851eb9bb1b29b9e6783e269641f01a"
   },
@@ -23675,8 +24991,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "6de7b2708fdbaab6dd85e5fff8ecf694d0e482f01041118437747e71188aa5b2"
   },
   "gLOLdDj21bTaLHp7": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 330,
     "descriptionHash": "400244860ec5f9b87c7a347786995d635cc77f3202dafe8e6940ee76c706f36a"
   },
@@ -23711,8 +25027,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b6006bf98fc999bcab7d7d033dc715ed9ae71a8eceecbabcacfa81cf9c052bc9"
   },
   "hv0SwlsAtcnR7R4T": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "electric",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 566,
     "descriptionHash": "5df39858c4625050b8c16f25fa525a0102cd86c125f230310c15d8ccffb3f228"
   },
@@ -23856,7 +25172,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "31Z6tFfSKWMe3OdR": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 184,
     "descriptionHash": "48b920eac05c8df427a9552cda71e4d4bf1d8ad69c286bcbcf94c2b8f6f06147"
   },
@@ -23867,7 +25183,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "9e71463f1e58c44b7f9f9c7e870083d83a193d3589345ff0050a56b77e5b93f5"
   },
   "QgfrfzQAtzgwAgtQ": {
-    "profile": "",
+    "profile": "light",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 416,
     "descriptionHash": "2895a76fcd0be915a8267fff2e6d83df825b02f4e1cf9cd9131e03371382de1e"
@@ -23922,7 +25238,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "MRxQDZFNPpUKC0CL": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 246,
     "descriptionHash": "6728aebc7ffd2b4b3b130453b81522963e576dde15ae51c6f8663474369038f9"
   },
@@ -23964,7 +25280,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "lTwi4lyVk1UXomhK": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 659,
     "descriptionHash": "4e611f4d4f4b13452edfc4db8d9bdc9dbb59a16de98759dc4c32f4fe9ccc25e5"
   },
@@ -23993,8 +25309,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "16d5ca2e1387eee74669fac5656cff389fb3c9500e42477745ae8329f331735c"
   },
   "dY8LGT6KDcGy93GY": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 652,
     "descriptionHash": "21faa1b39964320500ae8a8a52a0419485791e8549f533a24014025dc0896337"
   },
@@ -24029,14 +25345,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "dbf1075467b2dfe68447a3c5a74dbacf556a0fdb46076af6b7272e65dea23b3c"
   },
   "IxggfXunfldeVOsQ": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "water",
+    "reason": "Flows like water to end a movement restriction; water cue, not healing.",
     "descriptionChars": 237,
     "descriptionHash": "cfc2b288e6ef17ebb9121a284857dcd455771b9d93b6a057531a9cbcc4026bd9"
   },
   "ZvCG3exhs9ZhhKPV": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 629,
     "descriptionHash": "8c9cf4c6a2aa73bf96e603afbac635de13ea2626ccd22f42b96e479021c0265f"
   },
@@ -24071,7 +25387,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "cd9f429026cb0506391ed300d14c614f8f40a639990b03ed8d02790b8b70adfe"
   },
   "8M7iQfVBRuucR6hJ": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 429,
     "descriptionHash": "aef767bce4a4feb55f69db65f5e5b2344083767c4901f6dee6763db40d729721"
@@ -24149,8 +25465,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "d895c7cba9efb2fc91980eb0763fdbfea5d1ab9287ef5032b1fa07524fc9c420"
   },
   "j305O6rhKvx4sT38": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 528,
     "descriptionHash": "858e95539d412f5d6cdccc1b04ff22b6bf0bc619af8d4dc0c8408c74e774e996"
   },
@@ -24204,7 +25520,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "ckukkEJj4Lc3ENjr": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 621,
     "descriptionHash": "e24b0aec072c3216504757b1043714295bb46a13256b49a190e561452c365010"
   },
@@ -24341,14 +25657,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e28aa948a11d9b4f6f63d226d4f5cf95f11a03ef0bce05ad8e285893f3b6d826"
   },
   "HjinlKihkadhkQ4Z": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "howl",
+    "reason": "The source howls; one howl cue.",
     "descriptionChars": 288,
     "descriptionHash": "8caaca5418e250e51c8943ea49c39f1a43f7f6dc9d869e929b8ee01c4bdcc86d"
   },
   "HZE37GeNGeBeutZk": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 259,
     "descriptionHash": "75eadefd216740d55070a52c3917494db9130ad5bdae19dc4337d94283b61dbb"
   },
@@ -24378,7 +25694,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "OdfEpte6cnGB2EOY": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 522,
     "descriptionHash": "4a40ac863cca69b6646054d4ae10c6850c5ff973b4fb5dbc10620680c9cdbeb9"
   },
@@ -24389,14 +25705,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "ec0edb65255eda7bb1b16ff631d0175eb6a0ef65e9ec3c6b882a202c9cd9c856"
   },
   "Aa0DqivAEL0ngunw": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 600,
     "descriptionHash": "d7da8c638ce2e38f2ddc59e6cab3f4ce29b8c0f577a268bf256744ba5cfb811a"
   },
   "PYRx4lCIQXyW8tz8": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 969,
     "descriptionHash": "f4616dfc857e35ed081a98d0f1ed9255e56e0836034f99b93742f0975e8c1b5e"
   },
@@ -24407,8 +25723,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "c508008e3496cfa5e4ab8039957080a118470ceaaf655fdf1defa354c59ad37e"
   },
   "PKNL4jyUcSARtjyN": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 1504,
     "descriptionHash": "11db26cf1c31e986211404022536f0ef9d3f84cf9c47684e442a0be199f27599"
   },
@@ -24431,8 +25747,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b3212f2054fbb3020e0cfa38849e3453eafc2198171ff73d38aa21da3437d973"
   },
   "XJCsa3UbQtsKcqve": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 434,
     "descriptionHash": "78354916998005a75b1b0fd3082b1925e93b04746b65a152f337b4da438c381a"
   },
@@ -24551,8 +25867,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "39f568c61eeca4994ae53d726e7881dcf6b89a50a3301bfcc3ec0bfcf285bdee"
   },
   "aHlcMMNQ85VLK7QT": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 248,
     "descriptionHash": "ecdf51f0da106b71f811c33c9c0719f1e8fa2b478333f8648cc53dd072c494cf"
   },
@@ -24605,8 +25921,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "9d2e1693c301792b37d962b2523da297262d0d5ca38fc63f90f0fef4f4784269"
   },
   "oFcn7SDOH6W2QhJl": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 342,
     "descriptionHash": "d661d225be2c1d6bb8b94b8429b2b47b51c776631d307d6c8fc9c6927664f4f2"
   },
@@ -24635,8 +25951,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "24d1b89e86651c580b749812b55725954f10d910da34073df5436b3521b76567"
   },
   "U5FcfRvveTKtgebq": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fireIgnition",
+    "reason": "Sets itself thoroughly on fire with a torch or incendiary.",
     "descriptionChars": 651,
     "descriptionHash": "59d9e33f7b8d06559de0fdd7640ea8026088566e6f9c942b983ba8522d23a1c0"
   },
@@ -24684,7 +26000,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "qq7QHfysWzBn4z36": {
     "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "reason": "Dramatic poetic speech; spoken words are left to the table, no battle cry.",
     "descriptionChars": 657,
     "descriptionHash": "8d0fa266e895600e56e1f92d4b6d8b28d299153f1628b4e738cd5443c41714a8"
   },
@@ -24726,7 +26042,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "q4wFELOV4BQO4cDd": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 304,
     "descriptionHash": "c5d1e79664ed00eb2510e38bf087029e4b09f47f3345e4b8bdcbbcd3afcee377"
   },
@@ -24749,20 +26065,20 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e854ecf33a7b232799b9a54a2b582b3fd7f3b1bde96d976ef5da170d3b9657a5"
   },
   "rfnEcjxIFqwlJwJT": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
     "descriptionChars": 957,
     "descriptionHash": "a10756b72d3f1d8fc39717ce384f76ed3b0e3215908f5d6eeb85d72a51bbfbdb"
   },
   "KqpXb13Scv7uzole": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 759,
     "descriptionHash": "d5b6896e5d4ceb7b63b4752a2d9bbad446b3545df3a4faa0eb47fb572d24a2dc"
   },
   "r5vSplcFXtTS0kOB": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 374,
     "descriptionHash": "988e6b14bd6ea6a42cc409c02ef3d029de034b0eeda7305b7279363a5e74272c"
   },
@@ -24785,8 +26101,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "3744ed46ca54dffa56b22c059127ffe7c6012962385f7a3224388094bdc4458f"
   },
   "0HgfWQMIo2UEAlAm": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 454,
     "descriptionHash": "60f02abeac18d75bc15e335fe107f240cbe819e73f73325b787898e7356755a9"
   },
@@ -24827,8 +26143,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "cf20a9d3685bc5db798212ec5d16c0fe04764c1d1b7f8b92a34c567136eec94c"
   },
   "RHLfM9NlIlHTH85w": {
-    "profile": "",
-    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 221,
     "descriptionHash": "4f466da423b3c40724c30625c917de1e7f9ec4cf602768b193d8b132e9298f0b"
   },
@@ -24863,7 +26179,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "ddee6c7fdae34c82fa65a5ea7ffbbc77d92433db70f9196a58abea16e95590f2"
   },
   "iSnstY2UywUdoBRZ": {
-    "profile": "",
+    "profile": "vines",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 683,
     "descriptionHash": "b617c7add2f5417ebcc5ef69801086e801f36f5c7179fb8dc42f0cc7634707f5"
@@ -24905,8 +26221,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "bf3e79b1e8826d9332665f4ce7d8aef150b46cdbcedaf7d95ac97e7e64ff8695"
   },
   "7jMAkP86uwnZCxYx": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 1151,
     "descriptionHash": "d81c34bc58293bb98022a1e16c588e02eb51c5d2348230172149739a99f18933"
   },
@@ -25139,8 +26455,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b5e25cad170797e35ec045296e52242f5cd05be32b28b576530b122e67105513"
   },
   "eJmloGN2jfKYUNPw": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "howl",
+    "reason": "The source howls; one howl cue.",
     "descriptionChars": 463,
     "descriptionHash": "abf7ec3a301a131b9260d00c8c49fc0daaa6579240f5fd47063ac6a899a2b9ee"
   },
@@ -25187,8 +26503,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "4c47a7e06f4e40f0d8e099ae5b71b3dbcbbd5b29ded72d3ee9675ad3123f094b"
   },
   "xYNMWGEmpbtrtWXQ": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "revive",
+    "reason": "Winds a dead creature back to life; return-to-life cue.",
     "descriptionChars": 583,
     "descriptionHash": "5d9e6bf3db9fdeb573d1c9e309928b6e3b53f705917fcad5593288856c707a44"
   },
@@ -25199,8 +26515,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "3465bfcb2ecba67ed992ce9c30bdfe260978f08b8ede3604240e32372efe237b"
   },
   "TCLDccG80M5GeqGw": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "force",
+    "reason": "Wellspring magic surges; raw magical energy cue, not healing.",
     "descriptionChars": 502,
     "descriptionHash": "ea1e24c7f150c3a1a41d2250bd6fd2c09babe78e2dbf5833d15dbdc20fe02732"
   },
@@ -25211,8 +26527,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "9c5da944ce619ee55dfbcdd4c50912549ef06afaaf9053014d2674aadbb07012"
   },
   "c3c7pVXq0Ys5a6Mr": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 1392,
     "descriptionHash": "1cc7ad543111433293e88f464c5f6529e140fa099999d66976653d81559fc9f0"
   },
@@ -25277,8 +26593,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "9e2d53d7058a6bcff3257326dcbed649b27081b36d5142568c17f475a11aeec4"
   },
   "aRqXpCBWic6a3DQH": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "poison",
+    "reason": "Specialized venom burns out other toxins; venom cue, not healing.",
     "descriptionChars": 298,
     "descriptionHash": "effae04d6625c637cdc5fa09e54a6d2e1b3618021909a3922541b2e379d5bce3"
   },
@@ -25367,13 +26683,13 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b833b9c838eabe288ced5954c357a52639233ac2856fe31ca4d1f7724b23f1fd"
   },
   "fYD0SrZhMyJVQgvl": {
-    "profile": "",
+    "profile": "vines",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 936,
     "descriptionHash": "a2ac2a90e2786788c64abc109847f2533884e1924e6be1ed76d266fce97fa77d"
   },
   "N8mhYbr5xBI8jydb": {
-    "profile": "",
+    "profile": "force",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 360,
     "descriptionHash": "f25e62cac66a47820029d20b6d29b4d9ac0a858a3432c8eb62a56c0c55ff422a"
@@ -25398,7 +26714,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "icSHA9Bx0SfIuqRo": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 329,
     "descriptionHash": "810fa35c157821dc64c549d9a8c1630552dd095e75d7f10fa1838ea2c8f9b232"
   },
@@ -25433,14 +26749,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "34c107bf978ac133da8469ab88e5a7cb972ea34c43a7a86c557b00ea58557810"
   },
   "7zFdE4RHd9QJTWig": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "fire",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 347,
     "descriptionHash": "50137dda0b29639935d39b5dd356b1ee16bf2749c527605e5924a2c67ee16c4a"
   },
   "MFcsGkzPYaWxwW4d": {
-    "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "profile": "",
+    "reason": "Expelling a poisoned stomach is not magical healing; left quiet.",
     "descriptionChars": 466,
     "descriptionHash": "40fb70480f22beca860f69f85414910ab62d3bd7a249fcc9b6d743cb06cc4304"
   },
@@ -25451,8 +26767,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "50da801bf83c6cfb69bfc6114484699e98778afa2a3bb35ebf0c325ba261ad13"
   },
   "wp9Pnu2qe7GkZgHS": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wail",
+    "reason": "The source shrieks or wails; one eerie vocal cue.",
     "descriptionChars": 725,
     "descriptionHash": "0cecd6245ce68854e84e6700a03812f5ea857331b6d94ea44e18c2346953edb8"
   },
@@ -25523,8 +26839,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "7da5f5ec136a5c6c04f88cd7e11c06facf88efd6f44d4427bb5acdbd0f2e030d"
   },
   "XQEoKoFtq8n3wgA3": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "gunshotAir",
+    "reason": "Demoralize by firing the loaded firearm into the air; one discharge at the source, no projectile contact.",
     "descriptionChars": 354,
     "descriptionHash": "2f98ba5cae4bf2f0b9fee3f540e90b95c7637915e0c0f560747845eba0c55e86"
   },
@@ -25571,8 +26887,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b879cc1f486645a92ed04703761c02235920fcdc4a389facdf2d2989e335a939"
   },
   "9jc2G0Rc4hjcYakh": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 222,
     "descriptionHash": "5361a4dd48076e9e9f9d0cdc476101edab4e4d69a31656fec937adc931d2962c"
   },
@@ -25589,8 +26905,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "1921471dfcea1cade76132b22f928e4dbece2b09e44e8c9f49e87c3dbc8460b4"
   },
   "Q8fdMjZ2Wv3FawOI": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 374,
     "descriptionHash": "65219e4e8c05c3f26c419044f3b96bfad1d5e679d7bf98e8e1fdbda5f4da4a11"
   },
@@ -25601,20 +26917,20 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "7453d0e9cc696db189e3010471eaae5050ae621af24e767085095a31aaec568a"
   },
   "6XL3usbKH9g5FaQo": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "water",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 695,
     "descriptionHash": "4cc5cded90639584a0e23087426697b435a56d449b36b19536b16e8cc7d2cf31"
   },
   "KGxGE0yv69ND2hct": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 443,
     "descriptionHash": "619c626439714f52ad8d678c6d6df71d6780e244fdf798b22c58f9dc12f1c3f0"
   },
   "mXQG0WtHHGVyJfZf": {
-    "profile": "unarmed",
-    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "profile": "feat-unarmed-water",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon. Native water trait adds one elemental finish at the first contact.",
     "descriptionChars": 432,
     "descriptionHash": "9379b4b2191f3d47ff6c604bf1fd0371173d62d14efd1ec51dfd715295462c7c"
   },
@@ -25667,14 +26983,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "8997db78161c719f50ea634b198117eaccda832b0c8d913be4fa376a6f075f90"
   },
   "2j99hqUYPciC9bFQ": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 868,
     "descriptionHash": "64a636f6865a3886a4798ec3ff13299ba2c370208b72a4878f7904d5c6f8e505"
   },
   "KU488rIt9bOdTNMA": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 121,
     "descriptionHash": "661fb5b77ca9eb9f568a35a94f06c8975d82552b440206621fe5e91e96b81e7c"
   },
@@ -25709,8 +27025,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "e87365e27471c29402a67a22b0fcfcd8bd34c6f633c28832ffeb823f60e9564b"
   },
   "EVgtfnOPDKpB0bAi": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "earth",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 860,
     "descriptionHash": "8ed8eb38fe0dbe925286f0cf0bf4db7bda20adb925bb67f23127de7d29afdf62"
   },
@@ -25805,8 +27121,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "b6011525646ac0978a1c7c5adfb3ed074d36d894e7ec8201a22c549547818ab7"
   },
   "F2i6B8adeIy4LYxk": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "wind",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 969,
     "descriptionHash": "8885fa627653e60a8e266c5998784d3f575b531b7bc4601c4bc7978606f8ebd5"
   },
@@ -25871,25 +27187,25 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "26f05e9013503530e8853fa3c8cde9bae5c81fd05e8c598656024c735b60481e"
   },
   "xn6EaAbQlAB5ZGe6": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "cold",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 553,
     "descriptionHash": "f9eb9bd3f5802670e210c02340aa44ea4fc12770caa08261a01050552e26b088"
   },
   "YM4ReMXafoqCEpaR": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "cold",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 418,
     "descriptionHash": "95d0d7a650c0a4bcb4b97c02c18d8ea93248fea48d768a3e95e662218836ce72"
   },
   "GnTh2t4MvjifRxBd": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 279,
     "descriptionHash": "8fd1172bc39aac2561f95dbae6e02d5739f69668610d9b31a45f7fe91588f3d0"
   },
   "S3CAJt6D7r1KcRv8": {
-    "profile": "",
+    "profile": "vines",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 779,
     "descriptionHash": "2031f69b5cccaf249cbdf70345f301afce1754f9420a308bc2b42af101e97e2f"
@@ -25919,14 +27235,14 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "75205815ab8c723fb21399d5004554ea2c34ad428a3606573c1635f2c7db4000"
   },
   "qW0E05GudC6bRA2Q": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 667,
     "descriptionHash": "97f9a14ea5dc88ec52c595e42f8b0496e80ed1cbe6198891ec6a8510e90f9022"
   },
   "zwxRIi0qqmyWlaTd": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "vines",
+    "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 784,
     "descriptionHash": "694fe278fc976acc348c6a13e34bf68b26c29ec1a4788ad25a68349302ebb82e"
   },
@@ -25973,8 +27289,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "87cdefdd6dc43bdae2255aa5224650e38c5990cb612d1ec537894d94d191f78f"
   },
   "CLKlavik0540j5bl": {
-    "profile": "",
-    "reason": "No reliable audible action in the complete description; silent by design.",
+    "profile": "battleCry",
+    "reason": "The source roars or shouts aloud; one battle-cry cue.",
     "descriptionChars": 117,
     "descriptionHash": "c291a3f60c93e934b2ab95b5086d76ff4bafbea2cd14bb0d524ad95815798e07"
   },
@@ -25997,7 +27313,7 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "ff9d73ef542d4a38279db28da56351ab89e3819d3fa2eaa07a52b2d839fdfaf1"
   },
   "AYHhuLIDtIEewfRf": {
-    "profile": "",
+    "profile": "spirit",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 488,
     "descriptionHash": "4124e9000093a53f8b6ebe238ddab9fb0f22e83a730cf6aa6542f8c786dc4571"
@@ -26027,8 +27343,8 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionHash": "ab21b908ca59d108af13bccfc4bf3b3a9aa6945c3db013571a47110a50e28e8a"
   },
   "7iB1yacjF9fG6Rvn": {
-    "profile": "cold",
-    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "profile": "wind",
+    "reason": "A blast of icy wind and ravenous insects dealing slashing damage; wind cue rather than ice forming.",
     "descriptionChars": 413,
     "descriptionHash": "4a98bd51fc21ab55970fa59966f1d3817ccc0737346da71d550560417855d6a5"
   },
@@ -26040,7 +27356,7 @@ export const FEAT_SOUND_DESIGNS = {
   },
   "2q8vzxnlYYWcUGJd": {
     "profile": "healing",
-    "reason": "Description explicitly restores through a magical effect.",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 381,
     "descriptionHash": "49f14158419f398f319e14ba0d819607f765af2f2f3f6c14037f816b4f4365b1"
   },
@@ -26174,7 +27490,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "SzUynRs4HVtnpnel:ranged": {
     "profile": "blowgun",
-    "reason": "ranged blowgun cue follows native usage and physical construction. airgun shot across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "Pressurized-air repeater: pneumatic dart release, no black-powder discharge.",
     "descriptionChars": 565,
     "descriptionHash": "4a6d559ec3c02322"
   },
@@ -27061,7 +28377,7 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "6412cdab2740972c"
   },
   "kCN0QxUbJrvidysF:melee": {
-    "profile": "enchanted-rapier-fire",
+    "profile": "enchanted-rapier-brilliant",
     "reason": "melee rapier cue follows native usage and physical construction. One-handed fire contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. holy flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 334,
     "descriptionHash": "7404db28df3a7272"
@@ -27181,7 +28497,7 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "ae1f08da84b3d1bf"
   },
   "y5ibQXac9BbzrYoT:melee": {
-    "profile": "enchanted-rapier-fire",
+    "profile": "enchanted-rapier-brilliant",
     "reason": "melee rapier cue follows native usage and physical construction. One-handed piercing contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1064,
     "descriptionHash": "29c07714d7c1fc93"
@@ -27205,14 +28521,14 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "aae83fa7aea6f29f"
   },
   "LMKw9PCVGeZy7knY:melee": {
-    "profile": "enchanted-hammer-electricity",
-    "reason": "melee hammer cue follows native usage and physical construction. One-handed bludgeoning contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "hammer",
+    "reason": "melee hammer cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1996,
     "descriptionHash": "69639f71343cafd6"
   },
   "LMKw9PCVGeZy7knY:thrown": {
-    "profile": "enchanted-thrown-electricity",
-    "reason": "thrown hammer cue follows native usage and physical construction. hammer throw across 20 ft increments. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "thrown",
+    "reason": "thrown hammer cue follows native usage and physical construction. hammer throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1996,
     "descriptionHash": "69639f71343cafd6"
   },
@@ -27721,8 +29037,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "f458ec751f879a27"
   },
   "kP51e5Ul3Q1fusSg:ranged": {
-    "profile": "enchanted-firearm-acid",
-    "reason": "Native firearm construction selects arquebus, musket or pistol discharge when explicit; other firearms use a neutral black-powder cue.",
+    "profile": "enchanted-blowgun-acid",
+    "reason": "Pressurized-air repeater: pneumatic dart release, no black-powder discharge.",
     "descriptionChars": 665,
     "descriptionHash": "e450a5e9ad8975e1"
   },
@@ -27793,8 +29109,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "9d4443b92678ec2d"
   },
   "l3IOo6AiQj7pxPhB:melee": {
-    "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "shieldStrike",
+    "reason": "melee shieldStrike cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1011,
     "descriptionHash": "d72b9f573e4b2858"
   },
@@ -28873,8 +30189,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "2a81acfe5c7db3ef"
   },
   "qtlkftQXfO4wuCVu:melee": {
-    "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "dagger",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1165,
     "descriptionHash": "d8ee7f1f39aa19a0"
   },
@@ -29474,7 +30790,7 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "Hc4qCwyO9i0Avlzt:ranged": {
     "profile": "blowgun",
-    "reason": "ranged blowgun cue follows native usage and physical construction. airgun shot across 60 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "reason": "Pressurized-air repeater: pneumatic dart release, no black-powder discharge.",
     "descriptionChars": 368,
     "descriptionHash": "caeb37c41db4ab06"
   },
@@ -30295,7 +31611,7 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "88d48cf0c4742bdb"
   },
   "fLqRH3XpvDZEMxOO:melee": {
-    "profile": "enchanted-spear-fire",
+    "profile": "enchanted-spear-brilliant",
     "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. fire + spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 811,
     "descriptionHash": "ac4c0b2d74646f78"
@@ -30511,8 +31827,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "237c7b383b78c2c2"
   },
   "djSCel13i1p8JeXv:melee": {
-    "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. Two-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "dagger",
+    "reason": "melee dagger cue follows native usage and physical construction. Two-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 215,
     "descriptionHash": "47207e6e454f05c7"
   },
@@ -30793,8 +32109,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "e3b0c44298fc1c14"
   },
   "dfum7DpOEkwxwTsT:melee": {
-    "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "shieldStrike",
+    "reason": "melee shieldStrike cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 159,
     "descriptionHash": "b8bde52a9f01ed58"
   },
@@ -30811,8 +32127,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "b01213b47eeb88e9"
   },
   "nSO0Z662LkkLfa2u:melee": {
-    "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "shieldStrike",
+    "reason": "melee shieldStrike cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 123,
     "descriptionHash": "f54fe17afbe0c7e5"
   },
@@ -31087,7 +32403,7 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "6af4f67642110890"
   },
   "8S81RvynBS09rIOF:melee": {
-    "profile": "enchanted-sword-fire",
+    "profile": "enchanted-sword-brilliant",
     "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 826,
     "descriptionHash": "1bcce095138bd21b"
@@ -31987,8 +33303,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "377f5ff3f3dd47e4"
   },
   "Hh3F4DEP6aVulwQN:melee": {
-    "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "dagger",
+    "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 313,
     "descriptionHash": "4dc88bd7b7b327fe"
   },
@@ -32275,8 +33591,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "e3cb9f395a2e1320"
   },
   "pnA6uENYDDduWmAn:ranged": {
-    "profile": "thrownDagger",
-    "reason": "ranged thrownDagger cue follows native usage and physical construction. dart shot across 50 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "sling",
+    "reason": "Dart sling: sling release rather than a hand-thrown knife.",
     "descriptionChars": 269,
     "descriptionHash": "f56eeefbc73964a5"
   },
@@ -32629,8 +33945,8 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "281c8def1aecb026"
   },
   "DhaxHGxXL4Om7bqp:melee": {
-    "profile": "club",
-    "reason": "melee club cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "profile": "spear",
+    "reason": "melee spear cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 196,
     "descriptionHash": "505ea36f6a53be34"
   },
@@ -32737,7 +34053,7 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionHash": "8997c18e2ef8c18c"
   },
   "rft8qacTooqfsUIo:melee": {
-    "profile": "enchanted-polearmBlade-fire",
+    "profile": "enchanted-polearmBlade-brilliant",
     "reason": "melee polearmBlade cue follows native usage and physical construction. Two-handed slashing contact, extended reach. fire native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 2509,
     "descriptionHash": "40b9e4a89f3606fa"

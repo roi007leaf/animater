@@ -12,7 +12,7 @@ export const PF2E_WEAPON_SOURCE = {
   "missingDescriptions": [
     "IF6qUrR3i030v0dH"
   ],
-  "probedKeys": 137,
+  "probedKeys": 139,
   "missingTiming": [],
   "modes": {
     "melee": 695,
@@ -17369,7 +17369,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "bind": [
+            "jb2a.markers.chain.standard.complete.02.grey",
+            "jb2a.markers.chain.standard.complete.02.red"
+          ]
         },
         "selections": [
           {
@@ -17387,6 +17391,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "bind",
+            "key": "jb2a.markers.chain.standard.complete.02.grey",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
@@ -17397,6 +17408,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "bind",
+            "key": "jb2a.markers.chain.standard.complete.02.red",
             "geometry": "radial",
             "approximation": false
           }
@@ -17420,6 +17438,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.markers.chain.standard.complete.02.grey": {
+            "duration": 8333,
+            "baked": false
+          },
+          "jb2a.markers.chain.standard.complete.02.red": {
+            "duration": 8333,
             "baked": false
           }
         },
@@ -23735,10 +23761,8 @@ export const PF2E_WEAPONS = [
         ],
         "range": 0,
         "family": "hammer",
-        "element": "electricity",
-        "elements": [
-          "electricity"
-        ],
+        "element": "physical",
+        "elements": [],
         "flavor": [],
         "payload": null,
         "hands": 1,
@@ -23747,14 +23771,15 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "One-handed bludgeoning contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.hammer.melee.01.white"
           ],
           "flight": [],
           "accent": [
-            "jb2a.lightning_ball.blue"
+            "jb2a.impact.005.white",
+            "jb2a.impact.005.orange"
           ],
           "return": []
         },
@@ -23769,7 +23794,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "accent",
-            "key": "jb2a.lightning_ball.blue",
+            "key": "jb2a.impact.005.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -23783,7 +23808,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "accent",
-            "key": "jb2a.lightning_ball.blue",
+            "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
           }
@@ -23793,8 +23818,12 @@ export const PF2E_WEAPONS = [
             "duration": 2867,
             "baked": false
           },
-          "jb2a.lightning_ball.blue": {
-            "duration": 2033,
+          "jb2a.impact.005.white": {
+            "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.005.orange": {
+            "duration": 833,
             "baked": false
           }
         },
@@ -23814,10 +23843,8 @@ export const PF2E_WEAPONS = [
         ],
         "range": 20,
         "family": "hammer",
-        "element": "electricity",
-        "elements": [
-          "electricity"
-        ],
+        "element": "physical",
+        "elements": [],
         "flavor": [],
         "payload": null,
         "hands": 1,
@@ -23826,7 +23853,7 @@ export const PF2E_WEAPONS = [
         "heavy": false,
         "onHitCue": "",
         "returning": true,
-        "rationale": "hammer throw across 20 ft increments. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "hammer throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [],
           "flight": [
@@ -23834,7 +23861,8 @@ export const PF2E_WEAPONS = [
             "jb2a.dagger.throw.01.white"
           ],
           "accent": [
-            "jb2a.lightning_ball.blue"
+            "jb2a.impact.005.white",
+            "jb2a.impact.005.orange"
           ],
           "return": [
             "jb2a.hammer.return",
@@ -23852,7 +23880,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "patreon",
             "slot": "accent",
-            "key": "jb2a.lightning_ball.blue",
+            "key": "jb2a.impact.005.white",
             "geometry": "radial",
             "approximation": false
           },
@@ -23873,7 +23901,7 @@ export const PF2E_WEAPONS = [
           {
             "edition": "free",
             "slot": "accent",
-            "key": "jb2a.lightning_ball.blue",
+            "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
           },
@@ -23898,8 +23926,12 @@ export const PF2E_WEAPONS = [
             "contact": 850,
             "contactMethod": "alpha-weighted-estimate"
           },
-          "jb2a.lightning_ball.blue": {
-            "duration": 2033,
+          "jb2a.impact.005.white": {
+            "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.005.orange": {
+            "duration": 833,
             "baked": false
           },
           "jb2a.hammer.return": {
@@ -70844,7 +70876,11 @@ export const PF2E_WEAPONS = [
             "jb2a.impact.005.white",
             "jb2a.impact.005.orange"
           ],
-          "return": []
+          "return": [],
+          "bind": [
+            "jb2a.markers.chain.standard.complete.02.grey",
+            "jb2a.markers.chain.standard.complete.02.red"
+          ]
         },
         "selections": [
           {
@@ -70862,6 +70898,13 @@ export const PF2E_WEAPONS = [
             "approximation": false
           },
           {
+            "edition": "patreon",
+            "slot": "bind",
+            "key": "jb2a.markers.chain.standard.complete.02.grey",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
             "edition": "free",
             "slot": "flight",
             "key": "jb2a.dagger.throw.01.white",
@@ -70872,6 +70915,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "bind",
+            "key": "jb2a.markers.chain.standard.complete.02.red",
             "geometry": "radial",
             "approximation": false
           }
@@ -70895,6 +70945,14 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.impact.005.orange": {
             "duration": 833,
+            "baked": false
+          },
+          "jb2a.markers.chain.standard.complete.02.grey": {
+            "duration": 8333,
+            "baked": false
+          },
+          "jb2a.markers.chain.standard.complete.02.red": {
+            "duration": 8333,
             "baked": false
           }
         },
@@ -135340,6 +135398,10 @@ export const PF2E_WEAPONS = [
           ],
           "return": [
             "jb2a.dagger.return.01.white"
+          ],
+          "bind": [
+            "jb2a.markers.chain.standard.complete.02.grey",
+            "jb2a.markers.chain.standard.complete.02.red"
           ]
         },
         "selections": [
@@ -135354,6 +135416,13 @@ export const PF2E_WEAPONS = [
             "edition": "patreon",
             "slot": "accent",
             "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bind",
+            "key": "jb2a.markers.chain.standard.complete.02.grey",
             "geometry": "radial",
             "approximation": false
           },
@@ -135375,6 +135444,13 @@ export const PF2E_WEAPONS = [
             "edition": "free",
             "slot": "accent",
             "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "bind",
+            "key": "jb2a.markers.chain.standard.complete.02.red",
             "geometry": "radial",
             "approximation": false
           },
@@ -135412,6 +135488,14 @@ export const PF2E_WEAPONS = [
             "baked": true,
             "contact": 50,
             "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.markers.chain.standard.complete.02.grey": {
+            "duration": 8333,
+            "baked": false
+          },
+          "jb2a.markers.chain.standard.complete.02.red": {
+            "duration": 8333,
+            "baked": false
           }
         },
         "approximations": [

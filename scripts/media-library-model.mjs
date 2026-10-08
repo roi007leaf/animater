@@ -25,6 +25,7 @@ export function assetColor(key, file = '') {
 // Database dimensions describe a variant. File pixel dimensions describe the
 // video resolution and must not become footprint choices.
 const sizeToken = /^(?:\d+x\d+|tiny|small|medium|large|huge|gargantuan)$/i;
+const compareNames=new Intl.Collator(undefined,{numeric:true}).compare;
 export const variantSize = item => item?.type === 'audio' || safeMediaFile(item?.key)
   ? '' : String(item?.key ?? '').split('.').find(part => sizeToken.test(part))?.toLowerCase() ?? '';
 const variantStem = item => String(item.key ?? item.file).split('.').map(part =>
@@ -37,7 +38,7 @@ export function matchingMediaVariant(variants, current, {color = current?.color,
     ?? candidates[0] ?? null;
 }
 export function mediaVariantChoices(variants, current) {
-  const sort = (a,b) => a.localeCompare(b, undefined, {numeric:true});
+  const sort = compareNames;
   const namedSizes = ['tiny','small','medium','large','huge','gargantuan'];
   const sizeSort = (a,b) => namedSizes.includes(a)&&namedSizes.includes(b)
     ? namedSizes.indexOf(a)-namedSizes.indexOf(b) : sort(a,b);
@@ -150,6 +151,16 @@ export function mergeMedia(...lists) {
   }
   return [...unique.values()];
 }
+// Existing rows are a normalized library snapshot. Validate only additions;
+// progressive discovery must not reprocess every prior file on each batch.
+export function appendMedia(existing,...lists) {
+  const unique=new Map(existing.map(item=>[item.id,item]));
+  for(const entry of lists.flat()) {
+    const item=libraryItem(entry);
+    if(item)unique.set(item.id,{...unique.get(item.id),...item});
+  }
+  return [...unique.values()];
+}
 export function mediaGroups(items, filters = {}, collections = {}) {
   const terms = words(filters.search).toLowerCase().split(' ').filter(Boolean);
   const synonyms = {cold:['cold','ice','frost','snow'],ice:['ice','cold','frost'],healing:['healing','heal','cure'],lightning:['lightning','electric','thunder'],sound:['sound','audio']};
@@ -170,7 +181,7 @@ export function mediaGroups(items, filters = {}, collections = {}) {
   }
   const result = [...groups.values()];
   if (filters.collection === 'recent') result.sort((a,b) => Math.min(...a.variants.map(v => collections.recent.indexOf(v.id))) - Math.min(...b.variants.map(v => collections.recent.indexOf(v.id))));
-  else result.sort((a,b) => a.label.localeCompare(b.label, undefined, {numeric:true}) * (filters.sort === 'za' ? -1 : 1));
+  else result.sort((a,b) => compareNames(a.label,b.label) * (filters.sort === 'za' ? -1 : 1));
   return {groups:result, count:matches.length};
 }
 export function mediaForReference(catalog, reference) {

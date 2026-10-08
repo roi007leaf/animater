@@ -91,10 +91,39 @@ export const FEAT_ACTION_MOTION_REVIEWS = {
 
 // A native activity chooses the action branch. No movement is added to another
 // activity merely because it shares the same item's description.
+// Takeoff/landing samples for D&D flight and jump grants (cosmetic, restored).
+const takeoff = (label, extra = {}) => route('rush', label, .6, { motionHeading: 'up', duration: 3400, intensity: .12, motionArrival: 45, motionHold: 35, ...extra });
+const bound = (label, extra = {}) => route('leap', label, 1.2, { jumpHeight: .9, duration: 3000, ...extra });
+const DND_ITEM_SPELL_MOTION = {
+  'expeditious-retreat': () => route('rush', 'Expeditious Retreat Dash', 2.2, { duration: 3400 }),
+  jump: () => bound('Jump-empowered bound', { subject: 'targets', targetLimit: 1, when: 'after', anchorKind: 'aura' }),
+  fly: () => takeoff('Recipient rises into flight', { subject: 'targets', targetLimit: 3, when: 'after', anchorKind: 'aura' }),
+  'ring-of-jumping': () => bound('Ring-empowered bound', { when: 'after' }),
+  'winged-boots': () => takeoff('Winged boots lift the wearer', { when: 'after' }),
+  'wings-of-flying': () => takeoff('Wings open and lift', { when: 'after' }),
+  'potion-of-flying': () => takeoff('Drinker lifts into flight', { when: 'after' }),
+  'broom-of-flying': name => /send|recall/i.test(name) ? null : takeoff('Broom lifts the rider', { when: 'after' }),
+  'carpet-of-flying': () => takeoff('Carpet lifts its riders', { when: 'after' }),
+};
+
 export function dndMotionReview(entry, variant) {
-  if (entry.kind !== 'feat') return null;
   const name = variant.activityName ?? '';
+  if (['spell', 'item'].includes(entry.kind)) return DND_ITEM_SPELL_MOTION[entry.slug.replace(/-\d.*$/, '')]?.(name) ?? null;
+  if (entry.kind !== 'feat') return null;
+  // Unnamed native activities are labelled by type ("save", "utility").
+  const save = /save|damage/i.test(`${name} ${variant.label ?? ''}`);
   switch (entry.slug) {
+    case 'charge': case 'trampling-charge': case 'aquatic-charge': case 'pounce': case 'charging-horn': case 'onslaught':
+      return save ? null : approach('Straight advance toward the enemy', { duration: 3600 });
+    case 'bubble-dash': return route('rush', 'Swim without provoking', 2, { duration: 3300, intensity: .15 });
+    case 'move-legendary': return route('rush', 'Legendary half-Speed move', 1.6, { duration: 3300, intensity: .15 });
+    case 'hasten': return route('rush', 'Dash and Disengage', 2.2, { duration: 3500 });
+    case 'nimble-escape': return step('Nimble Disengage or Hide', { duration: 1800 });
+    case 'leap': return bound('Monster leap', { distance: 2, duration: 3400 });
+    case 'otherworldly-leap': return bound('Self-cast Jump bound', { when: 'after' });
+    case 'draconic-flight': return takeoff('Spectral wings lift the dragonborn', { when: 'after' });
+    case 'dragon-wings': return /restore/i.test(name) ? null : takeoff('Draconic wings lift the sorcerer', { when: 'after' });
+    case 'step-of-the-wind': return bound('Step of the Wind bound', { distance: 2, jumpHeight: .5, duration: 3400 });
     case 'aggressive': return approach('Advance toward the visible hostile creature');
     case 'rampage': return approach('Half-Speed rampaging advance', { duration: 3400 });
     case 'prowl': return route('rush', 'Prowl before hiding', 1.5, { duration: 3300, intensity: .15 });
@@ -104,7 +133,7 @@ export function dndMotionReview(entry, variant) {
     case 'deadly-leap': return /damage/i.test(name) ? null : jump('Deadly landing leap', { distance: 3, duration: 3800 });
     case 'cunning-strike': return /withdraw/i.test(name) ? route('rush', 'Withdraw after the prior attack', 1.2, { motionHeading: 'away', when: 'after' }) : null;
     case 'patient-defense': return step('Patient defensive evasion', { distance: .18, duration: 1600 });
-    case 'monks-focus': return /step of the wind/i.test(name) ? route('rush', 'Step of the Wind Dash', 2, { duration: 3400 }) : /patient defense.*focus point/i.test(name) ? step('Patient defensive evasion', { distance: .18, duration: 1600 }) : null;
+    case 'monks-focus': return /step of the wind/i.test(name) ? bound('Step of the Wind Dash with doubled jump', { distance: 2, jumpHeight: .5, duration: 3400 }) : /patient defense.*focus point/i.test(name) ? step('Patient defensive evasion', { distance: .18, duration: 1600 }) : null;
     case 'cunning-action': return /dash/i.test(name) ? route('rush', 'Chosen Cunning Action Dash', 1.8, { duration: 3300 }) : /disengage/i.test(name) ? step('Chosen Cunning Action Disengage', { duration: 1800 }) : null;
     default: return null;
   }

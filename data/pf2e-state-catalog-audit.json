@@ -17,7 +17,7 @@
     "coverage": {
       "patreon": {
         "available": 7648,
-        "selected": 203,
+        "selected": 205,
         "families": [
           "markers",
           "template_circle",
@@ -45,16 +45,18 @@
           "web",
           "hunters_mark",
           "sleep",
+          "melee_generic",
+          "claws",
           "energy_strands",
           "bless",
-          "claws",
+          "fire_ring",
           "bite"
         ],
         "missing": []
       },
       "free": {
         "available": 1351,
-        "selected": 128,
+        "selected": 129,
         "families": [
           "markers",
           "template_circle",
@@ -82,9 +84,11 @@
           "web",
           "hunters_mark",
           "sleep",
+          "rapier",
+          "claws",
           "energy_strands",
           "bless",
-          "claws",
+          "fire_ring",
           "bite"
         ],
         "missing": []
@@ -91496,41 +91500,39 @@
             "descriptionHash": "dbe69fb1c5ae98aa0ad22cb657c63a4f2e4c7ad3a3aa8a331a94b4945673065f",
             "layers": [
               {
-                "scale": 0.9,
-                "opacity": 0.92,
+                "scale": 0.95,
+                "opacity": 0.55,
                 "below": false,
                 "offsetX": 0,
                 "offsetY": 0,
                 "offsetUnits": "token",
-                "playbackRate": 0.8,
-                "tracks": [
-                  {
-                    "property": "scale.y",
-                    "from": 0.6,
-                    "to": 0.6,
-                    "duration": 6000
-                  }
-                ],
+                "playbackRate": 0.6,
                 "stageId": "condition-1",
                 "label": "Persistent Damage",
                 "assets": [
-                  "jb2a.markers.simple.001.loop.001.red"
+                  "jb2a.melee_generic.piercing.one_handed",
+                  "jb2a.rapier.melee.01.white"
                 ],
                 "tint": "#cf7284",
                 "tintEnabled": true,
                 "colorize": true,
                 "editions": {
                   "patreon": {
-                    "key": "jb2a.markers.simple.001.loop.001.red",
+                    "key": "jb2a.melee_generic.piercing.one_handed",
                     "files": [
-                      "modules/jb2a_patreon/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm"
+                      "modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Melee/DmgPiercing_01_Regular_Yellow_1Handed_800x600.webm"
                     ],
                     "colorSubstitution": true
                   },
                   "free": {
-                    "key": "jb2a.markers.simple.001.loop.001.red",
+                    "key": "jb2a.rapier.melee.01.white",
                     "files": [
-                      "modules/JB2A_DnD5e/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm"
+                      "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_01_Regular_White_800x600.webm",
+                      "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_02_Regular_White_800x600.webm",
+                      "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_03_Regular_White_800x600.webm",
+                      "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_04_Regular_White_800x600.webm",
+                      "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_05_Regular_White_800x600.webm",
+                      "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_06_Regular_White_800x600.webm"
                     ],
                     "colorSubstitution": true
                   }
@@ -91538,41 +91540,39 @@
               }
             ]
           },
-          "scale": 0.9,
-          "opacity": 0.92,
+          "scale": 0.95,
+          "opacity": 0.55,
           "below": false,
           "offsetX": 0,
           "offsetY": 0,
           "offsetUnits": "token",
-          "playbackRate": 0.8,
-          "tracks": [
-            {
-              "property": "scale.y",
-              "from": 0.6,
-              "to": 0.6,
-              "duration": 6000
-            }
-          ],
+          "playbackRate": 0.6,
           "stageId": "condition-1",
           "label": "Persistent Damage",
           "assets": [
-            "jb2a.markers.simple.001.loop.001.red"
+            "jb2a.melee_generic.piercing.one_handed",
+            "jb2a.rapier.melee.01.white"
           ],
           "tint": "#cf7284",
           "tintEnabled": true,
           "colorize": true,
           "editions": {
             "patreon": {
-              "key": "jb2a.markers.simple.001.loop.001.red",
+              "key": "jb2a.melee_generic.piercing.one_handed",
               "files": [
-                "modules/jb2a_patreon/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm"
+                "modules/jb2a_patreon/Library/Generic/Weapon_Attacks/Melee/DmgPiercing_01_Regular_Yellow_1Handed_800x600.webm"
               ],
               "colorSubstitution": true
             },
             "free": {
-              "key": "jb2a.markers.simple.001.loop.001.red",
+              "key": "jb2a.rapier.melee.01.white",
               "files": [
-                "modules/JB2A_DnD5e/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm"
+                "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_01_Regular_White_800x600.webm",
+                "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_02_Regular_White_800x600.webm",
+                "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_03_Regular_White_800x600.webm",
+                "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_04_Regular_White_800x600.webm",
+                "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_05_Regular_White_800x600.webm",
+                "modules/JB2A_DnD5e/Library/Generic/Weapon_Attacks/Melee/Rapier01_06_Regular_White_800x600.webm"
               ],
               "colorSubstitution": true
             }
@@ -91668,42 +91668,34 @@
             "descriptionHash": "dbe69fb1c5ae98aa0ad22cb657c63a4f2e4c7ad3a3aa8a331a94b4945673065f",
             "layers": [
               {
-                "scale": 1.1,
-                "opacity": 0.92,
+                "scale": 1.05,
+                "opacity": 0.6,
                 "below": false,
                 "offsetX": 0,
                 "offsetY": 0,
                 "offsetUnits": "token",
-                "playbackRate": 0.8,
-                "rotation": 45,
-                "tracks": [
-                  {
-                    "property": "scale.y",
-                    "from": 0.4,
-                    "to": 0.4,
-                    "duration": 6000
-                  }
-                ],
+                "playbackRate": 0.6,
                 "stageId": "condition-1",
                 "label": "Persistent Damage",
                 "assets": [
-                  "jb2a.markers.simple.001.loop.001.red"
+                  "jb2a.claws.200px.dark_red",
+                  "jb2a.claws.200px.red"
                 ],
                 "tint": "#cf7284",
                 "tintEnabled": true,
                 "colorize": true,
                 "editions": {
                   "patreon": {
-                    "key": "jb2a.markers.simple.001.loop.001.red",
+                    "key": "jb2a.claws.200px.dark_red",
                     "files": [
-                      "modules/jb2a_patreon/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm"
+                      "modules/jb2a_patreon/Library/Generic/Creature/Claws_01_Dark_Red_200x200.webm"
                     ],
-                    "colorSubstitution": true
+                    "colorSubstitution": false
                   },
                   "free": {
-                    "key": "jb2a.markers.simple.001.loop.001.red",
+                    "key": "jb2a.claws.200px.red",
                     "files": [
-                      "modules/JB2A_DnD5e/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm"
+                      "modules/JB2A_DnD5e/Library/Generic/Creature/Claws_01_Regular_Red_200x200.webm"
                     ],
                     "colorSubstitution": true
                   }
@@ -91711,42 +91703,34 @@
               }
             ]
           },
-          "scale": 1.1,
-          "opacity": 0.92,
+          "scale": 1.05,
+          "opacity": 0.6,
           "below": false,
           "offsetX": 0,
           "offsetY": 0,
           "offsetUnits": "token",
-          "playbackRate": 0.8,
-          "rotation": 45,
-          "tracks": [
-            {
-              "property": "scale.y",
-              "from": 0.4,
-              "to": 0.4,
-              "duration": 6000
-            }
-          ],
+          "playbackRate": 0.6,
           "stageId": "condition-1",
           "label": "Persistent Damage",
           "assets": [
-            "jb2a.markers.simple.001.loop.001.red"
+            "jb2a.claws.200px.dark_red",
+            "jb2a.claws.200px.red"
           ],
           "tint": "#cf7284",
           "tintEnabled": true,
           "colorize": true,
           "editions": {
             "patreon": {
-              "key": "jb2a.markers.simple.001.loop.001.red",
+              "key": "jb2a.claws.200px.dark_red",
               "files": [
-                "modules/jb2a_patreon/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm"
+                "modules/jb2a_patreon/Library/Generic/Creature/Claws_01_Dark_Red_200x200.webm"
               ],
-              "colorSubstitution": true
+              "colorSubstitution": false
             },
             "free": {
-              "key": "jb2a.markers.simple.001.loop.001.red",
+              "key": "jb2a.claws.200px.red",
               "files": [
-                "modules/JB2A_DnD5e/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm"
+                "modules/JB2A_DnD5e/Library/Generic/Creature/Claws_01_Regular_Red_200x200.webm"
               ],
               "colorSubstitution": true
             }
@@ -100151,29 +100135,124 @@
       "name": "Spell Effect: Entropic Wheel",
       "kind": "effect",
       "theme": "fire",
-      "quality": "symbolic",
-      "evidence": "Complete native description",
+      "quality": "curated",
+      "evidence": "Reviewed complete native description",
       "descriptionHash": "86446eb885813e392e1fb9d9d6eb3ed1b58ff12b36899cc15c1b94eb91c1a042",
       "editions": {
         "patreon": {
-          "key": "jb2a.flames.04.loop.orange",
+          "key": "jb2a.fire_ring.500px.yellow",
           "files": [
-            "modules/jb2a_patreon/Library/Generic/Fire/Flame/Flames04_01_Regular_Orange_Loop_400x600.webm"
+            "modules/jb2a_patreon/Library/Generic/Fire/FireRing_01_Circle_Yellow_500x500.webm"
           ],
-          "colorSubstitution": false
+          "colorSubstitution": true
         },
         "free": {
-          "key": "jb2a.flames.04.loop.orange",
+          "key": "jb2a.fire_ring.500px.red",
           "files": [
-            "modules/JB2A_DnD5e/Library/Generic/Fire/Flame/Flames04_01_Regular_Orange_Loop_400x600.webm"
+            "modules/JB2A_DnD5e/Library/Generic/Fire/FireRing_01_Circle_Red_500.webm"
           ],
-          "colorSubstitution": false
+          "colorSubstitution": true
         }
       },
-      "presentationRole": "flame",
-      "scale": 1.55,
-      "opacity": 0.82,
-      "below": false,
+      "conditionDesign": {
+        "id": "spell-effect-entropic-wheel",
+        "descriptionHash": "86446eb885813e392e1fb9d9d6eb3ed1b58ff12b36899cc15c1b94eb91c1a042",
+        "layers": [
+          {
+            "scale": 1.2,
+            "opacity": 0.75,
+            "below": true,
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetUnits": "token",
+            "playbackRate": 0.7,
+            "tracks": [
+              {
+                "property": "rotation",
+                "from": 0,
+                "to": 360,
+                "duration": 7000,
+                "loop": true,
+                "pingPong": false,
+                "ease": "easeInOutQuad"
+              }
+            ],
+            "stageId": "condition-1",
+            "label": "Spell Effect: Entropic Wheel",
+            "assets": [
+              "jb2a.fire_ring.500px.yellow",
+              "jb2a.fire_ring.500px.red"
+            ],
+            "tint": "#ff8a3d",
+            "tintEnabled": true,
+            "colorize": true,
+            "editions": {
+              "patreon": {
+                "key": "jb2a.fire_ring.500px.yellow",
+                "files": [
+                  "modules/jb2a_patreon/Library/Generic/Fire/FireRing_01_Circle_Yellow_500x500.webm"
+                ],
+                "colorSubstitution": true
+              },
+              "free": {
+                "key": "jb2a.fire_ring.500px.red",
+                "files": [
+                  "modules/JB2A_DnD5e/Library/Generic/Fire/FireRing_01_Circle_Red_500.webm"
+                ],
+                "colorSubstitution": true
+              }
+            }
+          },
+          {
+            "scale": 1.35,
+            "opacity": 0.85,
+            "below": false,
+            "offsetX": 0,
+            "offsetY": 0,
+            "offsetUnits": "token",
+            "playbackRate": 0.7,
+            "tracks": [
+              {
+                "property": "rotation",
+                "from": 0,
+                "to": -360,
+                "duration": 7000,
+                "loop": true,
+                "pingPong": false,
+                "ease": "easeInOutQuad"
+              }
+            ],
+            "stageId": "condition-2",
+            "label": "Spell Effect: Entropic Wheel",
+            "assets": [
+              "jb2a.aura_themed.01.orbit.loop.cold.01.blue"
+            ],
+            "tint": "#8cdcff",
+            "tintEnabled": true,
+            "colorize": true,
+            "editions": {
+              "patreon": {
+                "key": "jb2a.aura_themed.01.orbit.loop.cold.01.blue",
+                "files": [
+                  "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedOrbitLoopCold01_01_Regular_Blue_700x700.webm"
+                ],
+                "colorSubstitution": false
+              },
+              "free": {
+                "key": "jb2a.aura_themed.01.orbit.loop.cold.01.blue",
+                "files": [
+                  "modules/JB2A_DnD5e/Library/Generic/Template/Circle/Aura/AuraThemedOrbitLoopCold01_01_Regular_Blue_700x700.webm"
+                ],
+                "colorSubstitution": false
+              }
+            }
+          }
+        ]
+      },
+      "presentationRole": "field",
+      "scale": 1.2,
+      "opacity": 0.75,
+      "below": true,
       "offsetY": 0
     },
     {

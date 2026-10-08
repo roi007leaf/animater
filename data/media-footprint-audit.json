@@ -6,7 +6,7 @@
     "condition": 43,
     "effect": 2929,
     "damageVariant": 15,
-    "elementVariant": 379,
+    "elementVariant": 386,
     "auraVariant": 12,
     "starter": 12,
     "orb": 6,
@@ -19,7 +19,7 @@
   },
   "method": "Union of alpha >= min(64, half peak alpha), minimum 8, at 6fps, 128px sample width; preserves original aspect and center",
   "selectedFiles": 2226,
-  "measuredFiles": 1674,
+  "measuredFiles": 1675,
   "installedFiles": 1455,
   "referenceFiles": 771,
   "missingMeasurements": [],
@@ -650,18 +650,6 @@
     },
     {
       "file": "modules/JB2A_DnD5e/Library/2nd_Level/Web/Web_01_White_01_400x400.webm",
-      "edition": "free",
-      "exactInstalled": false,
-      "source": "same-filename-reference",
-      "profile": [
-        400,
-        400,
-        378.125,
-        384.375
-      ]
-    },
-    {
-      "file": "modules/JB2A_DnD5e/Library/2nd_Level/Web/Web_01_White_02_400x400.webm",
       "edition": "free",
       "exactInstalled": false,
       "source": "same-filename-reference",
@@ -2749,6 +2737,18 @@
       ]
     },
     {
+      "file": "modules/JB2A_DnD5e/Library/Generic/Healing/HealingAbility_01_Yellow_200x200.webm",
+      "edition": "free",
+      "exactInstalled": false,
+      "source": "same-filename-reference",
+      "profile": [
+        200,
+        200,
+        154.6875,
+        137.5
+      ]
+    },
+    {
       "file": "modules/JB2A_DnD5e/Library/Generic/Healing/HealingAbility_02_Regular_GreenOrange_Burst_600x600.webm",
       "edition": "free",
       "exactInstalled": false,
@@ -4537,18 +4537,6 @@
       ]
     },
     {
-      "file": "modules/JB2A_DnD5e/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm",
-      "edition": "free",
-      "exactInstalled": false,
-      "source": "same-filename-reference",
-      "profile": [
-        600,
-        600,
-        300,
-        300
-      ]
-    },
-    {
       "file": "modules/JB2A_DnD5e/Library/Generic/Marker/WardRune_01_Regular_Yellow_600x600.webm",
       "edition": "free",
       "exactInstalled": false,
@@ -5974,6 +5962,18 @@
         700,
         552.3438,
         519.5313
+      ]
+    },
+    {
+      "file": "modules/JB2A_DnD5e/Library/Generic/Template/Circle/Aura/AuraThemedOrbitCompleteCold01_01_Regular_Blue_700x700.webm",
+      "edition": "free",
+      "exactInstalled": false,
+      "source": "same-filename-reference",
+      "profile": [
+        700,
+        700,
+        579.6875,
+        579.6875
       ]
     },
     {
@@ -10922,18 +10922,6 @@
     },
     {
       "file": "modules/jb2a_patreon/Library/2nd_Level/Web/Web_01_White_01_400x400.webm",
-      "edition": "patreon",
-      "exactInstalled": true,
-      "source": "installed",
-      "profile": [
-        400,
-        400,
-        378.125,
-        384.375
-      ]
-    },
-    {
-      "file": "modules/jb2a_patreon/Library/2nd_Level/Web/Web_01_White_02_400x400.webm",
       "edition": "patreon",
       "exactInstalled": true,
       "source": "installed",
@@ -18037,6 +18025,18 @@
       ]
     },
     {
+      "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerChainStandard01_02_Regular_Grey_Complete_400x400.webm",
+      "edition": "patreon",
+      "exactInstalled": true,
+      "source": "installed",
+      "profile": [
+        400,
+        400,
+        331.25,
+        359.375
+      ]
+    },
+    {
       "file": "modules/jb2a_patreon/Library/Generic/Marker/MarkerChainStandard01_02_Regular_Grey_Loop_400x400.webm",
       "edition": "patreon",
       "exactInstalled": true,
@@ -18682,18 +18682,6 @@
         300,
         257.8125,
         262.5
-      ]
-    },
-    {
-      "file": "modules/jb2a_patreon/Library/Generic/Marker/Simple/MarkerSimpleLoop001_001_Red_600x600.webm",
-      "edition": "patreon",
-      "exactInstalled": true,
-      "source": "installed",
-      "profile": [
-        600,
-        600,
-        300,
-        300
       ]
     },
     {
@@ -22138,6 +22126,18 @@
         700,
         552.3438,
         519.5313
+      ]
+    },
+    {
+      "file": "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedOrbitCompleteCold01_01_Regular_Blue_700x700.webm",
+      "edition": "patreon",
+      "exactInstalled": true,
+      "source": "installed",
+      "profile": [
+        700,
+        700,
+        579.6875,
+        579.6875
       ]
     },
     {

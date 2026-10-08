@@ -1030,6 +1030,12 @@ const track = (property, from, to, duration, extra = {}) => ({
   ...extra,
 });
 
+const HEAVY_GRAVITY = {
+  "unrelenting-gravity": ["press", "Crushing downward force"],
+  "gravity-weapon": ["pulse", "Gravity gathers into blows"],
+  "variable-gravity": ["pulse", "Gravity grip adjusts"],
+  "chosen-gravity": ["pulse", "Gravity reorients"],
+};
 export function applySpellDesign(spell, base, stage, { motion = true, castRank = spell.rank } = {}) {
   const d = spell.design;
   if (!d) return base;
@@ -1231,10 +1237,10 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
             opacity: 0.25,
           }),
           pose(
-            "levitate",
-            "Wind lifts caster artwork",
+            "pulse",
+            "Cold breath exhaled",
             charge + 350,
-            1500,
+            900,
             "source",
             0.08,
             0.3,
@@ -2524,7 +2530,17 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
           offsetY: 0.3,
           scale: 0.9,
         }),
-        pose(
+        // Only spells that actually lift a creature rise; heavier or redirected
+        // gravity presses (shake) or settles (pulse) instead of floating.
+        ...(pattern === "gravity" && HEAVY_GRAVITY[spell.slug] ? [pose(
+          HEAVY_GRAVITY[spell.slug][0],
+          HEAVY_GRAVITY[spell.slug][1],
+          charge + 100,
+          HEAVY_GRAVITY[spell.slug][0] === "press" ? 1100 : 1200,
+          subject,
+          HEAVY_GRAVITY[spell.slug][0] === "press" ? 0.12 : 0.06,
+          HEAVY_GRAVITY[spell.slug][0] === "press" ? 0.6 : 0.35,
+        )] : [pose(
           "levitate",
           pattern === "flight" ? "Air lift" : "Slow levitation",
           charge + 100,
@@ -2532,7 +2548,7 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
           subject,
           pattern === "flight" ? 0.55 : 0.35,
           0.8,
-        ),
+        )]),
       ];
       break;
     case "mirror":
@@ -2766,9 +2782,10 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
         cast("Stone stirs"),
         hit("Ground fracture", charge, 1300, { below: true, scale: 1.6 }),
         hit("Falling fragments", charge + 400, 850, { rotation: 45 }),
+        // Restorative or carving stone work reshapes gently; only harm trembles.
         pose(
-          subject === "source" ? "pulse" : "shake",
-          subject === "source" ? "Ground channel" : "Ground tremor",
+          subject === "source" || !(d.impact || spell.slug === "petrify") ? "pulse" : "shake",
+          subject === "source" ? "Ground channel" : d.impact || spell.slug === "petrify" ? "Ground tremor" : "Stone reshapes",
           charge + 450,
           800,
           subject,
@@ -2927,16 +2944,18 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
           rotateIn: -60,
           rotateInDuration: 600,
         }),
+        // Only a spell attack or melee delivery lunges; conjured bites, mirrored
+        // cuts and weapon buffs channel in place, and only damage makes targets react.
         pose(
-          subject === "source" ? "pulse" : "lunge",
-          subject === "source" ? "Weapon channel" : "Weapon lunge",
+          subject === "source" || !(d.spellAttack || spell.delivery === "melee") ? "pulse" : "lunge",
+          subject === "source" || !(d.spellAttack || spell.delivery === "melee") ? "Weapon channel" : "Weapon lunge",
           charge - 100,
           550,
           "source",
           0.14,
           0.6,
         ),
-        ...(subject === "targets"
+        ...(subject === "targets" && d.damageDice
           ? [
               pose(
                 "recoil",
@@ -3007,7 +3026,7 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
         { opacity: 0.4, scale: 1.1 },
       ),
     );
-  layers = capSpellStages(spell, applyFixStyle(spell, SPELL_MOTIFS[d.motif], layers));
+  layers = capSpellStages(spell, applyFixStyle(spell, SPELL_MOTIFS[d.motif], layers, { fx, charge }));
   if(!FIRE_SPELL_MOTIFS[d.motif])layers = applySpellVisualIdentity(spell, layers, stage);
   let paced = paceDeliveryEffects(layers, GAP_SPELL_MOTIFS[d.motif]||FIRE_SPELL_MOTIFS[d.motif]?{...d,preserveStageTiming:true}:d).map(paceGeneratedMotion);
   let reviewedMotion = SPELL_MOTION_REVIEWS[spell.slug];

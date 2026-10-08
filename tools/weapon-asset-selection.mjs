@@ -67,6 +67,8 @@ export function selectWeaponMedia(databases,weapon,mode){
   const secondary=[...new Set([...(mode.elements??[]).filter(e=>e!==mode.element),payload?.secondary].filter(Boolean))];
   for(const [index,element]of secondary.entries())pick(`accent${index+2}`,WEAPON_ACCENTS[element]??WEAPON_ACCENTS.physical,'radial');
   for(const [index,flavor]of (mode.flavor??[]).entries())pick(`flavor${index+1}`,WEAPON_ACCENTS[flavor]??WEAPON_ACCENTS.physical,'radial');
+  // Bolas entangle: wrap the first target in a chain marker (web wisp fallback).
+  if(mode.family==='bola')pick('bind',['markers.chain.standard.complete.02'],'radial',['web.complete.002.white']);
   if(mode.onHitCue==='warpwave')pick('onHit',['energy_field.01.multicolored'],'radial',['energy_field.01.blue']);
   if(mode.returning){
    const returns={boomerang:['boomerang.01.white.01.return','boomerang.02.white.01.return'],chakram:['chakram.01.return'],dart:['dart.01.return'],shieldThrow:['shield_attack.ranged.return'],javelin:['javelin.01.return','spear.return.01'],handaxe:['handaxe.return']};

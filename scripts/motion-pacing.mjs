@@ -10,6 +10,15 @@ export const GENERATED_MOTION_DURATION = Object.freeze({
   spin: 1400,
   levitate: 1400,
   pulse: 900,
+  press: 1100,
+  sink: 1400,
+  flicker: 1200,
+  throw: 900,
+  brace: 800,
+  stagger: 900,
+  cower: 1100,
+  slam: 1200,
+  drift: 1800,
 });
 
 export function paceGeneratedMotion(stage) {

@@ -10,9 +10,17 @@ export function weaponRecipe(weapon,modeName=weapon?.modes?.[0]?.mode,options={}
  const stage=(kind,slot,label,delay,extra={})=>{const film=Math.max(1300,...(mode.assets[slot]??[]).map(k=>mode.mediaTiming?.[k]?.duration??0))+150,long=kind==='impact'&&film>4650;
   return {kind,stageId:`${id}-${slot}`,assets:mode.assets[slot],label,delay,duration:long?4650:film,...(long?{clipEnd:4050}:{}),scale:1,oneShot:true,fadeIn:0,fadeOut:long?600:120,scaleInDuration:0,targetSelection:'first',...extra};};
  const firing=mode.mode==='ranged'&&['firearm','airgun'].includes(mode.family);
- const duration=mode.heavy?1500:mode.agile?1000:1250;
- const start=firing?(mode.heavy?520:420):duration/2;
- const gesture={kind:'motion',stageId:`${id}-motion`,label:mode.mode==='melee'?mode.heavy?'Weighty wind-up':'Measured approach':mode.mode==='thrown'?'Throw and settle':firing?'Discharge recoil':'Release and settle',assets:[],motion:firing?'recoil':'lunge',subject:'source',delay:firing?start:0,duration:firing?900:duration,intensity:1,distance:mode.mode==='melee'?mode.reach||mode.heavy?.2:.14:firing?mode.traits?.includes('kickback')?.14:.08:.1,targetSelection:'first'};
+ // Per-mode body language: melee lunges (reach weapons extend rather than
+ // step in), thrown objects and bombs wind back and release (the throw snaps
+ // forward at 35%, so flight starts there), bows draw back, crossbows and
+ // other launchers kick lightly at release, guns recoil on discharge.
+ const thrown=mode.mode==='thrown',drawn=mode.mode==='ranged'&&mode.family==='bow';
+ const duration=thrown?mode.heavy?1100:900:mode.heavy?1500:mode.agile?1000:1250;
+ const start=firing?(mode.heavy?520:420):thrown?Math.round(duration*.38):duration/2;
+ const motion=firing?'recoil':thrown?'throw':mode.mode==='melee'?'lunge':drawn?'brace':'recoil';
+ const distance=mode.mode==='melee'?mode.reach?.12:mode.heavy?.2:.14:firing?mode.traits?.includes('kickback')?.14:.08:thrown?mode.heavy?.16:.12:drawn?.1:.05;
+ const launcher=!firing&&!thrown&&!drawn&&mode.mode==='ranged';
+ const gesture={kind:'motion',stageId:`${id}-motion`,label:mode.mode==='melee'?mode.reach?'Reaching thrust':mode.heavy?'Weighty wind-up':'Measured approach':thrown?'Wind back and throw':firing?'Discharge recoil':drawn?'Draw and loose':'Release kick',assets:[],motion,subject:'source',delay:firing?start:launcher?Math.max(0,start-60):0,duration:firing?900:launcher?600:duration,intensity:1,distance,targetSelection:'first'};
  let stages=[];
  let contactStage;
  if(options.motion!==false)stages.push(gesture);
@@ -36,6 +44,10 @@ export function weaponRecipe(weapon,modeName=weapon?.modes?.[0]?.mode,options={}
   }
   if(mode.returning)stages.push(stage('travel','return','Return to wielder',start+offset+250,{travelOrigin:'target',afterStage:flight.stageId,timingAnchor:'end',startOffset:0}));
  }
+ // Bolas wrap the first target: a brief binding cue after a hit.
+ if(mode.family==='bola'&&mode.assets.bind?.length)stages.push(stage('aura','bind','Bola wraps target · brief binding cue',contactStage.delay+150,{subject:'targets',requiresHit:true,afterStage:contactStage.stageId,timingAnchor:'start',startOffset:150,duration:1800,oneShot:false,fadeIn:120,fadeOut:400,scale:.6,opacity:.85,persist:false}));
+ // Heavy shoving/tripping blows knock the struck target back a little.
+ if(options.motion!==false&&mode.mode==='melee'&&mode.heavy&&['shove','trip'].some(t=>mode.traits?.includes(t)))stages.push({kind:'motion',stageId:`${id}-stagger`,label:'Target staggers',assets:[],motion:'stagger',subject:'targets',delay:contactStage.delay+120,afterStage:contactStage.stageId,timingAnchor:'start',startOffset:120,duration:900,intensity:.8,distance:.1,targetSelection:'first',requiresHit:true});
  if(mode.assets.fracture?.length)stages.push(stage('impact','fracture','Glass fragments',contactStage.delay+50,{afterStage:contactStage.stageId,timingAnchor:'start',startOffset:50,scale:.7,opacity:.55}));
  if(mode.onHitCue==='warpwave'&&mode.assets.onHit?.length)stages.push(stage('aura','onHit','Successful-hit Warpwave · visual cue',contactStage.delay+250,{subject:'targets',requiresHit:true,afterStage:contactStage.stageId,timingAnchor:'start',startOffset:250,duration:2200,oneShot:false,fadeIn:150,fadeOut:450,scale:1.15,opacity:.8,persist:false}));
  const secondary=[...new Set([...(mode.elements??[]).filter(e=>e!==mode.element),mode.payload?.secondary].filter(Boolean))];

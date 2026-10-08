@@ -30,6 +30,7 @@ import {SPELL_SOUND_DESIGNS} from '../data/spell-sounds.mjs';
 import {FEAT_SOUND_DESIGNS,WEAPON_SOUND_DESIGNS,ABILITY_SOUND_PROFILES} from '../data/ability-sounds.mjs';
 import {SOUND_PROFILES} from '../data/spell-sounds.mjs';
 import {validateRecipe,planRecipe} from '../scripts/model.mjs';
+import {applySfMotionPatch} from '../scripts/sf2e-motion.mjs';
 
 const hash=value=>createHash('sha256').update(value).digest('hex');
 const [source,databases]=await Promise.all([sf2eSources(),assetDatabases()]);
@@ -142,6 +143,191 @@ function sfFeatMedia(feat,text,traits){
  if(traits.includes('solarian')&&/\bsolar weapon\b/i.test(text)&&/^jb2a\.melee_generic\./.test(slots.hit?.[0]??''))slots.hit=[...jb('lasersword.melee.yellow.01'),...slots.hit];
  if(JSON.stringify(slots)!==JSON.stringify(feat.assets)){feat.assets=slots;feat.notes=[...(feat.notes??[]),'SF2e-native media correction (2026-10-07 audit).'];}
 }
+// SF2e feat sounds (2026-10-08 audit, wave 2). PF2e sound designs cover only a dozen
+// shared SF2e feats; the rest fell back to motif/theme defaults that played the
+// "magic sensed" chime on ~350 mundane actions, anvils on Hide and wind on Stride.
+// Physical blows and shots keep their motif sound; everything else takes the cue its
+// fiction names, or deliberate silence (quiet utility, skill checks, rerolls).
+const SF_PHYSICAL_SOUND={unarmed:'unarmed',doubleStrike:'sword',strike:'sword',heavyStrike:'greatsword',multiStrike:'sword',whirlwindStrike:'sword',drawStrike:'sword',feintStrike:'sword',fearStrike:'sword',bindStrike:'sword',tripStrike:'sword',tumbleStrike:'sword',charge:'sword',maneuverCombo:'unarmed',spellstrike:'sword',mixedStrike:'mixed',ranged:'ranged',firearm:'firearm',throughShot:'firearm',alchemicalShot:'firearm',bombThrow:'bomb',guard:'shieldRaise',shield:'shieldRaise',targetGuard:'shieldRaise',bind:'unarmed',trip:'unarmed',shove:'unarmed',trample:'earth'};
+const SF_FEAT_SOUND={
+ // Reviewed exceptions to the keyword rules below ('' = deliberately silent).
+ 'bounce-back':'','uncanny-comprehension':'','used-to-it':'','rising-to-the-challenge':'','shielding-arrogance':'','convert-information':'','pressure-plates':'','thoughts-of-a-lost-home':'','eat-it':'','hold-the-line':'','balance':'','barricade':'','feign-prone':'','adapt-to-injury':'',
+ 'tripartite-mind':'psychic','galaxy-brain':'psychic','empathic-pulse':'psychic','shocking-howl':'psychic','listen':'shadow',
+ 'drain-blood':'drain','consume-flesh':'drain','blood-feast':'drain','soul-furnace':'fire','channel-the-worlds-core':'earth','damoritoshs-claw':'holy','foresight':'bless',
+ 'release-radiation':'poison','entangling-mycelium':'growth','slime-spray':'water','slime-squirt':'water','spray-ink':'water','squirt-blood':'water','gooey-engulf':'water','gooey-engulf-entu':'water','slick-mucus':'water',
+ 'warp-reality':'time','quantum-pulse':'time','persistent-quantum-field':'time','pause-button':'teleport',
+ 'percussive-maintenance':'metal','break-it':'metal','disarm':'unarmed','reposition':'unarmed','piercing-spikes':'naturalPierce','hurl-ally':'allyHeave','you-should-see-the-other-guy':'sword',
+ 'explosive-deflection':'firearm','pin-down':'firearm','glitching-memory':'electric','sabotage':'electric',
+ 'auto-fire':'firearm','brutal-barrage':'firearm','covering-fire':'firearm','line-em-up':'firearm','spread-the-love':'firearm','youll-have-to-go-through-me':'firearm','strike':'sword','hampering-flare':'radiantRay',
+ 'draconic-breath':'dragonRoar','dragonkin-breath':'dragonRoar','dragon-breath-dragon-form':'dragonRoar','digestive-spray':'acid','volosian-spit':'acid','unleash-hell':'fire','contaminate':'poison','vibe-eruption':'psychic',
+ 'world-shards':'earth','timber':'earth','thunderous-slam':'earth','superhero-landing':'earth','trampling-stride':'earth','road-roller':'earth','destructive-dash':'earth','burrow':'earth','excavating-tentacles':'earth',
+ 'run-over':'metal',hide:'','dance-partner':'','create-a-diversion':'','rush-of-adrenaline':'healing','swear-vengeance':'','command-an-animal':'','sync-up':'psychic',infodump:'','coordinated-ambush':'',frenzy:'dragonRoar','black-hole':'force','synthesized-black-hole':'void','force-open':'metal','resonant-weapon':'metalResonance','spellsurge-ammo':'force','unleash-pneuma':'force','bone-shards':'naturalPierce',
+ 'shooting-star':'wind','vent-gas':'wind','dust-devil-spin':'wind','launching-jump':'wind','dive-for-cover':'wind','parkour':'wind','swim':'water','veil-of-ink':'water','synthesize-vapor':'water','adaptive-locomotion':'transform','skitter-idol-transformation':'transform',
+};
+const SF_T=(traits,...names)=>names.some(n=>traits.includes(n));
+function sfFeatSoundCue(name,text,traits){
+ const t=`${name}. ${text}`;
+ if(SF_T(traits,'teleportation')||/\b(vanish\w* from existence|swap places|teleport\w*)\b/i.test(t))return 'teleport';
+ if(SF_T(traits,'fire','plasma')||/\b(flames?|plasma)\b/i.test(t))return 'fire';
+ if(SF_T(traits,'cold')||/\b(frost|freez\w*)\b/i.test(t))return 'cold';
+ if(SF_T(traits,'electricity')||/\b(lightning|electricity damage)\b/i.test(t))return 'electric';
+ if(SF_T(traits,'acid')||/\bacid damage to (?:the|each|all)\b/i.test(t))return 'acid';
+ if(SF_T(traits,'poison','disease')&&/\b(spew\w*|vent\w*|spurt\w*|secret\w*|spray\w*|deal\w* (?:\S+ ){0,3}poison)\b/i.test(t)||/\bspores?\b.*\b(cloud|emanation)\b/i.test(t))return 'poison';
+ if(/\b(roar\w*|bellow\w*|growl\w*|snarl\w*)\b/i.test(t))return 'dragonRoar';
+ if(SF_T(traits,'sonic')||/\b(howl\w*|scream\w*|shriek\w*|caterwaul\w*|wail\w*)\b/i.test(t))return 'sonic';
+ if(/\b(rage|fury|anger)\b/i.test(`${name} ${text.slice(0,200)}`))return 'dragonRoar';
+ if(/\b(would (?:otherwise )?die|return from the brink|resuscitat\w*|cheating death)\b/i.test(t))return 'revive';
+ if(/\bregenerat\w*\b/i.test(t))return 'natureHeal';
+ if(SF_T(traits,'healing')||/\b(regain\w* (?:\S+ ){0,6}hit points|temporary hit points|transfer (?:\S+ ){0,3}hit points)\b/i.test(t))return 'healing';
+ if(SF_T(traits,'light')||/\b(glow\w*|biolumin\w*|bright light|burst of light|pigmentation|colors? of your skin|shimmer\w*|strobe\w*|photon\w*)\b/i.test(t))return 'light';
+ if(SF_T(traits,'darkness')||/\bdarkness\b/i.test(t))return 'shadow';
+ if(SF_T(traits,'void'))return 'void';
+ if(SF_T(traits,'polymorph')||/\b(change shape|grow(?:s|ing)? (?:in size|to size)|size increases|increase\w* (?:\S+ ){0,2}size|curl up into a ball)\b/i.test(t))return 'transform';
+ if(/\b(gravit\w*|graviton|telekine\w* (?:hands?|lift|abilities)|gravitational)\b/i.test(t))return 'force';
+ if(/\b(jets?|thrusters?|rockets?|jetpack|glide\w*|wings?)\b/i.test(t)||SF_T(traits,'move')&&/\b(leap\w*|jump\w*|fly|flies)\b/i.test(t))return 'wind';
+ if(/\b(luck\w*|fortune|fate|miracle\w*|pray\w*|blessing)\b/i.test(t))return 'bless';
+ if(/\b(sing|song|music\w*|danc\w*|chant\w*|melod\w*|instrument\w*)\b/i.test(t))return 'song';
+ if(/\b(laugh\w*|joke\w*)\b/i.test(t))return 'laughter';
+ if(/\b(applau\w*|cheer\w*)\b/i.test(t)&&/\b(crowd|audience)\b/i.test(t))return 'applause';
+ if(!SF_COMFORT.test(t)&&SF_T(traits,'fear')||!SF_COMFORT.test(t)&&/\b(frighten\w*|demoraliz\w*|terrif\w*|taunt\w*)\b/i.test(t))return 'fear';
+ if(/\b(telepath\w*|psychic\w*|minds?|brain\w*|consciousness)\b/i.test(t)&&SF_T(traits,'mental','concentrate'))return 'psychic';
+ if(/\b(armplates?|chitinous plates|raise (?:a |your )?shield)\b/i.test(t))return 'shieldRaise';
+ return '';
+}
+function sfFeatSound(feat,text){
+ if(FEAT_SOUND_DESIGNS[feat.id])return FEAT_SOUND_DESIGNS[feat.id].profile;
+ if(feat.slug in SF_FEAT_SOUND)return SF_FEAT_SOUND[feat.slug];
+ const physical=SF_PHYSICAL_SOUND[feat.motif];
+ // Strikes made with guns fire; a solarian's solar weapon is a blade.
+ if(physical==='sword'&&/\b(ranged strikes?|guns?|firearms?|shots?|area fire|auto-?fire)\b/i.test(text)&&!/\bmelee strike\b/i.test(text))return 'firearm';
+ // A physical motif on an action with no blow (Hide, Create a Diversion, oaths) is not a swing.
+ if(physical==='shieldRaise'&&!/shield|armor|plate|shell|brace|block|guard|parry|cover/i.test(text))return sfFeatSoundCue(feat.name,text,feat.traits);
+ if(physical&&!(feat.motif==='charge'&&/quickened/i.test(text))&&(!['sword','greatsword','unarmed','mixed'].includes(physical)||/\b(strikes?|attacks?|shove|trip|grapple|disarm|escape|reposition|hit)\b/i.test(text)))return physical;
+ return sfFeatSoundCue(feat.name,text,feat.traits)||(feat.motif==='flight'&&!/\bburrow\b/i.test(text)?'wind':'');
+}
+// SF2e token-motion reviews (2026-10-08 audit, wave 2; full descriptions read). Movement
+// feats played a stationary pulse; quickened/morale buffs rushed at a target; directives
+// and encouragement lunged; helped allies recoiled as if struck. Ops: scripts/sf2e-motion.mjs.
+const mRoute=(motion,label,distance=1.5,extra={})=>({motion,label,distance,duration:3000,intensity:.4,motionRange:'distance',motionArrival:40,motionHold:20,...extra});
+const mApproach=(label,extra={})=>mRoute('rush',label,8,{motionRange:'target',duration:3800,motionArrival:35,motionHold:30,...extra});
+const mJump=(label,extra={})=>mApproach(label,{motion:'leap',duration:4000,jumpHeight:.75,...extra});
+const mStep=(label,extra={})=>mRoute('dodge',label,.5,{duration:1800,...extra});
+const R=(review,keep)=>[{review,...(keep?{keep:true}:{})}],D=(...patterns)=>patterns.map(drop=>({drop}));
+const calm=(...extra)=>[...D('lunge@source','recoil@targets','stagger@targets','rush@source','shake@targets'),...extra];
+const settle={add:{ifNone:true,motion:'pulse',label:'Settle',intensity:.12,duration:1000,delay:150}};
+const pull=label=>({review:mApproach(label,{subject:'targets',duration:3000,intensity:.25,when:'after',anchorKind:'impact'})});
+const SF2E_FEAT_MOTION={
+ // Stride / Step / Leap / Fly / Burrow now.
+ 'aerial-dash':R(mRoute('leap','Fly forward three times',2.6,{jumpHeight:.2,duration:3600,intensity:.2})),
+ 'another-day':R(mRoute('rush','Desperate Stride after the hit',1.2,{when:'after'})),
+ 'basic-flight':R(mRoute('leap','Short Fly',1.3,{jumpHeight:.15,arrivalLift:.2,duration:2700,intensity:.2})),
+ brightbomb:R(mStep('Step out of the light burst')),
+ 'bullet-dance':R(mRoute('rush','Dancing double Stride with shots',2.2,{duration:3800})),
+ burrow:[{add:{motion:'sink',label:'Dig into loose ground',duration:1400}}],
+ 'excavating-tentacles':[...D('levitate@source'),{add:{motion:'sink',label:'Tentacles burrow',duration:1400,delay:300}}],
+ 'burrowing-charge':[{review:mJump('Vertical Leap into the stinger Strike',{jumpHeight:1.1,duration:3600,delay:1400})},{add:{motion:'sink',label:'Burrow at double speed',duration:1400}}],
+ 'burst-of-speed':R(mRoute('rush','Hydraulic burst Stride',2,{duration:3000,intensity:.55})),
+ 'caterwaul-strut':R(mRoute('leap','Sashaying Stride',1.5,{jumpHeight:.1,duration:3200})),
+ 'caustic-trail':R(mRoute('rush','Slime-trailing double Stride',2.2,{duration:3600,intensity:.2})),
+ climb:R(mRoute('rush','Climb along the incline',.5,{motionHeading:'up',duration:2200,intensity:.2})),
+ 'close-the-gap':R(mApproach('Advance into danger',{duration:3400})),
+ 'convert-tempo':R(mRoute('leap','Dancing Strides',2,{jumpHeight:.15,duration:3600})),
+ 'covering-flare':R(mRoute('rush','Double Stride under solar-flare cover',2.2,{duration:3800}),true),
+ 'crab-walk':R(mStep('Sideways scuttle',{distance:.3,duration:1500})),
+ 'dance-partner':R(mRoute('leap','Lead the dance partner',1,{jumpHeight:.1,duration:2600})),
+ 'dead-nerves':R(mRoute('rush','Double Stride through obstacles',2.2,{duration:3600})),
+ 'deaths-advance':R(mRoute('rush','Relentless double Stride',2.2,{duration:3700,intensity:.2})),
+ 'destructive-dash':R(mRoute('rush','Destructive dash',2,{duration:3400,intensity:.6})),
+ 'diplomatic-retreat':R(mRoute('rush','Double Stride away while talking',2.2,{motionHeading:'away',duration:3600,intensity:.2})),
+ 'dive-bomb':R(mJump('Diving leap at the prey',{duration:3800})),
+ 'dive-for-cover':R(mRoute('leap','Dive for cover',1,{jumpHeight:.3,duration:2400})),
+ 'double-dip':R(mStep('Two Steps',{distance:1,duration:2200})),
+ 'drop-and-move':R(mRoute('rush','Quadrupedal gallop',1.8,{duration:3200,intensity:.5})),
+ 'drop-tail':R(mRoute('rush','Stride away from the flailing tail',1.5,{motionHeading:'away',when:'after'})),
+ 'dwarven-gravity-hammer':[...D('lunge@source'),{review:mRoute('rush','Straight-line cannonball double Stride',2.4,{duration:3400,intensity:.65})}],
+ 'eager-combatant':R(mApproach('Straight Stride toward an enemy',{duration:3200})),
+ 'elusive-target':R(mStep('Elude the failed Strike')),
+ 'elven-caution':R(mRoute('rush','Half-Speed cautious Stride',.9,{duration:2400,motionHeading:'away'})),
+ 'evasive-jet':R(mRoute('rush','Siphon jet away from the attack',1.5,{motionHeading:'away',duration:2600,intensity:.6})),
+ 'expert-set-up':R(mStep('Initiative Step')),
+ fidget:R(mStep('Step away from the adjacent creature',{motionHeading:'away'})),
+ 'flickering-existence':[{add:{motion:'flicker',label:'Vanish in static',duration:1200}},{review:mStep('Reappear 10 feet away',{distance:.8,duration:1400,when:'after'})}],
+ fly:R(mRoute('leap','Fly',1.6,{jumpHeight:.15,arrivalLift:.2,duration:3000,intensity:.2})),
+ 'follow-their-lead':R(mRoute('rush','Stride alongside the ally',1.4,{duration:3000,intensity:.2})),
+ 'glitter-cloud':R(mRoute('rush','Stride inside the glitter cloud',1,{when:'after'})),
+ 'gooey-engulf':R(mRoute('rush','Engulfing Stride',1.6,{duration:3200,intensity:.3})),'gooey-engulf-entu':R(mRoute('rush','Engulfing Stride',1.6,{duration:3200,intensity:.3})),
+ 'goring-rush':R(mApproach('Double Stride into the horns Strike',{duration:4000})),
+ 'grace-of-the-ages':R(mStep('Step away from the attacker',{motionHeading:'away'})),
+ 'high-jump':R(mRoute('leap','Stride then High Jump',1.4,{jumpHeight:1.1,duration:3600})),
+ jet:R(mRoute('rush','Straight-line siphon jet',2,{duration:2800,intensity:.6})),
+ 'land-on-your-foe':R(mJump('Leap down onto the foe',{distance:3,duration:3400}),true),
+ 'launching-jump':R(mRoute('leap','Posture-launched high leap',1.2,{jumpHeight:1,duration:3200})),
+ leap:R(mRoute('leap','Short Leap',2,{jumpHeight:.4,duration:2600})),
+ 'long-jump':R(mRoute('leap','Stride into a Long Jump',3,{jumpHeight:.6,duration:3800})),
+ 'lucky-like-a-squox':R(mStep('Initiative Step into cover')),
+ march:R(mRoute('rush','Formation Stride',1.4,{duration:3000,intensity:.25})),
+ 'mobile-aim':R(mRoute('rush','Stride then Aim',1.4,{duration:3000})),
+ momentum:R(mStep('Two momentum Steps',{distance:1,duration:2200})),
+ parkour:R(mRoute('leap','Stride and jump over obstacles',2.4,{jumpHeight:.7,duration:3800})),
+ 'practiced-escape':R(mStep('Step after escaping',{when:'after'})),
+ 'primal-vitality':R(mRoute('rush','Double Stride through creatures',2.2,{duration:3600,intensity:.2})),
+ 'quick-legs':R(mStep('Up to three quick Steps',{distance:1.2,duration:2400})),
+ 'rat-race':R(mRoute('rush','Triple Stride',3,{duration:4200})),
+ 'reactive-step':R(mRoute('dodge','Two Steps toward the moving creature',1,{duration:2000})),
+ 'ride-the-river-between':[...D('levitate@source'),{review:mRoute('rush','Move along the solar river',2,{duration:3200,intensity:.2,when:'after'})}],
+ 'road-roller':R(mRoute('roll','Road-rolling Stride',1.5,{duration:3000,intensity:.4})),
+ 'rocket-jump':R(mRoute('leap','Explosion-propelled Leap',1.6,{jumpHeight:.9,duration:3000,when:'after',anchorKind:'travel'}),true),
+ 'running-shot':R(mRoute('rush','Aimed Stride with a shot on the move',1.6,{duration:3200}),true),
+ 'scurry-to-safety':R(mRoute('rush','Scurry to safety',1.2,{motionHeading:'away',duration:2600})),
+ 'serpentine-scurry':R(mRoute('rush','Zig-zag Strides',2,{duration:3400})),
+ 'shed-skin':R(mStep('Slip away after the Escape',{when:'after'})),
+ 'shooting-star':R(mRoute('rush','Straight-line shooting-star dash',3,{duration:3400,intensity:.6})),
+ 'shore-scuttle':R(mRoute('rush','Shore scuttle',1.5,{duration:3000,intensity:.2})),
+ 'shot-on-the-run':R(mRoute('rush','Stride into position before firing',1.6,{duration:3000}),true),
+ 'skitter-wrastle':R(mApproach('Step into the grapple',{distance:1,duration:2200})),
+ 'slick-mucus':R(mRoute('rush','Slippery Stride',1.6,{when:'after'})),
+ spellsail:[{add:{motion:'flicker',label:'Ride the spell to its target',duration:1200,after:'cast',startOffset:300}}],
+ sprint:R(mRoute('rush','Sprint',3.5,{duration:4200,intensity:.55})),
+ 'stand-aside':R(mRoute('rush','Stride to make room',1.4,{duration:3000})),
+ 'steady-advance':[...D('lunge@source','recoil@targets','stagger@targets'),{review:mRoute('rush','Steady double Stride',2.2,{duration:3600,intensity:.5})}],
+ 'stellar-rush':R(mRoute('rush','Stellar double Stride',2.6,{duration:3600,intensity:.55})),
+ step:R(mStep('Step')),stride:R(mRoute('rush','Stride',1.5)),sneak:R(mRoute('rush','Half-Speed Sneak',1,{duration:3200,intensity:.15})),
+ 'step-between':R(mRoute('rush','Liminal Stride',1.4)),'stride-between':R(mRoute('rush','Liminal double Stride',2.2,{duration:3600})),
+ 'swift-reposition':R(mStep('Twist away from the threat',{motionHeading:'away'})),
+ swim:R(mRoute('rush','Swim',1,{intensity:.15})),
+ 'swooping-rescue':R(mRoute('leap','Swooping double Fly',2.4,{jumpHeight:.2,duration:3800,intensity:.2})),
+ 'tactical-advance':R(mRoute('roll','Weaving, rolling Stride',1.6,{duration:3200})),
+ 'telekinetic-sprint':R(mRoute('rush','Telekinetic sprint',1.8,{duration:3000})),
+ 'thermal-conversion':R(mRoute('rush','Heat-powered Stride',2.6,{duration:3600,intensity:.6})),
+ 'timely-team-up':R(mApproach('Rush to the damaged ally',{duration:4000,intensity:.25})),
+ 'trampling-stride':R(mRoute('rush','Trampling Stride',2.4,{duration:3800,intensity:.65})),
+ 'tumble-through':R(mRoute('roll','Tumble through',1.5,{duration:3000})),
+ 'underfoot-stampede':[...D('lunge@source'),{review:mRoute('rush','Double straight-line stampede',2.4,{duration:3800,intensity:.4})}],
+ 'wriggling-tail':R(mStep('Step free of the grab',{when:'after'})),
+ balance:R(mRoute('rush','Careful balance',1,{duration:3000,intensity:.15})),crawl:R(mRoute('rush','Crawl 5 feet',.5,{duration:2400,intensity:.1})),
+ breach:[...D('lunge@source'),{review:mRoute('leap','Whale-breach Leap',1.2,{jumpHeight:1,duration:2800})}],
+ // No movement now: Quickened grants, morale, hiding, oaths, reroll luck.
+ ...Object.fromEntries('activate-all-brains charged-blood create-a-diversion hide rush-of-adrenaline swear-vengeance photon-accelerator unstable-overdrive waiting-for-your-moment kick-it-into-overdrive need-for-speed you-cant-teach-speed confident-actualization soul-shield frenzy'.split(' ').map(s=>[s,calm({drop:'brace@source'},settle)])),
+ // Directives, encouragement and commands: no lunge at the helped ally or animal.
+ ...Object.fromEntries('delegate for-the-queen nonnegotiable-command perfect-synergy command-an-animal coordinated-ambush sync-up competitive-spirit hold-hands skillful-encouragement keep-on-keeping-on infodump'.split(' ').map(s=>[s,calm()])),
+ 'assistive-shove':[...D('recoil@targets','stagger@targets'),{review:mRoute('rush','Ally shoved out of harm’s way',1,{subject:'targets',targetLimit:1,motionHeading:'away',duration:2200,intensity:.2,when:'after'})}],
+ // Gravity pulls victims in; it does not lunge the solarian.
+ 'black-hole':[...D('lunge@source','recoil@targets','stagger@targets'),{add:{motion:'press',label:'Gravity well',duration:1100,delay:100}},pull('Creatures pulled toward you')],
+ 'synthesized-black-hole':[...D('lunge@source','recoil@targets','stagger@targets'),{add:{motion:'press',label:'Core collapses inward',duration:1100,delay:100}},pull('Creatures pulled toward you')],
+ cyclone:[...D('lunge@source','recoil@targets','stagger@targets'),{add:{motion:'spin',label:'Spin in place',duration:1400,delay:0,intensity:.35}},pull('Foes drawn into the vortex')],
+ 'hostile-gravity':[{swap:'levitate',to:'press'}],'gravity-grasp':[{swap:'levitate',to:'press'}],
+ // Tech concealment glitches instead of drifting; defensive reactions brace.
+ 'camera-blur':[...D('*@source'),{add:{motion:'flicker',label:'Pixelated glitch',duration:1200,delay:200}}],
+ 'encode-presence':[...D('*@source'),{add:{motion:'flicker',label:'Scrambled presence',duration:1200,delay:200}}],
+ 'cloaking-field':[...D('*@source'),{add:{motion:'flicker',label:'Cloak engages',duration:1200,delay:200}}],
+ ...Object.fromEntries('plate-deflection raise-crystalline-strands snap-shut conglobation immediate-relaxation living-shield energy-deflection fluid-anatomy deflect-force'.split(' ').map(s=>[s,[...D('*@source'),{add:{motion:'brace',label:'Brace against the blow',duration:900,delay:100}}]])),
+};
+// SF2e spell sound/motion corrections. FILL only replaces a silent design (the shared
+// PF2e sound designs win when they assign one); FORCE replaces a contradicting cue.
+const SF2E_SPELL_SOUND_FORCE={'cellular-stimulant':'time','share-life':'shield'};
+const SF2E_SPELL_SOUND_FILL={command:'psychic','control-weather':'wind','divine-decree':'holy','divine-wrath':'holy','divine-inspiration':'bless',enthrall:'song','uncontrollable-dance':'song',implosion:'force','shadow-blast':'shadow','spirit-blast':'force','synaptic-pulse':'psychic','phantasmal-calamity':'psychic','wave-of-despair':'fear','vision-of-death':'fear','mask-of-terror':'fear','phantom-pain':'psychic','warp-mind':'psychic',confusion:'psychic',dominate:'psychic',paralyze:'psychic',stupefy:'psychic',possession:'psychic',charm:'psychic','never-mind':'psychic',paranoia:'psychic',phantasmagoria:'psychic',hallucination:'psychic',calm:'sleep',bane:'shadow','clear-mind':'healing','sound-body':'healing',stabilize:'healing','vital-beacon':'healing','spirit-link':'healing','spiritual-armament':'metal','telekinetic-maneuver':'force',repulsion:'force','resist-energy':'shield','planar-palace':'summon'};
+// Gravity presses down; buffs and quiet hexes do not shake, recoil or lunge.
+const SF2E_SPELL_MOTION={'logic-bomb':[{drop:'shake@targets'}],'twisted-vision':[{drop:'shake@targets'}],'ghost-killer-weapon':[{drop:'lunge@source'},{drop:'recoil@targets'},{drop:'stagger@targets'}],'injury-echo':[{drop:'lunge@source'}]};
 const spellFallback={ward:'forceShield',healing:'restore',fear:'dread',mind:'mentalJolt',teleport:'portalStep',transform:'form',shadow:'darkShroud',divination:'eye',sonic:'song',weapon:'weaponRunes',light:'lightOrb',time:'swiftTime',force:'empower',arcane:'bodyRunes'};
 for(const entry of source.entries){
  const item=entry.source,s=item.system??{},native={systemId:'sf2e',uuid:entry.uuid};
@@ -164,6 +350,8 @@ for(const entry of source.entries){
    // Screams and howls are sound waves, not sheet music.
    else if(keys.some(k=>/^jb2a\.music_notations\./.test(k))&&!SF_MUSIC.test(spellText))spell.design.assets[slot]=jb('soundwave.02.blue');
   }
+  const motionPatch=SF2E_SPELL_MOTION[spell.slug]??(!entry.shared&&spell.design?.motif==='gravity'?[{swap:'levitate',to:'press',label:'Gravity presses down'}]:null);
+  if(motionPatch)spell.motionPatch=motionPatch;
   spells.push({entry,spell});
  }else if(['feat','action'].includes(item.type)){
   const active=classifyFeat(item);if(!active.included){excluded.push({uuid:entry.uuid,type:item.type,classification:active.classification});continue;}
@@ -224,10 +412,18 @@ for(const {feat}of feats)feat.mediaTiming=Object.fromEntries(Object.values(feat.
 for(const {weapon}of weapons)for(const mode of weapon.modes){mode.mediaTiming=Object.fromEntries(Object.values(mode.assets).flat().filter(k=>timings[k]).map(k=>[k,timings[k]]));mode.approximations=mode.selections.filter(s=>s.approximation).map(s=>`${s.edition}: ${s.key}`);}
 allocateSpellIdentities(spells.map(e=>e.spell),spell=>spellRecipe(spell,undefined,{motion:false}),databases,new Map(source.entries.filter(e=>e.source.type==='spell').map(e=>[e.source._id,e.source])));frameFeatCatalog(feats.map(e=>e.feat),databases);
 const bind=(recipe,entry)=>validateRecipe({...recipe,description:'',systemId:'sf2e',catalogEntry:entry.id,itemUuid:entry.uuid,lifecycle:['condition','effect'].includes(entry.kind)?'document':recipe.lifecycle,stateEntry:['condition','effect'].includes(entry.kind)?entry.id:recipe.stateEntry});
-for(const {entry,spell}of spells){const meta=metadata(entry,'spell'),sound=SPELL_SOUND_DESIGNS[spell.id]?.profile??themeSound(spell.theme);entries.push({...meta,level:spell.rank,theme:spell.theme,quality:spell.quality,spell,variants:[{id:'cast',label:spell.kind==='cantrip'?'Cantrip':`Rank ${spell.rank}`,soundProfile:sound,recipe:bind(spellRecipe(spell),meta)}]});}
-for(const {entry,feat}of feats){const meta=metadata(entry,'feat'),profile=FEAT_SOUND_DESIGNS[feat.id]?.profile??({unarmed:'unarmed',doubleStrike:'sword',strike:'sword',heavyStrike:'greatsword',ranged:'ranged',firearm:'firearm',bombThrow:'bomb',guard:'shieldRaise',bind:'chainBinding',trip:'unarmed',shove:'unarmed',movement:'wind',flight:'wind',stealth:'shadow',teleport:'teleport',healing:'healing',dread:'fear',utility:'detect',perception:'detect'})[feat.motif]??themeSound(feat.theme);entries.push({...meta,theme:feat.theme,quality:feat.quality,actionType:feat.actionType,actions:feat.actions,classTraits:feat.classTraits,variants:[{id:'activate',label:feat.actionType==='action'?`${feat.actions??1} actions`:feat.actionType,soundProfile:profile,soundNamespace:'ability',recipe:bind(featRecipe(feat),meta)}]});}
+for(const {entry,spell}of spells){const meta=metadata(entry,'spell'),design=SPELL_SOUND_DESIGNS[spell.id],sound=SF2E_SPELL_SOUND_FORCE[spell.slug]??(design?design.profile||SF2E_SPELL_SOUND_FILL[spell.slug]||'':SF2E_SPELL_SOUND_FILL[spell.slug]??themeSound(spell.theme));entries.push({...meta,level:spell.rank,theme:spell.theme,quality:spell.quality,spell,variants:[{id:'cast',label:spell.kind==='cantrip'?'Cantrip':`Rank ${spell.rank}`,soundProfile:sound,recipe:bind((r=>({...r,stages:applySfMotionPatch(spell,r.stages,spell.motionPatch)}))(spellRecipe(spell)),meta)}]});}
+// Guns recoil; they never lunge. Reviewed SF2e motion replaces the shared default.
+const sfFeatRecipe=(feat,profile)=>{const recipe=featRecipe(feat),patch=SF2E_FEAT_MOTION[feat.slug]??(profile==='firearm'?[{swap:'lunge',to:'recoil',label:'Shot recoil'}]:null);return patch?{...recipe,stages:applySfMotionPatch(feat,recipe.stages,patch)}:recipe;};
+// Foam and nausea gas are not sonic shockwaves.
+const SF2E_WEAPON_SOUND={'hardening-foam-grenade':'bomb-water','miasmatic-grenade':'bomb-poison'};
+// Grenades and thrown weapons wind up and throw; bow-like guns recoil.
+const sfWeaponMotion=(weapon,mode)=>mode==='thrown'||weapon.nativeGroup==='grenade'&&mode!=='melee'?[{swap:'lunge',to:'throw',label:'Wind up and throw'}]:mode==='ranged'?[{swap:'lunge',to:'recoil',label:'Release and settle'}]:null;
+const soundDump=[];
+for(const {entry,feat}of feats){const meta=metadata(entry,'feat'),profile=sfFeatSound(feat,meta.descriptionText);if(process.env.SF2E_SOUND_DUMP)soundDump.push(`${profile||'(silent)'}|${feat.slug}|${feat.motif}|${feat.theme}|${meta.traits.join(',')}|${meta.descriptionText.slice(0,160)}`);entries.push({...meta,theme:feat.theme,quality:feat.quality,actionType:feat.actionType,actions:feat.actions,classTraits:feat.classTraits,variants:[{id:'activate',label:feat.actionType==='action'?`${feat.actions??1} actions`:feat.actionType,soundProfile:profile,soundNamespace:'ability',recipe:bind(sfFeatRecipe(feat,profile),meta)}]});}
+if(process.env.SF2E_SOUND_DUMP)await writeFile(process.env.SF2E_SOUND_DUMP,soundDump.sort().join('\n'));
 for(const {entry,weapon}of weapons){
- const meta=metadata(entry,'weapon'),variants=weapon.modes.map(mode=>({id:mode.mode,label:mode.mode,weaponMode:mode.mode,soundNamespace:'ability',soundProfile:WEAPON_SOUND_DESIGNS[`${weapon.id}:${mode.mode}`]?.profile??(weapon.nativeGroup==='laser'?'fireRay':weapon.nativeGroup==='cryo'?'coldRay':weapon.nativeGroup==='shock'?'electric':weapon.nativeGroup==='sonic'?'sonic':weapon.nativeGroup==='corrosive'?'acid':weapon.nativeGroup==='plasma'?'fire':mode.payload?`bomb-${mode.element}`:mode.family),recipe:bind(weaponRecipe(weapon,mode.mode),meta)}));
+ const meta=metadata(entry,'weapon'),variants=weapon.modes.map(mode=>({id:mode.mode,label:mode.mode,weaponMode:mode.mode,soundNamespace:'ability',soundProfile:SF2E_WEAPON_SOUND[weapon.slug.replace(/-(commercial|tactical|advanced|superior|elite|ultimate|paragon)$/,'')]??WEAPON_SOUND_DESIGNS[`${weapon.id}:${mode.mode}`]?.profile??(weapon.nativeGroup==='laser'?'fireRay':weapon.nativeGroup==='cryo'?'coldRay':weapon.nativeGroup==='shock'?'electric':weapon.nativeGroup==='sonic'?'sonic':weapon.nativeGroup==='corrosive'?'acid':weapon.nativeGroup==='plasma'?'fire':mode.payload?`bomb-${mode.element}`:mode.family),recipe:bind((r=>({...r,stages:applySfMotionPatch(weapon,r.stages,sfWeaponMotion(weapon,mode.mode))}))(weaponRecipe(weapon,mode.mode)),meta)}));
  const automatic=weapon.traits.includes('automatic'),trait=weapon.traits.find(t=>/^area-(burst|cone|line)(?:-\d+)?$/.test(t)),tag=entry.source.system.description?.value.match(/@Template\[(burst|cone|line)\|distance:(\d+)/);
  const area=automatic?{type:'cone',value:Math.max(5,Math.floor((weapon.range??entry.source.system.range??10)/2/5)*5)}:trait?{type:trait.split('-')[1],value:Number(trait.split('-')[2])||(trait.includes('burst')?5:entry.source.system.range)}:weapon.nativeGroup==='grenade'&&tag?{type:tag[1],value:Number(tag[2])}:/\/grenade-launcher-/.test(entry.path)?{type:'burst',value:10}:null;
  if(area){

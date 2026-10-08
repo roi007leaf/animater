@@ -589,6 +589,12 @@ export const MEDIA_FOOTPRINTS = {
     552.3438,
     519.5313
   ],
+  "AuraThemedOrbitCompleteCold01_01_Regular_Blue_700x700.webm": [
+    700,
+    700,
+    579.6875,
+    579.6875
+  ],
   "AuraThemedOrbitCompleteMetal01_01_Regular_Grey_700x700.webm": [
     700,
     700,
@@ -4489,6 +4495,12 @@ export const MEDIA_FOOTPRINTS = {
     153.125,
     135.9375
   ],
+  "HealingAbility_01_Yellow_200x200.webm": [
+    200,
+    200,
+    154.6875,
+    137.5
+  ],
   "HealingAbility_02_Regular_BlueWhite_Loop_600x600.webm": [
     600,
     600,
@@ -5521,6 +5533,12 @@ export const MEDIA_FOOTPRINTS = {
     331.25,
     337.5
   ],
+  "MarkerChainStandard01_02_Regular_Grey_Complete_400x400.webm": [
+    400,
+    400,
+    331.25,
+    359.375
+  ],
   "MarkerChainStandard01_02_Regular_Grey_Loop_400x400.webm": [
     400,
     400,
@@ -5850,12 +5868,6 @@ export const MEDIA_FOOTPRINTS = {
     400,
     356.25,
     353.125
-  ],
-  "MarkerSimpleLoop001_001_Red_600x600.webm": [
-    600,
-    600,
-    300,
-    300
   ],
   "MarkerSkull_01_Dark_Orange_400x400.webm": [
     400,
@@ -9872,12 +9884,6 @@ export const MEDIA_FOOTPRINTS = {
     562.5
   ],
   "Web_01_White_01_400x400.webm": [
-    400,
-    400,
-    378.125,
-    384.375
-  ],
-  "Web_01_White_02_400x400.webm": [
     400,
     400,
     378.125,

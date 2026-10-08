@@ -139,7 +139,8 @@ export function starterRecipes() {
           0,
           900,
         ),
-        stage("impact", "jb2a.impact.001.yellow,jb2a.impact", 700, 600, 0.65),
+        // Mundane arrow: neutral white contact (Free falls back to impact.005), not a magic spark.
+        stage("impact", "jb2a.impact.005.white,jb2a.impact.005,jb2a.impact", 700, 600, 0.65),
       ],
     ],
     [

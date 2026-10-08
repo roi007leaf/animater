@@ -394,6 +394,29 @@ const profiles = {
   starFlight: [
     cue("Star-flight shimmer", "release", "^ggg-sfx\\.magic\\.arcane\\.light\\.revealing"),
   ],
+  explosion: [
+    cue("Explosion", "impact", "^ggg-sfx\\.(impact\\.explosion\\.general|ranged\\.bomb\\.explosion)", "fireball.*explosion"),
+  ],
+  scream: [cue("Piercing shriek", "effect", "^ggg-sfx\\.creatures\\.shriek\\.(generic|void)")],
+  battleCry: [cue("Rallying cry", "cast", "", "", "Battle Cry")],
+  whispers: [
+    cue("Eerie whispers", "effect", "^ggg-sfx\\.magic\\.occult\\.cast\\.whispers", "dissonant-whispers"),
+  ],
+  spirit: [cue("Spirit surge", "effect", "^ggg-sfx\\.magic\\.occult\\.(cast|buff)\\.ghostly")],
+  divineWrath: [
+    cue("Divine wrath", "effect", "^ggg-sfx\\.magic\\.divine\\.(impact\\.wrath|cast\\.smite)", "sacred-flame.*caster"),
+  ],
+  slash: [
+    cue("Slashing hit", "impact", "^ggg-sfx\\.melee\\.blade\\.strike\\.general", "", "Melee Hit"),
+  ],
+  pierce: [
+    cue("Piercing hit", "impact", "^ggg-sfx\\.impact\\.arrow\\.hit", "", "Arrow Impact"),
+  ],
+  bludgeon: [
+    cue("Bludgeoning hit", "impact", "^ggg-sfx\\.melee\\.bludgeoning\\.strike\\.one-hand", "", "Misc/Single/Impact/"),
+  ],
+  claws: [cue("Rending claws", "impact", "^ggg-sfx\\.melee\\.claws\\.strike\\.slash")],
+  gravity: [cue("Gravity crush", "effect", "^ggg-sfx\\.magic\\.occult\\.movement\\.whoosh\\.gravity")],
   dispel: [cue("Magic unravels", "effect", "magic\\.counter\\.dispel")],
   time: [cue("Time shifts", "effect", "magic\\.time\\.reverse")],
   slow: [cue("Time slows", "effect", "magic\\.time\\.slow")],

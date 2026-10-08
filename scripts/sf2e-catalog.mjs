@@ -6,6 +6,7 @@ import {addSpellSounds} from './spell-sounds.mjs';
 import {addAbilitySounds} from './ability-sounds.mjs';
 import {withoutCatalogMotion} from './catalog-motion.mjs';
 import {withCatalogFx} from './catalog-fx.mjs';
+import {applySfMotionPatch} from './sf2e-motion.mjs';
 export {SF2E_ENTRIES,SF2E_SOURCE};
 export const SF_KINDS=['spell','feat','weapon','condition','effect'];
 const byId=new Map(SF2E_ENTRIES.map(e=>[e.id,e]));
@@ -28,6 +29,8 @@ export function sfRecipe(entry,variantId,{motion=true,sounds,soundVolume=.35,cas
  const variant=entry.variants.find(v=>v.id===variantId)??entry.variants[0];
  let recipe=entry.kind==='spell'?spellRecipe(entry.spell,undefined,{motion,castRank,sounds:null,fx:false}):entry.state?stateRecipe(entry.state,{damageType:damageType??variant.damageType,aura,catalog,fx:false}):clone(variant.recipe);
  recipe={...recipe,id:variant.recipe.id,name:entry.name,description:'',itemUuid:entry.uuid,systemId:'sf2e',catalogEntry:entry.id,...(entry.state?{stateEntry:entry.id,lifecycle:'document'}:{})};
+ // Reviewed SF2e motion corrections for spells rebuilt from the shared choreography.
+ if(motion&&entry.spell?.motionPatch)recipe.stages=applySfMotionPatch(entry.spell,recipe.stages,entry.spell.motionPatch);
  if(!motion)recipe.stages=withoutCatalogMotion(recipe.stages);
  if(!entry.state){
   const item={id:entry.documentId,slug:entry.slug,soundProfile:variant.soundProfile},design={profile:variant.soundProfile};

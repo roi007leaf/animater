@@ -1,6 +1,6 @@
 {
   "entries": 1994,
-  "changed": 294,
+  "changed": 285,
   "variations": [
     {
       "id": "UGJzJRJDoonfWqqI",
@@ -275,15 +275,6 @@
           "phrase": "ward"
         }
       ]
-    },
-    {
-      "id": "SnjhtQYexDtNDdEg",
-      "name": "Stabilize",
-      "layout": "bloom",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": []
     },
     {
       "id": "r4HLQcYwB62bTayl",
@@ -564,6 +555,20 @@
       ]
     },
     {
+      "id": "BItahht2hEHvR9Bt",
+      "name": "Buzzing Bites",
+      "layout": "diagonal",
+      "finish": "settle",
+      "method": "shared-family-composition-variation",
+      "prosePreferenceApplied": true,
+      "evidence": [
+        {
+          "layout": "diagonal",
+          "phrase": "piercing"
+        }
+      ]
+    },
+    {
       "id": "CVvkveEH7lonSTZd",
       "name": "Channel Arrogance",
       "layout": "bloom",
@@ -606,20 +611,6 @@
         {
           "layout": "descend",
           "phrase": "fall"
-        }
-      ]
-    },
-    {
-      "id": "tf4PMMMzR5xxJDun",
-      "name": "Cleansing Flames",
-      "layout": "fold",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": true,
-      "evidence": [
-        {
-          "layout": "fold",
-          "phrase": "Drained"
         }
       ]
     },
@@ -1128,15 +1119,6 @@
       "evidence": []
     },
     {
-      "id": "y7Tusv3CieZktkkV",
-      "name": "Flame Barrier",
-      "layout": "fold",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": []
-    },
-    {
       "id": "zR67Rt3UMHKC5evy",
       "name": "Flicker",
       "layout": "fold",
@@ -1162,7 +1144,7 @@
     {
       "id": "RA7VKcen3p56rVyZ",
       "name": "Forbidding Ward",
-      "layout": "rise",
+      "layout": "fold",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -1455,20 +1437,6 @@
       ]
     },
     {
-      "id": "gSUQlTDYoLDGAsCP",
-      "name": "Hymn of Healing",
-      "layout": "fold",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": [
-        {
-          "layout": "bloom",
-          "phrase": "healing"
-        }
-      ]
-    },
-    {
       "id": "K2WpC3FFoHrqX9Q5",
       "name": "Hypnotize",
       "layout": "descend",
@@ -1673,7 +1641,7 @@
     {
       "id": "fAlzXtQAASaJx0mY",
       "name": "Life Boost",
-      "layout": "rise",
+      "layout": "fold",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -1769,10 +1737,10 @@
     {
       "id": "cHwM7Uj74L1titXZ",
       "name": "Lively Flight",
-      "layout": "descend",
+      "layout": "rise",
       "finish": "settle",
       "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
+      "prosePreferenceApplied": true,
       "evidence": [
         {
           "layout": "rise",
@@ -1837,34 +1805,6 @@
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
       "evidence": []
-    },
-    {
-      "id": "j2kfNBFpLa0JjVr8",
-      "name": "Mantle of the Magma Heart",
-      "layout": "orbit",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": true,
-      "evidence": [
-        {
-          "layout": "orbit",
-          "phrase": "surround"
-        }
-      ]
-    },
-    {
-      "id": "M9TiCE1vlG1j2faM",
-      "name": "Martyr's Intervention",
-      "layout": "bloom",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": [
-        {
-          "layout": "orbit",
-          "phrase": "shield"
-        }
-      ]
     },
     {
       "id": "wsTUiEOkYIrKSFBY",
@@ -1943,7 +1883,7 @@
     {
       "id": "4MOew29Z1oCX8O28",
       "name": "Moment of Renewal",
-      "layout": "returnSweep",
+      "layout": "descend",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -1998,7 +1938,7 @@
     {
       "id": "mnhuvqTIELcpJOFX",
       "name": "Musical Accompaniment",
-      "layout": "orbit",
+      "layout": "fold",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": true,
@@ -2020,7 +1960,7 @@
     {
       "id": "BWvGBx51RevizICD",
       "name": "Mutilate",
-      "layout": "bloom",
+      "layout": "fold",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2180,7 +2120,7 @@
     {
       "id": "x1YwD1E9LW8upBj6",
       "name": "Patron's Protector",
-      "layout": "fold",
+      "layout": "bloom",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2267,7 +2207,7 @@
     {
       "id": "9iJaD4S7ptUeq5vO",
       "name": "Positive Attunement",
-      "layout": "diagonal",
+      "layout": "returnSweep",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2317,7 +2257,7 @@
     {
       "id": "AfOpnnwdZwHi2Tnc",
       "name": "Protect Companion",
-      "layout": "descend",
+      "layout": "rise",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2325,20 +2265,6 @@
         {
           "layout": "orbit",
           "phrase": "shield"
-        }
-      ]
-    },
-    {
-      "id": "EiE1A8TCeJGVzzV2",
-      "name": "Pulverizing Wake",
-      "layout": "bloom",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": [
-        {
-          "layout": "diagonal",
-          "phrase": "Strike"
         }
       ]
     },
@@ -2387,7 +2313,7 @@
     {
       "id": "IkGYwHRLhkuoGReG",
       "name": "Raise Dead",
-      "layout": "returnDiagonal",
+      "layout": "diagonal",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2455,7 +2381,7 @@
     {
       "id": "VDWIZuLOJqwBthHc",
       "name": "Ravening Maw",
-      "layout": "orbit",
+      "layout": "returnDiagonal",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2537,7 +2463,7 @@
     {
       "id": "2Vkd1IxylPceUAAF",
       "name": "Regenerate",
-      "layout": "counterOrbit",
+      "layout": "orbit",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2650,15 +2576,6 @@
       ]
     },
     {
-      "id": "VTb0yI6P1bLkzuRr",
-      "name": "Shadow Raid",
-      "layout": "rise",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": []
-    },
-    {
       "id": "rnFAHvKpcsU4BJD4",
       "name": "Shall not Falter, Shall not Rout",
       "layout": "crossWeave",
@@ -2688,7 +2605,7 @@
     {
       "id": "1xbFBQDRs0hT5xZ9",
       "name": "Shatter",
-      "layout": "fold",
+      "layout": "bloom",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2706,7 +2623,7 @@
     {
       "id": "SzKkzq3Rr6vKIxbp",
       "name": "Shepherd of Souls",
-      "layout": "crossWeave",
+      "layout": "counterOrbit",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -2832,21 +2749,12 @@
       "evidence": []
     },
     {
-      "id": "IGXGs9PlqUCvODcH",
-      "name": "Song of the Fallen",
-      "layout": "fold",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": []
-    },
-    {
       "id": "oRKmyZPwGafCaFT2",
       "name": "Song of the Soul",
-      "layout": "rise",
+      "layout": "bloom",
       "finish": "settle",
       "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
+      "prosePreferenceApplied": true,
       "evidence": [
         {
           "layout": "bloom",
@@ -2871,28 +2779,14 @@
     {
       "id": "0JigNJDRwevZOyjI",
       "name": "Soothing Ballad",
-      "layout": "rise",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": false,
-      "evidence": [
-        {
-          "layout": "fold",
-          "phrase": "draw"
-        }
-      ]
-    },
-    {
-      "id": "RGBZrVRIEDb2G48h",
-      "name": "Soothing Mist",
-      "layout": "bloom",
+      "layout": "fold",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": true,
       "evidence": [
         {
-          "layout": "bloom",
-          "phrase": "restores"
+          "layout": "fold",
+          "phrase": "draw"
         }
       ]
     },
@@ -2915,26 +2809,12 @@
       ]
     },
     {
-      "id": "D6T17BdazhNy3KPm",
-      "name": "Soul Siphon",
-      "layout": "fold",
-      "finish": "settle",
-      "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": true,
-      "evidence": [
-        {
-          "layout": "fold",
-          "phrase": "siphon"
-        }
-      ]
-    },
-    {
       "id": "wYSLTNvmxbe78l2c",
       "name": "Soulshelter Vessel",
-      "layout": "weave",
-      "finish": "lift",
+      "layout": "crossWeave",
+      "finish": "settle",
       "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": true,
+      "prosePreferenceApplied": false,
       "evidence": [
         {
           "layout": "weave",
@@ -3045,7 +2925,7 @@
     {
       "id": "MFtXn7t5vApQXqlq",
       "name": "Spirit Ward",
-      "layout": "sweep",
+      "layout": "descend",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -3545,7 +3425,7 @@
     {
       "id": "EoKBlgf6Smt8opaU",
       "name": "Veil of Privacy",
-      "layout": "returnSweep",
+      "layout": "sweep",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -3573,7 +3453,7 @@
     {
       "id": "t4hGPdh6vAEgBFgZ",
       "name": "Victory Cry",
-      "layout": "rise",
+      "layout": "fold",
       "finish": "settle",
       "method": "shared-family-composition-variation",
       "prosePreferenceApplied": false,
@@ -3651,10 +3531,10 @@
     {
       "id": "W37iBXLsY2trJ1rS",
       "name": "Weapon Surge",
-      "layout": "diagonal",
+      "layout": "rise",
       "finish": "settle",
       "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": true,
+      "prosePreferenceApplied": false,
       "evidence": [
         {
           "layout": "diagonal",
@@ -3734,10 +3614,10 @@
     {
       "id": "H4oF5szC7aogqtvw",
       "name": "Worm's Repast",
-      "layout": "diagonal",
+      "layout": "descend",
       "finish": "settle",
       "method": "shared-family-composition-variation",
-      "prosePreferenceApplied": true,
+      "prosePreferenceApplied": false,
       "evidence": [
         {
           "layout": "diagonal",
@@ -3758,6 +3638,15 @@
           "phrase": "piercing"
         }
       ]
+    },
+    {
+      "id": "6gEKZaGdH842RF3J",
+      "name": "Ymeri's Mark",
+      "layout": "bloom",
+      "finish": "settle",
+      "method": "shared-family-composition-variation",
+      "prosePreferenceApplied": false,
+      "evidence": []
     }
   ],
   "sharedNativeCompositions": [
@@ -4034,6 +3923,10 @@
       {
         "key": "jb2a.aura_themed.01.inward.loop.metal.01.grey",
         "file": "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedInwardLoopMetal01_01_Regular_Grey_700x700.webm"
+      },
+      {
+        "key": "jb2a.aura_themed.01.orbit.complete.cold.01.blue",
+        "file": "modules/jb2a_patreon/Library/Generic/Template/Circle/Aura/AuraThemedOrbitCompleteCold01_01_Regular_Blue_700x700.webm"
       },
       {
         "key": "jb2a.aura_themed.01.orbit.complete.metal.01.grey",
@@ -5045,6 +4938,10 @@
         "file": "modules/jb2a_patreon/Library/Generic/Fire/Flame/Flames04_01_Regular_Orange_Loop_400x600.webm"
       },
       {
+        "key": "jb2a.flames.orange.01",
+        "file": "modules/jb2a_patreon/Library/Generic/Fire/Flame/Flames_01_Regular_Orange_200x200.webm"
+      },
+      {
         "key": "jb2a.flaming_sphere.200px.orange.01",
         "file": "modules/jb2a_patreon/Library/2nd_Level/Flaming_Sphere/FlamingSphere_01_Orange_200x200.webm"
       },
@@ -5274,6 +5171,10 @@
         "file": "modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_03_Regular_Green_600x600.webm"
       },
       {
+        "key": "jb2a.healing_generic.03.burst.yellow",
+        "file": "modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_03_Regular_Yellow_600x600.webm"
+      },
+      {
         "key": "jb2a.healing_generic.burst.greenorange",
         "file": "modules/jb2a_patreon/Library/Generic/Healing/HealingAbility_02_Regular_GreenOrange_Burst_600x600.webm"
       },
@@ -5470,10 +5371,6 @@
         "file": "modules/jb2a_patreon/Library/Generic/Impact/Impact_04_Regular_Green_400x400.webm"
       },
       {
-        "key": "jb2a.impact.004.pinkpurple",
-        "file": "modules/jb2a_patreon/Library/Generic/Impact/Impact_04_Regular_PinkPurple_400x400.webm"
-      },
-      {
         "key": "jb2a.impact.005.purple",
         "file": "modules/jb2a_patreon/Library/Generic/Impact/Impact_05_Regular_Purple_400x400.webm"
       },
@@ -5518,6 +5415,13 @@
         "file": "modules/jb2a_patreon/Library/Generic/Impact/ImpactEarth01_01_Regular_BrownGreen_600x600.webm",
         "files": [
           "modules/jb2a_patreon/Library/Generic/Impact/ImpactEarth01_01_Regular_BrownGreen_600x600.webm"
+        ]
+      },
+      {
+        "key": "jb2a.impact.fire.01.orange",
+        "file": "modules/jb2a_patreon/Library/Generic/Impact/ImpactFire01_01_Regular_Orange_600x600.webm",
+        "files": [
+          "modules/jb2a_patreon/Library/Generic/Impact/ImpactFire01_01_Regular_Orange_600x600.webm"
         ]
       },
       {
@@ -7428,6 +7332,10 @@
         "file": "modules/JB2A_DnD5e/Library/Generic/Template/Circle/Aura/AuraThemedInwardLoopMetal01_01_Regular_Grey_700x700.webm"
       },
       {
+        "key": "jb2a.aura_themed.01.orbit.complete.cold.01.blue",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Template/Circle/Aura/AuraThemedOrbitCompleteCold01_01_Regular_Blue_700x700.webm"
+      },
+      {
         "key": "jb2a.aura_themed.01.orbit.complete.metal.01.grey",
         "file": "modules/JB2A_DnD5e/Library/Generic/Template/Circle/Aura/AuraThemedOrbitCompleteMetal01_01_Regular_Grey_700x700.webm"
       },
@@ -7974,6 +7882,10 @@
         "file": "modules/JB2A_DnD5e/Library/Generic/Fire/Flame/Flames04_01_Regular_Orange_Loop_400x600.webm"
       },
       {
+        "key": "jb2a.flames.orange.01",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Fire/Flame/Flames_01_Regular_Orange_200x200.webm"
+      },
+      {
         "key": "jb2a.flaming_sphere.200px.orange.01",
         "file": "modules/JB2A_DnD5e/Library/2nd_Level/Flaming_Sphere/FlamingSphere_01_Orange_200x200.webm"
       },
@@ -8077,6 +7989,10 @@
       {
         "key": "jb2a.healing_generic.03.burst.bluegreen",
         "file": "modules/JB2A_DnD5e/Library/Generic/Healing/HealingAbility_03_Regular_BlueGreen_600x600.webm"
+      },
+      {
+        "key": "jb2a.healing_generic.200px.yellow",
+        "file": "modules/JB2A_DnD5e/Library/Generic/Healing/HealingAbility_01_Yellow_200x200.webm"
       },
       {
         "key": "jb2a.healing_generic.burst.greenorange",
@@ -9321,7 +9237,7 @@
   },
   "methodology": "Selected movie variants and visible effect layouts; excludes sounds, motions, display labels, fine timing and rank scaling. Casting seals differentiate shared families; these are compositions of shared artwork, not bespoke assets. Native material-only fields without casting seals report their shared compositions.",
   "mediaVariety": {
-    "changed": 993,
+    "changed": 990,
     "variants": [
       {
         "id": "9h9YCncqah6VNsKf",
@@ -10311,14 +10227,6 @@
         "id": "0JUOgbbFCapp3HlW",
         "name": "Elemental Toss",
         "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.impact.001.pinkpurple",
-        "to": "jb2a.impact.002.pinkpurple"
-      },
-      {
-        "id": "0JUOgbbFCapp3HlW",
-        "name": "Elemental Toss",
-        "edition": "patreon",
         "slot": "aura",
         "from": "jb2a.particles.inward.purple.01.01",
         "to": "jb2a.particles.inward.purple.02.02"
@@ -10865,7 +10773,7 @@
         "edition": "patreon",
         "slot": "hit",
         "from": "jb2a.impact.001.pinkpurple",
-        "to": "jb2a.impact.003.pinkpurple"
+        "to": "jb2a.impact.002.pinkpurple"
       },
       {
         "id": "o6YCGx4lycsYpww4",
@@ -10977,7 +10885,7 @@
         "edition": "patreon",
         "slot": "hit",
         "from": "jb2a.impact.001.pinkpurple",
-        "to": "jb2a.impact.004.pinkpurple"
+        "to": "jb2a.impact.003.pinkpurple"
       },
       {
         "id": "8Uzc9WKqRr755S5d",
@@ -11777,7 +11685,7 @@
         "edition": "patreon",
         "slot": "hit",
         "from": "jb2a.impact.001.pinkpurple",
-        "to": "jb2a.impact.pinkpurple"
+        "to": "jb2a.impact.004.pinkpurple"
       },
       {
         "id": "qCmihBL0G0G5ExPF",
@@ -13068,6 +12976,14 @@
         "to": "jb2a.particles.outward.purple.02.04"
       },
       {
+        "id": "a0AMgATvQGwDR5dR",
+        "name": "Vector Screen",
+        "edition": "patreon",
+        "slot": "hit",
+        "from": "jb2a.impact.001.pinkpurple",
+        "to": "jb2a.impact.pinkpurple"
+      },
+      {
         "id": "Juk3cD5385Ftybct",
         "name": "Verminous Lure",
         "edition": "patreon",
@@ -13548,14 +13464,6 @@
         "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
-        "id": "3ZNuJm5LDA8GkFsH",
-        "name": "Defy the Gods",
-        "edition": "patreon",
-        "slot": "hit",
-        "from": "jb2a.impact.001.pinkpurple",
-        "to": "jb2a.impact.002.pinkpurple"
-      },
-      {
         "id": "wTldMJx0vyBAehrI",
         "name": "Devouring Dark Form",
         "edition": "patreon",
@@ -13777,7 +13685,7 @@
         "edition": "patreon",
         "slot": "hit",
         "from": "jb2a.impact.001.pinkpurple",
-        "to": "jb2a.impact.003.pinkpurple"
+        "to": "jb2a.impact.002.pinkpurple"
       },
       {
         "id": "zLtu2ipfuJECS4gq",
@@ -14065,7 +13973,7 @@
         "edition": "patreon",
         "slot": "hit",
         "from": "jb2a.impact.001.pinkpurple",
-        "to": "jb2a.impact.004.pinkpurple"
+        "to": "jb2a.impact.003.pinkpurple"
       },
       {
         "id": "HES5jvGiNZZnJycK",
@@ -14108,24 +14016,24 @@
         "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
-        "id": "wsTUiEOkYIrKSFBY",
-        "name": "Metal Merged",
+        "id": "pswdik31kuHEvdno",
+        "name": "Metamorphosis",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
-        "id": "U0hL0LLaprcnAyzC",
-        "name": "Migration",
+        "id": "HBJPsonQnWcC3qdX",
+        "name": "Mirage",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
-        "id": "8AMvNVOUEtxBCDvJ",
-        "name": "Monstrosity Form",
+        "id": "YtesyvfAIwXOqISq",
+        "name": "Moon Frenzy",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14148,16 +14056,8 @@
         "to": "jb2a.ground_cracks.03.orange"
       },
       {
-        "id": "mnhuvqTIELcpJOFX",
-        "name": "Musical Accompaniment",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
-        "id": "ZXwxs5tRjEGrjAJT",
-        "name": "Nature Incarnate",
+        "id": "3ZxaIw1FOOocJboH",
+        "name": "Musical Shift",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14199,29 +14099,37 @@
         "id": "dileJ0Yxqg76LMvu",
         "name": "One with Plants",
         "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
+      },
+      {
+        "id": "dileJ0Yxqg76LMvu",
+        "name": "One with Plants",
+        "edition": "patreon",
         "slot": "aura",
         "from": "jb2a.swirling_leaves.loop.01.pink",
         "to": "jb2a.swirling_leaves.loop.02.pink"
       },
       {
-        "id": "vh1RpbWfqdNC4L3P",
-        "name": "One with Stone",
+        "id": "87zLUuTMmZ9zc7gH",
+        "name": "Oneiric Mire",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
-        "id": "0gdZrT9lwO17EIxc",
-        "name": "Ooze Form",
+        "id": "x1YwD1E9LW8upBj6",
+        "name": "Patron's Protector",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
-        "id": "gfPjmG6Fe6D3MFjl",
-        "name": "Pest Form",
+        "id": "fRqHDOWmgcUTeT03",
+        "name": "Pest Swarm",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14252,8 +14160,8 @@
         "to": "jb2a.ground_cracks.03.orange"
       },
       {
-        "id": "0XP2XOxT9VSiXFDr",
-        "name": "Phantasmal Calamity",
+        "id": "WfINystwLv9ohYpS",
+        "name": "Phantom Crowd",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14292,20 +14200,20 @@
         "to": "jb2a.wind_lines.01.02.white"
       },
       {
-        "id": "pmP8HhXvvEKP3LqU",
-        "name": "Primal Herd",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
         "id": "AlCFTjSBaCHuRHBv",
         "name": "Prismatic Shield",
         "edition": "patreon",
         "slot": "bolt",
         "from": "jb2a.shield_attack.ranged.throw.01.white.01",
         "to": "jb2a.shield_attack.ranged.throw.02.white.01"
+      },
+      {
+        "id": "YDMOqndvYFu3OjA6",
+        "name": "Qi Form",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
         "id": "Oj1PJBMQD9vuwCv7",
@@ -14364,14 +14272,6 @@
         "to": "jb2a.swirling_leaves.complete.02.green"
       },
       {
-        "id": "Mv5L4201uk8hnAtD",
-        "name": "Reflective Scales",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
         "id": "BX5UIAUarWG43Fg2",
         "name": "Root Reading",
         "edition": "patreon",
@@ -14396,8 +14296,8 @@
         "to": "jb2a.swirling_leaves.loop.02.green"
       },
       {
-        "id": "rVRyA7UQog633nTe",
-        "name": "Sacred Beasts",
+        "id": "4LSf04FFvDgMyDk6",
+        "name": "Rune of Observation",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14412,8 +14312,8 @@
         "to": "jb2a.particles.inward.purple.01.03"
       },
       {
-        "id": "hvKtmoHwekDZ5iOH",
-        "name": "Shadow Army",
+        "id": "9W2Qv0wXLg6tQg3y",
+        "name": "Scintillating Safeguard",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14428,8 +14328,8 @@
         "to": "jb2a.particles.inward.purple.01.04"
       },
       {
-        "id": "tcwT97RWKxsJiefG",
-        "name": "Shadow Siphon",
+        "id": "VTb0yI6P1bLkzuRr",
+        "name": "Shadow Raid",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14468,8 +14368,8 @@
         "to": "jb2a.guiding_bolt.02.yellow"
       },
       {
-        "id": "kWh8sJH7yawidMyW",
-        "name": "Shrink Item",
+        "id": "SDkIFrrO1PsE02Kd",
+        "name": "Shifting Form",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14500,8 +14400,8 @@
         "to": "jb2a.ground_cracks.03.orange"
       },
       {
-        "id": "IGXGs9PlqUCvODcH",
-        "name": "Song of the Fallen",
+        "id": "wLWMswY7aBHEFTRb",
+        "name": "Snake Fangs",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14564,8 +14464,16 @@
         "to": "jb2a.ground_cracks.03.orange"
       },
       {
-        "id": "wgAsL86ji5hulh7x",
-        "name": "Spirit of the Beast",
+        "id": "nDgrpbKICpjUz372",
+        "name": "Spiked Carapace",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
+      },
+      {
+        "id": "LFcGNGLMkGlsnEKQ",
+        "name": "Spy's Mark",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14578,14 +14486,6 @@
         "slot": "area",
         "from": "jb2a.hunters_mark.pulse.01.purple",
         "to": "jb2a.hunters_mark.pulse.05.purple"
-      },
-      {
-        "id": "5px35eHXGxHeT3am",
-        "name": "Stick On",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
         "id": "Pr1ruNTbzGn3H9w5",
@@ -14607,13 +14507,21 @@
         "id": "UVLiBXLLAoWhUU4R",
         "name": "Stonesense",
         "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
+      },
+      {
+        "id": "UVLiBXLLAoWhUU4R",
+        "name": "Stonesense",
+        "edition": "patreon",
         "slot": "hit",
         "from": "jb2a.ground_cracks.01.purple",
         "to": "jb2a.ground_cracks.03.purple"
       },
       {
-        "id": "m4Mc5XbdML92BKOE",
-        "name": "Strange Geometry",
+        "id": "9mm8RvPlD0wyb4S5",
+        "name": "Sudden Swarm",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14628,16 +14536,8 @@
         "to": "jb2a.particles.inward.purple.01.05"
       },
       {
-        "id": "cwXiKPkZrIupjwlQ",
-        "name": "Summoner's Precaution",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
-        "id": "Pd2M1XY8EXrSfWgJ",
-        "name": "Swarm Form",
+        "id": "vb2dFNtbofJ7A9BW",
+        "name": "Summoner's Visage",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14650,6 +14550,14 @@
         "slot": "aura",
         "from": "jb2a.particles.inward.purple.01.01",
         "to": "jb2a.particles.inward.purple.02.01"
+      },
+      {
+        "id": "5wjl0ZwEvvUh7sor",
+        "name": "Swarmsense",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
         "id": "5wjl0ZwEvvUh7sor",
@@ -14700,24 +14608,16 @@
         "to": "jb2a.wind_lines.01.02.white"
       },
       {
-        "id": "i8PBZsnoCrK7IWph",
-        "name": "Tentacular Limbs",
+        "id": "sfiH3lBvpGR1TTUk",
+        "name": "The Everfull Moon",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
         "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
-        "id": "9dyWP9RGCFwunGEo",
-        "name": "Theogeny",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
-        "id": "3DY4vbXj0BYSWA7z",
-        "name": "Threefold Limb",
+        "id": "MNiT0dHol5fEcKlz",
+        "name": "Threefold Aspect",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14764,8 +14664,8 @@
         "to": "jb2a.wind_lines.01.02.white"
       },
       {
-        "id": "HnykPqaCEPk3d2n3",
-        "name": "Tracking Mayflies",
+        "id": "T8Ymeig4Fv2HrzjF",
+        "name": "Tiny Wings",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14786,6 +14686,14 @@
         "slot": "hit",
         "from": "jb2a.impact.001.green",
         "to": "jb2a.impact.004.green"
+      },
+      {
+        "id": "NxOYiKCqcuAHVRCj",
+        "name": "Transcribe Moment",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
         "id": "LzfrBDxxPTiuN7uL",
@@ -14828,16 +14736,8 @@
         "to": "jb2a.electric_arc.blue.04"
       },
       {
-        "id": "8RWfKConLYFZpQ9X",
-        "name": "Untamed Form",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
-        "id": "FPnkOYyWIaOzkmqn",
-        "name": "Untwisting Iron Buffer",
+        "id": "0xR9vrt6uDFl0Umo",
+        "name": "Untamed Shift",
         "edition": "patreon",
         "slot": "cast",
         "from": "jb2a.cast_generic.01.dark_purple",
@@ -14874,6 +14774,14 @@
         "slot": "area",
         "from": "jb2a.ground_cracks.01.orange",
         "to": "jb2a.ground_cracks.03.orange"
+      },
+      {
+        "id": "ddKBoCjmSyPSHcws",
+        "name": "Unusual Anatomy",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
         "id": "xxhS66k68u5iIOHC",
@@ -14927,17 +14835,17 @@
         "id": "nnSipUPNd3sm5vYL",
         "name": "Vibrant Thorns",
         "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
-        "id": "nnSipUPNd3sm5vYL",
-        "name": "Vibrant Thorns",
-        "edition": "patreon",
         "slot": "aura",
         "from": "jb2a.swirling_leaves.loop.01.pink",
         "to": "jb2a.swirling_leaves.loop.02.pink"
+      },
+      {
+        "id": "jBGAYmR0BkkbpJvG",
+        "name": "Visions of Danger",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
         "id": "jBGAYmR0BkkbpJvG",
@@ -14956,20 +14864,20 @@
         "to": "jb2a.particles.inward.purple.02.05"
       },
       {
-        "id": "D4kArD91fFiREvC6",
-        "name": "Warning Stripes",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
-      },
-      {
         "id": "sX2g6WFSQPNW9jzx",
         "name": "Warp Step",
         "edition": "patreon",
         "slot": "area",
         "from": "jb2a.misty_step.01.purple",
         "to": "jb2a.misty_step.02.purple"
+      },
+      {
+        "id": "fXdADBwxmBsU9xPk",
+        "name": "Warped Terrain",
+        "edition": "patreon",
+        "slot": "cast",
+        "from": "jb2a.cast_generic.01.dark_purple",
+        "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
         "id": "eyKkLp8V55ydA64J",
@@ -14994,14 +14902,6 @@
         "slot": "cast",
         "from": "jb2a.wind_lines.01.01.white",
         "to": "jb2a.wind_lines.01.02.white"
-      },
-      {
-        "id": "6gEKZaGdH842RF3J",
-        "name": "Ymeri's Mark",
-        "edition": "patreon",
-        "slot": "cast",
-        "from": "jb2a.cast_generic.01.dark_purple",
-        "to": "jb2a.cast_generic.02.dark_purple"
       },
       {
         "id": "6gEKZaGdH842RF3J",
@@ -15228,14 +15128,6 @@
         "to": "jb2a.particles.outward.greenyellow.01.04"
       },
       {
-        "id": "LmGCKwk2yYhrDVjE",
-        "name": "Comet Charge",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.003.blue"
-      },
-      {
         "id": "zIAvj7V6BTuQMAIi",
         "name": "Commune with Corazal",
         "edition": "free",
@@ -15345,7 +15237,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.004.blue"
+        "to": "jb2a.impact.003.blue"
       },
       {
         "id": "5p9Y4ACrtRM4gTpN",
@@ -15377,7 +15269,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.011.blue"
+        "to": "jb2a.impact.004.blue"
       },
       {
         "id": "S6Kkk15MWGqzC00a",
@@ -15425,7 +15317,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.012.blue"
+        "to": "jb2a.impact.011.blue"
       },
       {
         "id": "oPVyu2a0K3aTVIR8",
@@ -15569,7 +15461,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.blue"
+        "to": "jb2a.impact.012.blue"
       },
       {
         "id": "Hu38hoAUSYeFpkVa",
@@ -15577,7 +15469,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.002.blue"
+        "to": "jb2a.impact.blue"
       },
       {
         "id": "cCFDnmFB1EGeQUeA",
@@ -15665,7 +15557,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.003.blue"
+        "to": "jb2a.impact.002.blue"
       },
       {
         "id": "o6YCGx4lycsYpww4",
@@ -15673,7 +15565,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.004.blue"
+        "to": "jb2a.impact.003.blue"
       },
       {
         "id": "o6YCGx4lycsYpww4",
@@ -15985,7 +15877,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.012.blue"
+        "to": "jb2a.impact.004.blue"
       },
       {
         "id": "wU6hNzK8Yfqdmc8m",
@@ -16225,7 +16117,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.blue"
+        "to": "jb2a.impact.012.blue"
       },
       {
         "id": "lONs4r14LEBZRLLw",
@@ -16297,7 +16189,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.002.blue"
+        "to": "jb2a.impact.blue"
       },
       {
         "id": "Et8RSCLx8w7uOLvo",
@@ -16860,14 +16752,6 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "RA7VKcen3p56rVyZ",
-        "name": "Forbidding Ward",
-        "edition": "free",
-        "slot": "bolt",
-        "from": "jb2a.shield_attack.ranged.throw.01.white.01",
-        "to": "jb2a.shield_attack.ranged.throw.01.white.02"
-      },
-      {
         "id": "fxRaWoeOGyi6THYH",
         "name": "Frenzied Revelry",
         "edition": "free",
@@ -16937,7 +16821,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.011.blue"
+        "to": "jb2a.impact.002.blue"
       },
       {
         "id": "ygZHabZRS1ypucaw",
@@ -16962,6 +16846,14 @@
         "slot": "aura",
         "from": "jb2a.particles.inward.greenyellow.01.01",
         "to": "jb2a.particles.inward.greenyellow.01.02"
+      },
+      {
+        "id": "lbQCmM0e89Y4ou7F",
+        "name": "Muscle Barrier",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.shield_attack.ranged.throw.01.white.01",
+        "to": "jb2a.shield_attack.ranged.throw.01.white.02"
       },
       {
         "id": "BWvGBx51RevizICD",
@@ -17012,8 +16904,8 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
-        "id": "AlCFTjSBaCHuRHBv",
-        "name": "Prismatic Shield",
+        "id": "AfOpnnwdZwHi2Tnc",
+        "name": "Protect Companion",
         "edition": "free",
         "slot": "bolt",
         "from": "jb2a.shield_attack.ranged.throw.01.white.01",
@@ -17026,14 +16918,6 @@
         "slot": "hit",
         "from": "jb2a.misty_step.01.blue",
         "to": "jb2a.misty_step.02.blue"
-      },
-      {
-        "id": "5p8naLYjFcG13OkU",
-        "name": "Rebounding Barrier",
-        "edition": "free",
-        "slot": "bolt",
-        "from": "jb2a.shield_attack.ranged.throw.01.white.01",
-        "to": "jb2a.shield_attack.ranged.throw.01.white.02"
       },
       {
         "id": "SSsUC7rZo0CwayPn",
@@ -17049,7 +16933,7 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.012.blue"
+        "to": "jb2a.impact.011.blue"
       },
       {
         "id": "gxK5XW4WAXOgY1mN",
@@ -17058,6 +16942,14 @@
         "slot": "bolt",
         "from": "jb2a.energy_beam.normal.bluepink.02",
         "to": "jb2a.energy_beam.normal.bluepink.03"
+      },
+      {
+        "id": "53NqGTJOf4LcjVyD",
+        "name": "Shielding Strike",
+        "edition": "free",
+        "slot": "bolt",
+        "from": "jb2a.shield_attack.ranged.throw.01.white.01",
+        "to": "jb2a.shield_attack.ranged.throw.01.white.02"
       },
       {
         "id": "dDt8VFuLuhznT19v",
@@ -17089,11 +16981,11 @@
         "edition": "free",
         "slot": "hit",
         "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.blue"
+        "to": "jb2a.impact.012.blue"
       },
       {
-        "id": "VrhCpCIQB8PFax77",
-        "name": "Spellmaster's Ward",
+        "id": "MFtXn7t5vApQXqlq",
+        "name": "Spirit Ward",
         "edition": "free",
         "slot": "bolt",
         "from": "jb2a.shield_attack.ranged.throw.01.white.01",
@@ -17140,6 +17032,14 @@
         "to": "jb2a.sleep.cloud.02.pink"
       },
       {
+        "id": "Jq9mbSwJHMbNv7Pu",
+        "name": "Thunder Echo",
+        "edition": "free",
+        "slot": "hit",
+        "from": "jb2a.impact.001.blue",
+        "to": "jb2a.impact.blue"
+      },
+      {
         "id": "T8Ymeig4Fv2HrzjF",
         "name": "Tiny Wings",
         "edition": "free",
@@ -17178,14 +17078,6 @@
         "slot": "area",
         "from": "jb2a.sleep.cloud.01.pink",
         "to": "jb2a.sleep.cloud.02.pink"
-      },
-      {
-        "id": "07xYlmGX32XtHGEt",
-        "name": "Vampiric Maiden",
-        "edition": "free",
-        "slot": "hit",
-        "from": "jb2a.impact.001.blue",
-        "to": "jb2a.impact.002.blue"
       },
       {
         "id": "nnSipUPNd3sm5vYL",

@@ -1,5 +1,5 @@
 import { RecipeClock } from "./choreography.mjs";
-import { motionPose, motionDirection, combineMotionPoses } from "./motion.mjs";
+import { motionPose, motionDirection, combineMotionPoses, poseTransform } from "./motion.mjs";
 import {
   previewPose,
   normalizeOptions,
@@ -388,7 +388,8 @@ export class RecipePreview {
         frame,
         Number(token.dataset.targetIndex ?? 0),
       );
-      token.style.transform = `translate(${pose.x}px,${pose.y}px) rotate(${pose.rotation}rad) scale(${pose.scale})`;
+      token.style.transform = poseTransform(pose);
+      token.style.opacity = pose.alpha ?? "";
     }
     this.onFrame(frame);
   }

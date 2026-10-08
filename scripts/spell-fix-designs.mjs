@@ -6,7 +6,7 @@ const colorize=tint=>({tintEnabled:true,colorize:true,tint});
 
 export const FIX_SPELL_MOTIFS={
  // Real wards keep a shield, in their element.
- wardFire:motif('Fire ward raised','shield',{hit:'shield_themed.above.fire.01.orange,shield.01.intro',aura:'shield_themed.below.fire.01.orange,fire_ring'},{stageLabels:{'Force shield':'Fire ward'}}),
+ wardFire:motif('Fire ward raised','shield',{hit:'shield_themed.above.fire.01.orange,shield_themed.above.fire.03.orange',aura:'shield_themed.below.fire.01.orange,fire_ring'},{slotThemes:{hit:'fire',aura:'fire'},stageLabels:{'Force shield':'Fire ward'}}),
  wardIce:motif('Ice ward raised','shield',{hit:'shield_themed.above.ice,shield.01.intro',aura:'shield_themed.below.ice,ice_spikes.radial.loop'},{stageLabels:{'Force shield':'Ice ward'}}),
  wardEarth:motif('Earthen ward raised','shield',{hit:'shield_themed.above.molten_earth,shield.01.intro',aura:'shield_themed.below.molten_earth,ground_cracks'},{stageLabels:{'Force shield':'Earthen ward'}}),
  // Not wards: the former "Force shield raised" defaults.
@@ -76,6 +76,10 @@ export const FIX_SPELL_MOTIFS={
  fixMetalShot:motif('Launched metal fragment','missile',{cast:'glint',bolt:'dart.01.throw,arrow.physical.white',hit:'impact.009',aura:'glint'},{stageTweaks:{'Missile contact':colorize('#d6d6d6')}}),
  fixMetalNeedles:motif('Three metal needles','needles',{cast:'glint',bolt:'dart,arrow',hit:'impact.009'},{stageTweaks:{'Needle contacts':colorize('#d6d6d6')}}),
  fixAquaticSwarm:motif('Predators circle in churning water','swarm',{hit:'water_splash.circle,liquid.splash',area:'water_splash.circle,liquid.splash',aura:'bubble'}),
+ // Fire-tinted restoration: purifying or cauterizing flame, not a green bloom.
+ fixFlameHeal:motif('Purifying flames mend','restore',{cast:'cast_generic.fire',hit:'healing_generic.03.burst.yellow,healing_generic.200px.yellow,flames.orange',aura:'flames.orange,particles.outward.orange,impact.fire'},{slotThemes:{cast:'fire',hit:'fire',aura:'fire'},stageLabels:{'Channel vitality':'Kindle purifying flame','Vitality bloom':'Flames wrap the target','Rising vital sparks':'Cleansing embers rise','Vitality pulse':'Warmth settles'}}),
+ fixMagmaForm:motif('Body becomes molten lava','form',{cast:'cast_generic.fire',hit:'lava_spout.001.001.complete.orangeyellow,flames.orange',aura:'flames.orange,particles.outward.orange,ground_cracks.orange'},{slotThemes:{cast:'fire',hit:'fire',aura:'fire'},stageLabels:{'Change silhouette':'Heart of magma ignites','Shimmer':'Lava wells up','Afterimage wisps':'Molten embers'}}),
+ fixCometCharge:motif('Blazing comet charge','combatLeap',{cast:'cast_generic.fire',hit:'impact.fire.01.orange,explosion.01.orange',aura:'flames.orange,particles.outward.orange'},{slotThemes:{cast:'fire',hit:'fire',aura:'fire'},stageLabels:{'Elemental power gathers':'Comet ignites','Melee contact':'Comet impact'}}),
  fixFlockSwarm:motif('Flock of birds descends','swarm',{hit:'swirling_feathers.outburst',area:'swirling_feathers.outburst',aura:'particles'}),
 };
 
@@ -134,6 +138,11 @@ const DESIGNS={
  'needle-darts':['fixMetalNeedles','Three metal needles with neutral metallic contacts.'],
  'blood-in-the-water':['fixAquaticSwarm','Churning water and bubbles stand in for the aquatic predators.'],
  'bounty-of-the-sky':['fixFlockSwarm','Swirling feathers stand in for the descending birds.'],
+ 'cauterize-wounds':['fixFlameHeal','Wounds are sealed with fire; flame-tinted restoration.'],
+ 'cleansing-flames':['fixFlameHeal','Purifying flames wrap the target; flame-tinted restoration.'],
+ 'flame-barrier':['wardFire','A fiery shield of fire resistance.'],
+ 'mantle-of-the-magma-heart':['fixMagmaForm','The caster\'s body becomes lava; molten fire cues.'],
+ 'comet-charge':['fixCometCharge','A blazing comet rush with a fiery impact (chosen element shown as fire).'],
 };
 export const FIX_SPELL_DESIGNS=DESIGNS;
 
@@ -189,11 +198,29 @@ const STAGE_TWEAKS={
  'vicious-jealousy':{labels:{'Resentment threads turn away':'Ties to allies sever'}},
  'zero-gravity':{stages:{'Zero-gravity field forms':{opacity:.45},'Suspended weightless flecks':{opacity:.65}}},
  'acid-arrow':{stages:{'Lingering residue':{opacity:.45}}},
+ // Nothing heals the caster: keep the returning strand, drop the healing loop.
+ // The weapon theme's default aura is a floating spectral weapon; it is not a
+ // fitting residue for bites, ritual cuts or worms.
+ 'blood-feast':{drop:['Lingering residue']},
+ 'mutilate':{drop:['Lingering residue']},
+ 'worms-repast':{drop:['Lingering residue']},
+ 'shadow-siphon':{drop:['Caster receives','Recovery pulse']},
+ 'defy-the-gods':{drop:['Caster receives','Recovery pulse']},
+ // Native areas with no area stage (no template is placed for these casts).
+ 'necrotic-bomb':{stages:{'Single detonation':{kind:'aura',subject:'targets',auraRadius:10,scale:1,duration:5150}},labels:{'Single detonation':'Void blast fills the emanation'}},
+ 'final-sacrifice':{stages:{'Single detonation':{kind:'aura',subject:'targets',auraRadius:20,scale:1,duration:4200}},labels:{'Single detonation':'Minion explodes across 20 feet'}},
+ 'rolling-boulders':{stages:{'Stones called':{kind:'aura',subject:'source',auraRadius:10,scale:1}},labels:{'Stones called':'Boulders rise around the caster'}},
+ 'crystallized-vapors':{add:[['area','Icy pellets fill the emanation',-200,3200,{subject:'source',auraRadius:15,opacity:.8}]]},
+ 'pulverizing-wake':{add:[['aura','Sonic wake bursts from the struck creature',300,1400,{subject:'targets',auraRadius:15,below:false,opacity:.85}]]},
+ 'garden-of-death':{add:[['cast','Deadly garden spreads',900,5200,{subject:'source',auraRadius:40,opacity:.6}]]},
 };
 
 // Motif- and slug-level presentation: tint, labels, stage tweaks and drops.
-export function applyFixStyle(spell,motifDef,layers){
+export function applyFixStyle(spell,motifDef,layers,{fx,charge=0}={}){
  const tweak=STAGE_TWEAKS[spell.slug?.replace(/-legacy$/,'')]??{};
+ // Reviewed area stages: an aura sized by auraRadius (feet) on the area's origin
+ // token, for native emanations/bursts that place no template.
+ if(fx&&tweak.add)layers=[...layers,...tweak.add.map(([slot,label,offset,duration,extra])=>fx('aura',slot,label,charge+offset,Math.max(duration,(spell.design?.mediaTiming?.[slot]?.duration??0)+(extra?.fadeOut??500)),{scale:1,below:true,fadeIn:250,fadeOut:500,...extra}))];
  const tint=tweak.tint??motifDef?.tint;
  const labels={...motifDef?.stageLabels,...tweak.labels};
  const stages={...motifDef?.stageTweaks,...tweak.stages};

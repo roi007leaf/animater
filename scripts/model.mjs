@@ -49,6 +49,15 @@ export const MOTIONS = {
   spin: "Full spin",
   levitate: "Rise and settle",
   pulse: "Casting pulse",
+  press: "Pressed down by force",
+  sink: "Sink into the ground",
+  flicker: "Flicker / phase out",
+  throw: "Wind-up and throw",
+  brace: "Brace / guard",
+  stagger: "Stagger and recover",
+  cower: "Cower in fear",
+  slam: "Rise and slam down",
+  drift: "Drift gently down",
 };
 export const clone = (value) => structuredClone(value);
 export const normalize = (value) =>
@@ -96,6 +105,9 @@ export function validateRecipe(input) {
           ...(/^[a-z-]{1,30}$/.test(input.stateDamageType ?? "") ? {stateDamageType:input.stateDamageType} : {}) } : {}),
     ...(["melee", "ranged", "thrown"].includes(input.weaponMode)
       ? { weaponMode: input.weaponMode } : {}),
+    // Play-time element choice (scripts/element-choice.mjs).
+    ...(input.elementChoice === true ? { elementChoice: true } : {}),
+    ...(text(input.bespoke, 120) ? { bespoke: text(input.bespoke, 120) } : {}),
     ...(normalizePreviewArea(input.previewArea)
       ? { previewArea: normalizePreviewArea(input.previewArea) }
       : {}),
@@ -135,6 +147,13 @@ export function validateRecipe(input) {
           below: s.below === true,
           persist: (s.kind === "aura" || s.kind==='tokenfx' && input.lifecycle==='document' && input.trigger==='effect') && s.persist === true,
           ...(s.kind==='aura'&&Number(s.auraRadius)>0?{auraRadius:number(s.auraRadius,0.1,240,5),auraSlug:text(s.auraSlug,100)}:{}),
+          ...(s.elementTint === true ? { elementTint: true } : {}),
+          ...(s.elementAssets && typeof s.elementAssets === "object"
+            ? { elementAssets: Object.fromEntries(Object.entries(s.elementAssets)
+                .filter(([k, v]) => /^[a-z]{2,15}$/.test(k) && Array.isArray(v))
+                .map(([k, v]) => [k, v.filter(visualReference).slice(0, 8)])
+                .filter(([, v]) => v.length)) }
+            : {}),
           ...normalizeOptions({
             ...s,
             duration: number(s.duration, 100, 30000, 1500),

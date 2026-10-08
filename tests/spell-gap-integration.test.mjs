@@ -40,6 +40,9 @@ test('all 897 reviewed spell gaps retain their intended artwork and valid stage 
     assert.equal(spell.design.rationale,'',spell.name);
     assert(!spell.design.visualIdentity,`${spell.name}: unrelated casting decoration`);
     assert(recipe.enabled,spell.name);
+    // Lead-authored bespoke compositions (scripts/bespoke) replace the gap
+    // design and are covered by tests/bespoke.test.mjs.
+    if(recipe.bespoke)continue;
     for(const [edition,rows]of Object.entries(databases)){
       const byKey=new Map(rows.map(row=>[row.key,row]));
       for(const stage of recipe.stages){

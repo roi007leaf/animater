@@ -10,11 +10,14 @@ export const ORB_ELEMENTS = {
   thunder: "Thunder",
 };
 const palettes = {
-  acid: ["yellow", 20, "green", "#8bd770"],
+  // [orb shell, shell hue shift, impact color, recipe color]. Acid is a
+  // yellow-green lime, poison a deeper emerald, lightning an electric blue
+  // shell with a yellow discharge flash.
+  acid: ["yellow", 20, "green", "#a8e05a"],
   cold: ["blue", 0, "blue", "#85d8ff"],
   fire: ["yellow", -15, "orange", "#ff9967"],
-  lightning: ["green", 180, "pinkpurple", "#b7a2ff"],
-  poison: ["green", -20, "green", "#7ee5bf"],
+  lightning: ["blue", 0, "yellow", "#9fd4ff"],
+  poison: ["green", 20, "green", "#5fd39a"],
   thunder: ["white", 0, "blue", "#ccd7ff"],
 };
 export function orbRecipe(config = {}, id = "chromatic-orb", catalog) {
@@ -166,8 +169,8 @@ export function orbRecipe(config = {}, id = "chromatic-orb", catalog) {
           acid: -120,
           cold: 0,
           fire: 140,
-          lightning: 40,
-          poison: -120,
+          lightning: 0,
+          poison: -100,
           thunder: 0,
         }[element];
         if (element === "thunder") {

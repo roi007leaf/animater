@@ -30,6 +30,6 @@ Ordinary token gestures retain a minimum 800ms, maximum 0.25-square displacement
 
 ## Assets and validation
 
-Full JB2A inventory search: 7,648 Patreon / 1,351 Free keys. Localized geometry for source/contact/aura cues, directed geometry for flights. Actual selected use: 320 Patreon keys across 92 families; 192 Free keys across 98 families. Both editions plan all 2,308 recipes: 5,334 effects and 1,198 motion stages per edition; **0 plan/asset/geometry issues**. Edition fallbacks can approximate colors or artwork.
+Full JB2A inventory search: 7,648 Patreon / 1,351 Free keys. Localized geometry for source/contact/aura cues, directed geometry for flights. Actual selected use: 320 Patreon keys across 92 families; 192 Free keys across 98 families. Both editions plan all 2,308 recipes: 5,334 effects and 1,265 motion stages per edition; **0 plan/asset/geometry issues**. Edition fallbacks can approximate colors or artwork.
 
 Audit: [JSON](../data/pf2e-feat-audit.json), [CSV](../data/pf2e-feat-audit.csv). Review datasets: early, martial, support and late `data/feat-*-review.mjs`. Rebuild: `rtk proxy node tools/build-pf2e-feat-catalog.mjs`. Tests include source coverage, hashes, native triggering, current-activation semantics, attack counts, edition-specific effects-only variety, framing and UI previews. Optional feat sounds remain quiet.

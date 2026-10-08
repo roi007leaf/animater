@@ -34,7 +34,8 @@ test('all native catalog builders add installed provider stages and preserve the
   assert.ok(r.stages.length<=MAX_STAGES,r.name);
   if(fx(r).length)enhanced++;
  }
- assert.ok(enhanced>1300,`${enhanced} matching recipes`);
+ // Wards, rushes and element accents now require fiction evidence (fewer, truer FX).
+ assert.ok(enhanced>1100,`${enhanced} matching recipes`);
 });
 test('native description evidence rejects misleading healing and ward metadata',()=>{
  assert.equal(fx(spell('Arcane Explosion'))[0].fxProfile,'force');

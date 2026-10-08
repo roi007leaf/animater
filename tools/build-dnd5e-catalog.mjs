@@ -2,7 +2,7 @@ import {colorAffinity} from './color-affinity.mjs';
 import {writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {dnd5eSources,hasNativeActivation} from './dnd5e-source.mjs';
-import {nativeDirection,weaponModes,weaponSound,weaponVisualFamily,damageThemes} from './dnd5e-directions.mjs';
+import {nativeDirection,weaponModes,weaponSound,weaponVisualFamily,damageThemes,deliveryGesture} from './dnd5e-directions.mjs';
 import {assetDatabases} from './asset-databases.mjs';
 import {resolveSpellMedia,assetGeometry} from './spell-asset-selection.mjs';
 import {SPELL_THEMES} from '../scripts/spell-choreography.mjs';
@@ -132,8 +132,13 @@ function finiteRecipe(entry,row,raw,mode){
   const s={stageId:`${stages.length}-${phase}`,kind,label,assets:m[slot],duration:1400,scale:kind==='travel'?.65:1.65,opacity:1,fadeIn:0,fadeOut:180,oneShot:true,playbackRate:fast?.5:1,delay:0,...tint,...extra};stages.push(s);return s;
  };
  const motion=(motion,subject,delay,duration=1200,distance=.16)=>stages.push({stageId:'motion-'+stages.length,kind:'motion',label:motion==='pulse'?'Casting breath':motion==='lunge'?'Measured approach':motion==='levitate'?'Illustrative lift':motion==='dodge'?'Wind step':'Guard and settle',assets:[],motion,subject,delay,duration,distance,intensity:.6,...(motion==='dodge'?{motionRange:'distance'}:{})});
- const gesture=(subject,delay)=>{if(d.motion==='none')return;const [type,duration,distance]=({ 'throw-small':['lunge',1400,.1],'brace-small':['recoil',1500,.06],'reach-small':['lunge',1500,.12],'stride-small':['lunge',1600,.24],'evade-small':['dodge',1600,.15],'lift-illustrative':['levitate',2000,.22],'hop-illustrative':['levitate',1600,.18],'wind-step-small':['dodge',1600,.15],'lash-small':['lunge',1600,.18],'guard-small':['recoil',1500,.06],'native-teleport-cue':['pulse',1600,.04],'transform-cue':['pulse',1800,.1] }[d.motion]??['pulse',1500,.09]);motion(type,subject,delay,duration,distance);};
+ // Delivery-aware performer gesture (tools/dnd5e-directions.mjs deliveryGesture).
+ const gesture=(subject,delay,physical=false)=>{for(const g of [deliveryGesture(d,{subject,physical})].flat().filter(Boolean))stages.push({stageId:'motion-'+stages.length,kind:'motion',assets:[],delay,...g,...(g.motion==='dodge'?{motionRange:'distance'}:{})});};
  const physical=!d.nativeEnergy&&mode||d.physicalThrow||d.theme==='weapon',source=d.delivery==='source';
+ // A net has no flight film: the wielder throws, then the binding web settles
+ // on the first target (no arrow, no spark).
+ const netThrow=Boolean(mode)&&mode!=='melee'&&/^net$/i.test(row.source.name);
+ const launcher=/bow|crossbow|sling|blowgun|pistol|musket|rifle|firearm|\bgun\b/i.test(`${row.source.system?.type?.baseItem??''} ${row.source.name}`);
  if(!d.followup&&!physical&&d.motion!=='none'&&!d.noCast)add('cast','cast','Gather '+(SPELL_THEMES[d.theme]?.label??'magic'),{scale:1.2,duration:1600});
  if(d.delivery==='fork'){
   const first=add('travel','bolt','Primary arc',{delay:350,targetSelection:'first',scale:.65});
@@ -143,11 +148,17 @@ function finiteRecipe(entry,row,raw,mode){
  }else if(d.delivery==='rayFan'){
   add('travel','bolt','Eight prismatic rays',{delay:350,travelDestination:'area',areaLayout:'fan',fanCount:8,scale:.35,fanColors:['#ff4040','#ff9f38','#ffe166','#62dc85','#73b9ff','#795dce','#b87afa','#ff4040']});
   gesture('source',0);
+ }else if(netThrow){
+  m.hit=[...new Set(['patreon','free'].map(edition=>['jb2a.web.complete.002.white','jb2a.web.01','jb2a.web.02'].find(k=>db[edition].some(r=>r.key===k))).filter(Boolean))];
+  motion('throw','source',0,1400,.12);stages.at(-1).label='Wind-up and throw';
+  add('impact','hit','Net binds the target',{delay:650,scale:1.2,targetLimit:1});
+  d.nativeMaterialProfile='chainBinding';
  }else if(['missile','ray','areaMissile'].includes(d.delivery)){
   const volley=d.count?{repeats:d.count,repeatScope:'total',repeatSimultaneous:entry.slug==='magic-missile',repeatInterval:120}:{};
   const travel=add('travel','bolt',physical?'Weapon release':d.delivery==='ray'?'Ray to recipient':'Flight to recipient',{delay:physical?250:400,scale:d.delivery==='ray'?.6:.7,...(d.delivery==='areaMissile'?{travelDestination:'area'}:{}),...volley});
   add(d.area?'template':'impact',d.area?'area':'hit',physical?'Weapon contact':'Payload contact',{afterStage:travel.stageId,timingAnchor:'end',scale:d.area?1:1.55,...volley});
-  if(physical)motion('lunge','source',80,1400,.1);else gesture('source',0);
+  if(physical&&launcher)stages.push({stageId:'motion-'+stages.length,kind:'motion',assets:[],label:'Release and settle',motion:'recoil',subject:'source',delay:250,duration:1100,distance:.06,intensity:.5});
+  else if(physical)motion('throw','source',0,1400,.12),stages.at(-1).label='Wind-up and throw';else gesture('source',0);
  }else if(d.area){
   const layout=d.area.type==='line'&&m.area.every(key=>assetGeometry(allAssets.get(key))==='radial')?'tiles':'fit';
   if(d.nativeCounts?.layers===7){
@@ -158,8 +169,8 @@ function finiteRecipe(entry,row,raw,mode){
  }else{
   if(physical&&mode==='melee'&&!d.flyingWeapon)motion('lunge','source',0,1500,.22);
   const kind=source?'aura':d.delivery==='contact'?'impact':'aura';
-  add(kind,source||!physical&&kind==='aura'?'aura':'hit',d.followup?'Follow-up contact':physical?'Physical contact':source?'Activation bloom':'Recipient bloom',{delay:physical?600:350,subject:source?'source':'targets',scale:physical?1.35:1.8});
-  if(!physical&&!d.followup)gesture(source?'source':'targets',300);
+  add(kind,source||!physical&&kind==='aura'?'aura':'hit',d.followup?'Follow-up contact':physical?'Physical contact':source?'Activation bloom':'Recipient bloom',{delay:physical||d.motion==='throw-small'?650:350,subject:source?'source':'targets',scale:physical?1.35:1.8});
+  if(!d.followup&&!(physical&&mode==='melee'&&!d.flyingWeapon))gesture(source?'source':'targets',d.motion==='throw-small'?0:300,physical);
  }
  const contact=stages.find(s=>s.kind==='impact');
  if(contact)for(const slot of Object.keys(m).filter(k=>k.startsWith('payload')))add('impact',slot,'Native magical material',{afterStage:contact.stageId,timingAnchor:'start',scale:1.5});
@@ -177,10 +188,13 @@ function finiteRecipe(entry,row,raw,mode){
  }
  for(const s of stages)capOneShot(s);
  const recipe=validateRecipe({id:`animater-${entry.id}-${id}`,name:entry.name,systemId:'dnd5e',catalogEntry:entry.id,activityId:raw._id,...(mode?{weaponMode:mode}:{}),itemUuid:row.uuid,match:entry.slug,description:d.note,category:entry.group,color:SPELL_THEMES[d.theme]?.color,trigger:delegated?'manual':d.trigger,previewArea:d.area,playbackRoles:roles,stages});
- const soundProfile=d.sound===null?null:d.nativeMaterialProfile??elementalSound??(d.physicalThrow||d.nativeEnergy?d.sound:mode?weaponSound(row.source,mode):physical?ABILITY_SOUND_PROFILES[d.sound]?d.sound:weaponSound(row.source,mode):d.sound);
+ let soundProfile=d.sound===null?null:d.nativeMaterialProfile??elementalSound??(d.physicalThrow||d.nativeEnergy?d.sound:mode?weaponSound(row.source,mode):physical?ABILITY_SOUND_PROFILES[d.sound]||SOUND_PROFILES[d.sound]?d.sound:weaponSound(row.source,mode):d.sound);
+ const RAY_FALLBACK={fireRay:'fire',coldRay:'cold',forceRay:'force',radiantRay:'holy',moonRay:'light',darkRay:'void',poisonRay:'poison',forceMissile:'force',chainLightning:'electric',teleport:'force',objectWhoosh:'wind',starFlight:'light'};
+ const exclude=d.followup&&!mode?['cast','release','chain']:d.physicalThrow?['cast']:[],flight=stages.some(s=>['travel','projectile'].includes(s.kind));
+ if(soundProfile&&RAY_FALLBACK[soundProfile]&&!(SOUND_PROFILES[soundProfile]??[]).some(c=>!exclude.includes(c.role)&&(flight||!['release','chain'].includes(c.role))))soundProfile=RAY_FALLBACK[soundProfile];
  const soundNamespace=!d.nativeMaterialProfile&&!d.nativeEnergy&&!d.physicalThrow&&(mode||d.theme==='weapon')&&ABILITY_SOUND_PROFILES[soundProfile]?'ability':'spell';
  if(soundProfile&&!(soundNamespace==='ability'?ABILITY_SOUND_PROFILES:SOUND_PROFILES)[soundProfile])throw Error(`Unregistered sound profile ${soundProfile} for ${entry.name}`);
- return {id,label:`${a.name||a.type}${mode?' · '+mode:''}`,activityId:raw._id,activityName:a.name||'',reviewed:d.reviewed,theme:d.theme,...(mode?{weaponMode:mode}:{}),rationale:d.note,artLimit:d.reviewed?'Native choreography reviewed; edition fallback may substitute color.':'Semantic composition; symbolic artwork where no literal JB2A asset exists.',soundNamespace,soundProfile,soundExcludeRoles:d.followup?['cast','release','chain']:d.physicalThrow?['cast']:[],recipe};
+ return {id,label:`${a.name||a.type}${mode?' · '+mode:''}`,activityId:raw._id,activityName:a.name||'',reviewed:d.reviewed,theme:d.theme,...(mode?{weaponMode:mode}:{}),rationale:d.note,artLimit:d.reviewed?'Native choreography reviewed; edition fallback may substitute color.':'Semantic composition; symbolic artwork where no literal JB2A asset exists.',soundNamespace,soundProfile,soundExcludeRoles:d.followup&&!mode?['cast','release','chain']:d.physicalThrow?['cast']:[],recipe};
 }
 function entryFor(row,kind){
  const s=row.source,id=`dnd5e-${row.pack}-${s._id}${row.parent?'-'+row.parent._id:''}`;

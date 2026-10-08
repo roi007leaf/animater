@@ -9,7 +9,7 @@ import {
   MOTIONS,
   MAX_STAGES,
 } from "./model.mjs";
-import { motionPose, motionDirection } from "./motion.mjs";
+import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
 import { catalogSoundOptions, previewRecipeSounds } from "./spell-sounds.mjs";
 import { starterRecipes } from "./presets.mjs";
@@ -878,7 +878,8 @@ export class Workspace {
         direction,
         isPathMotion(stage) ? 55 : 85,
       );
-      demo.style.transform = `translate(${pose.x}px,${pose.y}px) rotate(${pose.rotation}rad) scale(${pose.scale})`;
+      demo.style.transform = poseTransform(pose);
+      demo.style.opacity = pose.alpha ?? "";
       this.motionFrame = requestAnimationFrame(tick);
     };
     this.motionFrame = requestAnimationFrame(tick);

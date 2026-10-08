@@ -27,17 +27,23 @@ export function soundDirection(spell, source) {
   });
   if (!text)
     return choose("", "No source description; no automatic sound inferred.");
+  if (Object.hasOwn(AUDIBLE_OVERRIDES, spell.slug))
+    return choose(AUDIBLE_OVERRIDES[spell.slug][0], 'Reviewed: ' + AUDIBLE_OVERRIDES[spell.slug][1]);
   const reviewedFire={
     fireDrought:'',fireDehydrate:'',fireDust:'',fireFog:'',fireAshes:'',fireRedistribute:'',
     fireBlossoms:'fireIgnition',fireWildfire:'fireIgnition',fireDivine:'holy',fireSunBlade:'radiantRay',
     fireRayGround:'fireRay',fireGeyser:'water',fireBile:'earth',firePlasma:'fireCone',fireRejuvenating:'fireCone',
-    fireBarrage:'fireball',fireFireworkBlast:'sonic',fireIgniteFireworks:'sonic',fireSkyrocket:'sonic',
+    fireBarrage:'fireball',fireFireworkBlast:'explosion',fireIgniteFireworks:'sonic',fireSkyrocket:'sonic',
     fireCataclysm:'earthquake',fireConfluence:'summon',fireDouble:'fireIgnition',fireTruth:'fire',fireWhirling:'fireCone',fireFumarole:'fireIgnition',
   };
   if(Object.hasOwn(reviewedFire,motif))
     return choose(reviewedFire[motif], 'Reviewed native fire-spell casting event; deferred ignition, internal heat and unresolved choices do not play explosion audio.');
   if (['solarSensitivity','secretRevelation','betrayalVision','ambitionIsolation','doomForecast','mentalContingency','defensiveTerrorMask','fatedWeapon','ownDeathVision','privateNightmare'].includes(motif))
     return choose('', 'Private perception, belief, a spoken secret or a prepared contingency; symbolic public artwork does not establish an audible fear or damage event.');
+  // Composition spells are performances by definition (bard muse, instrument or
+  // voice). A mimed wall and a performance-preparing buff stay quiet.
+  if (spell.traits.includes('composition') && !['house-of-imaginary-walls','fortissimo-composition'].includes(spell.slug))
+    return choose('song', 'Composition spell: the caster performs aloud; short musical flourish follows the cast.');
   if (motif==='confidenceSiphon')
     return choose('drain','Confidence is inhaled from the victim; a finite energy draw follows the returning strand. Save-dependent healing is not played.');
   if (BROAD_VARIETY_MOTIFS[motif]) {
@@ -355,8 +361,176 @@ export function soundDirection(spell, source) {
       theme,
       `Description and ${spell.theme} treatment support a ${theme} effect cue.`,
     );
+  const audible = audibleFallback(spell, source, text, opening);
+  if (audible) return choose(...audible);
   return choose(
     "",
     "No unambiguous audible effect in description; quiet by default.",
   );
+}
+// Reviewed per-spell exceptions for the audible fallback ('' keeps the spell quiet).
+const AUDIBLE_OVERRIDES = {
+  'implosion': ['gravity', 'The target collapses in on itself; a gravitic crush cue, not an explosion.'],
+  'curse-of-lost-time': ['time', 'Rapid aging or erosion; temporal cue.'],
+  'horde-of-underlings': ['summon', 'Underlings are summoned; arrival cue, creature species player chosen.'],
+  'power-word-kill': ['psychic', 'A spoken word of power strikes the mind; mental pulse without prerecorded speech.'],
+  'power-word-blind': ['psychic', 'A spoken word of power strikes the mind; mental pulse without prerecorded speech.'],
+  'power-word-stun': ['psychic', 'A spoken word of power strikes the mind; mental pulse without prerecorded speech.'],
+  'malicious-shadow': ['shadow', 'The target\'s own shadow becomes a deadly form; shadow cue.'],
+  'quench': ['water', 'Air becomes supersaturated with water vapour and fires are doused; water cue.'],
+  'shock-and-awe': ['explosion', 'Illusory cannons explode overhead; explosion cue for the illusion.'],
+  'weapon-of-judgment': ['divineWrath', 'An immense spiritual weapon of the deity manifests above the target.'],
+  'deitys-strike': ['divineWrath', 'The deity\'s favored weapon falls from above; divine strike cue.'],
+  'gouging-claw': ['claws', 'Limb becomes a claw for a melee spell attack; claw strike cue.'],
+  'spiked-carapace': ['pierce', 'A spiked bone gauntlet strikes; piercing hit cue.'],
+  'buzzing-bites': ['swarm', 'Buzzing, biting insects are explicitly described.'],
+  'worms-repast': ['swarm', 'Gnawing worms materialize inside the target; crawling swarm cue.'],
+  'murder-of-crows': ['scream', 'A flock of crows torments the target; shrieking flock cue.'],
+  'songbirds-call': ['song', 'The caster\'s voice calls a storm of songbirds.'],
+  'sudden-swarm': ['', 'A familiar divides; piercing damage comes from the familiar\'s later bites.'],
+  'final-fate-of-the-locust-host': ['swarm', 'A locust host bursts from Deskari\'s corpse.'],
+  'incarnate-ancient-specter': ['summon', 'An ancient wraith is summoned; arrival cue.'],
+  'blood-vendetta': ['', 'Reactive curse; bleed is caused later by the cursed creature\'s own wounds.'],
+  'blossoming-gore': ['growth', 'A field of bloody roses grows; organic growth cue.'],
+  'feast-of-ashes': ['', 'A hunger curse; no audible effect.'],
+  'inevitable-disaster': ['', 'Deferred doom; no immediate audible effect.'],
+  'animus-mine': ['', 'A mental mine is implanted; it detonates later only when triggered.'],
+  'bandits-doom': ['', 'Ward on an item; mental damage happens only when the item is stolen.'],
+  'defensive-prescience': ['', 'Private foresight of an incoming attack; no audible effect.'],
+  'instant-minefield': ['', 'Mines are hidden now and explode later when stepped on.'],
+  'shattering-gem': ['', 'A gem orbits the target and shatters only when a Strike lands later.'],
+  'lashing-rope': ['', 'A rope animates and wreathes the caster; its slashing happens on a later attack.'],
+  'door-to-beyond': ['wind', 'Air rushes through hairline cracks in reality; wind cue.'],
+  'poltergeists-fury': ['wind', 'A telekinetic storm whirls loose objects; rushing wind cue.'],
+  'grasping-grave': ['earth', 'Skeletal arms erupt from the ground; earth rumble cue.'],
+  'coral-eruption': ['earth', 'Razor coral erupts from the ground; earth rumble cue.'],
+  'conjured-clockwork': ['metal', 'A clockwork device spreads across the ground; metal cue.'],
+  'etheric-shards': ['force', 'Splinters of force are sown; force cue.'],
+  'redistribute-potential': ['', 'Reviewed native energy transfer; quiet.'],
+  'hippocampus-retreat': ['water', 'The caster swims away with a hippocampus tail; water cue.'],
+  'inner-upheaval': ['force', 'Qi focused into a Strike; force cue.'],
+  'grisly-growths': ['transform', 'Flesh grows excess limbs and organs; transformation cue.'],
+  'flense': ['slash', 'Flesh is stripped from the target; slashing cue.'],
+  'mutilate': ['slash', 'Ritual cuts mirrored onto the target; slashing cue.'],
+  'split-the-tongue': ['slash', 'The target\'s tongue splits; slashing cue.'],
+  'blood-feast': ['claws', 'An enormous maw feasts on the target; savage bite cue.'],
+  'gluttons-jaws': ['claws', 'A slavering maw bites the target; savage bite cue.'],
+  'weight-of-the-world': ['gravity', 'A burst of multiplied gravity; gravitic crush cue.'],
+  'gravity-wave': ['gravity', 'A ripple of gravitic force lifts and slams; gravitic cue.'],
+  'calcium-rain': ['pierce', 'A torrent of bone shards rains down; piercing cue.'],
+  'shadow-raid': ['shadow', 'Illusory flying shadows strike; shadow cue.'],
+  'shadow-army': ['shadow', 'Semi-real shadow copies swarm the battlefield; shadow cue.'],
+  'abyssal-plague': ['', 'A disease touch; the plague siphons soul fragments silently.'],
+  'bullhorn': ['', 'The caster\'s own voice is amplified; player speaks.'],
+  'illusory-creature': ['', 'Illusion sounds are player chosen.'],
+  'illusory-scene': ['', 'Illusion sounds are player chosen.'],
+  'seashell-of-stolen-sound': ['', 'A stored sound is player chosen.'],
+  'whispering-quiet': ['', 'Sound is suppressed.'],
+  'unseen-heralds': ['', 'Illusory heralds; alarm sounds are player chosen.'],
+  'rallying-banner': ['', 'A visual banner; no audible effect is described.'],
+  'procyal-philosophy': ['', 'Advice dispensed is player chosen.'],
+  'overwhelming-presence': ['', 'Visual splendor; no audible effect is described.'],
+  'ghost-sound': ['', 'Player chooses the sound.'],
+  'cleansing-flames': ['fireIgnition', 'Purifying flames wrap the target; flame ignition instead of a healing chime.'],
+  'cauterize-wounds': ['fireIgnition', 'Wounds are sealed with fire; flame ignition instead of a healing chime.'],
+  'forest-of-gates': ['teleport', 'The group is transported to an extraplanar realm; spatial transition cue.'],
+  'reapers-lantern': ['light', 'A ghostly lantern sheds light; no healing is described.'],
+  'scroungers-glee': ['fear', 'A cruel laugh promises death; ominous cue, not a healing chime.'],
+  'share-life': ['', 'A life link redistributes later damage; no immediate healing or audible effect.'],
+  'tireless-worker': ['bless', 'A condition is suppressed; gentle beneficial cue, no Hit Points restored.'],
+  'vital-singularity': ['', 'A ritual pact for later sacrifice; no immediate restoration or audible effect.'],
+  'entropic-wheel': ['fireIgnition', 'A thermal wheel ignites around the caster; flame ignition (no combined frost cue profile exists).'],
+  'mantle-of-the-magma-heart': ['fireIgnition', 'Skin becomes burning lava wreathed in fire magic; flame ignition instead of a generic transformation.'],
+  'comet-charge': ['fire', 'The caster rushes wreathed in elemental power; fire cue for the comet.'],
+  'unrelenting-gravity': ['gravity', 'Gravity is greatly increased on the target; gravitic crush cue.'],
+  'chosen-gravity': ['gravity', 'Gravity\'s direction is changed for the target; gravitic cue.'],
+  'gravity-weapon': ['gravity', 'Gravitational force is funneled into the caster\'s blows; gravitic cue.'],
+  'amity-cycle':['song', 'The ritual performance includes singing and music.'],
+  'ash-strewn-ending': ['song', 'The ritual is sung aloud.'],
+  'clawsong': ['song', 'The caster sings a low, growling prayer.'],
+  'raga-of-remembrance': ['song', 'A musical raga is performed.'],
+  'regale-the-lost-ones': ['song', 'Music is performed for the lost ones.'],
+  'release-the-ego-to-restore-the-soul': ['song', 'Abundant music rallies a crowd into a dance.'],
+  'song-of-silver': ['song', 'A performance is the core of the casting.'],
+  'containment': ['shield', 'A force field wraps the creature; ward cue.'],
+  'resist-energy': ['shield', 'A shield of elemental energy protects the creature; ward cue.'],
+  'shielding-formation': ['shield', 'Magical shields of force are conjured; ward cue.'],
+  'cordyceps-command': ['poison', 'A mote of spores is whisked at the target; poison release cue.'],
+  'stinking-cloud': ['poison', 'A cloud of putrid mist is released; poison release cue.'],
+  'dread-mosquito-storm': ['swarm', 'A plague of undead mosquitoes is released; buzzing swarm cue.'],
+  'electrostatic-glider': ['electric', 'An arc of static electricity forms above the caster.'],
+  'frenzied-revelry': ['scream', 'The caster dances and howls wildly.'],
+  'spiral-of-horrors': ['scream', 'Shades and spirits howl and whirl around the caster.'],
+  'incarnate-tempest-of-shades': ['scream', 'An amalgam of howling vengeful dead is called forth.'],
+  'vicious-howl': ['scream', 'The caster howls with passion.'],
+  'overselling-flourish': ['scream', 'A grand, screaming spectacle of being hit.'],
+  'invoke-the-crimson-oath': ['battleCry', 'The caster shouts the final line of the Crimson Oath.'],
+  'incarnate-draconic-legion': ['explosion', 'Summoned dragons unleash annihilating blasts.'],
+  'incarnate-kaiju': ['dragonRoar', 'A massive rampaging monster rises; monstrous roar cue.'],
+  'kinetic-ram': ['force', 'Kinetic energy rams outward; force cue.'],
+  'forceful-hand': ['force', 'A hand of magical force appears; force cue.'],
+  'force-fling': ['force', 'A force echo of a weapon is flung; force cue.'],
+  'telekinetic-maneuver': ['force', 'A rush of telekinetic power moves a foe; force cue.'],
+  'friendfetch': ['force', 'Telekinetic strands drag targets toward the caster; force cue.'],
+  'shadow-blast': ['shadow', 'A blast of shadow energy; shadow cue.'],
+  'soul-cutter': ['spirit', 'A blade of spiritual energy cuts the soul; spirit cue.'],
+  'spiritual-armament': ['spirit', 'A ghostly echo of a weapon is flung; spirit cue.'],
+  'synaptic-pulse': ['psychic', 'A pulsating mental blast; mental pulse.'],
+  'void-harvest': ['void', 'A conduit to the Void opens; void cue.'],
+  'vital-luminance': ['holy', 'The caster glows as a beacon of vitality; radiant cue.'],
+  'zero-gravity': ['gravity', 'Gravity is negated in the area; gravitic cue.'],
+  'variable-gravity': ['gravity', 'The caster adjusts gravity\'s grip; gravitic cue.'],
+  'proximal-shift': ['teleport', 'With a thunderous crack the caster vanishes and reappears.'],
+  'psychic-outburst': ['psychic', 'Psychic energy bursts outward from the mind; mental pulse.'],
+  'luring-wail': ['scream', 'A plaintive wailing cry lures enemies.'],
+  'confusing-cry': ['scream', 'An unsettling, warbling cry.'],
+  'tattoo-whispers': ['', 'A ritual tattoo is inked; its later whispers are private.'],
+  'indolent-haze': ['', 'A faint scent and soothing calm; no audible effect.'],
+  'sacred-nimbus': ['water', 'A small cloud rains warm sanctified water; rain cue.'],
+  'banishing-touch': ['force', 'A surge of magic launches the target away; force cue.'],
+  'annunciation-of-the-outer-gate': ['', 'The caster speaks the announcement; player speech, no prerecorded voice.'],
+};
+const DAMAGE_PROFILES = { fire:'fire', cold:'cold', electricity:'electric', acid:'acid', poison:'poison', sonic:'sonic', force:'force', void:'void', vitality:'holy', mental:'psychic', bleed:'', spirit:'spirit', slashing:'slash', piercing:'pierce', bludgeoning:'bludgeon', untyped:'' };
+const MATERIAL_THEMES = { earth:'earth', metal:'metal', plant:'growth', wind:'wind', water:'water', fire:'fire', cold:'cold', electricity:'electric', acid:'acid', poison:'poison', sonic:'sonic', shadow:'shadow', void:'void', force:'force' };
+// Fallback for spells that no earlier semantic rule covered: audible vocal or
+// musical traits, explicit explosions, and finally the native damage types.
+function audibleFallback(spell, source, text, opening) {
+  if (Object.hasOwn(AUDIBLE_OVERRIDES, spell.slug)) {
+    const [profile, reason] = AUDIBLE_OVERRIDES[spell.slug];
+    return [profile, 'Reviewed: ' + reason];
+  }
+  const lower = text.toLowerCase();
+  const auditory = spell.traits.includes('auditory');
+  if (auditory && !/\b(tale|story|stories|folklore)\b/.test(lower)) {
+    if (/\b(scream\w*|shriek\w*|wail\w*|howl\w*|screech\w*)\b/.test(lower))
+      return ['scream', 'Auditory spell with an explicit scream, wail or howl.'];
+    if (/\b(sings?|singing|song|chant\w*|melody|music\w*|tune|chorus|dirge|lament|anthem|ode|perform\w*)\b/.test(lower))
+      return ['song', 'Auditory spell with explicit singing, chanting or performance.'];
+    if (/\b(shout\w*|cry|cries|yell\w*|bellow\w*|call to arms|exhortation|boast\w*|insult\w*)\b/.test(lower))
+      return ['battleCry', 'Auditory spell with an explicit shout, cry or boast.'];
+    if (/\b(whisper\w*|murmur\w*|utter\w*|unknown tongue|chatter\w*|cacophony)\b/.test(lower))
+      return ['whispers', 'Auditory spell with explicit whispers or utterances; no intelligible speech is assumed.'];
+  }
+  // Only the opening imagery: later Depart/critical-failure explosions are not the cast.
+  const lead = String(opening ?? '').toLowerCase();
+  if (/\b(explod\w*|explosion|detonat\w*)\b/.test(lead))
+    return ['explosion', 'Description explicitly describes an explosion.'];
+  if (/\bthunder(?:ous|clap)?\b/.test(lead))
+    return ['sonic', 'Description explicitly describes thunder.'];
+  const types = [...new Set(Object.values(source?.system?.damage ?? {}).filter(d => d.kinds?.includes?.('damage') ?? true).map(d => d.type).filter(Boolean))];
+  if (!types.length) return null;
+  const material = MATERIAL_THEMES[spell.theme];
+  const physical = types.every(t => ['slashing','piercing','bludgeoning','bleed','untyped'].includes(t));
+  if (physical && material)
+    return [material, `Physical damage delivered by ${spell.theme} material; material cue.`];
+  for (const type of types) {
+    let profile = DAMAGE_PROFILES[type];
+    if (type === 'spirit' && /\b(divin\w*|deity|faith|holy|sanctified|celestial|god|gods)\b/.test(lower) && !/\b(fiend\w*|abyss|hell)\b/.test(lower)) profile = 'divineWrath';
+    if (type === 'slashing' && /\b(claws?|talons?)\b/.test(lower)) profile = 'claws';
+    if (type === 'spirit' && /\bbeam of\b.*\blight\b/.test(lower)) profile = 'radiantRay';
+    if (profile) return [profile, `Native ${type} damage; ${profile} cue follows the visible contact.`];
+  }
+  if (types.includes('untyped') && /\b(energy|elemental)\b/.test(lower))
+    return ['force', 'Untyped or chosen-energy damage; neutral magical energy cue.'];
+  return null;
 }

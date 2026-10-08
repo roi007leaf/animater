@@ -4,7 +4,7 @@ import {variantFiles} from './asset-databases.mjs';
 
 // Reviewed against the full localized native descriptions. These cues never
 // move actors, decide outcomes, or change PF2e's visibility or action economy.
-const palettes={grey:['grey','#b7bdc8'],white:['white','#e4e9f2'],black:['dark_black','#555765'],purple:['purple','#ba9cdd'],red:['dark_red','#cf7284'],green:['green','#9ac885'],yellow:['yellow','#e6d096'],blue:['blue','#94bdd6'],pink:['pink','#e2a6ce'],orange:['orange','#c89f83']};
+const palettes={fire:['orange','#ff8a3d'],frost:['blue','#8cdcff'],grey:['grey','#b7bdc8'],white:['white','#e4e9f2'],black:['dark_black','#555765'],purple:['purple','#ba9cdd'],red:['dark_red','#cf7284'],green:['green','#9ac885'],yellow:['yellow','#e6d096'],blue:['blue','#94bdd6'],pink:['pink','#e2a6ce'],orange:['orange','#c89f83']};
 const track=(property,from,to,duration,pingPong=true)=>({property,from,to,duration,loop:true,pingPong,ease:'easeInOutQuad'});
 const flatten=value=>[{property:'scale.y',from:value,to:value,duration:6000}];
 const art=(roots,palette='grey',options={})=>({roots:Array.isArray(roots)?roots:[roots],palette,scale:1,opacity:.92,below:false,offsetX:0,offsetY:0,offsetUnits:'token',playbackRate:.8,...options});
@@ -20,6 +20,14 @@ const sleepAnchors={
  'SleepSymbol01_01_Dark_Pink_400x400.webm':{x:.6796875,y:.31640625},
 };
 
+// Reviewed multi-layer looks for individual effects (keyed by effect slug).
+export const EFFECT_PLANS={
+ // A thermal wheel: a burning ring and an orbit of icy motes turning in opposite
+ // directions around the caster while the spell lasts.
+ 'spell-effect-entropic-wheel':plan('fire','curated',
+  art('fire_ring.500px','fire',{scale:1.2,opacity:.75,below:true,playbackRate:.7,tracks:[track('rotation',0,360,7000,false)]}),
+  art('aura_themed.01.orbit.loop.cold.01','frost',{scale:1.35,opacity:.85,playbackRate:.7,tracks:[track('rotation',0,-360,7000,false)]})),
+};
 export const CONDITION_PLANS={
  blinded:plan('vision','symbolic',art('darkness.black','black',{offsetY:-.1,scale:.9,opacity:.8})),
  broken:plan('broken','themed',glyph('shield_cracked','orange',{scale:1})),
@@ -82,9 +90,11 @@ export const DAMAGE_PLANS={
  fire:plan('fire','themed',art('flames.04.loop','orange',{scale:1.5})),
  force:plan('shield','symbolic',art('energy_field.01','purple',{scale:1.3})),
  mental:plan('mind','symbolic',glyph('runes03','purple',{scale:.95})),
- piercing:plan('broken','symbolic',glyph('simple.001.loop.001','red',{scale:.9,tracks:flatten(.6)})),
+ // Physical persistent damage: a repeating stab for piercing and red claw rakes for
+ // slashing, so the three physical types no longer differ only by rotation.
+ piercing:plan('broken','symbolic',art(['melee_generic.piercing.one_handed','rapier.melee.01'],'red',{scale:.95,opacity:.55,playbackRate:.6})),
  poison:plan('poison','themed',glyph('poison','green',{scale:1})),
- slashing:plan('broken','symbolic',glyph('simple.001.loop.001','red',{scale:1.1,rotation:45,tracks:flatten(.4)})),
+ slashing:plan('broken','symbolic',art('claws.200px','red',{scale:1.05,opacity:.6,playbackRate:.6})),
  sonic:plan('sonic','symbolic',art('energy_field.01','white',{scale:1.5,tracks:[track('scale.x',.85,1.1,1800),track('scale.y',.85,1.1,1800)]})),
  spirit:plan('void','symbolic',art('energy_strands.overlay','white',{scale:1.4})),
  vitality:plan('light','symbolic',art('energy_field.01','yellow',{scale:1.45})),
@@ -117,6 +127,9 @@ function build(entry,definition,db,id){
  return {theme:definition.theme,quality:definition.quality,color:primary.tint,rationale:'',evidence:'native-condition-description',conditionDesign:{id,descriptionHash:entry.descriptionHash,layers},...primary,presentationRole:primary.below?'field':'body'};
 }
 
+export function buildEffectDesign(entry,db){
+ return EFFECT_PLANS[entry.slug]?{...build(entry,EFFECT_PLANS[entry.slug],db,entry.slug),evidence:'Reviewed complete native description'}:null;
+}
 export function buildConditionDesign(entry,db){
  const design=build(entry,CONDITION_PLANS[entry.slug],db,entry.slug);
  if(entry.slug==='persistent-damage')design.damageVariants=Object.fromEntries(Object.entries(DAMAGE_PLANS).map(([type,definition])=>[type,build(entry,definition,db,`persistent-${type}`)]));

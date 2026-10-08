@@ -116,16 +116,13 @@
 .animater .an-tokenfx-sample .an-preview-token-art { width:100%; height:100%; display:grid; place-items:center; }
 .animater .an-tokenfx-sample img { object-fit:contain; max-width:none; max-height:none; }
 .animater .an-tokenfx-settings { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
-.animater .an-tokenfx-settings>strong,.animater .an-tokenfx-preview-actions,.animater .an-tokenfx-settings>p { grid-column:1/-1; margin:0; }
+.animater .an-tokenfx-settings>strong,.animater .an-tokenfx-settings>p { grid-column:1/-1; margin:0; }
 .animater .an-tokenfx-settings>strong { font-size:11px; }
 .animater .an-tokenfx-settings label { display:grid; gap:5px; margin:0; font-size:10px; color:var(--an-muted); }
 .animater .an-tokenfx-settings input[type="number"] { margin:0; width:100%; min-height:36px; padding:7px 10px; font-size:11px; }
 .animater .an-tokenfx-settings .an-tokenfx-check { display:flex; align-items:center; gap:7px; }
 .animater .an-tokenfx-check input[type="checkbox"] { width:15px; height:15px; margin:0; flex:none; }
 .animater .an-tokenfx-settings input[type="color"] { width:100%; height:32px; margin:0; }
-.animater .an-tokenfx-preview-actions { display:flex; gap:6px; }
-.animater .an-tokenfx-preview-actions button { font-size:11px; min-height:36px; padding:7px 10px; }
-.animater .an-tokenfx-preview-actions button:first-child { flex:1; }
 .animater .an-tokenfx-status { font-size:10px; color:var(--an-accent); min-height:15px; line-height:1.5; }
 .animater .an-preview>img,.animater .an-recipe-layer>img { width:100%; height:100%; object-fit:contain; }
 @container (max-width:1100px) {

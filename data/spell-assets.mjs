@@ -372,7 +372,7 @@ export const SPELL_ASSETS = {
   "fear": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.sound.01.pinkteal"
+      "jb2a.cast_generic.02.blue"
     ],
     "bolt": [
       "jb2a.eldritch_blast.purple"
@@ -392,7 +392,7 @@ export const SPELL_ASSETS = {
   "curse": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.sound.01.pinkteal"
+      "jb2a.cast_generic.02.blue"
     ],
     "bolt": [
       "jb2a.eldritch_blast.purple"
@@ -433,7 +433,7 @@ export const SPELL_ASSETS = {
   "illusion": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.sound.01.pinkteal"
+      "jb2a.cast_generic.02.blue"
     ],
     "bolt": [
       "jb2a.magic_missile.purple"
@@ -563,7 +563,7 @@ export const SPELL_ASSETS = {
   "transform": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.sound.01.pinkteal"
+      "jb2a.cast_generic.02.blue"
     ],
     "bolt": [
       "jb2a.energy_beam.normal.purple.01",
@@ -649,7 +649,7 @@ export const SPELL_ASSETS = {
   "web": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.sound.01.pinkteal"
+      "jb2a.cast_generic.02.blue"
     ],
     "bolt": [
       "jb2a.energy_beam.normal.purple.01",
@@ -756,7 +756,7 @@ export const SPELL_ASSETS = {
   "arcane": {
     "cast": [
       "jb2a.cast_generic.01.dark_purple",
-      "jb2a.cast_generic.sound.01.pinkteal"
+      "jb2a.cast_generic.02.blue"
     ],
     "bolt": [
       "jb2a.magic_missile.purple"

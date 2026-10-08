@@ -4,7 +4,7 @@ import { pf2eEvent, sf2eEvent, dnd5eEvent } from "./adapters.mjs";
 import { AnimaterRuntime } from "./runtime.mjs";
 import { installedSoundCatalog, catalogSoundOptions } from "./spell-sounds.mjs";
 import { Workspace } from "./workspace.mjs";
-import { installedMediaLibrary } from './media-library-sources.mjs';
+import { MediaLibraryLoader } from './media-library-sources.mjs';
 import { libraryPreferences } from './media-library.mjs';
 import {TokenFxPreview} from './token-fx-preview.mjs';
 import {
@@ -40,6 +40,8 @@ import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,
 import {sfStateHost} from './sf2e-states.mjs';
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 let runtime, app;
+const mediaLibraryLoader=new MediaLibraryLoader(()=>({modules:game.modules,database:globalThis.Sequencer?.Database,
+  browse:path=>foundry.applications.apps.FilePicker.implementation.browse('data',path)}));
 let motions;
 let optionalFx;
 let persistentStates;
@@ -315,8 +317,8 @@ function workspaceHost() {
   return {
     mediaPreferences:()=>libraryPreferences(game.settings.get(ID,'mediaLibrary')),
     setMediaPreferences:value=>game.settings.set(ID,'mediaLibrary',libraryPreferences(value)),
-    loadMediaCatalog:()=>installedMediaLibrary({modules:game.modules,database:globalThis.Sequencer?.Database,
-      browse:path=>foundry.applications.apps.FilePicker.implementation.browse('data',path)}),
+    mediaCatalog:()=>mediaLibraryLoader.peek(),
+    loadMediaCatalog:(refresh,onProgress)=>mediaLibraryLoader.load(refresh,onProgress),
     sfCatalogState:kind=>normalizeSfCatalogState(game.settings.get(ID,sfSettingKey(kind))),
     setSfCatalogState:async(kind,change)=>{
       if(!game.user.isGM||game.system.id!=="sf2e"||!SF_KINDS.includes(kind))throw Error("SF2e catalog configuration requires a GM in an SF2e world.");
@@ -338,8 +340,7 @@ function workspaceHost() {
     fxCatalog,
     createTokenFxPreview:async(scene,recipe)=>{
       if(!fxCatalog().tokenReady)return null;
-      const {Anime}=await import(new URL('../../tokenmagic/fx/Anime.js',import.meta.url).href);
-      return new TokenFxPreview({scene,recipe,PIXI:globalThis.PIXI,Anime,tokenMagic:globalThis.TokenMagic});
+      return new TokenFxPreview({scene,recipe,PIXI:globalThis.PIXI,tokenMagic:globalThis.TokenMagic});
     },
     previewTokenFx:stage=>{
       if(!canvas.ready)throw Error('Open a scene first.');

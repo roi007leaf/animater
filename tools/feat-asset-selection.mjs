@@ -251,6 +251,10 @@ const FEAT_MEDIA={
   "dominion-aura":{aura:["energy_field.02.below.purple","energy_field.02.below"]},
   "beguiling-aura":{aura:["swirling_sparkles.01.bluepink","swirling_sparkles"]},
   "slowing-strike":{aura:["markers.chain.standard.loop.02.grey","markers.chain.standard.loop","glint"]},
+  // 2026-10-08: icy wind with insects deals slashing (no ice spikes); SF2e
+  // leviathan transformation is a sea-creature change, not a healing burst.
+  "yamarajs-grandeur":{hit:["whirlwind.bluewhite","whirlwind"],area:["whirlwind.bluewhite","whirlwind"]},
+  "invoke-the-leviathan":{cast:["water_splash.circle.01.blue","water_splash"],hit:["impact.water.02.blue","impact.water"]},
   "snakebirds-shadow":{hit:["melee_generic.slashing.one_handed","melee_generic.slash.01","melee_generic.slash"],aura:["water_splash.circle.01.blue","water_splash"]},
 };
 const MUSIC=/\b(?:sing|song|music|musical|instrument|compos|perform|dance|danc|tune|melod|chant|hymn|anthem|rhythm|verse|lyric)/i;

@@ -2,14 +2,21 @@ import {registeredMedia, mergeMedia, libraryItem, safeMediaFile} from './media-l
 import {installedSoundCatalog, SOUND_SOURCE} from './spell-sounds.mjs';
 // FilePicker remains the permission boundary. Scan only enabled sound modules,
 // skip code/non-media files, and report partial discovery instead of hiding it.
-export async function installedMediaLibrary({modules,database,browse,maxFolders=10_000}) {
+export async function installedMediaLibrary({modules,database,browse,maxFolders=10_000,onProgress}) {
   const entries=registeredMedia(database).map(entry=>({...entry,source:entry.source==='jb2a'
     ? modules?.get?.('jb2a_patreon')?.active?'JB2A Patreon':'JB2A Free'
     : SOUND_SOURCE.packs.find(p=>p.module===entry.source)?.title ?? modules?.get?.(entry.source)?.title ?? entry.source})), failures=[];
   const sounds=installedSoundCatalog(modules,database);
+  const inventory=new Map(mergeMedia(entries,sounds.entries??[]).map(item=>[item.id,item]));
+  let added=[],lastPublish=performance.now(),lastFolders=0;
+  const publish=()=>{
+    if(added.length)onProgress?.({entries:added,normalized:true});
+    added=[];lastPublish=performance.now();lastFolders=visited.size;
+  };
   const jobs=browse?SOUND_SOURCE.packs.filter(p=>modules?.get?.(p.module)?.active).map(p=>({path:`modules/${p.module}`,source:p.title})):[];
   const visited=new Set();
   const scheduled=new Set(jobs.map(job=>job.path));
+  onProgress?.({entries:[...inventory.values()],normalized:true});
   // Large installed packs routinely exceed 600 folders together. Retain a
   // safety budget without truncating ordinary libraries or counting duplicates.
   if(browse)while(jobs.length&&visited.size<maxFolders) {
@@ -19,7 +26,8 @@ export async function installedMediaLibrary({modules,database,browse,maxFolders=
       try {
         const result=await browse(job.path);
         for(const file of result.files??[])if(safeMediaFile(file,'audio')) {
-          const item=libraryItem({file,type:'audio',source:job.source});if(item)entries.push(item);
+          const item=libraryItem({file,type:'audio',source:job.source});
+          if(item&&!inventory.has(item.id)){inventory.set(item.id,item);added.push(item);}
         }
         for(const path of result.dirs??[]) {
           if(typeof path==='string'&&path.startsWith(`modules/${job.path.split('/')[1]}/`)&&!/(?:^|\/)(?:\.\.|\.git|node_modules)(?:\/|$)|[:<>"'\x00-\x1f]/.test(path)&&!scheduled.has(path)) {
@@ -28,12 +36,52 @@ export async function installedMediaLibrary({modules,database,browse,maxFolders=
         }
       } catch(error) {failures.push({path:job.path,error:String(error?.message??error)});}
     }));
+    if(added.length&&(added.length>=500||visited.size-lastFolders>=64||performance.now()-lastPublish>=150))publish();
   }
+  publish();
   const discovery={folders:visited.size,failures,limitReached:jobs.length>0,remaining:jobs.length};
   const warnings=[];
   if(failures.length)warnings.push(`Some sound folders could not be indexed. Browse files to add missing media. ${failures.slice(0,3).map(f=>`${f.path}: ${f.error}`).join(' · ')}${failures.length>3?` (+${failures.length-3})`:''}`);
   if(discovery.limitReached)warnings.push(`Sound indexing reached folder limit (${maxFolders}). Browse files to add missing media.`);
   // File identity merges registered and loose audio into one result. Preserve
   // audited duration/gain where a cue also belongs to the curated catalog.
-  return {entries:mergeMedia(entries,sounds.entries??[]),warning:warnings.join(' '),discovery};
+  return {entries:[...inventory.values()],normalized:true,warning:warnings.join(' '),discovery};
+}
+
+// One client/session cache across workspace instances. Namespace counts catch
+// late Sequencer registrations; module state/version changes invalidate it.
+export class MediaLibraryLoader {
+  constructor(sources){this.sources=sources;}
+  state() {
+    const options=this.sources(),{modules,database}=options;
+    const packs=modules?.entries?[...modules.entries()].filter(([,m])=>m.active).map(([id,m])=>[id,m.version??m.data?.version??'',m.title??'']).sort()
+      :SOUND_SOURCE.packs.map(p=>[p.module,modules?.get?.(p.module)?.active===true]);
+    let namespaces;
+    try{namespaces=database?.searchFor?.('');}catch{/* Not yet registered. */}
+    if(!Array.isArray(namespaces))namespaces=database?.entryExists?.('jb2a')?['jb2a']:[];
+    const paths=(Array.isArray(namespaces)?namespaces:[]).filter(n=>typeof n==='string').sort().map(n=>{
+      try{return [n,database.getPathsUnder(n,{fullyQualified:true})?.length??0];}catch{return [n,-1];}
+    });
+    return {options,database,key:JSON.stringify([packs,paths])};
+  }
+  matches(row,state){return row&&row.database===state.database&&row.key===state.key;}
+  peek(){const state=this.state();return this.matches(this.cached,state)?this.cached.result:null;}
+  load(refresh=false,onProgress) {
+    const state=this.state();
+    if(refresh)this.cached=null;
+    if(!refresh&&this.matches(this.cached,state))return Promise.resolve(this.cached.result);
+    if(this.matches(this.pending,state)) {
+      if(onProgress){this.pending.listeners.add(onProgress);if(this.pending.available.size)onProgress({entries:[...this.pending.available.values()],normalized:true});}
+      return this.pending.promise;
+    }
+    const row={...state,listeners:new Set(onProgress?[onProgress]:[]),available:new Map()};
+    this.pending=row;
+    // Defer one microtask so the pending row is installed before callbacks run.
+    row.promise=Promise.resolve().then(()=>installedMediaLibrary({...state.options,onProgress:part=>{
+      for(const item of part.entries)row.available.set(item.id,item);
+      for(const listener of row.listeners)listener(part);
+    }})).then(result=>{if(this.pending===row)this.cached={...state,result};return result;})
+      .finally(()=>{row.listeners.clear();if(this.pending===row)this.pending=null;});
+    return row.promise;
+  }
 }

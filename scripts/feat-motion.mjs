@@ -223,6 +223,48 @@ export const FEAT_MOTION_PROFILES = {
   },
 };
 
+// 2026-10-08 motion review: fiction-specific motion types replace generic
+// lunge/recoil/pulse. Cosmetic only; recipients are the enemies the PF2e
+// action affects (shoved, tripped, frightened), never helped allies.
+const SLAM_FEATS = new Set(["quaking-stomp", "impressive-landing", "world-breaking-footfall", "shifting-terrain", "rattle-the-earth"]);
+const SINK_FEATS = new Set(["mirror-refuge"]);
+const BRACE_FEATS = new Set(["aggressive-block", "drive-back", "knights-retaliation", "repulse-the-wicked", "armored-rebuff"]);
+export function reviewFeatMotion(feat, stages, motion) {
+  const text = feat.plainDescription ?? "";
+  const source = stages.filter(s => s.kind === "motion" && s.subject === "source");
+  const first = stages.find(s => ["impact", "aura", "cast"].includes(s.kind));
+  for (const s of stages.filter(s => s.kind === "motion")) {
+    // Shoved, tripped or heavily struck foes stagger rather than twitch back.
+    if (s.subject === "targets" && ((s.motion === "recoil" && ["shove", "trip", "tripStrike"].includes(feat.motif)) || (s.motion === "shake" && feat.motif === "heavyStrike")))
+      Object.assign(s, { motion: "stagger", intensity: .5, distance: s.motion === "shake" ? .1 : s.distance });
+    // Thrown bombs and weapons wind back and release instead of lunging.
+    if (s.subject === "source" && s.stageId?.endsWith("-physical-release") && s.motion === "lunge") s.motion = "throw";
+    // A source raising its own guard braces rather than pulsing.
+    if (s.subject === "source" && s.motion === "pulse" && s.label === "Brace" && ["shield", "guard", "waveGuard"].includes(feat.motif)) Object.assign(s, { motion: "brace", intensity: .4 });
+  }
+  // Reactions that push from behind a raised shield or after a foe's failed
+  // attack: brace first, the foe staggers away; no forward attack lunge.
+  if (BRACE_FEATS.has(feat.slug)) for (const s of source.filter(s => s.motion === "lunge")) Object.assign(s, { motion: "brace", label: "Brace and push back", intensity: .45 });
+  if (feat.slug === "boulder-roll") for (const s of source.filter(s => s.motion === "lunge"))
+    Object.assign(s, { motion: "rush", label: "Step into the foe's square", motionRange: "target", targetSelection: "first", distance: 2, perSquare: 220, duration: 1800, motionArrival: 45, motionHold: 25, stopGap: 0, intensity: .45 });
+  if (feat.slug === "roll-with-it-kingmaker") for (const s of source.filter(s => ["pulse", "brace"].includes(s.motion))) Object.assign(s, { motion: "dodge", label: "Dodge the giant's blow", duration: 1800, distance: .3, intensity: .35, motionRange: "distance" });
+  // Sneak up, not sprint: a slow low creep toward the distracted foe.
+  if (feat.slug === "underhanded-assault") for (const s of source.filter(s => s.motion === "rush")) Object.assign(s, { label: "Sneak up on the distracted foe", intensity: .12, duration: 3800 });
+  const add = (name, subject, label, extra = {}) => stages.push(motion(name, subject, label, first?.delay ?? 0, extra.duration ?? 1300, { ...extra }));
+  if (SLAM_FEATS.has(feat.slug)) for (const s of source.filter(s => s.motion === "pulse")) Object.assign(s, { motion: "slam", label: "Ground slam", intensity: .5, duration: Math.max(1300, s.duration ?? 0) });
+  if (!source.length && SLAM_FEATS.has(feat.slug)) add("slam", "source", "Ground slam", { intensity: .5 });
+  if (!source.length && SINK_FEATS.has(feat.slug)) add("sink", "source", "Meld into the surface", { duration: 1600, intensity: .5 });
+  // Teleport and sudden invisibility phase the body out and back.
+  if (!source.length && (feat.motif === "teleport" || feat.motif === "concealment" && /\byou (?:\w+ ){0,2}become (?:invisible|ethereal|incorporeal)\b|\bblink of an eye\b/i.test(text)))
+    add("flicker", "source", feat.motif === "teleport" ? "Phase out and back" : "Fade from sight", { duration: 1400, intensity: .5 });
+  // Demoralize-type fear: the frightened foes cower.
+  if (feat.motif === "dread" && (feat.traits?.includes("fear") || /\b(?:demoraliz|frightened)/i.test(text)) && !stages.some(s => s.kind === "motion" && s.subject === "targets")) {
+    const hit = stages.find(s => s.kind === "impact");
+    stages.push(motion("cower", "targets", "Frightened foes cower", 0, 1400, { intensity: .35, ...(hit ? { afterStage: hit.stageId, timingAnchor: "start", startOffset: 150 } : {}) }));
+  }
+  return stages;
+}
+
 export function directedFeatMotion(feat, { motion, copy, impact, cast, aura }) {
   const profile = FEAT_MOTION_PROFILES[feat.slug];
   if (!profile) return null;

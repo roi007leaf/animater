@@ -2,7 +2,7 @@ import { validateRecipe } from "./model.mjs";
 import {withCatalogFx} from './catalog-fx.mjs';
 import { SPELL_THEMES } from "./spell-choreography.mjs";
 import { applyFeatDirection, reviewedFeatActivation } from "./feat-direction.mjs";
-import { directedFeatMotion } from "./feat-motion.mjs";
+import { directedFeatMotion, reviewFeatMotion } from "./feat-motion.mjs";
 import { applyCatalogMotion, FEAT_ACTION_MOTION_REVIEWS, addPhysicalFeatGesture } from './catalog-motion.mjs';
 import { applyReviewedTraversal } from "./feat-traversal.mjs";
 import { timedStages } from "./composition.mjs";
@@ -404,6 +404,7 @@ export function featRecipe(feat, options = {}) {
     applyFeatDirection(stages,feat);
     stages = applyCatalogMotion(feat, stages, FEAT_ACTION_MOTION_REVIEWS[feat.slug]);
     stages = addPhysicalFeatGesture(feat, stages);
+    stages = reviewFeatMotion(feat, stages, motion);
   }
   if (options.motion === false) {
     const sample = timedStages({ stages });

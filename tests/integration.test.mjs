@@ -16,6 +16,8 @@ import { ABILITY_SOUND_PROFILES } from "../data/ability-sounds.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, useStateEntry, stateRecipe } from "../scripts/state-catalog.mjs";
 import {dndEntries,dndRecipe,useDndEntry} from '../scripts/dnd5e-catalog.mjs';
 import {sfEntries,sfRecipe,useSfEntry} from '../scripts/sf2e-catalog.mjs';
+import {Workspace} from '../scripts/workspace.mjs';
+import {previewFilters} from '../scripts/token-fx-preview.mjs';
 globalThis.requestAnimationFrame = (fn) =>
   setTimeout(() => fn(performance.now()), 5);
 globalThis.cancelAnimationFrame = clearTimeout;
@@ -233,6 +235,32 @@ async function boot(system, extraKeys = []) {
     app: () => renderedApp,
   };
 }
+
+test('workspace Token Magic preview uses loaded filters without importing loose vendor modules',async t=>{
+ const f=await boot('pf2e');
+ class Point {set(){}}
+ class Filter {
+  constructor(params){assert.equal(params.dummy,true);Object.assign(this,params);}
+  apply(){}
+  normalizeTMParams(){for(const spec of Object.values(this.animated)){assert.equal(typeof this.anime[spec.animType],'function');spec.active=true;}}
+ }
+ const native={togglePreset(){},getPresets:()=>[],filterTypes:{fire:Filter}};
+ t.mock.method(Workspace.prototype,'render',()=>{});
+ t.mock.method(Workspace.prototype,'syncPreviewTokens',()=>{});
+ const previous={TokenMagic:globalThis.TokenMagic,PIXI:globalThis.PIXI};
+ Object.assign(globalThis,{TokenMagic:native,PIXI:{Point,Matrix:class {}}});
+ t.after(()=>{for(const [key,value] of Object.entries(previous)){if(value===undefined)delete globalThis[key];else globalThis[key]=value;}});
+ game.modules.set('tokenmagic',{active:true,version:'0.8.4'});
+ const root={addEventListener(){},querySelector:()=>null,querySelectorAll:()=>[]};
+ f.api.open();f.app().element={querySelector:()=>root};await f.app()._onRender({},{});
+ const scene={dataset:{},querySelectorAll:()=>[]};
+ const preview=await f.app().workspace.host.createTokenFxPreview(scene,{stages:[]});
+ assert.equal(preview.tokenMagic,native);
+ const [filter]=previewFilters({params:[{filterType:'fire',time:0,animated:{time:{animType:'move',speed:.002}}}]},{},{...preview,sprite:{}});
+ filter.previewAnime.animate(500);assert.equal(filter.time,1);
+ assert.equal(Object.hasOwn(filter,'placeableId'),false);
+ preview.stop();await f.app().close();
+});
 
 test('native SF2e bootstrap routes native chat, area placement, isolated API and optional sounds',async()=>{
  const laser=sfEntries('weapon').find(e=>e.name==='Laser Pistol'),plasma=sfEntries('weapon').find(e=>e.name==='Plasma Cannon');

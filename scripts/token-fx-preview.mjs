@@ -1,14 +1,21 @@
 import {stageFrame} from './stage-options.mjs';
+import {TokenFxPreviewClock} from './token-fx-preview-clock.mjs';
+
+const imageFilters=new Set(['sprite','spriteMask','polymorph']);
+const videoPath=path=>/\.(?:webm|mp4|m4v|mov|ogv)(?:[?#]|$)/i.test(path);
 
 // Native Token Magic shaders, with local sprites and an isolated animation
 // clock. Dummy constructors bypass placeable lookup and global Anime registry.
-export function previewFilters(preset, stage, {PIXI, Anime, tokenMagic, sprite}) {
+export function previewFilters(preset, stage, {PIXI, Anime, tokenMagic, sprite, imageTextures=new Map()}) {
   const filters=[];
   try {
     for(const original of preset.params) {
       const params=structuredClone(original),Filter=tokenMagic.filterTypes?.[params.filterType];
       if(!Filter)throw Error(`Unsupported Token Magic filter: ${params.filterType}`);
-      if(params.imagePath||params.filterType==='distortion')throw Error(`Canvas-only Token Magic filter: ${params.filterType}`);
+      if(params.filterType==='distortion'||params.imagePath&&(!imageFilters.has(params.filterType)||videoPath(params.imagePath)))
+        throw Error(`Canvas-only Token Magic filter: ${params.filterType}`);
+      const texture=params.imagePath?imageTextures.get(params.imagePath):null;
+      if(params.imagePath&&!texture)throw Error(`Token Magic image unavailable: ${params.imagePath}`);
       Object.assign(params,{dummy:true,autoDisable:false,autoDestroy:false,enabled:params.enabled!==false});
       // No ownership or native-document IDs in the off-canvas animation player.
       delete params.filterOwner;delete params.placeableId;delete params.filterInternalId;
@@ -18,6 +25,18 @@ export function previewFilters(preset, stage, {PIXI, Anime, tokenMagic, sprite})
       const filter=new Filter(params);filters.push(filter);
       filter.targetPlaceable={worldTransform:new PIXI.Matrix(),x:0,y:0};
       filter.placeableImg=sprite;
+      if(texture) {
+        // Dummy constructors skip assignTexture: supply a private sampler
+        // sprite without Texture.from's global cache or game.video playback.
+        const target=new PIXI.Sprite(texture),base=sprite.texture?.baseTexture;
+        target.renderable=false;target.anchor.set(.5);
+        target.width=base?.realWidth??sprite.width;
+        target.height=params.filterType==='polymorph'
+          ?target.width*texture.baseTexture.realHeight/texture.baseTexture.realWidth
+          :base?.realHeight??sprite.height;
+        filter.targetSprite=target;filter.tex=texture;filter.uSamplerTarget=texture;
+        sprite.addChild(target);
+      }
       filter.boundsPadding??=new PIXI.Point(0,0);
       filter.boundsPadding.set?.(Math.max(0,Number(filter.padding)||0));
       // Restore native geometry-aware apply, which dummy construction replaces.
@@ -34,18 +53,19 @@ export function previewFilters(preset, stage, {PIXI, Anime, tokenMagic, sprite})
       filters.at(-1).previewAnime=anime;
     }
     return filters.sort((a,b)=>(a.zOrder??0)-(b.zOrder??0));
-  } catch(error) {filters.forEach(f=>f.destroy?.());throw error;}
+  } catch(error) {filters.forEach(f=>{try{f.destroy?.();}catch{/* Preserve the original constructor/binding error. */}});throw error;}
 }
 
 export class TokenFxPreview {
-  constructor({scene,recipe,PIXI,Anime,tokenMagic}) {
+  constructor({scene,recipe,PIXI,Anime=TokenFxPreviewClock,tokenMagic}) {
     Object.assign(this,{scene,recipe,PIXI,Anime,tokenMagic});
-    this.abort=new AbortController();this.records=[];this.stopped=false;
+    this.abort=new AbortController();this.records=[];this.imageTextures=new Map();this.stopped=false;
     this.info=JSON.parse(scene.dataset.previewTokens??'{}');
     this.entries=(recipe.playbackPlan??recipe.stages).flatMap((stage,index)=>stage.kind==='tokenfx'?[{stage,index}]:[]);
   }
   async ready() {
     const {PIXI,scene}=this;
+    try {await this.prepareImages();}catch(error){this.stop();throw error;}
     for(const token of scene.querySelectorAll('[data-preview-token]')) {
       if(this.stopped)return;
       const image=token.querySelector('img');
@@ -82,6 +102,34 @@ export class TokenFxPreview {
     }
     if(!this.stopped&&this.records.length)this.renderer=new PIXI.Renderer({width:256,height:256,resolution:1,backgroundAlpha:0,antialias:true,preserveDrawingBuffer:true});
   }
+  async prepareImages() {
+    const paths=new Set();
+    for(const entry of this.entries) {
+      entry.preset=this.tokenMagic.getPresets(entry.stage.fxLibrary??'tmfx-main').find(p=>p.name===entry.stage.fxPreset);
+      for(const params of entry.preset?.params??[]) {
+        if(params.imagePath&&imageFilters.has(params.filterType)&&!videoPath(params.imagePath))paths.add(params.imagePath);
+      }
+    }
+    for(const path of paths) {
+      if(this.stopped)return;
+      const image=this.scene.ownerDocument.createElement('img');
+      image.crossOrigin='anonymous';
+      const loaded=await new Promise((resolve,reject)=>{
+        const finish=()=>{
+          clearTimeout(timer);image.removeEventListener('load',finish);image.removeEventListener('error',finish);this.abort.signal.removeEventListener('abort',finish);
+          if(this.stopped){image.src='';resolve(false);}
+          else if(image.naturalWidth>0)resolve(true);
+          else reject(Error(`Token Magic image unavailable: ${path}`));
+        };
+        const timer=setTimeout(finish,5000);
+        image.addEventListener('load',finish,{once:true});image.addEventListener('error',finish,{once:true});this.abort.signal.addEventListener('abort',finish,{once:true});
+        // Resolve relative data paths beneath Foundry's configured route prefix.
+        image.src=new URL(path,new URL('../../../',import.meta.url)).href;
+      });
+      if(!loaded||this.stopped)return;
+      this.imageTextures.set(path,new this.PIXI.Texture(new this.PIXI.BaseTexture(image)));
+    }
+  }
   state(entry,frame) {
     return this.recipe.playbackPlan?{...stageFrame({...entry.stage,repeats:1,targetStagger:0},frame.time),stage:entry.stage}:frame.stages[entry.index];
   }
@@ -103,7 +151,7 @@ export class TokenFxPreview {
           const state=this.state(entry,frame),key=`${entry.index}:${state.iteration??0}`;
           let group=record.groups.get(key);
           if(!group) {
-            const preset=this.tokenMagic.getPresets(entry.stage.fxLibrary??'tmfx-main').find(p=>p.name===entry.stage.fxPreset);
+            const preset=entry.preset;
             if(!preset?.params?.length)throw Error('Token Magic preset unavailable');
             group={filters:previewFilters(preset,entry.stage,{...this,sprite:record.art}),time:0};record.groups.set(key,group);
           }
@@ -138,5 +186,6 @@ export class TokenFxPreview {
       record.texture?.destroy(true);
     }
     this.renderer?.destroy(true);this.records=[];
+    this.imageTextures.forEach(texture=>texture.destroy(true));this.imageTextures.clear();
   }
 }

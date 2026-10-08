@@ -430,6 +430,11 @@ export function resolveSpellMedia(
           if (slot === "aura" && /\.loop\b|loop_/.test(key)) score += 12;
           if (slot === "hit" && /\.caster\.|\.source\./.test(key)) score -= 40;
           if (slot === "cast" && /\.target\./.test(key)) score -= 20;
+          // The sound-wave cast film is a sonic/musical cast; Free has neutral
+          // cast films (yellow/blue) that must win for every other spell.
+          if (slot === "cast" && /cast_generic\.sound\./.test(key) && theme !== "sonic" &&
+            ![...nameWords, ...clueWords].some((w) => /^(sound|sonic|song|music|musical|thunder|voice|shout|scream)$/.test(w)))
+            score -= 15;
           if (/reversed/.test(key)) score -= 10;
           if (slot === "bolt" && /\.return\b/.test(key)) score -= 180;
           if (geometry === "projectile" && shape === "beam") score -= 12;

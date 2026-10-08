@@ -62,6 +62,14 @@ const profiles={
  thrownSpear:[cue('Spear release','release','^ggg-sfx\\.ranged\\.thrown\\.spear\\.strike'),cue('Spear contact','impact','^ggg-sfx\\.ranged\\.thrown\\.spear\\.impact')],
  thrownDagger:[cue('Dagger release','release','^ggg-sfx\\.ranged\\.thrown\\.knife\\.strike'),cue('Dagger contact','impact','^ggg-sfx\\.ranged\\.thrown\\.knife\\.impact')],
  thrownAxe:[cue('Axe release','release','^ggg-sfx\\.melee\\.axe\\.throw\\.01\\.throw'),cue('Axe contact','impact','', '', 'Combat/Single/Throw Hit')],
+ // Source vocal and source-only cues anchor on the cast phase, so activities
+ // without a projectile or contact still voice the roar, song or discharge.
+ battleCry:[cue('Battle cry','cast','','','Combat/Single/Battle Cry/')],
+ howl:[cue('Howl','cast','','','Creatures/Animals/Wolf Howl/')],
+ growl:[cue('Growl','cast','','','Creatures/Monsters/Growl/')],
+ wail:[cue('Eerie wail','cast','^ggg-sfx\\.creatures\\.shriek\\.void')],
+ spirit:[cue('Spirit energy','effect','^ggg-sfx\\.magic\\.occult\\.cast\\.ghostly\\.02')],
+ gunshotAir:[cue('Shot fired into the air','cast','^ggg-sfx\\.ranged\\.firearm\\.old_timey\\.strike')],
 };
 const missing=[],selected=new Map();
 for(const [profile,cues]of Object.entries(profiles))for(const c of cues){
@@ -91,17 +99,27 @@ for(const w of PF2E_WEAPONS)for(const m of w.modes)if(m.group==='bomb'&&SOUND_PR
  const decision=weapons[`${w.id}:${m.mode}`];decision.profile=key;decision.reason=`Native ${m.element} bomb contents have their own landing cue, rather than a generic pot break or restoration tone. ${m.rationale}`;
 }
 for(const w of PF2E_WEAPONS)for(const m of w.modes){
- const decision=weapons[`${w.id}:${m.mode}`],element=elements[m.element];
+ // Brilliant runes are radiant light; their native fire damage is not a flame burst.
+ const radiant=m.element==='fire'&&/\bbrilliant\b/i.test(w.plainDescription??'');
+ const decision=weapons[`${w.id}:${m.mode}`],element=radiant?'holy':elements[m.element];
  // Native enchanted contact has one physical attack plus one material finish.
  // Keep additional rune layers quiet to avoid piling several cues on one hit.
  if(m.group==='bomb'||!element||!profiles[decision.profile]||!SOUND_PROFILES[element])continue;
- const key=`enchanted-${decision.profile}-${m.element}`;
+ const key=`enchanted-${decision.profile}-${radiant?'brilliant':m.element}`;
  profiles[key]??=[...profiles[decision.profile],...SOUND_PROFILES[element].slice(0,1).map(c=>({...c,role:'impact',anchorSlot:'accent'}))];
  decision.profile=key;
 }
 // Restoration is a source spell followed by one physical blow. Use both phases
 // without making the optional ally restoration sound like another weapon hit.
 profiles.restorativeStrike=[...SOUND_PROFILES.healing.map(c=>({...c,role:'cast'})),...profiles.sword];
+// Elemental Strike feats: physical contact cues plus one elemental finish that
+// anchors on the first contact (feat stages carry no weapon accent slot).
+for(const d of Object.values(feats)){
+ if(!d.element||!profiles[d.profile]||!SOUND_PROFILES[d.element]){delete d.element;continue;}
+ const key=`feat-${d.profile}-${d.element}`;
+ profiles[key]??=[...profiles[d.profile],...SOUND_PROFILES[d.element].slice(0,1).map(c=>({...c,role:'effect'}))];
+ d.profile=key;delete d.element;
+}
 for(const [id,d]of Object.entries(feats))if(d.profile&&!profiles[d.profile]&&!SOUND_PROFILES[d.profile]){d.reason+=' No matching profile available.';d.profile='';}
 const usedFiles=new Set(Object.values(profiles).flatMap(cues=>cues.flatMap(c=>c.candidates.map(e=>e.file))));
 const coverage={feats:PF2E_FEATS.length,featSounds:Object.values(feats).filter(d=>d.profile).length,quietFeats:Object.values(feats).filter(d=>!d.profile).length,weapons:PF2E_WEAPONS.length,weaponModes:Object.keys(weapons).length,weaponSounds:Object.values(weapons).filter(d=>(profiles[d.profile]??SOUND_PROFILES[d.profile])?.some(c=>c.candidates.length)).length,selectedAudioFiles:usedFiles.size,packs,missing};

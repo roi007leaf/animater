@@ -90,6 +90,63 @@ export function motionPose(
     case "pulse":
       pose.scale = 1 + 0.18 * amount * envelope;
       break;
+    // Squash/stretch and opacity channels (scaleX/scaleY/alpha) are only set
+    // by these gestures, so older poses keep their original shape.
+    case "press":
+      pose.y = distance * 0.25 * envelope;
+      pose.scaleX = 1 + 0.12 * amount * envelope;
+      pose.scaleY = 1 - 0.2 * amount * envelope;
+      break;
+    case "sink":
+      pose.y = distance * envelope;
+      pose.scaleY = 1 - 0.15 * amount * envelope;
+      pose.alpha = 1 - 0.65 * envelope;
+      break;
+    case "flicker": {
+      const cycles = Math.max(2, Math.round(3 * amount));
+      pose.alpha = 1 - 0.75 * envelope * (0.5 - 0.5 * Math.cos(p * Math.PI * 2 * cycles));
+      break;
+    }
+    case "throw": {
+      // Draw back for the first third, then snap forward past the start.
+      const reach = p < 0.35 ? -0.45 * Math.sin((Math.PI * p) / 0.35) : Math.sin((Math.PI * (p - 0.35)) / 0.65);
+      pose.x = direction.x * distance * reach;
+      pose.y = direction.y * distance * reach;
+      pose.rotation = 0.12 * amount * reach * Math.sign(direction.x || 1);
+      break;
+    }
+    case "brace":
+      pose.x = -direction.x * distance * 0.4 * envelope;
+      pose.y = -direction.y * distance * 0.4 * envelope;
+      pose.scaleX = 1 + 0.05 * amount * envelope;
+      pose.scaleY = 1 - 0.08 * amount * envelope;
+      break;
+    case "stagger": {
+      const side = stage.motionSide ?? 1;
+      pose.x = -direction.x * distance * 0.6 * envelope;
+      pose.y = -direction.y * distance * 0.6 * envelope + distance * 0.15 * envelope;
+      pose.rotation = side * 0.28 * amount * Math.sin(Math.PI * p) * (1 - p);
+      break;
+    }
+    case "cower":
+      pose.scale = 1 - 0.12 * amount * envelope;
+      pose.x = Math.sin(p * Math.PI * 2 * 6) * distance * 0.08 * envelope;
+      pose.y = distance * 0.1 * envelope;
+      break;
+    case "slam": {
+      // Rise for 60%, then a fast fall and a brief squash on landing.
+      const rise = p < 0.6 ? Math.sin((Math.PI / 2) * (p / 0.6)) : Math.max(0, 1 - (p - 0.6) / 0.12);
+      pose.y = -distance * 1.2 * rise;
+      const impact = p >= 0.72 ? Math.sin((Math.PI * (p - 0.72)) / 0.28) : 0;
+      pose.scaleX = 1 + 0.12 * amount * impact;
+      pose.scaleY = 1 - 0.15 * amount * impact;
+      break;
+    }
+    case "drift":
+      pose.y = distance * 0.35 * envelope;
+      pose.x = Math.sin(p * Math.PI * 3) * distance * 0.25 * envelope;
+      pose.rotation = Math.sin(p * Math.PI * 3) * 0.08 * amount * envelope;
+      break;
   }
   return pose;
 }
@@ -131,13 +188,20 @@ export function motionDirection(token, source, target, motion, grid = 100) {
 // Independently authored gestures can overlap: a wind-up may continue while a
 // lunge starts. Compose their local deltas against one unanimated baseline.
 export function combineMotionPoses(poses) {
-  return poses.reduce((pose, next) => ({
+  const combined = poses.reduce((pose, next) => ({
     x: pose.x + next.x,
     y: pose.y + next.y,
     rotation: pose.rotation + next.rotation,
     scale: pose.scale * next.scale,
   }), { x: 0, y: 0, rotation: 0, scale: 1 });
+  // Optional channels appear only when a gesture uses them.
+  for (const key of ["scaleX", "scaleY", "alpha"])
+    if (poses.some(p => p[key] !== undefined)) combined[key] = poses.reduce((v, p) => v * (p[key] ?? 1), 1);
+  return combined;
 }
+// CSS transform for editor/preview tokens, including squash and stretch.
+export const poseTransform = pose =>
+  `translate(${pose.x}px,${pose.y}px) rotate(${pose.rotation}rad) scale(${pose.scaleX === undefined && pose.scaleY === undefined ? pose.scale : `${pose.scale * (pose.scaleX ?? 1)},${pose.scale * (pose.scaleY ?? 1)}`})`;
 
 const tokenGeometry = token => ({
   width: token.document?.width,
@@ -181,6 +245,7 @@ export class TokenMotionPlayer {
       rotation: mesh.rotation,
       sx: mesh.scale.x,
       sy: mesh.scale.y,
+      alpha: mesh.alpha ?? 1,
     };
     const location = existing?.location ?? {
       x: token.document?.x,
@@ -235,7 +300,9 @@ export class TokenMotionPlayer {
         const pose = combineMotionPoses(poses);
         mesh.position.set(original.x + pose.x, original.y + pose.y);
         mesh.rotation = original.rotation + pose.rotation;
-        mesh.scale.set(original.sx * pose.scale, original.sy * pose.scale);
+        mesh.scale.set(original.sx * pose.scale * (pose.scaleX ?? 1), original.sy * pose.scale * (pose.scaleY ?? 1));
+        if (pose.alpha !== undefined) { mesh.alpha = original.alpha * pose.alpha; run.alphaTouched = true; }
+        else if (run.alphaTouched) mesh.alpha = original.alpha;
         if (!run.tracks.length) this.end(token);
         else run.frame = this.frame(tick);
       };
@@ -252,6 +319,7 @@ export class TokenMotionPlayer {
         run.mesh.position.set(run.original.x, run.original.y);
       if (restoreRotation) run.mesh.rotation = run.original.rotation;
       if (restoreScale) run.mesh.scale.set(run.original.sx, run.original.sy);
+      if (run.alphaTouched) run.mesh.alpha = run.original.alpha;
     }
     for (const track of run.tracks) track.resolve(true);
   }

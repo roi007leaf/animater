@@ -12,7 +12,7 @@
     "missingDescriptions": [
       "IF6qUrR3i030v0dH"
     ],
-    "probedKeys": 137,
+    "probedKeys": 139,
     "missingTiming": [],
     "modes": {
       "melee": 695,
@@ -249,7 +249,7 @@
       "thorns": 4,
       "void": 12
     },
-    "elementalUses": 259,
+    "elementalUses": 257,
     "residueUses": 118
   },
   "issues": [],
@@ -3142,12 +3142,10 @@
       "descriptionChars": 1996,
       "mode": "melee",
       "family": "hammer",
-      "elements": [
-        "electricity"
-      ],
+      "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "One-handed bludgeoning contact. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": []
     },
     {
@@ -3157,12 +3155,10 @@
       "descriptionChars": 1996,
       "mode": "thrown",
       "family": "hammer",
-      "elements": [
-        "electricity"
-      ],
+      "elements": [],
       "persistent": "",
       "payload": null,
-      "rationale": "hammer throw across 20 ft increments. electricity native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+      "rationale": "hammer throw across 20 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
       "approximations": [
         "free flight: jb2a.dagger.throw.01.white",
         "free return: jb2a.dagger.return.01.white"

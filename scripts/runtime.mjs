@@ -1,4 +1,5 @@
 import { ID, matchRecipe, planRecipe, validateRecipe } from "./model.mjs";
+import { applyEventElement } from "./element-choice.mjs";
 import { OPTIONAL_FX_KINDS } from './optional-fx.mjs';
 import { applyEffectOptions, applyMediaOptions } from "./stage-options.mjs";
 import { tokenFootprint, effectFootprint, artworkSize, offsetInGridSquares, beamGeometry } from "./media-preview.mjs";
@@ -42,9 +43,10 @@ export class AnimaterRuntime {
         this.seen.delete(this.seen.values().next().value);
     }
     const saved = this.host.recipes();
-    const recipe = this.host.resolveRecipe
+    const resolved = this.host.resolveRecipe
       ? this.host.resolveRecipe(event, saved)
       : (matchRecipe(saved, event) ?? this.host.catalogRecipe?.(event, saved));
+    const recipe = applyEventElement(resolved, event.element);
     if (!recipe)
       return this.trace(
         "Skipped",
