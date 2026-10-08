@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Studio buttons line up.** In a narrower window, "Save recipe" no longer wraps onto two lines and grows taller than Revert. The bar buttons share one height, and the recipe name shrinks instead.
 - **New recipe asks what kind of animation you want.**
   - **Action animation:** plays once when something happens: a spell, an attack, damage, or an area.
   - **Lasting animation:** stays on a token while a condition or effect is on it, and stops when it is removed.

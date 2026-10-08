@@ -1936,8 +1936,9 @@
 .animater .an-st-name:focus { border-color: var(--an-line); background: var(--an-bg); }
 .animater .an-st-state { font-size: 12px; color: var(--an-green); white-space: nowrap; }
 .animater .an-st-state.is-missing { color: #ffb86b; }
-.animater .an-st-bar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-.animater .an-st-bar-actions button { width: auto; }
+.animater .an-st-bar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; flex: none; }
+/* Bar buttons share one height and never wrap ("Save recipe" stays on one line). */
+.animater .an-st-bar-actions button { width: auto; height: 34px; white-space: nowrap; flex: none; }
 .animater .an-st-monitor {
   grid-area: monitor;
   display: flex;
