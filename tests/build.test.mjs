@@ -11,7 +11,7 @@ test("build inputs follow the static graph but exclude the step's own outputs", 
   assert.ok(spells.some(p => p.startsWith("scripts/bespoke/")), "bespoke registry is part of the spell graph");
   assert.ok(!spells.includes("data/pf2e-spells.mjs") && !spells.includes("data/spell-assets.mjs"));
   assert.ok(!spells.some(p => p.startsWith(".cache/")));
-  for (const name of ["feats", "actions", "classfeatures"]) assert.ok(stepInputs(step(name)).includes("data/feat-support-review.mjs"));
+  for (const name of ["feats", "actions", "classfeatures"]) assert.ok(stepInputs(step(name)).includes("tools/feat-support-review.mjs"));
 });
 
 test("dependencies come from the import graph and cycles are cut by declaration order", () => {

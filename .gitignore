@@ -23,3 +23,9 @@ tools/inspect-spell-designs.mjs
 tools/print-feat-descriptions.mjs
 tools/qa-sound-discovery.mjs
 tools/read-eskie-reference.mjs
+
+# Generated development review maps; recreated before catalog builds/audits.
+data/feat-description-review.mjs
+data/feat-early-review.mjs
+data/feat-late-review.mjs
+data/feat-support-review.mjs

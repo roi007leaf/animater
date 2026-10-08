@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { PF2E_FEATS } from '../scripts/feat-catalog.mjs';
+import { PF2E_FEATS } from '../data/pf2e-feats.mjs';
 
 const frozenSources = {
   "bond-conservation": [

@@ -4,7 +4,10 @@ const motifs = new Set("strike unarmed heavyStrike doubleStrike charge ranged fi
 let preservedIds;
 try { preservedIds=Object.keys((await import('../data/feat-description-review.mjs')).FEAT_DESCRIPTION_REVIEWS); }
 catch(error) { if(error.code!=='ERR_MODULE_NOT_FOUND')throw error; }
-export const MARTIAL_REVIEW_FEATS = preservedIds ? preservedIds.map(id=>PF2E_FEATS.find(feat=>feat.id===id)) : PF2E_FEATS.filter(feat=>motifs.has(feat.motif));
+// Generated catalogs preserve the original review inventory and order even
+// after reviewed directions change motifs. Rebuild without the local review map.
+const catalogReviewed = PF2E_FEATS.filter(feat=>feat.review?.scope==='martial-and-maneuver').sort((a,b)=>a.review.index-b.review.index);
+export const MARTIAL_REVIEW_FEATS = preservedIds ? preservedIds.map(id=>PF2E_FEATS.find(feat=>feat.id===id)) : catalogReviewed.length ? catalogReviewed : PF2E_FEATS.filter(feat=>motifs.has(feat.motif));
 if(MARTIAL_REVIEW_FEATS.some(feat=>!feat))throw Error('Reviewed feat ID missing from pinned source catalog.');
 
 /** Descriptors concern visible storytelling only. Contact count is visual, never MAP, damage dice, or actions spent. */
@@ -632,6 +635,8 @@ export function readableFeatDescription(description) {
 const normalizeName = name => name.toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9]+/g,' ').split(' ').filter(word=>word&&!['the','of','and','our','to','as','against'].includes(word)).join(' ');
 const normalizedManual = new Map(Object.entries(manual).map(([name,descriptor])=>[normalizeName(name),{name,descriptor}]));
 const reviewedInitialIds = MARTIAL_REVIEW_FEATS.map(feat=>feat.id);
+// Preserve these original review themes independently of later catalog fixes.
+const reviewedThemes = {'Double Shot':'arcane', 'Paired Shots':'arcane', 'Twin Shot Knockdown':'arcane', 'Everstand Strike':'ward'};
 const commonConstraints = [
   'Cosmetic choreography only: never changes token position, HP, conditions, dice, actions, or item state.',
   'Contact timing depicts the declared activity; hit, miss, critical effects, saves, and optional branches remain player or GM decisions.',
@@ -698,7 +703,7 @@ export function describeMartialFeat(feat,index) {
   if (['Drifter\'s Juke','Infiltration Assassination','Rebounding Assault','Stab and Blast','Throw and Catch','Triggerbrand Blitz','Triggerbrand Salvo','Two-Weapon Fusillade'].includes(feat.name))descriptor.motif='mixedStrike';
   if(feat.name==='Restorative Strike')descriptor.motif='restorativeStrike';
   if (typeof descriptor.design.contacts.count==='number'&&descriptor.design.contacts.count>2&&!['ranged','firearm','charge','groundCreation','whirlwindStrike','lineCue','mixedStrike'].includes(descriptor.motif))descriptor.motif='multiStrike';
-  return {name:feat.name,...descriptor,theme:descriptor.theme??feat.theme,
+  return {name:feat.name,...descriptor,theme:descriptor.theme??reviewedThemes[feat.name]??feat.theme,
     evidence,evidenceFormat:'full text with native references expanded and HTML markup removed',
     rationale:`${feat.name}: ${descriptor.design.approach.replaceAll('-',' ')}; ${descriptor.design.contacts.count===0?'no Strike now':descriptor.design.contacts.count==='targets'?'one contact per selected target':`${descriptor.design.contacts.count} visible contact${descriptor.design.contacts.count===1?'':'s'} (${descriptor.design.contacts.distribution})`}; ${descriptor.design.weapon}; ${descriptor.design.shape.replaceAll('-',' ')}${descriptor.design.finish.length?`; ${descriptor.design.finish.join(', ')}`:''}.`,
     authored:Boolean(authored),

@@ -15,8 +15,9 @@ import { join, relative, resolve, sep } from "node:path";
 import { pathToFileURL } from "node:url";
 import { ROOT, closure, fileHash, forgetHashes, digest, saveGraphCache, moduleInfo } from "./build-graph.mjs";
 import { SOUND_PACKS, audioFile } from "./sound-databases.mjs";
+import { ensureFeatReviews, FEAT_REVIEW_GENERATORS } from "./ensure-feat-reviews.mjs";
 
-const FEAT_REVIEWS = ["early", "description", "support", "late"].map(n => `data/feat-${n}-review.mjs`);
+const FEAT_REVIEWS = FEAT_REVIEW_GENERATORS.flatMap(({script, output}) => [script, output]);
 const featOutputs = (data, audit) => [data, `${audit}.json`, `${audit}.csv`];
 // Declaration order is the tie-break inside dependency cycles (and matches the
 // historical hand-run order: catalogs, then sounds, then audits).
@@ -43,7 +44,7 @@ const ignoredInput = path => path.startsWith(".cache/");
 // ---------------------------------------------------------------- inputs ----
 export function stepInputs(step) {
   const own = new Set(step.outputs);
-  return closure([step.script, ...(step.extraInputs ?? [])], { exclude: own }).filter(p => !own.has(p) && !ignoredInput(p));
+  return closure([step.script, ...(step.extraInputs ?? []).filter(p => existsSync(join(ROOT, p)))], { exclude: own }).filter(p => !own.has(p) && !ignoredInput(p));
 }
 
 function listFiles(dir, filter = () => true) {
@@ -370,6 +371,7 @@ export async function main(argv = process.argv.slice(2)) {
   const unknown = only?.filter(n => !STEPS.some(s => s.name === n)) ?? [];
   if (unknown.length) { console.error(`Unknown step(s): ${unknown.join(", ")}. Steps: ${STEPS.map(s => s.name).join(", ")}`); return 2; }
   const steps = only ? STEPS.filter(s => only.includes(s.name)) : STEPS;
+  if (steps.some(s => s.extraInputs === FEAT_REVIEWS)) ensureFeatReviews();
   const jobs = Math.max(1, Number(option("jobs") ?? 3));
   const force = flag("force");
   const graph = dependencyGraph(steps);

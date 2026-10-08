@@ -1,8 +1,10 @@
 import { existsSync } from "node:fs";
 import { FEAT_MOTIFS } from "../scripts/feat-choreography.mjs";
 import { reviewedFeatActivation } from "../scripts/feat-direction.mjs";
+import { ensureFeatReviews } from "./ensure-feat-reviews.mjs";
 
 export async function loadFeatReviews() {
+  ensureFeatReviews();
   const reviews={};
   for(const file of ["feat-early-review","feat-description-review","feat-support-review","feat-late-review"]){
     const url=new URL(`../data/${file}.mjs`,import.meta.url);
