@@ -82,7 +82,7 @@ export function studioHTML(w, r) {
       <button class="an-primary" data-action="preview" data-tooltip="${canvasUnavailable ? "Canvas playback requires Foundry" : "Play privately on your canvas with the selected tokens"}" ${w.busy || canvasUnavailable || unconfigured ? "disabled" : ""}>▷ Local preview</button><button data-action="play" data-tooltip="${canvasUnavailable ? "Canvas playback requires Foundry" : motionBlocked ? "Foundry has not registered the token-motion channel" : "Broadcast this recipe to the table"}" ${w.busy || canvasUnavailable || motionBlocked || unconfigured || linked ? "disabled" : ""}>Play at table</button>
     </div>${motionBlocked ? w.motionSyncNoticeHTML() : ""}`;
   const monitor = `<section class="an-st-monitor" aria-label="Preview">${w.monitorHTML(r)}${transport}
-      ${linked ? `<div class="an-catalog-use-status is-using"><b>Plays while the condition or effect is on the token</b><small>Starts when it is added to a token, follows that token, and stops when it is removed. Your saved version plays instead of the catalog one.</small></div>` : ""}</section>`;
+      ${linked ? `<div class="an-catalog-use-status is-using"><b>${esc(w.lastingLabel?.(r) || "Condition / effect")} animation · plays while it is on the token</b><small>Starts when it is added to a token, follows that token, and stops when it is removed. Your saved version plays instead of the catalog one.</small></div>` : ""}</section>`;
   const tracks = studio.tracks.map((t) => {
     const canAdd = !w.busy && r.stages.length < MAX_STAGES && (!linked || LINKED_TRACKS.has(t.id));
     return `<div class="an-st-track${silenced(w).has(t.id) ? " is-muted" : ""}" data-st-track="${t.id}"><div class="an-st-head"><span class="an-st-head-icon">${t.icon}</span><b>${esc(t.name)}</b><button class="an-st-ms${w.studioMuted?.has(t.id) ? " is-on" : ""}" data-action="studio-mute" data-st-track="${t.id}" aria-pressed="${!!w.studioMuted?.has(t.id)}" data-tooltip="Mute: hide this track in the monitor">M</button><button class="an-st-ms is-solo${w.studioSolo?.has(t.id) ? " is-on" : ""}" data-action="studio-solo" data-st-track="${t.id}" aria-pressed="${!!w.studioSolo?.has(t.id)}" data-tooltip="Solo: show only soloed tracks in the monitor">S</button><button class="an-st-add" data-action="studio-add" data-st-track="${t.id}" data-tooltip="Add a ${esc(KINDS[t.kind])} stage at the playhead" aria-label="Add ${esc(t.name)} stage at playhead" ${canAdd ? "" : "disabled"}>+</button></div><div class="an-st-lanes">${t.lanes.map((lane) => `<div class="an-tl-lane"><div class="an-tl-track">${lane.map((row) => w.timelineBarHTML(r, row, index, studio.total)).join("")}</div></div>`).join("")}</div></div>`;
@@ -102,7 +102,8 @@ export function studioHTML(w, r) {
 function triggerChipHTML(w, r) {
   const bound = r.itemUuid ? w.host.itemSummary?.(r.itemUuid)?.name : "";
   const what = bound || r.match?.split(",")[0]?.trim() || "";
-  const when = r.enabled === false ? "Disabled" : EVENTS[r.trigger] ?? r.trigger;
+  const lasting = w.lastingLabel?.(r);
+  const when = r.enabled === false ? "Disabled" : lasting ? `${lasting} · while on token` : EVENTS[r.trigger] ?? r.trigger;
   return `<button class="an-st-trigger${r.enabled === false ? " is-off" : ""}${w.studioSettings ? " is-open" : ""}" data-action="studio-settings" aria-expanded="${!!w.studioSettings}" data-tooltip="Recipe settings: trigger, item binding, description, category">⚙ <span>${esc(when)}</span>${what ? `<small>${esc(what)}</small>` : ""}</button>`;
 }
 

@@ -1085,7 +1085,7 @@ export class Workspace {
             (
               r,
             ) => `<button data-action="select" data-id="${esc(r.id)}" class="an-card ${r.id === this.selected ? "is-selected" : ""}" style="--effect:${esc(r.color)}" aria-pressed="${r.id === this.selected}">
-        <div class="an-art"><div class="an-orbit"></div><span>${icons[r.category] ?? "◎"}</span><small>${esc(r.category)}</small></div><div class="an-card-body"><h2>${esc(r.name)}${this.dirty.has(r.id) ? " <sup>•</sup>" : ""}</h2><p>${esc(r.description)}</p><div class="an-card-meta"><span>${r.stages.length} stage${r.stages.length === 1 ? "" : "s"}</span><span>${r.enabled ? esc(EVENTS[r.trigger]) : "Disabled"}</span></div><div class="an-readiness ${this.status(r) !== "Ready to play" ? "is-missing" : ""}"><span>●</span> ${this.status(r)}</div>${this.approvalBadgeHTML(r)}</div></button>`,
+        <div class="an-art"><div class="an-orbit"></div><span>${icons[r.category] ?? "◎"}</span><small>${esc(r.category)}</small></div><div class="an-card-body"><h2>${esc(r.name)}${this.dirty.has(r.id) ? " <sup>•</sup>" : ""}</h2><p>${esc(r.description)}</p><div class="an-card-meta"><span>${r.stages.length} stage${r.stages.length === 1 ? "" : "s"}</span><span>${r.enabled ? esc(EVENTS[r.trigger]) : "Disabled"}</span></div>${this.lastingLabel(r) ? `<div class="an-lasting-badge" data-tooltip="Plays for as long as the ${esc(this.lastingLabel(r).toLowerCase())} is on a token">◷ ${esc(this.lastingLabel(r))} · stays while on token</div>` : ""}<div class="an-readiness ${this.status(r) !== "Ready to play" ? "is-missing" : ""}"><span>●</span> ${this.status(r)}</div>${this.approvalBadgeHTML(r)}</div></button>`,
           )
           .join("") ||
         `<div class="an-empty">No recipes found.<small>Try another search or create your own.</small></div>`
@@ -1093,6 +1093,12 @@ export class Workspace {
       ${this.playerReviewHTML()}
       <div class="an-tip"><span>✧</span><div><b>A little choreography goes a long way.</b><p>Start with a caster cue. Add travel. Finish with impact.</p></div></div></section>
       </div>`;
+  }
+  // Condition and effect recipes last while their condition is on a token; they are named as such everywhere.
+  lastingLabel(r) {
+    if (r?.lifecycle !== "document") return "";
+    const kind = catalogStateEntry(r.stateEntry)?.kind;
+    return kind === "condition" ? "Condition" : kind === "effect" ? "Effect" : "Condition / effect";
   }
   // Player recipes show where they stand with the GM.
   approvalBadgeHTML(r) {
