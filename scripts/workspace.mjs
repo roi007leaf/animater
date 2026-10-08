@@ -1743,8 +1743,16 @@ export class Workspace {
     const b = e.target.closest("[data-action]");
     if (!b || b.disabled) return;
     e.preventDefault();
-    const action = b.dataset.action;
+    let action = b.dataset.action;
     if (this.busy && action !== "stop") return;
+    // A recipe card's right-click menu acts on that recipe as if it were open.
+    if (action.startsWith("recipe-menu-")) {
+      this.root.querySelector(".an-st-menu")?.remove();
+      if (this.selected !== b.dataset.id) { this.stageIndex = 0; this.studioTime = 0; }
+      this.selected = b.dataset.id;
+      if (action === "recipe-menu-open") { this.studio = true; this.render(); return; }
+      action = action === "recipe-menu-duplicate" ? "duplicate" : "delete";
+    }
     try {
       if(await this.mediaLibrary?.action(action,b))return;
       if(await this.dndCatalog?.action(action,b))return;

@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **Right-click a recipe** in the recipe list to open it in the Studio, duplicate it or delete it, without opening it first.
+- **Recipe delete is a red bin** in the Studio bar instead of the ⌫ symbol.
+- **PF2e Dying no longer makes the token vanish.** Dying brings Unconscious, and the two breathing motions compounded every frame until the token shrank to nothing and stayed that way after the condition ended. A token now shows one condition motion at a time and returns to its natural pose when the last one ends.
+
 ## 0.2.2 (2026-10-08)
 
 - **Custom asset sources.** Add named User Data folders in Assets to browse animations, images and sounds without Sequencer database registration, including subfolders. Sources are remembered per user and can be refreshed or removed. Folder source controls open in a compact toolbar popover.

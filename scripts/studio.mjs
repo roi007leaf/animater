@@ -73,7 +73,7 @@ export function studioHTML(w, r) {
   const index = Math.min(w.stageIndex, r.stages.length - 1), dirty = w.dirty.has(r.id), status = w.status(r);
   const duration = w.previewDuration(r), studio = studioTracks(r), zoom = w.studioZoom ?? 1;
   w.previewMode = "recipe";
-  const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" data-tooltip="Back to all recipes">← Recipes</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}">${triggerChipHTML(w, r)}<span class="an-st-state ${status !== "Ready to play" ? "is-missing" : ""}">● ${esc(dirty ? "Unsaved changes" : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" data-tooltip="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon" data-action="delete" data-tooltip="Delete recipe" aria-label="Delete recipe">⌫</button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" data-tooltip="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? "Save recipe" : "Saved ✓"}</button></div></header>`;
+  const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" data-tooltip="Back to all recipes">← Recipes</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}">${triggerChipHTML(w, r)}<span class="an-st-state ${status !== "Ready to play" ? "is-missing" : ""}">● ${esc(dirty ? "Unsaved changes" : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" data-tooltip="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon is-danger" data-action="delete" data-tooltip="Delete recipe" aria-label="Delete recipe"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" data-tooltip="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? "Save recipe" : "Saved ✓"}</button></div></header>`;
   const transport = `<div class="an-st-transport" role="group" aria-label="Playback">
       <button class="an-st-tbtn" data-action="studio-home" data-tooltip="Go to start (Home)" aria-label="Go to start">⏮</button><button class="an-st-tbtn an-st-play" data-action="studio-play" data-tooltip="Play / pause (Space)" aria-label="Play" ${unconfigured ? "disabled" : ""}>▶</button><button class="an-st-tbtn" data-action="studio-stop" data-tooltip="Stop and rewind" aria-label="Stop">■</button><button class="an-st-tbtn" data-action="studio-end" data-tooltip="Go to end (End)" aria-label="Go to end">⏭</button><button class="an-st-tbtn ${w.studioLoop ? "is-active" : ""}" data-action="studio-loop" aria-pressed="${!!w.studioLoop}" data-tooltip="Loop playback (L)" aria-label="Loop">⟲</button>
       <span class="an-st-time"><b data-st-time>${seconds(w.studioTime ?? 0)}</b> / ${seconds(duration)}</span>
@@ -261,10 +261,28 @@ export function studioWheel(w, e) {
   if (e.ctrlKey || e.metaKey) { e.preventDefault(); applyZoom(w, (w.studioZoom ?? 1) * (e.deltaY < 0 ? 1.25 : 0.8), e.clientX); }
   else if (e.shiftKey) { e.preventDefault(); scroll.scrollLeft += e.deltaY; }
 }
-function closeMenu(w) { el(w, ".an-st-menu")?.remove(); }
+function closeMenu(w) { w.root.querySelector(".an-st-menu")?.remove(); }
+// Right-click a recipe card in the list: open, duplicate or delete it in place.
+function recipeCardMenu(w, e, card) {
+  e.preventDefault();
+  const id = card.dataset.id, r = w.listedRecipes?.().find((x) => x.id === id) ?? w.host.recipes().find((x) => x.id === id);
+  if (!r) return;
+  const menu = document.createElement("div");
+  menu.className = "an-st-menu";
+  menu.setAttribute("role", "menu");
+  menu.innerHTML = `<b>${esc(r.name)}</b><button role="menuitem" data-action="recipe-menu-open" data-id="${esc(id)}">Open in Studio</button><button role="menuitem" data-action="recipe-menu-duplicate" data-id="${esc(id)}">Duplicate</button><button role="menuitem" class="is-danger" data-action="recipe-menu-delete" data-id="${esc(id)}">Delete…</button>`;
+  w.root.append(menu);
+  // Place it at the pointer, relative to whatever box it is positioned in.
+  const box = (menu.offsetParent ?? document.body).getBoundingClientRect();
+  menu.style.left = `${Math.max(0, Math.min(e.clientX - box.left, box.width - 220))}px`;
+  menu.style.top = `${Math.max(0, Math.min(e.clientY - box.top, box.height - 150))}px`;
+  menu.querySelector("button")?.focus();
+}
 export function studioContextMenu(w, e) {
   const bar = e.target.closest?.(".an-studio [data-tl-bar]");
   closeMenu(w);
+  const card = !bar && e.target.closest?.('.an-card[data-action="select"][data-id]');
+  if (card && !w.busy) return recipeCardMenu(w, e, card);
   if (!bar || w.busy) return;
   e.preventDefault();
   const i = Number(bar.dataset.tlBar), studio = el(w, ""), box = studio.getBoundingClientRect(), r = w.recipe();
