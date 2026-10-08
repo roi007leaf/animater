@@ -17,6 +17,8 @@ const named={
  'fire bolt':{theme:'fire',delivery:'missile',bolt:'fire_bolt',sound:'fireRay'},
  'guiding bolt':{theme:'light',delivery:'missile',bolt:'guiding_bolt',sound:'radiantRay'},
  // A 5-foot sphere bursts evenly; the theme's side splash points one way.
+ // A bell tolls over the target; "Healthy Target" is a damage tier, not healing.
+ 'toll the dead':{theme:'void',cast:'cast_generic.01.dark_purple',hit:'toll_the_dead.purple.complete,toll_the_dead.purple.bell'},
  'acid splash':{theme:'acid',area:'liquid.splash.bright_green,liquid.splash.green'},
  'acid arrow':{theme:'acid',delivery:'missile',bolt:'arrow',sound:'acidSplash'},
  "melf's acid arrow":{theme:'acid',delivery:'missile',bolt:'arrow',sound:'acidSplash'},

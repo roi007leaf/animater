@@ -1,7 +1,7 @@
 import {colorAffinity} from './color-affinity.mjs';
 import {writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {dnd5eSources,hasNativeActivation} from './dnd5e-source.mjs';
+import {dnd5eSources,dnd5eBookSources,hasNativeActivation} from './dnd5e-source.mjs';
 import {nativeDirection,weaponModes,weaponSound,weaponVisualFamily,damageThemes,deliveryGesture,LASTING_AREAS,LASTING_EVENT} from './dnd5e-directions.mjs';
 import {assetDatabases} from './asset-databases.mjs';
 import {resolveSpellMedia,assetGeometry} from './spell-asset-selection.mjs';
@@ -14,7 +14,10 @@ import {SOUND_PROFILES} from '../data/spell-sounds.mjs';
 import {MEDIA_DURATIONS} from '../data/media-durations.mjs';
 const hash=v=>createHash('sha256').update(String(v)).digest('hex');
 const seed=v=>parseInt(hash(v).slice(0,8),16);
-const data=await dnd5eSources(),db=await assetDatabases(),rows=[];
+// --books builds the official-book catalog from the developer's local export (see
+// dnd5eBookSources): only content the SRD lacks, without any of its text.
+const BOOKS=process.argv.includes('--books');
+const data=BOOKS?await dnd5eBookSources():await dnd5eSources(),db=await assetDatabases(),rows=[];
 const allAssets=new Map(Object.values(db).flat().map(r=>[r.key,r]));
 const mediaCache=new Map();
 const siblingCache=new Map();
@@ -233,7 +236,27 @@ function entryFor(row,kind){
   if(!entry.variants.length)entry.variants.push(finiteRecipe(entry,row,{_id:'manual',type:'utility',name:'Manual native activation',activation:{type:'special'}},undefined));
   entry.reviewed=entry.variants.some(v=>v.reviewed);entry.quality=entry.reviewed?'curated':'symbolic';entry.theme=entry.variants[0].theme;
  }
+ if(row.book){delete entry.descriptionText;delete entry.descriptionHash;delete entry.path;delete entry.sourceURL;entry.requires=row.book;}
  return entry;
+}
+if(BOOKS){
+ const {DND5E_ENTRIES}=await import('../data/dnd5e-catalog.mjs');
+ const {srdSpellName}=await import('../scripts/dnd5e-catalog.mjs');
+ const {normalize}=await import('../scripts/model.mjs');
+ const kindOf=s=>s.type==='spell'?'spell':s.type==='feat'?'feat':s.type==='weapon'?'weapon':'item';
+ const srd=new Set(DND5E_ENTRIES.flatMap(e=>[`${e.kind}:${normalize(e.name)}`,`${e.kind}:id:${e.identifier}`]));
+ // A book copy of SRD content already resolves to the SRD entry at play time.
+ const covered=s=>[s.name,kindOf(s)==='spell'?srdSpellName(s.name):s.name].some(n=>srd.has(`${kindOf(s)}:${normalize(n)}`))||s.system?.identifier&&srd.has(`${kindOf(s)}:id:${s.system.identifier}`);
+ for(const [kind,list] of [['spell',data.spells],['feat',data.features.filter(r=>hasNativeActivation(r.source))],['weapon',data.weapons],['item',data.items.filter(r=>hasNativeActivation(r.source))]]){
+  // Books reprint each other (Heroes of the Borderlands repeats PHB spells): one entry
+  // per kind and identifier, the Player's Handbook copy first.
+  const rank=r=>/players-handbook/.test(r.book)?0:/dungeon-masters/.test(r.book)?1:/monster-manual/.test(r.book)?2:3,seen=new Set();
+  for(const row of [...list].sort((x,y)=>rank(x)-rank(y))){const k=`${kind}:${row.source.system?.identifier||normalize(row.source.name)}`;if(seen.has(k)||covered(row.source))continue;seen.add(k);rows.push(entryFor(row,kind));}
+ }
+ const counts=Object.fromEntries(['spell','feat','weapon','item'].map(k=>[k,rows.filter(r=>r.kind===k).length]));
+ await writeFile(new URL('../data/dnd5e-book-catalog.mjs',import.meta.url),`// Generated from the developer's official D&D book modules: content the SRD lacks.\n// Names, ids and Animater's own compositions only; no book text. Entries show only\n// while their book module (entry.requires) is active.\nexport const DND5E_BOOK_ENTRIES=${JSON.stringify(rows)};\n`);
+ console.log(JSON.stringify({books:counts,variants:rows.reduce((n,r)=>n+r.variants.length,0)}));
+ process.exit(0);
 }
 for(const [kind,list] of [['spell',data.spells],['feat',data.features.filter(r=>hasNativeActivation(r.source))],['weapon',data.weapons],['item',data.items.filter(r=>hasNativeActivation(r.source))],['condition',data.conditions],['effect',[...data.standaloneEffects,...data.embeddedEffects].filter(r=>r.source.type!=='enchantment')]])for(const row of list)rows.push(entryFor(row,kind));
 const source={version:data.systemVersion,ref:data.ref,sha:data.sha,scope:'Public SRD 5.1 and 5.2, 2014 and 2024 official system packs',license:'SRD text CC-BY-4.0; system code MIT',counts:Object.fromEntries(['spell','feat','weapon','item','condition','effect'].map(k=>[k,rows.filter(r=>r.kind===k).length]))};

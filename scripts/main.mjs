@@ -42,7 +42,7 @@ const abilitySettingKey = item => item?.type === "action" ? "actionCatalog" : is
 import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, resolveAutomaticWeaponRecipe } from "./weapon-catalog.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, PF2E_STATE_SOURCE, normalizeStateCatalogState, catalogStateEntry, stateRecipe } from "./state-catalog.mjs";
 import { PersistentStates } from "./persistent-states.mjs";
-import { DND_KINDS,DND5E_SOURCE,dndEntries,dndEntry,dndRecipe,normalizeDndCatalogState,resolveDndAutomaticRecipe } from './dnd5e-catalog.mjs';
+import { DND_KINDS,DND5E_SOURCE,dndEntries,dndEntry,dndRecipe,normalizeDndCatalogState,resolveDndAutomaticRecipe, addDndBookEntries } from './dnd5e-catalog.mjs';
 import { dndSettingKey,sfSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
@@ -650,7 +650,22 @@ function eventFrom(input) {
   }
   return input;
 }
+// Official D&D book modules (PHB, DMG, Monster Manual…) add their own content to the
+// D&D catalog while active; the data loads only in worlds that use one.
+const DND_BOOKS = /^dnd-/;
+async function loadDndBooks() {
+  const active = Array.from(game.modules?.values?.() ?? []).filter((m) => m.active && DND_BOOKS.test(m.id));
+  if (game.system.id !== "dnd5e" || !active.length) return;
+  try {
+    const { DND5E_BOOK_ENTRIES } = await import("../data/dnd5e-book-catalog.mjs");
+    const added = addDndBookEntries(DND5E_BOOK_ENTRIES, (id) => Boolean(game.modules.get(id)?.active));
+    if (added) app?.workspace?.render();
+  } catch (error) {
+    console.warn("Animater | official book catalog unavailable", error);
+  }
+}
 Hooks.once("ready", () => {
+  void loadDndBooks();
   syncQuality();
   const env = environment();
   if (game.user.isGM && env.ready && !env.jb2a) ui.notifications.warn(`Animater: ${JB2A_MISSING}`, { permanent: true });

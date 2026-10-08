@@ -72,7 +72,7 @@ export class AnimaterRuntime {
     if (!recipe && !riders.length)
       return this.trace(
         "Skipped",
-        `${event.item?.name ?? "Unknown item"}: no enabled ${event.type} recipe.`,
+        `${event.item?.name ?? "Unknown item"}: ${event.skipReason ?? `no enabled ${event.type} recipe`}.`,
       );
     // Other modules may claim the event (return false) before anything plays.
     if (globalThis.Hooks?.call?.("animater.preDispatch", event, recipe) === false)

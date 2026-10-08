@@ -174,3 +174,24 @@ test('official-book copies resolve to their SRD entry and activity', () => {
   const event={type:'template',activityId:'bookActivity0001',activityName:'Cast Fireball',activity:{type:variant.activityType}};
   assert.equal(dndVariantForEvent(fireball,event)?.id,variant.id);
 });
+
+test('a save spell cast before targeting plays on its damage roll', () => {
+  const entry=find('Sacred Flame'),variant=entry.variants[0];
+  const item={uuid:'Actor.a.Item.sacred',type:'spell',name:'Sacred Flame',system:{source:{rules:'2024'}}};
+  const stateFor=()=>({enabled:true});
+  const cast={type:'use',item,activityId:variant.activityId,activity:{type:variant.activityType},targets:[]};
+  assert.equal(resolveDndAutomaticRecipe(cast,stateFor),null);
+  assert.match(cast.skipReason,/damage roll/);
+  const damage={type:'damage',item,targets:[{id:'t'}]};
+  assert.equal(resolveDndAutomaticRecipe(damage,stateFor)?.catalogEntry,entry.id);
+  assert.equal(resolveDndAutomaticRecipe({...damage},stateFor),null,'only the waiting cast plays once');
+});
+
+test('official-book entries join only for active book modules', async () => {
+  const {addDndBookEntries,dndEntry}=await import('../scripts/dnd5e-catalog.mjs');
+  const book={id:'dnd5e-test-book-spell',uuid:'Compendium.dnd-test-book.spells.Item.x',name:'Test Book Spell',kind:'spell',edition:'2024',level:1,variants:[],requires:'dnd-test-book'};
+  assert.equal(addDndBookEntries([book],()=>false),0);
+  assert.equal(dndEntry(book.id),null);
+  assert.equal(addDndBookEntries([book],id=>id==='dnd-test-book'),1);
+  assert.equal(findDndEntry({item:{type:'spell',name:'x',_stats:{compendiumSource:book.uuid}}})?.id,book.id);
+});

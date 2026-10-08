@@ -137,6 +137,28 @@ export async function dnd5eSources() {
   const configuration = await dnd5eConfiguration(tree);
   return { ref: DND5E_SOURCE_REF, sha: DND5E_SOURCE_SHA, systemVersion: manifest.version, packs, rows, configuration, spells: rows.filter(r => r.source.type === "spell"), features: rows.filter(r => r.source.type === "feat"), weapons: rows.filter(r => r.source.type === "weapon"), items: rows.filter(r => !["spell","feat","weapon"].includes(r.source.type) && packMap.get(r.pack).type === "Item"), conditions: configuration.conditions, standaloneEffects: rows.filter(r => r.pack === "effects" && r.source.type !== "condition"), embeddedEffects: rows.flatMap(row => row.effects.map(effect => ({...row, parent: row.source, source: effect, uuid: `${row.uuid}.ActiveEffect.${effect._id}`, description: descriptionText(effect.description ?? row.source.system?.description?.value ?? "")}))) };
 }
+// Official D&D book modules (PHB, DMG, MM…) the developer owns, exported from a running
+// Foundry into .cache/dnd5e-books (never committed or shipped). Rows mirror the SRD rows
+// so the same generator builds them; their text is read here and never written out.
+export const dnd5eBookCache = join(moduleRoot, ".cache", "dnd5e-books");
+export async function dnd5eBookSources() {
+  const { readdir } = await import("node:fs/promises");
+  const files = (await readdir(dnd5eBookCache).catch(() => [])).filter(f => f.endsWith(".json")).sort();
+  const rows = [];
+  for (const file of files) {
+    const { module, pack, items } = JSON.parse(await readFile(join(dnd5eBookCache, file), "utf8"));
+    for (const source of items) {
+      const row = { pack: `${module.replace(/^dnd-/, "")}-${pack}`, book: module, source, uuid: `Compendium.${module}.${pack}.Item.${source._id}`,
+        edition: source.system?.source?.rules === "2014" ? "2014" : "2024", sourceBook: source.system?.source?.book ?? module,
+        description: descriptionText(source.system?.description?.value ?? ""), activities: sourceActivities(source),
+        effectiveActivities: sourceActivities(source, { effective: true }), effects: sourceEffects(source) };
+      rows.push(row);
+    }
+  }
+  rows.sort((a, b) => a.source.name.localeCompare(b.source.name) || a.pack.localeCompare(b.pack));
+  return { rows, spells: rows.filter(r => r.source.type === "spell"), features: rows.filter(r => r.source.type === "feat"),
+    weapons: rows.filter(r => r.source.type === "weapon"), items: rows.filter(r => !["spell", "feat", "weapon"].includes(r.source.type)) };
+}
 if (process.argv.includes("--inspect")) {
   const data = await dnd5eSources();
   const counts = {rows:data.rows.length, spells:data.spells.length, features:data.features.length, activeFeatures:data.features.filter(r=>hasNativeActivation(r.source)).length, weapons:data.weapons.length, items:data.items.length, activeItems:data.items.filter(r=>hasNativeActivation(r.source)).length, conditions:data.conditions.length, standaloneEffects:data.standaloneEffects.length, embeddedEffects:data.embeddedEffects.length};

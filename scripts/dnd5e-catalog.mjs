@@ -9,6 +9,18 @@ export const DND_KINDS=['spell','feat','weapon','item','condition','effect'];
 const byId=new Map(DND5E_ENTRIES.map(e=>[e.id,e]));
 const byUuid=new Map(DND5E_ENTRIES.filter(e=>e.uuid).map(e=>[e.uuid,e]));
 export const dndEntries=kind=>kind?DND5E_ENTRIES.filter(e=>e.kind===kind):DND5E_ENTRIES;
+const BOOK_LABELS={'dnd-players-handbook':'PHB','dnd-dungeon-masters-guide':'DMG','dnd-monster-manual':'MM','dnd-heroes-borderlands':'Borderlands'};
+export const dndBookLabel=id=>BOOK_LABELS[id]??globalThis.game?.modules?.get?.(id)?.title??id;
+// Official-book content the SRD lacks (data/dnd5e-book-catalog.mjs) joins the catalog
+// only for book modules active in this world (entry.requires).
+export function addDndBookEntries(entries,active=()=>true){
+ let added=0;
+ for(const e of entries??[]){
+  if(byId.has(e.id)||!active(e.requires))continue;
+  DND5E_ENTRIES.push(e);byId.set(e.id,e);if(e.uuid)byUuid.set(e.uuid,e);added++;
+ }
+ return added;
+}
 export const dndEntry=id=>byId.get(String(id).replace(/^animater-/,''))??null;
 export function normalizeDndCatalogState(state={}){
  state??={};const ids=values=>[...new Set((Array.isArray(values)?values:[]).filter(id=>byId.has(id)))];
@@ -78,6 +90,9 @@ export function dndVariantForEvent(entry,event){
  const type=event.activity?.type,same=type?candidates.filter(v=>v.activityType===type):[];
  return same.length===1?same[0]:same.find(v=>!v.activityName)??null;
 }
+const awaitingTargets=new Map();
+// Creature-bound stages with nothing optional about them cannot play without a target.
+const needsTargets=recipe=>recipe.trigger!=='template'&&recipe.stages.some(s=>(['travel','projectile','impact'].includes(s.kind)||s.subject==='targets')&&!s.optionalTargets&&s.travelDestination!=='area');
 export function resolveDndAutomaticRecipe(event,stateFor,saved=[],{customEnabled=true,sounds}={}){
  const entry=findDndEntry(event),state=normalizeDndCatalogState(entry&&stateFor(entry.kind));
  const selected=entry&&dndEntryEnabled(entry.id,state),prefer=selected&&(state.selected.includes(entry.id)||state.preferCatalog&&!state.customized.includes(entry.id));
@@ -85,7 +100,13 @@ export function resolveDndAutomaticRecipe(event,stateFor,saved=[],{customEnabled
  if(!prefer){const match=matchRecipe(custom,event);if(match)return match;}
  if(!selected||['condition','effect'].includes(entry.kind))return null;
  if(!prefer&&custom.some(r=>!r.enabled&&matchRecipe([{...r,enabled:true}],event)))return null;
- const variant=dndVariantForEvent(entry,event);if(!variant)return null;
+ let variant=dndVariantForEvent(entry,event);
+ // A save spell plays when cast (Sacred Flame, Toll the Dead). Cast before anyone is
+ // targeted, it waits for that item's damage roll, when the targets are known.
+ const key=event.item?.uuid??event.item?.id;
+ if(!variant&&event.type==='damage'&&key&&awaitingTargets.has(key)){variant=entry.variants.find(v=>v.id===awaitingTargets.get(key));awaitingTargets.delete(key);}
+ else if(variant&&event.type==='use'&&key&&!event.targets?.length&&needsTargets(variant.recipe)){awaitingTargets.set(key,variant.id);event.skipReason='no target yet; plays on its damage roll';if(awaitingTargets.size>50)awaitingTargets.delete(awaitingTargets.keys().next().value);return null;}
+ if(!variant)return null;
  const recipe=dndRecipe(entry,variant.id,{motion:state.motion,sounds:state.sound?sounds:null,soundVolume:state.soundVolume});
  // Native cast level supplies the dart count; separate attack-roll beams stay one.
  if(entry.slug==='magic-missile'){
