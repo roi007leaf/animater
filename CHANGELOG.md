@@ -3,7 +3,7 @@
 ## Unreleased
 
 - **PF2e and SF2e lasting emanations and sustained spells.**
-  - An emanation spell with a duration (Angelic Halo…) loops around the caster and follows them.
+  - An aura emanation (Divine Aura, Destructive Aura, Reaper's Lantern…) loops around the caster and follows them. Emanations without the aura trait (Synaptic Pulse, Confusing Cry) only affect whoever is inside when cast, so they still play once.
   - Emanations that apply a spell effect (Bless, Protector's Sphere…) already show their aura from that effect, so they are not doubled.
   - Sustained spells count as lasting too. Their area ends when the spell's effect on the caster ends, or when the template is removed.
 - **Auras that move with the caster.** Spirit Guardians, Aura of Life, Holy Aura, Antimagic Field and Antilife Shell (and, with the Player's Handbook, Aura of Purity, Aura of Vitality, Crusader's Mantle and Circle of Power) now keep looping around the caster and follow them as they move, instead of playing once.

@@ -22,6 +22,7 @@ export function lastingDuration(text) {
 export function isEmanation(item) {
   return item?.system?.area?.type === 'emanation';
 }
+const hasAuraTrait = (item) => [item?.system?.traits?.value ?? []].flat().includes('aura');
 const appliesEffect = (item) => /spell-effects|Item\.[^\]]*[Ee]ffect/.test(String(item?.system?.description?.value ?? ''));
 
 export function isLastingArea(item) {
@@ -30,7 +31,9 @@ export function isLastingArea(item) {
   const duration = item.system?.duration?.value ?? item.system?.duration;
   const lasting = lastingDuration(typeof duration === 'object' ? duration?.value : duration) || item.system?.duration?.sustained === true;
   if (!lasting || BLAST.test(name) || NOT_AREA.test(name)) return false;
-  if (isEmanation(item)) return !appliesEffect(item);
+  // An emanation only stays when the system calls it an aura (Divine Aura, Reaper's
+  // Lantern); others just affect whoever is inside when cast (Synaptic Pulse).
+  if (isEmanation(item)) return hasAuraTrait(item) && !appliesEffect(item);
   return STANDING.test(name);
 }
 
