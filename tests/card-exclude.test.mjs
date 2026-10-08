@@ -41,3 +41,29 @@ test("card toggle markup reflects the excluded state", () => {
   assert.match(on, /class="an-card-exclude is-on"/);
   assert.match(on, /aria-label="Include Longsword in plug &amp; play"/);
 });
+
+test("with plug & play off or picked-only, a card's ✓ adds and removes just that entry", async () => {
+  const f = spellsWorkspace();
+  const setState = (s) => { f.w.host.setCatalogState({ ...s }); };
+  setState({ enabled: false, scope: "all", selected: [], excluded: [] });
+  await f.click({ action: "card-include", id: card });
+  assert.equal(f.state().enabled, true);
+  assert.equal(f.state().scope, "selected", "only picked entries play");
+  assert.deepEqual(f.state().selected, [card]);
+  await f.click({ action: "card-include", id: card });
+  assert.deepEqual(f.state().selected, [], "clicking again removes it");
+  assert.equal(f.state().scope, "selected");
+});
+
+test("cards show exclude while the whole catalog runs, include otherwise", async () => {
+  const { cardToggleHTML, cardSlotClass } = await import("../scripts/catalog-details.mjs");
+  const item = { id: "x1", name: "Shield" };
+  const all = { enabled: true, scope: "all", excluded: ["x1"], selected: [] };
+  assert.match(cardToggleHTML(all, "catalog-exclude", "card-include", item), /an-card-exclude is-on/);
+  assert.equal(cardSlotClass(all, "x1"), " is-excluded");
+  const picked = { enabled: true, scope: "selected", excluded: [], selected: ["x1"] };
+  assert.match(cardToggleHTML(picked, "catalog-exclude", "card-include", item), /an-card-include is-on[^>]*data-action="card-include"/);
+  assert.equal(cardSlotClass(picked, "x1"), " is-included");
+  const off = { enabled: false, scope: "all", excluded: [], selected: [] };
+  assert.match(cardToggleHTML(off, "catalog-exclude", "card-include", item), /class="an-card-include"/);
+});

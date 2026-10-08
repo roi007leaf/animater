@@ -554,3 +554,29 @@
   background: #ff8a8a;
   pointer-events: none;
 }
+
+/* Per-card include toggle (picked-only catalogs). */
+.animater .an-card-include {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 24px;
+  height: 24px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--an-muted);
+  background: #141821e6;
+  border: 1px solid var(--an-line);
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 2;
+}
+.animater .an-card-slot:hover .an-card-include,
+.animater .an-card-include:focus-visible,
+.animater .an-card-include.is-on { opacity: 1; }
+.animater .an-card-include:hover { color: var(--an-green); border-color: var(--an-green); }
+.animater .an-card-include.is-on { color: #10241c; background: var(--an-green); border-color: var(--an-green); }
+.animater .an-card-slot.is-included > .an-spell-card { box-shadow: inset 0 0 0 1px var(--an-green); }

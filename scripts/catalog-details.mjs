@@ -21,6 +21,20 @@ export function cardExcludeHTML(action, item, excluded) {
   const label = `${excluded ? "Include" : "Exclude"} ${item.name} ${excluded ? "in" : "from"} plug & play`;
   return `<button type="button" class="an-card-exclude${excluded ? " is-on" : ""}" data-action="${esc(action)}" data-id="${esc(item.id)}" aria-pressed="${excluded}" aria-label="${esc(label)}" data-tooltip="${excluded ? "Excluded from plug &amp; play. Click to include it again." : "Exclude from plug &amp; play"}">⊘</button>`;
 }
+// Picked-only catalogs: add or remove this entry from the plug & play list.
+export function cardIncludeHTML(action, item, included) {
+  const label = `${included ? "Remove" : "Add"} ${item.name} ${included ? "from" : "to"} plug & play`;
+  return `<button type="button" class="an-card-include${included ? " is-on" : ""}" data-action="${esc(action)}" data-id="${esc(item.id)}" aria-pressed="${included}" aria-label="${esc(label)}" data-tooltip="${included ? "Plays automatically. Click to remove it from plug &amp; play." : "Add to plug &amp; play (just this one)"}">✓</button>`;
+}
+// Whole catalog running: cards exclude. Otherwise: cards include specific entries.
+export function cardToggleHTML(state, excludeAction, includeAction, item) {
+  const all = state.enabled && state.scope === "all";
+  return all ? cardExcludeHTML(excludeAction, item, state.excluded.includes(item.id)) : cardIncludeHTML(includeAction, item, !!state.enabled && state.selected.includes(item.id));
+}
+export function cardSlotClass(state, id) {
+  const all = state.enabled && state.scope === "all";
+  return all ? (state.excluded.includes(id) ? " is-excluded" : "") : (state.enabled && state.selected.includes(id) ? " is-included" : "");
+}
 export function catalogNameHTML(item, kind, environment = {}) {
   const demo = environment.demo === true;
   return `<button type="button" class="an-catalog-name" data-action="item-details" data-kind="${esc(kind)}" data-id="${esc(item.id)}" aria-label="Open ${esc(item.name)} details" data-tooltip="${demo ? "Item details open inside Foundry" : "Open native Foundry item sheet"}" ${demo ? "disabled" : ""}>${esc(item.name)}</button>`;

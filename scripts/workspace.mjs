@@ -36,7 +36,7 @@ import { featCatalogHTML, ABILITY_PAGE_PROFILES, abilityProfileForPage, abilityP
 import { PF2E_WEAPONS, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, useCatalogWeapon, weaponCustomizationKey } from "./weapon-catalog.mjs";
 import { weaponCatalogHTML } from "./weapon-catalog-ui.mjs";
 import { openCatalogDetails } from "./catalog-details.mjs";
-import { PF2E_CONDITIONS, PF2E_EFFECTS, catalogStateEntry, stateRecipe } from "./state-catalog.mjs";
+import { PF2E_CONDITIONS, PF2E_EFFECTS, catalogStateEntry, stateRecipe, normalizeStateCatalogState, useStateEntry } from "./state-catalog.mjs";
 import { stateCatalogHTML } from "./state-catalog-ui.mjs";
 import { handleStateCatalogAction } from "./state-catalog-actions.mjs";
 import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem} from './catalog-system.mjs';
@@ -408,6 +408,27 @@ export class Workspace {
     return missing.length
       ? `${missing.length} missing asset${missing.length > 1 ? "s" : ""}`
       : "Ready to play";
+  }
+  // Picked-only catalogs: a card's ✓ adds or removes just that entry.
+  catalogStore() {
+    const host = this.host, profile = abilityProfileForPage(this.page);
+    if (this.page === "spells") return { get: () => normalizeCatalogState(host.catalogState()), set: (c) => host.setCatalogState(c), use: useCatalogSpell };
+    if (profile) return { get: () => profile.catalog.normalizeState(host[profile.stateKey]()), set: (c) => host[profile.setStateKey](c), use: profile.catalog.use };
+    if (this.page === "weapons") return { get: () => normalizeWeaponCatalogState(host.weaponCatalogState?.()), set: (c) => host.setWeaponCatalogState(c), use: useCatalogWeapon };
+    if (["conditions", "effects"].includes(this.page)) {
+      const kind = this.page === "conditions" ? "condition" : "effect";
+      return { get: () => normalizeStateCatalogState(host.stateCatalogState?.(kind)), set: (c) => host.setStateCatalogState(kind, c), use: useStateEntry };
+    }
+    return null;
+  }
+  async toggleCardInclude(id) {
+    const env = this.host.environment(), store = this.catalogStore();
+    if (!store || !id) return;
+    if (env.demo || env.systemId !== "pf2e" || !env.ready) throw Error("Choose plug & play animations inside a PF2e world with Sequencer and JB2A active.");
+    const state = store.get(), included = state.enabled && state.selected.includes(id);
+    await store.set(included ? { selected: state.selected.filter((v) => v !== id) } : store.use(state, id));
+    this.message = included ? "Removed from plug & play." : "Added to plug & play. It plays automatically; other entries stay manual.";
+    this.render();
   }
   isStudio() { return this.page === "recipes" && !!this.studio && !!this.recipe(); }
   render() {
@@ -1936,6 +1957,7 @@ export class Workspace {
         return;
       }
       if (await studioAction(this, action, b)) return;
+      if (action === "card-include") { await this.toggleCardInclude(b.dataset.id); return; }
       if (action === "select") {
         if (this.selected === b.dataset.id && this.studio) return;
         if (this.selected !== b.dataset.id) { this.stageIndex = 0; this.studioTime = 0; }
