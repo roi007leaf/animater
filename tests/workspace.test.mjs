@@ -487,3 +487,38 @@ test("workspace warns when neither JB2A module is active", async () => {
   assert.equal(w.envBannerHTML({ ready: true, demo: true }), "", "design preview without the flag shows nothing");
   assert.match(JB2A_MISSING, /JB2A Free.*JB2A Patreon/);
 });
+
+test("the GM opens a player's animation in the Studio, edits it for them and approves that version", async () => {
+  const f = workspace();
+  const mine = [{ id: "frost", name: "Frost", trigger: "manual", stages: [{ kind: "impact", assets: ["jb2a.impact.001.orange"] }] }];
+  let theirs = [{ id: "p1", name: "Untitled recipe", trigger: "attack", stages: [{ kind: "impact", assets: ["jb2a.impact.001.orange"] }] }];
+  let reviewing = null;
+  const decisions = [];
+  f.w.host = {
+    recipes: () => (reviewing ? theirs : mine),
+    review: (id) => { reviewing = id; },
+    reviewing: () => (reviewing ? { userId: reviewing, userName: "Oded" } : null),
+    approvalState: (r) => (reviewing ? (decisions.some((d) => d.recipe.name === r.name) ? "approved" : "pending") : null),
+    decidePlayerRecipe: async (userId, recipe, status) => decisions.push({ userId, recipe, status }),
+    save: async (data) => { if (reviewing) theirs = data; else throw Error("saved the GM's recipes"); },
+  };
+  await f.click({ action: "player-open", user: "oded", id: "p1" });
+  assert.equal(f.w.selected, "p1");
+  assert.ok(f.w.studio);
+  assert.match(f.w.reviewBannerHTML(), /Reviewing Oded's animations[\s\S]*review-approve/);
+  assert.equal(f.w.playerReviewHTML(), "", "no review list while reviewing");
+  f.w.edit().name = "Oded's strike";
+  assert.match(f.w.reviewBannerHTML(), /save your edits before approving/);
+  await f.click({ action: "review-approve" });
+  assert.equal(decisions.length, 0, "unsaved edits are never approved");
+  await f.click({ action: "review-done" });
+  assert.equal(reviewing, "oded", "unsaved edits keep the review open");
+  await f.w.host.save([f.w.recipe()]);
+  f.w.drafts.clear(); f.w.dirty.clear();
+  await f.click({ action: "review-approve" });
+  assert.deepEqual(decisions.map((d) => [d.userId, d.recipe.name, d.status]), [["oded", "Oded's strike", "approved"]]);
+  await f.click({ action: "review-done" });
+  assert.equal(reviewing, null);
+  assert.equal(f.w.selected, "frost");
+  assert.equal(f.w.studio, false);
+});

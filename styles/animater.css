@@ -2285,4 +2285,6 @@
 .animater .an-review-row small { display: block; color: var(--an-muted); font-size: 11px; }
 .animater .an-review-row .an-approval { margin-top: 0; }
 .animater .an-review-actions { display: flex; gap: 6px; }
+.animater .an-review-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 0 0 10px; padding: 8px 12px; border-radius: 10px; background: rgba(243, 210, 122, 0.08); border: 1px solid rgba(243, 210, 122, 0.35); }
+.animater .an-review-banner small { display: block; color: var(--an-muted); font-size: 11px; }
 @container (max-width: 640px) { .animater .an-review-row { grid-template-columns: 1fr; } }

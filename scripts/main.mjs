@@ -128,6 +128,9 @@ const recipes = () =>
   clone(game.settings.get(ID, "recipes")?.recipes ?? starterRecipes());
 const playerDecisions = () => game.settings.get(ID, "playerApprovals") ?? {};
 const ownPlayerRecipes = () => clone(game.user?.getFlag?.(ID, "playerRecipes")?.recipes ?? []);
+// The player whose animations the GM has open in the Studio, if any.
+let reviewing = null;
+const reviewedUser = () => (game.user?.isGM && reviewing ? game.users?.get(reviewing) ?? null : null);
 const enabled = () => game.settings.get(ID, "automatic");
 // Players' approved recipes play for their own characters even when the GM's
 // automatic playback is off.
@@ -478,9 +481,12 @@ function workspaceHost() {
       installedSoundCatalog(game.modules, globalThis.Sequencer?.Database),
     weaponScale: () => Number(game.settings.get(ID, "weaponScale")) || 1,
     // Players edit their own recipes (on their user); the GM's stay world-wide.
-    recipes: () => (game.user.isGM ? recipes() : ownPlayerRecipes()),
-    playerMode: !game.user.isGM,
-    approvalState: (recipe) => (game.user.isGM ? null : approvalState(recipe, playerDecisions()[game.user.id])),
+    // While the GM reviews a player, the Studio shows and saves that player's recipes.
+    recipes: () => { const user = reviewedUser(); return user ? clone(user.getFlag(ID, "playerRecipes")?.recipes ?? []) : game.user.isGM ? recipes() : ownPlayerRecipes(); },
+    get playerMode() { return !game.user.isGM || Boolean(reviewedUser()); },
+    approvalState: (recipe) => { const user = game.user.isGM ? reviewedUser() : game.user; return user ? approvalState(recipe, playerDecisions()[user.id]) : null; },
+    reviewing: () => { const user = reviewedUser(); return user ? { userId: user.id, userName: user.name } : null; },
+    review: (userId) => { reviewing = game.user.isGM && userId && game.users?.get(userId) ? userId : null; },
     playerSubmissions: () => (game.user.isGM ? playerSubmissions(Array.from(game.users?.contents ?? []), playerDecisions()) : []),
     decidePlayerRecipe: async (userId, recipe, status) => {
       if (!game.user.isGM) throw Error('Only a GM can approve player animations.');
@@ -561,6 +567,9 @@ function workspaceHost() {
     async save(data) {
       // A player saves their own recipes; each new version waits for the GM.
       if (!game.user.isGM) return game.user.setFlag(ID, "playerRecipes", { schema: 1, recipes: validatePlayerRecipes(data) });
+      // The GM's edits to a player's animation go back to that player; the new version still needs approving.
+      const player = reviewedUser();
+      if (player) return player.setFlag(ID, "playerRecipes", { schema: 1, recipes: validatePlayerRecipes(data) });
       if (data.length > 200) throw Error("Maximum 200 recipes.");
       const valid = data.map(validateRecipe);
       if (new Set(valid.map((r) => r.id)).size !== valid.length)

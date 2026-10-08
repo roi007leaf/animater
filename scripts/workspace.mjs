@@ -491,7 +491,7 @@ export class Workspace {
       `<div class="an-shell${this.isStudio() ? " is-studio" : ""}">
       <aside class="an-nav"><div class="an-brand"><span class="an-logo">A</span><div>Animater<small>MAKE EVERY ACTION FELT</small></div></div>
         <div class="an-nav-caption">WORKSPACE</div>
-        ${(this.host.playerMode ? [["recipes", "✦", "My animations"], ["assets", "▦", "Assets"]] : [
+        ${(this.host.playerMode ? [["recipes", "✦", this.host.reviewing?.() ? `${esc(this.host.reviewing().userName)}'s animations` : "My animations"],["assets", "▦", "Assets"]] : [
           ["recipes", "✦", "Recipes"],
           ...catalogNavigation(env),
           ["assets", "▦", "Assets"],
@@ -507,6 +507,7 @@ export class Workspace {
       </aside>
       <main class="an-main">${this.isStudio() ? "" : `<header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : ""}</div></header>`}
         <div role="status" aria-live="polite" class="an-toast ${this.message ? "is-visible" : ""}">${esc(this.message)}</div>
+        ${this.reviewBannerHTML()}
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
         ${this.envBannerHTML(env)}
         ${this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
@@ -1100,13 +1101,22 @@ export class Workspace {
     const label = { pending: "Waiting for GM approval", approved: "Approved by the GM", declined: "Declined by the GM" }[state];
     return `<div class="an-approval is-${state}">${esc(label)}</div>`;
   }
+  // The GM has a player's animations open: edits save to that player, and the saved version is approved here.
+  reviewBannerHTML() {
+    const review = this.host.reviewing?.();
+    if (!review) return "";
+    const saved = this.savedRecipe(), state = saved && this.host.approvalState?.(saved), unsaved = saved && this.dirty.has(saved.id);
+    const status = state === "approved" ? "Approved" : state === "declined" ? "Declined" : "Waiting";
+    return `<div class="an-review-banner"><div><b>Reviewing ${esc(review.userName)}'s animations</b><small>${saved ? `“${esc(saved.name)}” · ${status}${unsaved ? " · save your edits before approving" : ""}. ` : ""}Saved edits go back to ${esc(review.userName)} and need approving again.</small></div><div class="an-review-actions">${saved && state !== "approved" ? `<button class="an-primary" data-action="review-approve" ${unsaved ? "disabled" : ""}>Approve</button>` : ""}${saved && state !== "declined" ? `<button class="an-quiet" data-action="review-decline" ${unsaved ? "disabled" : ""}>${state === "approved" ? "Revoke" : "Decline"}</button>` : ""}<button data-action="review-done">Done reviewing</button></div></div>`;
+  }
   // The GM's review of player-made recipes: each version is approved or declined once.
   playerReviewHTML() {
+    if (this.host.reviewing?.()) return "";
     const rows = this.host.playerSubmissions?.() ?? [];
     if (!rows.length) return "";
     const pending = rows.filter((r) => r.state === "pending").length;
     return `<div class="an-section-title"><span>Player animations${pending ? ` · ${pending} waiting` : ""}</span><small>Approved animations play for that player's own characters</small></div>
-      <div class="an-player-review">${rows.map(({ userId, userName, recipe, state }) => `<div class="an-review-row is-${state}"><div><b>${esc(recipe.name)}</b><small>${esc(userName)} · ${esc(EVENTS[recipe.trigger] ?? recipe.trigger)} · ${recipe.stages.length} stage${recipe.stages.length === 1 ? "" : "s"}</small></div><span class="an-approval is-${state}">${state === "pending" ? "Waiting" : state === "approved" ? "Approved" : "Declined"}</span><div class="an-review-actions"><button class="an-quiet" data-action="player-preview" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">▷ Preview</button>${state !== "approved" ? `<button class="an-primary" data-action="player-approve" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">Approve</button>` : ""}${state !== "declined" ? `<button class="an-quiet" data-action="player-decline" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">${state === "approved" ? "Revoke" : "Decline"}</button>` : ""}</div></div>`).join("")}</div>`;
+      <div class="an-player-review">${rows.map(({ userId, userName, recipe, state }) => `<div class="an-review-row is-${state}"><div><b>${esc(recipe.name)}</b><small>${esc(userName)} · ${esc(EVENTS[recipe.trigger] ?? recipe.trigger)} · ${recipe.stages.length} stage${recipe.stages.length === 1 ? "" : "s"}</small></div><span class="an-approval is-${state}">${state === "pending" ? "Waiting" : state === "approved" ? "Approved" : "Declined"}</span><div class="an-review-actions"><button class="an-quiet" data-action="player-open" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">✎ Open in Studio</button><button class="an-quiet" data-action="player-preview" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">▷ Preview</button>${state !== "approved" ? `<button class="an-primary" data-action="player-approve" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">Approve</button>` : ""}${state !== "declined" ? `<button class="an-quiet" data-action="player-decline" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">${state === "approved" ? "Revoke" : "Decline"}</button>` : ""}</div></div>`).join("")}</div>`;
   }
   optionalFxPreviewHTML(stage,index) {
     if(stage.kind==='tokenfx')return '';
@@ -1988,6 +1998,35 @@ export class Workspace {
         return;
       }
       if (await studioAction(this, action, b)) return;
+      // Open a player's animation in the Studio; the GM's own drafts wait until they are done reviewing.
+      if (action === "player-open" || action === "review-done") {
+        if ([...this.dirty].some((id) => this.drafts.has(id))) { this.message = "Save or revert your changes first."; this.render(); return; }
+        if (action === "player-open") {
+          this.reviewStash ??= { selected: this.selected, drafts: this.drafts, dirty: this.dirty };
+          this.host.review(b.dataset.user);
+          this.selected = b.dataset.id;
+          this.studio = true;
+        } else {
+          this.host.review(null);
+          this.selected = this.reviewStash?.selected ?? this.host.recipes()[0]?.id;
+          this.studio = false;
+        }
+        this.drafts = action === "review-done" ? this.reviewStash?.drafts ?? new Map() : new Map();
+        this.dirty = action === "review-done" ? this.reviewStash?.dirty ?? new Set() : new Set();
+        if (action === "review-done") this.reviewStash = null;
+        this.page = "recipes"; this.stageIndex = 0; this.studioTime = 0;
+        this.render();
+        return;
+      }
+      if (action === "review-approve" || action === "review-decline") {
+        const review = this.host.reviewing?.(), saved = this.savedRecipe();
+        if (!review || !saved || this.dirty.has(saved.id)) return;
+        const was = this.host.approvalState?.(saved), status = action === "review-approve" ? "approved" : "declined";
+        await this.host.decidePlayerRecipe(review.userId, saved, status);
+        this.message = `${review.userName}'s “${saved.name}” ${status === "approved" ? "approved: it now plays for their characters" : was === "approved" ? "revoked" : "declined"}.`;
+        this.render();
+        return;
+      }
       // The GM's review of a player's recipe: preview it locally, then approve or decline that version.
       if (["player-preview", "player-approve", "player-decline"].includes(action)) {
         const row = (this.host.playerSubmissions?.() ?? []).find((r) => r.userId === b.dataset.user && r.recipe.id === b.dataset.id);
