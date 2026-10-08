@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.3 (2026-10-08)
 
 - **Right-click a recipe** in the recipe list to open it in the Studio, duplicate it or delete it, without opening it first.
 - **Recipe delete is a red bin** in the Studio bar instead of the ⌫ symbol.
