@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { ConditionBody, bodyTreatment, bodyPose } from "../scripts/condition-body.mjs";
+import { ConditionBody, bodyTreatment, bodyPose, shownTreatment } from "../scripts/condition-body.mjs";
 
 const token = () => ({ w: 100, mesh: { position: { x: 500, y: 300 }, rotation: 0, scale: { x: 1, y: 1 }, filters: null } });
 function runner(extra = {}) {
@@ -74,4 +74,33 @@ test("two conditions on one token share a pose instead of compounding (PF2e Dyin
   body.remove("unconscious");
   assert.equal(t.mesh.scale.y, 1);
   assert.deepEqual(t.mesh.position, { x: 500, y: 300 });
+});
+
+test("several conditions: the token shows the most telling one, stone and stillness freeze it", () => {
+  assert.equal(shownTreatment(["tremble", "struggle"]), "struggle", "a grapple outweighs fear");
+  assert.equal(shownTreatment(["tremble", "breathe"]), "breathe", "unconscious and frightened only breathes");
+  assert.equal(shownTreatment(["sway", "stone"]), null, "petrified does not sway");
+  assert.equal(shownTreatment(["sway", "still"]), null, "paralyzed does not sway");
+  assert.equal(shownTreatment(["sag", "search"]), "search");
+  assert.equal(shownTreatment([]), null);
+  // Frightened then Restrained: struggles; once free, trembles again.
+  const { body, step } = runner(), t = token();
+  body.add("frightened", t, "tremble");
+  body.add("restrained", t, "struggle");
+  step(16); step(400);
+  assert.equal(body.poses.size, 1);
+  body.add("paralyzed", t, "still");
+  step(16);
+  assert.deepEqual(t.mesh.position, { x: 500, y: 300 }, "held still in its natural pose");
+  assert.equal(t.mesh.rotation, 0);
+  body.remove("paralyzed"); body.remove("restrained");
+  step(16); step(30);
+  assert.notEqual(t.mesh.position.x, 500, "trembling again");
+  body.clear();
+  assert.deepEqual(t.mesh.position, { x: 500, y: 300 });
+});
+
+test("D&D, PF2e and SF2e condition names share the treatments", () => {
+  for (const [name, kind] of [["Dead", "still"], ["Stable", "breathe"], ["Dehydration", "sag"], ["Slowed 1", "sag"], ["Controlled", "sway"], ["Glitching 2", "tremble"], ["Untethered", "sway"], ["Dying 3", "breathe"]])
+    assert.equal(bodyTreatment(name), kind, name);
 });

@@ -6,16 +6,27 @@
 
 // Condition names (D&D 5e, PF2e, SF2e) → treatment.
 const BY_NAME = {
-  frightened: 'tremble', fleeing: 'tremble',
-  poisoned: 'sway', diseased: 'sway', sickened: 'sway', charmed: 'sway', fascinated: 'sway',
+  frightened: 'tremble', fleeing: 'tremble', glitching: 'tremble',
+  poisoned: 'sway', diseased: 'sway', sickened: 'sway', charmed: 'sway', fascinated: 'sway', controlled: 'sway', untethered: 'sway',
   stunned: 'wobble', incapacitated: 'wobble', confused: 'wobble', stupefied: 'wobble',
-  exhaustion: 'sag', fatigued: 'sag', encumbered: 'sag', 'heavily encumbered': 'sag', 'exceeding carrying capacity': 'sag', drained: 'sag', enfeebled: 'sag',
+  exhaustion: 'sag', fatigued: 'sag', encumbered: 'sag', 'heavily encumbered': 'sag', 'exceeding carrying capacity': 'sag', drained: 'sag', enfeebled: 'sag', slowed: 'sag', dehydration: 'sag', malnutrition: 'sag',
   grappled: 'struggle', grabbed: 'struggle', restrained: 'struggle', immobilized: 'struggle',
   blinded: 'search',
-  unconscious: 'breathe', sleeping: 'breathe', dying: 'breathe',
+  unconscious: 'breathe', sleeping: 'breathe', dying: 'breathe', stable: 'breathe',
   petrified: 'stone',
-  paralyzed: 'still',
+  paralyzed: 'still', dead: 'still',
 };
+// With several conditions, the token shows the most telling one: a body turned to
+// stone or held still does not move at all, a body on the ground only breathes, and
+// a grapple outweighs fear, sickness or weariness. Equal ranks: the latest applied.
+export const BODY_PRIORITY = ['stone', 'still', 'breathe', 'struggle', 'wobble', 'tremble', 'sway', 'search', 'sag'];
+const rank = (kind) => { const i = BODY_PRIORITY.indexOf(kind); return i < 0 ? BODY_PRIORITY.length : i; };
+// The treatment a token shows for its active treatments (null: none, or no motion).
+export function shownTreatment(kinds) {
+  let best = null;
+  for (const kind of kinds) if (best === null || rank(kind) <= rank(best)) best = kind;
+  return best && !['stone', 'still'].includes(best) ? best : null;
+}
 export function bodyTreatment(name = '') {
   const key = String(name).toLowerCase().replace(/^(?:condition|effect)\s*:\s*/, '').replace(/\s+\d+$/, '').trim();
   return BY_NAME[key] ?? null;
@@ -93,9 +104,15 @@ export class ConditionBody {
     this.handle = null;
     if (!this.records.size) return;
     const time = this.now(), on = this.enabled();
-    // The most recent moving treatment on each token is the one it shows.
+    // Each token shows its highest-priority treatment (see BODY_PRIORITY); stone or
+    // stillness anywhere on the token holds it in its natural pose.
+    const byToken = new Map();
+    for (const r of this.records.values()) byToken.set(r.token, [...(byToken.get(r.token) ?? []), r]);
     const shown = new Map();
-    for (const r of this.records.values()) if (!['stone', 'still'].includes(r.kind)) shown.set(r.token, r);
+    for (const [token, list] of byToken) {
+      const kind = shownTreatment(list.map((r) => r.kind));
+      if (kind) shown.set(token, list.findLast((r) => r.kind === kind));
+    }
     for (const token of new Set([...this.records.values()].map(r => r.token))) if (!shown.has(token)) this.restore(token);
     for (const [token, r] of shown) {
       const mesh = token?.mesh;
