@@ -2159,6 +2159,10 @@
 .animater .an-icon.is-danger { color: #ff8a8a; border-color: rgba(224, 72, 72, 0.45); }
 .animater .an-icon.is-danger:hover:not(:disabled),
 .animater .an-icon.is-danger:focus-visible { color: #fff; background: #c43c3c; border-color: #c43c3c; }
+/* Removing one stage is smaller and quieter than deleting the whole recipe. */
+.animater .an-inspector-tools { display: inline-flex; align-items: center; gap: 6px; }
+.animater .an-icon.an-stage-remove { font-size: 12px; padding: 3px 7px; color: var(--an-muted); border-color: transparent; }
+.animater .an-icon.an-stage-remove:disabled { opacity: 0.35; }
 @container (max-width: 1000px) {
   .animater .an-studio { grid-template-columns: minmax(260px, 1fr) 8px var(--an-inspector-width, 320px); }
   .animater .an-st-hint { display: none; }

@@ -1180,7 +1180,7 @@ export class Workspace {
     const key = resolveAsset(s, this.host.catalog());
     const file = mediaForReference(this.host.catalog(),key)?.file;
     const assetFree = ["motion", "sprite", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind);
-    return `<div class="an-inspector-head"><span class="an-eyebrow">STAGE ${index + 1} OF ${r.stages.length}</span><span class="an-st-kind kind-${esc(s.kind)}">${esc(KINDS[s.kind])}</span></div>
+    return `<div class="an-inspector-head"><span class="an-eyebrow">STAGE ${index + 1} OF ${r.stages.length}</span><span class="an-inspector-tools"><span class="an-st-kind kind-${esc(s.kind)}">${esc(KINDS[s.kind])}</span><button class="an-icon is-danger an-stage-remove" data-action="remove-stage" aria-label="Remove this stage" data-tooltip="${r.stages.length === 1 ? "A recipe needs at least one stage" : "Remove this stage"}" ${r.stages.length === 1 || this.busy ? "disabled" : ""}><i class="fas fa-trash" aria-hidden="true"></i></button></span></div>
       <div class="an-editor-section an-stage-fields">
         <label>Stage name<input data-field="label" data-index="${index}" value="${esc(s.label ?? "")}" placeholder="${esc(KINDS[s.kind])}"></label>${this.stageVariantHTML(s, index, linked)}
         ${OPTIONAL_FX_KINDS.has(s.kind) ? this.optionalFxControlsHTML(s,index) : s.kind === "motion" ? this.motionControlsHTML(s, index) : s.kind === "sound" ? `<label>Audio file<input data-field="soundFile" data-index="${index}" placeholder="sounds/spell.ogg" value="${esc(s.soundFile)}"></label>${this.host.soundCatalog || this.host.pickMedia ? `<button data-action="browse-sound">Browse sounds</button>` : ""}${this.soundVolumeHTML(s, index, audioPreview)}<p class="an-hint">Relative Foundry audio path. Sound plays with recipe; Stop ends it too.</p>` : s.kind === "sprite" ? `<p class="an-hint">Copies token artwork into Sequencer. Configure copies, shadows and tracks below.</p>` : `<label>Visual asset<button class="an-asset-picker" data-action="browse">${this.assetThumbHTML(file)}<span class="an-asset-picker-text">${esc(key ?? s.assets[0] ?? "Choose an asset")}<span>Browse ↗</span></span></button></label>${key && key !== s.assets[0] ? `<p class="an-hint">Using installed fallback variant. Choose another in Assets anytime.</p>` : ""}`}
@@ -1190,7 +1190,7 @@ export class Workspace {
         ${s.kind === "aura" && !linked ? `<label class="an-check an-stay"><input type="checkbox" data-field="persist" data-index="${index}" ${s.persist ? "checked" : ""}> Stay until the effect ends</label><p class="an-hint">${s.persist ? "Loops on the token until the spell's effect (for example “Effect: Shield”) is removed, the spell ends or you press Stop. If no effect is applied within a minute, it stops on its own. Duration only sets the preview length." : "Tick to keep a looping asset on the token for as long as the spell's effect lasts."}</p>` : ""}
         ${this.compositionHTML(r, s, index)}
         ${this.stageOptionsHTML(s, index, linked)}
-        <details class="an-advanced" data-options-group="basic"><summary>Asset & visibility</summary>${assetFree ? "" : `<label>Fallback keys (comma separated)<textarea rows="2" data-field="assets" data-index="${index}">${esc(s.assets.join(","))}</textarea></label>`}${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Opacity<input type="number" min="0.1" max="1" step="0.1" data-field="opacity" data-index="${index}" value="${s.opacity}"></label><label class="an-check"><input type="checkbox" data-field="below" data-index="${index}" ${s.below ? "checked" : ""}> Below tokens</label>`}${linked && ["aura", "tokenfx"].includes(s.kind) ? `<label class="an-check"><input type="checkbox" data-field="persist" data-index="${index}" ${s.persist ? "checked" : ""}> Keep while the condition or effect is on the token</label>` : ""}<button data-action="remove-stage" ${r.stages.length === 1 || this.busy ? "disabled" : ""}>Remove stage</button></details></div>
+        <details class="an-advanced" data-options-group="basic"><summary>Asset & visibility</summary>${assetFree ? "" : `<label>Fallback keys (comma separated)<textarea rows="2" data-field="assets" data-index="${index}">${esc(s.assets.join(","))}</textarea></label>`}${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Opacity<input type="number" min="0.1" max="1" step="0.1" data-field="opacity" data-index="${index}" value="${s.opacity}"></label><label class="an-check"><input type="checkbox" data-field="below" data-index="${index}" ${s.below ? "checked" : ""}> Below tokens</label>`}${linked && ["aura", "tokenfx"].includes(s.kind) ? `<label class="an-check"><input type="checkbox" data-field="persist" data-index="${index}" ${s.persist ? "checked" : ""}> Keep while the condition or effect is on the token</label>` : ""}</details></div>
 `;
   }
   builderHTML() {
@@ -1273,6 +1273,8 @@ export class Workspace {
       html += `<label>Flight destination<select data-field="travelDestination" data-index="${index}">${options({ targets: "Selected creatures", area: "Selected area center" }, stage.travelDestination ?? "targets")}</select></label>`;
     if (["travel", "projectile"].includes(stage.kind) && stage.travelDestination === "area")
       html += `<label>Area flight layout<select data-field="areaLayout" data-index="${index}">${options({ fit: "One flight to area center", fan: "Spread through cone" }, s.areaLayout)}</select></label>${s.areaLayout === "fan" ? `<label>Flights in fan<input type="number" min="3" max="9" step="1" data-field="fanCount" data-index="${index}" value="${s.fanCount}"></label><p class="an-hint">Starts at the placed cone vertex. Flights spread inside its direction and reach; creature hits remain rules.</p>` : ""}`;
+    // Target options only matter on stages that play on or toward targets.
+    const targeted = ["travel", "projectile", "impact"].includes(s.kind) || s.subject === "targets";
     for (const [group, fields] of Object.entries(OPTION_GROUPS)) {
       if (
         (group === "Token copies" && s.kind !== "sprite") ||
@@ -1291,7 +1293,10 @@ export class Workspace {
         continue;
       const visible = fields.filter(
         ([key]) =>
-          !(linked && ["repeats", "repeatGap", "repeatMode", "stagger", "oneShot", "targetPick", "attach", "bindAlpha"].includes(key)) &&
+          !(!targeted && ["optionalTargets", "targetSelection", "targetLimit", "targetStagger", "repeatScope"].includes(key)) &&
+          !(!s.customAnchor && ["anchorX", "anchorY"].includes(key)) &&
+          !(!s.tintEnabled && ["tint", "colorize"].includes(key)) &&
+          !(linked &&["repeats", "repeatGap", "repeatMode", "stagger", "oneShot", "targetPick", "attach", "bindAlpha"].includes(key)) &&
           !(key === "areaLayout" && s.kind !== "template") &&
           !(
             key === "playbackRate" &&
@@ -1317,6 +1322,9 @@ export class Workspace {
           ),
       );
       if (!visible.length) continue;
+      // The anchor toggle reads first; its X/Y fields appear under it once ticked.
+      const toggle = visible.findIndex(([key]) => key === "customAnchor"), anchor = visible.findIndex(([key]) => key === "anchorX");
+      if (toggle > anchor && anchor >= 0) visible.splice(anchor, 0, ...visible.splice(toggle, 1));
       html += `<details class="an-advanced an-options" data-options-group="${esc(group)}"><summary>${esc(group)}</summary><div class="an-options-grid">${visible.map((f) => input(f)).join("")}</div></details>`;
     }
     if (!["motion", "sound"].includes(s.kind))

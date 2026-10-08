@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **Tidier Studio stage panel.**
+  - Target options (which targets, maximum targets, skip without targets, spread across targets, delay between targets) only show on stages that play on or toward targets, not on Caster, Area or screen stages.
+  - Anchor X/Y show only after ticking "Override artwork anchor", and tint colour options only after ticking "Apply tint".
+  - Remove stage is now a small bin next to the stage type, instead of hiding under Asset & visibility.
+  - Plainer labels: "Restart every", "Stop clip at", "Play the clip once, no looping", "Recolor fully".
 - **Customizing a catalog entry uses your version right away.** Clicking Customize on a condition, effect or D&D entry now plays your saved version instead of the catalog one, with no extra "Enable customization" step. If that catalog was off, it turns on for that one entry only.
 - **Plainer wording for condition and effect animations.** "Document-linked" and "native document" are gone: the Studio now says the animation plays while the condition or effect is on the token.
 

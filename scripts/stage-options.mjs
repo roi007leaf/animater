@@ -34,14 +34,14 @@ export const OPTION_GROUPS = {
       },
     ],
     ["repeatGap", "Gap between plays (ms)", 0, 0, 10000, 50],
-    ["repeatInterval", "Launch every (ms; 0 = after finish)", 0, 0, 10000, 50],
+    ["repeatInterval", "Restart every (ms, 0 = when finished)", 0, 0, 10000, 50],
     ["targetStagger", "Between targets (ms)", 0, 0, 3000, 50],
   ],
   "Media playback": [
-    ["oneShot", "Play clip once per stage play", false],
+    ["oneShot", "Play the clip once, no looping", false],
     ["playbackRate", "Media speed", 1, 0.25, 3, 0.25],
     ["clipStart", "Skip opening (ms)", 0, 0, 30000, 50],
-    ["clipEnd", "Clip end (ms; 0 = full file)", 0, 0, 30000, 50],
+    ["clipEnd", "Stop clip at (ms, 0 = its end)", 0, 0, 30000, 50],
   ],
   "Placement & attachment": [
     ["optionalTargets", "Skip stage when no targets are selected", false],
@@ -86,7 +86,7 @@ export const OPTION_GROUPS = {
   "Color & filters": [
     ["tintEnabled", "Apply tint", false],
     ["tint", "Tint color", "#ffffff"],
-    ["colorize", "Replace media color before tint", false],
+    ["colorize", "Recolor fully (ignore the original color)", false],
     ["brightness", "Brightness", 1, 0, 3, 0.1],
     ["contrast", "Contrast", 0, -1, 1, 0.1],
     ["saturation", "Saturation", 0, -1, 1, 0.1],
