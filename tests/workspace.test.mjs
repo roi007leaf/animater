@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { Workspace } from "../scripts/workspace.mjs";
+import { studioHTML } from "../scripts/studio.mjs";
 import { PF2E_SPELLS, spellRecipe } from "../scripts/spell-catalog.mjs";
 import { PF2E_FEATS, featRecipe } from "../scripts/feat-catalog.mjs";
 import { PF2E_WEAPONS, weaponRecipe } from "../scripts/weapon-catalog.mjs";
@@ -271,10 +272,14 @@ test("Customize switches to saved edits without deleting a prior catalog choice 
 });
 test("clicking current recipe, stage or preview tab does not redraw", async () => {
   const f = workspace();
+  f.w.studio = true;
   await f.click({ action: "stage", index: "0" });
   await f.click({ action: "select", id: "frost" });
   await f.click({ action: "preview-mode", mode: "recipe" });
   assert.equal(f.renders(), 0);
+  f.w.studio = false;
+  await f.click({ action: "select", id: "frost" });
+  assert.equal(f.w.studio, true, "picking a recipe opens it in the studio");
 });
 
 test("New recipe opens an unconfigured manual draft and saves only after choosing an asset", async () => {
@@ -382,7 +387,7 @@ test("recipe editor shows loaded server version and keeps table playback blocked
     catalog: () => [],
   };
   w.recipePreviewHTML = () => "<div data-recipe-scene></div>";
-  const blocked = w.inspectorHTML(recipe);
+  const blocked = studioHTML(w, recipe);
   assert.match(blocked, /Server loaded Animater 0\.1\.0/);
   assert.match(blocked, /data-action="play"[^>]*disabled/);
   assert.doesNotMatch(blocked, /Server restart required/);

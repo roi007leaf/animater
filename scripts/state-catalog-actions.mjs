@@ -10,7 +10,7 @@ export async function handleStateCatalogAction(w,action,b){
   const recipe=w.recipe()??stateRecipe(catalogStateEntry(id),{catalog:w.host.catalog?.()}),saved=w.host.recipes().find(r=>r.lifecycle==='document'&&r.stateEntry===id&&r.stateDamageType===recipe.stateDamageType);
   if(!saved)await w.host.save([...w.host.recipes(),recipe]);
   await w.host.setStateCatalogState(kind,{customized:[...new Set([...state.customized,id])]});
-  w.selected=saved?.id??recipe.id;w.page='recipes';w.search='';w.category='All';w.stageIndex=0;
+  w.selected=saved?.id??recipe.id;w.page='recipes';w.studio=true;w.studioTime=0;w.search='';w.category='All';w.stageIndex=0;
   w.message='Edit the sustained layers, save, then enable this customization. Its lifetime follows the native document.';
  }else{
   const env=w.host.environment();if(env.demo||env.systemId!=='pf2e'||!env.ready)throw Error('Enable persistent animations inside a PF2e world with Sequencer and JB2A.');

@@ -321,7 +321,7 @@ export class MediaLibrary {
           ? {kind:'sound',soundFile:this.file??item.file,duration:1500,volume:this.preview.volume}
           : {kind:'cast',assets:[this.file??item.key??item.file],duration:1500,scale:1}]}).stages[0];
         next.stageId=crypto.randomUUID();next.label=item.label;
-        if(!linked){next.startMode=item.type==='audio'||item.type==='tokenfx'?'with':'after';next.startOffset=0;}
+        if(!linked&&r.stages.length){next.startMode=item.type==='audio'||item.type==='tokenfx'?'with':'after';next.startRef=r.stages.at(-1).stageId;next.startOffset=0;}
         r.stages.push(next);linkStartModes(r.stages);this.w.stageIndex=r.stages.length-1;stage=next;
       }
       if(item.type==='tokenfx') {

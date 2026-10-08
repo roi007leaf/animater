@@ -1,4 +1,4 @@
-import { RecipeClock } from "./choreography.mjs";
+import { RecipeClock, recipeFrame } from "./choreography.mjs";
 import { motionPose, motionDirection, combineMotionPoses, poseTransform } from "./motion.mjs";
 import {
   previewPose,
@@ -79,14 +79,46 @@ export class RecipePreview {
       Number(element.dataset.previewStage ?? element.dataset.layerStage)
     ];
   }
-  async play() {
-    // Buffer all layers before starting one shared recipe clock.
-    await Promise.all(
+  // Buffer all layers before starting one shared recipe clock.
+  prepare() {
+    return this.mediaReady ??= Promise.all(
       [...this.videos, ...this.audio].map((video) => this.ready(video)).concat(this.images.map(image=>this.readyImage(image))),
     );
+  }
+  // from: start offset (ms). loop(): checked at each end to replay from 0.
+  async play({ from = 0, loop } = {}) {
+    await this.prepare();
     await this.prepareTokenFx();
     if (this.abort.signal.aborted) return false;
-    return this.clock.play(this.recipe, (frame) => this.draw(frame));
+    let complete;
+    do {
+      // Re-entering stages mid-way must seek media to the shared clock again.
+      this.started.clear();
+      complete = await this.clock.play(this.recipe, (frame) => this.draw(frame), { from });
+      from = 0;
+    } while (complete && loop?.() && !this.abort.signal.aborted);
+    return complete;
+  }
+  duration() { return recipeFrame(this.recipe, 0).duration; }
+  // Show one still moment (timeline scrubbing): media seek but never play.
+  async seek(ms) {
+    await this.prepare();
+    if (this.abort.signal.aborted) return;
+    this.clock.stop();
+    this.scrubbing = true;
+    this.started.clear();
+    try { this.draw(recipeFrame(this.recipe, ms)); } finally { this.scrubbing = false; }
+    [...this.videos, ...this.audio].forEach((v) => v.pause());
+    // A seek made while its layer was hidden is not painted once the layer
+    // shows; nudge visible videos so the browser decodes that frame.
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    if (this.abort.signal.aborted) return;
+    for (const v of this.videos)
+      if (!v.closest(".an-recipe-layer")?.hidden) v.currentTime = v.currentTime + 0.001;
+  }
+  pause() {
+    this.clock.stop();
+    [...this.videos, ...this.audio].forEach((v) => v.pause());
   }
   prepareTokenFx() {
     return this.fxReady??=Promise.resolve().then(async()=>{
@@ -163,7 +195,7 @@ export class RecipePreview {
         video.currentTime = expected;
         if (video.tagName === "AUDIO") video.volume = opts.volume;
         else video.playbackRate = opts.playbackRate;
-        void video.play().catch((error) => {
+        if (!this.scrubbing) void video.play().catch((error) => {
           // A seek, stage transition or Stop can cancel pending play(). The
           // media is still valid; only resource/codec failures need a badge.
           if (error?.name === "AbortError" || this.abort.signal.aborted) return;

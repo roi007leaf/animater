@@ -25,6 +25,29 @@ export function linkStartModes(stages) {
   });
   return stages;
 }
+// Timeline editing: row order is only a list. Relative "previous stage" links
+// are pinned to the stage they currently follow before rows move, so moving a
+// row never changes when anything plays.
+export function pinStartRefs(stages) {
+  stages.forEach((s, i) => { if (START_MODES[s.startMode] && !s.startRef && i > 0) s.startRef = stages[i - 1].stageId; });
+  return stages;
+}
+export function moveRow(stages, from, to) {
+  if (![from, to].every(n => Number.isInteger(n) && n >= 0 && n < stages.length)) throw Error("Choose a valid stage position.");
+  const result = pinStartRefs(clone(stages));
+  const [moved] = result.splice(from, 1);
+  result.splice(to, 0, moved);
+  return linkStartModes(result);
+}
+// Snap a dragged start to another stage's start ("with") or end ("after").
+export function snapStart(ms, others, tolerance) {
+  let best = null;
+  for (const o of others) for (const [edge, at] of [["with", o.start], ["after", o.end]]) {
+    const d = Math.abs(ms - at);
+    if (d <= tolerance && (!best || d < best.d)) best = { d, at, mode: edge, ref: o.stageId };
+  }
+  return best;
+}
 export function reorderStages(stages, from, to) {
   if (
     !Number.isInteger(from) ||
@@ -46,6 +69,28 @@ export function reorderStages(stages, from, to) {
   return linkStartModes(result);
 }
 
+// Resolved start/end of every stage for the editor timeline (sample spacing).
+export function timelineLayout(recipe) {
+  const resolved = sampleRecipe(recipe).stages;
+  const rows = resolved.map((s, i) => {
+    const start = Math.max(0, Math.round(s.delay));
+    const span = Math.max(100, Math.round(stageSpan(s, recipe.targetCount ?? 1)));
+    return { index: i, stageId: recipe.stages[i].stageId, start, end: start + span };
+  });
+  const end = Math.max(1000, ...rows.map(r => r.end));
+  // Round the scale up to a whole half second so the ruler reads cleanly.
+  return { rows, total: Math.ceil(end / 500) * 500 };
+}
+// First-fit lanes by start time: a stage joins the first lane already free when
+// it starts, so a sequence shares one row and only overlapping stages stack.
+export function packLanes(rows) {
+  const lanes = [];
+  for (const row of [...rows].sort((a, b) => a.start - b.start || a.index - b.index)) {
+    const lane = lanes.find(l => l.at(-1).end <= row.start);
+    if (lane) lane.push(row); else lanes.push([row]);
+  }
+  return lanes;
+}
 export const recipeDuration = (recipe) =>
   Math.max(
     0,
@@ -101,9 +146,9 @@ export class RecipeClock {
     this.cancel = cancel;
     this.now = now;
   }
-  play(recipe, onFrame) {
+  play(recipe, onFrame, { from = 0 } = {}) {
     this.stop();
-    const start = this.now();
+    const start = this.now() - Math.max(0, from);
     return new Promise((resolve) => {
       const run = { resolve, handle: null };
       this.run = run;
@@ -116,7 +161,7 @@ export class RecipeClock {
           resolve(true);
         } else run.handle = this.frame(tick);
       };
-      onFrame(recipeFrame(recipe, 0));
+      onFrame(recipeFrame(recipe, Math.max(0, from)));
       run.handle = this.frame(tick);
     });
   }

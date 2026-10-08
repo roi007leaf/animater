@@ -5,6 +5,17 @@
 - Installing no longer offers JB2A Free when you use JB2A Patreon: the manifest no longer recommends a specific JB2A edition (install either one).
 - Stages have a **Start** choice: *After* (optional gap) or *With* another stage, or *At a set time*. Pick *Previous stage* to follow whatever comes before it, or a specific stage (e.g. stage 3 with stage 1), which it stays attached to when reordered. New stages follow the previous one; sounds and token motion start with it. Stages that start with their neighbour are chained in the timeline; loops are refused.
 - The Animater window minimizes while Local preview or Play at table runs and restores afterwards (per-user setting).
+- **Recipe Studio.** Opening a recipe now fills the whole window, laid out like a video editor:
+  - **Monitor.** A large preview with play/pause, stop, go to start/end, loop and a time readout.
+  - **Inspector.** The selected stage's settings sit on the right. Drag the divider to resize it.
+  - **Timeline.** A multi-track timeline runs across the bottom, with tracks for Caster, Flight, Target, Token motion, Sound and Filters & scene. Stages that don't overlap share a row.
+  - **Scrubbing.** Click or drag the ruler (or empty track space) to scrub; the monitor shows that exact moment.
+  - **Editing clips.** Drag clips to move them; they snap to other clips and to the playhead (hold Alt to place freely). Drag a clip's right edge to trim it. Lines show what the selected clip starts with or after.
+  - **Adding stages.** Each track's **+** adds a stage at the playhead.
+  - **Right-click menu.** Start at playhead, duplicate after it, or delete.
+  - **Shortcuts.** Space plays or pauses, Home/End jump, `,` `.` and the arrow keys step (Shift for larger steps), L loops, Ctrl+D duplicates, Delete removes, Ctrl+S saves. Ctrl+wheel or the slider zooms the timeline, and Fit resets the zoom.
+  - **Layout.** The timeline's height and the inspector's width are remembered per browser.
+- The recipe library uses the full window width; **← Recipes** (or the Recipes nav item) returns to it.
 
 ## 0.1.0 — prerelease (2026-10-08)
 

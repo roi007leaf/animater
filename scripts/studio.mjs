@@ -1,0 +1,380 @@
+// Recipe Studio: the full-window recipe editor. A monitor with transport on the
+// left, the stage inspector on the right and a multi-track timeline across the
+// bottom. Stages are grouped into role tracks; inside a track, stages that do
+// not overlap share a lane. Saved recipe data is unchanged: tracks, lanes,
+// playhead and zoom are presentation only.
+import { KINDS, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
+import { timelineLayout, packLanes, linkStartModes } from "./choreography.mjs";
+import { sampleRecipe, timedStages } from "./composition.mjs";
+import { previewRecipeSounds } from "./spell-sounds.mjs";
+import { RecipePreview } from "./recipe-preview.mjs";
+
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+export const STUDIO_TRACKS = Object.freeze([
+  { id: "caster", icon: "✦", name: "Caster", kind: "cast" },
+  { id: "flight", icon: "➶", name: "Flight", kind: "projectile" },
+  { id: "target", icon: "◎", name: "Target", kind: "impact" },
+  { id: "motion", icon: "⇄", name: "Token motion", kind: "motion" },
+  { id: "sound", icon: "♪", name: "Sound", kind: "sound" },
+  { id: "fx", icon: "✧", name: "Filters & scene", kind: "tokenfx" },
+]);
+const LINKED_TRACKS = new Set(["caster", "fx"]);
+const HEAD_WIDTH = 150, MIN_ZOOM = 1, MAX_ZOOM = 16;
+
+export function trackOf(stage) {
+  const k = stage.kind;
+  if (k === "cast") return "caster";
+  if (k === "aura") return stage.subject === "targets" ? "target" : "caster";
+  if (k === "travel" || k === "projectile") return "flight";
+  if (k === "motion" || k === "sprite") return "motion";
+  if (k === "sound") return "sound";
+  if (k === "tokenfx" || k === "scenefx" || k === "overlay") return "fx";
+  return "target";
+}
+// Tracks with their lanes; empty tracks still show so stages can be added there.
+export function studioTracks(recipe) {
+  const layout = timelineLayout(recipe);
+  const linked = recipe.lifecycle === "document";
+  const tracks = STUDIO_TRACKS.map((t) => {
+    const rows = layout.rows.filter((row) => trackOf(recipe.stages[row.index]) === t.id);
+    return { ...t, lanes: rows.length ? packLanes(rows) : [[]] };
+  }).filter((t) => !linked || LINKED_TRACKS.has(t.id) || t.lanes[0].length);
+  // Leave room past the last stage so clips can be dragged later.
+  const end = Math.max(0, ...layout.rows.map((r) => r.end));
+  return { tracks, rows: layout.rows, end, total: Math.max(2000, Math.ceil((end * 1.25 + 500) / 500) * 500) };
+}
+// Label spacing that stays readable at any zoom (~viewport px across the full scale).
+export function rulerStep(total, zoom, viewport = 900) {
+  const pxPerMs = (viewport * zoom) / total;
+  return [100, 250, 500, 1000, 2000, 5000, 10000].find((s) => s * pxPerMs >= 64) ?? 10000;
+}
+const seconds = (ms) => `${(ms / 1000).toFixed(2)}s`;
+export function rulerHTML(total, zoom, viewport) {
+  const step = rulerStep(total, zoom, viewport), minor = step / 5, marks = [];
+  for (let t = 0; t <= total + 1e-6; t += minor) {
+    const major = Math.abs(t / step - Math.round(t / step)) < 1e-6, left = ((t / total) * 100).toFixed(3);
+    marks.push(major ? `<span class="is-major" style="left:${left}%"><i></i>${t % 1000 ? (t / 1000).toFixed(step < 1000 ? 2 : 1) : t / 1000}s</span>` : `<span style="left:${left}%"><i></i></span>`);
+  }
+  return marks.join("");
+}
+
+export function studioHTML(w, r) {
+  const env = w.host.environment(), canvasUnavailable = Boolean(env.demo), linked = r.lifecycle === "document";
+  const motionBlocked = w.motionBlocked(r), unconfigured = w.status(r) === "Choose an asset";
+  const index = Math.min(w.stageIndex, r.stages.length - 1), dirty = w.dirty.has(r.id), status = w.status(r);
+  const duration = w.previewDuration(r), studio = studioTracks(r), zoom = w.studioZoom ?? 1;
+  const busy = w.busy ? "disabled" : "";
+  const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" title="Back to all recipes">← Recipes</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}"><span class="an-st-state ${status !== "Ready to play" ? "is-missing" : ""}">● ${esc(dirty ? "Unsaved changes" : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" title="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon" data-action="delete" title="Delete recipe" aria-label="Delete recipe">⌫</button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" title="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? "Save recipe" : "Saved ✓"}</button></div></header>`;
+  const transport = `<div class="an-st-transport" role="group" aria-label="Playback">
+      <button class="an-st-tbtn" data-action="studio-home" title="Go to start (Home)" aria-label="Go to start">⏮</button><button class="an-st-tbtn an-st-play" data-action="studio-play" title="Play / pause (Space)" aria-label="Play" ${unconfigured ? "disabled" : ""}>▶</button><button class="an-st-tbtn" data-action="studio-stop" title="Stop and rewind" aria-label="Stop">■</button><button class="an-st-tbtn" data-action="studio-end" title="Go to end (End)" aria-label="Go to end">⏭</button><button class="an-st-tbtn ${w.studioLoop ? "is-active" : ""}" data-action="studio-loop" aria-pressed="${!!w.studioLoop}" title="Loop playback (L)" aria-label="Loop">⟲</button>
+      <span class="an-st-time"><b data-st-time>${seconds(w.studioTime ?? 0)}</b> / ${seconds(duration)}</span>
+      <small class="an-preview-status" data-preview-status role="status" aria-live="polite">${unconfigured ? "Choose an asset to preview your first stage" : "Sample spacing · drag the ruler to scrub"}</small>
+      <span class="an-st-spacer"></span>
+      <button class="an-primary" data-action="preview" title="${canvasUnavailable ? "Canvas playback requires Foundry" : "Play privately on your canvas with the selected tokens"}" ${w.busy || canvasUnavailable || unconfigured ? "disabled" : ""}>▷ Local preview</button><button data-action="play" title="${canvasUnavailable ? "Canvas playback requires Foundry" : motionBlocked ? "Foundry has not registered the token-motion channel" : "Broadcast this recipe to the table"}" ${w.busy || canvasUnavailable || motionBlocked || unconfigured || linked ? "disabled" : ""}>Play at table</button>
+    </div>`;
+  const monitor = `<section class="an-st-monitor" aria-label="Preview">${w.monitorHTML(r)}${transport}
+      ${linked ? `<div class="an-catalog-use-status is-using"><b>Document-linked animation</b><small>Sustained layers and token filters follow the affected token while its native document is active.</small><button data-action="enable-state-custom" ${canvasUnavailable || !env.ready ? "disabled" : ""}>Enable customization</button></div>` : ""}</section>`;
+  const tracks = studio.tracks.map((t) => {
+    const canAdd = !w.busy && r.stages.length < MAX_STAGES && (!linked || LINKED_TRACKS.has(t.id));
+    return `<div class="an-st-track" data-st-track="${t.id}"><div class="an-st-head"><span class="an-st-head-icon">${t.icon}</span><b>${esc(t.name)}</b><button class="an-st-add" data-action="studio-add" data-st-track="${t.id}" title="Add a ${esc(KINDS[t.kind])} stage at the playhead" aria-label="Add ${esc(t.name)} stage at playhead" ${canAdd ? "" : "disabled"}>+</button></div><div class="an-st-lanes">${t.lanes.map((lane) => `<div class="an-tl-lane"><div class="an-tl-track">${lane.map((row) => w.timelineBarHTML(r, row, index, studio.total)).join("")}</div></div>`).join("")}</div></div>`;
+  }).join("");
+  const timeline = `<section class="an-st-timeline" aria-label="Timeline"><div class="an-st-toolbar"><b>Timeline</b><button class="an-text-button" data-action="add-stage" ${r.stages.length >= MAX_STAGES || w.busy ? "disabled" : ""}>${linked ? "+ Layer" : "+ Stage"}</button>${linked ? "" : `<button class="an-text-button" data-action="add-motion" ${r.stages.length >= MAX_STAGES || w.busy ? "disabled" : ""}>+ Token motion</button>`}<small class="an-st-hint">Drag clips to move · they snap to other clips and the playhead (Alt = free) · drag the right edge to trim · right-click for more</small><span class="an-st-spacer"></span><label class="an-st-zoom">Zoom<input type="range" min="${MIN_ZOOM}" max="${MAX_ZOOM}" step="0.25" value="${zoom}" data-st-zoom aria-label="Timeline zoom"></label><button class="an-text-button" data-action="studio-fit" title="Fit the whole recipe">Fit</button></div>
+    <div class="an-st-scroll" data-st-scroll style="--st-zoom:${zoom}"><div class="an-tl an-st-tl" data-tl-total="${studio.total}" data-studio-tl style="--tl-label:${HEAD_WIDTH}px">
+      <div class="an-st-ruler-row"><div class="an-st-corner" data-st-time-corner>${seconds(w.studioTime ?? 0)}</div><div class="an-tl-track an-st-ruler" data-st-ruler title="Click or drag to move the playhead">${rulerHTML(studio.total, zoom)}</div></div>
+      ${tracks}
+      <div class="an-st-end" style="left:${w.timelineX(studio.total, studio.end)}" title="Recipe ends"></div>
+      <svg class="an-st-links" data-st-links aria-hidden="true"></svg>
+      <div class="an-tl-playhead an-st-playhead" data-tl-playhead style="left:${w.timelineX(studio.total, w.studioTime ?? 0)}"><span></span></div>
+      <div class="an-tl-guide" data-tl-guide hidden><span></span></div>
+    </div></div></section>`;
+  return `<div class="an-studio" tabindex="-1" style="--an-inspector-width:${w.inspectorWidth()}px;--an-timeline-height:${timelineHeight(w)}px">${bar}${monitor}<div class="an-splitter" data-splitter role="separator" aria-orientation="vertical" aria-label="Resize stage inspector" tabindex="0" title="Drag to resize · double-click to reset"></div><aside class="an-inspector">${w.inspectorHTML(r)}</aside><div class="an-st-hsplit" data-st-hsplit role="separator" aria-orientation="horizontal" aria-label="Resize timeline" tabindex="0" title="Drag to resize the timeline · double-click to reset"></div>${timeline}</div>`;
+}
+
+function timelineHeight(w) {
+  if (w.studioTimelineHeight === undefined) {
+    let stored = NaN;
+    try { stored = Number(globalThis.localStorage?.getItem("animater.timelineHeight")); } catch {}
+    w.studioTimelineHeight = Number.isFinite(stored) && stored >= 160 ? stored : 280;
+  }
+  return w.studioTimelineHeight;
+}
+function setTimelineHeight(w, px) {
+  const studio = w.root.querySelector(".an-studio");
+  const max = Math.max(200, (studio?.getBoundingClientRect().height ?? 800) - 260);
+  w.studioTimelineHeight = Math.round(Math.min(max, Math.max(160, px)));
+  studio?.style.setProperty("--an-timeline-height", `${w.studioTimelineHeight}px`);
+  try { globalThis.localStorage?.setItem("animater.timelineHeight", String(w.studioTimelineHeight)); } catch {}
+  drawLinks(w);
+}
+
+// ——— Playback ———
+const el = (w, sel) => w.root.querySelector(sel ? `.an-studio ${sel}` : ".an-studio");
+const totalOf = (w) => Number(el(w, "[data-studio-tl]")?.dataset.tlTotal) || 1000;
+function durationOf(w) { return w.previewDuration(w.recipe()); }
+export function studioFrame(w, frame) {
+  w.studioTime = frame.time;
+  const t = el(w, "[data-st-time]"), c = el(w, "[data-st-time-corner]");
+  if (t) t.textContent = seconds(frame.time);
+  if (c) c.textContent = seconds(frame.time);
+}
+function placePlayhead(w) {
+  const head = el(w, "[data-tl-playhead]");
+  if (head) { head.hidden = false; head.style.left = w.timelineX(totalOf(w), w.studioTime ?? 0); }
+  studioFrame(w, { time: w.studioTime ?? 0 });
+}
+function syncTransport(w) {
+  const play = el(w, '[data-action="studio-play"]');
+  if (play) { play.textContent = w.studioPlaying ? "❚❚" : "▶"; play.setAttribute("aria-label", w.studioPlaying ? "Pause" : "Play"); play.classList.toggle("is-active", !!w.studioPlaying); }
+  const loop = el(w, '[data-action="studio-loop"]');
+  if (loop) { loop.classList.toggle("is-active", !!w.studioLoop); loop.setAttribute("aria-pressed", String(!!w.studioLoop)); }
+}
+function ensureRun(w) {
+  const scene = el(w, "[data-recipe-scene]");
+  if (!scene || w.busy) return null;
+  const run = w.previewRun;
+  if (run?.scene === scene && run.seek && !run.abort.signal.aborted) return run;
+  run?.stop?.();
+  try {
+    let recipe;
+    try { recipe = validateRecipe(w.recipe()); } catch { recipe = clone(w.recipe()); }
+    recipe = previewRecipeSounds({ ...recipe, previewDistance: 3 }, w.host.soundCatalog?.());
+    const next = new RecipePreview(scene, recipe, (frame) => w.updatePlayback(frame), { tokenFx: w.host.createTokenFxPreview });
+    w.previewRun = next;
+    return next;
+  } catch { return null; }
+}
+function queueSeek(w) {
+  if (w.studioSeekQueued) return;
+  w.studioSeekQueued = true;
+  requestAnimationFrame(async () => {
+    w.studioSeekQueued = false;
+    const run = ensureRun(w);
+    if (!run || w.studioPlaying) return;
+    const idle = el(w, "[data-preview-idle]");
+    if (idle) idle.hidden = true;
+    await run.seek(w.studioTime ?? 0).catch(() => {});
+  });
+}
+function pause(w) {
+  w.previewRun?.pause?.();
+  w.studioPlaying = false;
+  syncTransport(w);
+}
+async function togglePlay(w) {
+  if (w.studioPlaying) return pause(w);
+  if (w.previewMode !== "recipe") { w.previewMode = "recipe"; w.render(); }
+  const run = ensureRun(w);
+  if (!run) return;
+  const duration = run.duration();
+  const from = (w.studioTime ?? 0) >= duration - 20 ? 0 : w.studioTime ?? 0;
+  w.studioPlaying = true;
+  syncTransport(w);
+  const idle = el(w, "[data-preview-idle]");
+  if (idle) idle.hidden = true;
+  const complete = await run.play({ from, loop: () => !!w.studioLoop });
+  if (w.previewRun !== run) return;
+  w.studioPlaying = false;
+  if (complete) { w.studioTime = duration; placePlayhead(w); }
+  syncTransport(w);
+}
+function moveTo(w, ms) {
+  w.studioTime = Math.max(0, Math.min(totalOf(w), Math.round(ms)));
+  if (w.studioPlaying) pause(w);
+  placePlayhead(w);
+  queueSeek(w);
+}
+
+// ——— Rendering hooks ———
+export function studioAfterRender(w) {
+  if (!el(w, "")) return;
+  w.studioTime = Math.min(w.studioTime ?? 0, totalOf(w));
+  placePlayhead(w);
+  syncTransport(w);
+  requestAnimationFrame(() => drawLinks(w));
+  if (w.previewMode === "recipe" && !w.busy) queueSeek(w);
+}
+// Link lines for the selected clip: what it starts with/after, and what follows it.
+export function drawLinks(w) {
+  const svg = el(w, "[data-st-links]"), tl = el(w, "[data-studio-tl]");
+  if (!svg || !tl) return;
+  const r = w.recipe(), i = Math.min(w.stageIndex, r.stages.length - 1), s = r.stages[i];
+  const box = tl.getBoundingClientRect();
+  svg.setAttribute("width", box.width); svg.setAttribute("height", box.height);
+  const rect = (index) => { const b = tl.querySelector(`[data-tl-bar="${index}"]`)?.getBoundingClientRect(); return b && { l: b.left - box.left, r: b.right - box.left, y: b.top - box.top + b.height / 2 }; };
+  const links = [];
+  const add = (from, to, stage) => {
+    const a = rect(from), b = rect(to);
+    if (!a || !b) return;
+    const withStart = stage.timingAnchor === "start";
+    const x1 = withStart ? a.l : a.r, x2 = b.l, dx = Math.max(18, Math.abs(x2 - x1) / 2);
+    links.push(`<path class="${withStart ? "is-with" : "is-after"}" d="M${x1} ${a.y} C${x1 + dx} ${a.y} ${x2 - dx} ${b.y} ${x2} ${b.y}"/><circle cx="${x1}" cy="${a.y}" r="3"/><circle cx="${x2}" cy="${b.y}" r="3"/>`);
+  };
+  if (s?.afterStage) { const from = r.stages.findIndex((o) => o.stageId === s.afterStage); if (from >= 0) add(from, i, s); }
+  r.stages.forEach((o, j) => { if (j !== i && o.afterStage && o.afterStage === s?.stageId) add(i, j, o); });
+  svg.innerHTML = links.join("");
+}
+function applyZoom(w, zoom, anchorClientX) {
+  const scroll = el(w, "[data-st-scroll]"), tl = el(w, "[data-studio-tl]");
+  if (!scroll || !tl) return;
+  zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Math.round(zoom * 4) / 4));
+  const view = scroll.getBoundingClientRect(), x = (anchorClientX ?? view.left + HEAD_WIDTH + (view.width - HEAD_WIDTH) / 2) - view.left;
+  const trackWidth = () => tl.getBoundingClientRect().width - HEAD_WIDTH;
+  const at = (scroll.scrollLeft + x - HEAD_WIDTH) / Math.max(1, trackWidth());
+  w.studioZoom = zoom;
+  scroll.style.setProperty("--st-zoom", zoom);
+  const ruler = el(w, "[data-st-ruler]");
+  if (ruler) ruler.innerHTML = rulerHTML(totalOf(w), zoom, view.width - HEAD_WIDTH);
+  const slider = el(w, "[data-st-zoom]");
+  if (slider && Number(slider.value) !== zoom) slider.value = zoom;
+  scroll.scrollLeft = Math.max(0, at * trackWidth() + HEAD_WIDTH - x);
+  drawLinks(w);
+}
+
+// ——— Input ———
+export function studioInput(w, t) {
+  if (!t.matches?.("[data-st-zoom]")) return false;
+  applyZoom(w, Number(t.value));
+  return true;
+}
+export function studioWheel(w, e) {
+  const scroll = e.target.closest?.(".an-studio [data-st-scroll]");
+  if (!scroll) return;
+  if (e.ctrlKey || e.metaKey) { e.preventDefault(); applyZoom(w, (w.studioZoom ?? 1) * (e.deltaY < 0 ? 1.25 : 0.8), e.clientX); }
+  else if (e.shiftKey) { e.preventDefault(); scroll.scrollLeft += e.deltaY; }
+}
+function closeMenu(w) { el(w, ".an-st-menu")?.remove(); }
+export function studioContextMenu(w, e) {
+  const bar = e.target.closest?.(".an-studio [data-tl-bar]");
+  closeMenu(w);
+  if (!bar || w.busy) return;
+  e.preventDefault();
+  const i = Number(bar.dataset.tlBar), studio = el(w, ""), box = studio.getBoundingClientRect(), r = w.recipe();
+  if (w.stageIndex !== i) { w.stageIndex = i; w.render(); }
+  const menu = document.createElement("div");
+  menu.className = "an-st-menu";
+  menu.setAttribute("role", "menu");
+  menu.style.left = `${Math.min(e.clientX - box.left, box.width - 210)}px`;
+  menu.style.top = `${Math.min(e.clientY - box.top, box.height - 170)}px`;
+  menu.innerHTML = `<b>${esc(w.stageLabel(r.stages[i]))}</b><button role="menuitem" data-action="studio-at-playhead" data-index="${i}">Start at playhead <kbd>${seconds(w.studioTime ?? 0)}</kbd></button><button role="menuitem" data-action="studio-dup-stage" data-index="${i}">Duplicate after it <kbd>Ctrl+D</kbd></button><button role="menuitem" data-action="studio-del-stage" data-index="${i}" ${r.stages.length < 2 ? "disabled" : ""}>Delete <kbd>Del</kbd></button>`;
+  el(w, "").append(menu);
+  menu.querySelector("button")?.focus();
+}
+// Pointer on the ruler or empty track space scrubs; the bottom splitter resizes.
+export function studioPointer(w, e) {
+  if (!e.target.closest?.(".an-st-menu")) closeMenu(w);
+  if (e.button !== 0 || !e.target.closest?.(".an-studio")) return false;
+  const split = e.target.closest("[data-st-hsplit]");
+  if (split) {
+    e.preventDefault();
+    const bottom = el(w, "").getBoundingClientRect().bottom;
+    split.setPointerCapture?.(e.pointerId);
+    split.classList.add("is-active");
+    const move = (ev) => setTimelineHeight(w, bottom - ev.clientY);
+    const up = () => { split.classList.remove("is-active"); split.removeEventListener("pointermove", move); split.removeEventListener("pointerup", up); split.removeEventListener("pointercancel", up); };
+    split.addEventListener("pointermove", move); split.addEventListener("pointerup", up); split.addEventListener("pointercancel", up);
+    return true;
+  }
+  const track = e.target.closest(".an-st-ruler, .an-st-tl .an-tl-track");
+  if (!track || e.target.closest("[data-tl-bar]")) return false;
+  e.preventDefault();
+  if (w.previewMode !== "recipe") { w.previewMode = "recipe"; w.render(); }
+  const scrub = (ev) => {
+    const tl = el(w, "[data-studio-tl]"), lane = tl.querySelector(".an-st-ruler").getBoundingClientRect();
+    moveTo(w, ((ev.clientX - lane.left) / Math.max(1, lane.width)) * totalOf(w));
+  };
+  const target = el(w, "[data-studio-tl]");
+  target.setPointerCapture?.(e.pointerId);
+  scrub(e);
+  const up = () => { target.removeEventListener("pointermove", scrub); target.removeEventListener("pointerup", up); target.removeEventListener("pointercancel", up); };
+  target.addEventListener("pointermove", scrub); target.addEventListener("pointerup", up); target.addEventListener("pointercancel", up);
+  return true;
+}
+export function studioKey(w, e) {
+  if (!e.target.closest?.(".an-studio")) return false;
+  if (e.key === "Escape" && el(w, ".an-st-menu")) { e.preventDefault(); e.stopPropagation(); closeMenu(w); el(w, `[data-tl-bar="${w.stageIndex}"]`)?.focus(); return true; }
+  const ctrl = e.ctrlKey || e.metaKey;
+  if (ctrl && e.key.toLowerCase() === "s") { e.preventDefault(); e.stopPropagation(); el(w, '[data-action="save"]:not(:disabled)')?.click(); return true; }
+  if (e.target.matches("input, textarea, select, [contenteditable]") || e.target.closest(".an-inspector, .an-st-menu")) return false;
+  const onBar = !!e.target.closest("[data-tl-bar]"), key = e.key;
+  const stop = () => { e.preventDefault(); e.stopPropagation(); return true; };
+  if (key === " " && !e.target.matches("button")) { stop(); void togglePlay(w); return true; }
+  if (key === "Home") { moveTo(w, 0); return stop(); }
+  if (key === "End") { moveTo(w, durationOf(w)); return stop(); }
+  if (key.toLowerCase() === "l" && !ctrl) { w.studioLoop = !w.studioLoop; syncTransport(w); return stop(); }
+  if ((key === "," || key === ".") && !ctrl) { moveTo(w, (w.studioTime ?? 0) + (key === "," ? -1 : 1) * (e.shiftKey ? 500 : 50)); return stop(); }
+  if (!onBar && (key === "ArrowLeft" || key === "ArrowRight")) { moveTo(w, (w.studioTime ?? 0) + (key === "ArrowLeft" ? -1 : 1) * (e.shiftKey ? 500 : 50)); return stop(); }
+  if (w.busy) return false;
+  const i = onBar ? Number(e.target.closest("[data-tl-bar]").dataset.tlBar) : w.stageIndex;
+  if ((key === "Delete" || key === "Backspace") && (onBar || e.target.matches(".an-studio"))) { stop(); removeStage(w, i); return true; }
+  if (ctrl && key.toLowerCase() === "d") { stop(); duplicateStage(w, i); return true; }
+  return false;
+}
+
+// ——— Edits ———
+function commit(w, r, snapshot, message) {
+  linkStartModes(r.stages);
+  try { timedStages(r, 0); w.message = message; }
+  catch { r.stages = snapshot; w.message = "Those stages would wait on each other. Choose a stage that starts earlier."; }
+  w.render();
+  el(w, `[data-tl-bar="${w.stageIndex}"]`)?.focus();
+}
+function duplicateStage(w, i) {
+  w.stopEditorPreview();
+  const r = w.edit();
+  if (!r || r.stages.length >= MAX_STAGES) return;
+  const snapshot = clone(r.stages), source = r.stages[i];
+  const copy = { ...clone(source), stageId: crypto.randomUUID(), label: source.label ? `${source.label} copy` : "" };
+  if (r.lifecycle === "document") copy.afterStage = "";
+  else Object.assign(copy, { startMode: "after", startRef: source.stageId, startOffset: 0 });
+  r.stages.splice(i + 1, 0, copy);
+  w.stageIndex = i + 1;
+  commit(w, r, snapshot, "Stage duplicated. Save recipe to apply.");
+}
+function removeStage(w, i) {
+  w.stopEditorPreview();
+  const r = w.edit();
+  if (!r || r.stages.length < 2) return;
+  const snapshot = clone(r.stages), resolved = sampleRecipe(r).stages, removedId = r.stages[i].stageId;
+  r.stages.forEach((stage, j) => {
+    // Keep dependants where they played: freeze their start as a set time.
+    if (stage.afterStage === removedId) { delete stage.startMode; delete stage.startRef; stage.afterStage = ""; stage.delay = Math.round(resolved[j].delay); }
+  });
+  r.stages.splice(i, 1);
+  w.stageIndex = Math.max(0, Math.min(i, r.stages.length - 1));
+  commit(w, r, snapshot, "Stage deleted. Save recipe to apply.");
+}
+function addStage(w, trackId) {
+  const track = STUDIO_TRACKS.find((t) => t.id === trackId);
+  w.stopEditorPreview();
+  const r = w.edit();
+  if (!r || !track || r.stages.length >= MAX_STAGES) return;
+  const snapshot = clone(r.stages), linked = r.lifecycle === "document", last = r.stages.at(-1);
+  const at = linked ? 0 : Math.round(w.studioTime ?? 0);
+  const base = { ...clone(last), stageId: crypto.randomUUID(), label: "", afterStage: "", delay: at, tracks: [] };
+  delete base.startMode; delete base.startRef;
+  let stage;
+  if (track.kind === "motion") stage = { ...base, kind: "motion", motion: "lunge", subject: "source", assets: [], duration: 800, distance: 0.35, intensity: 1, scale: 1, opacity: 1, below: false, persist: false };
+  else if (track.kind === "sound") stage = { ...base, kind: "sound", assets: [], soundFile: "", volume: 0.8, duration: Math.max(500, last.duration ?? 1000) };
+  else if (track.kind === "tokenfx") stage = { ...base, kind: "tokenfx", assets: [], subject: "source", fxLibrary: "tmfx-main", fxPreset: "", persist: linked };
+  else if (linked) stage = { ...base, kind: "aura", subject: "source", persist: true, assets: [...last.assets] };
+  else stage = { ...base, kind: track.kind, subject: track.id === "target" ? "targets" : "source", assets: track.kind === "cast" ? ["jb2a.cast_generic"] : track.kind === "impact" ? ["jb2a.impact"] : [], duration: track.kind === "projectile" ? 800 : 1000 };
+  r.stages.push(stage);
+  w.stageIndex = r.stages.length - 1;
+  commit(w, r, snapshot, `${KINDS[stage.kind]} stage added at ${seconds(at)}.${stage.assets.length || ["motion", "sound", "tokenfx"].includes(stage.kind) ? "" : " Choose its asset in the inspector."}`);
+}
+export async function studioAction(w, action, b) {
+  switch (action) {
+    case "studio-close": w.studio = false; w.render(); return true;
+    case "studio-play": await togglePlay(w); return true;
+    case "studio-stop": pause(w); moveTo(w, 0); return true;
+    case "studio-home": moveTo(w, 0); return true;
+    case "studio-end": moveTo(w, durationOf(w)); return true;
+    case "studio-loop": w.studioLoop = !w.studioLoop; syncTransport(w); return true;
+    case "studio-fit": applyZoom(w, 1); el(w, "[data-st-scroll]").scrollLeft = 0; return true;
+    case "studio-add": addStage(w, b.dataset.stTrack); return true;
+    case "studio-dup-stage": closeMenu(w); duplicateStage(w, Number(b.dataset.index)); return true;
+    case "studio-del-stage": closeMenu(w); removeStage(w, Number(b.dataset.index)); return true;
+    case "studio-at-playhead": closeMenu(w); w.stageIndex = Number(b.dataset.index); w.applyTimelineEdit(w.stageIndex, { ms: w.studioTime ?? 0 }); return true;
+    default: return false;
+  }
+}

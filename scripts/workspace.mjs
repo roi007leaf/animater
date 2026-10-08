@@ -13,8 +13,9 @@ import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
 import { catalogSoundOptions, previewRecipeSounds } from "./spell-sounds.mjs";
 import { starterRecipes } from "./presets.mjs";
-import { reorderStages, recipeDuration, RecipeClock, linkStartModes } from "./choreography.mjs";
+import { reorderStages, recipeDuration, RecipeClock, linkStartModes, moveRow, snapStart, timelineLayout, packLanes } from "./choreography.mjs";
 import { RecipePreview } from "./recipe-preview.mjs";
+import { studioHTML, studioAfterRender, studioAction, studioFrame, studioInput, studioKey, studioPointer, studioWheel, studioContextMenu } from "./studio.mjs";
 import { previewMediaFailed, markPreviewMediaFailure, clearPreviewMediaFailure } from "./preview-media-status.mjs";
 import { chainPreview, hasChain } from "./chain-preview.mjs";
 import { patchDOM } from "./dom-patch.mjs";
@@ -261,6 +262,19 @@ export class Workspace {
     root.addEventListener("drop", (e) => this.onDrop(e), {
       signal: this.abort.signal,
     });
+    root.addEventListener("pointerdown", (e) => { if (studioPointer(this, e)) return; this.onSplitterPointer(e); this.onTimelinePointer(e); }, { signal: this.abort.signal });
+    root.addEventListener("wheel", (e) => studioWheel(this, e), { passive: false, signal: this.abort.signal });
+    root.addEventListener("contextmenu", (e) => studioContextMenu(this, e), { signal: this.abort.signal });
+    root.addEventListener("dblclick", (e) => {
+      const h = e.target.closest?.("[data-splitter]"); if (h) this.setInspectorWidth(380, h.closest(".an-work, .an-studio"));
+      if (e.target.closest?.("[data-st-hsplit]")) { this.studioTimelineHeight = 280; try { globalThis.localStorage?.removeItem("animater.timelineHeight"); } catch {} this.render(); }
+    }, { signal: this.abort.signal });
+    root.addEventListener("keydown", (e) => {
+      if (this.isStudio() && studioKey(this, e)) return;
+      const bar = e.target.closest?.("[data-tl-bar]"); if (bar) { this.nudgeTimeline(bar, e); return; }
+      const split = e.target.closest?.("[data-splitter]");
+      if (split && ["ArrowLeft", "ArrowRight"].includes(e.key)) { e.preventDefault(); this.setInspectorWidth(this.inspectorWidth() + (e.key === "ArrowLeft" ? 20 : -20), split.closest(".an-work, .an-studio")); }
+    }, { signal: this.abort.signal });
     root.addEventListener(
       "dragstart",
       (e) => {
@@ -395,6 +409,7 @@ export class Workspace {
       ? `${missing.length} missing asset${missing.length > 1 ? "s" : ""}`
       : "Ready to play";
   }
+  isStudio() { return this.page === "recipes" && !!this.studio && !!this.recipe(); }
   render() {
     if(this.page!=='assets'||this.mediaLibrary?.fxScene)void this.mediaLibrary?.stopTokenPreview();
     if(!catalogPageAllowed(this.page,this.host.environment()))this.page='recipes';
@@ -446,7 +461,7 @@ export class Workspace {
     const env = this.host.environment();
     patchDOM(
       this.root,
-      `<div class="an-shell">
+      `<div class="an-shell${this.isStudio() ? " is-studio" : ""}">
       <aside class="an-nav"><div class="an-brand"><span class="an-logo">A</span><div>Animater<small>MAKE EVERY ACTION FELT</small></div></div>
         <div class="an-nav-caption">WORKSPACE</div>
         ${[
@@ -463,7 +478,7 @@ export class Workspace {
           .join("")}
         <div class="an-nav-bottom"><div class="an-pack"><span class="an-dot ${env.ready ? "is-ready" : ""}"></span><div>${esc(env.pack)}<small>${this.host.catalog().length.toLocaleString()} asset variants</small></div></div><button data-action="stop" class="an-stop">■ Stop my effects</button><small class="an-version">v0.2 · ${esc(env.system)}${env.demo ? " · PREVIEW" : ""}</small></div>
       </aside>
-      <main class="an-main"><header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : ""}</div></header>
+      <main class="an-main">${this.isStudio() ? "" : `<header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : ""}</div></header>`}
         <div role="status" aria-live="polite" class="an-toast ${this.message ? "is-visible" : ""}">${esc(this.message)}</div>
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
         ${!env.ready ? `<div class="an-warning">${esc(env.problem)} <button data-action="page" data-page="setup">Open setup →</button></div>` : ""}
@@ -512,6 +527,7 @@ export class Workspace {
           el.disabled = true;
         });
     this.observeThumbnails();
+    if (this.isStudio()) studioAfterRender(this);
     if(this.page==='assets') { this.mediaLibrary?.syncPreview(); void this.mediaLibrary?.load(); }
   }
   observeThumbnails() {
@@ -541,6 +557,7 @@ export class Workspace {
       : KINDS[stage.kind];
   }
   updateInspector() {
+    if (this.isStudio()) return this.render();
     const inspector = this.root.querySelector(".an-inspector");
     if (!inspector) return this.render();
     this.stopEditorPreview();
@@ -554,6 +571,122 @@ export class Workspace {
       details.open = groups.includes(details.dataset.optionsGroup);
     inspector.scrollTop = top;
     if (this.previewMode === "stage") this.startMotionPreview(this.recipe());
+  }
+  inspectorWidth() {
+    if (this.panelWidth === undefined) {
+      let stored = NaN;
+      try { stored = Number(globalThis.localStorage?.getItem("animater.inspectorWidth")); } catch {}
+      this.panelWidth = Number.isFinite(stored) && stored >= 300 ? stored : 380;
+    }
+    return this.panelWidth;
+  }
+  setInspectorWidth(px, work) {
+    const max = Math.max(320, (work?.getBoundingClientRect().width ?? 1200) - 260);
+    this.panelWidth = Math.round(Math.min(max, Math.max(300, px)));
+    work?.style.setProperty("--an-inspector-width", `${this.panelWidth}px`);
+    try { globalThis.localStorage?.setItem("animater.inspectorWidth", String(this.panelWidth)); } catch {}
+  }
+  onSplitterPointer(e) {
+    const handle = e.target.closest?.("[data-splitter]");
+    if (!handle || e.button !== 0) return;
+    e.preventDefault();
+    const work = handle.closest(".an-work, .an-studio"), right = work.getBoundingClientRect().right;
+    handle.setPointerCapture?.(e.pointerId);
+    handle.classList.add("is-active");
+    const move = ev => this.setInspectorWidth(right - ev.clientX, work);
+    const up = () => { handle.classList.remove("is-active"); handle.removeEventListener("pointermove", move); handle.removeEventListener("pointerup", up); handle.removeEventListener("pointercancel", up); };
+    handle.addEventListener("pointermove", move);
+    handle.addEventListener("pointerup", up);
+    handle.addEventListener("pointercancel", up);
+  }
+  timelineWhen(s, r) {
+    if (s.startMode) {
+      const ref = r.stages.find(o => o.stageId === s.afterStage);
+      const name = ref ? this.stageLabel(ref) : "previous stage";
+      return s.startMode === "with" ? `with ${name}` : `after ${name}${s.startOffset > 0 ? ` +${(s.startOffset / 1000).toFixed(2)}s` : ""}`;
+    }
+    return s.afterStage ? "linked" : `at ${(s.delay / 1000).toFixed(2)}s`;
+  }
+  timelineBarHTML(r, row, index, total) {
+    const pct = ms => ((ms / total) * 100).toFixed(3);
+    const i = row.index, s = r.stages[i], name = this.stageLabel(s), when = this.timelineWhen(s, r), length = ((row.end - row.start) / 1000).toFixed(2);
+    return `<div class="an-tl-bar kind-${esc(s.kind)}${i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" title="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${esc(name)}</span><small class="an-tl-bar-when">${esc(when)}</small><span class="an-tl-resize" data-tl-resize="${i}" title="Drag to change length"></span></div>`;
+  }
+  timelineX(total, ms) { return `calc(var(--tl-label) + (100% - var(--tl-label)) * ${Math.max(0, Math.min(1, ms / total))})`; }
+  onTimelinePointer(e) {
+    const bar = e.target.closest?.("[data-tl-bar]");
+    if (!bar || this.busy || e.button !== 0) return;
+    e.preventDefault();
+    const i = Number(bar.dataset.tlBar), resize = !!e.target.closest("[data-tl-resize]");
+    const r = this.recipe(), tl = bar.closest(".an-tl"), total = Number(tl.dataset.tlTotal);
+    const msPerPx = total / Math.max(1, bar.parentElement.getBoundingClientRect().width);
+    const layout = timelineLayout(r), row = layout.rows[i];
+    const others = layout.rows.filter(o => o.index !== i).map(o => ({ stageId: o.stageId, start: o.start, end: o.end, name: this.stageLabel(r.stages[o.index]) }));
+    if (this.isStudio()) others.push({ stageId: "__playhead", start: this.studioTime ?? 0, end: this.studioTime ?? 0, name: "playhead" });
+    const playheadSnap = (ms) => this.isStudio() && Math.abs(ms - (this.studioTime ?? 0)) <= 10 * msPerPx ? this.studioTime ?? 0 : null;
+    const guide = tl.querySelector("[data-tl-guide]"), x0 = e.clientX;
+    let result = null;
+    bar.setPointerCapture?.(e.pointerId);
+    bar.classList.add("is-moving");
+    const show = (ms, text) => { guide.hidden = false; guide.style.left = this.timelineX(total, ms); guide.querySelector("span").textContent = text; };
+    const move = ev => {
+      const dms = (ev.clientX - x0) * msPerPx;
+      if (Math.abs(ev.clientX - x0) < 3 && !result) return;
+      if (resize) {
+        const end = ev.altKey ? null : playheadSnap(row.end + dms);
+        const duration = Math.max(100, end !== null && end > row.start ? end - row.start : Math.round((row.end - row.start + dms) / 50) * 50);
+        bar.style.width = `${(duration / total) * 100}%`;
+        result = { duration };
+        show(row.start + duration, `${(duration / 1000).toFixed(2)}s long`);
+        return;
+      }
+      let ms = Math.max(0, row.start + dms);
+      let snap = ev.altKey ? null : snapStart(ms, others, 10 * msPerPx);
+      ms = snap ? snap.at : Math.round(ms / 50) * 50;
+      const onPlayhead = snap?.ref === "__playhead";
+      if (onPlayhead) snap = null;
+      bar.style.left = `${(ms / total) * 100}%`;
+      result = { ms, snap };
+      const ref = snap && others.find(o => o.stageId === snap.ref);
+      show(ms, snap ? `${snap.mode === "with" ? "Starts with" : "Starts after"} ${ref.name}` : onPlayhead ? `Starts at playhead ${(ms / 1000).toFixed(2)}s` : `Starts at ${(ms / 1000).toFixed(2)}s`);
+    };
+    const up = ev => {
+      bar.releasePointerCapture?.(ev.pointerId);
+      bar.removeEventListener("pointermove", move);
+      bar.removeEventListener("pointerup", up);
+      bar.removeEventListener("pointercancel", up);
+      guide.hidden = true;
+      this.stageIndex = i;
+      if (result && ev.type === "pointerup") this.applyTimelineEdit(i, result);
+      else this.render();
+    };
+    bar.addEventListener("pointermove", move);
+    bar.addEventListener("pointerup", up);
+    bar.addEventListener("pointercancel", up);
+  }
+  applyTimelineEdit(i, result) {
+    this.stopEditorPreview();
+    const r = this.edit();
+    if (!r) return;
+    const s = r.stages[i], snapshot = clone(r.stages);
+    if (result.duration) s.duration = result.duration;
+    else if (result.snap) { s.startMode = result.snap.mode; s.startRef = result.snap.ref; s.startOffset = 0; }
+    else { delete s.startMode; delete s.startRef; s.afterStage = ""; s.delay = Math.round(result.ms); }
+    linkStartModes(r.stages);
+    try { timedStages(r, 0); this.message = "Timeline updated. Save recipe to apply."; }
+    catch { r.stages = snapshot; this.message = "Those stages would wait on each other. Choose a stage that starts earlier."; }
+    this.render();
+  }
+  nudgeTimeline(bar, e) {
+    if ((e.key === "Enter" || e.key === " ") && !this.busy) { e.preventDefault(); this.stageIndex = Number(bar.dataset.tlBar); this.render(); this.root.querySelector(`[data-tl-bar="${this.stageIndex}"]`)?.focus(); return true; }
+    if (!["ArrowLeft", "ArrowRight"].includes(e.key) || this.busy) return false;
+    e.preventDefault();
+    const i = Number(bar.dataset.tlBar), row = timelineLayout(this.recipe()).rows[i];
+    const step = (e.shiftKey ? 500 : 50) * (e.key === "ArrowLeft" ? -1 : 1);
+    if (e.altKey) this.applyTimelineEdit(i, { duration: Math.max(100, row.end - row.start + step) });
+    else this.applyTimelineEdit(i, { ms: Math.max(0, row.start + step) });
+    this.root.querySelector(`[data-tl-bar="${i}"]`)?.focus();
+    return true;
   }
   stageStartLabel(stage, recipe) {
     if (stage.startMode) {
@@ -724,6 +857,7 @@ export class Workspace {
     return `<div class="an-recipe-scene an-chain-scene" data-recipe-scene data-chain-preview data-preview-width="${chain.width}" data-preview-height="${chain.height}" data-preview-tokens="${esc(JSON.stringify(tokens))}" data-preview-grid-distance="${Number(tokens.gridDistance) || 5}" aria-label="Full recipe composition preview">${layers}${actors}<span class="an-preview-label">FULL RECIPE · ${hasChain(chain.recipe) ? "CHAIN" : chain.recipe.previewArea?.type === "line" ? "LINE" : chain.recipe.previewArea?.type === "cone" ? "CONE" : chain.recipe.stages.some(isPathMotion) ? "MOTION" : "VOLLEY"}</span><span class="an-preview-idle" data-preview-idle>${esc(chain.note)}</span></div>`;
   }
   updatePlayback(frame) {
+    if (this.isStudio()) studioFrame(this, frame);
     this.root.querySelectorAll("[data-stage-drag]").forEach((el) => {
       const state = frame.stages[Number(el.dataset.stageDrag)].state;
       el.classList.toggle("is-playing", state === "playing");
@@ -740,6 +874,8 @@ export class Workspace {
       progress.max = frame.duration || 1;
       progress.value = frame.time;
     }
+    const head = this.root.querySelector("[data-tl-playhead]"), tl = this.root.querySelector(".an-tl");
+    if (head && tl) { head.hidden = false; head.style.left = this.timelineX(Number(tl.dataset.tlTotal), frame.time); }
     const time = this.root.querySelector("[data-preview-time]");
     if (time)
       time.textContent = `${(frame.time / 1000).toFixed(1)} / ${(frame.duration / 1000).toFixed(1)}s`;
@@ -762,7 +898,11 @@ export class Workspace {
           timeline.scrollLeft -= bounds.left - rect.left;
       }
     }
-    let label = frame.complete
+    let label = this.isStudio() && !this.studioPlaying
+      ? active.length
+        ? `At playhead: stage${active.length > 1 ? "s" : ""} ${active.join(" + ")}`
+        : "Nothing plays at the playhead"
+      : frame.complete
       ? "Recipe complete"
       : active.length
         ? `Playing stage${active.length > 1 ? "s" : ""} ${active.join(" + ")}`
@@ -794,6 +934,11 @@ export class Workspace {
       delete el.dataset.playback;
       el.querySelector('[data-action="stage"]')?.removeAttribute("aria-label");
     });
+    this.studioPlaying = false;
+    const play = this.root.querySelector('[data-action="studio-play"]');
+    if (play) { play.textContent = "▶"; play.classList.remove("is-active"); play.setAttribute("aria-label", "Play"); }
+    const head = this.root.querySelector("[data-tl-playhead]");
+    if (head && !this.isStudio()) head.hidden = true;
   }
   async playEditorPreview() {
     if (this.previewRun) {
@@ -845,10 +990,10 @@ export class Workspace {
     if (from === to || from < 0 || to < 0 || to >= current.stages.length)
       return;
     const r = this.edit();
-    r.stages = reorderStages(r.stages, from, to);
+    r.stages = moveRow(r.stages, from, to);
     this.stageIndex = to;
     this.message =
-      "Stage reordered. Start times follow timeline slots; overlaps preserved. Save recipe to apply.";
+      "Stage moved in the list. Timing is unchanged. Save recipe to apply.";
     this.clearStageDrag();
     this.render();
     this.root
@@ -897,9 +1042,10 @@ export class Workspace {
           .toLowerCase()
           .includes(this.search.toLowerCase()),
     );
-    return `<div class="an-work"><section class="an-library"><div class="an-search"><span>⌕</span><input aria-label="Search recipes" data-search="recipes" placeholder="Search spells, weapons, or recipes…" value="${esc(this.search)}"><kbd>/</kbd></div>
+    if (this.studio && recipe) return studioHTML(this, recipe);
+    return `<div class="an-work is-library"><section class="an-library"><div class="an-search"><span>⌕</span><input aria-label="Search recipes" data-search="recipes" placeholder="Search spells, weapons, or recipes…" value="${esc(this.search)}"><kbd>/</kbd></div>
       <div class="an-chips" role="group" aria-label="Recipe categories">${categories.map((c) => `<button data-action="category" data-category="${esc(c)}" class="${c === this.category ? "is-active" : ""}">${esc(c)}</button>`).join("")}</div>
-      <div class="an-section-title"><span>${filtered.length} recipe${filtered.length === 1 ? "" : "s"}</span><small>Pick → customize → play</small></div>
+      <div class="an-section-title"><span>${filtered.length} recipe${filtered.length === 1 ? "" : "s"}</span><small>Open a recipe to edit it in the studio</small></div>
       <div class="an-grid">${
         filtered
           .map(
@@ -912,7 +1058,7 @@ export class Workspace {
         `<div class="an-empty">No recipes found.<small>Try another search or create your own.</small></div>`
       }</div>
       <div class="an-tip"><span>✧</span><div><b>A little choreography goes a long way.</b><p>Start with a caster cue. Add travel. Finish with impact.</p></div></div></section>
-      <aside class="an-inspector">${recipe ? this.inspectorHTML(recipe) : `<div class="an-empty">Create your first recipe.</div>`}</aside></div>`;
+      </div>`;
   }
   optionalFxPreviewHTML(stage,index) {
     if(stage.kind==='tokenfx')return '';
@@ -938,6 +1084,21 @@ export class Workspace {
     }).join('');
     return `<label>FXMaster category<select ${attrs('fxCategory')}>${options({particle:'Scene particles',filter:'Scene filter'},category)}</select></label><label>FXMaster effect<select ${attrs('fxType')} ${catalog.sceneReady?'':'disabled'}>${options({'':'Choose effect',...Object.fromEntries(effects.map(e=>[e.type,e.label]))},stage.fxType ?? '')}</select></label><p class="an-hint">${catalog.sceneReady?'Whole scene · GM playback. Skipped in private preview.':'Enable FXMaster with Effects API support.'}</p>${fields?`<div class="an-options-grid">${fields}</div>`:''}`;
   }
+  monitorHTML(r) {
+    const canvasUnavailable = Boolean(this.host.environment().demo);
+    const linked = r.lifecycle === "document";
+    const motionBlocked = this.motionBlocked(r);
+    const unconfigured = this.status(r) === "Choose an asset";
+    const index = Math.min(this.stageIndex, r.stages.length - 1);
+    const s = r.stages[index];
+    const audioPreview = previewRecipeSounds(r, this.host.soundCatalog?.())
+      .stages[index];
+    const key = resolveAsset(s, this.host.catalog());
+    const file = mediaForReference(this.host.catalog(),key)?.file;
+    const assetFree = ["motion", "sprite", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind);
+    return `<div class="an-preview-tabs" role="group" aria-label="Preview mode"><button data-action="preview-mode" data-mode="recipe" class="${this.previewMode === "recipe" ? "is-active" : ""}">Composition</button><button data-action="preview-mode" data-mode="stage" class="${this.previewMode === "stage" ? "is-active" : ""}">Selected stage</button></div>
+      <div class="an-preview ${this.previewMode === "recipe" ? "an-full-preview" : ""}" style="--effect:${esc(r.color)}">${this.previewMode === "recipe" ? this.recipePreviewHTML(r) : `${OPTIONAL_FX_KINDS.has(s.kind) ? `<div class="an-preview-empty"><b>${esc(KINDS[s.kind])}</b><small>${s.kind==='scenefx'?'Play at table · shared scene':'Local canvas preview · token filter'}</small></div>` : s.kind === "motion" ? `<div class="an-motion-scene" aria-label="Token motion schematic preview"><div class="an-demo-token" data-motion-demo>✦</div><div class="an-demo-target">◇</div><small>Token motion · schematic</small></div>` : s.kind === "sound" ? (audioPreview.skipSound ? `<div class="an-preview-empty"><small>Optional sound pack unavailable. Visual stages still play.</small></div>` : `<audio controls src="${esc(this.host.mediaURL?.(audioPreview.soundFile) ?? audioPreview.soundFile)}" aria-label="Selected sound preview" data-cue-volume="${audioPreview.volume}"></audio>`) : s.kind === "sprite" ? `<div class="an-preview-empty">✦<small>Token copies appear in Full recipe preview</small></div>` : file ? this.visualMediaHTML(file,'controls autoplay aria-label="Selected stage asset preview"') : `<div class="an-preview-empty">◇<small>Choose an installed asset</small></div>`}<span class="an-preview-label">STAGE ${index + 1} · ${s.kind === "motion" ? "TOKEN MOTION" : "ASSET PREVIEW"}</span>`}</div>`;
+  }
   inspectorHTML(r) {
     const canvasUnavailable = Boolean(this.host.environment().demo);
     const linked = r.lifecycle === "document";
@@ -950,25 +1111,18 @@ export class Workspace {
     const key = resolveAsset(s, this.host.catalog());
     const file = mediaForReference(this.host.catalog(),key)?.file;
     const assetFree = ["motion", "sprite", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind);
-    return `<div class="an-inspector-head"><span class="an-eyebrow">RECIPE EDITOR</span><button class="an-icon" data-action="duplicate" aria-label="Duplicate recipe">⧉</button></div><input class="an-title-input" aria-label="Recipe name" data-field="name" value="${esc(r.name)}"><textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea>
-      <div class="an-preview-tabs" role="group" aria-label="Preview mode"><button data-action="preview-mode" data-mode="recipe" class="${this.previewMode === "recipe" ? "is-active" : ""}">Full recipe</button><button data-action="preview-mode" data-mode="stage" class="${this.previewMode === "stage" ? "is-active" : ""}">Selected stage</button></div>
-      <div class="an-preview ${this.previewMode === "recipe" ? "an-full-preview" : ""}" style="--effect:${esc(r.color)}">${this.previewMode === "recipe" ? this.recipePreviewHTML(r) : `${OPTIONAL_FX_KINDS.has(s.kind) ? `<div class="an-preview-empty"><b>${esc(KINDS[s.kind])}</b><small>${s.kind==='scenefx'?'Play at table · shared scene':'Local canvas preview · token filter'}</small></div>` : s.kind === "motion" ? `<div class="an-motion-scene" aria-label="Token motion schematic preview"><div class="an-demo-token" data-motion-demo>✦</div><div class="an-demo-target">◇</div><small>Token motion · schematic</small></div>` : s.kind === "sound" ? (audioPreview.skipSound ? `<div class="an-preview-empty"><small>Optional sound pack unavailable. Visual stages still play.</small></div>` : `<audio controls src="${esc(this.host.mediaURL?.(audioPreview.soundFile) ?? audioPreview.soundFile)}" aria-label="Selected sound preview" data-cue-volume="${audioPreview.volume}"></audio>`) : s.kind === "sprite" ? `<div class="an-preview-empty">✦<small>Token copies appear in Full recipe preview</small></div>` : file ? this.visualMediaHTML(file,'controls autoplay aria-label="Selected stage asset preview"') : `<div class="an-preview-empty">◇<small>Choose an installed asset</small></div>`}<span class="an-preview-label">STAGE ${index + 1} · ${s.kind === "motion" ? "TOKEN MOTION" : "ASSET PREVIEW"}</span>`}</div>
-      <div class="an-preview-transport"><button class="an-primary" data-action="recipe-preview" ${this.busy || unconfigured ? "disabled" : ""}>▶ Preview recipe</button><span data-preview-time>0.0 / ${(this.previewDuration(r) / 1000).toFixed(1)}s</span></div><progress data-recipe-progress aria-label="Recipe playback progress" max="${this.previewDuration(r)}" value="0"></progress><small class="an-preview-status" data-preview-status role="status" aria-live="polite">${unconfigured ? "Choose an asset to preview your first stage" : "Ready · all stages, original timing"}</small>
-      <p class="an-hint">${hasChain(r) ? "Chain preview follows targeting order, with three sample targets when fewer than two are targeted." : "Editor composition uses sample spacing. Motion paths show approach, hold and return."} Local preview uses actual canvas placement.</p>
-      ${linked ? `<div class="an-catalog-use-status is-using"><b>Document-linked animation</b><small>Sustained layers and token filters follow the affected token while its native document is active.</small><button data-action="enable-state-custom" ${canvasUnavailable || !this.host.environment().ready ? "disabled" : ""}>Enable customization</button></div>` : ""}
-      <div class="an-play-actions"><button class="an-primary" data-action="preview" title="${canvasUnavailable ? "Canvas playback requires Foundry" : "Preview privately on your canvas"}" ${this.busy || canvasUnavailable || unconfigured ? "disabled" : ""}>▷ Local preview</button><button data-action="play" title="${canvasUnavailable ? "Canvas playback requires Foundry" : motionBlocked ? "Foundry has not registered the token-motion channel" : "Broadcast this recipe to the table"}" ${this.busy || canvasUnavailable || motionBlocked || unconfigured || linked ? "disabled" : ""}>Play at table</button></div><p class="an-hint">${linked ? "Select the affected token for a temporary preview. Native condition/effect documents control table playback." : canvasUnavailable ? "Canvas playback requires Foundry. Video previews show installed assets." : "Select caster token and target tokens. Preview stays on your screen."}</p>
-      <div class="an-editor-section"><div class="an-section-title"><b>Choreography</b><button class="an-text-button" data-action="add-motion" ${linked || r.stages.length >= MAX_STAGES || this.busy ? "disabled" : ""}>+ Token</button><button class="an-text-button" data-action="add-stage" ${r.stages.length >= MAX_STAGES || this.busy ? "disabled" : ""}>${linked ? "+ Layer" : "+ Stage"}</button></div><p class="an-hint">Drag stages to reorder. Each stage starts after or with the one before it, or at a set time. Joined cards play together.</p><div class="an-timeline">${r.stages.map((stage, i) => `<div class="an-stage ${i === index ? "is-selected" : ""}${stage.startMode === "with" && (!stage.startRef || stage.startRef === r.stages[i - 1]?.stageId) ? " is-with-previous" : ""}" data-stage-drag="${i}" draggable="${!this.busy}"><span class="an-drag-handle" aria-hidden="true">⠿</span><button data-action="stage" data-index="${i}" class="${i === index ? "is-active" : ""}" aria-pressed="${i === index}"><span>${i + 1}</span><b>${esc(this.stageLabel(stage))}</b><small>${esc(this.stageStartLabel(stage, r))}</small></button></div>`).join("")}</div><div class="an-stage-tools"><button data-action="move-stage" data-dir="-1" ${index === 0 || this.busy ? "disabled" : ""} aria-label="Move selected stage earlier">← Earlier</button><button data-action="move-stage" data-dir="1" ${index === r.stages.length - 1 || this.busy ? "disabled" : ""} aria-label="Move selected stage later">Later →</button><span>Stage ${index + 1} of ${r.stages.length}</span></div>
+    return `<div class="an-inspector-head"><span class="an-eyebrow">STAGE ${index + 1} OF ${r.stages.length}</span><span class="an-st-kind kind-${esc(s.kind)}">${esc(KINDS[s.kind])}</span></div>
+      <div class="an-editor-section an-stage-fields">
         <label>Stage name<input data-field="label" data-index="${index}" value="${esc(s.label ?? "")}" placeholder="${esc(KINDS[s.kind])}"></label><label>Stage type<select data-field="kind" data-index="${index}">${options(linked ? {aura: "Sustained attached layer",tokenfx:"Token Magic FX"} : KINDS, s.kind)}</select></label>
         ${OPTIONAL_FX_KINDS.has(s.kind) ? this.optionalFxControlsHTML(s,index) : s.kind === "motion" ? this.motionControlsHTML(s, index) : s.kind === "sound" ? `<label>Audio file<input data-field="soundFile" data-index="${index}" placeholder="sounds/spell.ogg" value="${esc(s.soundFile)}"></label>${this.host.soundCatalog || this.host.pickMedia ? `<button data-action="browse-sound">Browse sounds</button>` : ""}<p class="an-hint">Relative Foundry audio path. Sound plays with recipe; Stop ends it too.</p>` : s.kind === "sprite" ? `<p class="an-hint">Copies token artwork into Sequencer. Configure copies, shadows and tracks below.</p>` : `<label>Visual asset<button class="an-asset-picker" data-action="browse">${esc(key ?? s.assets[0] ?? "Choose an asset")}<span>Browse ↗</span></button></label>${key && key !== s.assets[0] ? `<p class="an-hint">Using installed fallback variant. Choose another in Assets anytime.</p>` : ""}`}
         ${["sprite", "aura", "tokenfx"].includes(s.kind) ? `<label>Subject<select data-field="subject" data-index="${index}">${options(linked ? {source: "Affected token"} : { source: "Caster token", targets: "Target tokens" }, s.subject ?? "source")}</select></label>` : ""}
-        ${r.stages.length > 1 && !linked ? `<div class="an-field-row an-start-row"><label>Start<select data-field="startMode" data-index="${index}">${options({ after: "After", with: "With", time: "At a set time", ...(s.afterStage && !s.startMode ? { link: "Linked (custom)" } : {}) }, s.startMode ?? (s.afterStage ? "link" : "time"))}</select></label>${s.startMode ? `<label>Stage<select data-field="startRef" data-index="${index}">${options({ ...(index > 0 ? { previous: "Previous stage" } : {}), ...Object.fromEntries(r.stages.map((o, j) => [o, j]).filter(([, j]) => j !== index).map(([o, j]) => [o.stageId, `${j + 1} · ${o.label || KINDS[o.kind]}`])) }, s.startRef ?? "previous")}</select></label>` : ""}${s.startMode === "after" ? `<label>Gap (ms)<input type="number" min="0" max="30000" step="50" data-field="startOffset" data-index="${index}" value="${s.startOffset ?? 0}"></label>` : ""}</div>` : ""}
+        ${r.stages.length > 1 && !linked ? `<div class="an-field-row an-start-row"><label>Start<select data-field="startMode" data-index="${index}">${options({ with: "With", after: "After", time: "At a set time", ...(s.afterStage && !s.startMode ? { link: "Linked (custom)" } : {}) }, s.startMode ?? (s.afterStage ? "link" : "time"))}</select></label>${s.startMode ? `<label>Stage<select data-field="startRef" data-index="${index}">${options(Object.fromEntries(r.stages.filter((o, j) => j !== index).map(o => [o.stageId, this.stageLabel(o)])), s.startRef ?? s.afterStage)}</select></label>` : ""}${s.startMode === "after" ? `<label>Gap (ms)<input type="number" min="0" max="30000" step="50" data-field="startOffset" data-index="${index}" value="${s.startOffset ?? 0}"></label>` : ""}</div>` : ""}
         <div class="an-field-row"><label>${s.afterStage ? "Linked start (sample ms)" : "Start (ms)"}<input type="number" min="0" max="30000" step="50" data-field="delay" data-index="${index}" value="${s.afterStage ? sampleRecipe(r).stages[index].delay : s.delay}" ${s.afterStage ? "disabled" : ""}></label><label>${linked ? "Preview sample (ms)" : s.kind === "projectile" || isPathMotion(s) && s.motionRange === "target" ? "Base duration (ms)" : "Duration (ms)"}<input type="number" min="100" max="30000" step="100" data-field="duration" data-index="${index}" value="${s.duration}"></label>${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Scale<input type="number" min="0.1" max="5" step="0.1" data-field="scale" data-index="${index}" value="${s.scale}"></label>`}</div>
         ${this.compositionHTML(r, s, index)}
         ${this.stageOptionsHTML(s, index, linked)}
         <details class="an-advanced" data-options-group="basic"><summary>Asset & visibility</summary>${assetFree ? "" : `<label>Fallback keys (comma separated)<textarea rows="2" data-field="assets" data-index="${index}">${esc(s.assets.join(","))}</textarea></label>`}${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Opacity<input type="number" min="0.1" max="1" step="0.1" data-field="opacity" data-index="${index}" value="${s.opacity}"></label><label class="an-check"><input type="checkbox" data-field="below" data-index="${index}" ${s.below ? "checked" : ""}> Below tokens</label>`}${(s.kind === "aura" || linked && s.kind === "tokenfx") ? `<label class="an-check"><input type="checkbox" data-field="persist" data-index="${index}" ${s.persist ? "checked" : ""}> ${linked ? "Keep this layer while document active" : "Persist until stopped"}</label>` : ""}<button data-action="remove-stage" ${r.stages.length === 1 || this.busy ? "disabled" : ""}>Remove stage</button></details></div>
-      <div class="an-editor-section an-binding"><div class="an-section-title"><b>When it plays</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>${motionBlocked ? motionSyncNoticeHTML(this.host.environment()) : ""}<label>Trigger<select data-field="trigger">${options(linked ? {effect: "Native document active"} : EVENTS, r.trigger)}</select></label><label>Item names / slugs<input data-field="match" placeholder="fire bolt, ignition" value="${esc(r.match)}"></label><p class="an-hint">Exact matches. Commas separate alternatives. Drop an item here to bind only that item.</p>${r.itemUuid ? `<div class="an-bound">Bound: ${esc(r.itemUuid)}<button data-action="unbind">Unbind</button></div>` : ""}
-      ${r.weaponMode || r.category === "Weapons" ? `<label>PF2e weapon use<select data-field="weaponMode">${options({ "": "Any usage", melee: "Melee Strike", ranged: "Ranged Strike", thrown: "Thrown Strike" }, r.weaponMode ?? "")}</select></label><p class="an-hint">PF2e's rolled usage selects this customization. Other uses keep their own animation.</p>` : ""}<div class="an-field-row"><label>Category<input data-field="category" value="${esc(r.category)}"></label><label>Accent<input type="color" aria-label="Recipe accent color" data-field="color" value="${esc(r.color)}"></label></div></div>
-      <footer class="an-save-bar"><button data-action="delete" class="an-icon" aria-label="Delete recipe">⌫</button><button data-action="revert" ${!this.dirty.has(r.id) ? "disabled" : ""}>Revert</button><button data-action="save" class="an-primary" ${!this.dirty.has(r.id) || this.busy ? "disabled" : ""}>${this.dirty.has(r.id) ? "Save recipe" : "Saved ✓"}</button></footer>`;
+      <div class="an-editor-section an-binding"><div class="an-section-title"><b>Recipe &amp; trigger</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>${motionBlocked ? motionSyncNoticeHTML(this.host.environment()) : ""}<label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label><label>Trigger<select data-field="trigger">${options(linked ? {effect: "Native document active"} : EVENTS, r.trigger)}</select></label><label>Item names / slugs<input data-field="match" placeholder="fire bolt, ignition" value="${esc(r.match)}"></label><p class="an-hint">Exact matches. Commas separate alternatives. Drop an item here to bind only that item.</p>${r.itemUuid ? `<div class="an-bound">Bound: ${esc(r.itemUuid)}<button data-action="unbind">Unbind</button></div>` : ""}
+      ${r.weaponMode || r.category === "Weapons" ? `<label>PF2e weapon use<select data-field="weaponMode">${options({ "": "Any usage", melee: "Melee Strike", ranged: "Ranged Strike", thrown: "Thrown Strike" }, r.weaponMode ?? "")}</select></label><p class="an-hint">PF2e's rolled usage selects this customization. Other uses keep their own animation.</p>` : ""}<div class="an-field-row"><label>Category<input data-field="category" value="${esc(r.category)}"></label><label>Accent<input type="color" aria-label="Recipe accent color" data-field="color" value="${esc(r.color)}"></label></div></div>`;
   }
   builderHTML() {
     const r = {
@@ -1177,6 +1331,7 @@ export class Workspace {
   }
   onInput(e) {
     const t = e.target;
+    if (studioInput(this, t)) return;
     if(this.mediaLibrary?.input(t))return;
     if(this.dndCatalog?.input(t))return;
     if (t.dataset.builder) {
@@ -1286,11 +1441,11 @@ export class Workspace {
       const i = Number(t.dataset.index);
       const snapshot = clone(r.stages);
       if (key === "startRef") {
-        if (t.value === "previous") delete s.startRef; else s.startRef = t.value;
+        s.startRef = t.value;
       } else if (t.value === "after" || t.value === "with") {
         s.startMode = t.value;
-        // The first stage has no previous one; default it to the next stage.
-        if (i === 0 && !s.startRef) s.startRef = r.stages[1]?.stageId;
+        // Always name the stage it follows, so moving rows never changes timing.
+        if (!s.startRef) s.startRef = (i > 0 ? r.stages[i - 1] : r.stages[1])?.stageId;
       } else if (t.value === "time") {
         // Freeze the current resolved start as a plain time.
         const at = sampleRecipe(r).stages[i]?.delay ?? s.delay ?? 0;
@@ -1517,7 +1672,7 @@ export class Workspace {
         selected: (state.selected ?? []).filter((id) => id !== selected),
         customized: [...new Set([...(state.customized ?? []), selected])],
       });
-      this.selected = saved?.id ?? recipe.id; this.page = "recipes"; this.stageIndex = 0; this.search = ""; this.category = "All";
+      this.selected = saved?.id ?? recipe.id; this.page = "recipes"; this.studio = true; this.studioTime = 0; this.stageIndex = 0; this.search = ""; this.category = "All";
       this.render(); return true;
     }
     return false;
@@ -1564,7 +1719,7 @@ export class Workspace {
         if (!saved) await this.host.save([...this.host.recipes(), recipe]);
         const state = normalizeWeaponCatalogState(this.host.weaponCatalogState?.()), key = weaponCustomizationKey(this.selectedWeapon, recipe.weaponMode);
         await this.host.setWeaponCatalogState({ customized: [...new Set([...state.customized, key])] });
-        this.selected = saved?.id ?? recipe.id; this.page = "recipes"; this.search = ""; this.category = "All"; this.stageIndex = 0;
+        this.selected = saved?.id ?? recipe.id; this.page = "recipes"; this.studio = true; this.studioTime = 0; this.search = ""; this.category = "All"; this.stageIndex = 0;
         this.render(); return;
       }
       if (await this.abilityAction(action, b)) return;
@@ -1684,6 +1839,8 @@ export class Workspace {
           });
         this.selected = saved?.id ?? recipe.id;
         this.page = "recipes";
+        this.studio = true;
+        this.studioTime = 0;
         this.stageIndex = 0;
         this.search = "";
         this.category = "All";
@@ -1728,7 +1885,10 @@ export class Workspace {
       }
       if (action === "page") {
         if(!catalogPageAllowed(b.dataset.page,this.host.environment()))return;
-        if (this.page === b.dataset.page) return;
+        if (this.page === b.dataset.page) {
+          if (this.page === "recipes" && this.studio) { this.studio = false; this.render(); }
+          return;
+        }
         this.page = b.dataset.page;
         this.message = "";
         this.render();
@@ -1740,11 +1900,14 @@ export class Workspace {
         this.render();
         return;
       }
+      if (await studioAction(this, action, b)) return;
       if (action === "select") {
-        if (this.selected === b.dataset.id) return;
+        if (this.selected === b.dataset.id && this.studio) return;
+        if (this.selected !== b.dataset.id) { this.stageIndex = 0; this.studioTime = 0; }
         this.selected = b.dataset.id;
-        this.stageIndex = 0;
+        this.studio = true;
         this.render();
+        this.root.querySelector(".an-studio")?.focus({ preventScroll: true });
         return;
       }
       if (action === "stage") {
@@ -1800,6 +1963,8 @@ export class Workspace {
         await this.host.save([...this.host.recipes(), validateRecipe(base)]);
         this.selected = base.id;
         this.page = "recipes";
+        this.studio = true;
+        this.studioTime = 0;
         this.builder = null;
         this.stageIndex = 0;
         this.category = "All";
@@ -1834,6 +1999,8 @@ export class Workspace {
         this.dirty.add(base.id);
         this.selected = base.id;
         this.page = "recipes";
+        this.studio = true;
+        this.studioTime = 0;
         this.builder = null;
         this.previewMode = "recipe";
         this.category = "All";
@@ -1855,6 +2022,8 @@ export class Workspace {
         await this.host.save([...this.host.recipes(), validateRecipe(base)]);
         this.selected = base.id;
         this.page = "recipes";
+        this.studio = true;
+        this.studioTime = 0;
         this.category = "All";
         this.search = "";
         this.stageIndex = 0;
@@ -1867,7 +2036,7 @@ export class Workspace {
           .some((r) => r.id === this.selected);
         this.drafts.delete(this.selected);
         this.dirty.delete(this.selected);
-        if (unsaved) this.selected = this.listedRecipes()[0]?.id;
+        if (unsaved) { this.selected = this.listedRecipes()[0]?.id; this.studio = false; }
         this.message = "";
         this.render();
         return;
@@ -1891,6 +2060,7 @@ export class Workspace {
             stageId: crypto.randomUUID(),
             kind: "motion",
             startMode: "with",
+            startRef: r.stages.at(-1)?.stageId,
             motion: "lunge",
             subject: "source",
             assets: [],
@@ -1915,7 +2085,7 @@ export class Workspace {
             stageId: crypto.randomUUID(),
             label: "",
             afterStage: "",
-            ...(r.lifecycle === "document" ? {} : { startMode: "after", startOffset: 0 }),
+            ...(r.lifecycle === "document" ? {} : { startMode: "after", startRef: r.stages.at(-1).stageId, startOffset: 0 }),
             kind: r.lifecycle === "document" ? "aura" : "impact",
             assets: r.lifecycle === "document" ? [...r.stages.at(-1).assets] : ["jb2a.impact"],
             subject: r.lifecycle === "document" ? "source" : r.stages.at(-1).subject,
@@ -2076,6 +2246,7 @@ export class Workspace {
           this.drafts.delete(r.id);
           this.dirty.delete(r.id);
           this.selected = this.listedRecipes()[0]?.id;
+          this.studio = false;
           this.stageIndex = 0;
           this.message = "Draft discarded.";
           this.render();
@@ -2093,6 +2264,7 @@ export class Workspace {
         this.drafts.delete(r.id);
         this.dirty.delete(r.id);
         this.selected = this.host.recipes()[0]?.id;
+        this.studio = false;
         this.stageIndex = 0;
       }
       if (action === "restore-starters") {
