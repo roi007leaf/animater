@@ -164,3 +164,13 @@ test('lasting areas loop on their template; blasts and cast-time areas play once
   assert.ok(call.find(v => v.label === 'Cast').recipe.stages.some(s => s.persist));
   assert.ok(!call.filter(v => /Lightning Bolt/.test(v.label)).some(v => v.recipe.stages.some(s => s.persist)));
 });
+
+test('official-book copies resolve to their SRD entry and activity', () => {
+  const book = {type:'spell',name:"Evard's Black Tentacles",system:{source:{rules:'2024'},identifier:'evards-black-tentacles'}};
+  assert.equal(findDndEntry({item:book})?.name,'Black Tentacles');
+  assert.equal(findDndEntry({item:{type:'spell',name:"Bigby's Hand",system:{source:{rules:'2024'}}}})?.name,'Arcane Hand');
+  // A book activity with its own id and name still finds the SRD activity of the same kind.
+  const fireball=find('Fireball'),variant=fireball.variants.find(v=>v.recipe.trigger==='template');
+  const event={type:'template',activityId:'bookActivity0001',activityName:'Cast Fireball',activity:{type:variant.activityType}};
+  assert.equal(dndVariantForEvent(fireball,event)?.id,variant.id);
+});

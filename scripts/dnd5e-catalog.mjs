@@ -56,12 +56,27 @@ export function findDndEntry(event){
  for(const uuid of [event.itemUuid,item._stats?.compendiumSource,item.flags?.core?.sourceId,item.original?.uuid,item.uuid]){const entry=byUuid.get(uuid);if(entry)return entry;}
  const kind=item.type==='spell'?'spell':item.type==='feat'?'feat':item.type==='weapon'?'weapon':'item';
  const edition=item.system?.source?.rules==='2014'?'2014':item.system?.source?.rules==='2024'?'2024':null;
- const matches=dndEntries(kind).filter(e=>normalize(e.name)===normalize(item.name)||item.system?.identifier&&e.identifier===item.system.identifier);
+ const byName=name=>dndEntries(kind).filter(e=>normalize(e.name)===normalize(name)||item.system?.identifier&&e.identifier===item.system.identifier);
+ let matches=byName(item.name);
+ // Official books keep the wizard's name the SRD drops ("Evard's Black Tentacles",
+ // "Bigby's Hand" → Black Tentacles, Arcane Hand).
+ if(!matches.length&&kind==='spell')matches=byName(srdSpellName(item.name));
  return matches.find(e=>e.edition===edition)??matches.find(e=>e.edition==='2024')??matches[0]??null;
+}
+const BOOK_SPELL_NAMES={"bigby's hand":'Arcane Hand',"mordenkainen's sword":'Arcane Sword',"nystul's magic aura":"Arcanist's Magic Aura"};
+export function srdSpellName(name){
+ const lower=String(name??'').toLowerCase().replace(/[’]/g,"'");
+ return BOOK_SPELL_NAMES[lower]??String(name??'').replace(/^[A-Z][\w-]*['’]s\s+/,'');
 }
 export function dndVariantForEvent(entry,event){
  const candidates=entry.variants.filter(v=>v.recipe.trigger===event.type&&(!v.weaponMode||v.weaponMode===event.weaponMode||!event.weaponMode));
- return candidates.find(v=>v.activityId===event.activityId)??candidates.find(v=>event.activityName&&normalize(v.activityName)===normalize(event.activityName))??(!event.activityId&&!event.activityName&&candidates.length===1?candidates[0]:null);
+ const exact=candidates.find(v=>v.activityId===event.activityId)??candidates.find(v=>event.activityName&&normalize(v.activityName)===normalize(event.activityName));
+ if(exact)return exact;
+ if(!event.activityId&&!event.activityName)return candidates.length===1?candidates[0]:null;
+ // An official-book copy of an SRD item has its own activity ids and sometimes
+ // names ("Consume" for an unnamed potion activity): match the same kind of activity.
+ const type=event.activity?.type,same=type?candidates.filter(v=>v.activityType===type):[];
+ return same.length===1?same[0]:same.find(v=>!v.activityName)??null;
 }
 export function resolveDndAutomaticRecipe(event,stateFor,saved=[],{customEnabled=true,sounds}={}){
  const entry=findDndEntry(event),state=normalizeDndCatalogState(entry&&stateFor(entry.kind));

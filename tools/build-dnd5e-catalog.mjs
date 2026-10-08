@@ -218,7 +218,7 @@ function finiteRecipe(entry,row,raw,mode){
  if(soundProfile&&RAY_FALLBACK[soundProfile]&&!(SOUND_PROFILES[soundProfile]??[]).some(c=>!exclude.includes(c.role)&&(flight||!['release','chain'].includes(c.role))))soundProfile=RAY_FALLBACK[soundProfile];
  const soundNamespace=!d.nativeMaterialProfile&&!d.nativeEnergy&&!d.physicalThrow&&(mode||d.theme==='weapon')&&ABILITY_SOUND_PROFILES[soundProfile]?'ability':'spell';
  if(soundProfile&&!(soundNamespace==='ability'?ABILITY_SOUND_PROFILES:SOUND_PROFILES)[soundProfile])throw Error(`Unregistered sound profile ${soundProfile} for ${entry.name}`);
- return {id,label:`${a.name||a.type}${mode?' · '+mode:''}`,activityId:raw._id,activityName:a.name||'',reviewed:d.reviewed,theme:d.theme,...(mode?{weaponMode:mode}:{}),rationale:d.note,artLimit:d.reviewed?'Native choreography reviewed; edition fallback may substitute color.':'Semantic composition; symbolic artwork where no literal JB2A asset exists.',soundNamespace,soundProfile,soundExcludeRoles:d.followup&&!mode?['cast','release','chain']:d.physicalThrow?['cast']:[],recipe};
+ return {id,label:`${a.name||a.type}${mode?' · '+mode:''}`,activityId:raw._id,activityName:a.name||'',activityType:a.type,reviewed:d.reviewed,theme:d.theme,...(mode?{weaponMode:mode}:{}),rationale:d.note,artLimit:d.reviewed?'Native choreography reviewed; edition fallback may substitute color.':'Semantic composition; symbolic artwork where no literal JB2A asset exists.',soundNamespace,soundProfile,soundExcludeRoles:d.followup&&!mode?['cast','release','chain']:d.physicalThrow?['cast']:[],recipe};
 }
 function entryFor(row,kind){
  const s=row.source,id=`dnd5e-${row.pack}-${s._id}${row.parent?'-'+row.parent._id:''}`;
