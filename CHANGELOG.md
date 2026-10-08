@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **"Off" animation quality silences Animater too.** A player who sets Animation quality to Off no longer hears Animater sounds either; everyone else still does.
 - **PF2e and SF2e effects no longer share one animation per theme.**
   - Effects of the same kind used to look identical: every lightning effect showed the same orb, and over 400 effects shared one blue border. They now take the theme's variants in turn.
   - Effects with the same name stem (Lightning Armillary, Catcher, Powered, Rod) always get different animations.

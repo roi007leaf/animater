@@ -48,7 +48,7 @@ import { dndSettingKey,sfSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
 import {sfStateHost} from './sf2e-states.mjs';
-import {QUALITY_CHOICES,allowsMotion,allowsTokenFx,stateBudget,usersForTier} from './quality.mjs';
+import {QUALITY_CHOICES,allowsMotion,allowsTokenFx,stateBudget,usersForTier,usersForSound} from './quality.mjs';
 import {ConditionBody,bodyTreatment} from './condition-body.mjs';
 let conditionBody;
 const localQuality=()=>{try{return game.settings.get('animater','quality');}catch{return 'full';}};
@@ -736,6 +736,7 @@ Hooks.once("ready", () => {
     enabled: acceptsEvents,
     weaponScale: () => Number(game.settings.get(ID, "weaponScale")) || 1,
     usersFor: (tier) => usersForTier(Array.from(game.users?.contents ?? game.users?.values?.() ?? []), tier),
+    soundUsers: () => usersForSound(Array.from(game.users?.contents ?? game.users?.values?.() ?? [])),
     recipes,
     riderRecipes: (event, saved) => game.system.id === "pf2e" ? riderRecipes(event, game.settings.get(ID, "featureCatalog"), saved, { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) }) : [],
     resolveRecipe: systemRecipe,

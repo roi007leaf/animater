@@ -8,7 +8,7 @@ export const QUALITY_CHOICES = Object.freeze({
   full: 'Full: every layer, token motion and Token Magic filters',
   balanced: 'Balanced: skip decorative layers and Token Magic filters',
   low: 'Low: only the main effect of each animation, one effect per token',
-  off: 'Off: no Animater visuals on this client (sounds still play)',
+  off: 'Off: no Animater visuals or sounds on this client',
 });
 export const qualityRank = value => QUALITY_LEVELS[value] ?? QUALITY_LEVELS.full;
 
@@ -33,6 +33,13 @@ export const allowsTokenFx = value => qualityRank(value) >= QUALITY_LEVELS.full;
 // Persistent state layers: how many states per token, and layers per state.
 export function stateBudget(value) {
   return ({ 3: { states: Infinity, layers: Infinity, pips: true }, 2: { states: 3, layers: 1, pips: true }, 1: { states: 1, layers: 1, pips: false }, 0: { states: 0, layers: 0, pips: false } })[qualityRank(value)];
+}
+// Users who hear Animater sounds: everyone except those who turned Animater off.
+// null means everyone (no filter).
+export function usersForSound(users) {
+  const active = users.filter(u => u.active);
+  const allowed = active.filter(u => qualityRank(u.getFlag?.('animater', 'quality') ?? 'full') > 0);
+  return allowed.length === active.length ? null : allowed.map(u => u.id);
 }
 // Users allowed to see a stage of the given tier; null means everyone (no filter).
 export function usersForTier(users, tier) {

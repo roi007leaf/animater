@@ -167,6 +167,9 @@ export class AnimaterRuntime {
       for (const s of stages) {
         if (s.kind === "motion" || OPTIONAL_FX_KINDS.has(s.kind)) continue;
         if (s.kind === "sound") {
+          // Players who turned Animater off hear nothing either.
+          const listeners = preview ? null : this.host.soundUsers?.() ?? null;
+          if (listeners && !listeners.length) continue;
           const sound = sequence
             .sound()
             .file(s.soundFile)
@@ -174,6 +177,7 @@ export class AnimaterRuntime {
             .playIf(() => this.epoch === epoch && !failed)
             .duration(s.duration)
             .volume(s.volume);
+          if (listeners) sound.forUsers(listeners);
           applyMediaOptions(sound, s);
           if (s.fadeIn) sound.fadeInAudio(s.fadeIn, { ease: s.ease });
           if (s.fadeOut) sound.fadeOutAudio(s.fadeOut, { ease: s.ease });

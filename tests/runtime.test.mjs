@@ -777,3 +777,17 @@ test("an emanation rides on its caster, and concentration ending ends it", async
   assert.ok(calls.some((c) => c[0] === "stop" && c[1]?.name === session));
   assert.equal(await runtime.endConcentration("cleric", "sg"), 0, "ended once");
 });
+
+test("players who turned Animater off hear no sounds either", async () => {
+  const recipe = validateRecipe({ id: "s", name: "S", trigger: "manual", stages: [{ stageId: "a", kind: "impact", assets: ["jb2a.impact.001.orange"] }, { stageId: "b", kind: "sound", soundFile: "hit.ogg", assets: [] }] });
+  const context = { source: { center: { x: 0, y: 0 } }, targets: [{ center: { x: 100, y: 0 } }] };
+  for (const [listeners, sounds, filtered] of [[null, 1, false], [["u2"], 1, true], [[], 0, false]]) {
+    const { runtime, host, calls } = fixture();
+    host.soundUsers = () => listeners;
+    runtime.catalog = [{ key: "jb2a.impact.001.orange" }];
+    runtime.wait = async () => true;
+    await runtime.play(recipe, context);
+    assert.equal(calls.filter((c) => c[0] === "sound").length, sounds, JSON.stringify(listeners));
+    assert.equal(calls.some((c) => c[0] === "forUsers" && c[1] === listeners), filtered);
+  }
+});
