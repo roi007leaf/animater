@@ -268,9 +268,15 @@ export function nativeDirection(row,activity,mode){
  const ELEMENTS=new Set(['fire','cold','electricity','sonic','acid','poison','water','earth','wind']);
  const leadTheme=actTheme&&(ELEMENTS.has(actTheme)||!ELEMENTS.has(itemTheme))?actTheme:itemTheme;
  const theme=base.theme??(a.type==='heal'?tempHp?'ward':'healing':leadTheme??types.map(t=>damageThemes[t]??t).find(t=>!['weapon','','temphp'].includes(t))??(reliableSchools.has(school)?schoolThemes[school]:undefined)??descTheme(desc.replace(/(?:immune|resistan)[^.]+\./g,''))??schoolThemes[school]??(item.type==='weapon'?'weapon':'arcane'));
- const template=a.target?.template,shape=template?.type,size=Number(template?.size);
+ // Some activities (Fog Cloud, Confusion 2024) carry a shape without a size; the text states it.
+ const template=a.target?.template,shape=template?.type,textSize=shape&&new RegExp(String.raw`(\d+)-foot(?:-radius)?[- ](?:radius|sphere|cube|cylinder|cone|line|emanation)`).exec(desc)?.[1],size=Number(template?.size)||Number(textSize);
  let area=shape&&Number.isFinite(size)&&size>0?{type:['sphere','radius'].includes(shape)?'circle':shape==='wall'?'line':shape,value:size}:null;
- const followup=item.flags?.dnd5e?.riders?.activity?.includes(a._id)||/follow.?up|ongoing|subsequent|lethargy|burn save|sustain|failure|mishap/.test(act)||a.activation?.type==='special'&&a.type==='damage'&&!/cast|throw|strike|attack/.test(act);
+ // Re-creating Sunbeam fires the same 60-foot line, though the activity has no template.
+ if(!area&&name==='sunbeam'&&/new sunbeam/.test(act))area={type:'line',value:60};
+ // A save/damage with no template of its own, beside a sibling that places the area
+ // (Cloudkill's "Start of Turn Save"), happens inside the existing area: no new cast.
+ const insideArea=item.type==='spell'&&!area&&['save','damage'].includes(a.type)&&(row.activities??[]).some(o=>o._id!==a._id&&effectiveActivity(item,o).target?.template?.type);
+ const followup=insideArea||item.flags?.dnd5e?.riders?.activity?.includes(a._id)||/follow.?up|ongoing|subsequent|lethargy|burn save|sustain|failure|mishap/.test(act)||a.activation?.type==='special'&&a.type==='damage'&&!/cast|throw|strike|attack/.test(act);
  const self=a.target?.affects?.type==='self'||a.range?.units==='self'&&!area;
  let delivery=base.delivery??(area?shape==='cone'?'cone':shape==='line'?'line':'burst':a.type==='attack'?a.attack?.type?.value==='melee'?'contact':/ray|beam/.test(name)?'ray':'missile':a.type==='heal'?self?'source':'recipient':self?'source':a.type==='damage'||types.length?'contact':a.target?.affects?.type?'recipient':'source');
  if(mode)delivery=mode==='melee'?'contact':'missile';
@@ -285,9 +291,12 @@ export function nativeDirection(row,activity,mode){
   nativeTheme=damageThemes[review.theme]??({lightning:'electricity',radiant:'light',necrotic:'void',psychic:'mind',prismatic:'force',petrification:'earth',blindness:'shadow','chosen-element':theme,oil:'water',resolve:'ward',reveal:'divination',divine:'spirit',nature:'plant',mobility:'wind',disruption:'dispel',stealth:'shadow',physical:'weapon',speed:'time',slow:'time',defense:'ward',restraint:'web',cleanse:'healing',mist:'water',primal:'plant',thunder:'sonic',protection:'ward',sleep:'mind'}[review.theme]??review.theme);
   const deliveryMap={projectile:'missile',local:review.origin==='caster'?'source':'contact',resource:'source',buff:review.origin==='caster'?'source':'recipient',summon:'source',cone:'cone',line:'line','vertical-strike':'contact',cloud:'burst',beam:'ray',aura:review.origin==='caster'?'source':'recipient',contact:'contact',teleport:'source','projectile-area':'areaMissile','falling-area':'burst',delegate:'source',column:'burst','ray-fan':'rayFan',wall:'line','barrier-sphere':'burst',area:'burst',cube:'burst',ring:'burst',connection:'ray',transform:review.origin==='caster'?'source':'recipient'};
   if(review.delivery!=='weapon-mode')delivery=deliveryMap[review.delivery]??delivery;
+  // A held resource (Sunbeam's mote) is caster-local; a sibling activity owns the area.
+  if(review.delivery==='resource')area=null;
   if(review.targeting==='first-target-fan')delivery='fork';
   trigger=review.trigger;
-  if(review.followup){area=null;delete base.count;}
+  // A new Sunbeam is a fresh 60-foot line, not a contact inside an existing area.
+  if(review.followup){if(!/new sunbeam/.test(act))area=null;delete base.count;}
   base.note=review.notes;base.motion=review.motion;base.nativeCounts=review.counts;
   if(review.colors)base.colors=review.colors;
   if(/Chill Touch/i.test(item.name)){base.hit='energy_strands,particle_burst';base.cast='cast_generic';}
@@ -342,7 +351,7 @@ export function nativeDirection(row,activity,mode){
  if(a.type==='check'){base.cast='impact.005.white';base.hit=/tune|song|instrument/.test(act)?'music_notations':'glint';base.aura=base.hit;}
  const silent=/silence|invisible|invisibility|telepath|detect thoughts|pass without trace/.test(name)||base.sound===null;
  const profile=base.sound??({electricity:'electric',sonic:'sonic',vitality:'holy',spirit:'holy',light:'light',void:'void',mind:'psychic',plant:'growth',ward:'shield',arcane:'force',weapon:item.type==='weapon'?weaponSound(item):'sword',divination:'detect',illusion:'transform',flight:'wind',fear:'fear',curse:'void',web:'vines',disease:'poison',blood:'drain'}[nativeTheme]??nativeTheme);
- return {...base,areaAsset:typeof base.area==='string'?base.area:undefined,theme:nativeTheme,delivery,area,trigger,followup:review?.followup??followup,self,activity:a,reviewed:Boolean(review),sound:silent?null:profile,
+ return {...base,areaAsset:typeof base.area==='string'?base.area:undefined,theme:nativeTheme,delivery,area,trigger,followup:(review?.followup??followup)||insideArea,self,activity:a,reviewed:Boolean(review),sound:silent?null:profile,
  note:base.note??`${a.name||item.name}: ${followup?'native follow-up; target-local cue':area?`${shape} footprint from native activity`:delivery==='source'?'caster-local activation':delivery==='ray'?'visible ray followed by contact':delivery==='missile'?'flight followed by target contact':delivery==='contact'?'localized contact':'recipient-local effect'}. ${row.edition} rules and complete source description inform material; symbolic media does not change rules.`};
 }
 export function weaponModes(item,a){
