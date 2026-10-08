@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- **Condition and effect recipes are marked as such.** Their recipe cards carry a teal "◷ Condition · stays while on token" (or Effect) badge. In the Studio, the trigger reads "Effect · while on token" and the panel title names the kind, so they no longer look like ordinary one-shot recipes.
+- **Condition and effect recipes are marked as such.** Their recipe cards carry a teal "◷ Condition · stays while on token" (or Effect) badge. In the Studio, the trigger reads "Effect · while on token", so they no longer look like ordinary one-shot recipes.
 - **Condition and effect layers always stay on the token.** A layer added to a condition or effect animation used to stay invisible until a hidden "keep" box was ticked. These layers now always last while the condition or effect is on the token. The one-choice Subject menu is gone, and a note explains that Duration only sets the preview length.
 - **Tidier Studio stage panel.**
   - Target options (which targets, maximum targets, skip without targets, spread across targets, delay between targets) only show on stages that play on or toward targets, not on Caster, Area or screen stages.
