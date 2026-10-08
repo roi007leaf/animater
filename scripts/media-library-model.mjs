@@ -17,6 +17,17 @@ export const fileValues = value => typeof value === 'string' ? [value] : Array.i
   ? value.flatMap(fileValues) : value && typeof value === 'object' ? Object.values(value).flatMap(fileValues) : [];
 export const words = value => String(value ?? '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_.\-/]+/g, ' ').replace(/\s+/g, ' ').trim();
 export const title = value => words(value).replace(/\b\w/g, c => c.toUpperCase());
+export function mediaFolderSources(value) {
+  const sources=new Map();
+  for(const row of Array.isArray(value)?value:[]) {
+    const path=typeof row?.path==='string'?row.path.trim().replace(/\/+$/,''):'';
+    if(!path||path.length>1500||/^[\\/]|[\\:<>"'?#\x00-\x1f]|(?:^|\/)\.{1,2}(?:\/|$)|(?:^|\/)(?:\.git|node_modules)(?:\/|$)/.test(path)||path.includes('//'))continue;
+    const name=typeof row.name==='string'?row.name.trim().slice(0,100):'';
+    sources.set(path,{path,name:name.replace(/[\x00-\x1f]/g,'')||title(path.split('/').at(-1))});
+    if(sources.size>=50)break;
+  }
+  return [...sources.values()];
+}
 const palettes = ['bluepurple','blueteal','greenpurple','pinkyellow','greenyellow','orangeyellow','purplered','greenorange','darkpurple','darkred','darkblue','lightblue','blue','green','orange','purple','red','yellow','white','black','pink','grey','gray','brown','rainbow','multicolored'];
 export function assetColor(key, file = '') {
   const tokens = (key + ' ' + file.split('/').at(-1)).toLowerCase().replace(/[^a-z]+/g, ' ').split(' ');

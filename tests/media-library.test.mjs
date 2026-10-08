@@ -319,7 +319,7 @@ test('asset replacement preserves placement and timing; exact file variation sur
   assert.equal(f.library.file,null);
 });
 test('library collections sanitize malformed preferences and retain favorites independently of active pack',()=>{
-  assert.deepEqual(libraryPreferences(null),{favorites:[],recent:[],custom:[]});
+  assert.deepEqual(libraryPreferences(null),{favorites:[],recent:[],custom:[],sources:[]});
   const prefs=libraryPreferences({favorites:['x','x',null],recent:['gone'],custom:[null,{file:'../unsafe.png'},{file:'worlds/w/custom.png'}]});
   assert.deepEqual(prefs.favorites,['x']);assert.equal(prefs.custom.length,1);assert.deepEqual(prefs.recent,['gone']);
 });

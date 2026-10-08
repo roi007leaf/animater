@@ -1,5 +1,5 @@
 import { linkStartModes } from './choreography.mjs';
-import {libraryItem, mergeMedia, appendMedia, mediaGroups, safeMediaFile, title, mediaType, matchingMediaVariant, mediaVariantChoices, tokenFxAssets} from './media-library-model.mjs';
+import {libraryItem, mergeMedia, appendMedia, mediaGroups, safeMediaFile, title, mediaType, matchingMediaVariant, mediaVariantChoices, tokenFxAssets, mediaFolderSources} from './media-library-model.mjs';
 import {validateRecipe, MAX_STAGES} from './model.mjs';
 import {patchDOM, reconcileChildren} from './dom-patch.mjs';
 import {RecipePreview} from './recipe-preview.mjs';
@@ -26,7 +26,7 @@ const mergeSnapshots=(existing,incoming)=>{
 export function libraryPreferences(value = {}) {
   if(!value||typeof value!=='object')value={};
   const ids = (list,max) => [...new Set(Array.isArray(list) ? list.filter(v=>typeof v==='string'&&v.length<1500) : [])].slice(0,max);
-  return {favorites:ids(value.favorites,500),recent:ids(value.recent,60),custom:(Array.isArray(value.custom)?value.custom:[]).map(libraryItem).filter(item=>item&&item.type!=='tokenfx').slice(0,500)};
+  return {favorites:ids(value.favorites,500),recent:ids(value.recent,60),custom:(Array.isArray(value.custom)?value.custom:[]).map(libraryItem).filter(item=>item&&item.type!=='tokenfx').slice(0,500),sources:mediaFolderSources(value.sources)};
 }
 export class MediaLibrary {
   constructor(workspace) {
@@ -84,9 +84,11 @@ export class MediaLibrary {
     const list=root.querySelector('.an-asset-list'),detail=root.querySelector('.an-media-detail-body');
     const scroll=list?.scrollTop??0,detailScroll=detail?.scrollTop??0,previous=this.selected;
     const referenceOpen=!!root.querySelector('.an-media-reference[open]');
+    const sourcesOpen=!!root.querySelector('.an-media-sources[open]');
     const template=root.ownerDocument.createElement('template');
     template.innerHTML=this.html(this.w.recipe());
     reconcileChildren(root,template.content.firstElementChild);
+    if(sourcesOpen)root.querySelector('.an-media-sources')?.setAttribute('open','');
     root.querySelector('.an-asset-list').scrollTop=resetResults?0:scroll;
     const nextDetail=root.querySelector('.an-media-detail-body');
     if(nextDetail)nextDetail.scrollTop=this.sameFamily(previous,this.selected)?detailScroll:0;
@@ -95,6 +97,9 @@ export class MediaLibrary {
     this.w.observeThumbnails?.();
   }
   sameFamily(a,b) { return a&&b&&a.type===b.type&&a.source===b.source&&a.family===b.family; }
+  sourceControls() {
+    return `<details class="an-media-sources"><summary>Folder sources${this.prefs.sources.length?` (${this.prefs.sources.length})`:''}</summary><div class="an-media-source-panel"><p class="an-hint">Include media from a User Data folder and its subfolders.</p><div class="an-media-source-add"><input data-media-source-name aria-label="Folder source name" maxlength="100" placeholder="Source name (optional)"><button data-action="media-source-add" ${this.loading||!this.w.host.pickMediaFolder?'disabled':''}>+ Add folder</button></div>${this.prefs.sources.map(source=>`<div class="an-media-source-row"><span><b>${esc(source.name)}</b> <small>${esc(source.path)}</small></span><button data-action="media-source-remove" data-path="${esc(source.path)}" ${this.loading?'disabled':''} aria-label="Remove ${esc(source.name)} folder source">Remove</button></div>`).join('')}</div></details>`;
+  }
   inspect(id,{reveal=false} = {}) {
     const previous=this.selected;
     this.choose(id);
@@ -292,6 +297,32 @@ export class MediaLibrary {
       }
       return true;
     }
+    if(action==='media-source-add') {
+      if(this.loading)return true;
+      const name=this.w.root.querySelector('[data-media-source-name]')?.value??'';
+      this.w.host.pickMediaFolder?.(async path=>{
+        if(this.w.abort?.signal.aborted)return;
+        const [source]=mediaFolderSources([{path,name}]);
+        if(!source){this.error='Choose a folder in User Data.';this.render();return;}
+        const next=mediaFolderSources([...this.prefs.sources,source]);
+        if(!next.some(row=>row.path===source.path)){this.error='Folder source limit reached (50). Remove a source first.';this.render();return;}
+        try {
+          await this.w.host.setMediaPreferences?.({...this.prefs,sources:next});
+          this.prefs.sources=next;
+          this.filters.source=source.name;this.filters.collection='all';this.filters.search='';this.filters.category='all';this.filters.color='all';this.filters.loop='all';this.page=0;
+          await this.load(true);
+        } catch(error){this.error=error.message;this.render();}
+      });
+      return true;
+    }
+    if(action==='media-source-remove') {
+      if(this.loading)return true;
+      const next=this.prefs.sources.filter(source=>source.path!==button.dataset.path);
+      await this.w.host.setMediaPreferences?.({...this.prefs,sources:next});
+      this.prefs.sources=next;this.filters.source='all';this.page=0;
+      await this.load(true);
+      return true;
+    }
     if (action==='media-import') {
       const epoch=this.w.selected,importType=this.filters.type;
       this.w.host.pickMedia?.(importType==='audio'?'audio':'imagevideo',this.selected?.file??'',file=>{
@@ -430,7 +461,7 @@ export class MediaLibrary {
     const facets=this.index().facets,facet=facets.get(this.filters.type);
     const sources=[...(facet?.sources??[])].sort(),categories=[...(facet?.categories??[])].sort(),palette=[...(facet?.colors??[])].sort();
     return `<section class="an-media-library" aria-label="Media library">
-      <div class="an-media-toolbar"><div class="an-media-types" role="group" aria-label="Media type">${[['animation','Animations'],['audio','Sounds'],['image','Images'],['tokenfx','Token FX'],['all','All media']].map(([id,label])=>`<button data-action="media-type" data-value="${id}" aria-pressed="${this.filters.type===id}" class="${this.filters.type===id?'is-selected':''}">${svg(id)}${label}<small>${(facets.get(id)?.count??0).toLocaleString()}</small></button>`).join('')}</div><div class="an-media-tools">${this.filters.type==='tokenfx'?'':`<button data-action="media-import" ${this.w.host.pickMedia?'':'disabled'}>+ Browse files</button>`}<button data-action="media-refresh" ${this.loading?'disabled':''}>${this.loading?'Loading…':'Refresh'}</button></div></div>
+      <div class="an-media-toolbar"><div class="an-media-types" role="group" aria-label="Media type">${[['animation','Animations'],['audio','Sounds'],['image','Images'],['tokenfx','Token FX'],['all','All media']].map(([id,label])=>`<button data-action="media-type" data-value="${id}" aria-pressed="${this.filters.type===id}" class="${this.filters.type===id?'is-selected':''}">${svg(id)}${label}<small>${(facets.get(id)?.count??0).toLocaleString()}</small></button>`).join('')}</div><div class="an-media-tools">${this.sourceControls()}${this.filters.type==='tokenfx'?'':`<button data-action="media-import" ${this.w.host.pickMedia?'':'disabled'}>+ Browse files</button>`}<button data-action="media-refresh" ${this.loading?'disabled':''}>${this.loading?'Loading…':'Refresh'}</button></div></div>
       <div class="an-media-search-row"><div class="an-search">${svg('search')}<input data-search="assets" aria-label="Search media" placeholder="Search effects, weapons, creatures, colors, sounds…" value="${esc(this.filters.search)}"></div><div class="an-media-collections" role="group" aria-label="Library collection">${[['all','Library'],['favorites','Favorites'],['recent','Recent']].map(([id,label])=>`<button data-action="media-collection" data-value="${id}" aria-pressed="${this.filters.collection===id}" class="${this.filters.collection===id?'is-selected':''}">${label}</button>`).join('')}</div></div>
       <div class="an-media-filters">${select('source','Source',[['all','All sources'],...sources.map(v=>[v,v])],this.filters.source)}${select('category','Category',[['all','All categories'],...categories.map(v=>[v,v])],this.filters.category)}${['audio','tokenfx'].includes(this.filters.type)?'':select('color','Color',[['all','All colors'],...palette.map(v=>[v,title(v)])],this.filters.color)}${this.filters.type==='tokenfx'?'':select('loop','Playback',[['all','Any playback'],['loop','Loops'],['one','Other clips']],this.filters.loop)}${select('sort','Sort',[['az','Name A–Z'],['za','Name Z–A']],this.filters.sort)}<button data-action="media-clear" class="an-media-reset">Reset</button></div>
       ${this.error?`<div class="an-media-notice" role="status">${esc(this.error)}</div>`:''}

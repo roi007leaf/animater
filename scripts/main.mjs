@@ -57,6 +57,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 let runtime, app;
 registerTriggerEngine();
 const mediaLibraryLoader=new MediaLibraryLoader(()=>({modules:game.modules,database:globalThis.Sequencer?.Database,
+  folderSources:libraryPreferences(game.settings.get(ID,'mediaLibrary')).sources,
   browse:path=>foundry.applications.apps.FilePicker.implementation.browse('data',path)}));
 let motions;
 let optionalFx;
@@ -502,6 +503,10 @@ function workspaceHost() {
         callback,
       }).browse(),
     pickMedia: (type,current,callback)=>new foundry.applications.apps.FilePicker.implementation({type,current,callback}).browse(),
+    pickMediaFolder:callback=>new foundry.applications.apps.FilePicker.implementation({type:'folder',activeSource:'data',callback:(path,picker)=>{
+      if(picker.activeSource!=='data'){ui.notifications.warn('Choose a folder in User Data.');return;}
+      void Promise.resolve(callback(path)).catch(error=>ui.notifications.error(error.message));
+    }}).browse(),
     refreshCatalog: () => runtime.refreshCatalog(),
     resolveItem: (uuid) => fromUuid(uuid),
     // Name/icon for a bound item without loading it (compendium index or world doc).

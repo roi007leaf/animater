@@ -52,6 +52,8 @@ Every catalog entry can be previewed in the workspace, enabled or excluded indiv
 
 ## Recipe Studio
 
+In **Assets → Folder sources**, enter a source name (for example, **BossLoot**) and choose **Add folder**. Select its folder in Foundry's **User Data** file picker. Animater indexes animations, images and sounds in that folder and its subfolders, even without Sequencer database registration. Sources are remembered per user; **Refresh** picks up new files. **Remove** stops indexing a source without deleting files or changing saved recipes.
+
 Build your own animation or customize a catalog entry in a timeline workspace.
 
 - **Preview monitor:** Play, pause, stop, loop and scrub to inspect a specific moment.
