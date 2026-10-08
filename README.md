@@ -1,8 +1,10 @@
 # Animater
 
-Automatic JB2A animations for **Pathfinder 2e**, **Starfinder 2e** and **D&D 5e** in Foundry VTT 14, played through Sequencer. Every spell, feat, action, class feature, weapon, item, effect and condition in the supported systems has a catalog entry matched to its own description, combining JB2A footage, token motion, optional Token Magic FX filters and optional sound.
+Automatic animations for **Pathfinder 2e**, **Starfinder 2e** and **D&D 5e** in **Foundry VTT 14**, powered by **Sequencer and JB2A**. Enable ready-made catalogs or choose individual animations, then cast spells, make attacks and use abilities through your system's normal workflow.
 
-> **Prerelease (0.1.0).** Feature-complete for everyday play in PF2e; SF2e and D&D 5e catalogs are complete but have had less live table testing. Please report issues on GitHub.
+Animater combines visual effects, cosmetic token movement and optional sound. Browse and preview catalog entries, or customize them in **Recipe Studio**, a timeline editor with separate tracks for visuals, motion, sound and filters.
+
+> PF2e has received the most live table testing. SF2e, D&D 5e and multiplayer playback have had less testing. Report bugs and requests on the [issue tracker](https://github.com/roi007leaf/animater/issues).
 
 ## Requirements
 
@@ -18,10 +20,13 @@ Automatic JB2A animations for **Pathfinder 2e**, **Starfinder 2e** and **D&D 5e*
 
 1. In Foundry's **Add-on Modules → Install Module**, paste the manifest URL:
    `https://github.com/roi007leaf/animater/releases/latest/download/module.json`
-   (for this prerelease, use the `module.json` attached to the [0.1.0 release](https://github.com/roi007leaf/animater/releases)).
+   For a specific version, use the manifest attached to that version on the [releases page](https://github.com/roi007leaf/animater/releases).
 2. Activate Sequencer, a JB2A pack and Animater in your world.
 3. Open **Game Settings → Animater → Open Animater** (or the wand in Token Controls, or **Alt+Shift+A**).
-4. In a catalog page, choose **Use entire catalog** (or **Use animation** on single entries). Automatic playback is off until you enable it.
+4. Open a catalog and enable it with **Use entire catalog** or the corresponding **Use … catalog** button. To enable one entry, select it and choose **Use animation**. Automatic playback is off until you enable it.
+5. Cast, attack or use the enabled ability normally. For a canvas preview, select a caster token first and target any affected creatures.
+
+Install and activate **either** JB2A edition; Patreon users do not need JB2A Free as well. Animation, sound and icon media comes from your installed asset packs, rather than being bundled with Animater.
 
 ## What it animates
 
@@ -37,6 +42,31 @@ Automatic JB2A animations for **Pathfinder 2e**, **Starfinder 2e** and **D&D 5e*
 
 Every catalog entry can be previewed in the workspace, enabled or excluded individually, and customized into an editable recipe: stages, timing, assets, motion, sound and filters.
 
+### Catalog controls
+
+- Search and filter entries within each catalog.
+- Enable the whole catalog, or choose individual entries with **Use animation**.
+- While the whole catalog is enabled, hover a card and use **⊘** to exclude that entry. Click again to include it; excluded cards appear dimmed.
+- Adjust token motion, sounds and volume using the catalog controls.
+- Choose **Customize** to create an editable recipe for an entry. Entries marked as needing configuration require setup before automatic playback.
+
+## Recipe Studio
+
+Build your own animation or customize a catalog entry in a timeline workspace.
+
+- **Preview monitor:** Play, pause, stop, loop and scrub to inspect a specific moment.
+- **Separate tracks:** Caster, Flight, Target, Token motion, Sound, and Filters & scene. Add stages with the track's **+** button.
+- **Clip editing:** Drag clips to change timing, drag their right edge to trim duration, and right-click to duplicate or delete. Clips snap to other clips and the playhead; hold **Alt** to place freely.
+- **Choreography:** Start a stage *With* or *After* another stage, or *At a set time*. Linked stages stay attached when their timing changes.
+- **Mute and solo:** Isolate tracks while previewing to check visuals, motion, sound and filters separately.
+- **Stage inspector:** Choose assets, stage types and stage-specific options. Visual assets have previews; sound stages have a listen player and volume control.
+- **Recipe settings:** Set the trigger, bound item, description, category and accent through the **⚙** trigger chip.
+- **Table playback:** Try a private local canvas preview, then use **Play at table** to share the animation.
+
+FXMaster particles can play inside the preview monitor. FXMaster scene filters need **Play at table** to inspect their appearance on the scene.
+
+Useful shortcuts: **Space** to play/pause, **Home/End** to jump, **L** to loop, **Ctrl+D** to duplicate, **Delete** to remove a clip, **Ctrl+S** to save, and **Ctrl+wheel** to zoom the timeline.
+
 ## Settings
 
 | Setting | Scope | What it does |
@@ -46,6 +76,8 @@ Every catalog entry can be previewed in the workspace, enabled or excluded indiv
 | Add Token Magic FX filters to catalog animations | World | Optional filters when Token Magic FX is active |
 | Add FXMaster scene effects to catalog animations | World | Optional scene effects when FXMaster is active |
 | Take over from Automated Animations | World | When both modules would animate the same item, Animater plays and Automated Animations stands down |
+
+The per-user preview setting can minimize the Animater window during local previews and table playback, then restore it afterward.
 
 ### Animation quality
 
@@ -83,19 +115,24 @@ Hooks: `animater.preDispatch(event, recipe)` runs before automatic playback (ret
 - Area animations play once when the area is placed. For visuals that last as long as the area does, use Spell Arsenal.
 - Actions whose area is placed separately (e.g. Dragon Breath) use their regular animation; template-driven action areas are planned.
 - Token motion is cosmetic; it never moves tokens or changes their documents.
+- D&D 5e catalogs use public 2014 and 2024 SRD content. Passive features are excluded from active ability catalogs.
 - No animation, sound or icon media is bundled; everything comes from the JB2A and sound modules you install.
 
 ## Development
 
 ```bash
-npm test                 # unit and integration tests
-npm run build            # rebuild changed catalogs (see tools/build.mjs)
-node tools/release-files.mjs   # the files a release zip contains
+npm ci                         # install development dependencies
+npm test                       # unit and integration tests
+npm run build                  # rebuild changed catalogs
+npm run build -- --dry-run      # inspect the incremental build plan
+node tools/release-files.mjs    # list release ZIP contents
 ```
 
 Catalog data is generated by `tools/build-*.mjs` from pinned system compendium sources. Release archives contain only runtime files; audits and docs stay local.
 
 Development-only `data/feat-*-review.mjs` maps are Git-ignored. Catalog builds and review audits recreate missing maps from the retained review generators and pinned feat catalog.
+
+Runtime catalog data, sound mappings, FX description flags and media measurements remain tracked because Foundry loads them directly. Development inspection helpers are local-only; release archives exclude tools, tests, caches and development review maps.
 
 D&D 5e descriptions include content from the System Reference Document 5.1 and 5.2 by Wizards of the Coast LLC, available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
