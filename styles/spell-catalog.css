@@ -491,3 +491,25 @@
 .animater .an-catalog-controls .an-sound-settings > label { flex: 1 1 auto; min-width: 0; }
 .animater .an-catalog-controls .an-sound-settings input[type="range"] { flex: 1 1 60px; min-width: 40px; width: auto; }
 .animater .an-catalog-automation + :not(.an-catalog-automation) { margin-top: 0; }
+
+/* Row v2: never wraps; cards keep their natural width and only shrink (with
+   ellipsis) when space runs out; all cards share one height. */
+.animater .an-catalog-controls { flex-wrap: nowrap; align-items: stretch; }
+.animater .an-catalog-controls > .an-catalog-automation {
+  flex: 0 1 auto;
+  align-items: center;
+  height: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.animater .an-catalog-controls > .an-sound-settings { flex: 1 1 auto; }
+.animater .an-catalog-controls > .an-catalog-automation > div { min-width: 0; }
+.animater .an-catalog-controls > :not(.an-catalog-automation) { flex: 0 1 auto; }
+.animater .an-catalog-controls .an-sound-settings > label { height: 26px; }
+.animater .an-catalog-controls .an-sound-settings input[type="range"] { height: 14px; margin: 0; }
+/* Only the sound card flexes (its slider absorbs the slack); labels stay whole. */
+.animater .an-catalog-controls > .an-catalog-automation { flex: 0 0 auto; }
+.animater .an-catalog-controls > .an-sound-settings { flex: 1 1 0; min-width: 0; }
+.animater .an-catalog-controls > .an-catalog-automation b { overflow: visible; }
+.animater .an-catalog-controls .an-sound-settings > div { flex: 0 0 auto; }
+.animater .an-catalog-controls .an-sound-settings > button { flex: 0 0 auto; }

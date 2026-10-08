@@ -81,3 +81,21 @@ test("muting token motion removes it from chain previews", async () => {
   const still = p.subjectPose(motion.subject, frame);
   assert.equal(Math.round(Math.abs(still.x) + Math.abs(still.y)), 0);
 });
+
+test("muting the filters track silences Token Magic in chain previews", async () => {
+  const { PF2E_FEATS, featRecipe } = await import("../scripts/feat-catalog.mjs");
+  const { chainPreview } = await import("../scripts/chain-preview.mjs");
+  const { TokenFxPreview } = await import("../scripts/token-fx-preview.mjs");
+  const recipe = featRecipe(PF2E_FEATS.find((f) => f.name === "Sudden Charge"));
+  recipe.stages.push({ stageId: "zoom", kind: "tokenfx", subject: "source", fxLibrary: "tmfx-main", fxPreset: "zoomblur", assets: [], delay: 100, duration: 1500, scale: 1, opacity: 1 });
+  const chain = chainPreview(recipe, {});
+  const plan = chain.recipe.playbackPlan, at = plan.findIndex((p) => p.kind === "tokenfx");
+  assert.ok(at >= 0, "Sudden Charge has a Token Magic stage");
+  const fx = new TokenFxPreview({ scene: { dataset: {} }, recipe: chain.recipe, PIXI: {}, tokenMagic: {} });
+  const entry = fx.entries.find((e) => e.index === at);
+  assert.equal(entry.stageIndex, plan[at].index, "entries remember their recipe stage");
+  assert.notEqual(entry.index, entry.stageIndex, "plan position differs from stage number here");
+  const frame = { time: plan[at].delay + 50, stages: [] };
+  assert.equal(fx.state(entry, frame).state, "playing");
+  assert.equal(fx.state(entry, { ...frame, muted: new Set([plan[at].index]) }).state, "pending");
+});

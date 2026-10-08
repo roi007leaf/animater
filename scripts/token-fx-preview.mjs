@@ -61,7 +61,8 @@ export class TokenFxPreview {
     Object.assign(this,{scene,recipe,PIXI,Anime,tokenMagic});
     this.abort=new AbortController();this.records=[];this.imageTextures=new Map();this.stopped=false;
     this.info=JSON.parse(scene.dataset.previewTokens??'{}');
-    this.entries=(recipe.playbackPlan??recipe.stages).flatMap((stage,index)=>stage.kind==='tokenfx'?[{stage,index}]:[]);
+    // index: position in the plan (or stages); stageIndex: the recipe stage it plays.
+    this.entries=(recipe.playbackPlan??recipe.stages).flatMap((stage,index)=>stage.kind==='tokenfx'?[{stage,index,stageIndex:stage.index??index}]:[]);
   }
   async ready() {
     const {PIXI,scene}=this;
@@ -131,7 +132,7 @@ export class TokenFxPreview {
     }
   }
   state(entry,frame) {
-    if(frame.muted?.has(entry.index))return {state:'pending',progress:0,localTime:0,stage:entry.stage};
+    if(frame.muted?.has(entry.stageIndex))return {state:'pending',progress:0,localTime:0,stage:entry.stage};
     return this.recipe.playbackPlan?{...stageFrame({...entry.stage,repeats:1,targetStagger:0},frame.time),stage:entry.stage}:frame.stages[entry.index];
   }
   matches(record,stage) {
