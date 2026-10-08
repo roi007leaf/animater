@@ -139,7 +139,7 @@ export class PersistentStates{
    catch(error){h.trace?.('Skipped',`Token Magic FX: ${error.message}`);}
   }));
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}
-  h.trace?.('Persistent',`${r.recipe.name} follows ${r.token.name??'token'} until its native document ends.`);
+  h.trace?.('Persistent',`${r.recipe.name} follows ${r.token.name??'token'} while its condition or effect lasts.`);
   await sequence.play({local:true});
   // Removal/scene changes can race asynchronous texture loading.
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}

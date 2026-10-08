@@ -9,9 +9,10 @@ export async function handleStateCatalogAction(w,action,b){
  else if(action==='copy-state'){
   const recipe=w.recipe()??stateRecipe(catalogStateEntry(id),{catalog:w.host.catalog?.()}),saved=w.host.recipes().find(r=>r.lifecycle==='document'&&r.stateEntry===id&&r.stateDamageType===recipe.stateDamageType);
   if(!saved)await w.host.save([...w.host.recipes(),recipe]);
-  await w.host.setStateCatalogState(kind,{customized:[...new Set([...state.customized,id])]});
+  // Customizing means using your version: the catalog turns on for this entry and plays your saved recipe.
+  await w.host.setStateCatalogState(kind,{...useStateEntry(state,id),customized:[...new Set([...state.customized,id])]});
   w.selected=saved?.id??recipe.id;w.page='recipes';w.studio=true;w.studioTime=0;w.search='';w.category='All';w.stageIndex=0;
-  w.message='Edit the sustained layers, save, then enable this customization. Its lifetime follows the native document.';
+  w.message='Your version now plays instead of the catalog one. Edit and save to change it.';
  }else{
   const env=w.host.environment();if(env.demo||env.systemId!=='pf2e'||!env.ready)throw Error('Enable persistent animations inside a PF2e world with Sequencer and JB2A.');
   let change=action==='state-auto'?{enabled:!(state.enabled&&state.scope==='all'),scope:'all'}:action==='state-pause'?{enabled:false}:action==='state-exclude'?{excluded:state.excluded.includes(id)?state.excluded.filter(v=>v!==id):[...state.excluded,id]}:useStateEntry(state,id);
@@ -19,7 +20,7 @@ export async function handleStateCatalogAction(w,action,b){
    if(w.dirty?.has(w.recipe()?.id))throw Error('Save your customization before enabling it.');
    change={...change,customized:[...new Set([...state.customized,id])]};
   }
-  await w.host.setStateCatalogState(kind,change);w.message=change.enabled===false?'Catalog paused. Its attached visuals will end.':'Persistent catalog settings updated. Existing native documents are reconciled now.';
+  await w.host.setStateCatalogState(kind,change);w.message=change.enabled===false?'Catalog paused. Its attached visuals will end.':'Saved. Tokens that already have these conditions or effects update now.';
  }
  w.render();return true;
 }

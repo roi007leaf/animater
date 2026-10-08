@@ -109,5 +109,5 @@ test('condition filters remain document-linked; temporary previews retain finite
  assert.equal(planRecipe(concealed,media(concealed),{source,targets:[]}).find(s=>s.kind==='tokenfx').duration,6000);
  const w=Object.create(Workspace.prototype);w.host={fxCatalog:()=>fxCatalog,catalogFxSettings:()=>({token:false,scene:true}),setCatalogFxSetting:()=>{}};
  const html=w.catalogFxControlsHTML({});assert.match(html,/Catalog: Token Magic FX/);assert.match(html,/Catalog: FXMaster/);assert.match(html,/catalogTokenFx[\s\S]*?aria-checked="false"/);
- assert.match(w.optionalFxControlsHTML(s,1),/Filter stays until its native document ends/);
+ assert.match(w.optionalFxControlsHTML(s,1),/Filter stays while the condition or effect is on the token/);
 });

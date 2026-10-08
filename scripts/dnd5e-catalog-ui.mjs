@@ -54,8 +54,10 @@ export class DndCatalogWorkspace {
   else if(action==='dnd-copy'){
    const recipe=this.recipe(),saved=w.host.recipes().find(r=>r.id===recipe.id);
    if(!saved)await w.host.save([...w.host.recipes(),recipe]);
-   await w.host[this.api.setStateKey](kind,{customized:[...new Set([...state.customized,entry.id])],selected:state.selected.filter(id=>id!==entry.id)});
-   w.selected=saved?.id??recipe.id;w.page='recipes';w.studio=true;w.studioTime=0;w.search='';w.category='All';w.stageIndex=0;w.message='Edit choreography, save, and use your customization.';
+   // Customizing means using your version: the catalog turns on for this entry and plays your saved recipe.
+   const use=this.api.use(state,entry.id);
+   await w.host[this.api.setStateKey](kind,{...use,customized:[...new Set([...state.customized,entry.id])],selected:use.selected.filter(id=>id!==entry.id)});
+   w.selected=saved?.id??recipe.id;w.page='recipes';w.studio=true;w.studioTime=0;w.search='';w.category='All';w.stageIndex=0;w.message='Your version now plays instead of the catalog one. Edit and save to change it.';
   }else{
    if(!['dnd-motion','dnd-sound'].includes(action)&&(env.demo||env.systemId!==this.api.systemId||!env.ready))throw Error(`Configure ${this.api.label} catalog playback inside its world with Sequencer and JB2A.`);
    let change=action==='dnd-auto'?{enabled:!(state.enabled&&state.scope==='all'),scope:'all',independent:true,preferCatalog:true}:action==='dnd-motion'?{motion:!state.motion}:action==='dnd-sound'?{sound:!state.sound}:action==='dnd-include'&&state.enabled&&state.selected.includes(entry.id)?{selected:state.selected.filter(id=>id!==entry.id)}:action==='dnd-exclude'?{excluded:state.excluded.includes(entry.id)?state.excluded.filter(id=>id!==entry.id):[...state.excluded,entry.id]}:this.api.use(state,entry.id);

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {stateCatalogHTML} from '../scripts/state-catalog-ui.mjs';
 import {handleStateCatalogAction} from '../scripts/state-catalog-actions.mjs';
-import {PF2E_CONDITIONS,PF2E_EFFECTS,stateRecipe,useStateEntry} from '../scripts/state-catalog.mjs';
+import {PF2E_CONDITIONS,PF2E_EFFECTS,stateRecipe,useStateEntry,stateEntryEnabled,normalizeStateCatalogState} from '../scripts/state-catalog.mjs';
 import {openCatalogDetails} from '../scripts/catalog-details.mjs';
 function view(entry,env={},auraVariant='default'){
  const kind=entry.kind,w={page:kind==='condition'?'conditions':'effects',selectedState:{[kind]:entry.id},stateFilters:{[kind]:{search:entry.name}},statePages:{[kind]:0},stateDamageType:'fire',stateAuraVariant:auraVariant,busy:false,recipePreviewHTML:()=>'<div data-recipe-scene></div>',host:{recipes:()=>[],stateCatalogState:()=>({}),environment:()=>({systemId:'pf2e',ready:true,...env})}};
@@ -28,9 +28,10 @@ test('state title buttons open native conditionitems/effect compendium Item shee
   let got,rendered=false;await openCatalogDetails({host:{environment:()=>({}),resolveItem:async uuid=>{got=uuid;return {sheet:{render:async()=>rendered=true}}}}},e.kind,e.id);assert.equal(got,e.uuid);assert.equal(rendered,true);
  }
 });
-test('customize retains selected variant, no default activation, and enable requires saved edits',async()=>{
+test('customize retains selected variant and uses that version for this entry only',async()=>{
  const e=PF2E_CONDITIONS.find(e=>e.slug==='persistent-damage');let saved=[],state={};
  const w={page:'conditions',selectedState:{condition:e.id},recipe:()=>stateRecipe(e,{damageType:'fire'}),dirty:new Set(),render:()=>{},host:{environment:()=>({systemId:'pf2e',ready:true}),recipes:()=>saved,save:async rows=>saved=rows,stateCatalogState:()=>state,setStateCatalogState:async(k,change)=>state={...state,...change}}};
- await handleStateCatalogAction(w,'copy-state',{dataset:{}});assert.equal(saved[0].stateDamageType,'fire');assert.equal(state.enabled,undefined);assert.equal(w.page,'recipes');
+ await handleStateCatalogAction(w,'copy-state',{dataset:{}});assert.equal(saved[0].stateDamageType,'fire');assert.equal(w.page,'recipes');
+ assert.equal(state.enabled,true);assert.equal(state.scope,'selected','only this entry turns on');assert.ok(state.customized.includes(e.id));assert.ok(stateEntryEnabled(e.id,normalizeStateCatalogState(state)));
  w.dirty.add(saved[0].id);await assert.rejects(handleStateCatalogAction(w,'enable-state-custom',{dataset:{}}),/Save/);w.dirty.clear();await handleStateCatalogAction(w,'enable-state-custom',{dataset:{}});assert.equal(state.enabled,true);assert.ok(state.customized.includes(e.id));
 });

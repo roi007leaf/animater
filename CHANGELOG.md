@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- **Customizing a catalog entry uses your version right away.** Clicking Customize on a condition, effect or D&D entry now plays your saved version instead of the catalog one, with no extra "Enable customization" step. If that catalog was off, it turns on for that one entry only.
+- **Plainer wording for condition and effect animations.** "Document-linked" and "native document" are gone: the Studio now says the animation plays while the condition or effect is on the token.
+
 ## 0.2.6 (2026-10-08)
 
 - **"Attached aura" stages are now called "Stays on token"**, which says what they do: the animation sits on the token and moves with it.

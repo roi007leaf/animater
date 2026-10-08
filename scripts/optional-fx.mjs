@@ -130,7 +130,7 @@ export class OptionalFxPlayer {
     return remove;
   }
   async retain(stage,{session,userId}={}) {
-    if(stage.kind!=='tokenfx')throw Error('Only token filters follow native documents.');
+    if(stage.kind!=='tokenfx')throw Error('Only token filters can last while a condition or effect is on the token.');
     const unavailable=fxAvailability(stage,this.host.catalog());
     if(unavailable){this.host.trace?.('Skipped',unavailable);return ()=>{};}
     const entry={session,userId,cancelled:false};
