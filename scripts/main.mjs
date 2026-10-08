@@ -264,10 +264,22 @@ function findRecipe(id) {
   return saved.find(r=>r.id===id) ?? builtinRecipe(id) ??
     saved.find(r=>typeof id === "string" && r.name?.trim().toLowerCase() === id.trim().toLowerCase());
 }
+// Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
+// (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
+const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
+async function afterDice(event) {
+  const dice = globalThis.game?.dice3d;
+  if (!event.messageId || !dice?.waitFor3DAnimationByMessageID || !["attack", "damage"].includes(event.type)) return;
+  if (game.settings.get(ID, WAIT_FOR_DICE) === false) return;
+  // Dice So Nice marks the message as animating from its own creation hook.
+  await new Promise((resolve) => setTimeout(resolve, 60));
+  await Promise.race([dice.waitFor3DAnimationByMessageID(event.messageId), new Promise((resolve) => setTimeout(resolve, DICE_WAIT_LIMIT))]);
+}
 async function dispatch(event) {
   if (!event || !acceptsEvents()) return;
   if (yieldsToAA(event)) return runtime.trace("Skipped", `${event.item?.name ?? "Unknown item"}: customized in Automated Animations.`);
   try {
+    await afterDice(event);
     await runtime.dispatch(await enrich(event));
   } catch (error) {
     runtime.trace("Blocked", error.message);
@@ -574,6 +586,14 @@ Hooks.once("init", () => {
     config: false,
     type: Object,
     default: { schema: 1, recipes: starterRecipes() },
+  });
+  game.settings.register(ID, WAIT_FOR_DICE, {
+    name: "Wait for Dice So Nice",
+    hint: "Attack and damage animations start when the 3D dice for that roll have landed, so a hit or miss plays after you see the result.",
+    scope: "client",
+    config: true,
+    type: Boolean,
+    default: true,
   });
   game.settings.register(ID, AA_TAKEOVER, {
     name: "Take over from Automated Animations when Animater has an animation",
