@@ -48,6 +48,8 @@ import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
 import {sfStateHost} from './sf2e-states.mjs';
 import {QUALITY_CHOICES,allowsMotion,allowsTokenFx,stateBudget,usersForTier} from './quality.mjs';
+import {ConditionBody,bodyTreatment} from './condition-body.mjs';
+let conditionBody;
 const localQuality=()=>{try{return game.settings.get('animater','quality');}catch{return 'full';}};
 // Mirror this client's choice so the client that starts an animation can route optional layers.
 const syncQuality=()=>{const value=localQuality(),user=game.user;if(typeof user?.getFlag==='function'&&typeof user.setFlag==='function'&&user.getFlag('animater','quality')!==value)void Promise.resolve(user.setFlag('animater','quality',value)).catch(()=>{});};
@@ -648,6 +650,8 @@ Hooks.once("ready", () => {
   const env = environment();
   if (game.user.isGM && env.ready && !env.jb2a) ui.notifications.warn(`Animater: ${JB2A_MISSING}`, { permanent: true });
   motions = new TokenMotionPlayer({ grid: () => canvas.grid?.size ?? 100 });
+  // Lasting conditions move the creature itself; one-off motions take priority.
+  conditionBody = new ConditionBody({ busy: (token) => motions.active.has(token), enabled: () => allowsMotion(localQuality()) });
   optionalFx = new OptionalFxPlayer({catalog:fxCatalog,tokenMagic:()=>globalThis.TokenMagic,
     fxmaster:()=>globalThis.FXMASTER?.api,scene:()=>canvas.scene,
     trace:(status,detail)=>runtime?.trace(status,detail)});
@@ -656,6 +660,7 @@ Hooks.once("ready", () => {
   });
   Hooks.on("canvasTearDown", () => {
     void persistentStates?.clear();
+    conditionBody?.clear();
     motions.stop();
     void optionalFx.stop();
     void runtime?.stop();
@@ -687,6 +692,14 @@ Hooks.once("ready", () => {
     ready: () => Boolean(canvas.ready && environment().ready),
     canPlay: (context) => Boolean(game.user.isGM || context.source?.isOwner),
     canSyncMotion: () => game.modules.get(ID)?.socket === true,
+    // Preview of a lasting condition: show its body treatment for the preview's span.
+    previewBody: (recipe, token) => {
+      const kind = bodyTreatment(recipe.name);
+      if (!kind || !token) return;
+      const name = `preview-${crypto.randomUUID()}`;
+      conditionBody?.add(name, token, kind);
+      setTimeout(() => conditionBody?.remove(name), Math.max(3000, ...recipe.stages.map((s) => (s.delay ?? 0) + (s.duration ?? 0))));
+    },
     fxCatalog,
     optionalFx: async (stage,context,{preview,session}) => {
       const unavailable=fxAvailability(stage,fxCatalog(),{preview});
@@ -800,6 +813,7 @@ Hooks.once("ready", () => {
       retainFx:(stage,{session})=>allowsTokenFx(localQuality())?optionalFx.retain(stage,{session,userId:`state:${clientId}`}):undefined,
       budget:()=>stateBudget(localQuality()),
       stopFx:session=>optionalFx.stop({session}),
+      body:{add:(...a)=>conditionBody?.add(...a),remove:(...a)=>conditionBody?.remove(...a)},
       trace: (status, detail) => runtime.trace(status, detail),
     });
     for (const hook of ["createActiveEffect","updateActiveEffect","deleteActiveEffect","createItem", "updateItem", "deleteItem", "updateActor", "createToken", "updateToken", "deleteToken", "refreshToken", "canvasReady", "updateWorldTime", "updateCombat", "deleteCombat", "updateUser"])

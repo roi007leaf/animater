@@ -1,0 +1,63 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { ConditionBody, bodyTreatment, bodyPose } from "../scripts/condition-body.mjs";
+
+const token = () => ({ w: 100, mesh: { position: { x: 500, y: 300 }, rotation: 0, scale: { x: 1, y: 1 }, filters: null } });
+function runner(extra = {}) {
+  let time = 0, queued = null;
+  const body = new ConditionBody({ now: () => time, frame: (cb) => (queued = cb, 1), cancel: () => (queued = null), tokenMagic: () => null, ...extra });
+  return { body, step: (ms) => { time += ms; const cb = queued; queued = null; cb?.(); } };
+}
+
+test("condition names map to body treatments across systems", () => {
+  assert.equal(bodyTreatment("Frightened"), "tremble");
+  assert.equal(bodyTreatment("Frightened 3"), "tremble");
+  assert.equal(bodyTreatment("Petrified"), "stone");
+  assert.equal(bodyTreatment("Grabbed"), "struggle");
+  assert.equal(bodyTreatment("Heavily Encumbered"), "sag");
+  assert.equal(bodyTreatment("Half Cover"), null);
+  assert.ok(Math.abs(bodyPose("tremble", 0.03).x) > 0);
+});
+
+test("a treatment moves the sprite and removal restores it exactly", () => {
+  const { body, step } = runner(), t = token();
+  body.add("s1", t, "sway");
+  step(650);
+  assert.notEqual(t.mesh.rotation, 0, "sways");
+  body.remove("s1");
+  assert.deepEqual([t.mesh.position.x, t.mesh.position.y, t.mesh.rotation, t.mesh.scale.y], [500, 300, 0, 1]);
+});
+
+test("Foundry refreshing the token mid-treatment is respected, not undone", () => {
+  const { body, step } = runner(), t = token();
+  body.add("s1", t, "tremble");
+  step(30);
+  t.mesh.position.x = 800; // token moved: Foundry set a new natural position
+  step(30);
+  body.remove("s1");
+  assert.equal(Math.round(t.mesh.position.x), 800);
+});
+
+test("one-off motions take priority and petrified drains colour without moving", () => {
+  let busy = false;
+  const { body, step } = runner({ busy: () => busy }), t = token();
+  body.add("s1", t, "wobble");
+  busy = true; step(400);
+  assert.equal(t.mesh.rotation, 0, "steps aside during an attack motion");
+  const stone = { ...token(), mesh: { ...token().mesh, tint: 0xffffff } };
+  body.add("s2", stone, "stone");
+  step(400);
+  assert.equal(stone.mesh.tint, 0xa39e94, "without Token Magic the sprite is tinted stone grey");
+  assert.deepEqual([stone.mesh.position.x, stone.mesh.rotation], [500, 0]);
+  body.remove("s2");
+  assert.equal(stone.mesh.tint, 0xffffff);
+});
+
+test("with Token Magic, petrified uses a transient desaturating filter", () => {
+  const calls = [];
+  const tokenMagic = () => ({ togglePreset: (token, preset, opts) => calls.push([preset.params[0].filterType, preset.params[0].saturation, opts.action, opts.transient]) });
+  const { body } = runner({ tokenMagic }), t = token();
+  body.add("s3", t, "stone");
+  body.remove("s3");
+  assert.deepEqual(calls, [["adjustment", 0.08, "add", true], ["adjustment", 0.08, "remove", true]]);
+});

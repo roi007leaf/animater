@@ -103,6 +103,7 @@ export class AnimaterRuntime {
       throw Error(recipe.playbackRoles.reason);
     if (recipe.lifecycle === "document" && !preview)
       throw Error("Enable this condition or effect in its catalog. Native documents control its lifetime; use Local canvas preview to test it.");
+    if (recipe.lifecycle === "document" && preview) this.host.previewBody?.(recipe, context.source);
     recipe = prepareRecipeSounds(recipe, this.host.soundCatalog?.());
     recipe = withWeaponScale(recipe, this.host.weaponScale?.() ?? 1);
     if (!this.host.ready())

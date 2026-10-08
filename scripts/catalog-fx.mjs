@@ -24,8 +24,10 @@ const bodyProfiles = {
   cold:{preset:'[BW] Overlay Cold Ice',fallback:'pure-ice-aura',tint:'#9cdeff'},
   electricity:{preset:'electric',tint:'#88cfff'},acid:{preset:'fumes',tint:'#a2dc48'},
   poison:{preset:'smoke',tint:'#78bc57'},force:{preset:'glow',tint:'#ba9cff'},
-  healing:{preset:'glow',tint:'#80dda4'},ward:{preset:'hexa-field',tint:'#a7bcff'},
-  stone:{preset:'earth-field',tint:'#bea57f'},water:{preset:'water-field',tint:'#75cfff'},
+  // Force-field presets (hexa/earth/water-field) draw a large dome with a dark
+  // rim and radiating lines over the token; wards glow on the body instead.
+  healing:{preset:'glow',tint:'#80dda4'},ward:{preset:'glow',tint:'#a7bcff'},
+  stone:{preset:'glow',tint:'#bea57f'},water:{preset:'glow',tint:'#75cfff'},
   blur:{preset:'blur'},distortion:{preset:'distortion'},mirror:{preset:'images'},spectral:{preset:'spectral-body',tint:'#83dcf3'},
   teleport:{preset:'warp-field',tint:'#ccb8ff'},fireWard:{preset:'fire-aura',tint:'#ffb267'},
   rush:{preset:'zoomblur'},
@@ -67,7 +69,6 @@ function bodyProfile(recipe, entry, anchor, options) {
   if (/^mirror-image(?:-|$)/.test(name))return 'mirror';
   if (/^(?:invisible|invisibility|displacement)(?:-|$)/.test(name)&&!/(?:suppressed|immunity|curtain)/.test(name))return 'distortion';
   if (/^(?:ethereal|etherealness|ghostly-form|incorporeal-form|ghost-walk)(?:-|$)/.test(name))return 'spectral';
-  if (persistent && name==='petrified')return 'stone';
   if (persistent && name==='poisoned')return 'poison';
   if (meaning.healing&&!healingVetoes.some(v=>v.test(name))&&/jb2a\.(?:cure_wounds|healing_generic|heal\.)/.test(art))return 'healing';
   // Token Magic's hexa-field is a fixed, very large dome; JB2A shield art already

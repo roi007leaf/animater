@@ -60,8 +60,10 @@ put('conditions-dnd5eparalyzed00', state('Paralyzed: numb, barely-moving nerve c
 ]));
 // The inward-metal clip is built from long streaks that run off the token at any
 // size (ground cracks too); a stone-grey pall over the body reads as turned to stone.
-put('conditions-dnd5epetrified00', state('Petrified: a stone-grey pall settles over the body.', [
-  ['Stone pall', ['fog_cloud.01.white', 'ambient_fog.001.loop.small.white'], { scale: 1.05, opacity: 0.8, playbackRate: 0.3, ...tint('#a39e94') }],
+// The creature itself turns grey (condition-body 'stone'); any cloud over the
+// body read as a dome, so only low settling dust remains at the feet.
+put('conditions-dnd5epetrified00', state('Petrified: the body turns grey stone over settling dust.', [
+  dust({ scale: 1.1, offsetY: 0.32, opacity: 0.7, ...tint('#a39e94') }),
 ]));
 put('conditions-dnd5epoisoned000', state('Poisoned: a dark green poison marker circles the creature.', [
   ['Poisoned', ['markers.poison.dark_green.03'], { scale: 0.95, opacity: 0.92 }],

@@ -3,6 +3,7 @@ import {planRecipe} from './model.mjs';
 import {artworkSize, offsetInGridSquares,tokenFootprint,effectFootprint} from './media-preview.mjs';
 import {applyEffectOptions} from './stage-options.mjs';
 import {mediaForReference} from './media-library-model.mjs';
+import {bodyTreatment} from './condition-body.mjs';
 
 export function activeState(item){
  if(item?.animaterAura){const source=item.animaterAura.source;return source?.type==='effect'?activeState(source):Boolean(source);}
@@ -77,7 +78,7 @@ export function storedStateDocument(item){
 // Sequencer media is temporary/local: no socket playback or stale scene flags.
 export class PersistentStates{
  constructor(host){this.host=host;this.active=new Map();this.serial=0;this.revision=0;this.timer=null;this.closed=false;this.pending=new Set();}
- async end(record){await Promise.all([this.host.end(record.name),this.host.stopFx?.(record.name)]);}
+ async end(record){this.host.body?.remove(record.name);await Promise.all([this.host.end(record.name),this.host.stopFx?.(record.name)]);}
  schedule(){if(this.closed)return;clearTimeout(this.timer);this.timer=setTimeout(()=>{this.timer=null;void this.reconcile().catch(e=>this.host.trace?.('Blocked',`Persistent effects: ${e.message}`));},35);}
  accepts(name){if(!String(name??'').startsWith(`animater-state-${this.host.clientId}-`))return true;return !this.closed&&[...this.active.values()].some(r=>r.name===name&&!r.cancelled);}
  async reconcile(){
@@ -141,7 +142,9 @@ export class PersistentStates{
   h.trace?.('Persistent',`${r.recipe.name} follows ${r.token.name??'token'} until its native document ends.`);
   await sequence.play({local:true});
   // Removal/scene changes can race asynchronous texture loading.
-  if(r.cancelled||this.closed||this.active.get(r.key)!==r)await this.end(r);
+  if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}
+  // The creature itself reacts (trembles, sways, turns to stone…) while the state lasts.
+  h.body?.add(r.name,r.token,bodyTreatment(r.item.name??r.recipe.name),{strength:level.scale});
  }
  async clear(){++this.revision;clearTimeout(this.timer);this.timer=null;const records=[...this.active.values()];this.active.clear();for(const r of records)r.cancelled=true;await Promise.all(records.map(r=>this.end(r)));}
  async destroy(){this.closed=true;await this.clear();}
