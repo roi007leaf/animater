@@ -3,7 +3,7 @@
 // bottom. Stages are grouped into role tracks; inside a track, stages that do
 // not overlap share a lane. Saved recipe data is unchanged: tracks, lanes,
 // playhead and zoom are presentation only.
-import { KINDS, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
+import { KINDS, EVENTS, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
 import { timelineLayout, packLanes, linkStartModes } from "./choreography.mjs";
 import { sampleRecipe, timedStages } from "./composition.mjs";
 import { previewRecipeSounds } from "./spell-sounds.mjs";
@@ -73,14 +73,14 @@ export function studioHTML(w, r) {
   const index = Math.min(w.stageIndex, r.stages.length - 1), dirty = w.dirty.has(r.id), status = w.status(r);
   const duration = w.previewDuration(r), studio = studioTracks(r), zoom = w.studioZoom ?? 1;
   w.previewMode = "recipe";
-  const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" title="Back to all recipes">← Recipes</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}"><span class="an-st-state ${status !== "Ready to play" ? "is-missing" : ""}">● ${esc(dirty ? "Unsaved changes" : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" title="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon" data-action="delete" title="Delete recipe" aria-label="Delete recipe">⌫</button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" title="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? "Save recipe" : "Saved ✓"}</button></div></header>`;
+  const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" title="Back to all recipes">← Recipes</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}">${triggerChipHTML(w, r)}<span class="an-st-state ${status !== "Ready to play" ? "is-missing" : ""}">● ${esc(dirty ? "Unsaved changes" : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" title="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon" data-action="delete" title="Delete recipe" aria-label="Delete recipe">⌫</button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" title="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? "Save recipe" : "Saved ✓"}</button></div></header>`;
   const transport = `<div class="an-st-transport" role="group" aria-label="Playback">
       <button class="an-st-tbtn" data-action="studio-home" title="Go to start (Home)" aria-label="Go to start">⏮</button><button class="an-st-tbtn an-st-play" data-action="studio-play" title="Play / pause (Space)" aria-label="Play" ${unconfigured ? "disabled" : ""}>▶</button><button class="an-st-tbtn" data-action="studio-stop" title="Stop and rewind" aria-label="Stop">■</button><button class="an-st-tbtn" data-action="studio-end" title="Go to end (End)" aria-label="Go to end">⏭</button><button class="an-st-tbtn ${w.studioLoop ? "is-active" : ""}" data-action="studio-loop" aria-pressed="${!!w.studioLoop}" title="Loop playback (L)" aria-label="Loop">⟲</button>
       <span class="an-st-time"><b data-st-time>${seconds(w.studioTime ?? 0)}</b> / ${seconds(duration)}</span>
       <small class="an-preview-status" data-preview-status role="status" aria-live="polite">${unconfigured ? "Choose an asset to preview your first stage" : "Sample spacing · drag the ruler to scrub"}</small>
       <span class="an-st-spacer"></span>
       <button class="an-primary" data-action="preview" title="${canvasUnavailable ? "Canvas playback requires Foundry" : "Play privately on your canvas with the selected tokens"}" ${w.busy || canvasUnavailable || unconfigured ? "disabled" : ""}>▷ Local preview</button><button data-action="play" title="${canvasUnavailable ? "Canvas playback requires Foundry" : motionBlocked ? "Foundry has not registered the token-motion channel" : "Broadcast this recipe to the table"}" ${w.busy || canvasUnavailable || motionBlocked || unconfigured || linked ? "disabled" : ""}>Play at table</button>
-    </div>`;
+    </div>${motionBlocked ? w.motionSyncNoticeHTML() : ""}`;
   const monitor = `<section class="an-st-monitor" aria-label="Preview">${w.monitorHTML(r)}${transport}
       ${linked ? `<div class="an-catalog-use-status is-using"><b>Document-linked animation</b><small>Sustained layers and token filters follow the affected token while its native document is active.</small><button data-action="enable-state-custom" ${canvasUnavailable || !env.ready ? "disabled" : ""}>Enable customization</button></div>` : ""}</section>`;
   const tracks = studio.tracks.map((t) => {
@@ -104,7 +104,14 @@ export function studioHTML(w, r) {
       <div class="an-tl-playhead an-st-playhead" data-tl-playhead style="left:${w.timelineX(studio.total, w.studioTime ?? 0)}"><span></span></div>
       <div class="an-tl-guide" data-tl-guide hidden><span></span></div>
     </div></div></section>`;
-  return `<div class="an-studio" tabindex="-1" style="--an-inspector-width:${w.inspectorWidth()}px;--an-timeline-height:${timelineHeight(w)}px">${bar}${monitor}<div class="an-splitter" data-splitter role="separator" aria-orientation="vertical" aria-label="Resize stage inspector" tabindex="0" title="Drag to resize · double-click to reset"></div><aside class="an-inspector">${w.inspectorHTML(r)}</aside><div class="an-st-hsplit" data-st-hsplit role="separator" aria-orientation="horizontal" aria-label="Resize timeline" tabindex="0" title="Drag to resize the timeline · double-click to reset"></div>${timeline}</div>`;
+  const settings = w.studioSettings ? `<div class="an-st-settings" role="dialog" aria-label="Recipe settings"><div class="an-st-settings-head"><b>Recipe settings</b><small>Applies to the whole recipe</small><button class="an-icon" data-action="studio-settings" aria-label="Close recipe settings" title="Close (Esc)">✕</button></div>${w.recipeSettingsHTML(r)}</div>` : "";
+  return `<div class="an-studio" tabindex="-1" style="--an-inspector-width:${w.inspectorWidth()}px;--an-timeline-height:${timelineHeight(w)}px">${bar}${monitor}<div class="an-splitter" data-splitter role="separator" aria-orientation="vertical" aria-label="Resize stage inspector" tabindex="0" title="Drag to resize · double-click to reset"></div><aside class="an-inspector">${w.inspectorHTML(r)}</aside><div class="an-st-hsplit" data-st-hsplit role="separator" aria-orientation="horizontal" aria-label="Resize timeline" tabindex="0" title="Drag to resize the timeline · double-click to reset"></div>${timeline}${settings}</div>`;
+}
+function triggerChipHTML(w, r) {
+  const bound = r.itemUuid ? w.host.itemSummary?.(r.itemUuid)?.name : "";
+  const what = bound || r.match?.split(",")[0]?.trim() || "";
+  const when = r.enabled === false ? "Disabled" : EVENTS[r.trigger] ?? r.trigger;
+  return `<button class="an-st-trigger${r.enabled === false ? " is-off" : ""}${w.studioSettings ? " is-open" : ""}" data-action="studio-settings" aria-expanded="${!!w.studioSettings}" title="Recipe settings: trigger, item binding, description, category">⚙ <span>${esc(when)}</span>${what ? `<small>${esc(what)}</small>` : ""}</button>`;
 }
 
 function timelineHeight(w) {
@@ -311,10 +318,11 @@ export function studioPointer(w, e) {
 }
 export function studioKey(w, e) {
   if (!e.target.closest?.(".an-studio")) return false;
+  if (e.key === "Escape" && w.studioSettings && !el(w, ".an-st-menu")) { e.preventDefault(); e.stopPropagation(); w.studioSettings = false; w.render(); el(w, ".an-st-trigger")?.focus(); return true; }
   if (e.key === "Escape" && el(w, ".an-st-menu")) { e.preventDefault(); e.stopPropagation(); closeMenu(w); el(w, `[data-tl-bar="${w.stageIndex}"]`)?.focus(); return true; }
   const ctrl = e.ctrlKey || e.metaKey;
   if (ctrl && e.key.toLowerCase() === "s") { e.preventDefault(); e.stopPropagation(); el(w, '[data-action="save"]:not(:disabled)')?.click(); return true; }
-  if (e.target.matches("input, textarea, select, [contenteditable]") || e.target.closest(".an-inspector, .an-st-menu")) return false;
+  if (e.target.matches("input, textarea, select, [contenteditable]") || e.target.closest(".an-inspector, .an-st-menu, .an-st-settings")) return false;
   const onBar = !!e.target.closest("[data-tl-bar]"), key = e.key;
   const stop = () => { e.preventDefault(); e.stopPropagation(); return true; };
   if (key === " " && !e.target.matches("button")) { stop(); void togglePlay(w); return true; }
@@ -407,6 +415,7 @@ export async function studioAction(w, action, b) {
     case "studio-zoom-in": applyZoom(w, (w.studioZoom ?? 1) * 1.5); return true;
     case "studio-zoom-out": applyZoom(w, (w.studioZoom ?? 1) / 1.5); return true;
     case "studio-help": return true;
+    case "studio-settings": w.studioSettings = !w.studioSettings; w.render(); if (w.studioSettings) el(w, ".an-st-settings input, .an-st-settings select, .an-st-settings textarea")?.focus({ preventScroll: true }); else el(w, ".an-st-trigger")?.focus(); return true;
     case "studio-fit": applyZoom(w, 1); el(w, "[data-st-scroll]").scrollLeft = 0; return true;
     case "studio-add": addStage(w, b.dataset.stTrack); return true;
     case "studio-dup-stage": closeMenu(w); duplicateStage(w, Number(b.dataset.index)); return true;

@@ -2199,3 +2199,40 @@
 }
 .animater .an-st-corner .an-st-mini:hover { color: var(--an-text); border-color: var(--an-accent); }
 .animater .an-st-corner .an-st-mini[data-action="studio-help"] { cursor: help; }
+
+/* Recipe-level settings: trigger chip in the studio bar + floating panel. */
+.animater .an-st-trigger {
+  width: auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.animater .an-st-trigger span { color: var(--an-text); }
+.animater .an-st-trigger small { color: var(--an-muted); overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+.animater .an-st-trigger.is-off span { color: #ffb86b; }
+.animater .an-st-trigger.is-open { border-color: var(--an-accent); }
+.animater .an-st-settings {
+  position: absolute;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(460px, calc(100% - 32px));
+  max-height: calc(100% - 80px);
+  overflow: auto;
+  z-index: 40;
+  padding: 14px 16px 16px;
+  border: 1px solid var(--an-line);
+  border-radius: 12px;
+  background: var(--an-panel);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+}
+.animater .an-st-settings-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+.animater .an-st-settings-head small { color: var(--an-muted); font-size: 11px; }
+.animater .an-st-settings-head button { margin-left: auto; width: auto; }
+.animater .an-st-settings .an-editor-section { border: 0; padding: 0; margin: 0; }

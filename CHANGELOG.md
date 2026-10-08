@@ -20,6 +20,7 @@
 - The bound item shows its name and icon; click it to open its sheet.
 - Local preview and Play at table tell you to select a caster token before the window minimizes, instead of minimizing and failing quietly.
 - Catalog controls (Plug & play, Token motion, sounds) are compact pills that share one row on every catalog tab; their descriptions show on hover.
+  - **Recipe settings.** The inspector shows only the selected stage. Trigger, item binding, description, category and accent open from the ⚙ trigger chip in the Studio bar (Esc closes).
 - The recipe library uses the full window width; **← Recipes** (or the Recipes nav item) returns to it.
 
 ## 0.1.0 — prerelease (2026-10-08)
