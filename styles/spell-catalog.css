@@ -467,3 +467,27 @@
   background: transparent;
   box-shadow: none;
 }
+
+/* One row of catalog controls: cards share the width (never wrap), notices
+   inside the row drop to their own line underneath. */
+.animater .an-catalog-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 14px;
+}
+.animater .an-catalog-controls > .an-catalog-automation {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  justify-content: space-between;
+}
+.animater .an-catalog-controls > .an-sound-settings { flex-grow: 1.7; }
+.animater .an-catalog-controls > :not(.an-catalog-automation) { flex-basis: 100%; margin: 0; }
+.animater .an-catalog-controls > .an-catalog-automation > div { overflow: visible; }
+.animater .an-catalog-controls > .an-catalog-automation b { overflow: hidden; text-overflow: ellipsis; }
+.animater .an-catalog-controls .an-sound-settings > label { flex: 1 1 auto; min-width: 0; }
+.animater .an-catalog-controls .an-sound-settings input[type="range"] { flex: 1 1 60px; min-width: 40px; width: auto; }
+.animater .an-catalog-automation + :not(.an-catalog-automation) { margin-top: 0; }
