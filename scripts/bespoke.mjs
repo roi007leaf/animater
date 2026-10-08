@@ -38,12 +38,19 @@ function reanchorSounds(oldStages, newStages) {
 // Catalog ids embed a kind/pack prefix that can change when catalogs are split
 // (e.g. sf2e-feat-actions-<doc> → sf2e-action-actions-<doc>). The trailing
 // 16-character document id is stable, so index designs by it as well.
+// Embedded effects are keyed <pack>-<effectId>-<parentItemId>: their trailing id is
+// the parent spell/feature, so aliasing it would put the effect's status design on
+// the parent's own activities (Ray of Enfeeblement lost its ray to "Enfeebled").
 const DOC_ALIASES = new Map();
+const EMBEDDED = /-[A-Za-z0-9]{16}-[A-Za-z0-9]{16}(?::.+)?$/;
 for (const key of Object.keys(BESPOKE)) {
-  const m = /^(\w+):(?:[\w-]*-)?([A-Za-z0-9]{16})(:.+)?$/.exec(key);
+  if (EMBEDDED.test(key)) continue;
+  const m =/^(\w+):(?:[\w-]*-)?([A-Za-z0-9]{16})(:.+)?$/.exec(key);
   if (m) DOC_ALIASES.set(`${m[1]}:${m[2]}${m[3] ?? ''}`, key);
 }
 const lookup = k => { const key = resolveKey(k); return key && !PINNED.has(key) ? key : undefined; };
+// An embedded effect without its own design falls back to its parent's design
+// (Banished → Banishment's vortex); only parents' own designs are aliased.
 const resolveKey = k => (BESPOKE[k] ? k : DOC_ALIASES.get(k.replace(/^(\w+):(?:[\w-]*-)?([A-Za-z0-9]{16})/, '$1:$2')));
 // A bespoke design changes the look, never the native semantics the generator
 // already resolved: who is affected, how many shots, whether motion is enabled,

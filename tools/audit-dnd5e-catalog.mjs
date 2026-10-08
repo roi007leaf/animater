@@ -6,11 +6,18 @@
 import { writeFile } from "node:fs/promises";
 import { dnd5eSources } from "./dnd5e-source.mjs";
 import { assetDatabases } from "./asset-databases.mjs";
+import { assetGeometry } from "./spell-asset-selection.mjs";
 import { dndEntries, dndRecipe } from "../scripts/dnd5e-catalog.mjs";
 
 const arg = (name) => process.argv.find((a) => a.startsWith(`--${name}=`))?.split("=")[1];
 const data = await dnd5eSources(), db = await assetDatabases();
 const rowsByUuid = new Map(Object.values(data).filter(Array.isArray).flat().filter((r) => r?.uuid).map((r) => [r.uuid, r]));
+const rowByKey = new Map([...db.free, ...db.patreon].map((r) => [r.key, r]));
+const geometryOf = (key) => { const r = rowByKey.get(key); return r ? assetGeometry(r) : "unknown"; };
+// Art shape each native template shape needs.
+const SHAPE_FITS = { cone: ["cone"], line: ["line", "beam"], wall: ["wall", "line", "beam"], radius: ["radial"], sphere: ["radial"], cylinder: ["radial"], emanation: ["radial"], cube: ["radial"], square: ["radial"], circle: ["radial"] };
+const reviewed = JSON.parse(await (await import("node:fs/promises")).readFile(new URL("../data/dnd5e-native-directions.json", import.meta.url), "utf8"));
+const reviewedBy = new Map(reviewed.directions.map((d) => [`${d.uuid}::${d.activityId}`, d]));
 const families = new Set([...db.patreon, ...db.free].map((r) => r.key.split(".")[1]));
 const snake = (s) => s.toLowerCase().replace(/[’']/g, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
 // JB2A families named after a specific spell/feature (excluding generic words).
@@ -47,6 +54,19 @@ function audit(entry, variant) {
   if (MULTI.test(text) && !recipe.stages.some((s) => ["travel", "projectile"].includes(s.kind) && (s.repeats ?? 1) > 1) && recipe.stages.filter((s) => ["travel", "projectile"].includes(s.kind)).length < 2) flag("MULTI_MISSILE", "description has several missiles/rays; recipe fires one");
   if (selfRange && /radius|sphere|emanation|cylinder/.test(template) && lasting && !recipe.stages.some((s) => s.kind === "aura" || (s.kind === "template" && s.persist))) flag("SELF_AURA_ONESHOT", `lasting ${template} around the caster plays as a one-off`);
   if (template && !selfRange && hostile && !recipe.stages.some((s) => s.kind === "template")) flag("AREA_NO_TEMPLATE", `${template} area with no area stage`);
+  // Area spells: the template's own shape must be drawn by art of that shape.
+  const actTemplate = act.target?.template?.type || "", followupLike = /start of turn|end of turn|enter|ongoing|subsequent|move|repeat|each turn/i.test(variant.label + " " + (act.name ?? ""));
+  if (entry.kind === "spell" && actTemplate && SHAPE_FITS[actTemplate] && !followupLike) {
+    const areaStages = recipe.stages.filter((s) => s.kind === "template");
+    if (!areaStages.length) flag("TEMPLATE_NO_AREA", `${actTemplate} template but no area stage`);
+    else for (const s of areaStages) { const geo = geometryOf(s.assets[0]); if (!SHAPE_FITS[actTemplate].includes(geo)) flag("TEMPLATE_SHAPE", `${actTemplate} template drawn with ${geo} art (${(s.assets[0] ?? "").replace(/^jb2a./, "")})`); }
+  }
+  // A reviewed ray/beam/missile must actually travel from the caster.
+  const review = reviewedBy.get(`${entry.uuid}::${variant.activityId}`);
+  const travels = recipe.stages.some((s) => ["travel", "projectile"].includes(s.kind));
+  if (review && ["beam", "projectile", "missile", "ray"].includes(review.delivery) && !review.followup && !travels) flag("DELIVERY_LOST", `reviewed ${review.delivery} has no travelling stage${recipe.bespoke ? " (bespoke " + recipe.bespoke + ")" : ""}`);
+  if (!review && /^(?:ray|bolt|beam)|(?:ray|bolt|beam|missile|dart)s?$/i.test(entry.name) && act.type === "attack" && !travels) flag("DELIVERY_LOST", `named ${entry.name} attack with no travelling stage${recipe.bespoke ? " (bespoke)" : ""}`);
+  if (!review && act.type === "attack" && act.attack?.type?.value === "ranged" && !["self", "touch"].includes(act.range?.units ?? sys.range?.units) && !travels && entry.kind === "spell") flag("DELIVERY_LOST", `ranged spell attack with no travelling stage${recipe.bespoke ? " (bespoke)" : ""}`);
   const own = snake(entry.name);
   if (families.has(own) && !fams.some((f) => f.split(".")[0] === own)) flag("NAMED_ART_UNUSED", `JB2A has ${own} art; unused`);
   for (const f of new Set(fams.map((f) => f.split(".")[0]))) if (namedFamily.has(f) && namedFamily.get(f) !== entry.name && !own.includes(f)) flag("FOREIGN_NAMED_ART", `uses ${f} (art for ${namedFamily.get(f)})`);

@@ -23,6 +23,10 @@ function siblings(key,id,edition){const base=allAssets.get(key);if(!base)return 
 function media(direction,row,id){
  const theme=SPELL_THEMES[direction.theme]?direction.theme:'arcane',defaults=SPELL_THEMES[theme];
  const profile={...defaults,...Object.fromEntries(['bolt','hit','area','aura','cast'].filter(k=>typeof direction[k]==='string').map(k=>[k,direction[k]])),...(direction.areaAsset?{area:direction.areaAsset}:{}),...(direction.slotThemes?{slotThemes:direction.slotThemes}:{})};
+ // The shared necrotic/curse themes list Toll the Dead's bell first: as a generic
+ // impact it rang on Finger of Death, Harm or a life-stealing sword. Only spells
+ // that name it keep the bell; other necrotic hits drain life inward.
+ if(typeof profile.hit==='string'&&/^toll_the_dead/.test(profile.hit)&&typeof direction.hit!=='string'&&!/toll|knell|bell/i.test(row.source.name))profile.hit='energy_strands.in,impact.004.dark_purple,impact.001.purple';
  const key=JSON.stringify([theme,profile,row.source.name,direction.delivery,direction.areaTiles]);
  if(!mediaCache.has(key))mediaCache.set(key,resolveSpellMedia(db,theme,profile,defaults,{system:'dnd5e',name:row.source.name,slug:id,delivery:direction.delivery==='fork'?'chain':direction.delivery==='rayFan'?'coneRayFan':direction.delivery,design:{...(direction.areaTiles?{areaLayout:'tiles'}:{}),pattern:['ray','fork','rayFan'].includes(direction.delivery)?'ray':['missile','areaMissile'].includes(direction.delivery)?'missile':'generic',assetIntent:row.source.name}}));
  const resolved=mediaCache.get(key);
