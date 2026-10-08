@@ -751,25 +751,23 @@
   border-radius: 8px;
 }
 /* "With previous" stages join the card before them: one group, played together. */
-.animater .an-stage.is-with-previous {
-  margin-left: -5px;
-}
-.animater .an-stage.is-with-previous::before {
+/* Two interlocking links bridge the gap to the previous card. */
+.animater .an-stage.is-with-previous::before,
+.animater .an-stage.is-with-previous::after {
   content: "";
   position: absolute;
-  left: -3px;
   top: 50%;
-  width: 6px;
-  height: 22px;
-  transform: translateY(-50%);
-  border-radius: 3px;
-  background: var(--an-accent, #b48cff);
+  width: 12px;
+  height: 7px;
+  margin-top: -4px;
+  border: 2px solid var(--an-accent, #b48cff);
+  border-radius: 5px;
+  background: transparent;
   z-index: 2;
+  pointer-events: none;
 }
-.animater .an-stage.is-with-previous > button {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-}
+.animater .an-stage.is-with-previous::before { left: -13px; }
+.animater .an-stage.is-with-previous::after { left: -5px; }
 .animater .an-stage > button {
   width: 100%;
   min-height: 90px;

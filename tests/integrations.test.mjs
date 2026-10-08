@@ -267,3 +267,25 @@ test('stage start modes link to the neighbouring stage and survive reordering', 
   const first = linkStartModes([st('x', { startMode: 'after' })]);
   assert.equal(first[0].startMode, undefined, 'the first stage has nothing to follow');
 });
+
+test('a stage can start with or after a specific stage, kept through reordering', async () => {
+  const { linkStartModes, reorderStages } = await import('../scripts/choreography.mjs');
+  const { validateRecipe } = await import('../scripts/model.mjs');
+  const { timedStages } = await import('../scripts/composition.mjs');
+  const st = (stageId, extra) => ({ stageId, kind: 'impact', assets: ['jb2a.impact'], duration: 1000, delay: 0, ...extra });
+  const recipe = list => validateRecipe({ id: 't', name: 't', trigger: 'manual', stages: list });
+  const at = list => Object.fromEntries(timedStages(recipe(list)).map(s => [s.stageId, Math.round(s.delay)]));
+  // Stage 3 starts with stage 1, not with stage 2.
+  const stages = linkStartModes([st('a'), st('b', { startMode: 'after' }), st('c', { startMode: 'with', startRef: 'a' })]);
+  assert.deepEqual(at(stages), { a: 0, b: 1000, c: 0 });
+  assert.equal(recipe(stages).stages[2].startRef, 'a');
+  // Moving c to the front keeps it attached to a; b still follows its new previous stage.
+  const moved = reorderStages(stages, 2, 0);
+  assert.equal(moved[0].afterStage, 'a');
+  assert.deepEqual(at(moved), { c: 0, a: 0, b: 1000 });
+  // A missing reference falls back to the previous stage.
+  const orphan = linkStartModes([st('a'), st('b', { startMode: 'after', startRef: 'gone' })]);
+  assert.equal(orphan[1].afterStage, 'a');
+  // A loop cannot be resolved.
+  assert.throws(() => timedStages(recipe(linkStartModes([st('a', { startMode: 'after', startRef: 'b' }), st('b', { startMode: 'after', startRef: 'a' })]))));
+});

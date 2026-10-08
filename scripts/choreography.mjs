@@ -9,11 +9,15 @@ import { sampleRecipe } from "./composition.mjs";
 // are stored as ordinary stage links, so playback and saved data stay unchanged;
 // re-running this after any reorder/add/remove keeps each link on its neighbour.
 export const START_MODES = Object.freeze({ after: 'After previous', with: 'With previous' });
+// startRef names a specific stage to follow; without one (or when that stage is
+// gone) the stage follows whichever stage now precedes it.
 export function linkStartModes(stages) {
+  const ids = new Set(stages.map(s => s.stageId));
   stages.forEach((s, i) => {
-    if (!START_MODES[s.startMode]) { delete s.startMode; return; }
-    if (i === 0) { delete s.startMode; s.afterStage = ''; s.delay = 0; return; }
-    s.afterStage = stages[i - 1].stageId;
+    if (!START_MODES[s.startMode]) { delete s.startMode; delete s.startRef; return; }
+    if (s.startRef && (!ids.has(s.startRef) || s.startRef === s.stageId)) delete s.startRef;
+    if (i === 0 && !s.startRef) { delete s.startMode; s.afterStage = ''; s.delay = 0; return; }
+    s.afterStage = s.startRef ?? stages[i - 1].stageId;
     s.timingAnchor = s.startMode === 'with' ? 'start' : 'end';
     if (s.startMode === 'with') s.startOffset = 0;
     else s.startOffset = Math.max(0, Number(s.startOffset) || 0);

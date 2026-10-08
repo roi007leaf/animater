@@ -3,7 +3,7 @@
 ## 0.1.1 — prerelease (2026-10-08)
 
 - Installing no longer offers JB2A Free when you use JB2A Patreon: the manifest no longer recommends a specific JB2A edition (install either one).
-- Stages have a **Start** choice: *After previous* (optional gap), *With previous* or *At a set time*. New stages follow the previous one; sounds and token motion start with it. Cards that play together are joined in the timeline, and reordering keeps each stage attached to its neighbour.
+- Stages have a **Start** choice: *After* (optional gap) or *With* another stage, or *At a set time*. Pick *Previous stage* to follow whatever comes before it, or a specific stage (e.g. stage 3 with stage 1), which it stays attached to when reordered. New stages follow the previous one; sounds and token motion start with it. Stages that start with their neighbour are chained in the timeline; loops are refused.
 - The Animater window minimizes while Local preview or Play at table runs and restores afterwards (per-user setting).
 
 ## 0.1.0 — prerelease (2026-10-08)
