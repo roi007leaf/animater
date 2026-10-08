@@ -94,7 +94,7 @@ export class PersistentStates{
     for(const item of states){
      if(shown>=budget.states)break;
      if(!(h.activeState??activeState)(item)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
-     const state=(h.normalizeState??normalizeStateCatalogState)(h.state(h.stateKind?.(item)??item.type)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog());if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
+     const state=(h.normalizeState??normalizeStateCatalogState)(h.state(h.stateKind?.(item)??item.type)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType]);
      if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget),token,item,recipe,opacity:state.opacity});shown++;}

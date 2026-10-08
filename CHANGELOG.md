@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Your customized conditions and effects play with plug & play off.** A condition or effect you customized (or made yourself) now plays from your Recipes whenever Automatic playback is on, even if that catalog is paused. Spells, feats and weapons already worked this way. It doesn't play if you explicitly chose "Use animation" for the catalog version of that entry, or if you disable the recipe. Turning Automatic playback on or off updates lasting animations right away.
+- **Leaner condition and effect catalog page.** The "Using catalog animation" box is gone (the Use / Customize buttons already show it), the Local canvas preview button has space above it, and "Loops while document active" now reads "Loops while it is on the token".
 - **Recipes say when they can't play.**
   - **Same link:** when two enabled recipes are linked to the same item, condition or effect, the card that loses says "⚠ Not playing: “Spell Effect: Shield” is also linked to … and plays instead", and the winner says which recipe it overrides. The Studio header shows the warning too.
   - **Who wins:** a catalog copy beats a handmade lasting animation, a recipe bound to an item beats one matched by name, and otherwise the tie is broken by internal recipe ID.
@@ -13,7 +15,6 @@
   - **Lasting animation:** stays on a token while a condition or effect is on it, and stops when it is removed.
   - Each choice has a one-line explanation and an example. A lasting animation opens its Recipe settings so you can type the condition or effect name first.
   - Players, and worlds without condition support, go straight to an action animation.
-- **Handmade lasting animations always play.** A lasting animation you made yourself plays while its condition or effect is on a token, even if that condition or effect catalog is off. Catalog copies still follow the catalog.
 - **Duplicating a lasting animation keeps it lasting** instead of turning it into a manual one.
 - **Condition and effect recipes are marked as such.** Their recipe cards carry a teal "◷ Condition · stays while on token" (or Effect) badge. In the Studio, the trigger reads "Effect · while on token", so they no longer look like ordinary one-shot recipes.
 - **Condition and effect layers always stay on the token.** A layer added to a condition or effect animation used to stay invisible until a hidden "keep" box was ticked. These layers now always last while the condition or effect is on the token. The one-choice Subject menu is gone, and a note explains that Duration only sets the preview length.

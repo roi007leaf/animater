@@ -722,6 +722,8 @@ Hooks.once("init", () => {
     config: true,
     type: Boolean,
     default: false,
+    // Your own lasting animations start or stop with it.
+    onChange: () => persistentStates?.schedule(),
   });
   game.settings.registerMenu(ID, "workspace", {
     name: "Animater workspace",
@@ -957,6 +959,8 @@ Hooks.once("ready", () => {
       sceneId: () => canvas.scene?.id,
       tokens: () => canvas.tokens?.placeables ?? [],
       recipes,
+      // Your own lasting recipes follow the same switch as every other custom recipe.
+      customEnabled: () => enabled(),
       catalog: () => runtime.getCatalog(),
       state: (kind) => game.settings.get(ID, game.system.id==='sf2e'?sfSettingKey(kind):game.system.id==='dnd5e'?dndSettingKey(kind):kind === "condition" ? "conditionCatalog" : "effectCatalog"),
       visibility: () => ({ isGM: game.user.isGM, secretConditions: ['pf2e','sf2e'].includes(game.system.id)&&game.settings.get(game.system.id, "metagame_secretCondition") === true }),

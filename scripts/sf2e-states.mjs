@@ -10,13 +10,14 @@ const auraLookup=uuid=>{
 const profile={findStateEntry:item=>stateView(findSfState(item)),auraStateEntry:auraLookup,effects:sfEntries('effect').map(stateView)};
 export const sfActorStates=actor=>actorStates(actor,profile);
 export const sfStateVisible=(item,token,visibility)=>stateVisible(item,token,visibility,findSfState);
-export function resolveSfStateRecipe(item,options,saved=[],catalog){
+export function resolveSfStateRecipe(item,options,saved=[],catalog,{customEnabled=true}={}){
  const entry=findSfState(item),state=normalizeSfCatalogState(options);
  const damageType=item.system?.persistent?.damageType;
  const own=saved.filter(r=>r.lifecycle==='document'&&r.systemId==='sf2e'&&(!r.stateDamageType||r.stateDamageType===damageType)).sort((a,b)=>Number(Boolean(b.stateDamageType))-Number(Boolean(a.stateDamageType)));
  const custom=(entry?own.find(r=>r.stateEntry===entry.id):null)??matchRecipe(own,{type:'effect',systemId:'sf2e',item});
- // A handmade lasting recipe (not a catalog copy) plays whenever it is enabled, catalog on or off.
- const handmade=Boolean(custom?.enabled&&!custom.stateEntry);
+ // Your own recipe plays whenever it is enabled and custom recipes play, catalog on or off,
+ // unless you explicitly picked the catalog's version of this entry.
+ const handmade=Boolean(custom?.enabled&&customEnabled&&!(entry&&state.enabled&&state.selected.includes(entry.id)&&!state.customized.includes(entry.id)));
  if(!handmade&&(entry&&!sfEntryEnabled(entry.id,state)||!entry&&!state.enabled))return null;
  const built=()=>sfRecipe(entry,damageType,{damageType,catalog,aura:item.animaterAura??null});
  if(!handmade&&entry&&state.selected.includes(entry.id)&&!state.customized.includes(entry.id))return built();

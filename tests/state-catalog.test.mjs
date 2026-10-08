@@ -113,13 +113,16 @@ test('a customized fire damage loop never overrides bleed or other persistent da
  assert.equal(bleed.stateDamageType,'bleed');assert.match(bleed.stages[0].assets[0],/drop/);
 });
 
-test("a handmade lasting recipe plays with the condition catalog off; catalog copies follow the catalog", async () => {
+test("your own lasting recipe plays with the catalog off, unless custom recipes are off or you picked the catalog version", async () => {
   const { resolveStateRecipe, PF2E_CONDITIONS } = await import("../scripts/state-catalog.mjs");
   const { validateRecipe } = await import("../scripts/model.mjs");
   const entry = PF2E_CONDITIONS.find((e) => e.slug === "frightened");
   const item = { type: "condition", slug: "frightened", name: "Frightened" };
   const lasting = (extra) => validateRecipe({ id: "mine", name: "Mine", trigger: "effect", lifecycle: "document", stages: [{ kind: "aura", assets: ["jb2a.impact.001.orange"], persist: true }], ...extra });
   assert.equal(resolveStateRecipe(item, { enabled: false }, [lasting({ match: "frightened" })], [])?.id, "mine");
-  assert.equal(resolveStateRecipe(item, { enabled: false }, [lasting({ stateEntry: entry.id })], []), null);
+  assert.equal(resolveStateRecipe(item, { enabled: false }, [lasting({ stateEntry: entry.id })], [])?.id, "mine", "a customized catalog copy too");
+  assert.equal(resolveStateRecipe(item, { enabled: false }, [lasting({ match: "frightened" })], [], { customEnabled: false }), null, "custom recipes switched off");
+  const picked = resolveStateRecipe(item, { enabled: true, scope: "selected", selected: [entry.id] }, [lasting({ stateEntry: entry.id })], []);
+  assert.notEqual(picked?.id, "mine", "explicitly using the catalog version");
   assert.equal(resolveStateRecipe(item, { enabled: false }, [lasting({ match: "frightened", enabled: false })], []), null);
 });

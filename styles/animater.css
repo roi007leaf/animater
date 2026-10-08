@@ -716,6 +716,8 @@
   flex: 1;
   padding: 9px 5px;
 }
+/* Same gap below the Use / Customize row as between its two buttons. */
+.animater .an-catalog-canvas-preview { margin-top: 7px; }
 .animater .an-hint {
   font-size: 10px;
   line-height: 1.6;

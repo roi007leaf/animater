@@ -63,12 +63,13 @@ export function stateRecipe(entry,{damageType,element,catalog,auraVariant,aura=e
  }):[{stageId:'sustained',label:'Sustained visual',...lifetime,assets:design.assets,scale:design.scale??entry.scale,opacity:design.opacity??entry.opacity,below:design.below??entry.below,offsetX:design.offsetX??entry.offsetX,offsetY:design.offsetY??entry.offsetY,offsetUnits:design.offsetUnits??entry.offsetUnits,...area,...(aura?{below:true}:{}),...markerTint,...wardTint}];
  return withCatalogFx(validateRecipe({id:`${entry.systemId??'pf2e'}-state-${entry.id}${variant?`-${variant}`:''}`,name:entry.name,description:field?.rationale??design.rationale??entry.rationale,category:entry.group,color:design.color??entry.color,trigger:'effect',itemUuid:entry.uuid,match:entry.name,lifecycle:'document',stateEntry:entry.id,...(variant?{stateDamageType:variant}:{}),stages}),entry,{damageType,fx,fxCatalog});
 }
-export function resolveStateRecipe(item,state,saved=[],catalog){
+export function resolveStateRecipe(item,state,saved=[],catalog,{customEnabled=true}={}){
  const entry=findStateEntry(item);
  const own=saved.filter(r=>r.lifecycle==='document'&&(!r.stateDamageType||r.stateDamageType===item.system?.persistent?.damageType)).sort((a,b)=>Number(Boolean(b.stateDamageType))-Number(Boolean(a.stateDamageType)));
  const custom=(entry?own.find(r=>r.stateEntry===entry.id):null)??matchRecipe(own,{type:'effect',item});
- // A handmade lasting recipe (not a catalog copy) plays whenever it is enabled, catalog on or off.
- const handmade=Boolean(custom?.enabled&&!custom.stateEntry);
+ // Your own recipe plays whenever it is enabled and custom recipes play, catalog on or off,
+ // unless you explicitly picked the catalog's version of this entry.
+ const handmade=Boolean(custom?.enabled&&customEnabled&&!(entry&&state?.enabled&&state.selected?.includes(entry.id)&&!state.customized?.includes(entry.id)));
  if(!handmade&&entry&&!stateEntryEnabled(entry.id,state))return null;
  if(!handmade&&!entry&&state?.enabled!==true)return null;
  const aura=item.animaterAura??null;

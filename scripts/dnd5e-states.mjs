@@ -31,12 +31,13 @@ export function dndStateVisible(state,token,{isGM=false}={}){
  const parent=state.document?.parent;
  return parent?.documentName!=='Item'||parent.system?.identified!==false;
 }
-export function resolveDndStateRecipe(state,options,saved=[]){
+export function resolveDndStateRecipe(state,options,saved=[],_catalog,{customEnabled=true}={}){
  const entry=findDndState(state),config=normalizeDndCatalogState(options);
  const own=saved.filter(r=>r.lifecycle==='document'&&r.systemId==='dnd5e');
  const custom=(entry?own.find(r=>r.stateEntry===entry.id):null)??matchRecipe(own,{type:'effect',systemId:'dnd5e',item:state.document??state});
- // A handmade lasting recipe (not a catalog copy) plays whenever it is enabled, catalog on or off.
- const handmade=Boolean(custom?.enabled&&!custom.stateEntry);
+ // Your own recipe plays whenever it is enabled and custom recipes play, catalog on or off,
+ // unless you explicitly picked the catalog's version of this entry.
+ const handmade=Boolean(custom?.enabled&&customEnabled&&!(entry&&config.enabled&&config.selected.includes(entry.id)&&!config.customized.includes(entry.id)));
  if(!handmade&&(entry&&!dndEntryEnabled(entry.id,config)||!entry&&!config.enabled))return null;
  if(!handmade&&entry&&config.selected.includes(entry.id)&&!config.customized.includes(entry.id))return dndRecipe(entry);
  if(custom&&!custom.enabled)return null;
