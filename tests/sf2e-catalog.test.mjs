@@ -15,13 +15,13 @@ const find=(name,kind='spell')=>sfEntries(kind).find(e=>e.name===name);
 const native=entry=>({id:'owned',uuid:'Actor.a.Item.owned',type:entry.nativeType,name:entry.name,slug:entry.slug,sourceId:entry.uuid,system:{active:true,value:{isValued:false}},active:true});
 const context={source:{id:'caster',center:{x:100,y:100},w:100,h:100},targets:[{id:'target',center:{x:500,y:100},w:100,h:100}],gridSize:100,gridDistance:5,template:{id:'area'},area:{type:'cone',center:{x:100,y:100},endpoint:{x:500,y:100},diameter:400,length:400,width:100,angle:90}};
 test('SF2e catalog is native, complete for active sources, and isolated from PF2e/D&D',async()=>{
- assert.equal(SF2E_SOURCE.version,'1.5.1');assert.deepEqual(SF2E_SOURCE.counts,{spell:432,feat:858,weapon:192,condition:46,effect:400});
+ assert.equal(SF2E_SOURCE.version,'1.5.1');assert.deepEqual(SF2E_SOURCE.counts,{spell:432,feat:681,action:174,feature:3,weapon:192,condition:46,effect:400});
  const audit=JSON.parse(await readFile(new URL('../data/sf2e-catalog-validation.json',import.meta.url),'utf8'));
  assert.equal(audit.issues.length,0);assert.equal(sfEntries().length+audit.excluded.length,SF2E_SOURCE.sourceDocuments);
  assert.ok(sfEntries().every(e=>e.uuid.startsWith(`Compendium.sf2e.${e.pack}.Item.`)&&e.systemId==='sf2e'));
  assert.ok(!sfEntries('feat').some(e=>e.name==='Hologram Skeptic'||e.name==='Suppressing Fire'));
  assert.equal(new Set(sfEntries().map(e=>e.uuid)).size,sfEntries().length);
- const nav=catalogNavigation({systemId:'sf2e'});assert.equal(nav.length,5);assert.ok(nav.every(e=>e[2].startsWith('SF2e')));assert.equal(catalogPageAllowed('items',{systemId:'sf2e'}),false);
+ const nav=catalogNavigation({systemId:'sf2e'});assert.equal(nav.length,7);assert.ok(nav.every(e=>e[2].startsWith('SF2e')));assert.equal(catalogPageAllowed('items',{systemId:'sf2e'}),false);
  assert.equal(sfSettingKey('spell'),'sf2eSpellCatalog');
  const entry=find('Supercharge Weapon'),recipe=sfRecipe(entry);assert.equal(findSfEntry({systemId:'pf2e',item:native(entry)}),null);assert.equal(matchRecipe([recipe],{type:recipe.trigger,systemId:'pf2e',item:native(entry)}),null);
 });

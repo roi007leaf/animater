@@ -6,7 +6,7 @@ Development publication check: this build contains AI-authored prepared text and
 
 Version 0.2.0 is a development foundation. The editor and JB2A video previews were verified inside Foundry 14 with PF2e 8.5.1. A private Casting flourish preview visibly animated the existing token artwork and restored its pose; Activity recorded paired motion and Sequencer playback. Native PF2e and D&D 5e 6.0.5 hooks, motion restoration, private routing, and scene-scoped transport have automated coverage. Live D&D 5e gameplay and multiplayer replication remain unverified.
 
-SF2e 1.5.1 support: 432 spells, 858 active feats/actions, 192 weapons, 46 condition entries and 400 sustained effects. Native SF2e UUIDs, chat rolls, Area Fire/Auto-Fire Regions, temporary previews, optional sound packs and document-linked lifetimes use separate catalog settings. Only the world’s system catalogs appear. See [SF2e coverage and limits](docs/sf2e-support.md). Native SF2e world gameplay and multiplayer verification remain outstanding.
+SF2e 1.5.1 support: 432 spells, 681 active feats, 174 actions, 3 class/ancestry features, 192 weapons, 46 condition entries and 400 sustained effects. Native SF2e UUIDs, chat rolls, Area Fire/Auto-Fire Regions, temporary previews, optional sound packs and document-linked lifetimes use separate catalog settings. Only the world’s system catalogs appear. See [SF2e coverage and limits](docs/sf2e-support.md). Native SF2e world gameplay and multiplayer verification remain outstanding.
 
 ## Start in Foundry
 
@@ -44,6 +44,8 @@ Click a selected spell, feature or item title to open its native Foundry sheet, 
 - **Recipes:** search, category filters, twelve starters, clone/create/delete, editable names and descriptions, draft preservation while switching recipes. Existing worlds can use **Add 3 motion recipes** above the cards; existing edits are preserved.
 - **PF2e spells:** all 1,994 spell documents from PF2e 8.5.1, including focus, rituals and legacy entries. Search/filter, full composition previews with step highlights, private canvas previews, **Use animation** and optional **Customize**. Optional catalog automation stays separate from saved recipes. See the [animation audit](docs/pf2e-animation-audit.md), [catalog coverage](docs/pf2e-spell-catalog.md) and the [full CSV](data/pf2e-animation-catalog.csv).
 - **PF2e feats:** 2,308 active feat documents from PF2e 8.5.1: 1,619 actions, 473 reactions and 216 free actions. The other 3,976 native passive feat items are excluded. Search by name, trait or book; filter by level, activity, category, class, animation family and treatment. Full previews highlight every stage. **Use animation** enables one feat directly; **Use feat catalog** enables catalog defaults without saved recipe slots. **Customize** opens editable choreography. Feat automation is separate from spell automation. See [coverage and limitations](docs/pf2e-feat-catalog.md).
+- **PF2e actions:** 494 basic, skill and class actions such as Demoralize, Grapple, Raise a Shield, Rage and Glimpse of Redemption (native `actionspf2e` pack), with their own page, settings and enable/exclude state.
+- **PF2e features:** class and ancestry features such as Flurry of Blows and Sneak Attack; damage riders (Sneak Attack, Precise Strike, ranger Precision) play alongside the Strike's own animation when the damage roll includes them.
 - **PF2e weapons:** 1,013 weapons / 1,122 native melee, ranged and thrown uses. Full-description search, mode buttons, complete previews/highlights, direct catalog use and per-mode customization. Actual Strike usage selects the animation, including combination weapons. Bombs release matching contents on the target, with optional glass fragments and brief residue. Guaranteed elemental weapon damage keeps its own contact finishes. Optional weapon sounds have independent toggle/volume and auditions. See [weapon catalog and limits](docs/pf2e-weapon-catalog.md).
 - **Travel paths:** beam stages support caster to every target, creature-to-creature chains, or target to caster for drain effects. Moving projectiles also support target-to-caster returns. Native controls preserve existing saved recipes' default source routing.
 - **Feat treatments:** every active feat's complete description has an individual review, source hash and evidence. Related feats retain shared visual vocabulary but get distinct visible effect composition, including effects-only Free/Patreon playback. Double Slice uses overlapping crossed cuts; Twin Takedown uses pursuit echoes and staggered alternating cuts. Preparations do not prematurely cast later attacks; mixed weapon combinations preserve their attack sequence. Framing differences are art choices, not rules outcomes. Audit data records semantic design and visible framing separately.
@@ -130,10 +132,22 @@ await animater.play("ember", {
 await animater.stop();
 console.table(animater.activity());
 console.table(animater.feats().feats); // active PF2e catalog and pinned source metadata
+console.table(animater.actions().actions); // basic, skill and class actions
+console.table(animater.features().features); // class and ancestry features, including damage riders
 console.table(animater.weapons().weapons); // weapon catalog with supported native modes
 console.table(animater.conditions().conditions); // native PF2e conditions
 console.table(animater.effects().effects); // spell, item, feat and creature effect Items
+animater.resolve(message); // recipe automatic playback would use, or null; nothing plays
+animater.handles(item); // true when Animater would animate this item or chat message
 ```
+
+Hooks: `animater.preDispatch(event, recipe)` runs before automatic playback; return `false` to claim the event. `animater.played(event, recipe)` runs afterwards.
+
+## Integrations
+
+- **Automated Animations.** With *Take over from Automated Animations when Animater has an animation* enabled (default), Automated Animations stops its workflow for any item Animater would animate, and the conflict warning is hidden. Items customized in Automated Animations (enabled, *Customize* set) stay with Automated Animations; Animater skips them.
+- **Spell Arsenal.** Spells mapped to an area rule are left to Spell Arsenal; Animater skips its own automatic area animation. Enable *Also play Animater recipe* on a mapping to have Spell Arsenal play the Animater recipe beside its tiles, once per area or chat card, on the active GM. Opted-in damage and cast mappings likewise replace Animater's automatic playback.
+- **Trigger Engine.** Adds the *Animater: Play animation* action node (recipe ID or name, source token, target tokens) to Trigger Animations and Trigger Engine graphs. It plays on the active GM.
 
 ## Validation
 

@@ -18,6 +18,7 @@ import {dndEntries,dndRecipe,useDndEntry} from '../scripts/dnd5e-catalog.mjs';
 import {sfEntries,sfRecipe,useSfEntry} from '../scripts/sf2e-catalog.mjs';
 import {Workspace} from '../scripts/workspace.mjs';
 import {previewFilters} from '../scripts/token-fx-preview.mjs';
+import {MediaLibrary} from '../scripts/media-library.mjs';
 globalThis.requestAnimationFrame = (fn) =>
   setTimeout(() => fn(performance.now()), 5);
 globalThis.cancelAnimationFrame = clearTimeout;
@@ -262,6 +263,22 @@ test('workspace Token Magic preview uses loaded filters without importing loose 
  preview.stop();await f.app().close();
 });
 
+test('actual workspace host reuses discovery after closing and reopening; explicit Refresh still rescans',async t=>{
+ const f=await boot('pf2e');let browses=0;
+ game.modules.set('soundfxlibrary',{active:true,version:'1'});
+ foundry.applications.apps={FilePicker:{implementation:{browse:async()=>{browses++;return {dirs:[],files:['modules/soundfxlibrary/new-audio.ogg']};}}}};
+ t.mock.method(Workspace.prototype,'render',()=>{});t.mock.method(Workspace.prototype,'syncPreviewTokens',()=>{});
+ const root={addEventListener(){},querySelector:()=>null,querySelectorAll:()=>[]};
+ f.api.open();f.app().element={querySelector:()=>root};await f.app()._onRender({},{});
+ const first=new MediaLibrary(f.app().workspace);await first.load();assert.equal(browses,1);
+ assert.ok(first.items.some(e=>e.file.endsWith('/new-audio.ogg')));await f.app().close();
+ f.api.open();f.app().element={querySelector:()=>root};await f.app()._onRender({},{});
+ const second=new MediaLibrary(f.app().workspace);assert.equal(second.loaded,true);await second.load();assert.equal(browses,1);
+ await second.load(true);assert.equal(browses,2);
+ game.modules.get('soundfxlibrary').active=false;assert.equal(f.app().workspace.host.mediaCatalog(),null);
+ await f.app().close();
+});
+
 test('native SF2e bootstrap routes native chat, area placement, isolated API and optional sounds',async()=>{
  const laser=sfEntries('weapon').find(e=>e.name==='Laser Pistol'),plasma=sfEntries('weapon').find(e=>e.name==='Plasma Cannon');
  const keys=[laser,plasma].flatMap(e=>e.variants.flatMap(v=>sfRecipe(e,v.id,{motion:false,sounds:null}).stages.flatMap(s=>s.assets))),f=await boot('sf2e',keys);
@@ -388,6 +405,38 @@ test("active feat cards play independently of spell and saved automation; passiv
   await f.fire("createChatMessage", { ...card, id: "feat-paused" });
   await settle();
   assert.equal(f.calls.filter((c) => c[0] === "play").length, count);
+});
+
+test("PF2e action cards play through the Actions catalog and Sneak Attack damage plays its Features rider", async () => {
+  const { PF2E_ACTION_CATALOG, PF2E_FEATURE_CATALOG } = await import("../scripts/ability-catalog.mjs");
+  const rage = PF2E_ACTION_CATALOG.entries.find((e) => e.slug === "rage"), sneak = PF2E_FEATURE_CATALOG.entries.find((e) => e.slug === "sneak-attack");
+  const keys = [rage, sneak].flatMap((e) => PF2E_ACTION_CATALOG.recipe(e, { motion: false }).stages.flatMap((s) => s.assets));
+  const f = await boot("pf2e", keys);
+  assert.deepEqual(f.settings.get("actionCatalog"), PF2E_ACTION_CATALOG.normalizeState());
+  assert.deepEqual(f.settings.get("featureCatalog"), PF2E_FEATURE_CATALOG.normalizeState());
+  assert.equal(f.api.actions().actions.length, PF2E_ACTION_CATALOG.entries.length);
+  f.settings.set("recipes", { schema: 1, recipes: [] });
+  f.settings.set("featCatalog", { ...useCatalogFeat({}, PF2E_FEATS[0].id), motion: false });
+  Object.assign(f.item, { type: "action", name: "Rage", system: { slug: "rage" }, _stats: { compendiumSource: rage.uuid } });
+  const card = { id: "rage-card", author: { id: "u" }, item: f.item, isRoll: false, speaker: { token: "t", scene: "s" }, flags: {} };
+  await f.fire("createChatMessage", card);
+  await settle();
+  assert.ok(!f.calls.some((c) => c[0] === "play"), "an enabled feat catalog does not play actions");
+  f.settings.set("actionCatalog", { ...PF2E_ACTION_CATALOG.use({}, rage.id), motion: false });
+  await f.fire("createChatMessage", { ...card, id: "rage-card-2" });
+  await settle();
+  assert.ok(f.calls.some((c) => c[0] === "play"));
+  assert.ok(f.calls.some((c) => c[0] === "file" && PF2E_ACTION_CATALOG.recipe(rage, { motion: false }).stages.some((s) => s.assets.includes(c[1]))));
+  await f.api.stop();
+  const before = f.calls.filter((c) => c[0] === "play").length;
+  f.settings.set("featureCatalog", { ...PF2E_FEATURE_CATALOG.use({}, sneak.id), motion: false });
+  Object.assign(f.item, { type: "weapon", name: "Dagger", system: { traits: { value: ["agile", "finesse"] } }, _stats: {} });
+  await f.fire("createChatMessage", { id: "sneak-damage", author: { id: "u" }, item: f.item, isRoll: true, isDamageRoll: true, speaker: { token: "t", scene: "s" },
+    flags: { pf2e: { context: { type: "damage-roll", options: [] }, origin: { uuid: f.item.uuid }, dice: [{ slug: "sneak-attack", enabled: true, ignored: false }], modifiers: [] } } });
+  await settle();
+  assert.ok(f.calls.filter((c) => c[0] === "play").length > before, "Sneak Attack rider played on the damage roll");
+  assert.ok(f.calls.some((c) => c[0] === "file" && PF2E_FEATURE_CATALOG.recipe(sneak, { motion: false }).stages.some((s) => s.assets.includes(c[1]))));
+  await f.api.stop();
 });
 
 test("feat API exposes active data and respects effects-only table and local preview settings", async () => {
@@ -562,10 +611,42 @@ test("native PF2e attack hooks and API previews include optional pack audio and 
   assert.ok(!f.calls.some((c) => c[0] === "sound"));
   await f.api.stop();
 });
-test("native PF2e weapon rolls choose the actual usage with independent automation and optional audio", async () => {
+test("Apotheosis Knife native melee and thrown Strike rolls dispatch their catalog animations", async () => {
+  const weapon = PF2E_WEAPONS.find(w => w.slug === "apotheosis-knife");
+  const variants = weapon.modes.map(m => weaponRecipe(weapon, m.mode));
+  const f = await boot("pf2e", variants.flatMap(r => r.stages.flatMap(s => s.assets)));
+  f.settings.set("recipes", { schema: 1, recipes: [] });
+  f.settings.set("weaponCatalog", { enabled: true, independent: true, scope: "all", preferCatalog: true, motion: true, sound: false });
+  Object.assign(f.item, { type: "weapon", name: weapon.name, system: { slug: weapon.slug, baseItem: "dagger", range: null, traits: { value: weapon.traits } },
+    _stats: { compendiumSource: variants[0].itemUuid } });
+  game.user.targets.clear();
+  for (const mode of ["melee", "thrown"]) {
+    f.calls.length = 0;
+    const context = { type: "attack-roll", altUsage: null, identifier: `i.apotheosis-knife.${mode === "melee" ? "melee" : "ranged"}`,
+      options: mode === "melee" ? ["item:melee"] : ["item:ranged", "item:thrown", "item:thrown-melee"],
+      target: { token: "Scene.s.Token.target" }, outcome: "criticalSuccess" };
+    // Native Strike item lookup can be unavailable when the create hook runs.
+    // The origin UUID resolves the owned base weapon, so roll options must
+    // preserve the usage independently of that base item's melee range.
+    await f.fire("createChatMessage", { id: `apotheosis-${mode}`, author: { id: "u" }, item: null, isRoll: true,
+      speaker: { token: "t", scene: "s" }, flags: { pf2e: { context, origin: { uuid: f.item.uuid, type: "weapon" } } } });
+    await new Promise(resolve => setTimeout(resolve, 650));
+    assert.ok(f.calls.some(c => c[0] === "play"), JSON.stringify(f.api.activity()));
+    const primary = variants.find(r => r.weaponMode === mode).stages.find(s => !["motion", "sound"].includes(s.kind));
+    assert.ok(f.calls.some(c => c[0] === "file" && primary.assets.includes(c[1])), `${mode} footage from native roll options`);
+    assert.ok(f.calls.some(c => c[0] === "socket" && c[2].type === "motion"), `${mode} gesture`);
+    await f.api.stop();
+  }
+});
+
+test("native PF2e weapon rolls choose actual usage and play audio without waiting for remote preloads", async t => {
   const weapon = PF2E_WEAPONS.find(w => w.slug === "dagger-pistol");
   const recipes = weapon.modes.map(m => weaponRecipe(weapon, m.mode, { motion: false }));
   const f = await boot("pf2e", recipes.flatMap(r => r.stages.flatMap(s => s.assets)));
+  t.after(() => f.api.stop());
+  // One connected client's preload can stall indefinitely. Sequencer's native
+  // playback handles remote loading; it must not gate the rolling user's Strike.
+  Sequencer.Preloader.preloadForClients = () => new Promise(() => {});
   game.modules.set("ggg", { active: true });
   const paths = new Map();
   for (const cues of Object.values(ABILITY_SOUND_PROFILES)) for (const cue of cues) for (const c of cue.candidates)
@@ -584,7 +665,9 @@ test("native PF2e weapon rolls choose the actual usage with independent automati
     await new Promise(r => setTimeout(r, 650));
     const recipe = recipes.find(r => r.weaponMode === mode), primary = recipe.stages.find(s => s.kind !== "motion");
     assert.ok(f.calls.some(c => c[0] === "file" && primary.assets.includes(c[1])), `${mode} native footage`);
+    assert.ok(f.calls.some(c => c[0] === "play"), `${mode} playback starts with sound enabled`);
     assert.ok(f.calls.some(c => c[0] === "sound"), `${mode} active audio pack`);
+    assert.ok(f.calls.some(c => c[0] === "preload"), `${mode} local sound preparation`);
     assertAttenuatedAudio(f.calls,ABILITY_SOUND_PROFILES,.2);
     assert.ok(f.calls.filter(c => c[0] === "play").every(c => !c[1].local));
     await f.api.stop();

@@ -33,11 +33,14 @@ export function twoeEvent(message, userId, systemId='pf2e') {
     return null;
   const item = message.item;
   const options = context?.options ?? [];
+  // Enabled damage dice/modifiers identify riders such as Sneak Attack (flags.<system>.dice/.modifiers).
+  const live = rows => (Array.isArray(rows) ? rows : []).filter(r => r?.slug && r.enabled !== false && r.ignored !== true);
+  const damageSlugs = type === "damage" ? [...live(flags?.dice).map(d => `dice:${d.slug}`), ...live(flags?.modifiers).map(m => `modifier:${m.slug}`)] : [];
   const altUsage = context?.altUsage ?? flags?.strike?.altUsage ?? item?.altUsageType;
-  const weaponMode = item?.type === "weapon" ? altUsage === "thrown"
+  const weaponMode = (item?.type ?? flags?.origin?.type) === "weapon" ? altUsage === "thrown"
     ? "thrown" : altUsage === "melee" ? "melee"
-      : options.includes("item:thrown") || options.includes("item:thrown-melee") || item.isThrown === true || (item.system?.traits?.value?.includes("thrown") || ['bomb','grenade'].includes(item.system?.group)) && item.system?.range ? "thrown"
-        : item.isRanged === true || options.includes("item:ranged") || item.system?.range
+      : options.includes("item:thrown") || options.includes("item:thrown-melee") || item?.isThrown === true || (item?.system?.traits?.value?.includes("thrown") || ['bomb','grenade'].includes(item?.system?.group)) && item?.system?.range ? "thrown"
+        : item?.isRanged === true || options.includes("item:ranged") || item?.system?.range
           ? "ranged" : "melee" : undefined;
   return {
     type,
@@ -45,6 +48,7 @@ export function twoeEvent(message, userId, systemId='pf2e') {
     id: `chat:${message.id}`,
     item,
     ...(weaponMode ? { weaponMode } : {}),
+    ...(damageSlugs.length ? { damageSlugs } : {}),
     itemUuid: flags?.origin?.uuid,
     ...(item?.type === 'spell' ? { castRank: Number(flags?.origin?.castRank ?? item.rank ?? item.system?.location?.heightenedLevel ?? item.system?.level?.value) || undefined } : {}),
     tokenId: message.speaker?.token,

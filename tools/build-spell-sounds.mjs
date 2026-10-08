@@ -7,10 +7,12 @@ import { soundDirection } from "./spell-sound-semantics.mjs";
 import {nativeSpellDescription} from './spell-semantics.mjs';
 import { PF2E_SPELLS } from "../scripts/spell-catalog.mjs";
 import { validateSoundFile } from "../scripts/stage-options.mjs";
-const cue = (label, role, ggg = "", psfx = "", files = "") => ({
+// Cross-pack fallbacks: every cue lists each optional pack that has a fitting
+// recording, so a user with any one pack still hears it. Runtime order decides.
+const cue = (label, role, ggg = "", psfx = "", files = "", creature = "") => ({
   label,
   role,
-  selectors: { ggg, psfx, soundfxlibrary: files },
+  selectors: { ggg, psfx, soundfxlibrary: files, ...(creature ? { "pf2e-creature-sounds": creature } : {}) },
 });
 const profiles = {
   fireball: [
@@ -67,7 +69,7 @@ const profiles = {
       "ray-of-frost",
     ),
   ],
-  forceRay: [cue("Energy ray", "release", "", "ranged-magic\\.generic\\.beam")],
+  forceRay: [cue("Energy ray", "release", "^ggg-sfx\\.magic\\.arcane\\.cast\\.arrow", "ranged-magic\\.generic\\.beam")],
   radiantRay: [
     cue(
       "Radiant ray",
@@ -210,7 +212,7 @@ const profiles = {
     ),
   ],
   metalProjectile: [
-    cue("Metal projectile release", "release", "^ggg-sfx\\.ranged\\.thrown\\.general"),
+    cue("Metal projectile release", "release", "^ggg-sfx\\.ranged\\.thrown\\.general", "^psfx\\.weapon-swooshes\\.light\\.v1\\.group01"),
     cue("Metal projectile contact", "impact", "^ggg-sfx\\.magic\\.metal\\.cast\\.hit"),
   ],
   metalResonance: [
@@ -240,7 +242,7 @@ const profiles = {
     ),
   ],
   shadow: [cue("Shadow gathers", "effect", "magic\\.occult\\.bolt.*cast")],
-  psychic: [cue("Mental pulse", "effect", "", "cantrips\\.mind-sliver")],
+  psychic: [cue("Mental pulse", "effect", "^ggg-sfx\\.magic\\.occult\\.curse\\.confused", "cantrips\\.mind-sliver")],
   holy: [
     cue(
       "Radiant light",
@@ -311,7 +313,7 @@ const profiles = {
     ),
   ],
   swarm: [
-    cue("Insect swarm", "effect", "magic\\.primal\\.bugs\\.poisonous_swarm"),
+    cue("Insect swarm", "effect", "magic\\.primal\\.bugs\\.poisonous_swarm", "", "", "Animal_Monster/Fly/Attack/Insect_Fly_Close_Range_Buzz"),
   ],
   earthquake: [
     cue("Seismic rumble", "effect", "magic\\.earth\\.pulse\\.seismic"),
@@ -348,8 +350,8 @@ const profiles = {
       "cantrips\\.(light|dancing-lights)",
     ),
   ],
-  sleep: [cue("Sleep settles", "effect", "", "1st-level-spells\\.sleep")],
-  fear: [cue("Dread rises", "effect", "magic\\.occult\\.curse\\.general\\.02")],
+  sleep: [cue("Sleep settles", "effect", "^ggg-sfx\\.magic\\.occult\\.curse\\.hypnotize", "1st-level-spells\\.sleep")],
+  fear: [cue("Dread rises", "effect", "magic\\.occult\\.curse\\.general\\.02", "toll-the-dead\\.ominous-bell")],
   drain: [
     cue(
       "Energy siphon",
@@ -375,7 +377,7 @@ const profiles = {
     ),
   ],
   transform: [
-    cue("Form shifts", "effect", "magic\\.primal\\.cast\\.general\\.03"),
+    cue("Form shifts", "effect", "magic\\.primal\\.cast\\.general\\.03", "^psfx\\.casting\\.on-token"),
   ],
   teleport: [
     cue(
@@ -389,7 +391,7 @@ const profiles = {
     cue("Pocket departure", "effect", "^ggg-sfx\\.magic\\.occult\\.movement\\.teleportation", "misty-step.*intro\\.generic"),
   ],
   objectWhoosh: [
-    cue("Hook and rope extension", "release", "^ggg-sfx\\.ranged\\.thrown\\.general"),
+    cue("Hook and rope extension", "release", "^ggg-sfx\\.ranged\\.thrown\\.general", "^psfx\\.weapon-swooshes\\.light\\.v1\\.group01"),
   ],
   starFlight: [
     cue("Star-flight shimmer", "release", "^ggg-sfx\\.magic\\.arcane\\.light\\.revealing"),
@@ -397,8 +399,10 @@ const profiles = {
   explosion: [
     cue("Explosion", "impact", "^ggg-sfx\\.(impact\\.explosion\\.general|ranged\\.bomb\\.explosion)", "fireball.*explosion"),
   ],
-  scream: [cue("Piercing shriek", "effect", "^ggg-sfx\\.creatures\\.shriek\\.(generic|void)")],
-  battleCry: [cue("Rallying cry", "cast", "", "", "Battle Cry")],
+  // GGG's creatures.shriek.generic key points at "Rusty Tool" recordings; use the void screams only.
+  scream: [cue("Piercing shriek", "effect", "^ggg-sfx\\.creatures\\.shriek\\.void", "", "", "Animal_Monster/Monster/Monster_Scream")],
+  battleCry: [cue("Rallying cry", "cast", "", "", "Battle Cry", "Cyclops/Attack/cyclops_voice_battle_shout")],
+  whistle: [cue("Sharp whistle", "cast", "^ggg-sfx\\.abilities\\.gunslinger\\.whistle")],
   whispers: [
     cue("Eerie whispers", "effect", "^ggg-sfx\\.magic\\.occult\\.cast\\.whispers", "dissonant-whispers"),
   ],
@@ -407,20 +411,20 @@ const profiles = {
     cue("Divine wrath", "effect", "^ggg-sfx\\.magic\\.divine\\.(impact\\.wrath|cast\\.smite)", "sacred-flame.*caster"),
   ],
   slash: [
-    cue("Slashing hit", "impact", "^ggg-sfx\\.melee\\.blade\\.strike\\.general", "", "Melee Hit"),
+    cue("Slashing hit", "impact", "^ggg-sfx\\.melee\\.blade\\.strike\\.general", "^psfx\\.impacts\\.slashing", "Melee Hit"),
   ],
   pierce: [
     cue("Piercing hit", "impact", "^ggg-sfx\\.impact\\.arrow\\.hit", "", "Arrow Impact"),
   ],
   bludgeon: [
-    cue("Bludgeoning hit", "impact", "^ggg-sfx\\.melee\\.bludgeoning\\.strike\\.one-hand", "", "Misc/Single/Impact/"),
+    cue("Bludgeoning hit", "impact", "^ggg-sfx\\.melee\\.bludgeoning\\.strike\\.one-hand", "^psfx\\.impacts\\.bludgeoning", "Misc/Single/Impact/"),
   ],
-  claws: [cue("Rending claws", "impact", "^ggg-sfx\\.melee\\.claws\\.strike\\.slash")],
+  claws: [cue("Rending claws", "impact", "^ggg-sfx\\.melee\\.claws\\.strike\\.slash", "^psfx\\.impacts\\.slashing", "Combat/Single/Melee Hit/")],
   gravity: [cue("Gravity crush", "effect", "^ggg-sfx\\.magic\\.occult\\.movement\\.whoosh\\.gravity")],
-  dispel: [cue("Magic unravels", "effect", "magic\\.counter\\.dispel")],
+  dispel: [cue("Magic unravels", "effect", "magic\\.counter\\.dispel", "magic-signs\\.circle\\.v1\\.abjuration\\.outro")],
   time: [cue("Time shifts", "effect", "magic\\.time\\.reverse")],
   slow: [cue("Time slows", "effect", "magic\\.time\\.slow")],
-  unlock: [cue("Lock opens", "effect", "magic\\.tech\\.lock\\.unlock")],
+  unlock: [cue("Lock opens", "effect", "magic\\.tech\\.lock\\.unlock", "^psfx\\.doors\\.clean\\.lock\\.unlock")],
   mending: [
     cue(
       "Object repairs",
@@ -429,8 +433,8 @@ const profiles = {
       "cantrips\\.mending.*with-cast",
     ),
   ],
-  detect: [cue("Magic sensed", "effect", "", "detect-magic")],
-  laughter: [cue("Laughter", "effect", "", "hideous-laughter\\.fem-group")],
+  detect: [cue("Magic sensed", "effect", "^ggg-sfx\\.magic\\.arcane\\.light\\.revealing", "detect-magic")],
+  laughter: [cue("Laughter", "effect", "^ggg-sfx\\.(actions\\.laugh|magic\\.occult\\.cast\\.laughter)", "hideous-laughter\\.fem-group")],
   applause: [
     cue(
       "Audience cheers",

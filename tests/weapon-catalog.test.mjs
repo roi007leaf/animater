@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {PF2E_WEAPONS,PF2E_WEAPON_SOURCE,weaponRecipe,findCatalogWeapon,useCatalogWeapon,normalizeWeaponCatalogState,resolveAutomaticWeaponRecipe,filterWeapons} from '../scripts/weapon-catalog.mjs';
-import {pf2eEvent} from '../scripts/adapters.mjs';
+import {pf2eEvent,sf2eEvent} from '../scripts/adapters.mjs';
 import {validateRecipe,previewPlan,matchRecipe} from '../scripts/model.mjs';
 import {weaponModes,analyzeWeapon} from '../tools/weapon-semantics.mjs';
 import {planRecipe} from '../scripts/model.mjs';
@@ -43,6 +43,19 @@ test('melee contacts stay localized; ranged and thrown animations really fly and
  }
  assert.notDeepEqual(weaponRecipe(weapon('dagger'),'melee').stages,weaponRecipe(weapon('dagger'),'thrown').stages);
  assert.notDeepEqual(weaponRecipe(weapon('greatsword'),'melee').stages,weaponRecipe(weapon('rapier'),'melee').stages);
+});
+
+test('2e adapters keep native weapon usage when the chat item awaits UUID resolution',()=>{
+ for(const [system,adapt] of [['pf2e',pf2eEvent],['sf2e',sf2eEvent]]){
+  const message={id:'pending-item',author:{id:'u'},isRoll:true,item:null};
+  const adaptUsage=context=>adapt({...message,flags:{[system]:{origin:{type:'weapon',uuid:'Actor.a.Item.w'},context:{type:'attack-roll',...context}}}},'u');
+  assert.equal(adaptUsage({options:['item:melee']}).weaponMode,'melee');
+  assert.equal(adaptUsage({options:['item:ranged']}).weaponMode,'ranged');
+  assert.equal(adaptUsage({altUsage:null,options:['item:ranged','item:thrown','item:thrown-melee']}).weaponMode,'thrown');
+  assert.equal(adaptUsage({altUsage:'melee',options:['item:ranged']}).weaponMode,'melee');
+  assert.equal(adaptUsage({altUsage:'thrown'}).weaponMode,'thrown');
+  assert.equal(adapt({...message,flags:{[system]:{origin:{type:'spell',uuid:'Actor.a.Item.s'},context:{type:'attack-roll',options:['item:ranged']}}}},'u').weaponMode,undefined);
+ }
 });
 test('weapon opt-in is independent; customization applies only to its mode',()=>{
  const w=weapon('dagger'),state=useCatalogWeapon({},w.id),melee=event(w,'melee'),thrown=event(w,'thrown');

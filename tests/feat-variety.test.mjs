@@ -71,7 +71,8 @@ test("single strikes stay single; mixed sequences and deferred return keep disti
 });
 
 test("perceptual fingerprint ignores IDs, labels and disabled filters",()=>{
-  const recipe=featRecipe(PF2E_FEATS[0]),copy=structuredClone(recipe);
+  // Disabling an enabled tint is a real visible change, so sample an untinted feat.
+  const recipe=PF2E_FEATS.map(f=>featRecipe(f)).find(r=>!r.stages.some(s=>s.tintEnabled)),copy=structuredClone(recipe);
   for(const stage of copy.stages){stage.label="Other title";stage.tint="#123456";stage.tintEnabled=false;}
   assert.deepEqual(visibleFeatComposition(recipe),visibleFeatComposition(copy));
 });

@@ -11,7 +11,7 @@ import {ABILITY_SOUND_PROFILES} from '../data/ability-sounds.mjs';
 const find=(name,kind='spell',edition='2024')=>dndEntries(kind).find(e=>e.name===name&&e.edition===edition);
 const context={source:{id:'caster',center:{x:0,y:0},w:100,h:100},targets:Array.from({length:5},(_,i)=>({id:'target-'+i,center:{x:200+i*200,y:200},w:100,h:100})),gridSize:100,template:{id:'template'},area:{type:'cone',center:{x:0,y:0},endpoint:{x:400,y:0},length:400,angle:90,width:100,diameter:400}};
 test('catalog navigation shows only the native world system, including direct page guards',()=>{
- for(const systemId of ['pf2e','dnd5e']){const nav=catalogNavigation({systemId});assert.equal(nav.length,systemId==='pf2e'?5:6);assert.ok(nav.every(([, ,label])=>label.startsWith(systemId==='pf2e'?'PF2e':'D&D 5e')));}
+ for(const systemId of ['pf2e','dnd5e']){const nav=catalogNavigation({systemId});assert.equal(nav.length,systemId==='pf2e'?7:6);assert.ok(nav.every(([, ,label])=>label.startsWith(systemId==='pf2e'?'PF2e':'D&D 5e')));}
  assert.equal(catalogPageAllowed('items',{systemId:'pf2e'}),false);
  assert.deepEqual(catalogNavigation({systemId:'unsupported'}),[]);assert.equal(catalogPageAllowed('spells',{systemId:'unsupported'}),false);
  for(const edition of ['2014','2024'])assert.equal(filterDndEntries('condition',{edition}).length,44,'shared native conditions remain visible in either rules edition');
@@ -87,7 +87,8 @@ test('every eligible D&D weapon release/contact/material cue has an actual synch
   for(const cue of ABILITY_SOUND_PROFILES[variant.soundProfile]??[]){
    if(variant.soundExcludeRoles?.includes(cue.role))continue;
    const hasAnchor=cue.role==='release'?recipe.stages.some(s=>s.kind==='travel'||s.kind==='projectile'):['contact','impact'].includes(cue.role)?recipe.stages.some(s=>s.kind==='impact'):false;
-   if(hasAnchor)assert.ok(audio.some(s=>s.label.startsWith(cue.label)),entry.name+' / '+variant.label+' / '+cue.label);
+   // Bespoke designs may choose a closer sound profile (e.g. natural piercing for a beak); they still need audio.
+   if(hasAnchor)assert.ok(recipe.bespoke?audio.length:audio.some(s=>s.label.startsWith(cue.label)),entry.name+' / '+variant.label+' / '+cue.label);
   }
   for(const cue of audio){const anchor=recipe.stages.find(s=>s.stageId===cue.afterStage);assert.ok(anchor);assert.equal(cue.timingAnchor,'start');}
  }

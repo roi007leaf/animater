@@ -5,6 +5,13 @@ import { applyEffectOptions, applyMediaOptions } from "./stage-options.mjs";
 import { tokenFootprint, effectFootprint, artworkSize, offsetInGridSquares, beamGeometry } from "./media-preview.mjs";
 import { prepareRecipeSounds } from "./spell-sounds.mjs";
 import { registeredMedia, mediaForReference } from './media-library-model.mjs';
+const SOUND_PRELOAD_TIMEOUT = 2000;
+// Weapon hits and residue are sized to the target token; the world setting
+// enlarges them to JB2A's intended swing size. Placed Area Fire keeps its template size.
+export function withWeaponScale(recipe, factor) {
+  if (!recipe.weaponMode || recipe.weaponMode === 'area' || !(factor > 0) || factor === 1) return recipe;
+  return { ...recipe, stages: recipe.stages.map(s => ['impact', 'aura'].includes(s.kind) ? { ...s, scale: (s.scale ?? 1) * factor } : s) };
+}
 export class AnimaterRuntime {
   constructor(host) {
     this.host = host;
@@ -47,16 +54,24 @@ export class AnimaterRuntime {
       ? this.host.resolveRecipe(event, saved)
       : (matchRecipe(saved, event) ?? this.host.catalogRecipe?.(event, saved));
     const recipe = applyEventElement(resolved, event.element);
-    if (!recipe)
+    // Damage riders (e.g. Sneak Attack) play alongside the event's own recipe.
+    const riders = (this.host.riderRecipes?.(event, saved) ?? []).filter(Boolean);
+    if (!recipe && !riders.length)
       return this.trace(
         "Skipped",
         `${event.item?.name ?? "Unknown item"}: no enabled ${event.type} recipe.`,
       );
-    try {
-      await this.play(recipe, {...event,automatic:true});
-    } catch (error) {
-      this.trace("Blocked", error.message, recipe);
-    }
+    // Other modules may claim the event (return false) before anything plays.
+    if (globalThis.Hooks?.call?.("animater.preDispatch", event, recipe) === false)
+      return this.trace("Skipped", `${event.item?.name ?? "Unknown item"}: claimed by another module.`, recipe);
+    await Promise.all([recipe, ...riders].filter(Boolean).map(async (next) => {
+      try {
+        await this.play(next, {...event,automatic:true});
+      } catch (error) {
+        this.trace("Blocked", error.message, next);
+      }
+    }));
+    globalThis.Hooks?.callAll?.("animater.played", event, recipe);
   }
   async play(recipe, context, { preview = false, onStart } = {}) {
     recipe = validateRecipe(recipe);
@@ -88,6 +103,7 @@ export class AnimaterRuntime {
     if (recipe.lifecycle === "document" && !preview)
       throw Error("Enable this condition or effect in its catalog. Native documents control its lifetime; use Local canvas preview to test it.");
     recipe = prepareRecipeSounds(recipe, this.host.soundCatalog?.());
+    recipe = withWeaponScale(recipe, this.host.weaponScale?.() ?? 1);
     if (!this.host.ready())
       throw Error("Activate Sequencer, then reload Foundry.");
     if (!this.catalog.length) this.refreshCatalog();
@@ -113,11 +129,6 @@ export class AnimaterRuntime {
     const session = `${ID}-${this.host.userId()}-${crypto.randomUUID()}`;
     const epoch = this.epoch;
     let failed = false;
-    const groups = new Map();
-    for (const s of plan) {
-      if (!groups.has(s.delay)) groups.set(s.delay, []);
-      groups.get(s.delay).push(s);
-    }
     const build = (stages) => {
       const sequence = this.host.sequence();
       for (const s of stages) {
@@ -229,20 +240,31 @@ export class AnimaterRuntime {
       }
       return sequence;
     };
-    // Prebuild every group so a bad Sequencer option cannot produce half a recipe.
-    const sequences = [...groups].map(([delay, stages]) => ({
-      delay,
-      sequence: stages.some((s) => s.kind !== "motion" && !OPTIONAL_FX_KINDS.has(s.kind)) ? build(stages) : null,
-      motions: stages.filter((s) => s.kind === "motion"),
-      optionalFx: stages.filter((s) => OPTIONAL_FX_KINDS.has(s.kind)),
-    }));
     this.sessions.add(session);
     try {
       const soundFiles=[...new Set(plan.filter(s=>s.kind==='sound').map(s=>s.soundFile))];
       if(soundFiles.length && this.host.preloadSounds) {
-        const prepared=await this.prepare(this.host.preloadSounds(soundFiles,{preview}),session);
-        if(!prepared || this.epoch!==epoch)return null;
+        const prepared=await this.prepare(Promise.resolve().then(()=>this.host.preloadSounds(soundFiles,{preview})),session);
+        if(prepared.status==='cancelled' || this.epoch!==epoch)return null;
+        if(prepared.status!=='ready') {
+          const reason=prepared.status==='timeout'?'Sound preparation timed out':`Sound preparation failed: ${prepared.error?.message??prepared.error}`;
+          plan=plan.filter(s=>s.kind!=='sound');
+          if(!plan.length)throw Error(reason);
+          this.trace('Skipped',`${reason}; playing animation without audio.`,recipe);
+        }
       }
+      const groups = new Map();
+      for (const s of plan) {
+        if (!groups.has(s.delay)) groups.set(s.delay, []);
+        groups.get(s.delay).push(s);
+      }
+      // Prebuild every group so a bad Sequencer option cannot produce half a recipe.
+      const sequences = [...groups].map(([delay, stages]) => ({
+        delay,
+        sequence: stages.some((s) => s.kind !== "motion" && !OPTIONAL_FX_KINDS.has(s.kind)) ? build(stages) : null,
+        motions: stages.filter((s) => s.kind === "motion"),
+        optionalFx: stages.filter((s) => OPTIONAL_FX_KINDS.has(s.kind)),
+      }));
       onStart?.({ ...recipe, playbackPlan: plan });
       // Local previews never broadcast; real plays use Sequencer's own sync.
       const results = await Promise.all([
@@ -308,10 +330,18 @@ export class AnimaterRuntime {
     });
   }
   prepare(task,session) {
-    return new Promise((resolve,reject)=>{
-      const cancel=()=>{this.preparations.delete(session);resolve(false);};
-      this.preparations.set(session,cancel);
-      Promise.resolve(task).then(()=>{this.preparations.delete(session);resolve(true);},error=>{this.preparations.delete(session);reject(error);});
+    return new Promise(resolve=>{
+      let settled=false;
+      const finish=result=>{
+        if(settled)return;
+        settled=true;
+        clearTimeout(timer);
+        this.preparations.delete(session);
+        resolve(result);
+      };
+      const timer=setTimeout(()=>finish({status:'timeout'}),SOUND_PRELOAD_TIMEOUT);
+      this.preparations.set(session,()=>finish({status:'cancelled'}));
+      Promise.resolve(task).then(()=>finish({status:'ready'}),error=>finish({status:'failed',error}));
     });
   }
   cancelWaits(session = null) {

@@ -150,7 +150,13 @@ const columns = [
 const editionKeys = Object.fromEntries(
   Object.entries(databases).map(([edition, rows]) => [
     edition,
-    new Set(rows.map((r) => r.key)),
+    // Bespoke stages may name a key prefix (e.g. a sign without its colour);
+    // the runtime resolves those to the first matching row.
+    new Set(
+      rows.flatMap((r) =>
+        r.key.split(".").map((_, i, parts) => parts.slice(0, i + 1).join(".")),
+      ),
+    ),
   ]),
 );
 const timeline = (recipe) =>

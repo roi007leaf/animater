@@ -2387,6 +2387,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.explosion.01.orange"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.explosion.01.orange"
           }
         ],
         "mediaTiming": {
@@ -3210,6 +3220,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.liquid.splash.green"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.liquid.splash.blue"
           }
         ],
         "mediaTiming": {
@@ -3332,6 +3352,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.blueteal"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.blue"
           }
         ],
         "mediaTiming": {
@@ -5892,6 +5922,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.grey.shockwave"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.green.shockwave"
           }
         ],
         "mediaTiming": {
@@ -6027,6 +6067,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.grey.shockwave"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.green.shockwave"
           }
         ],
         "mediaTiming": {
@@ -6162,6 +6212,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.grey.shockwave"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.green.shockwave"
           }
         ],
         "mediaTiming": {
@@ -6297,6 +6357,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.wind_lines.01.01.white",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.grey.shockwave"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.green.shockwave"
           }
         ],
         "mediaTiming": {
@@ -14733,6 +14803,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.misty_step.02.blue"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.misty_step.02.blue"
           }
         ],
         "mediaTiming": {
@@ -15707,6 +15787,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.007.red"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.impact.007.orange"
           }
         ],
         "mediaTiming": {
@@ -15838,6 +15928,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash02.red",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.007.red"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.impact.007.orange"
           }
         ],
         "mediaTiming": {
@@ -20236,6 +20336,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.swirling_leaves.outburst.01.greenorange"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.swirling_leaves.outburst.01.pink"
           }
         ],
         "mediaTiming": {
@@ -21890,6 +22000,21 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.boulder.01"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.ground_crack.01.orange"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.impact.ground_crack.01.orange"
           }
         ],
         "mediaTiming": {
@@ -23358,6 +23483,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.rapier.melee.fire.green"
           }
         ],
         "mediaTiming": {
@@ -23811,6 +23941,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.yellow.shockwave"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.green.shockwave"
           }
         ],
         "mediaTiming": {
@@ -23911,6 +24051,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.dagger.return.01.white",
             "geometry": "projectile",
             "approximation": true
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.yellow.shockwave"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.green.shockwave"
           }
         ],
         "mediaTiming": {
@@ -27670,6 +27820,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.music_notations.beamed_quavers.purple"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.music_notations.beamed_quavers.blue"
           }
         ],
         "mediaTiming": {
@@ -27780,6 +27940,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.music_notations.beamed_quavers.purple"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.music_notations.beamed_quavers.blue"
           }
         ],
         "mediaTiming": {
@@ -27890,6 +28060,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.music_notations.beamed_quavers.purple"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.music_notations.beamed_quavers.blue"
           }
         ],
         "mediaTiming": {
@@ -29272,6 +29452,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.bolt.physical.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.bolt.physical.orange"
           }
         ],
         "mediaTiming": {
@@ -30634,6 +30824,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.dark_green"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
           }
         ],
         "mediaTiming": {
@@ -31774,6 +31974,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.dart.01.throw.physical.white"
           }
         ],
         "mediaTiming": {
@@ -35659,6 +35864,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.arrow.fire.orange"
           }
         ],
         "mediaTiming": {
@@ -40403,6 +40613,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.sword.melee.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.sword.melee.01.white"
           }
         ],
         "mediaTiming": {
@@ -41304,6 +41524,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.ground_crack.02.orange"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.impact.ground_crack.02.orange"
           }
         ],
         "mediaTiming": {
@@ -43506,6 +43736,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.fire.01.orange"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.impact.fire.01.orange"
           }
         ],
         "mediaTiming": {
@@ -44445,6 +44685,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.chakram.01.throw.01"
           }
         ],
         "mediaTiming": {
@@ -44842,6 +45087,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
           }
         ],
         "mediaTiming": {
@@ -44975,6 +45230,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
           }
         ],
         "mediaTiming": {
@@ -45108,6 +45373,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.water_splash.circle.01.blue",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
           }
         ],
         "mediaTiming": {
@@ -47424,6 +47699,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.03.greatsword.02"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.greatsword.melee.standard.white"
           }
         ],
         "mediaTiming": {
@@ -50605,6 +50890,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.dark_black"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
           }
         ],
         "mediaTiming": {
@@ -53376,6 +53671,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.purple.skull_smoke"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.toll_the_dead.green.skull_smoke"
           }
         ],
         "mediaTiming": {
@@ -58467,6 +58772,31 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.throwable.throw.flask.02.blue"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.water_splash.circle.01.blue"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.explosion.top_fracture.flask.01"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.water_splash.circle.01.blue"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.explosion.top_fracture.flask.01"
           }
         ],
         "mediaTiming": {
@@ -59168,6 +59498,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.butterflies.outward_burst.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.butterflies.outward_burst.01.bluepurple"
           }
         ],
         "mediaTiming": {
@@ -65153,6 +65493,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.01.sickle.01"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.01.sickle.01"
           }
         ],
         "mediaTiming": {
@@ -65972,6 +66322,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.bolt.physical.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.bolt.physical.orange"
           }
         ],
         "mediaTiming": {
@@ -69574,6 +69934,21 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.shortsword.melee.01.yellow"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
           }
         ],
         "mediaTiming": {
@@ -69688,6 +70063,21 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.shortsword.melee.01.yellow"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
           }
         ],
         "mediaTiming": {
@@ -69906,6 +70296,31 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.quarterstaff.melee.01.blue"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particle_burst.01.star.bluepurple"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.twinkling_stars.points07.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particle_burst.01.star.bluepurple"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.twinkling_stars.points07.white"
           }
         ],
         "mediaTiming": {
@@ -70016,6 +70431,31 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.quarterstaff.melee.01.blue"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particle_burst.01.star.bluepurple"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.twinkling_stars.points07.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particle_burst.01.star.bluepurple"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.twinkling_stars.points07.white"
           }
         ],
         "mediaTiming": {
@@ -70126,6 +70566,31 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.quarterstaff.melee.01.blue"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particle_burst.01.star.bluepurple"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.twinkling_stars.points07.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particle_burst.01.star.bluepurple"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.twinkling_stars.points07.white"
           }
         ],
         "mediaTiming": {
@@ -71480,6 +71945,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.02.battleaxe.01"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.02.battleaxe.01"
           }
         ],
         "mediaTiming": {
@@ -71589,6 +72064,21 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.ground_crack.01.orange"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.warhammer.melee.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.impact.ground_crack.01.orange"
           }
         ],
         "mediaTiming": {
@@ -73364,6 +73854,26 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.falchion.melee.01.white"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.glint.blue.many"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.falchion.melee.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.many"
           }
         ],
         "mediaTiming": {
@@ -73863,6 +74373,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.greatsword.melee.fire.white"
           }
         ],
         "mediaTiming": {
@@ -76778,6 +77293,26 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.rapier.melee.01.white"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.dark_black"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.rapier.melee.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.grey"
           }
         ],
         "mediaTiming": {
@@ -77001,6 +77536,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.05.nodachi.01"
           }
         ],
         "mediaTiming": {
@@ -78547,6 +79087,21 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.shortsword.melee.01.yellow"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
           }
         ],
         "mediaTiming": {
@@ -81699,6 +82254,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.spear.melee.01.blue"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.divine_smite.target.blueyellow"
           }
         ],
         "mediaTiming": {
@@ -81782,6 +82347,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.divine_smite.target.blueyellow"
           }
         ],
         "mediaTiming": {
@@ -82132,6 +82702,21 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.glint.blue.few"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.warhammer.melee.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
           }
         ],
         "mediaTiming": {
@@ -86325,6 +86910,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.007.yellow",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.007.white"
           }
         ],
         "mediaTiming": {
@@ -86851,6 +87441,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.dark_green"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.centered.grey"
           }
         ],
         "mediaTiming": {
@@ -88877,6 +89477,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.dark_purple"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.grey"
           }
         ],
         "mediaTiming": {
@@ -89210,6 +89820,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.divine_smite.target.blueyellow",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.sword.melee.01.yellow"
           }
         ],
         "mediaTiming": {
@@ -89321,6 +89936,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.frost.white.01",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.rapier.melee.01.blue"
           }
         ],
         "mediaTiming": {
@@ -90818,6 +91438,26 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash02.red",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.01.sickle.01"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.plumes.01.dark_red"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.01.sickle.01"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.grey"
           }
         ],
         "mediaTiming": {
@@ -94022,6 +94662,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.dark_black"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.grey"
           }
         ],
         "mediaTiming": {
@@ -94136,6 +94786,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.glint.blue.few"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
           }
         ],
         "mediaTiming": {
@@ -94220,6 +94880,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.glint.blue.few"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.glint.yellow.few"
           }
         ],
         "mediaTiming": {
@@ -94447,6 +95117,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.boomerang.01.white.01.return"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.dagger.return.01.white"
           }
         ],
         "mediaTiming": {
@@ -99684,6 +100364,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.liquid.splash.green"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.liquid.splash.blue"
           }
         ],
         "mediaTiming": {
@@ -101194,6 +101884,11 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.scimitar.melee.01.orange"
           }
         ],
         "mediaTiming": {
@@ -102051,6 +102746,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.dark_black"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.grey"
           }
         ],
         "mediaTiming": {
@@ -104438,6 +105143,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.swirling_sparkles.01.blue"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.swirling_sparkles.01.blue"
           }
         ],
         "mediaTiming": {
@@ -104521,6 +105236,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.swirling_sparkles.01.blue"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.swirling_sparkles.01.blue"
           }
         ],
         "mediaTiming": {
@@ -106242,6 +106967,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.greenyellow"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.blue"
           }
         ],
         "mediaTiming": {
@@ -106352,6 +107087,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.blue"
           }
         ],
         "mediaTiming": {
@@ -106462,6 +107207,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.blue"
           }
         ],
         "mediaTiming": {
@@ -106572,6 +107327,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.blue"
           }
         ],
         "mediaTiming": {
@@ -118079,6 +118844,26 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.dancing_light.blueteal"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.twinkling_stars.points07.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.dancing_light.blueteal"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.twinkling_stars.points07.white"
           }
         ],
         "mediaTiming": {
@@ -124883,6 +125668,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.melee_generic.slashing.one_handed"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.melee_generic.slash.01.orange"
           }
         ],
         "mediaTiming": {
@@ -127045,6 +127840,31 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.liquid.splash.blue",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.sword.melee.01.orange"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.orangeyellow"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.grey"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.particles.002.001.complete.few.blue"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.grey"
           }
         ],
         "mediaTiming": {
@@ -129414,6 +130234,26 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.wind_lines.01.01.white"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.012.blue"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.wind_lines.01.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.impact.012.blue"
           }
         ],
         "mediaTiming": {
@@ -130671,6 +131511,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.01.flail.01"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.melee_attack.01.flail.01"
           }
         ],
         "mediaTiming": {
@@ -132352,6 +133202,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.dark_black"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.smoke.puff.side.grey"
           }
         ],
         "mediaTiming": {
@@ -135203,6 +136063,26 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.fire.01.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.divine_smite.target.yellowwhite"
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.impact.007.yellow"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.divine_smite.target.blueyellow"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.impact.007.yellow"
           }
         ],
         "mediaTiming": {
@@ -136205,6 +137085,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.quarterstaff.melee.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.quarterstaff.melee.01.white"
           }
         ],
         "mediaTiming": {
@@ -136315,6 +137205,16 @@ export const PF2E_WEAPONS = [
             "key": "jb2a.impact.005.orange",
             "geometry": "radial",
             "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "bespoke",
+            "key": "jb2a.quarterstaff.melee.01.white"
+          },
+          {
+            "edition": "free",
+            "slot": "bespoke",
+            "key": "jb2a.quarterstaff.melee.01.white"
           }
         ],
         "mediaTiming": {

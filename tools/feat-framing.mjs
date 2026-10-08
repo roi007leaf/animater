@@ -15,6 +15,9 @@ export function frameFeatCatalog(feats,databases){
     const preferred=semanticEntrance(feat.direction),first=preferredFrame(feat.direction??{});
     const entrances=[preferred,...allowedEntrances(feat).filter(v=>v!==preferred)];
     let chosen=null;
+    for(let attempt=0;attempt<2&&!chosen;attempt++){
+    // A bespoke design that duplicates an earlier feat yields to the framed generated design.
+    if(attempt)feat.bespoke=false;
     // Preserve semantic shape first. If identical, choose visibly different
     // ambient framing, footprint, then entrance. Never add attacks or change
     // attack count, flight speed, media duration or token mechanics for variety.
@@ -23,6 +26,7 @@ export function frameFeatCatalog(feats,databases){
       const recipe=featRecipe(feat,{motion:false});
       const signatures=Object.fromEntries(Object.entries(editions).map(([edition,keys])=>[edition,JSON.stringify(visibleFeatComposition(recipe,keys,{motion:false}))]));
       if(Object.entries(signatures).every(([edition,key])=>!seen[edition].has(key))){chosen=signatures;break outer;}
+    }
     }
     if(!chosen)throw Error(`Visible framing exhausted for ${feat.name}; author another semantic treatment.`);
     for(const [edition,key] of Object.entries(chosen))seen[edition].set(key,feat.id);

@@ -2,9 +2,9 @@
   "id": "animater",
   "title": "Animater",
   "description": "Animation module using JB2A animations (Free and Patreon) and Sequencer. PF2e, SF2e, and D&D 5e.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "authors": [{ "name": "Animater contributors" }],
-  "compatibility": { "minimum": "14" },
+  "compatibility": { "minimum": "14", "verified": "14" },
   "esmodules": ["scripts/main.mjs"],
   "styles": ["styles/animater.css"],
   "relationships": {
@@ -15,7 +15,19 @@
         "compatibility": { "minimum": "4.2" },
         "manifest": "https://github.com/fantasycalendar/FoundryVTT-Sequencer/releases/latest/download/module.json"
       }
+    ],
+    "recommends": [
+      { "id": "JB2A_DnD5e", "type": "module", "reason": "Free JB2A animation library (or JB2A Patreon, jb2a_patreon, for the full catalog)." },
+      { "id": "ggg", "type": "module", "reason": "Primary sound library for spells, feats and weapons.", "manifest": "https://github.com/ChasarooniZ/GGG-Sequencer-Sound-DB-Collection/releases/latest/download/module.json" },
+      { "id": "psfx", "type": "module", "reason": "Preferred spell and weapon sound effects.", "manifest": "https://github.com/JimHPerry/psfx/releases/latest/download/module.json" },
+      { "id": "soundfxlibrary", "type": "module", "reason": "Fallback sounds when GGG or PSFX are missing.", "manifest": "https://github.com/MaterialFoundry/SoundFxLibrary/releases/latest/download/module.json" },
+      { "id": "pf2e-creature-sounds", "type": "module", "reason": "Creature voices for natural attacks.", "manifest": "https://github.com/olilan1/pf2e-creature-sounds/releases/latest/download/module.json" },
+      { "id": "tokenmagic", "type": "module", "reason": "Token filters added by catalog animations.", "manifest": "https://github.com/Feu-Secret/Tokenmagic/releases/latest/download/module.json" },
+      { "id": "fxmaster", "type": "module", "reason": "Scene weather effects added by catalog animations.", "manifest": "https://github.com/gambit07/fxmaster/releases/latest/download/module.json" }
     ]
   },
-  "socket": true
+  "socket": true,
+  "url": "#{URL}#",
+  "manifest": "#{MANIFEST}#",
+  "download": "#{DOWNLOAD}#"
 }

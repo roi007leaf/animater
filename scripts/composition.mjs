@@ -77,9 +77,12 @@ export function timedStages(
           `Stage ${s.label || s.stageId}: linked stage was removed. Choose another timing reference.`,
         );
       const reference = resolve(parent);
-      if (s.timingAnchor === "arrival" && !isPathMotion(reference))
+      // Arrival: a path motion's arrival phase, or the moment a travel/projectile
+      // film reaches its target (measured contact, else ~55% of the flight).
+      const flight = ["travel", "projectile"].includes(reference.kind);
+      if (s.timingAnchor === "arrival" && !isPathMotion(reference) && !flight)
         throw Error(
-          "Arrival timing needs a rush, leap, roll or dodge reference.",
+          "Arrival timing needs a rush, leap, roll, dodge, travel or projectile reference.",
         );
       delay = Math.max(
         0,
@@ -87,9 +90,12 @@ export function timedStages(
           (s.timingAnchor === "start"
             ? 0
             : s.timingAnchor === "arrival"
-              ? stageSpan(reference) -
-                reference.duration +
-                reference.duration * motionPhases(reference).arrival
+              ? flight
+                ? stageSpan(reference) - reference.duration +
+                  Math.min(reference.duration, Number(reference.contact) > 0 ? Number(reference.contact) : reference.duration * 0.55)
+                : stageSpan(reference) -
+                  reference.duration +
+                  reference.duration * motionPhases(reference).arrival
               : stageSpan(reference)) +
           s.startOffset,
       );

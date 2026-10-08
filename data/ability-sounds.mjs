@@ -34,6 +34,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -36.2,
+          "peakDb": -11.3,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -42.1,
+          "peakDb": -16.1,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -33,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -32.7,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     }
@@ -102,6 +142,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -8,
           "gain": 1,
           "duration": 657
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -140,6 +240,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -147,6 +287,56 @@ export const ABILITY_SOUND_PROFILES = {
       "label": "Thrown-weapon contact",
       "role": "contact",
       "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 001.ogg",
+          "nativeDuration": 496,
+          "meanDb": -23.5,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 496
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 002.ogg",
+          "nativeDuration": 432,
+          "meanDb": -25.2,
+          "peakDb": -1.2,
+          "gain": 0.81283,
+          "duration": 432
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 003.ogg",
+          "nativeDuration": 554,
+          "meanDb": -26.7,
+          "peakDb": -2.5,
+          "gain": 0.94406,
+          "duration": 554
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 004.ogg",
+          "nativeDuration": 331,
+          "meanDb": -20.1,
+          "peakDb": -1.6,
+          "gain": 0.85114,
+          "duration": 331
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 005.ogg",
+          "nativeDuration": 537,
+          "meanDb": -25.2,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 537
+        },
         {
           "module": "soundfxlibrary",
           "key": "",
@@ -274,6 +464,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -392,6 +642,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -450,6 +760,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.6,
           "gain": 0.85114,
           "duration": 499
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-00.ogg",
+          "nativeDuration": 1206,
+          "meanDb": -27.5,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 1206
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-01.ogg",
+          "nativeDuration": 1225,
+          "meanDb": -28.6,
+          "peakDb": -3.6,
+          "gain": 1,
+          "duration": 1225
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-02.ogg",
+          "nativeDuration": 1230,
+          "meanDb": -24.8,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 1230
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-03.ogg",
+          "nativeDuration": 1245,
+          "meanDb": -27.6,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 1245
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -568,6 +978,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -804,6 +1274,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -862,6 +1392,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.9,
           "gain": 0.93325,
           "duration": 464
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     }
@@ -930,6 +1560,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -5.8,
           "gain": 0.97724,
           "duration": 592
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     }
@@ -1058,6 +1788,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -1126,6 +1916,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -7.4,
           "gain": 1,
           "duration": 1367
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-00.ogg",
+          "nativeDuration": 1206,
+          "meanDb": -27.5,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 1206
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-01.ogg",
+          "nativeDuration": 1225,
+          "meanDb": -28.6,
+          "peakDb": -3.6,
+          "gain": 1,
+          "duration": 1225
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-02.ogg",
+          "nativeDuration": 1230,
+          "meanDb": -24.8,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 1230
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-03.ogg",
+          "nativeDuration": 1245,
+          "meanDb": -27.6,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 1245
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -1184,6 +2074,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.9,
           "gain": 0.93325,
           "duration": 464
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     }
@@ -1242,6 +2232,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 981
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     }
@@ -1310,6 +2400,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3.7,
           "gain": 1,
           "duration": 1140
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     }
@@ -1406,6 +2596,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.9,
           "gain": 0.88105,
           "duration": 357
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     }
@@ -1474,6 +2764,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -9.3,
           "gain": 1,
           "duration": 684
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-00.ogg",
+          "nativeDuration": 1206,
+          "meanDb": -27.5,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 1206
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-01.ogg",
+          "nativeDuration": 1225,
+          "meanDb": -28.6,
+          "peakDb": -3.6,
+          "gain": 1,
+          "duration": 1225
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-02.ogg",
+          "nativeDuration": 1230,
+          "meanDb": -24.8,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 1230
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-03.ogg",
+          "nativeDuration": 1245,
+          "meanDb": -27.6,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 1245
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -1512,6 +2902,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.8,
           "gain": 0.97724,
           "duration": 374
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     }
@@ -1824,6 +3314,16 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -7.4,
           "gain": 1,
           "duration": 638
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.longbow.v1.15ft",
+          "file": "modules/psfx/library/ranged-weapons/longbow/v1/longbow-003-15ft.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.1,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 3500
         }
       ]
     },
@@ -1880,6 +3380,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3,
           "gain": 1,
           "duration": 847
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-1.mp3",
+          "nativeDuration": 275,
+          "meanDb": -24.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 275
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-2.mp3",
+          "nativeDuration": 320,
+          "meanDb": -28.8,
+          "peakDb": -7.1,
+          "gain": 1,
+          "duration": 320
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-3.mp3",
+          "nativeDuration": 393,
+          "meanDb": -27.6,
+          "peakDb": -7.9,
+          "gain": 1,
+          "duration": 393
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-4.mp3",
+          "nativeDuration": 232,
+          "meanDb": -26.5,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 232
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-5.mp3",
+          "nativeDuration": 255,
+          "meanDb": -26.4,
+          "peakDb": -4.8,
+          "gain": 1,
+          "duration": 255
         }
       ]
     }
@@ -2004,6 +3554,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3,
           "gain": 1,
           "duration": 847
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-1.mp3",
+          "nativeDuration": 275,
+          "meanDb": -24.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 275
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-2.mp3",
+          "nativeDuration": 320,
+          "meanDb": -28.8,
+          "peakDb": -7.1,
+          "gain": 1,
+          "duration": 320
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-3.mp3",
+          "nativeDuration": 393,
+          "meanDb": -27.6,
+          "peakDb": -7.9,
+          "gain": 1,
+          "duration": 393
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-4.mp3",
+          "nativeDuration": 232,
+          "meanDb": -26.5,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 232
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-5.mp3",
+          "nativeDuration": 255,
+          "meanDb": -26.4,
+          "peakDb": -4.8,
+          "gain": 1,
+          "duration": 255
         }
       ]
     }
@@ -2062,6 +3662,16 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.4,
           "gain": 0.83176,
           "duration": 580
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.longbow.v1.15ft",
+          "file": "modules/psfx/library/ranged-weapons/longbow/v1/longbow-003-15ft.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.1,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 3500
         }
       ]
     },
@@ -2118,6 +3728,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3,
           "gain": 1,
           "duration": 847
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-1.mp3",
+          "nativeDuration": 275,
+          "meanDb": -24.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 275
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-2.mp3",
+          "nativeDuration": 320,
+          "meanDb": -28.8,
+          "peakDb": -7.1,
+          "gain": 1,
+          "duration": 320
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-3.mp3",
+          "nativeDuration": 393,
+          "meanDb": -27.6,
+          "peakDb": -7.9,
+          "gain": 1,
+          "duration": 393
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-4.mp3",
+          "nativeDuration": 232,
+          "meanDb": -26.5,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 232
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-5.mp3",
+          "nativeDuration": 255,
+          "meanDb": -26.4,
+          "peakDb": -4.8,
+          "gain": 1,
+          "duration": 255
         }
       ]
     }
@@ -2222,6 +3882,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3,
           "gain": 1,
           "duration": 847
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-1.mp3",
+          "nativeDuration": 275,
+          "meanDb": -24.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 275
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-2.mp3",
+          "nativeDuration": 320,
+          "meanDb": -28.8,
+          "peakDb": -7.1,
+          "gain": 1,
+          "duration": 320
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-3.mp3",
+          "nativeDuration": 393,
+          "meanDb": -27.6,
+          "peakDb": -7.9,
+          "gain": 1,
+          "duration": 393
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-4.mp3",
+          "nativeDuration": 232,
+          "meanDb": -26.5,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 232
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-5.mp3",
+          "nativeDuration": 255,
+          "meanDb": -26.4,
+          "peakDb": -4.8,
+          "gain": 1,
+          "duration": 255
         }
       ]
     }
@@ -2280,6 +3990,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 2049
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -2336,6 +4086,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": 0,
           "gain": 0.70795,
           "duration": 392
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     }
@@ -2394,6 +4204,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3.2,
           "gain": 1,
           "duration": 1538
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -2508,6 +4368,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.6,
           "gain": 0.85114,
           "duration": 2194
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -2622,6 +4532,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.4,
           "gain": 0.83176,
           "duration": 1706
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -2736,6 +4696,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 1866
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -2848,6 +4858,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -2855,6 +4905,56 @@ export const ABILITY_SOUND_PROFILES = {
       "label": "Thrown contact",
       "role": "impact",
       "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 001.ogg",
+          "nativeDuration": 496,
+          "meanDb": -23.5,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 496
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 002.ogg",
+          "nativeDuration": 432,
+          "meanDb": -25.2,
+          "peakDb": -1.2,
+          "gain": 0.81283,
+          "duration": 432
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 003.ogg",
+          "nativeDuration": 554,
+          "meanDb": -26.7,
+          "peakDb": -2.5,
+          "gain": 0.94406,
+          "duration": 554
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 004.ogg",
+          "nativeDuration": 331,
+          "meanDb": -20.1,
+          "peakDb": -1.6,
+          "gain": 0.85114,
+          "duration": 331
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.stone.impact.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Ranged Sound FX Pack Vol. 1/Throwables/Stones/Stones Impact 005.ogg",
+          "nativeDuration": 537,
+          "meanDb": -25.2,
+          "peakDb": -1.9,
+          "gain": 0.88105,
+          "duration": 537
+        },
         {
           "module": "soundfxlibrary",
           "key": "",
@@ -2902,6 +5002,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     }
@@ -2940,6 +5080,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3094,6 +5274,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3168,6 +5388,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     }
@@ -3206,6 +5466,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3280,6 +5580,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3296,6 +5636,16 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 2693
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.3rd-level-spells.fireball.v1.001.explosion",
+          "file": "modules/psfx/library/3rd-level-spells/fireball/v1/fireball-explosion-01.ogg",
+          "nativeDuration": 3994,
+          "meanDb": -18.5,
+          "peakDb": -3.6,
+          "gain": 0.8414,
+          "duration": 3994
         }
       ]
     }
@@ -3334,6 +5684,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3388,6 +5778,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3482,6 +5912,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3498,6 +5968,16 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.9,
           "gain": 0.88105,
           "duration": 3326
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.1st-level-spells.entangle.vines.v1.001.intro",
+          "file": "modules/psfx/library/1st-level-spells/entangle/vines/v1/entangle-intro.ogg",
+          "nativeDuration": 5251,
+          "meanDb": -20.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 4500
         }
       ]
     }
@@ -3536,6 +6016,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3590,6 +6110,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3694,6 +6254,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3758,6 +6358,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3832,6 +6472,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -3976,6 +6656,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -4050,6 +6770,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3,
           "gain": 1,
           "duration": 1152
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     }
@@ -4108,6 +6868,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.5,
           "gain": 0.94406,
           "duration": 717
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -4232,6 +7032,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.1,
           "gain": 0.80353,
           "duration": 931
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -36.2,
+          "peakDb": -11.3,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -42.1,
+          "peakDb": -16.1,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -33,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -32.7,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -4288,6 +7128,16 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.7,
           "gain": 0.96605,
           "duration": 470
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Throw Hit/throw-hit-1.mp3",
+          "nativeDuration": 1041,
+          "meanDb": -24.6,
+          "peakDb": -0.1,
+          "gain": 0.71614,
+          "duration": 1041
         }
       ]
     }
@@ -4346,6 +7196,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.5,
           "gain": 0.8414,
           "duration": 601
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -4402,6 +7292,16 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.2,
           "gain": 0.81283,
           "duration": 325
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Throw Hit/throw-hit-1.mp3",
+          "nativeDuration": 1041,
+          "meanDb": -24.6,
+          "peakDb": -0.1,
+          "gain": 0.71614,
+          "duration": 1041
         }
       ]
     }
@@ -4420,6 +7320,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3.1,
           "gain": 1,
           "duration": 1175
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -36.2,
+          "peakDb": -11.3,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -42.1,
+          "peakDb": -16.1,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -33,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.heavy.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/heavy/v1/group01/meleeattack-swoosh-heavy-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -32.7,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -4427,6 +7367,16 @@ export const ABILITY_SOUND_PROFILES = {
       "label": "Axe contact",
       "role": "impact",
       "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.axe.throw.01.spin-hit",
+          "file": "modules/ggg/assets/sounds/SoundFlakes/diablo-wrath/weapon/axe-throwing-hitting-flesh.ogg",
+          "nativeDuration": 1802,
+          "meanDb": -29,
+          "peakDb": -2.5,
+          "gain": 0.94406,
+          "duration": 1802
+        },
         {
           "module": "soundfxlibrary",
           "key": "",
@@ -4504,6 +7454,26 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": 0,
           "gain": 0.56885,
           "duration": 1632
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Cyclops/Attack/cyclops_voice_battle_shout_03.m4a",
+          "nativeDuration": 1254,
+          "meanDb": -9.9,
+          "peakDb": 0,
+          "gain": 0.31261,
+          "duration": 1254
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Cyclops/Attack/cyclops_voice_battle_shout_05.m4a",
+          "nativeDuration": 1649,
+          "meanDb": -7.3,
+          "peakDb": 0,
+          "gain": 0.23174,
+          "duration": 1649
         }
       ]
     }
@@ -4600,6 +7570,36 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": 0,
           "gain": 0.4217,
           "duration": 4500
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Animal_Monster/Monster/Monster_Growl-001.m4a",
+          "nativeDuration": 3321,
+          "meanDb": -14,
+          "peakDb": 0,
+          "gain": 0.50119,
+          "duration": 3321
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Animal_Monster/Monster/Monster_Growl-002.m4a",
+          "nativeDuration": 4459,
+          "meanDb": -13.9,
+          "peakDb": 0,
+          "gain": 0.49545,
+          "duration": 4459
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Animal_Monster/Monster/Monster_Growl-003.m4a",
+          "nativeDuration": 4366,
+          "meanDb": -14.1,
+          "peakDb": 0,
+          "gain": 0.50699,
+          "duration": 4366
         }
       ]
     }
@@ -4637,6 +7637,66 @@ export const ABILITY_SOUND_PROFILES = {
           "meanDb": -22.6,
           "peakDb": -2.3,
           "gain": 0.92257,
+          "duration": 4500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Monsters/Moan/moan-1.mp3",
+          "nativeDuration": 2400,
+          "meanDb": -14.2,
+          "peakDb": -0.1,
+          "gain": 0.51286,
+          "duration": 2400
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Creatures/Monsters/Moan/moan-2.mp3",
+          "nativeDuration": 2632,
+          "meanDb": -19.4,
+          "peakDb": -4.2,
+          "gain": 0.93325,
+          "duration": 2632
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Evolved_Game_Creatures_2/Wraith/Wraith_Monster_Attack_1_Spirit_Fairy_Ghost_Creature.m4a",
+          "nativeDuration": 4180,
+          "meanDb": -20.4,
+          "peakDb": -0.1,
+          "gain": 0.71614,
+          "duration": 4180
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Evolved_Game_Creatures_2/Wraith/Wraith_Monster_Attack_2_Spirit_Fairy_Ghost_Creature.m4a",
+          "nativeDuration": 4343,
+          "meanDb": -26.5,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 4343
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Evolved_Game_Creatures_2/Wraith/Wraith_Monster_Attack_3_Spirit_Fairy_Ghost_Creature.m4a",
+          "nativeDuration": 6502,
+          "meanDb": -18.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 4500
+        },
+        {
+          "module": "pf2e-creature-sounds",
+          "key": "",
+          "file": "modules/pf2e-creature-sounds/sounds/GameDevMarket/Evolved_Game_Creatures_2/Wraith/Wraith_Monster_Attack_4_Spirit_Fairy_Ghost_Creature.m4a",
+          "nativeDuration": 5225,
+          "meanDb": -18.2,
+          "peakDb": 0,
+          "gain": 0.70795,
           "duration": 4500
         }
       ]
@@ -4754,6 +7814,464 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3.2,
           "gain": 1,
           "duration": 1538
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
+        }
+      ]
+    }
+  ],
+  "laserDischarge": [
+    {
+      "label": "Energy weapon discharge",
+      "role": "release",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.plasma.gun.strike.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Sci-Fi/Weapon/Heavy/Plasmagun A.ogg",
+          "nativeDuration": 2182,
+          "meanDb": -21.8,
+          "peakDb": -4.9,
+          "gain": 1,
+          "duration": 2182
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.plasma.gun.strike.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Sci-Fi/Weapon/Heavy/Plasmagun B.ogg",
+          "nativeDuration": 2722,
+          "meanDb": -23,
+          "peakDb": -4,
+          "gain": 1,
+          "duration": 2722
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.plasma.gun.strike.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Sci-Fi/Weapon/Heavy/Plasmagun C.ogg",
+          "nativeDuration": 2673,
+          "meanDb": -22.3,
+          "peakDb": -3.8,
+          "gain": 1,
+          "duration": 2673
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.laser.pistol.strike.single.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Sci-Fi/Weapon/Light/Laser Pistol Shot Single A.ogg",
+          "nativeDuration": 917,
+          "meanDb": -21.9,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 917
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.laser.pistol.strike.single.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Sci-Fi/Weapon/Light/Laser Pistol Shot Single B.ogg",
+          "nativeDuration": 870,
+          "meanDb": -21.2,
+          "peakDb": -2.1,
+          "gain": 0.90157,
+          "duration": 870
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.laser.pistol.strike.single.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Sci-Fi/Weapon/Light/Laser Pistol Shot Single C.ogg",
+          "nativeDuration": 865,
+          "meanDb": -21.5,
+          "peakDb": -2.3,
+          "gain": 0.92257,
+          "duration": 865
+        }
+      ]
+    }
+  ],
+  "scifiGun": [
+    {
+      "label": "Sci-fi gunfire",
+      "role": "release",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.needler.strike.single.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Science Fiction Sound FX Pack Vol. 4/Weapon/Small/Kinetic Impaler 001.ogg",
+          "nativeDuration": 377,
+          "meanDb": -18.3,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 377
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.needler.strike.single.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Science Fiction Sound FX Pack Vol. 4/Weapon/Small/Kinetic Impaler 002.ogg",
+          "nativeDuration": 383,
+          "meanDb": -17.4,
+          "peakDb": -2.1,
+          "gain": 0.74131,
+          "duration": 383
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.needler.strike.single.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Science Fiction Sound FX Pack Vol. 4/Weapon/Small/Kinetic Impaler 003.ogg",
+          "nativeDuration": 377,
+          "meanDb": -17.7,
+          "peakDb": -1.7,
+          "gain": 0.76736,
+          "duration": 377
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.needler.strike.single.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Science Fiction Sound FX Pack Vol. 4/Weapon/Small/Kinetic Impaler 004.ogg",
+          "nativeDuration": 380,
+          "meanDb": -17.7,
+          "peakDb": -0.8,
+          "gain": 0.76736,
+          "duration": 380
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.needler.strike.single.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Science Fiction Sound FX Pack Vol. 4/Weapon/Small/Kinetic Impaler 005.ogg",
+          "nativeDuration": 368,
+          "meanDb": -17.3,
+          "peakDb": -1.8,
+          "gain": 0.73282,
+          "duration": 368
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.scifi.needler.strike.single.01.06",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Science Fiction Sound FX Pack Vol. 4/Weapon/Small/Kinetic Impaler 006.ogg",
+          "nativeDuration": 380,
+          "meanDb": -17.2,
+          "peakDb": -1.6,
+          "gain": 0.72444,
+          "duration": 380
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
+        }
+      ]
+    }
+  ],
+  "flashGrenade": [
+    {
+      "label": "Grenade toss",
+      "role": "release",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.general.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Medieval Fantasy Sound FX Pack Vol. 2/Whooshes/General Throw A.ogg",
+          "nativeDuration": 757,
+          "meanDb": -22.5,
+          "peakDb": -3.3,
+          "gain": 1,
+          "duration": 757
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.general.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Medieval Fantasy Sound FX Pack Vol. 2/Whooshes/General Throw B.ogg",
+          "nativeDuration": 894,
+          "meanDb": -24.8,
+          "peakDb": -2.7,
+          "gain": 0.96605,
+          "duration": 894
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.thrown.general.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Medieval Fantasy Sound FX Pack Vol. 2/Whooshes/General Throw C.ogg",
+          "nativeDuration": 960,
+          "meanDb": -24,
+          "peakDb": -2.1,
+          "gain": 0.90157,
+          "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
+        }
+      ]
+    },
+    {
+      "label": "Flash-bang burst",
+      "role": "impact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.ranged.bomb.explosion.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Medieval Fantasy Sound FX Pack Vol. 2/Weapons/Pot Explosion.ogg",
+          "nativeDuration": 2693,
+          "meanDb": -20.9,
+          "peakDb": -2,
+          "gain": 0.89125,
+          "duration": 2693
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.cantrips.thunderclap.v1",
+          "file": "modules/psfx/library/cantrips/thunderclap/v1/thunderclap-001.ogg",
+          "nativeDuration": 5520,
+          "meanDb": -15.8,
+          "peakDb": 0,
+          "gain": 0.6166,
+          "duration": 4500
+        }
+      ]
+    }
+  ],
+  "bladeParry": [
+    {
+      "label": "Blade parry",
+      "role": "contact",
+      "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.parry.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Parry Blade 001.ogg",
+          "nativeDuration": 1004,
+          "meanDb": -21.7,
+          "peakDb": -2.2,
+          "gain": 0.91201,
+          "duration": 1004
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.parry.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Parry Blade 002.ogg",
+          "nativeDuration": 1048,
+          "meanDb": -21.9,
+          "peakDb": -2.8,
+          "gain": 0.97724,
+          "duration": 1048
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.parry.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Parry Blade 003.ogg",
+          "nativeDuration": 1132,
+          "meanDb": -22.1,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 1132
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.parry.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Parry Blade 004.ogg",
+          "nativeDuration": 998,
+          "meanDb": -20.8,
+          "peakDb": -2.7,
+          "gain": 0.96605,
+          "duration": 998
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.melee.blade.parry.01.05",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Weaponry Melee Sound FX Pack Vol. 1/Blade/Parry Blade 005.ogg",
+          "nativeDuration": 1149,
+          "meanDb": -21.2,
+          "peakDb": -3.1,
+          "gain": 1,
+          "duration": 1149
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-1.mp3",
+          "nativeDuration": 351,
+          "meanDb": -23.6,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 351
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-10.mp3",
+          "nativeDuration": 301,
+          "meanDb": -22.8,
+          "peakDb": -5.3,
+          "gain": 1,
+          "duration": 301
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-11.mp3",
+          "nativeDuration": 1007,
+          "meanDb": -12.7,
+          "peakDb": 0,
+          "gain": 0.43152,
+          "duration": 1007
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-12.mp3",
+          "nativeDuration": 451,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 451
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-3.mp3",
+          "nativeDuration": 449,
+          "meanDb": -21.9,
+          "peakDb": -1,
+          "gain": 0.79433,
+          "duration": 449
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Shield Hit/shield-hit-4.mp3",
+          "nativeDuration": 359,
+          "meanDb": -22.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 359
         }
       ]
     }
@@ -4792,6 +8310,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -4856,6 +8414,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -4970,6 +8568,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -5044,6 +8682,46 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.1,
           "gain": 0.90157,
           "duration": 960
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-00.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -35,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -38.4,
+          "peakDb": -8.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -39.7,
+          "peakDb": -9.6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.weapon-swooshes.light.v1.group01",
+          "file": "modules/psfx/library/weapon-swooshes/light/v1/group01/meleeattack-swoosh-light-group01-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -30.8,
+          "peakDb": -0.3,
+          "gain": 0.73282,
+          "duration": 3000
         }
       ]
     },
@@ -5051,6 +8729,46 @@ export const ABILITY_SOUND_PROFILES = {
       "label": "Mental pulse",
       "role": "impact",
       "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.curse.confused.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Confuse 001.ogg",
+          "nativeDuration": 1933,
+          "meanDb": -26.2,
+          "peakDb": -6.4,
+          "gain": 1,
+          "duration": 1933
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.curse.confused.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Confuse 002.ogg",
+          "nativeDuration": 3007,
+          "meanDb": -22.6,
+          "peakDb": -1.6,
+          "gain": 0.85114,
+          "duration": 3007
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.curse.confused.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Confuse 003.ogg",
+          "nativeDuration": 3520,
+          "meanDb": -22.4,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3520
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.curse.confused.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Confuse 004.ogg",
+          "nativeDuration": 2005,
+          "meanDb": -24.7,
+          "peakDb": -2.8,
+          "gain": 0.97724,
+          "duration": 2005
+        },
         {
           "module": "psfx",
           "key": "psfx.cantrips.mind-sliver.v1",
@@ -5098,6 +8816,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.9,
           "gain": 0.88105,
           "duration": 357
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -5203,6 +9021,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.9,
           "gain": 0.93325,
           "duration": 464
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -5348,6 +9266,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -7.4,
           "gain": 1,
           "duration": 1367
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-00.ogg",
+          "nativeDuration": 1206,
+          "meanDb": -27.5,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 1206
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-01.ogg",
+          "nativeDuration": 1225,
+          "meanDb": -28.6,
+          "peakDb": -3.6,
+          "gain": 1,
+          "duration": 1225
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-02.ogg",
+          "nativeDuration": 1230,
+          "meanDb": -24.8,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 1230
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-03.ogg",
+          "nativeDuration": 1245,
+          "meanDb": -27.6,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 1245
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -5453,6 +9471,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 1866
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -5704,6 +9772,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -5899,6 +10027,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -6094,6 +10282,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.9,
           "gain": 0.93325,
           "duration": 464
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -6229,6 +10517,16 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.4,
           "gain": 0.83176,
           "duration": 580
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.longbow.v1.15ft",
+          "file": "modules/psfx/library/ranged-weapons/longbow/v1/longbow-003-15ft.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.1,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 3500
         }
       ]
     },
@@ -6285,6 +10583,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3,
           "gain": 1,
           "duration": 847
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-1.mp3",
+          "nativeDuration": 275,
+          "meanDb": -24.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 275
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-2.mp3",
+          "nativeDuration": 320,
+          "meanDb": -28.8,
+          "peakDb": -7.1,
+          "gain": 1,
+          "duration": 320
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-3.mp3",
+          "nativeDuration": 393,
+          "meanDb": -27.6,
+          "peakDb": -7.9,
+          "gain": 1,
+          "duration": 393
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-4.mp3",
+          "nativeDuration": 232,
+          "meanDb": -26.5,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 232
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-5.mp3",
+          "nativeDuration": 255,
+          "meanDb": -26.4,
+          "peakDb": -4.8,
+          "gain": 1,
+          "duration": 255
         }
       ]
     },
@@ -6480,6 +10828,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -6575,6 +10983,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.6,
           "gain": 0.85114,
           "duration": 2194
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -6831,6 +11289,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.9,
           "gain": 0.88105,
           "duration": 357
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -6986,6 +11544,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.4,
           "gain": 0.83176,
           "duration": 1706
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -7197,6 +11805,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 981
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -7392,6 +12100,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -7527,6 +12295,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.6,
           "gain": 0.85114,
           "duration": 499
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-00.ogg",
+          "nativeDuration": 1206,
+          "meanDb": -27.5,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 1206
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-01.ogg",
+          "nativeDuration": 1225,
+          "meanDb": -28.6,
+          "peakDb": -3.6,
+          "gain": 1,
+          "duration": 1225
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-02.ogg",
+          "nativeDuration": 1230,
+          "meanDb": -24.8,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 1230
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-03.ogg",
+          "nativeDuration": 1245,
+          "meanDb": -27.6,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 1245
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -7692,6 +12560,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -5.8,
           "gain": 0.97724,
           "duration": 592
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -8062,6 +13030,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.6,
           "gain": 0.85114,
           "duration": 2194
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -8253,6 +13271,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3.2,
           "gain": 1,
           "duration": 1538
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -8524,6 +13592,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -8659,6 +13787,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 1866
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -8722,6 +13900,46 @@ export const ABILITY_SOUND_PROFILES = {
       "label": "Mental pulse",
       "role": "impact",
       "candidates": [
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.curse.confused.01.01",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Confuse 001.ogg",
+          "nativeDuration": 1933,
+          "meanDb": -26.2,
+          "peakDb": -6.4,
+          "gain": 1,
+          "duration": 1933
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.curse.confused.01.02",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Confuse 002.ogg",
+          "nativeDuration": 3007,
+          "meanDb": -22.6,
+          "peakDb": -1.6,
+          "gain": 0.85114,
+          "duration": 3007
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.curse.confused.01.03",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Confuse 003.ogg",
+          "nativeDuration": 3520,
+          "meanDb": -22.4,
+          "peakDb": -1.8,
+          "gain": 0.87096,
+          "duration": 3520
+        },
+        {
+          "module": "ggg",
+          "key": "ggg-sfx.magic.occult.curse.confused.01.04",
+          "file": "modules/ggg/assets/sounds/ovani-sounds/Player Status SFX/Ailments/Ailments Confuse 004.ogg",
+          "nativeDuration": 2005,
+          "meanDb": -24.7,
+          "peakDb": -2.8,
+          "gain": 0.97724,
+          "duration": 2005
+        },
         {
           "module": "psfx",
           "key": "psfx.cantrips.mind-sliver.v1",
@@ -8860,6 +14078,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -9055,6 +14333,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -9210,6 +14548,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2.9,
           "gain": 0.93325,
           "duration": 464
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -9465,6 +14903,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -9620,6 +15118,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -9765,6 +15323,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3.7,
           "gain": 1,
           "duration": 1140
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -9870,6 +15528,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 981
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -10025,6 +15783,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3.2,
           "gain": 1,
           "duration": 1538
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -10276,6 +16084,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -10491,6 +16359,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -10626,6 +16554,16 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.4,
           "gain": 0.83176,
           "duration": 580
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.longbow.v1.15ft",
+          "file": "modules/psfx/library/ranged-weapons/longbow/v1/longbow-003-15ft.ogg",
+          "nativeDuration": 3500,
+          "meanDb": -28.1,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 3500
         }
       ]
     },
@@ -10682,6 +16620,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3,
           "gain": 1,
           "duration": 847
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-1.mp3",
+          "nativeDuration": 275,
+          "meanDb": -24.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 275
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-2.mp3",
+          "nativeDuration": 320,
+          "meanDb": -28.8,
+          "peakDb": -7.1,
+          "gain": 1,
+          "duration": 320
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-3.mp3",
+          "nativeDuration": 393,
+          "meanDb": -27.6,
+          "peakDb": -7.9,
+          "gain": 1,
+          "duration": 393
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-4.mp3",
+          "nativeDuration": 232,
+          "meanDb": -26.5,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 232
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Arrow Impact/arrow-impact-5.mp3",
+          "nativeDuration": 255,
+          "meanDb": -26.4,
+          "peakDb": -4.8,
+          "gain": 1,
+          "duration": 255
         }
       ]
     },
@@ -10877,6 +16865,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -11032,6 +17080,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -11187,6 +17295,56 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -3.2,
           "gain": 1,
           "duration": 1538
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-01.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -6,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-02.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -5.2,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-03.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -26.7,
+          "peakDb": -6.5,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-04.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.1,
+          "peakDb": -3.4,
+          "gain": 1,
+          "duration": 3000
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.ranged-weapons.guns.single-fire.revolver",
+          "file": "modules/psfx/library/ranged-weapons/guns/revolver/single-fire/revolver-single-fire-001-05.ogg",
+          "nativeDuration": 3000,
+          "meanDb": -27.2,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 3000
         }
       ]
     },
@@ -11438,6 +17596,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -11633,6 +17851,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.8,
           "gain": 0.87096,
           "duration": 981
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -11828,6 +18146,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.6,
           "gain": 0.85114,
           "duration": 499
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-00.ogg",
+          "nativeDuration": 1206,
+          "meanDb": -27.5,
+          "peakDb": -1.3,
+          "gain": 0.82224,
+          "duration": 1206
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-01.ogg",
+          "nativeDuration": 1225,
+          "meanDb": -28.6,
+          "peakDb": -3.6,
+          "gain": 1,
+          "duration": 1225
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-02.ogg",
+          "nativeDuration": 1230,
+          "meanDb": -24.8,
+          "peakDb": -3,
+          "gain": 1,
+          "duration": 1230
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.slashing.v1",
+          "file": "modules/psfx/library/impacts/slashing/v1/meleeattack-impacts-slashing-03.ogg",
+          "nativeDuration": 1245,
+          "meanDb": -27.6,
+          "peakDb": -5.1,
+          "gain": 1,
+          "duration": 1245
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -12083,6 +18501,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -12278,6 +18756,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -12674,6 +19212,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     }
@@ -12792,6 +19390,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },
@@ -12926,6 +19584,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.9,
           "gain": 0.88105,
           "duration": 357
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -13100,6 +19858,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.9,
           "gain": 0.88105,
           "duration": 357
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -13254,6 +20112,106 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -1.9,
           "gain": 0.88105,
           "duration": 357
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-00.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-01.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-02.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -22.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "psfx",
+          "key": "psfx.impacts.bludgeoning.v1",
+          "file": "modules/psfx/library/impacts/bludgeoning/v1/meleeattack-impacts-bludgeoning-03.ogg",
+          "nativeDuration": 1704,
+          "meanDb": -23.2,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1704
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-1.mp3",
+          "nativeDuration": 410,
+          "meanDb": -11.1,
+          "peakDb": 0,
+          "gain": 0.35892,
+          "duration": 410
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-2.mp3",
+          "nativeDuration": 4063,
+          "meanDb": -24.6,
+          "peakDb": -5.4,
+          "gain": 1,
+          "duration": 4063
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-3.mp3",
+          "nativeDuration": 2615,
+          "meanDb": -18.1,
+          "peakDb": -0.2,
+          "gain": 0.72444,
+          "duration": 2615
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-4.mp3",
+          "nativeDuration": 573,
+          "meanDb": -12.9,
+          "peakDb": -2.3,
+          "gain": 0.44157,
+          "duration": 573
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-5.mp3",
+          "nativeDuration": 1277,
+          "meanDb": -14.8,
+          "peakDb": -0.1,
+          "gain": 0.54954,
+          "duration": 1277
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Misc/Single/Impact/impact-6.mp3",
+          "nativeDuration": 2335,
+          "meanDb": -13.1,
+          "peakDb": -1,
+          "gain": 0.45186,
+          "duration": 2335
         }
       ]
     },
@@ -13448,6 +20406,66 @@ export const ABILITY_SOUND_PROFILES = {
           "peakDb": -2,
           "gain": 0.89125,
           "duration": 3500
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-1.mp3",
+          "nativeDuration": 227,
+          "meanDb": -23.7,
+          "peakDb": -0.9,
+          "gain": 0.78524,
+          "duration": 227
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-10.mp3",
+          "nativeDuration": 486,
+          "meanDb": -19.4,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 486
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-11.mp3",
+          "nativeDuration": 912,
+          "meanDb": -20.9,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 912
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-12.mp3",
+          "nativeDuration": 968,
+          "meanDb": -19.3,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 968
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-13.mp3",
+          "nativeDuration": 1240,
+          "meanDb": -17.1,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 1240
+        },
+        {
+          "module": "soundfxlibrary",
+          "key": "",
+          "file": "modules/soundfxlibrary/Combat/Single/Melee Hit/melee-hit-2.mp3",
+          "nativeDuration": 698,
+          "meanDb": -22.8,
+          "peakDb": 0,
+          "gain": 0.70795,
+          "duration": 698
         }
       ]
     },

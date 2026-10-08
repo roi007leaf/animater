@@ -2,3 +2,14 @@ node_modules/
 .cache/
 *.log
 dist/
+module.zip
+release-files.txt
+
+# Local-only: docs, audits, reports and QA pages are never pushed or shipped.
+docs/
+publication/
+preview/
+data/*.json
+data/*.csv
+.claude/
+.vscode/

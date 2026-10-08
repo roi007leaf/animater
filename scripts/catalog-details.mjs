@@ -2,11 +2,14 @@ import { catalogSpell } from "./spell-catalog.mjs";
 import { catalogFeat } from "./feat-catalog.mjs";
 import { catalogWeapon } from "./weapon-catalog.mjs";
 import { catalogStateEntry } from "./state-catalog.mjs";
+import { PF2E_ACTION_CATALOG, PF2E_FEATURE_CATALOG } from "./ability-catalog.mjs";
 
 const catalogs = {
   spell: { get: catalogSpell, pack: "spells-srd" },
   feat: { get: catalogFeat, pack: "feats-srd" },
   weapon: { get: catalogWeapon, pack: "equipment-srd" },
+  action: { get: PF2E_ACTION_CATALOG.entry, pack: "actionspf2e" },
+  feature: { get: PF2E_FEATURE_CATALOG.entry, pack: "classfeatures" },
   condition: { get: catalogStateEntry },
   effect: { get: catalogStateEntry },
 };

@@ -3,8 +3,8 @@ import {recipeDuration} from './choreography.mjs';
 import {sampleRecipe} from './composition.mjs';
 import {EVENTS} from './model.mjs';
 import {motionSyncNoticeHTML} from './spell-catalog-ui.mjs';
-const kinds={spells:'spell',feats:'feat',weapons:'weapon',items:'item',conditions:'condition',effects:'effect'};
-const labels={spell:'spells',feat:'active features',weapon:'weapons',item:'activated items',condition:'conditions',effect:'persistent effects'};
+const kinds={spells:'spell',feats:'feat',actions:'action',features:'feature',weapons:'weapon',items:'item',conditions:'condition',effects:'effect'};
+const labels={spell:'spells',feat:'active features',action:'actions',feature:'class and ancestry features',weapon:'weapons',item:'activated items',condition:'conditions',effect:'persistent effects'};
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const opts=(values,current)=>values.map(([value,label])=>`<option value="${esc(value)}" ${String(value)===String(current)?'selected':''}>${esc(label)}</option>`).join('');
 export class DndCatalogWorkspace {

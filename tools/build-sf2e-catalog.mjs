@@ -28,6 +28,9 @@ import {PF2E_WEAPONS} from '../data/pf2e-weapons.mjs';
 import {PF2E_CONDITIONS,PF2E_EFFECTS} from '../data/pf2e-state-catalog.mjs';
 import {SPELL_SOUND_DESIGNS} from '../data/spell-sounds.mjs';
 import {FEAT_SOUND_DESIGNS,WEAPON_SOUND_DESIGNS,ABILITY_SOUND_PROFILES} from '../data/ability-sounds.mjs';
+import {suspendBespoke} from '../scripts/bespoke.mjs';
+// Variant recipes are baked generated designs; bespoke designs apply at play time.
+suspendBespoke();
 import {SOUND_PROFILES} from '../data/spell-sounds.mjs';
 import {validateRecipe,planRecipe} from '../scripts/model.mjs';
 import {applySfMotionPatch} from '../scripts/sf2e-motion.mjs';
@@ -40,6 +43,8 @@ const entries=[],spells=[],feats=[],weapons=[],states=[],excluded=[];
 const timings=Object.assign({},...PF2E_FEATS.map(e=>e.mediaTiming??{}),...PF2E_WEAPONS.flatMap(e=>e.modes.map(m=>m.mediaTiming??{})));
 for(const spell of PF2E_SPELLS)for(const [slot,keys]of Object.entries(spell.design.assets??{}))for(const key of keys)if(!timings[key]&&spell.design.mediaTiming?.[slot])timings[key]={...spell.design.mediaTiming[slot]};
 const classes=new Set('envoy mystic operative soldier solarian witchwarper evolutionist mechanic technomancer'.split(' '));
+// Actions and class/ancestry features get their own catalogs, like PF2e.
+const abilityKind=entry=>entry.pack==='actions'?'action':['class-features','ancestry-features'].includes(entry.pack)?'feature':'feat';
 const metadata=(entry,kind)=>{const s=entry.source.system;return {id:`sf2e-${kind}-${entry.pack}-${entry.source._id}`,documentId:entry.source._id,systemId:'sf2e',kind,nativeType:entry.source.type,pack:entry.pack,uuid:entry.uuid,name:entry.source.name,img:entry.source.img,slug:s.slug??entry.path.split('/').at(-1).replace(/\.json$/,''),level:s.level?.value??0,group:entry.pack,edition:'SF2e',publication:s.publication?.title??'',traits:s.traits?.value??[],descriptionText:plainFeatDescription(s.description?.value),descriptionHash:hash(s.description?.value??''),sourceURL:`https://github.com/foundryvtt/pf2e/blob/${source.sha}/${entry.path}`,shared:entry.shared===true};};
 const themeSound=theme=>({electricity:'electric',mind:'psychic',plant:'growth',ward:'shield',gravity:'force',weapon:'metal',arcane:'force',illusion:'shadow',spirit:'holy',vitality:'healing',blood:'drain',curse:'shadow',dream:'sleep',luck:'bless',divination:'detect',web:'chainBinding'})[theme]??theme;
 // Reviewed per-spell cues for SF2e spells without a PF2e composition (full
@@ -357,7 +362,7 @@ for(const entry of source.entries){
   const active=classifyFeat(item);if(!active.included){excluded.push({uuid:entry.uuid,type:item.type,classification:active.classification});continue;}
   const design=analyzeFeat(item,entry.path),traits=s.traits?.value??[];
   const resolved=resolveFeatMedia(databases,design.theme,FEAT_MOTIFS[design.motif],SPELL_THEMES[design.theme],{name:item.name,slug:design.slug,motif:design.motif,rationale:design.rationale,direction:design.direction,traits,description:plainFeatDescription(s.description?.value)});
-  const feat={id:item._id,name:item.name,slug:design.slug,...native,level:s.level?.value??0,actionType:s.actionType?.value,actions:s.actions?.value,traits,classTraits:traits.filter(t=>classes.has(t)),category:s.category??entry.pack,trigger:'use',descriptionHash:active.descriptionHash,...design,...resolved};
+  const feat={id:item._id,name:item.name,slug:design.slug,...native,...(abilityKind(entry)==='feat'?{}:{recipeKind:abilityKind(entry)}),level:s.level?.value??0,actionType:s.actionType?.value,actions:s.actions?.value,traits,classTraits:traits.filter(t=>classes.has(t)),category:s.category??entry.pack,trigger:'use',descriptionHash:active.descriptionHash,...design,...resolved};
   if(!entry.shared)sfFeatMedia(feat,plainFeatDescription(s.description?.value),traits);
   feats.push({entry,feat});
  }else if(item.type==='weapon'){
@@ -412,7 +417,7 @@ for(const {feat}of feats)feat.mediaTiming=Object.fromEntries(Object.values(feat.
 for(const {weapon}of weapons)for(const mode of weapon.modes){mode.mediaTiming=Object.fromEntries(Object.values(mode.assets).flat().filter(k=>timings[k]).map(k=>[k,timings[k]]));mode.approximations=mode.selections.filter(s=>s.approximation).map(s=>`${s.edition}: ${s.key}`);}
 allocateSpellIdentities(spells.map(e=>e.spell),spell=>spellRecipe(spell,undefined,{motion:false}),databases,new Map(source.entries.filter(e=>e.source.type==='spell').map(e=>[e.source._id,e.source])));frameFeatCatalog(feats.map(e=>e.feat),databases);
 const bind=(recipe,entry)=>validateRecipe({...recipe,description:'',systemId:'sf2e',catalogEntry:entry.id,itemUuid:entry.uuid,lifecycle:['condition','effect'].includes(entry.kind)?'document':recipe.lifecycle,stateEntry:['condition','effect'].includes(entry.kind)?entry.id:recipe.stateEntry});
-for(const {entry,spell}of spells){const meta=metadata(entry,'spell'),design=SPELL_SOUND_DESIGNS[spell.id],sound=SF2E_SPELL_SOUND_FORCE[spell.slug]??(design?design.profile||SF2E_SPELL_SOUND_FILL[spell.slug]||'':SF2E_SPELL_SOUND_FILL[spell.slug]??themeSound(spell.theme));entries.push({...meta,level:spell.rank,theme:spell.theme,quality:spell.quality,spell,variants:[{id:'cast',label:spell.kind==='cantrip'?'Cantrip':`Rank ${spell.rank}`,soundProfile:sound,recipe:bind((r=>({...r,stages:applySfMotionPatch(spell,r.stages,spell.motionPatch)}))(spellRecipe(spell)),meta)}]});}
+for(const {entry,spell}of spells){const meta=metadata(entry,'spell'),design=SPELL_SOUND_DESIGNS[spell.id],sound=SF2E_SPELL_SOUND_FORCE[spell.slug]??(design?design.profile||SF2E_SPELL_SOUND_FILL[spell.slug]||'':SF2E_SPELL_SOUND_FILL[spell.slug]??themeSound(spell.theme));entries.push({...meta,level:spell.rank,theme:spell.theme,quality:spell.quality,spell,variants:[{id:'cast',label:spell.kind==='cantrip'?'Cantrip':`Rank ${spell.rank}`,soundProfile:sound,recipe:bind((r=>r.bespoke?r:({...r,stages:applySfMotionPatch(spell,r.stages,spell.motionPatch)}))(spellRecipe(spell)),meta)}]});}
 // Guns recoil; they never lunge. Reviewed SF2e motion replaces the shared default.
 const sfFeatRecipe=(feat,profile)=>{const recipe=featRecipe(feat),patch=SF2E_FEAT_MOTION[feat.slug]??(profile==='firearm'?[{swap:'lunge',to:'recoil',label:'Shot recoil'}]:null);return patch?{...recipe,stages:applySfMotionPatch(feat,recipe.stages,patch)}:recipe;};
 // Foam and nausea gas are not sonic shockwaves.
@@ -420,15 +425,15 @@ const SF2E_WEAPON_SOUND={'hardening-foam-grenade':'bomb-water','miasmatic-grenad
 // Grenades and thrown weapons wind up and throw; bow-like guns recoil.
 const sfWeaponMotion=(weapon,mode)=>mode==='thrown'||weapon.nativeGroup==='grenade'&&mode!=='melee'?[{swap:'lunge',to:'throw',label:'Wind up and throw'}]:mode==='ranged'?[{swap:'lunge',to:'recoil',label:'Release and settle'}]:null;
 const soundDump=[];
-for(const {entry,feat}of feats){const meta=metadata(entry,'feat'),profile=sfFeatSound(feat,meta.descriptionText);if(process.env.SF2E_SOUND_DUMP)soundDump.push(`${profile||'(silent)'}|${feat.slug}|${feat.motif}|${feat.theme}|${meta.traits.join(',')}|${meta.descriptionText.slice(0,160)}`);entries.push({...meta,theme:feat.theme,quality:feat.quality,actionType:feat.actionType,actions:feat.actions,classTraits:feat.classTraits,variants:[{id:'activate',label:feat.actionType==='action'?`${feat.actions??1} actions`:feat.actionType,soundProfile:profile,soundNamespace:'ability',recipe:bind(sfFeatRecipe(feat,profile),meta)}]});}
+for(const {entry,feat}of feats){const meta=metadata(entry,abilityKind(entry)),profile=sfFeatSound(feat,meta.descriptionText);if(process.env.SF2E_SOUND_DUMP)soundDump.push(`${profile||'(silent)'}|${feat.slug}|${feat.motif}|${feat.theme}|${meta.traits.join(',')}|${meta.descriptionText.slice(0,160)}`);entries.push({...meta,theme:feat.theme,quality:feat.quality,actionType:feat.actionType,actions:feat.actions,classTraits:feat.classTraits,variants:[{id:'activate',label:feat.actionType==='action'?`${feat.actions??1} actions`:feat.actionType,soundProfile:profile,soundNamespace:'ability',recipe:bind(sfFeatRecipe(feat,profile),meta)}]});}
 if(process.env.SF2E_SOUND_DUMP)await writeFile(process.env.SF2E_SOUND_DUMP,soundDump.sort().join('\n'));
 for(const {entry,weapon}of weapons){
- const meta=metadata(entry,'weapon'),variants=weapon.modes.map(mode=>({id:mode.mode,label:mode.mode,weaponMode:mode.mode,soundNamespace:'ability',soundProfile:SF2E_WEAPON_SOUND[weapon.slug.replace(/-(commercial|tactical|advanced|superior|elite|ultimate|paragon)$/,'')]??WEAPON_SOUND_DESIGNS[`${weapon.id}:${mode.mode}`]?.profile??(weapon.nativeGroup==='laser'?'fireRay':weapon.nativeGroup==='cryo'?'coldRay':weapon.nativeGroup==='shock'?'electric':weapon.nativeGroup==='sonic'?'sonic':weapon.nativeGroup==='corrosive'?'acid':weapon.nativeGroup==='plasma'?'fire':mode.payload?`bomb-${mode.element}`:mode.family),recipe:bind((r=>({...r,stages:applySfMotionPatch(weapon,r.stages,sfWeaponMotion(weapon,mode.mode))}))(weaponRecipe(weapon,mode.mode)),meta)}));
+ const meta=metadata(entry,'weapon'),variants=weapon.modes.map(mode=>({id:mode.mode,label:mode.mode,weaponMode:mode.mode,soundNamespace:'ability',soundProfile:SF2E_WEAPON_SOUND[weapon.slug.replace(/-(commercial|tactical|advanced|superior|elite|ultimate|paragon)$/,'')]??WEAPON_SOUND_DESIGNS[`${weapon.id}:${mode.mode}`]?.profile??(weapon.nativeGroup==='laser'?'fireRay':weapon.nativeGroup==='cryo'?'coldRay':weapon.nativeGroup==='shock'?'electric':weapon.nativeGroup==='sonic'?'sonic':weapon.nativeGroup==='corrosive'?'acid':weapon.nativeGroup==='plasma'?'fire':mode.payload?`bomb-${mode.element}`:mode.family),recipe:bind((r=>r.bespoke?r:({...r,stages:applySfMotionPatch(weapon,r.stages,sfWeaponMotion(weapon,mode.mode))}))(weaponRecipe(weapon,mode.mode)),meta)}));
  const automatic=weapon.traits.includes('automatic'),trait=weapon.traits.find(t=>/^area-(burst|cone|line)(?:-\d+)?$/.test(t)),tag=entry.source.system.description?.value.match(/@Template\[(burst|cone|line)\|distance:(\d+)/);
  const area=automatic?{type:'cone',value:Math.max(5,Math.floor((weapon.range??entry.source.system.range??10)/2/5)*5)}:trait?{type:trait.split('-')[1],value:Number(trait.split('-')[2])||(trait.includes('burst')?5:entry.source.system.range)}:weapon.nativeGroup==='grenade'&&tag?{type:tag[1],value:Number(tag[2])}:/\/grenade-launcher-/.test(entry.path)?{type:'burst',value:10}:null;
  if(area){
   const mode=weapon.modes[0],recipe=variants[0].recipe,impact=recipe.stages.find(s=>s.kind==='impact'),flight=recipe.stages.find(s=>s.kind==='travel'),label=automatic?'Auto-Fire':'Area Fire';
-  const stages=recipe.stages.filter(s=>s.kind==='motion').map(s=>({...s,distance:.08}));
+  const stages=recipe.stages.filter(s=>s.kind==='motion').map(s=>({...s,distance:.08,afterStage:''}));
   if(area.type==='cone'){
    const selectedCones=Object.values(databases).map(db=>db.filter(row=>assetGeometry(row)==='cone'&&coneMaterialMatches(row.key,mode.element)).sort((a,b)=>a.key.localeCompare(b.key))[0]?.key).filter(Boolean),coneKeys=[...new Set(selectedCones)];
    if(selectedCones.length===Object.keys(databases).length){
@@ -436,7 +441,7 @@ for(const {entry,weapon}of weapons){
     stages.push({...impact,kind:'template',stageId:`${meta.id}-area`,label,assets:coneKeys,delay:500,afterStage:'',duration:Math.max(2500,...samples.filter(Boolean).map(t=>t.duration)),scale:1,oneShot:true});
    }else stages.push({...flight,stageId:`${meta.id}-area-fan`,label,travelDestination:'area',areaLayout:'fan',fanCount:automatic?7:5,delay:500,afterStage:'',opacity:.85});
   }else{
-   if(weapon.nativeGroup==='grenade'&&flight)stages.push({...flight,travelDestination:'area'});
+   if(weapon.nativeGroup==='grenade'&&flight)stages.push({...flight,afterStage:'',travelDestination:'area'});
    stages.push({...impact,kind:'template',stageId:`${meta.id}-area`,label,assets:area.type==='line'?mode.assets.flight:mode.assets.accent,delay:500,afterStage:weapon.nativeGroup==='grenade'?flight?.stageId??'':'',duration:Math.max(2500,impact?.duration??0,area.type==='line'?flight?.duration??0:0),scale:1,oneShot:true});
   }
   variants.push({id:'area',label,weaponMode:'area',soundNamespace:'ability',soundProfile:variants[0].soundProfile,recipe:bind({...recipe,id:`${recipe.id}-area`,trigger:'template',weaponMode:undefined,previewArea:area,stages},meta)});
@@ -452,7 +457,7 @@ for(const entry of entries)for(const variant of entry.variants){
 }
 const context={source:{id:'s',center:{x:100,y:100},w:100,h:100,document:{width:1,height:1}},targets:[{id:'t',center:{x:400,y:100},w:100,h:100,document:{width:1,height:1}}],gridSize:100,gridDistance:5,template:{id:'area'},area:{type:'cone',center:{x:100,y:100},endpoint:{x:500,y:100},diameter:400,length:400,width:100,angle:90}};
 const issues=[];for(const entry of entries)for(const variant of entry.variants)for(const [edition,db]of Object.entries(databases))try{planRecipe(variant.recipe,db,context);}catch(error){issues.push({id:entry.id,name:entry.name,variant:variant.id,edition,error:error.message});}
-const meta={systemId:'sf2e',version:source.version,ref:source.ref,sha:source.sha,repository:source.repository,sourceDocuments:source.entries.length,counts:Object.fromEntries(['spell','feat','weapon','condition','effect'].map(k=>[k,entries.filter(e=>e.kind===k).length])),variants:entries.reduce((n,e)=>n+e.variants.length,0),excluded:excluded.length,descriptionHashes:entries.length,variety,issues:issues.length};
+const meta={systemId:'sf2e',version:source.version,ref:source.ref,sha:source.sha,repository:source.repository,sourceDocuments:source.entries.length,counts:Object.fromEntries(['spell','feat','action','feature','weapon','condition','effect'].map(k=>[k,entries.filter(e=>e.kind===k).length])),variants:entries.reduce((n,e)=>n+e.variants.length,0),excluded:excluded.length,descriptionHashes:entries.length,variety,issues:issues.length};
 await writeFile('data/sf2e-catalog.mjs',`// Native SF2e catalog. References only; no animation or sound media bundled.\nexport const SF2E_SOURCE=${JSON.stringify(meta)};\nexport const SF2E_ENTRIES=${JSON.stringify(entries)};\n`);
 await writeFile('data/sf2e-catalog-validation.json',JSON.stringify({source:meta,issues,excluded},null,2));
 console.log(JSON.stringify({source:meta,issues:issues.slice(0,15)},null,2));if(issues.length)process.exitCode=1;

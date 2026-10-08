@@ -1,0 +1,104 @@
+# GitHub Actions workflow for creating a new Animater release.
+#
+# On every push/PR it validates the manifest and checks that every file the
+# module loads at runtime exists. On a published release it injects the
+# release URLs into module.json, zips ONLY the runtime files (see
+# tools/release-files.mjs: manifest entry points plus everything they import),
+# attaches module.json + module.zip to the release and notifies Foundry.
+#
+# Audits, docs, tests, tools, previews and publication reports never ship.
+name: Animater Release Pipeline
+
+env:
+  project_url: 'https://github.com/${{github.repository}}'
+  latest_manifest_url: 'https://github.com/${{github.repository}}/releases/latest/download/module.json'
+  release_module_url: 'https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip'
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main, dev]
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Validate Module Manifest
+        run: |
+          jq empty module.json
+          jq -e '.id == "animater" and (.esmodules | length > 0)' module.json > /dev/null
+          echo "Manifest is valid JSON with entry points"
+
+      # Fails if any runtime import points at a file missing from the repo.
+      - name: Resolve Runtime Files
+        run: |
+          node tools/release-files.mjs > release-files.txt
+          echo "$(wc -l < release-files.txt) runtime files"
+          cat release-files.txt
+
+      - name: Extract Version From Tag
+        id: get_version
+        if: github.event_name == 'release'
+        uses: battila7/get-version-action@v2
+
+      - name: Check Tag Matches Manifest Version
+        if: github.event_name == 'release'
+        run: |
+          manifest=$(jq -r .version module.json)
+          tag='${{ steps.get_version.outputs.version-without-v }}'
+          if [ "$manifest" != "$tag" ]; then echo "module.json version $manifest does not match tag $tag"; exit 1; fi
+
+      - name: Modify Module Manifest With Release-Specific Values
+        if: github.event_name == 'release'
+        uses: cschleiden/replace-tokens@v1
+        with:
+          files: 'module.json'
+        env:
+          URL: ${{ env.project_url }}
+          MANIFEST: ${{ env.latest_manifest_url }}
+          DOWNLOAD: ${{ env.release_module_url }}
+
+      - name: Create Module Archive
+        if: github.event_name == 'release'
+        run: |
+          zip ./module.zip -@ < release-files.txt
+          unzip -l module.zip | tail -1
+
+      - name: Update Release With Files
+        if: github.event_name == 'release'
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          name: ${{ github.event.release.name }}
+          draft: ${{ github.event.release.unpublished }}
+          prerelease: ${{ github.event.release.prerelease }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: './module.json, ./module.zip'
+          tag: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
+
+  publish-to-foundry:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: ${{ github.event_name == 'release' && github.event.release.prerelease != true }}
+
+    steps:
+      - name: Publish to Foundry VTT
+        uses: JamesIves/fetch-api-data-action@v2
+        with:
+          endpoint: https://foundryvtt.com/_api/packages/release_version/
+          configuration: '{ "method": "POST", "headers": { "Content-Type": "application/json", "Authorization": "${{ secrets.FVTT_API_TOKEN }}" }, "body": { "id": "animater", "dry-run": false, "release": { "version": "${{github.event.release.tag_name}}", "manifest": "https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json", "notes": "https://github.com/${{github.repository}}/blob/main/CHANGELOG.md", "compatibility": { "minimum": "14", "verified": "14", "maximum": "" } } } }'

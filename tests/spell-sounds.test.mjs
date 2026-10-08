@@ -181,10 +181,10 @@ test("reviewed rays use their stated energy rather than damage-derived material"
   const r = spellRecipe(spell("Admonishing Ray"), undefined, {
     sounds: fixture(["ggg"]).catalog,
   });
-  assert.equal(
-    sounds(r).length,
-    0,
-    "No invented earth rumble when pack lacks an energy ray",
+  // GGG now supplies an arcane energy-arrow fallback; never an earth rumble.
+  assert.ok(
+    sounds(r).every((s) => /Energy Arrow/.test(s.soundFile) && !/earth|stone|rumble/i.test(s.soundFile)),
+    "GGG plays its energy ray fallback, not an invented earth rumble",
   );
 });
 test("saved optional cues are silent in editor when pack is off without shifting highlight indices", () => {

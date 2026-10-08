@@ -30,13 +30,8 @@ import {
 import { spellCatalogHTML, motionSyncNoticeHTML } from "./spell-catalog-ui.mjs";
 import {
   PF2E_FEATS,
-  catalogFeat,
-  featRecipe,
-  filterFeats,
-  normalizeFeatCatalogState,
-  useCatalogFeat,
 } from "./feat-catalog.mjs";
-import { featCatalogHTML } from "./feat-catalog-ui.mjs";
+import { featCatalogHTML, ABILITY_PAGE_PROFILES, abilityProfileForPage, abilityProfileForKey, defaultAbilityFilters } from "./feat-catalog-ui.mjs";
 import { PF2E_WEAPONS, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, useCatalogWeapon, weaponCustomizationKey } from "./weapon-catalog.mjs";
 import { weaponCatalogHTML } from "./weapon-catalog-ui.mjs";
 import { openCatalogDetails } from "./catalog-details.mjs";
@@ -111,6 +106,12 @@ export class Workspace {
     };
     this.selectedFeat = PF2E_FEATS.find((f) => f.slug === "sudden-charge")?.id;
     this.featPage = 0;
+    // Actions and Features pages share the feat page UI (see ABILITY_PAGE_PROFILES).
+    for (const profile of [ABILITY_PAGE_PROFILES.actions, ABILITY_PAGE_PROFILES.features]) {
+      this[profile.filtersKey] = defaultAbilityFilters();
+      this[profile.selectedKey] = profile.catalog.entries.find((f) => f.slug === profile.defaultSlug)?.id;
+      this[profile.pageKey] = 0;
+    }
     this.weaponFilters = { search: "", group: "all", mode: "all", category: "all", edition: "all" };
     this.weaponPage = 0;
     this.selectedWeapon = PF2E_WEAPONS.find(w => w.slug === "dagger")?.id;
@@ -264,7 +265,7 @@ export class Workspace {
       "dragstart",
       (e) => {
         const stage = e.target.closest("[data-stage-drag]");
-        if (!stage || this.busy || ["builder", "spells", "feats", "weapons", "items", "conditions", "effects"].includes(this.page))
+        if (!stage || this.busy || ["builder", "spells", "feats", "actions", "features", "weapons", "items", "conditions", "effects"].includes(this.page))
           return;
         this.stopEditorPreview();
         this.stageDrag = Number(stage.dataset.stageDrag);
@@ -324,14 +325,10 @@ export class Workspace {
       const mode = weapon?.modes.some(m => m.mode === this.weaponMode) ? this.weaponMode : weapon?.modes[0]?.mode;
       return weapon && weaponRecipe(weapon, mode, { motion: state.motion, soundCatalog: state.sound ? this.host.soundCatalog?.() : null, soundVolume: state.soundVolume });
     }
-    if (this.page === "feats") {
-      const feat = catalogFeat(this.selectedFeat);
-      const state = normalizeFeatCatalogState(this.host.featCatalogState?.());
-      return feat && featRecipe(feat, {
-        motion: state.motion,
-        soundCatalog: state.sound ? this.host.soundCatalog?.() : null,
-        soundVolume: state.soundVolume,
-      });
+    if (abilityProfileForPage(this.page)) {
+      const profile = abilityProfileForPage(this.page), feat = profile.catalog.entry(this[profile.selectedKey]);
+      const state = profile.catalog.normalizeState(this.host[profile.stateKey]?.());
+      return feat && profile.catalog.recipe(feat, state, this.host.soundCatalog?.());
     }
     if (this.page === "spells") {
       const spell = catalogSpell(this.selectedSpell);
@@ -401,10 +398,10 @@ export class Workspace {
   render() {
     if(this.page!=='assets'||this.mediaLibrary?.fxScene)void this.mediaLibrary?.stopTokenPreview();
     if(!catalogPageAllowed(this.page,this.host.environment()))this.page='recipes';
-    if (this.page === "feats"&&!this.dndCatalog) {
-      const matches = filterFeats(this.featFilters);
-      if (!matches.some((feat) => feat.id === this.selectedFeat))
-        this.selectedFeat = matches[0]?.id;
+    if (abilityProfileForPage(this.page)&&!this.dndCatalog) {
+      const profile = abilityProfileForPage(this.page), matches = profile.catalog.filter(this[profile.filtersKey] ?? defaultAbilityFilters());
+      if (!matches.some((feat) => feat.id === this[profile.selectedKey]))
+        this[profile.selectedKey] = matches[0]?.id;
     }
     const openGroups = [
       ...this.root.querySelectorAll("details[data-options-group][open]"),
@@ -414,13 +411,13 @@ export class Workspace {
     cancelAnimationFrame(this.motionFrame);
     this.thumbnails?.disconnect();
     const scrollKeys = {
-      ".an-inspector": `${this.page}:${this.dndCatalog?.isCatalogPage()?this.dndCatalog.entry()?.id:this.page === "spells" ? this.selectedSpell : this.page === "feats" ? this.selectedFeat : this.selected}`,
+      ".an-inspector": `${this.page}:${this.dndCatalog?.isCatalogPage()?this.dndCatalog.entry()?.id:this.page === "spells" ? this.selectedSpell : abilityProfileForPage(this.page) ? this[abilityProfileForPage(this.page).selectedKey] : this.selected}`,
       ".an-library": `${this.page}:${this.search}:${this.category}`,
       ".an-asset-list": `${this.page}:${JSON.stringify(this.mediaLibrary?.filters)}:${this.mediaLibrary?.page}`,
       ".an-media-detail-body": `${this.page}:${this.mediaLibrary?.selectedId}`,
       ".an-builder": this.page,
       ".an-spell-library": this.dndCatalog?.isCatalogPage()?`${this.page}:${JSON.stringify(this.dndCatalog.filters)}:${this.dndCatalog.pages[this.dndCatalog.kind]}`:`${this.page}:${JSON.stringify(this.spellFilters)}:${this.spellPage}`,
-      ".an-feat-library": `${this.page}:${JSON.stringify(this.featFilters)}:${this.featPage}`,
+      ".an-feat-library": `${this.page}:${JSON.stringify(this[abilityProfileForPage(this.page)?.filtersKey])}:${this[abilityProfileForPage(this.page)?.pageKey]}`,
     };
     const scroll = Object.fromEntries(
       Object.entries(scrollKeys).map(([selector, key]) => [
@@ -470,7 +467,7 @@ export class Workspace {
         <div role="status" aria-live="polite" class="an-toast ${this.message ? "is-visible" : ""}">${esc(this.message)}</div>
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
         ${!env.ready ? `<div class="an-warning">${esc(env.problem)} <button data-action="page" data-page="setup">Open setup →</button></div>` : ""}
-        ${this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : this.page === "feats" ? featCatalogHTML(this) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
+        ${this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
       </main>${this.pendingImport !== null ? this.importHTML() : ""}</div>`,
     );
     this.root.querySelectorAll("details[data-options-group]").forEach((e) => {
@@ -566,7 +563,7 @@ export class Workspace {
     return `↳ ${resolved.delay}ms`;
   }
   syncPreviewTokens({ clear = false } = {}) {
-    if (this.busy || !["recipes", "builder", "spells", "feats", "weapons", "items", "conditions", "effects"].includes(this.page))
+    if (this.busy || !["recipes", "builder", "spells", "feats", "actions", "features", "weapons", "items", "conditions", "effects"].includes(this.page))
       return;
     const scene = this.root.querySelector("[data-recipe-scene]");
     if (!scene) return;
@@ -1186,9 +1183,10 @@ export class Workspace {
       else if (t.dataset.search === "spells") {
         this.spellFilters.search = t.value;
         this.spellPage = 0;
-      } else if (t.dataset.search === "feats") {
-        this.featFilters.search = t.value;
-        this.featPage = 0;
+      } else if (abilityProfileForPage(t.dataset.search)) {
+        const profile = abilityProfileForPage(t.dataset.search);
+        this[profile.filtersKey].search = t.value;
+        this[profile.pageKey] = 0;
       } else if (t.dataset.search === "weapons") {
         this.weaponFilters.search = t.value;
         this.weaponPage = 0;
@@ -1224,13 +1222,15 @@ export class Workspace {
     }
     if (e.target.dataset.abilityVolume) {
       this.stopEditorPreview();
-      const set = e.target.dataset.abilityVolume === "feat" ? this.host.setFeatCatalogState : this.host.setWeaponCatalogState;
+      const profile = abilityProfileForKey(e.target.dataset.abilityVolume), set = profile ? this.host[profile.setStateKey] : this.host.setWeaponCatalogState;
       void set({ soundVolume: Math.max(0, Math.min(1, Number(e.target.value) / 100)) }).then(() => this.render()).catch(error => { this.message = error.message; this.render(); });
       return;
     }
-    if (e.target.dataset.featFilter) {
-      this.featFilters[e.target.dataset.featFilter] = e.target.value;
-      this.featPage = 0;
+    const abilityFilter = ["feat", "action", "feature"].map((key) => [abilityProfileForKey(key), e.target.dataset[key + "Filter"]]).find(([, field]) => field);
+    if (abilityFilter) {
+      const [profile, field] = abilityFilter;
+      this[profile.filtersKey][field] = e.target.value;
+      this[profile.pageKey] = 0;
       this.render();
       return;
     }
@@ -1431,6 +1431,68 @@ export class Workspace {
       this.render();
     }
   }
+  // Feats, Actions and Features pages: data-action "<key>-auto", "select-<key>"…
+  async abilityAction(action, b) {
+    const match = /^(?:(select|use|copy)-(feat|action|feature)|(feat|action|feature)-(sound|page|reset|auto|exclude|motion|pause))$/.exec(action);
+    if (!match) return false;
+    const profile = abilityProfileForKey(match[2] ?? match[3]), verb = match[1] ?? match[4], catalog = profile.catalog, noun = profile.noun;
+    const getState = () => catalog.normalizeState(this.host[profile.stateKey]?.()), setState = (change) => this.host[profile.setStateKey](change);
+    const selected = this[profile.selectedKey];
+    if (verb === "sound") { await setState({ sound: !getState().sound }); this.render(); return true; }
+    if (verb === "select") {
+      if (selected === b.dataset.id) return true;
+      this[profile.selectedKey] = b.dataset.id; this.stageIndex = 0; this.render(); return true;
+    }
+    if (verb === "page") { this[profile.pageKey] = Math.max(0, Number(b.dataset.index)); this.render(); return true; }
+    if (verb === "reset") {
+      for (const field of Object.keys(this[profile.filtersKey])) this[profile.filtersKey][field] = field === "search" ? "" : "all";
+      this[profile.pageKey] = 0; this.render(); return true;
+    }
+    if (["auto", "exclude", "motion"].includes(verb)) {
+      const env = this.host.environment();
+      if (env.demo || env.systemId !== "pf2e" || !env.ready)
+        throw Error(`Configure ${noun} animations inside a PF2e world with Sequencer and JB2A active.`);
+      const state = catalog.normalizeState(this.host[profile.stateKey]());
+      if (verb === "auto") {
+        const enabled = !(state.enabled && state.scope === "all" && (state.independent || this.host.enabled()));
+        await setState({ enabled, scope: "all", independent: true, preferCatalog: true });
+        this.message = enabled
+          ? `Active ${noun} catalog enabled. Send an active ${noun} to chat to play; manual entries stay manual.`
+          : `${profile.label} catalog paused. Spell settings preserved.`;
+      } else await setState(verb === "motion"
+        ? { motion: state.motion === false }
+        : { excluded: state.excluded.includes(selected) ? state.excluded.filter((id) => id !== selected) : [...state.excluded, selected] });
+      this.render(); return true;
+    }
+    if (verb === "use") {
+      const env = this.host.environment();
+      if (env.demo || env.systemId !== "pf2e" || !env.ready)
+        throw Error(`Use ${noun} animations inside a PF2e world with Sequencer and JB2A active.`);
+      const feat = catalog.entry(selected);
+      if (!feat || feat.trigger === "manual") throw Error(`This ${noun} uses manual playback.`);
+      await setState(catalog.use(this.host[profile.stateKey](), feat.id));
+      this.message = feat.rider ? `${feat.name} uses its catalog animation. Roll Strike damage that includes it to play.` : `${feat.name} uses its catalog animation. Send the ${noun} to chat to play.`;
+      this.render(); return true;
+    }
+    if (verb === "pause") {
+      await setState({ enabled: false });
+      this.message = `${profile.label} catalog paused. Spell settings preserved.`;
+      this.render(); return true;
+    }
+    if (verb === "copy") {
+      const recipe = this.recipe();
+      const saved = this.host.recipes().find((r) => r.id === recipe.id || r.itemUuid === recipe.itemUuid);
+      if (!saved) await this.host.save([...this.host.recipes(), recipe]);
+      const state = this.host[profile.stateKey]?.();
+      if (state) await setState({
+        selected: (state.selected ?? []).filter((id) => id !== selected),
+        customized: [...new Set([...(state.customized ?? []), selected])],
+      });
+      this.selected = saved?.id ?? recipe.id; this.page = "recipes"; this.stageIndex = 0; this.search = ""; this.category = "All";
+      this.render(); return true;
+    }
+    return false;
+  }
   async onClick(e) {
     const b = e.target.closest("[data-action]");
     if (!b || b.disabled) return;
@@ -1476,80 +1538,7 @@ export class Workspace {
         this.selected = saved?.id ?? recipe.id; this.page = "recipes"; this.search = ""; this.category = "All"; this.stageIndex = 0;
         this.render(); return;
       }
-      if (action === "feat-sound") { const state = normalizeFeatCatalogState(this.host.featCatalogState?.()); await this.host.setFeatCatalogState({ sound: !state.sound }); this.render(); return; }
-      if (action === "select-feat") {
-        if (this.selectedFeat === b.dataset.id) return;
-        this.selectedFeat = b.dataset.id;
-        this.stageIndex = 0;
-        this.render();
-        return;
-      }
-      if (action === "feat-page") {
-        this.featPage = Math.max(0, Number(b.dataset.index));
-        this.render();
-        return;
-      }
-      if (action === "feat-reset") {
-        for (const field of Object.keys(this.featFilters))
-          this.featFilters[field] = field === "search" ? "" : "all";
-        this.featPage = 0;
-        this.render();
-        return;
-      }
-      if (["feat-auto", "feat-exclude", "feat-motion"].includes(action)) {
-        const env = this.host.environment();
-        if (env.demo || env.systemId !== "pf2e" || !env.ready)
-          throw Error("Configure feat animations inside a PF2e world with Sequencer and JB2A active.");
-        const state = normalizeFeatCatalogState(this.host.featCatalogState());
-        if (action === "feat-auto") {
-          const enabled = !(state.enabled && state.scope === "all" &&
-            (state.independent || this.host.enabled()));
-          await this.host.setFeatCatalogState({ enabled, scope: "all", independent: true, preferCatalog: true });
-          this.message = enabled
-            ? "Active feat catalog enabled. Send an active feat to chat to play; manual entries stay manual."
-            : "Feat catalog paused. Spell settings preserved.";
-        } else await this.host.setFeatCatalogState(action === "feat-motion"
-          ? { motion: state.motion === false }
-          : { excluded: state.excluded.includes(this.selectedFeat)
-            ? state.excluded.filter((id) => id !== this.selectedFeat)
-            : [...state.excluded, this.selectedFeat] });
-        this.render();
-        return;
-      }
-      if (action === "use-feat") {
-        const env = this.host.environment();
-        if (env.demo || env.systemId !== "pf2e" || !env.ready)
-          throw Error("Use feat animations inside a PF2e world with Sequencer and JB2A active.");
-        const feat = catalogFeat(this.selectedFeat);
-        if (!feat || feat.trigger === "manual") throw Error("This feat uses manual playback.");
-        await this.host.setFeatCatalogState(useCatalogFeat(this.host.featCatalogState(), feat.id));
-        this.message = `${feat.name} uses its catalog animation. Send the feat to chat to play.`;
-        this.render();
-        return;
-      }
-      if (action === "feat-pause") {
-        await this.host.setFeatCatalogState({ enabled: false });
-        this.message = "Feat catalog paused. Spell settings preserved.";
-        this.render();
-        return;
-      }
-      if (action === "copy-feat") {
-        const recipe = this.recipe();
-        const saved = this.host.recipes().find((r) => r.id === recipe.id || r.itemUuid === recipe.itemUuid);
-        if (!saved) await this.host.save([...this.host.recipes(), recipe]);
-        const state = this.host.featCatalogState?.();
-        if (state) await this.host.setFeatCatalogState({
-          selected: (state.selected ?? []).filter((id) => id !== this.selectedFeat),
-          customized: [...new Set([...(state.customized ?? []), this.selectedFeat])],
-        });
-        this.selected = saved?.id ?? recipe.id;
-        this.page = "recipes";
-        this.stageIndex = 0;
-        this.search = "";
-        this.category = "All";
-        this.render();
-        return;
-      }
+      if (await this.abilityAction(action, b)) return;
       if (action === "select-spell") {
         if (this.selectedSpell === b.dataset.id) return;
         this.selectedSpell = b.dataset.id;

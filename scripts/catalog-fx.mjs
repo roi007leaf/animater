@@ -1,6 +1,7 @@
 import {installedFxCatalog, OPTIONAL_FX_KINDS} from './optional-fx.mjs';
 import {validateRecipe, MAX_STAGES} from './model.mjs';
 import {applyBespoke} from './bespoke.mjs';
+import {BESPOKE} from './bespoke/index.mjs';
 import {CATALOG_FX_EVIDENCE} from '../data/catalog-fx-evidence.mjs';
 import {fxSemantics} from './catalog-fx-semantics.mjs';
 
@@ -130,7 +131,7 @@ export function withCatalogFx(recipe, entry, options={}) {
   // Reviewed bespoke compositions and play-time element choice come first, so they
   // apply whether or not optional FX providers are installed.
   recipe=applyBespoke(recipe, entry, options);
-  if (options.fx===false)return recipe;
+  if (options.fx===false||BESPOKE[recipe.bespoke]?.fx===false)return recipe;
   const catalog=options.fxCatalog??liveCatalogFx();
   if (!catalog.tokenReady&&!catalog.sceneReady)return recipe;
   const candidates=catalogFxDesign(recipe,entry,options).filter(stage=>stage.kind==='tokenfx'

@@ -18,6 +18,14 @@ console.log(`${weapons.length} weapons / ${weapons.reduce((n,w)=>n+w.modes.lengt
 const rows=new Map(Object.values(databases).flat().map(row=>[row.key,row])),keys=[...new Set(weapons.flatMap(w=>w.modes.flatMap(m=>Object.values(m.assets).flat())))],timings={};let next=0;
 await Promise.all(Array.from({length:6},async()=>{while(next<keys.length){const key=keys[next++],timing=await mediaTiming(rows.get(key),databases);if(timing)timings[key]={...timing,duration:Math.max(timing.duration,MEDIA_DURATIONS[key]??0)};}}));
 for(const weapon of weapons)for(const mode of weapon.modes){mode.mediaTiming=Object.fromEntries(Object.values(mode.assets).flat().filter(k=>timings[k]).map(k=>[k,timings[k]]));mode.approximations=mode.selections.filter(s=>s.approximation).map(s=>`${s.edition} ${s.slot}: ${s.key}`);}
+// Bespoke usages play their own media; record what each edition resolves for them.
+for(const weapon of weapons)for(const mode of weapon.modes){
+ const recipe=weaponRecipe(weapon,mode.mode);if(!recipe.bespoke)continue;
+ for(const [edition,db]of Object.entries(databases))for(const stage of recipe.stages){
+  const key=stage.assets?.length?resolveAsset(stage,db):null;
+  if(key&&!mode.selections.some(s=>s.edition===edition&&s.key===key))mode.selections.push({edition,slot:'bespoke',key});
+ }
+}
 const issues=[],coverage={},context={source:{id:'s',center:{x:100,y:100},document:{width:1,height:1}},targets:[{id:'t',center:{x:400,y:100},document:{width:1,height:1}}],gridSize:100};
 for(const [edition,db]of Object.entries(databases)){
  const used=new Set();

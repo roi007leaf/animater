@@ -210,6 +210,8 @@ test("directed feats preserve described contacts, motion shape, and effects-only
   for (const [slug, profile] of Object.entries(FEAT_MOTION_PROFILES)) {
     const feat = PF2E_FEATS.find((f) => f.slug === slug),
       recipe = featRecipe(feat);
+    // Reviewed bespoke compositions replace the generated profile on purpose.
+    if (recipe.bespoke) continue;
     const approach = recipe.stages.find((s) => s.kind === "motion");
     assert.equal(approach.motion, profile.motion, slug);
     assert.equal(
@@ -254,7 +256,7 @@ test("directed feats preserve described contacts, motion shape, and effects-only
       JSON.stringify(recipe.stages.map(({ stageId, label, ...s }) => s)),
     );
   }
-  assert.equal(seen.size, Object.keys(FEAT_MOTION_PROFILES).length);
+  assert.equal(seen.size, Object.keys(FEAT_MOTION_PROFILES).filter(slug => !featRecipe(PF2E_FEATS.find(f => f.slug === slug)).bespoke).length);
 });
 
 test("editor motion uses actual scene size and matches canvas pose for held arrival", () => {

@@ -1,4 +1,5 @@
 import {SF2E_ENTRIES,SF2E_SOURCE} from '../data/sf2e-catalog.mjs';
+import {withoutBespoke} from './bespoke.mjs';
 import {clone,normalize,validateRecipe,matchRecipe} from './model.mjs';
 import {spellRecipe} from './spell-choreography.mjs';
 import {stateRecipe} from './state-catalog.mjs';
@@ -8,7 +9,7 @@ import {withoutCatalogMotion} from './catalog-motion.mjs';
 import {withCatalogFx} from './catalog-fx.mjs';
 import {applySfMotionPatch} from './sf2e-motion.mjs';
 export {SF2E_ENTRIES,SF2E_SOURCE};
-export const SF_KINDS=['spell','feat','weapon','condition','effect'];
+export const SF_KINDS=['spell','feat','action','feature','weapon','condition','effect'];
 const byId=new Map(SF2E_ENTRIES.map(e=>[e.id,e]));
 const byUuid=new Map(SF2E_ENTRIES.map(e=>[e.uuid,e]));
 const byRecipe=new Map(SF2E_ENTRIES.flatMap(e=>e.variants.map(v=>[v.recipe.id,e])));
@@ -27,7 +28,7 @@ export function useSfEntry(state,id){
 export function sfRecipe(entry,variantId,{motion=true,sounds,soundVolume=.35,castRank,damageType,aura,catalog,fx=true,fxCatalog}={}){
  if(!entry)throw Error('Choose an SF2e catalog entry.');
  const variant=entry.variants.find(v=>v.id===variantId)??entry.variants[0];
- let recipe=entry.kind==='spell'?spellRecipe(entry.spell,undefined,{motion,castRank,sounds:null,fx:false}):entry.state?stateRecipe(entry.state,{damageType:damageType??variant.damageType,aura,catalog,fx:false}):clone(variant.recipe);
+ let recipe=withoutBespoke(()=>entry.kind==='spell'?spellRecipe(entry.spell,undefined,{motion,castRank,sounds:null,fx:false}):entry.state?stateRecipe(entry.state,{damageType:damageType??variant.damageType,aura,catalog,fx:false}):clone(variant.recipe));
  recipe={...recipe,id:variant.recipe.id,name:entry.name,description:'',itemUuid:entry.uuid,systemId:'sf2e',catalogEntry:entry.id,...(entry.state?{stateEntry:entry.id,lifecycle:'document'}:{})};
  // Reviewed SF2e motion corrections for spells rebuilt from the shared choreography.
  if(motion&&entry.spell?.motionPatch)recipe.stages=applySfMotionPatch(entry.spell,recipe.stages,entry.spell.motionPatch);
@@ -36,14 +37,14 @@ export function sfRecipe(entry,variantId,{motion=true,sounds,soundVolume=.35,cas
   const item={id:entry.documentId,slug:entry.slug,soundProfile:variant.soundProfile},design={profile:variant.soundProfile};
   recipe.stages=variant.soundNamespace==='ability'?addAbilitySounds(item,recipe.stages,{sounds,soundVolume,mode:variant.weaponMode,design}):addSpellSounds(item,recipe.stages,{sounds,soundVolume,design});
  }
- return withCatalogFx(validateRecipe(recipe),{...entry,...entry.spell,...entry.state},{fx,fxCatalog,variant,damageType:damageType??variant.damageType});
+ return withCatalogFx(validateRecipe(recipe),{...entry,...entry.spell,...entry.state},{fx,fxCatalog,motion,sounds,variant,damageType:damageType??variant.damageType});
 }
 export function findSfEntry(event){
  if(event.systemId&&event.systemId!=='sf2e')return null;
  const item=event.item;if(!item)return null;
  if(item.animaterAura?.entryId)return sfEntry(item.animaterAura.entryId);
  for(const uuid of [event.itemUuid,item.sourceId,item._stats?.compendiumSource,item.flags?.core?.sourceId,item.original?.uuid,item.uuid]){const entry=byUuid.get(uuid);if(entry)return entry;}
- const kind=item.type==='spell'?'spell':['feat','action'].includes(item.type)?'feat':item.type==='weapon'?'weapon':item.type==='condition'?'condition':item.type==='effect'?null:undefined;
+ const kind=item.type==='spell'?'spell':item.type==='action'?'action':item.type==='feat'?(['classfeature','ancestryfeature'].includes(item.system?.category)?'feature':'feat'):item.type==='weapon'?'weapon':item.type==='condition'?'condition':item.type==='effect'?null:undefined;
  if(kind===undefined)return null;
  const slug=normalize(item.slug??item.system?.slug),name=normalize(item.name);
  const candidates=sfEntries(kind).filter(e=>(kind||e.state)&&(slug&&normalize(e.slug)===slug||normalize(e.name)===name));

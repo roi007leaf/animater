@@ -1,6 +1,10 @@
 import { ID, validateRecipe, clone, matchRecipe } from "./model.mjs";
 import { starterRecipes } from "./presets.mjs";
-import { pf2eEvent, sf2eEvent, dnd5eEvent } from "./adapters.mjs";
+import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
+import { applyEventElement } from "./element-choice.mjs";
+import { AA_ID, AA_TAKEOVER, aaCustomized, registerAATakeover } from "./integrations/automated-animations.mjs";
+import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
+import { registerTriggerEngine } from "./integrations/trigger-engine.mjs";
 import { AnimaterRuntime } from "./runtime.mjs";
 import { installedSoundCatalog, catalogSoundOptions } from "./spell-sounds.mjs";
 import { Workspace } from "./workspace.mjs";
@@ -30,6 +34,10 @@ import {
   normalizeFeatCatalogState,
   resolveAutomaticFeatRecipe,
 } from "./feat-catalog.mjs";
+import { PF2E_ACTION_CATALOG, PF2E_FEATURE_CATALOG, isFeatureItem, riderRecipes } from "./ability-catalog.mjs";
+// PF2e ability catalogs beside feats: setting key → catalog.
+const ABILITY_CATALOGS = { actionCatalog: PF2E_ACTION_CATALOG, featureCatalog: PF2E_FEATURE_CATALOG };
+const abilitySettingKey = item => item?.type === "action" ? "actionCatalog" : isFeatureItem(item) ? "featureCatalog" : null;
 import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, resolveAutomaticWeaponRecipe } from "./weapon-catalog.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, PF2E_STATE_SOURCE, normalizeStateCatalogState, catalogStateEntry, stateRecipe } from "./state-catalog.mjs";
 import { PersistentStates } from "./persistent-states.mjs";
@@ -40,6 +48,7 @@ import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,
 import {sfStateHost} from './sf2e-states.mjs';
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 let runtime, app;
+registerTriggerEngine();
 const mediaLibraryLoader=new MediaLibraryLoader(()=>({modules:game.modules,database:globalThis.Sequencer?.Database,
   browse:path=>foundry.applications.apps.FilePicker.implementation.browse('data',path)}));
 let motions;
@@ -111,7 +120,7 @@ const acceptsEvents = () =>
   (game.system.id === "sf2e" && SF_KINDS.some(kind=>{const state=game.settings.get(ID,sfSettingKey(kind));return state?.enabled&&state.independent;})) ||
   (game.system.id === 'dnd5e' && DND_KINDS.some(kind=>{const state=game.settings.get(ID,dndSettingKey(kind));return state?.enabled&&state.independent;})) ||
   (game.system.id === "pf2e" &&
-    ["spellCatalog", "featCatalog", "weaponCatalog"].some((key) => {
+    ["spellCatalog", "featCatalog", "actionCatalog", "featureCatalog", "weaponCatalog"].some((key) => {
       const state = game.settings.get(ID, key);
       return state?.enabled && state.independent;
     }));
@@ -140,7 +149,7 @@ function environment() {
     pack,
     system,
     conflicts: ["autoanimations", "trigger-animations"]
-      .filter((id) => game.modules.get(id)?.active)
+      .filter((id) => game.modules.get(id)?.active && !(id === AA_ID && aaTakeover()))
       .map((id) => game.modules.get(id).title),
     problem: !seq?.active
       ? "Activate Sequencer, then reload Foundry."
@@ -227,15 +236,25 @@ async function enrich(event) {
         : null;
     event.targets = doc?.object ? [doc.object] : [];
   } else event.targets = Array.from(game.user.targets ?? []);
-  event.area = circleArea(
+  event.area = eventArea(event);
+  return event;
+}
+function eventArea(event) {
+  return circleArea(
     event.template,
     event.source,
-    event.systemId==='dnd5e' ? {...event.activity?.target?.template,type:event.activity?.target?.template?.type==='wall'?'line':event.activity?.target?.template?.type} : event.item?.system?.area,
+    (event.systemId ?? game.system.id)==='dnd5e' ? {...event.activity?.target?.template,type:event.activity?.target?.template?.type==='wall'?'line':event.activity?.target?.template?.type} : event.item?.system?.area,
   );
-  return event;
+}
+function findRecipe(id) {
+  if (id && typeof id === "object") return id;
+  const saved = recipes();
+  return saved.find(r=>r.id===id) ?? builtinRecipe(id) ??
+    saved.find(r=>typeof id === "string" && r.name?.trim().toLowerCase() === id.trim().toLowerCase());
 }
 async function dispatch(event) {
   if (!event || !acceptsEvents()) return;
+  if (yieldsToAA(event)) return runtime.trace("Skipped", `${event.item?.name ?? "Unknown item"}: customized in Automated Animations.`);
   try {
     await runtime.dispatch(await enrich(event));
   } catch (error) {
@@ -303,6 +322,7 @@ function builtinRecipe(id) {
             catalogSoundOptions(workspaceHost()),
           )) ??
         (catalogWeapon(id) && weaponRecipe(catalogWeapon(id), /-(melee|ranged|thrown)$/.exec(id)?.[1], { motion: game.settings.get(ID, "weaponCatalog")?.motion !== false, soundCatalog: game.settings.get(ID, "weaponCatalog")?.sound === false ? null : installedSoundCatalog(game.modules, globalThis.Sequencer?.Database), soundVolume: game.settings.get(ID, "weaponCatalog")?.soundVolume })) ??
+        Object.entries(ABILITY_CATALOGS).map(([key,catalog])=>catalog.entry(id)&&catalog.recipe(catalog.entry(id),game.settings.get(ID,key)??{},installedSoundCatalog(game.modules,globalThis.Sequencer?.Database))).find(Boolean) ??
         (catalogFeat(id) &&
           featRecipe(catalogFeat(id), {
             motion: game.settings.get(ID, "featCatalog")?.motion !== false,
@@ -335,6 +355,7 @@ function workspaceHost() {
     },
     soundCatalog: () =>
       installedSoundCatalog(game.modules, globalThis.Sequencer?.Database),
+    weaponScale: () => Number(game.settings.get(ID, "weaponScale")) || 1,
     recipes,
     catalog: () => runtime.getCatalog(),
     fxCatalog,
@@ -380,6 +401,16 @@ function workspaceHost() {
         "featCatalog",
         normalizeFeatCatalogState({ ...current, ...change }),
       );
+    },
+    actionCatalogState: () => PF2E_ACTION_CATALOG.normalizeState(game.settings.get(ID, "actionCatalog")),
+    setActionCatalogState: async (change) => {
+      if (!game.user.isGM) throw Error("Only a GM can configure the action catalog.");
+      return game.settings.set(ID, "actionCatalog", PF2E_ACTION_CATALOG.normalizeState({ ...game.settings.get(ID, "actionCatalog"), ...change }));
+    },
+    featureCatalogState: () => PF2E_FEATURE_CATALOG.normalizeState(game.settings.get(ID, "featureCatalog")),
+    setFeatureCatalogState: async (change) => {
+      if (!game.user.isGM) throw Error("Only a GM can configure the feature catalog.");
+      return game.settings.set(ID, "featureCatalog", PF2E_FEATURE_CATALOG.normalizeState({ ...game.settings.get(ID, "featureCatalog"), ...change }));
     },
     weaponCatalogState: () => normalizeWeaponCatalogState(game.settings.get(ID, "weaponCatalog")),
     setWeaponCatalogState: async (change) => {
@@ -468,14 +499,20 @@ function workspaceHost() {
 }
 Hooks.once("init", () => {
   game.settings.register(ID,'mediaLibrary',{scope:'client',config:false,type:Object,default:libraryPreferences()});
-  for(const [key,name] of [['catalogTokenFx','Catalog: Token Magic FX'],['catalogSceneFx','Catalog: FXMaster']])
-    game.settings.register(ID,key,{name,scope:'world',config:true,type:Boolean,default:true,
+  for(const [key,name,hint] of [
+    ['catalogTokenFx','Add Token Magic FX filters to catalog animations','When Token Magic FX is active, catalog animations add matching token filters (glows, frost, shimmer). Skipped automatically when the module is missing.'],
+    ['catalogSceneFx','Add FXMaster scene effects to catalog animations','When FXMaster is active, weather-like catalog spells add brief scene effects (rain, fog, embers). Skipped automatically when the module is missing.']])
+    game.settings.register(ID,key,{name,hint,scope:'world',config:true,type:Boolean,default:true,
       onChange:()=>{persistentStates?.schedule();app?.workspace?.render();}});
+  game.settings.register(ID,'weaponScale',{name:'Weapon effect size',hint:'Multiplies the size of weapon hit and residue effects (1 = the target token\'s footprint).',
+    scope:'world',config:true,type:Number,range:{min:0.5,max:3,step:0.1},default:1.5});
   for(const kind of SF_KINDS)game.settings.register(ID,sfSettingKey(kind),{scope:"world",config:false,type:Object,default:normalizeSfCatalogState(),onChange:()=>persistentStates?.schedule()});
   for(const kind of DND_KINDS)game.settings.register(ID,dndSettingKey(kind),{scope:'world',config:false,type:Object,default:normalizeDndCatalogState(),onChange:()=>persistentStates?.schedule()});
   for (const key of ["conditionCatalog", "effectCatalog"])
     game.settings.register(ID, key, { scope: "world", config: false, type: Object, default: normalizeStateCatalogState(), onChange: () => persistentStates?.schedule() });
   game.settings.register(ID, "weaponCatalog", { scope: "world", config: false, type: Object, default: normalizeWeaponCatalogState() });
+  for (const [key, catalog] of Object.entries(ABILITY_CATALOGS))
+    game.settings.register(ID, key, { scope: "world", config: false, type: Object, default: catalog.normalizeState() });
   game.settings.register(ID, "featCatalog", {
     scope: "world",
     config: false,
@@ -493,6 +530,14 @@ Hooks.once("init", () => {
     config: false,
     type: Object,
     default: { schema: 1, recipes: starterRecipes() },
+  });
+  game.settings.register(ID, AA_TAKEOVER, {
+    name: "Take over from Automated Animations when Animater has an animation",
+    hint: "Automated Animations skips items Animater animates. Items customized in Automated Animations stay with it.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
   });
   game.settings.register(ID, "automatic", {
     name: "Automatic playback",
@@ -520,6 +565,47 @@ Hooks.once("init", () => {
     },
   });
 });
+function systemRecipe(event, saved) {
+  return game.system.id === "pf2e" && abilitySettingKey(event.item)
+        ? ABILITY_CATALOGS[abilitySettingKey(event.item)].resolveAutomaticRecipe(event, game.settings.get(ID, abilitySettingKey(event.item)), saved,
+            { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) })
+        : game.system.id === "pf2e"
+        ? (event.item?.type === "weapon" ? resolveAutomaticWeaponRecipe : event.item?.type === "feat"
+            ? resolveAutomaticFeatRecipe
+            : resolveAutomaticRecipe)(
+            event,
+            game.settings.get(
+              ID,
+              event.item?.type === "weapon" ? "weaponCatalog" : event.item?.type === "feat" ? "featCatalog" : "spellCatalog",
+            ),
+            saved,
+            {
+              customEnabled: enabled(),
+              soundCatalog: installedSoundCatalog(
+                game.modules,
+                globalThis.Sequencer?.Database,
+              ),
+            },
+          )
+        : game.system.id==='sf2e'?resolveSfAutomaticRecipe(event,kind=>game.settings.get(ID,sfSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):game.system.id==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):matchRecipe(saved,event);
+}
+// The recipe dispatch would play, or null. AA-customized items stay with AA.
+function resolveEvent(event) {
+  if (!event || yieldsToAA(event)) return null;
+  return applyEventElement(systemRecipe({ systemId: game.system.id, ...event }, recipes()), event.element) ?? null;
+}
+const yieldsToAA = event => Boolean(game.modules.get(AA_ID)?.active && aaCustomized(event.item, event.activity));
+const aaTakeover = () => Boolean(game.modules.get(AA_ID)?.active && game.settings.get(ID, AA_TAKEOVER));
+function eventFrom(input) {
+  if (input?.documentName === "ChatMessage") {
+    if (["pf2e", "sf2e"].includes(game.system.id)) return twoeEvent(input, input.author?.id ?? game.user.id, game.system.id);
+    const roll = input.flags?.dnd5e?.roll?.type;
+    return { type: roll === "attack" ? "attack" : roll === "damage" ? "damage" : "use", systemId: game.system.id, id: input.id,
+      item: input.getAssociatedItem?.() ?? input.item, actor: input.getAssociatedActor?.() ?? input.actor,
+      tokenId: input.speaker?.token, sceneId: input.speaker?.scene };
+  }
+  return input;
+}
 Hooks.once("ready", () => {
   motions = new TokenMotionPlayer({ grid: () => canvas.grid?.size ?? 100 });
   optionalFx = new OptionalFxPlayer({catalog:fxCatalog,tokenMagic:()=>globalThis.TokenMagic,
@@ -554,26 +640,8 @@ Hooks.once("ready", () => {
     },
     enabled: acceptsEvents,
     recipes,
-    resolveRecipe: (event, saved) =>
-      game.system.id === "pf2e"
-        ? (event.item?.type === "weapon" ? resolveAutomaticWeaponRecipe : event.item?.type === "feat"
-            ? resolveAutomaticFeatRecipe
-            : resolveAutomaticRecipe)(
-            event,
-            game.settings.get(
-              ID,
-              event.item?.type === "weapon" ? "weaponCatalog" : event.item?.type === "feat" ? "featCatalog" : "spellCatalog",
-            ),
-            saved,
-            {
-              customEnabled: enabled(),
-              soundCatalog: installedSoundCatalog(
-                game.modules,
-                globalThis.Sequencer?.Database,
-              ),
-            },
-          )
-        : game.system.id==='sf2e'?resolveSfAutomaticRecipe(event,kind=>game.settings.get(ID,sfSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):game.system.id==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):matchRecipe(saved,event),
+    riderRecipes: (event, saved) => game.system.id === "pf2e" ? riderRecipes(event, game.settings.get(ID, "featureCatalog"), saved, { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) }) : [],
+    resolveRecipe: systemRecipe,
     ready: () => Boolean(canvas.ready && environment().ready),
     canPlay: (context) => Boolean(game.user.isGM || context.source?.isOwner),
     canSyncMotion: () => game.modules.get(ID)?.socket === true,
@@ -633,9 +701,9 @@ Hooks.once("ready", () => {
     sequence: () => new Sequence({ moduleName: ID }),
     endEffects: (filters) => Sequencer.EffectManager.endEffects(filters),
     endSounds: (filters) => Sequencer.SoundManager.endSounds(filters),
-      preloadSounds: (files,{preview}) => preview
-        ? Sequencer.Preloader.preload(files,false)
-        : Sequencer.Preloader.preloadForClients(files,false),
+    // Sequencer synchronizes playback and loads media on each receiving client.
+    // Waiting for every client here can stall the rolling user's animation.
+    preloadSounds: files => Sequencer.Preloader.preload(files,false),
     motion: async (stage, context, { preview, session }) => {
       const data = {
         type: "motion",
@@ -712,27 +780,43 @@ Hooks.once("ready", () => {
     activity: () => clone(runtime.log),
     spells: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_SOURCE), spells: clone(game.system.id==='sf2e'?sfEntries('spell'):game.system.id==='dnd5e'?dndEntries('spell'):game.system.id==='pf2e'?PF2E_SPELLS:[]) }),
     feats: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_FEAT_SOURCE), feats: clone(game.system.id==='sf2e'?sfEntries('feat'):game.system.id==='dnd5e'?dndEntries('feat'):game.system.id==='pf2e'?PF2E_FEATS:[]) }),
+    actions: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:PF2E_ACTION_CATALOG.source), actions: clone(game.system.id==='sf2e'?sfEntries('action'):game.system.id==='pf2e'?PF2E_ACTION_CATALOG.entries:[]) }),
+    features: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:PF2E_FEATURE_CATALOG.source), features: clone(game.system.id==='sf2e'?sfEntries('feature'):game.system.id==='pf2e'?PF2E_FEATURE_CATALOG.entries:[]) }),
     weapons: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_WEAPON_SOURCE), weapons: clone(game.system.id==='sf2e'?sfEntries('weapon'):game.system.id==='dnd5e'?dndEntries('weapon'):game.system.id==='pf2e'?PF2E_WEAPONS:[]) }),
     items:()=>({source:clone(DND5E_SOURCE),items:clone(game.system.id==='dnd5e'?dndEntries('item'):[])}),
     conditions: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_STATE_SOURCE), conditions: clone(game.system.id==='sf2e'?sfEntries('condition'):game.system.id==='dnd5e'?dndEntries('condition'):game.system.id==='pf2e'?PF2E_CONDITIONS:[]) }),
     effects: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_STATE_SOURCE), effects: clone(game.system.id==='sf2e'?sfEntries('effect'):game.system.id==='dnd5e'?dndEntries('effect'):game.system.id==='pf2e'?PF2E_EFFECTS:[]) }),
     refreshPersistent: () => persistentStates?.reconcile(),
+    // id, saved recipe name, or a recipe object (e.g. from resolve()).
     async play(id, context = manualContext()) {
-      const recipe = recipes().find(r=>r.id===id) ?? builtinRecipe(id);
-      if (!recipe) throw Error(`Unknown Animater recipe: ${id}`);
+      const recipe = findRecipe(id);
+      if (!recipe) throw Error(`Unknown Animater recipe: ${id?.id ?? id}`);
+      const source = sourceFor(context);
       return runtime.play(recipe, {
         ...context,
-        source: sourceFor(context),
+        source,
         targets: context.targets ?? [],
+        area: context.area ?? (context.template ? eventArea({ ...context, source }) : undefined),
       });
     },
+    resolve: (input) => clone(resolveEvent(eventFrom(input))) ?? null,
+    handles(input) {
+      if (input?.documentName !== "Item") return Boolean(resolveEvent(eventFrom(input)));
+      return ["use", "attack", "damage", "template"].some(type => resolveEvent({ type, item: input, actor: input.actor }));
+    },
     preview: async (id) => {
-      const r = recipes().find(r=>r.id===id) ?? builtinRecipe(id);
+      const r = findRecipe(id);
       if (!r) throw Error("Unknown recipe.");
       return runtime.play(r, manualContext(), { preview: true });
     },
     stop: () => runtime.stop(),
   };
+  registerAATakeover({
+    enabled: () => acceptsEvents() && aaTakeover(),
+    resolve: resolveEvent,
+    context: () => ({ systemId: game.system.id, userId: game.user.id, twoe: ["pf2e", "sf2e"].includes(game.system.id) ? twoeEvent : null }),
+  });
+  registerSpellArsenal();
   if (["pf2e","sf2e"].includes(game.system.id)) {
     Hooks.on("createChatMessage", (message) => {
       void dispatch((game.system.id==="sf2e"?sf2eEvent:pf2eEvent)(message, game.user.id));

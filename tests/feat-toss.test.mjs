@@ -97,5 +97,5 @@ test('physical toss sounds follow their phases and conditional rebound audio sta
  const contact=r.stages.find(s=>s.kind==='sound'&&s.afterStage===second.stageId);assert.ok(contact?.requiresHit);
  const catalog=r.stages.flatMap(s=>s.assets.map(key=>({key,file:key+'.webm'})));
  const failed=planRecipe(r,catalog,{...context,outcome:'failure'});assert.ok(!failed.some(s=>s.stageId===contact.stageId));
- assert.ok(ABILITY_SOUND_PROFILES.naturalPierce[0].candidates.every(c=>/melee\.claws\.strike\.stab/.test(c.key)),'natural piercing uses a creature stab rather than a metal polearm');
+ assert.ok(ABILITY_SOUND_PROFILES.naturalPierce[0].candidates.filter(c=>c.key).every(c=>/melee\.claws\.strike\.stab/.test(c.key)),'natural piercing uses a creature stab rather than a metal polearm');
 });

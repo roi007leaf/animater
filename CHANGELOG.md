@@ -1,7 +1,21 @@
 ﻿# Changelog
 
+## 0.3.0
+
+- Review every catalog animation against its spell, feat, action, item, effect and condition description. Add bespoke per-entry compositions across PF2e, SF2e and D&D 5e that combine JB2A footage, token motion, Token Magic FX and sounds. Bespoke designs keep native semantics: target selection, shot counts, motion pacing and the effects-only switch. Entries pinned by dedicated choreography tests keep their audited generated design.
+- Add separate PF2e Actions and Class Features catalogs (Sneak Attack, Glimpse of Redemption, Flurry of Blows…) with their own pages and settings. Do the same split for SF2e actions.
+- Extend the motion engine with press, sink, flicker, throw, brace, stagger, cower, slam and drift gestures, plus optional scale and alpha pose channels.
+- Rework Entropic Wheel with counter-spinning fire and frost wheels.
+- Add play-time element choice for spells and actions whose text offers a damage type, and Free-edition color parity for recolored fallbacks.
+- Fall back to installed sound packs when a preferred pack is missing (PSFX › GGG › SoundFx Library › PF2e Creature Sounds).
+- Enlarge weapon hit and residue effects with a new *Weapon effect size* world setting (default 1.5×; ranged hits now fill about one square). Rename the Token Magic FX and FXMaster catalog toggles to describe what they add.
+- Recommend the optional JB2A, sound, Token Magic FX and FXMaster modules in the manifest.
+- Release archives contain only runtime files (`tools/release-files.mjs`); audits, docs and QA pages are no longer published.
+- Add integrations: Automated Animations yields to Animater (world setting, on by default) while AA-customized items stay with AA; `animater.preDispatch`/`animater.played` hooks; `api.resolve` and `api.handles`; `api.play` accepts a recipe name or object and derives the area from `template`; Spell Arsenal mappings claim their spells, with an opt-in to play the Animater recipe; *Animater: Play animation* Trigger Engine node.
+
 ## 0.2.0
 
+- Speed up the media library with session-cached discovery, shared in-flight scans and progressive sound results. Reuse normalized media, indexes and grouped search results between pages; reuse one numeric name collator. Keep full provider discovery, invalidate on provider/database changes and rescan on Refresh. Validate native window reopening and preview preservation; timings and evidence: `docs/media-library-speed.md`.
 - Fix missing Token Magic image-backed window previews, including Criss Cross and Star Mask. Buffer private textures, bind native sampler sprites, preserve preset geometry, release textures on cancellation and report shader errors immediately. Verify Evade Stance, Saving Roll and Dodge Jump with native rendered motion.
 - Start Token Magic window previews by selecting a preset card; click the selected card again to replay. Remove the separate Preview/Replay and Stop controls, restart after artwork/tint/timing changes and cancel the previous renderer when switching cards. Preserve draft recipes and optional canvas audition.
 - Fix Token Magic window previews failing on the missing `broadcast` export in loose vendor sources. Reuse the already loaded shader constructors with a local preset clock, including color, rotation, pulses, random values, pauses and finite loops; keep world animation state isolated. Add a regression through the actual workspace preview factory and verify installed Frost, image-copy and bulge shaders.

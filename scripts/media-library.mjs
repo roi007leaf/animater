@@ -16,6 +16,12 @@ const colors = {blue:'#71bfff',green:'#75ddb0',orange:'#ffad70',purple:'#b49aff'
 colors.multicolored = colors.rainbow;
 const colorLabel = color => color === 'none' ? 'Original' : title(color);
 const sizeLabel = size => !size ? 'Default' : /^\d+x\d+$/.test(size) ? size.replace('x',' × ') : title(size);
+// Discovery snapshots already passed libraryItem at the provider boundary.
+const mergeSnapshots=(existing,incoming)=>{
+  const rows=new Map(existing.map(item=>[item.id,item]));
+  for(const item of incoming)rows.set(item.id,rows.has(item.id)?{...rows.get(item.id),...item}:item);
+  return [...rows.values()];
+};
 export function libraryPreferences(value = {}) {
   if(!value||typeof value!=='object')value={};
   const ids = (list,max) => [...new Set(Array.isArray(list) ? list.filter(v=>typeof v==='string'&&v.length<1500) : [])].slice(0,max);
@@ -129,7 +135,7 @@ export class MediaLibrary {
     try {
       const result = await this.w.host.loadMediaCatalog?.(refresh,part=>{
         if(this.w.abort?.signal.aborted||!part?.entries?.length)return;
-        this.items=appendMedia(this.items,part.entries);
+        this.items=part.normalized?mergeSnapshots(this.items,part.entries):appendMedia(this.items,part.entries);
         if(this.w.page!=='assets')return;
         // New audio needn't replace a visible animation/filter preview.
         if(this.filters.type!=='all'&&!part.entries.some(item=>item.type===this.filters.type)){this.syncCounts();return;}
