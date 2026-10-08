@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.5 (2026-10-08)
 
 - **All four degrees of success show.**
   - **Attacks:** a critical failure is a fumble. The attack goes wide and the attacker stumbles, unlike a plain miss.
