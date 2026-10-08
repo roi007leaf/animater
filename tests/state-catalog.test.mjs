@@ -101,7 +101,7 @@ test('unknown native effects match only their own custom document recipe',()=>{
 });
 test('document-linked imports retain lifetime and reject gameplay-like motion or unbound target layers',()=>{
  const recipe=stateRecipe(frightened);assert.deepEqual(validateRecipe(JSON.parse(JSON.stringify(recipe))),recipe);
- assert.throws(()=>validateRecipe({...recipe,stages:[{...recipe.stages[0],kind:'motion'}]}),/attached aura/);
+ assert.throws(()=>validateRecipe({...recipe,stages:[{...recipe.stages[0],kind:'motion'}]}),/Stays on token/);
  assert.throws(()=>validateRecipe({...recipe,stages:[{...recipe.stages[0],subject:'targets'}]}),/affected token/);
  assert.equal(validateRecipe({...recipe,trigger:'manual'}).lifecycle,undefined);
 });

@@ -29,7 +29,7 @@ export const KINDS = {
   travel: "Source → target",
   projectile: "Moving orb / projectile",
   impact: "Target",
-  aura: "Attached aura",
+  aura: "Stays on token",
   template: "Area (circle / cone / square / line)",
   motion: "Token motion",
   sprite: "Token copy / shadow",
@@ -117,7 +117,7 @@ export function validateRecipe(input) {
         if (!s || !Object.hasOwn(KINDS, s.kind))
           throw Error("Unknown stage type.");
         if (input.lifecycle === "document" && input.trigger === "effect" && !['aura','tokenfx'].includes(s.kind))
-          throw Error("Document-linked visuals use attached aura layers or Token Magic filters.");
+          throw Error("Document-linked visuals use “Stays on token” layers or Token Magic filters.");
         if (input.lifecycle === "document" && input.trigger === "effect" && s.subject === "targets")
           throw Error("Document-linked layers follow the affected token.");
         if (s.kind === "sound") validateSoundFile(s.soundFile);
