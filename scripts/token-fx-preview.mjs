@@ -131,6 +131,7 @@ export class TokenFxPreview {
     }
   }
   state(entry,frame) {
+    if(frame.muted?.has(entry.index))return {state:'pending',progress:0,localTime:0,stage:entry.stage};
     return this.recipe.playbackPlan?{...stageFrame({...entry.stage,repeats:1,targetStagger:0},frame.time),stage:entry.stage}:frame.stages[entry.index];
   }
   matches(record,stage) {

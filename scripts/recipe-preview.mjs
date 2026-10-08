@@ -179,7 +179,7 @@ export class RecipePreview {
   }
   draw(frame) {
     if (this.muted?.size)
-      frame = { ...frame, stages: frame.stages.map((s) => (this.muted.has(s.index) ? { ...s, state: "pending" } : s)) };
+      frame = { ...frame, muted: this.muted, stages: frame.stages.map((s) => (this.muted.has(s.index) ? { ...s, state: "pending" } : s)) };
     this.tokenFx?.draw(frame);
     try { this.sceneFx?.draw(frame, { seek: !!this.scrubbing }); } catch (error) { this.sceneFx?.stop(); this.sceneFx = null; this.scene.dataset.fxError = error.message; }
     for (const video of [...this.videos, ...this.audio]) {
@@ -447,6 +447,7 @@ export class RecipePreview {
         .filter(
           (s) =>
             s.kind === "motion" &&
+            !this.muted?.has(s.index) &&
             s.subject === subject &&
             (subject === "source" || s.targetIndex === targetIndex) &&
             frame.time >= s.delay,

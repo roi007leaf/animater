@@ -66,3 +66,18 @@ test("solo overrides mute; muting alone hides only muted tracks", () => {
   assert.deepEqual([...silencedTracks(new Set(["sound"]), new Set(["target", "sound"]))].sort(), ["caster", "flight", "fx", "motion"]);
   assert.equal(silencedTracks().size, 0);
 });
+
+test("muting token motion removes it from chain previews", async () => {
+  const { PF2E_FEATS, featRecipe } = await import("../scripts/feat-catalog.mjs");
+  const { chainPreview } = await import("../scripts/chain-preview.mjs");
+  const { RecipePreview } = await import("../scripts/recipe-preview.mjs");
+  const chain = chainPreview(featRecipe(PF2E_FEATS.find((f) => f.name === "Sudden Charge")), {});
+  const motion = chain.recipe.playbackPlan.find((p) => p.kind === "motion");
+  const p = Object.assign(Object.create(RecipePreview.prototype), { chain, recipe: chain.recipe, scene: { clientWidth: 400, clientHeight: 300 }, grid: 55 });
+  const frame = { time: motion.delay + motion.duration * 0.4, stages: [] };
+  const moving = p.subjectPose(motion.subject, frame);
+  assert.ok(Math.abs(moving.x) + Math.abs(moving.y) > 1, "unmuted motion moves the token");
+  p.muted = new Set([motion.index]);
+  const still = p.subjectPose(motion.subject, frame);
+  assert.equal(Math.round(Math.abs(still.x) + Math.abs(still.y)), 0);
+});
