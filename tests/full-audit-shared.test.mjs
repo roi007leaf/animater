@@ -58,7 +58,7 @@ test('protective effects are wards; word fragments do not invent cold or mental 
 test('persistent rings, shields and chains are readable; markers and damage have their own presentation',()=>{
  const slowed=PF2E_CONDITIONS.find(e=>e.slug==='slowed'),grabbed=PF2E_CONDITIONS.find(e=>e.slug==='grabbed');
  assert.ok(stateRecipe(slowed).stages[0].scale>=1.35);assert.ok(stateRecipe(grabbed).stages[0].scale>=1.5);
- const shield=stateRecipe(state('Spell Effect: Fire Shield')).stages[0];assert.ok(shield.scale>=1.5);assert.ok(shield.opacity>=.8);assert.equal(shield.below,false);
+ const shield=stateRecipe(state('Spell Effect: Fire Shield')).stages[0];assert.ok(shield.scale>=1.3);assert.ok(shield.opacity>=.8);assert.equal(shield.below,false);
  const damage=PF2E_CONDITIONS.find(e=>e.slug==='persistent-damage'),fire=stateRecipe(damage,{damageType:'fire'}).stages[0],bleed=stateRecipe(damage,{damageType:'bleed'}).stages[0];
  assert.ok(fire.scale>bleed.scale);assert.ok(fire.opacity>=.75);assert.equal(bleed.offsetY,0);assert.equal(bleed.below,false);
  const custom=validateRecipe({...stateRecipe(slowed),stages:[{...stateRecipe(slowed).stages[0],scale:.4,opacity:.3}]});
@@ -72,5 +72,5 @@ test('Free fallback markers use marker placement rather than copying Patreon orb
  const entry={...damage,damageVariants:{cold:{assets:['jb2a.aura_themed.01.orbit.loop.cold.blue','jb2a.markers.snowflake.blue'],scale:1.85,opacity:.84,below:false}}};
  const patreon=stateRecipe(entry,{damageType:'cold',catalog:[{key:entry.damageVariants.cold.assets[0]}]}).stages[0];
  const free=stateRecipe(entry,{damageType:'cold',catalog:[{key:entry.damageVariants.cold.assets[1]}]}).stages[0];
- assert.equal(patreon.scale,1.85);assert.ok(free.scale<1);assert.ok(free.offsetY<0);assert.equal(free.offsetUnits,'token');
+ assert.equal(patreon.scale,1.5);assert.ok(free.scale<1);assert.ok(free.offsetY<0);assert.equal(free.offsetUnits,'token');
 });

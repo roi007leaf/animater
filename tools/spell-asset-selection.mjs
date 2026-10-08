@@ -2,6 +2,9 @@
 // gates run first, so a matching name can never turn an impact into a ray.
 import {colorAffinity} from './color-affinity.mjs';
 import {reviewedUpgradeRoots} from './jb2a-reviewed-upgrades.mjs';
+import { createHash } from "node:crypto";
+import { closure, fileHash } from "./build-graph.mjs";
+import { canonical, persistentMemo } from "./probe-cache.mjs";
 const split = (value = "") => value.split(",").filter(Boolean);
 export const SPELL_SELECTION_REVISION=4;
 const words = (value) =>
@@ -307,7 +310,29 @@ function coneMaterialFits(row, theme, roots, context) {
   if (/volley_of_projectiles/i.test(root)) return /\b(?:arrow|arrows)\b/i.test(context.design?.assetIntent ?? context.name ?? "");
   return true;
 }
-export function resolveSpellMedia(
+// Per-entry memo (tools/probe-cache.mjs): the selection is a pure function of
+// its arguments, the edition inventories and this module's code graph.
+// onSelection callbacks are recorded and re-delivered in order on a hit.
+const inventoryDigests = new WeakMap();
+let codeSalt = null;
+function selectionSalt(databases) {
+  codeSalt ??= createHash("sha256").update(closure(["tools/spell-asset-selection.mjs"]).map(p => `${p}:${fileHash(p)}`).join("\n")).digest("hex");
+  if (!inventoryDigests.has(databases)) inventoryDigests.set(databases, createHash("sha256").update(canonical(databases)).digest("hex"));
+  return `${codeSalt}:${inventoryDigests.get(databases)}`;
+}
+export function resolveSpellMedia(databases, theme, profile = {}, defaults = profile, context = {}) {
+  const { onSelection, ...rest } = context;
+  const run = () => {
+    const selections = [];
+    try { return { result: computeSpellMedia(databases, theme, profile, defaults, { ...rest, onSelection: s => selections.push(s) }), selections }; }
+    catch (error) { for (const s of selections) onSelection?.(s); throw error; }
+  };
+  const { result, selections } = Object.keys(context).every(k => k === "onSelection" || Object.getOwnPropertyDescriptor(context, k).enumerable)
+    ? persistentMemo("spell-media", selectionSalt(databases), [theme, profile, defaults, rest], run) : run();
+  for (const s of selections) onSelection?.(s);
+  return result;
+}
+function computeSpellMedia(
   databases,
   theme,
   profile = {},

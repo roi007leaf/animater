@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { persistentProbe } from "./probe-cache.mjs";
 export const modulesRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../..",
@@ -23,8 +24,8 @@ export function automaticSoundGain(meanDb, peakDb) {
 }
 const probes = new Map();
 export function probeSoundFile(file) {
-  if (!probes.has(file)) probes.set(file, (async () => {
-    const full = path.resolve(modulesRoot, "..", file);
+  const full = path.resolve(modulesRoot, "..", file);
+  if (!probes.has(file)) probes.set(file, persistentProbe(import.meta.url, "sound", full, null, async () => {
     const [{ stdout }, { stderr }] = await Promise.all([
       exec("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", full], { windowsHide: true }),
       exec("ffmpeg", ["-hide_banner", "-nostats", "-threads", "1", "-i", full, "-af", "volumedetect", "-f", "null", "-"], { windowsHide: true }),
@@ -34,7 +35,7 @@ export function probeSoundFile(file) {
     const peakDb = Number(stderr.match(/max_volume:\s*(-?[\d.]+)/)?.[1]);
     if (!(nativeDuration > 0) || !Number.isFinite(meanDb) || !Number.isFinite(peakDb)) throw Error(`Invalid or silent sound: ${file}`);
     return { nativeDuration, meanDb, peakDb, gain: Number(automaticSoundGain(meanDb, peakDb).toFixed(5)) };
-  })());
+  }));
   return probes.get(file);
 }
 async function walk(dir) {

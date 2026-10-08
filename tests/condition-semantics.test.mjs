@@ -27,6 +27,16 @@ test('condition art avoids inventing poison, bleeding, chains, curses and healin
  for(const slug of ['friendly','helpful','unfriendly','hostile','indifferent'])assert.equal(entry(slug).theme,'attitude');
 });
 
+test('afflictions read as debuffs: no bright swirls, spinning rings, haloes or boon art',()=>{
+ // Beneficial, attitude and stealth conditions are not afflictions.
+ const exempt=new Set(['quickened','friendly','helpful','indifferent','observed','hostile','unfriendly','concealed','hidden','invisible','undetected','unnoticed']);
+ for(const e of PF2E_CONDITIONS.filter(e=>!exempt.has(e.slug))){
+  assert.doesNotMatch(assets(e.slug),/particles\.(?:swirl|outward)|token_border\.circle\.spinning|markers\.light|light_orb|twinkling_stars|swirling_sparkles|condition\.boon|bless/,e.slug);
+  assert.ok(stateRecipe(e).stages.every(s=>s.scale<=1.5),`${e.slug}: covers neighbours`);
+ }
+ for(const slug of ['clumsy','slowed','enfeebled','fatigued','encumbered','prone'])assert.doesNotMatch(assets(slug),/token_border/,`${slug}: a plain ring reads as an aura`);
+});
+
 test('persistent damage shows destructive type cues rather than musical notes, healing hearts or ice for void',()=>{
  const e=entry('persistent-damage'),keys=type=>stateRecipe(e,{damageType:type}).stages.flatMap(s=>s.assets).join(' ');
  assert.doesNotMatch(keys('sonic'),/music/);

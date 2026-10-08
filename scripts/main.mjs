@@ -46,6 +46,10 @@ import { dndSettingKey,sfSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
 import {sfStateHost} from './sf2e-states.mjs';
+import {QUALITY_CHOICES,allowsMotion,allowsTokenFx,stateBudget,usersForTier} from './quality.mjs';
+const localQuality=()=>{try{return game.settings.get('animater','quality');}catch{return 'full';}};
+// Mirror this client's choice so the client that starts an animation can route optional layers.
+const syncQuality=()=>{const value=localQuality(),user=game.user;if(typeof user?.getFlag==='function'&&typeof user.setFlag==='function'&&user.getFlag('animater','quality')!==value)void Promise.resolve(user.setFlag('animater','quality',value)).catch(()=>{});};
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 let runtime, app;
 registerTriggerEngine();
@@ -65,6 +69,7 @@ async function receiveOptionalFx(data) {
   if(!user)return;
   if(data.type==='fx-stop' || data.type==='stop')return optionalFx.stop({userId:user.id,session:data.type==='stop'?undefined:data.session});
   if(data.type!=='tokenfx' || !canvas.ready || data.sceneId!==canvas.scene?.id)return;
+  if(!allowsTokenFx(localQuality()))return;
   const source=canvas.tokens.get(data.sourceId);
   if(!source || !(user.isGM || source.document.testUserPermission(user,'OWNER')))return;
   try {
@@ -83,6 +88,7 @@ async function receiveMotion(data, { strict = false } = {}) {
   }
   if (data.type !== "motion") return;
   if (data.sceneId !== canvas.scene?.id) return;
+  if (!allowsMotion(localQuality())) return;
   const source = canvas.tokens.get(data.sourceId);
   if (
     !source ||
@@ -506,6 +512,10 @@ Hooks.once("init", () => {
       onChange:()=>{persistentStates?.schedule();app?.workspace?.render();}});
   game.settings.register(ID,'weaponScale',{name:'Weapon effect size',hint:'Multiplies the size of weapon hit and residue effects (1 = the target token\'s footprint).',
     scope:'world',config:true,type:Number,range:{min:0.5,max:3,step:0.1},default:1.5});
+  game.settings.register(ID,'quality',{name:'Animation quality (this device)',
+    hint:'Lower this on slower computers. Applies only to what you see; other players keep their own setting.',
+    scope:'client',config:true,type:String,choices:{...QUALITY_CHOICES},default:'full',
+    onChange:()=>{syncQuality();persistentStates?.schedule();}});
   for(const kind of SF_KINDS)game.settings.register(ID,sfSettingKey(kind),{scope:"world",config:false,type:Object,default:normalizeSfCatalogState(),onChange:()=>persistentStates?.schedule()});
   for(const kind of DND_KINDS)game.settings.register(ID,dndSettingKey(kind),{scope:'world',config:false,type:Object,default:normalizeDndCatalogState(),onChange:()=>persistentStates?.schedule()});
   for (const key of ["conditionCatalog", "effectCatalog"])
@@ -607,6 +617,7 @@ function eventFrom(input) {
   return input;
 }
 Hooks.once("ready", () => {
+  syncQuality();
   motions = new TokenMotionPlayer({ grid: () => canvas.grid?.size ?? 100 });
   optionalFx = new OptionalFxPlayer({catalog:fxCatalog,tokenMagic:()=>globalThis.TokenMagic,
     fxmaster:()=>globalThis.FXMASTER?.api,scene:()=>canvas.scene,
@@ -639,6 +650,8 @@ Hooks.once("ready", () => {
       return globalThis.Sequencer?.Database;
     },
     enabled: acceptsEvents,
+    weaponScale: () => Number(game.settings.get(ID, "weaponScale")) || 1,
+    usersFor: (tier) => usersForTier(Array.from(game.users?.contents ?? game.users?.values?.() ?? []), tier),
     recipes,
     riderRecipes: (event, saved) => game.system.id === "pf2e" ? riderRecipes(event, game.settings.get(ID, "featureCatalog"), saved, { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) }) : [],
     resolveRecipe: systemRecipe,
@@ -755,7 +768,8 @@ Hooks.once("ready", () => {
       gridDistance: () => canvas.scene?.grid?.distance ?? 5,
       sequence: () => new Sequence({ moduleName: ID }),
       end: (name) => Sequencer.EffectManager.endEffects({ name }, false),
-      retainFx:(stage,{session})=>optionalFx.retain(stage,{session,userId:`state:${clientId}`}),
+      retainFx:(stage,{session})=>allowsTokenFx(localQuality())?optionalFx.retain(stage,{session,userId:`state:${clientId}`}):undefined,
+      budget:()=>stateBudget(localQuality()),
       stopFx:session=>optionalFx.stop({session}),
       trace: (status, detail) => runtime.trace(status, detail),
     });

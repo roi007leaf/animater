@@ -5,6 +5,7 @@ import { resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { variantFiles } from "./asset-databases.mjs";
 import { assetGeometry } from "./spell-asset-selection.mjs";
+import { persistentProbe } from "./probe-cache.mjs";
 const exec = promisify(execFile),
   cache = new Map(),
   metadataCache = new Map(),
@@ -37,7 +38,7 @@ async function mediaMetadata(file, databases) {
   if (!metadataCache.has(path)) {
     metadataCache.set(
       path,
-      (async () => {
+      persistentProbe(import.meta.url, "metadata", path, null, async () => {
         const { stdout } = await exec("ffprobe", [
           "-v",
           "error",
@@ -51,8 +52,8 @@ async function mediaMetadata(file, databases) {
         const duration = Math.ceil(Number(metadata.format.duration) * 1000);
         if (!Number.isFinite(duration) || duration <= 0)
           throw Error(`Invalid duration: ${file}`);
-        return { path, metadata, duration };
-      })(),
+        return { metadata, duration };
+      }).then((measured) => ({ path, ...measured })),
     );
   }
   return metadataCache.get(path);
@@ -71,6 +72,11 @@ async function representativeTiming(row, databases) {
     // correct libvpx decoder before estimating visible destination contact.
     const decoder =
       metadata.streams[0].codec_name === "vp8" ? "libvpx" : "libvpx-vp9";
+    const endpoint = Math.round(
+      100 * (1 - (row.template?.[2] ?? 0) / (row.width || 1000)),
+    );
+    // Persisted per file, decoder and endpoint: the same frames give the same contact.
+    const contact = await persistentProbe(import.meta.url, "contact", path, { decoder, duration, endpoint }, async () => {
     const { stdout: frames } = await exec(
       "ffmpeg",
       [
@@ -94,9 +100,8 @@ async function representativeTiming(row, databases) {
       ],
       { encoding: "buffer", maxBuffer: 32 * 1024 * 1024 },
     );
-    const endpoint = Math.round(
-      100 * (1 - (row.template?.[2] ?? 0) / (row.width || 1000)),
-    );
+    return visibleContact(frames, duration, endpoint);
+    });
     // Magic Missile has a large leading glow. Frame inspection places its head
     // at destination around 1s; a glow threshold alone registers too early.
     const calibrated =
@@ -106,7 +111,7 @@ async function representativeTiming(row, databases) {
     return {
       duration,
       baked,
-      contact: calibrated ?? visibleContact(frames, duration, endpoint),
+      contact: calibrated ?? contact,
       ...(calibrated
         ? { contactMethod: "frame-reviewed" }
         : { contactMethod: "alpha-weighted-estimate" }),

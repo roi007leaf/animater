@@ -12,6 +12,8 @@ import pf2eWeaponsA from './pf2e-weapons-a.mjs';
 import pf2eWeaponsB from './pf2e-weapons-b.mjs';
 import pf2eStatesA from './pf2e-states-a.mjs';
 import pf2eStatesB from './pf2e-states-b.mjs';
+import pf2eStatesC from './pf2e-states-c.mjs';
+import pf2eStatesD from './pf2e-states-d.mjs';
 import sf2eA from './sf2e-a.mjs';
 import sf2eB from './sf2e-b.mjs';
 import sf2eC from './sf2e-c.mjs';
@@ -25,4 +27,6 @@ import dnd5eItemsWeaponsC from './dnd5e-items-weapons-c.mjs';
 import pf2eActionsA from './pf2e-actions-a.mjs';
 import pf2eActionsB from './pf2e-actions-b.mjs';
 import pf2eFeatures from './pf2e-features.mjs';
-export const BESPOKE = Object.freeze(Object.assign({}, pf2eSpellsA, pf2eSpellsB, pf2eSpellsC, pf2eSpellsD, pf2eFeatsA, pf2eFeatsB, pf2eFeatsC, pf2eFeatsD, pf2eFeatsE, pf2eWeaponsA, pf2eWeaponsB, pf2eStatesA, pf2eStatesB, sf2eA, sf2eB, sf2eC, dnd5eSpellsA, dnd5eSpellsB, dnd5eFeaturesA, dnd5eFeaturesB, dnd5eItemsWeaponsA, dnd5eItemsWeaponsB, dnd5eItemsWeaponsC, pf2eActionsA, pf2eActionsB, pf2eFeatures));
+// Registered last: the condition debuff pass overrides earlier condition looks.
+import conditions from './conditions.mjs';
+export const BESPOKE = Object.freeze(Object.assign({}, pf2eSpellsA, pf2eSpellsB, pf2eSpellsC, pf2eSpellsD, pf2eFeatsA, pf2eFeatsB, pf2eFeatsC, pf2eFeatsD, pf2eFeatsE, pf2eWeaponsA, pf2eWeaponsB, pf2eStatesA, pf2eStatesB, pf2eStatesC, pf2eStatesD, sf2eA, sf2eB, sf2eC, dnd5eSpellsA, dnd5eSpellsB, dnd5eFeaturesA, dnd5eFeaturesB, dnd5eItemsWeaponsA, dnd5eItemsWeaponsB, dnd5eItemsWeaponsC, pf2eActionsA, pf2eActionsB, pf2eFeatures, conditions));

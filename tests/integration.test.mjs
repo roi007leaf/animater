@@ -611,6 +611,36 @@ test("native PF2e attack hooks and API previews include optional pack audio and 
   assert.ok(!f.calls.some((c) => c[0] === "sound"));
   await f.api.stop();
 });
+test("weapon effect size setting reaches native attacks and local canvas previews immediately", async () => {
+  const f = await boot("pf2e");
+  const recipe = { id: "weapon-size-setting", name: "Weapon size", enabled: true, trigger: "attack", match: "Dagger", weaponMode: "melee",
+    stages: [{ kind: "impact", assets: ["jb2a.impact.001.orange"], scale: .8, duration: 100 },
+      { kind: "aura", subject: "targets", assets: ["jb2a.impact.001.orange"], scale: 1, duration: 100 }] };
+  f.settings.set("recipes", { schema: 1, recipes: [recipe] });
+  f.settings.set("automatic", true);
+  Object.assign(f.item, { type: "weapon", name: "Dagger", system: { range: null } });
+  const assertSizes = factor => {
+    const sizes = f.calls.filter(c => c[0] === "size").map(c => c[1].width);
+    assert.equal(sizes.length, 2, JSON.stringify(f.api.activity()));
+    for (const [i, scale] of [.8, 1].entries())
+      assert.ok(Math.abs(sizes[i] - 100 * scale * factor) < 1e-8, `weapon scale ${factor}: stage ${i} has width ${sizes[i]}`);
+  };
+  for (const factor of [1, 3, .5]) {
+    f.settings.set("weaponScale", factor);
+    f.calls.length = 0;
+    await f.fire("createChatMessage", { id: `size-${factor}`, author: { id: "u" }, item: f.item, isRoll: true,
+      speaker: { token: "t", scene: "s" }, flags: { pf2e: { context: { type: "attack-roll" } } } });
+    await settle();
+    assertSizes(factor);
+  }
+  f.calls.length = 0;
+  f.settings.set("weaponScale", 3);
+  await f.api.preview(recipe.id);
+  assertSizes(3);
+  assert.ok(f.calls.filter(c => c[0] === "play").every(c => c[1].local));
+  assert.deepEqual(recipe.stages.map(s => s.scale), [.8, 1], "saved recipe scales remain authored values");
+});
+
 test("Apotheosis Knife native melee and thrown Strike rolls dispatch their catalog animations", async () => {
   const weapon = PF2E_WEAPONS.find(w => w.slug === "apotheosis-knife");
   const variants = weapon.modes.map(m => weaponRecipe(weapon, m.mode));

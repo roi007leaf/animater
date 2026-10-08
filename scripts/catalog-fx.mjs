@@ -19,12 +19,14 @@ export function liveCatalogFx() {
 const slug = entry => String(entry.slug??entry.identifier??entry.name??'').toLowerCase()
   .replace(/^(?:spell[ -])?effect[ -:]*/,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const bodyProfiles = {
-  fire:{preset:'fire',tint:'#ff9b45'},cold:{preset:'pure-ice-aura',tint:'#9cdeff'},
+  fire:{preset:'fire',tint:'#ff9b45'},  // '[BW] …' presets are registered by the optional Baileywiki modules, not Token
+  // Magic FX itself; without them the core frost aura plays instead.
+  cold:{preset:'[BW] Overlay Cold Ice',fallback:'pure-ice-aura',tint:'#9cdeff'},
   electricity:{preset:'electric',tint:'#88cfff'},acid:{preset:'fumes',tint:'#a2dc48'},
   poison:{preset:'smoke',tint:'#78bc57'},force:{preset:'glow',tint:'#ba9cff'},
   healing:{preset:'glow',tint:'#80dda4'},ward:{preset:'hexa-field',tint:'#a7bcff'},
   stone:{preset:'earth-field',tint:'#bea57f'},water:{preset:'water-field',tint:'#75cfff'},
-  blur:{preset:'blur'},distortion:{preset:'distortion'},spectral:{preset:'spectral-body',tint:'#83dcf3'},
+  blur:{preset:'blur'},distortion:{preset:'distortion'},mirror:{preset:'images'},spectral:{preset:'spectral-body',tint:'#83dcf3'},
   teleport:{preset:'warp-field',tint:'#ccb8ff'},fireWard:{preset:'fire-aura',tint:'#ffb267'},
   rush:{preset:'zoomblur'},
 };
@@ -61,12 +63,16 @@ function bodyProfile(recipe, entry, anchor, options) {
   if (/^(?:blur|concealed|concealment|blurred)(?:-|$)/.test(name))return 'blur';
   // Concealment of the token itself only: not a suppressed property, an
   // immunity, or a wall that hides others.
-  if (/^(?:invisible|invisibility|displacement|mirror-image)(?:-|$)/.test(name)&&!/(?:suppressed|immunity|curtain)/.test(name))return 'distortion';
+  // Mirror Image shows its illusory duplicates with Token Magic's core image-copy filter.
+  if (/^mirror-image(?:-|$)/.test(name))return 'mirror';
+  if (/^(?:invisible|invisibility|displacement)(?:-|$)/.test(name)&&!/(?:suppressed|immunity|curtain)/.test(name))return 'distortion';
   if (/^(?:ethereal|etherealness|ghostly-form|incorporeal-form|ghost-walk)(?:-|$)/.test(name))return 'spectral';
   if (persistent && name==='petrified')return 'stone';
   if (persistent && name==='poisoned')return 'poison';
   if (meaning.healing&&!healingVetoes.some(v=>v.test(name))&&/jb2a\.(?:cure_wounds|healing_generic|heal\.)/.test(art))return 'healing';
-  if (meaning.ward&&realWard(entry,meaning)&&anchor.kind==='aura'&&/jb2a\.(?:shield|wall_of_force|shield_spell|antilife_shell|protect)/.test(art))return 'ward';
+  // Token Magic's hexa-field is a fixed, very large dome; JB2A shield art already
+  // draws the barrier, so only shell-like fields without their own bubble get it.
+  if (meaning.ward&&realWard(entry,meaning)&&anchor.kind==='aura'&&/jb2a\.(?:wall_of_force|antilife_shell|protect)/.test(art))return 'ward';
   if (anchor.kind==='aura'&&/jb2a\.fire_shield/.test(art))return 'fireWard';
   if (anchor.kind==='aura'&&/jb2a\.stoneskin/.test(art))return 'stone';
   if (anchor.kind==='aura'&&/jb2a\.(?:water_bubble|watery_sphere)/.test(art))return 'water';
@@ -86,7 +92,7 @@ function bodyProfile(recipe, entry, anchor, options) {
     const named=Object.keys(meaning).filter(k=>k.startsWith('dmg-'));
     if (named.length&&!meaning[`dmg-${theme}`])return null;
   }
-  const materials={fire:/jb2a\.(?:fire|flames|burning|scorching|explosion)/,cold:/jb2a\.(?:ice|frost|cold|snow|sleet|ray_of_frost)/,
+  const materials={fire:/jb2a\.(?:fire|flames|burning|scorching|explosion)/,cold:/jb2a\.(?:ice|frost|cold|snow|sleet|ray_of_frost|cone_of_cold)|jb2a\.breath_weapons\d*\.[\w.]*\b(?:cold|ice|frost)\b/,
     electricity:/jb2a\.(?:lightning|electric|chain_lightning|static_electricity)/,acid:/jb2a\.(?:acid|liquid|drop|splash)/,
     poison:/jb2a\.(?:poison|smoke|gas|liquid|drop|splash)/,force:/jb2a\.(?:impact|magic_missile|eldritch|force|energy_field|explosion)/};
   return materials[theme].test(art)?theme:null;
@@ -111,7 +117,7 @@ export function catalogFxDesign(recipe, entry, options={}) {
     const subject=persistent?'source':onTarget(anchor)?'targets':anchor.subject??'source';
     const duration=persistent?6000:Math.max(1400,Math.min(2400,anchor.duration??1600));
     additions.push({kind:'tokenfx',stageId:`${recipe.id}-tmfx`,label:`Token Magic FX · ${spec.preset}`,assets:[],
-      catalogFx:true,fxProfile:profile,fxPreset:spec.preset,fxLibrary:'tmfx-main',fxTint:spec.tint??'',subject,persist:persistent,
+      catalogFx:true,fxProfile:profile,fxPreset:spec.preset,...(spec.fallback?{fxFallbackPreset:spec.fallback}:{}),fxLibrary:'tmfx-main',fxTint:spec.tint??'',subject,persist:persistent,
       delay:persistent?0:anchor.delay??0,duration,optionalTargets:subject==='targets',
       ...(persistent?{}:{afterStage:anchor.stageId,timingAnchor:'start',startOffset:0,
         targetSelection:anchor.targetSelection??'all',targetLimit:anchor.targetLimit??0,
@@ -134,7 +140,10 @@ export function withCatalogFx(recipe, entry, options={}) {
   if (options.fx===false||BESPOKE[recipe.bespoke]?.fx===false)return recipe;
   const catalog=options.fxCatalog??liveCatalogFx();
   if (!catalog.tokenReady&&!catalog.sceneReady)return recipe;
-  const candidates=catalogFxDesign(recipe,entry,options).filter(stage=>stage.kind==='tokenfx'
+  const has=(name,library)=>catalog.presets?.some(p=>p.name===name&&p.library===library);
+  // Prefer the richer preset (e.g. an ice overlay) and fall back to a core one when an install lacks it.
+  const candidates=catalogFxDesign(recipe,entry,options).map(({fxFallbackPreset,...stage})=>stage.kind==='tokenfx'&&fxFallbackPreset&&!has(stage.fxPreset,stage.fxLibrary)&&has(fxFallbackPreset,stage.fxLibrary)
+    ?{...stage,fxPreset:fxFallbackPreset,label:`Token Magic FX · ${fxFallbackPreset}`}:stage).filter(stage=>stage.kind==='tokenfx'
     ? catalog.tokenReady&&catalog.presets.some(p=>p.name===stage.fxPreset&&p.library===stage.fxLibrary)
     : catalog.sceneReady&&catalog.effects.some(e=>e.type===stage.fxType&&e.category===stage.fxCategory));
   const additions=candidates.filter(stage=>!recipe.stages.some(s=>s.stageId===stage.stageId));

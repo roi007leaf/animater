@@ -42,7 +42,8 @@ test('native description evidence rejects misleading healing and ward metadata',
  assert.equal(fx(spell('Befitting Attire')).length,0);
  assert.equal(fx(spell('Brain Drain')).length,0);
  assert.equal(fx(spell('Heal'))[0].fxProfile,'healing');
- assert.equal(fx(spell('Shield'))[0].fxProfile,'ward');
+ // JB2A shield art already draws the barrier; Token Magic's large hexa dome is not stacked on it.
+ assert.ok(!fx(spell('Shield')).some(s=>s.fxProfile==='ward'));
  for(const name of ['Antidote','Armor Tampered With (Success)','A Little Bird Told Me...']){
   const e=PF2E_EFFECTS.find(e=>e.name===`Effect: ${name}`);
   assert.ok(e);assert.equal(fx(stateRecipe(e,{fxCatalog})).length,0,name);

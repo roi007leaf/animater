@@ -194,3 +194,61 @@ test('weapon effect size scales weapon hits and residue only', async () => {
   assert.equal(withWeaponScale({ ...recipe, weaponMode: 'area' }, 1.5).stages[1].scale, 0.8);
   assert.equal(withWeaponScale({ ...recipe, weaponMode: undefined }, 1.5).stages[1].scale, 0.8);
 });
+
+test('derived in-memory conditions without a stored item do not tie to a missing document', async () => {
+  const { storedStateDocument } = await import('../scripts/persistent-states.mjs');
+  const actor = { items: new Map([['real', {}]]) };
+  assert.equal(storedStateDocument({ id: 'real', uuid: 'Actor.a.Item.real', parent: actor }), 'Actor.a.Item.real');
+  assert.equal(storedStateDocument({ id: 'derived', uuid: 'Actor.a.Item.derived', parent: actor }), null);
+});
+
+test('cold area spells freeze caught creatures with the ice overlay, falling back to the core frost preset', async () => {
+  const { PF2E_SPELLS, spellRecipe } = await import('../scripts/spell-catalog.mjs');
+  const spell = PF2E_SPELLS.find(s => s.name === 'Cone of Cold');
+  const fxOf = presets => spellRecipe(spell, undefined, { fxCatalog: { tokenReady: true, sceneReady: false, presets: presets.map(name => ({ name, library: 'tmfx-main' })) } }).stages.find(s => s.kind === 'tokenfx');
+  const rich = fxOf(['[BW] Overlay Cold Ice', 'pure-ice-aura']);
+  assert.equal(rich.fxPreset, '[BW] Overlay Cold Ice');
+  assert.equal(rich.subject, 'targets');
+  assert.equal(fxOf(['pure-ice-aura']).fxPreset, 'pure-ice-aura');
+  assert.equal(fxOf([]), undefined);
+});
+
+test('Token Magic presets whose sprite images come from an inactive module are not offered', async () => {
+  const { presetAssetsAvailable } = await import('../scripts/optional-fx.mjs');
+  const bw = { params: [{ filterType: 'sprite', imagePath: 'modules/baileywiki-maps-premium-towns/maps/fx-tiles/overlay-fx/overlay-cold-ice-01.webp' }] };
+  const modules = active => ({ get: id => ({ active: active.includes(id) }) });
+  assert.equal(presetAssetsAvailable(bw, modules([])), false);
+  assert.equal(presetAssetsAvailable(bw, modules(['baileywiki-maps-premium-towns'])), true);
+  assert.equal(presetAssetsAvailable({ params: [{ filterType: 'glow' }] }, modules([])), true);
+});
+
+test('valued conditions grow gradually with their value; unvalued states keep full strength', async () => {
+  const { conditionLevel, levelIntensity } = await import('../scripts/persistent-states.mjs');
+  const cond = value => ({ type: 'condition', value, system: { value: { isValued: true, value } } });
+  assert.deepEqual([1, 2, 3, 4, 7].map(v => conditionLevel(cond(v))), [1, 2, 3, 4, 4]);
+  assert.equal(conditionLevel({ type: 'condition', system: { value: { isValued: false } } }), 0);
+  assert.equal(conditionLevel({ type: 'effect' }), 0);
+  const [one, two, four] = [1, 2, 4].map(levelIntensity);
+  assert.ok(one.opacity < two.opacity && two.opacity <= four.opacity);
+  assert.ok(one.scale < four.scale && one.rate < four.rate);
+  assert.deepEqual(levelIntensity(0), { opacity: 1, scale: 1, rate: 1 });
+});
+
+test('device quality routes optional layers per viewer and caps local state layers', async () => {
+  const q = await import('../scripts/quality.mjs');
+  const stages = [{ kind: 'cast', stageId: 'c' }, { kind: 'travel', stageId: 't' }, { kind: 'impact', stageId: 'i' }, { kind: 'aura', stageId: 'a' }, { kind: 'sprite', stageId: 's' }, { kind: 'aura', stageId: 'a2' }, { kind: 'sound', stageId: 'snd' }];
+  const tiers = Object.fromEntries([...q.stageTiers(stages)].map(([s, t]) => [s.stageId, t]));
+  assert.deepEqual(tiers, { c: 1, t: 0, i: 0, a: 1, s: 2, a2: 2 });
+  const user = (id, quality, active = true) => ({ id, active, getFlag: () => quality });
+  const users = [user('gm', 'full'), user('p1', 'low'), user('p2', 'balanced'), user('away', 'off', false)];
+  assert.equal(q.usersForTier(users, 0), null);
+  assert.deepEqual(q.usersForTier(users, 1), ['gm', 'p2']);
+  assert.deepEqual(q.usersForTier(users, 2), ['gm']);
+  assert.deepEqual(q.usersForTier([user('x', 'off')], 0), []);
+  assert.ok(q.allowsMotion('low') && !q.allowsMotion('off'));
+  assert.ok(q.allowsTokenFx('full') && !q.allowsTokenFx('balanced'));
+  assert.deepEqual(q.stateBudget('low'), { states: 1, layers: 1, pips: false });
+  assert.equal(q.stateBudget('full').states, Infinity);
+});
+
+

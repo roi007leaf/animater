@@ -769,6 +769,12 @@ export const MEDIA_FOOTPRINTS = {
     464.8438,
     464.8438
   ],
+  "AuraThemedOrbitLoopNature01_01_Regular_Pink_700x700.webm": [
+    700,
+    700,
+    464.8438,
+    470.3125
+  ],
   "AuraThemedOrbitLoopWood01_01_Regular_Green_700x700.webm": [
     700,
     700,
@@ -3636,12 +3642,6 @@ export const MEDIA_FOOTPRINTS = {
     600,
     510.9375,
     464.0625
-  ],
-  "EnergyStrandsOverlay_01_Regular_Grey_600x600.webm": [
-    600,
-    600,
-    501.5625,
-    459.375
   ],
   "EnergyStrandsOverlay_01_Regular_Orange_600x600.webm": [
     600,
@@ -7531,6 +7531,18 @@ export const MEDIA_FOOTPRINTS = {
     356.25,
     350
   ],
+  "MarkerHorror_03_Dark_Teal_400x400.webm": [
+    400,
+    400,
+    253.125,
+    250
+  ],
+  "MarkerHorror_03_Regular_Purple_400x400.webm": [
+    400,
+    400,
+    259.375,
+    253.125
+  ],
   "MarkerLightComplete_01_Regular_Blue_400x400.webm": [
     400,
     400,
@@ -7717,6 +7729,12 @@ export const MEDIA_FOOTPRINTS = {
     353.125,
     353.125
   ],
+  "MarkerRunes02_01_Regular_Yellow_400x400.webm": [
+    400,
+    400,
+    359.375,
+    353.125
+  ],
   "MarkerRunes02_03_Dark_Orange_400x400.webm": [
     400,
     400,
@@ -7734,6 +7752,18 @@ export const MEDIA_FOOTPRINTS = {
     400,
     256.25,
     253.125
+  ],
+  "MarkerRunes03_01_Dark_Black_400x400.webm": [
+    400,
+    400,
+    353.125,
+    353.125
+  ],
+  "MarkerRunes03_01_Dark_Orange_400x400.webm": [
+    400,
+    400,
+    362.5,
+    362.5
   ],
   "MarkerRunes03_01_Regular_Orange_400x400.webm": [
     400,
@@ -7951,6 +7981,12 @@ export const MEDIA_FOOTPRINTS = {
     328.125,
     321.875
   ],
+  "MarkerSmokeRingLoop01_Regular_Green_400x400.webm": [
+    400,
+    400,
+    325,
+    321.875
+  ],
   "MarkerSmokeRingLoop01_Regular_Purple_400x400.webm": [
     400,
     400,
@@ -7968,6 +8004,12 @@ export const MEDIA_FOOTPRINTS = {
     400,
     350,
     343.75
+  ],
+  "MarkerSnowflake_03_Regular_Blue_400x400.webm": [
+    400,
+    400,
+    256.25,
+    243.75
   ],
   "MarkerStun_01_Dark_Teal_400x400.webm": [
     400,
@@ -8659,6 +8701,12 @@ export const MEDIA_FOOTPRINTS = {
     800,
     800
   ],
+  "NecromancyCircleLoop_02_Dark_Purple_800x800.webm": [
+    800,
+    800,
+    800,
+    800
+  ],
   "NecromancyCircleLoop_02_Regular_Green_800x800.webm": [
     800,
     800,
@@ -9216,12 +9264,6 @@ export const MEDIA_FOOTPRINTS = {
     400,
     318.75,
     325
-  ],
-  "ParticlesOutward01_01_Regular_White_400x400.webm": [
-    400,
-    400,
-    318.75,
-    337.5
   ],
   "ParticlesOutward01_02_Regular_GreenYellow_400x400.webm": [
     400,
@@ -9978,6 +10020,18 @@ export const MEDIA_FOOTPRINTS = {
     200,
     150,
     179.6875
+  ],
+  "RadarLoop_01_Circle_Normal_500x500.webm": [
+    500,
+    500,
+    460.9375,
+    460.9375
+  ],
+  "RadarLoop_01_Circle_Slow_500x500.webm": [
+    500,
+    500,
+    460.9375,
+    460.9375
   ],
   "RadarLoop_PingRound_001_BlueTeal_Size1_300x300.webm": [
     300,
@@ -11887,6 +11941,12 @@ export const MEDIA_FOOTPRINTS = {
     359.375,
     359.375
   ],
+  "StaticElectricity_01_Regular_Yellow_400x400.webm": [
+    400,
+    400,
+    359.375,
+    359.375
+  ],
   "StaticElectricity_02_Regular_Blue_400x400.webm": [
     400,
     400,
@@ -12811,17 +12871,17 @@ export const MEDIA_FOOTPRINTS = {
     240.625,
     240.625
   ],
+  "TokenBorderCircle_03_Dark_Red_400x400.webm": [
+    400,
+    400,
+    309.375,
+    306.25
+  ],
   "TokenBorderCircle_03_Regular_Blue_400x400.webm": [
     400,
     400,
     300,
     296.875
-  ],
-  "TokenBorderCircle_03_Regular_Orange_400x400.webm": [
-    400,
-    400,
-    303.125,
-    303.125
   ],
   "TokenBorderCircle_04_Dark_Red_400x400.webm": [
     400,
@@ -12876,12 +12936,6 @@ export const MEDIA_FOOTPRINTS = {
     400,
     293.75,
     290.625
-  ],
-  "TokenBorderCircle_07_Regular_Purple_400x400.webm": [
-    400,
-    400,
-    309.375,
-    303.125
   ],
   "TollTheDeadBell_01_Regular_Blue_400x400.webm": [
     400,

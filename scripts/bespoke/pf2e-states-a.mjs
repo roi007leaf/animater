@@ -15,9 +15,9 @@ const radiantWings = (color = 'orange') => () => [
   P('Left wing glow', [`twinkling_stars.points06.${color}`, 'twinkling_stars.points06.orange'], { offsetX: -0.6, offsetUnits: T, scale: 0.95, opacity: 0.9 }),
   P('Right wing glow', [`twinkling_stars.points06.${color}`, 'twinkling_stars.points06.orange'], { offsetX: 0.6, offsetUnits: T, scale: 0.95, opacity: 0.9, mirrorX: true }),
   P('Wing light', ['markers.light_orb.loop.yellow', 'markers.light_orb.loop.blue'], { scale: 1.5, opacity: 0.4, ...tint('#ffd978') }),
-  P('Wingbeat gusts', ['wind_lines.01.01.white'], { scale: 1.7, opacity: 0.45 }),
+  P('Wingbeat gusts', ['wind_lines.01.01.white'], { scale: 1.5, opacity: 0.45 }),
 ];
-const gust = () => [P('Updraft', ['wind_lines.01.01.white', 'wind_lines.01.02.white'], { scale: 1.6, opacity: 0.65 }), P('Lift', ['token_border.circle.spinning.orange.012', 'token_border.circle.spinning.blue.002'], { scale: 1.4, opacity: 0.45 })];
+const gust = () => [P('Updraft', ['wind_lines.01.01.white', 'wind_lines.01.02.white'], { scale: 1.5, opacity: 0.65 }), P('Lift', ['token_border.circle.spinning.orange.012', 'token_border.circle.spinning.blue.002'], { scale: 1.4, opacity: 0.45 })];
 const speedLines = () => [P('Speed streaks', ['wind_lines.01.02.white', 'wind_lines.01.01.white'], { scale: 1.55, opacity: 0.6 }), P('Quickened pace', ['token_border.circle.spinning.blue.007'], { scale: 1.45, opacity: 0.55 })];
 const swimBubbles = () => [P('Rising bubbles', ['bubble.001.001.loop.blue', 'bubble.002.001.loop.blue'], { scale: 1.3, opacity: 0.8 }), P('Water sheen', ['token_border.circle.spinning.blue.007'], { scale: 1.45, opacity: 0.45 })];
 const glowingEyes = () => [P('Eyes that pierce the dark', ['eyes.01.dark_yellow.single', 'eyes.01.dark_green.single'], { scale: 0.7, opacity: 0.85, ...tint('#e8e45a') })];
@@ -40,7 +40,7 @@ export default {
   'pf2e:spell-effects-jPZXZjetdauqYuEH': design('A bright halo hovers above the caster while a soft green-gold emanation spreads around.', () => [
     P('Halo', ['markers.light.loop.yellow', 'markers.light.loop.blue'], { scale: 0.6, offsetY: -0.62, offsetUnits: T, opacity: 0.95, ...tint('#ffe27a') }),
     P('Halo sparks', ['twinkling_stars.points04.orange', 'twinkling_stars.points04.white'], { scale: 0.7, offsetY: -0.6, offsetUnits: T, opacity: 0.9 }),
-    P('Healing radiance', ['template_circle.aura.03.outward.001.loop.combined.greenyellow', 'template_circle.aura.03.outward.001.loop.combined.blue'], { scale: 1.6, below: true, opacity: 0.55, ...tint('#d9e48a') }),
+    P('Healing radiance', ['template_circle.aura.03.outward.001.loop.combined.greenyellow', 'template_circle.aura.03.outward.001.loop.combined.blue'], { scale: 1.5, below: true, opacity: 0.55, ...tint('#d9e48a') }),
   ]),
   // Ascended Celestial Nimbus: a shining nimbus of light rings the body.
   'pf2e:feat-effects-7UWKpTquSpP6Pgzh': design('A celestial nimbus of light crowns the figure with a slow ring of radiance and stars.', () => [
@@ -56,7 +56,7 @@ export default {
   ...many(['equipment-effects-gDefAEEMXVVZgqXH'], design('Holy Chain wings shed bright light, so both flanks glow golden and the figure is wrapped in brilliance.', radiantWings('orange'))),
   'pf2e:feat-effects-MrdT7LiOZMN8J4GK': design('Fiendish Wings are bat-like leathery wings, shown as a flutter of red bats around the figure.', () => [
     P('Bat-wing flutter', ['bats.loop.01.red', 'bats.loop.01.green'], { scale: 1.5, opacity: 0.9 }),
-    P('Infernal wingbeat', ['wind_lines.01.01.white'], { scale: 1.6, opacity: 0.35, ...tint('#c04030') }),
+    P('Infernal wingbeat', ['wind_lines.01.01.white'], { scale: 1.5, opacity: 0.35, ...tint('#c04030') }),
   ]),
   'pf2e:feat-effects-LhHJkfS5VhfJss6p': design('Fly on Shadowed Wings: wings of shadow, shown as drifting black fumes and a cloud of bats in flight.', () => [
     P('Shadow wings', ['fumes.04.loop.black', 'fumes.04.loop.grey'], { scale: 1.5, opacity: 0.7 }),
@@ -68,7 +68,7 @@ export default {
   'pf2e:bestiary-effects-H99PJXU5cvJ4Oycm': design('Fiery Form sets the creature alight, immune to fire and hovering with its own light and heat.', () => [
     P('Body of flame', ['flames.04.loop.orange'], { scale: 1.5, opacity: 0.9 }),
     P('Firelight', ['fire_ring.500px.red', 'fire_ring.500px.yellow'], { scale: 1.3, opacity: 0.4, below: true }),
-    P('Heat updraft', ['wind_lines.01.01.white'], { scale: 1.6, opacity: 0.35, ...tint('#ffb060') }),
+    P('Heat updraft', ['wind_lines.01.01.white'], { scale: 1.5, opacity: 0.35, ...tint('#ffb060') }),
   ]),
   'pf2e:feat-effects-Tw9MjeQHL3qFY1PO': design('Furnace Form turns the body into a stoked furnace, shown as roaring flames with rising smoke.', () => [
     P('Furnace flames', ['flames.04.loop.orange'], { scale: 1.45, opacity: 0.9 }),
@@ -76,7 +76,7 @@ export default {
   ]),
   'pf2e:feat-effects-wmBSuZPqiDyUNwXH': design('Dragon\'s Rage Wings ties a rage to draconic flight, shown as a furious red orbit with wingbeat gusts.', () => [
     P('Rage', ['aura_themed.01.orbit.loop.metal.01.red', 'aura_themed.01.orbit.loop.metal.01.grey'], { scale: 1.5, opacity: 0.85, ...tint('#d03020'), ...spin(7000) }),
-    P('Wingbeat gusts', ['wind_lines.01.01.white'], { scale: 1.7, opacity: 0.5 }),
+    P('Wingbeat gusts', ['wind_lines.01.01.white'], { scale: 1.5, opacity: 0.5 }),
   ]),
   'pf2e:feat-effects-nMMqJQsdV37TLfTu': design('Monarch Wings are fey butterfly wings, shown as a flutter of butterflies around the figure.', () => [
     P('Butterfly wings', ['butterflies.loop.01.bluepurple', 'butterflies.loop.01.greenyellow'], { scale: 1.5, opacity: 0.95 }),
@@ -209,9 +209,9 @@ export default {
 
   // ---------------- creatures, swarms and bones ----------------
   'pf2e:feat-effects-r4kb2zDepFeczMsl': design('Bone Swarm turns the body into a Huge flying swarm of bones, shown as two counter-rotating clouds of bone fragments.', () => [
-    P('Bone cloud', ['aura_themed.01.orbit.loop.metal.01.grey'], { scale: 1.9, opacity: 0.9, ...spin(5000) }),
+    P('Bone cloud', ['aura_themed.01.orbit.loop.metal.01.grey'], { scale: 1.5, opacity: 0.9, ...spin(5000) }),
     P('Inner bone cloud', ['aura_themed.01.orbit.loop.metal.01.grey'], { scale: 1.3, opacity: 0.8, ...spin(4000, -1) }),
-    P('Gravedust', ['fumes.04.loop.grey'], { scale: 1.6, opacity: 0.3 }),
+    P('Gravedust', ['fumes.04.loop.grey'], { scale: 1.5, opacity: 0.3 }),
   ]),
   'pf2e:feat-effects-4Zj71naHbY6O9ggP': design('Bristle curls the body so bone spines splay outward, shown as a ring of bone spikes.', () => [
     P('Splayed spines', ['ice_spikes.radial.loop.grey', 'ice_spikes.radial.loop.white'], { scale: 1.1, opacity: 0.9, ...tint('#e6dcc4') }),
@@ -224,8 +224,8 @@ export default {
     P('Bleeding foot', ['markers.drop.red.01', 'markers.drop.red.02'], { scale: 0.7, opacity: 0.8, offsetY: 0.3, offsetUnits: T }),
   ]),
   'pf2e:bestiary-effects-4bR1i7qzmSJ5No6O': design('Bond in Light makes the creature glow with bright light, shown as a bright steady orb with a soft outer glow.', () => [
-    P('Bright light', ['markers.light_orb.loop.yellow', 'markers.light_orb.loop.blue'], { scale: 1.6, opacity: 0.7, ...tint('#fff0b0') }),
-    P('Outer glow', ['template_circle.aura.03.outward.001.loop.combined.greenyellow', 'template_circle.aura.03.outward.001.loop.combined.blue'], { scale: 1.8, below: true, opacity: 0.35, ...tint('#d9e48a') }),
+    P('Bright light', ['markers.light_orb.loop.yellow', 'markers.light_orb.loop.blue'], { scale: 1.5, opacity: 0.7, ...tint('#fff0b0') }),
+    P('Outer glow', ['template_circle.aura.03.outward.001.loop.combined.greenyellow', 'template_circle.aura.03.outward.001.loop.combined.blue'], { scale: 1.5, below: true, opacity: 0.35, ...tint('#d9e48a') }),
   ]),
 
   // ---------------- nets, vines, slime and mud (movement penalties with a described cause) ----------------

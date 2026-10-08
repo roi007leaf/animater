@@ -5,6 +5,7 @@ import { applyEffectOptions, applyMediaOptions } from "./stage-options.mjs";
 import { tokenFootprint, effectFootprint, artworkSize, offsetInGridSquares, beamGeometry } from "./media-preview.mjs";
 import { prepareRecipeSounds } from "./spell-sounds.mjs";
 import { registeredMedia, mediaForReference } from './media-library-model.mjs';
+import { stageTiers } from './quality.mjs';
 const SOUND_PRELOAD_TIMEOUT = 2000;
 // Weapon hits and residue are sized to the target token; the world setting
 // enlarges them to JB2A's intended swing size. Placed Area Fire keeps its template size.
@@ -129,6 +130,9 @@ export class AnimaterRuntime {
     const session = `${ID}-${this.host.userId()}-${crypto.randomUUID()}`;
     const epoch = this.epoch;
     let failed = false;
+    // A stage planned once per target keeps the tier of its first copy.
+    const tiers = new Map();
+    for (const [s, tier] of stageTiers(plan)) tiers.set(s.stageId, Math.min(tier, tiers.get(s.stageId) ?? tier));
     const build = (stages) => {
       const sequence = this.host.sequence();
       for (const s of stages) {
@@ -146,6 +150,9 @@ export class AnimaterRuntime {
           if (s.fadeOut) sound.fadeOutAudio(s.fadeOut, { ease: s.ease });
           continue;
         }
+        // Optional layers only reach viewers whose quality setting allows them.
+        const users = preview ? null : this.host.usersFor?.(tiers.get(s.stageId) ?? 0) ?? null;
+        if (users && !users.length) continue;
         const e = sequence
           .effect()
           .name(session)
@@ -154,6 +161,7 @@ export class AnimaterRuntime {
           // Recipe durations, motion and stage links use elapsed milliseconds.
           .duration(s.duration * s.playbackRate + (s.clipEnd ? 0 : s.clipStart))
           .opacity(s.opacity);
+        if (users) e.forUsers(users);
         if (s.kind === "sprite") e.copySprite(s.destination);
         else e.file(s.asset);
         const location = {

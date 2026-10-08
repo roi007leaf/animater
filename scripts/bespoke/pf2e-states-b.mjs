@@ -5,18 +5,18 @@ import { cast, travel, projectile, impact, area, aura, sprite, motion, tint, spi
 
 const L = (label, assets, o = {}) => aura(label, assets, { persist: true, duration: 6000, ...o });
 
-const flight = () => [L('Wind streaks', ['wind_lines.01.02.white'], { scale: 1.7, opacity: 0.9 }), L('Cloud puffs', ['ambient_fog.001.loop.small.white'], { scale: 1.25, below: true, opacity: 0.55 })];
-const flightFire = () => [L('Flame cloak', ['flames.04.loop.orange'], { scale: 1.5, opacity: 0.9 }), L('Hot updraft', ['wind_lines.01.02.white'], { scale: 1.7, opacity: 0.55 })];
+const flight = () => [L('Wind streaks', ['wind_lines.01.02.white'], { scale: 1.5, opacity: 0.9 }), L('Cloud puffs', ['ambient_fog.001.loop.small.white'], { scale: 1.25, below: true, opacity: 0.55 })];
+const flightFire = () => [L('Flame cloak', ['flames.04.loop.orange'], { scale: 1.5, opacity: 0.9 }), L('Hot updraft', ['wind_lines.01.02.white'], { scale: 1.5, opacity: 0.55 })];
 const flightHoly = () => [L('Halo radiance', ['template_circle.aura.03.outward.001.loop.combined.greenyellow', 'template_circle.aura.03.outward.001.loop.combined.blue'], { ...tint('#ffe2a0'), scale: 1, opacity: 0.8 }), L('Drifting stars', ['twinkling_stars.points06.orange'], { ...tint('#ffe2a0'), scale: 1.3 })];
-const flightDragon = () => [L('Draconic embers', ['aura_themed.01.orbit.loop.metal.01.red', 'aura_themed.01.orbit.loop.metal.01.grey'], { scale: 1.9, opacity: 0.85 }), L('Wing-beat wind', ['wind_lines.01.02.white'], { scale: 1.7, opacity: 0.7 })];
-const flightBone = () => [L('Bone motes', ['aura_themed.01.orbit.loop.metal.01.grey'], { ...tint('#e3dcc8'), scale: 1.8 }), L('Wing-beat wind', ['wind_lines.01.02.white'], { scale: 1.7, opacity: 0.6 })];
-const flightStorm = () => [L('Storm charge', ['lightning_orb.01.loop.bluepurple'], { scale: 1.6 }), L('Gale', ['wind_lines.01.02.white'], { scale: 1.8, opacity: 0.75 })];
-const flightMoon = () => [L('Moonbeam column', ['moonbeam.01.loop.blue'], { scale: 1.2, opacity: 0.85 }), L('Lofting wind', ['wind_lines.01.02.white'], { scale: 1.7, opacity: 0.5 })];
+const flightDragon = () => [L('Draconic embers', ['aura_themed.01.orbit.loop.metal.01.red', 'aura_themed.01.orbit.loop.metal.01.grey'], { scale: 1.5, opacity: 0.85 }), L('Wing-beat wind', ['wind_lines.01.02.white'], { scale: 1.5, opacity: 0.7 })];
+const flightBone = () => [L('Bone motes', ['aura_themed.01.orbit.loop.metal.01.grey'], { ...tint('#e3dcc8'), scale: 1.5 }), L('Wing-beat wind', ['wind_lines.01.02.white'], { scale: 1.5, opacity: 0.6 })];
+const flightStorm = () => [L('Storm charge', ['lightning_orb.01.loop.bluepurple'], { scale: 1.5 }), L('Gale', ['wind_lines.01.02.white'], { scale: 1.5, opacity: 0.75 })];
+const flightMoon = () => [L('Moonbeam column', ['moonbeam.01.loop.blue'], { scale: 1.2, opacity: 0.85 }), L('Lofting wind', ['wind_lines.01.02.white'], { scale: 1.5, opacity: 0.5 })];
 const vapor = () => [L('Vapor body', ['ambient_fog.001.loop.small.white'], { scale: 1.4, opacity: 0.8 }), L('Mist drift', ['wind_lines.01.02.white'], { scale: 1.5, opacity: 0.45 })];
-const swift = () => [L('Speed lines', ['wind_lines.01.01.white'], { scale: 1.7 }), L('Quickened ring', ['token_border.circle.spinning.blue.007'], { scale: 1.35, opacity: 0.55 })];
-const quicksilver = () => [L('Quicksilver motes', ['aura_themed.01.orbit.loop.metal.01.grey'], { ...tint('#dfe6f2'), scale: 1.8 }), L('Speed lines', ['wind_lines.01.01.white'], { scale: 1.6, opacity: 0.8 })];
-const ghostRush = () => [L('Spectral mist', ['ambient_fog.001.loop.small.white'], { ...tint('#c9d6ff'), scale: 1.35, opacity: 0.7 }), L('Rushing wind', ['wind_lines.01.01.white'], { scale: 1.6 })];
-const smokeSpeed = () => [L('Trailing smoke', ['smoke.plumes_loop.01.grey'], { scale: 1.5, opacity: 0.75 }), L('Speed lines', ['wind_lines.01.01.white'], { scale: 1.6, opacity: 0.6 })];
+const swift = () => [L('Speed lines', ['wind_lines.01.01.white'], { scale: 1.5 }), L('Quickened ring', ['token_border.circle.spinning.blue.007'], { scale: 1.35, opacity: 0.55 })];
+const quicksilver = () => [L('Quicksilver motes', ['aura_themed.01.orbit.loop.metal.01.grey'], { ...tint('#dfe6f2'), scale: 1.5 }), L('Speed lines', ['wind_lines.01.01.white'], { scale: 1.5, opacity: 0.8 })];
+const ghostRush = () => [L('Spectral mist', ['ambient_fog.001.loop.small.white'], { ...tint('#c9d6ff'), scale: 1.35, opacity: 0.7 }), L('Rushing wind', ['wind_lines.01.01.white'], { scale: 1.5 })];
+const smokeSpeed = () => [L('Trailing smoke', ['smoke.plumes_loop.01.grey'], { scale: 1.5, opacity: 0.75 }), L('Speed lines', ['wind_lines.01.01.white'], { scale: 1.5, opacity: 0.6 })];
 const glow = () => [L('Soft radiance', ['markers.light.loop.yellow02', 'markers.light.loop.blue'], { ...tint('#ffe2a0'), scale: 1.5, opacity: 0.9 }), L('Light sparkle', ['twinkling_stars.points05.white'], { ...tint('#fff2c0'), scale: 1.1, opacity: 0.9 })];
 const eyesDark = () => [L('Watchful eyes', ['eyes.01.dark_yellow.single', 'eyes.01.dark_green.single'], { ...tint('#ffd75e'), scale: 1.1 })];
 const eyesMany = () => [L('Eyes all around', ['eyes.01.dark_yellow.many', 'eyes.01.dark_green.many'], { ...tint('#d9b8ff'), scale: 1.3 })];
@@ -24,10 +24,10 @@ const eyesMenace = () => [L('Baleful eye', ['eyes.01.dark_red.single', 'eyes.01.
 const web = () => [L('Clinging web', ['web.loop.002.white'], { scale: 1.5, opacity: 0.9 })];
 const entangle = () => [L('Grasping growth', ['entangle.02.loop.02.green'], { scale: 1.3 })];
 const vines = () => [L('Living vines', ['vine.loop.nature.group.01.green'], { scale: 1.4 })];
-const ice = () => [L('Frost motes', ['aura_themed.01.orbit.loop.cold.01.blue'], { scale: 1.8, opacity: 0.8 }), L('Snowflake', ['markers.snowflake.blue.01'], { scale: 0.75 })];
+const ice = () => [L('Frost motes', ['aura_themed.01.orbit.loop.cold.01.blue'], { scale: 1.5, opacity: 0.8 }), L('Snowflake', ['markers.snowflake.blue.01'], { scale: 0.75 })];
 const iceChain = () => [L('Frozen chains', ['markers.chain.spectral_standard.loop.02.blue'], { scale: 1.4 }), L('Snowflake', ['markers.snowflake.blue.02'], { scale: 0.7 })];
 const coldFog = () => [L('Freezing fog', ['ambient_fog.001.loop.large.blue', 'ambient_fog.001.loop.large.white'], { ...tint('#bfe6ff'), scale: 1.2, opacity: 0.85 })];
-const sandstorm = () => [L('Blowing sand', ['smoke.plumes_loop.01.grey'], { ...tint('#d8b878'), scale: 1.7, opacity: 0.85 }), L('Gale', ['wind_lines.01.02.white'], { ...tint('#e9d3a2'), scale: 1.7, opacity: 0.7 })];
+const sandstorm = () => [L('Blowing sand', ['smoke.plumes_loop.01.grey'], { ...tint('#d8b878'), scale: 1.5, opacity: 0.85 }), L('Gale', ['wind_lines.01.02.white'], { ...tint('#e9d3a2'), scale: 1.5, opacity: 0.7 })];
 const sandForm = () => [L('Sand body', ['smoke.plumes_loop.01.grey'], { ...tint('#d8b878'), scale: 1.5, opacity: 0.9 })];
 const ashForm = () => [L('Drifting ash', ['smoke.plumes_loop.01.grey'], { ...tint('#8a8a92'), scale: 1.5, opacity: 0.8 }), L('Dying embers', ['particles.swirl.orange.01.01', 'particles.swirl.greenyellow.01.01'], { ...tint('#ff9a4a'), scale: 1.3, opacity: 0.7 })];
 const stench = () => [L('Foul fumes', ['fumes.04.loop.green', 'fumes.04.loop.grey'], { ...tint('#8fd45a'), scale: 1.5, opacity: 0.85 })];
@@ -36,18 +36,18 @@ const violetFog = () => [L('Violet fog', ['ambient_fog.001.loop.large.bluepurple
 const mist = () => [L('Drifting mist', ['ambient_fog.001.loop.small.white'], { scale: 1.4, opacity: 0.8 })];
 const acid = () => [L('Corrosive bubbling', ['bubble.001.001.loop.green', 'bubble.001.001.loop.blue'], { ...tint('#9be15a'), scale: 1.5 })];
 const fire = () => [L('Flames', ['flames.04.loop.orange'], { scale: 1.3 }), L('Rising embers', ['particles.swirl.orange.01.01', 'particles.swirl.greenyellow.01.01'], { ...tint('#ffb978'), scale: 1.3, opacity: 0.8 })];
-const lightning = () => [L('Electric crackle', ['lightning_orb.01.loop.bluepurple'], { scale: 1.6 })];
-const rage = () => [L('Rage haze', ['aura_themed.01.orbit.loop.metal.01.red', 'aura_themed.01.orbit.loop.metal.01.grey'], { scale: 1.8 }), L('Rage pulse', ['token_border.circle.spinning.orange.012', 'token_border.circle.spinning.blue.007'], { ...tint('#ff4a3a'), scale: 1.4, opacity: 0.6 })];
+const lightning = () => [L('Electric crackle', ['lightning_orb.01.loop.bluepurple'], { scale: 1.5 })];
+const rage = () => [L('Rage haze', ['aura_themed.01.orbit.loop.metal.01.red', 'aura_themed.01.orbit.loop.metal.01.grey'], { scale: 1.5 }), L('Rage pulse', ['token_border.circle.spinning.orange.012', 'token_border.circle.spinning.blue.007'], { ...tint('#ff4a3a'), scale: 1.4, opacity: 0.6 })];
 const luck = () => [L('Stars of fortune', ['markers.circle_of_stars.yellowblue', 'markers.circle_of_stars.blue'], { ...tint('#ffe27a'), scale: 1.2 })];
 const misfortune = () => [L('Ill omen', ['markers.horror.purple.02'], { scale: 0.75 })];
 const moon = () => [L('Moonlight', ['moonbeam.01.loop.blue'], { scale: 1.1, opacity: 0.85 })];
-const bubbles = () => [L('Rising bubbles', ['bubble.001.001.loop.blue'], { scale: 1.6 })];
-const rain = () => [L('Cascading water', ['shield.01.loop.blue'], { scale: 1.6, opacity: 0.8 }), L('Droplets', ['bubble.001.001.loop.blue'], { scale: 1.4, opacity: 0.8 })];
+const bubbles = () => [L('Rising bubbles', ['bubble.001.001.loop.blue'], { scale: 1.5 })];
+const rain = () => [L('Cascading water', ['shield.01.loop.blue'], { scale: 1.5, opacity: 0.8 }), L('Droplets', ['bubble.001.001.loop.blue'], { scale: 1.4, opacity: 0.8 })];
 const whirl = () => [L('Swirling wind', ['template_circle.whirl.loop.blue'], { ...tint('#dbe9ff'), scale: 0.9, opacity: 0.85 })];
-const breeze = () => [L('Gentle breeze', ['wind_lines.01.02.white'], { scale: 1.8, opacity: 0.75 })];
+const breeze = () => [L('Gentle breeze', ['wind_lines.01.02.white'], { scale: 1.5, opacity: 0.75 })];
 const grease = () => [L('Slick oil', ['grease.dark_brown.loop'], { scale: 1.2, below: true })];
 const ooze = () => [L('Ooze bubbles', ['bubble.001.001.loop.green', 'bubble.001.001.loop.blue'], { ...tint('#8fd45a'), scale: 1.5 }), L('Slick sheen', ['grease.dark_green.loop', 'grease.dark_brown.loop'], { ...tint('#6fae45'), scale: 1.2, below: true, opacity: 0.8 })];
-const dino = () => [L('Primal might', ['aura_themed.01.orbit.loop.wood.01.green'], { ...tint('#b08a5a'), scale: 1.9 })];
+const dino = () => [L('Primal might', ['aura_themed.01.orbit.loop.wood.01.green'], { ...tint('#b08a5a'), scale: 1.5 })];
 const cosmic = () => [L('Starfield', ['twinkling_stars.points08.white'], { scale: 1.4 }), L('Orbiting stars', ['markers.circle_of_stars.blue'], { scale: 1.3, opacity: 0.8 })];
 const fey = () => [L('Fairy lights', ['fairies.loop.01.greenyellow', 'fairies.loop.01.bluepurple'], { scale: 1.4 })];
 const dust = () => [L('Glittering dust', ['twinkling_stars.points05.white'], { ...tint('#ffd6f5'), scale: 1.3 })];
@@ -57,10 +57,10 @@ const horror = () => [L('Creeping dread', ['markers.horror.purple.01'], { scale:
 const tremor = () => [L('Ground ripples', ['template_circle.out_pulse.01.loop.bluewhite'], { ...tint('#d8b878'), scale: 1.2, below: true, opacity: 0.8 })];
 const bubbleShell = () => [L('Air bubble', ['markers.bubble.loop.blue'], { scale: 1.1 })];
 const steam = () => [L('Steam', ['fumes.steam.white'], { scale: 1.5, opacity: 0.85 }), L('Furnace glow', ['flames.04.loop.orange'], { scale: 1.1, opacity: 0.55 })];
-const magnet = () => [L('Magnetic pull', ['aura_themed.01.inward.loop.metal.01.grey'], { ...tint('#b7c4e0'), scale: 1.9 })];
+const magnet = () => [L('Magnetic pull', ['aura_themed.01.inward.loop.metal.01.grey'], { ...tint('#b7c4e0'), scale: 1.5 })];
 const stars = () => [L('Shooting stars', ['twinkling_stars.points07.orange'], { scale: 1.4 })];
 const pollen = () => [L('Drifting pollen', ['particles.swirl.greenyellow.01.01'], { ...tint('#e8e060'), scale: 1.5, opacity: 0.9 })];
-const ghostly = () => [L('Spectral swirl', ['aura_themed.01.orbit.loop.cold.01.blue'], { ...tint('#d6e8ff'), scale: 1.8, opacity: 0.85 })];
+const ghostly = () => [L('Spectral swirl', ['aura_themed.01.orbit.loop.cold.01.blue'], { ...tint('#d6e8ff'), scale: 1.5, opacity: 0.85 })];
 
 export default {
   'pf2e:equipment-effects-Zdh2uO1vVYJmaqld': design("Wind streaks and cloud puffs make the flying or floating state read as being carried on air, instead of a generic ring.", flight),

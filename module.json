@@ -2,7 +2,7 @@
   "id": "animater",
   "title": "Animater",
   "description": "Animation module using JB2A animations (Free and Patreon) and Sequencer. PF2e, SF2e, and D&D 5e.",
-  "version": "0.3.0",
+  "version": "0.1.0",
   "authors": [{ "name": "Animater contributors" }],
   "compatibility": { "minimum": "14", "verified": "14" },
   "esmodules": ["scripts/main.mjs"],

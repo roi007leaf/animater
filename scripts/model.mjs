@@ -145,6 +145,8 @@ export function validateRecipe(input) {
           scale: number(s.scale, 0.1, 5, 1),
           opacity: number(s.opacity, 0.1, 1, 1),
           below: s.below === true,
+          // Drawn over the bearer's artwork (head-level stars, strands across the body).
+          ...(s.above === true && s.below !== true ? { above: true } : {}),
           persist: (s.kind === "aura" || s.kind==='tokenfx' && input.lifecycle==='document' && input.trigger==='effect') && s.persist === true,
           ...(s.kind==='aura'&&Number(s.auraRadius)>0?{auraRadius:number(s.auraRadius,0.1,240,5),auraSlug:text(s.auraSlug,100)}:{}),
           ...(s.elementTint === true ? { elementTint: true } : {}),

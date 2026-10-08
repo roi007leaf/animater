@@ -19,6 +19,18 @@ export function stateVisible(item,token,{isGM=false,secretConditions=false}={},l
  if(entry?.private&&!token.isOwner&&!token.actor?.isOwner)return false;
  return true;
 }
+// Valued conditions (Frightened 1–4, Clumsy, Drained, Doomed…) grow with their
+// value: fainter and slower at 1, full strength, larger and faster at 3+.
+export function conditionLevel(item){
+ if(item?.type!=='condition'||item.system?.value?.isValued!==true)return 0;
+ const value=Number(item.value??item.system.value.value);
+ return Number.isFinite(value)&&value>0?Math.min(Math.round(value),4):1;
+}
+export function levelIntensity(level){
+ if(!level)return {opacity:1,scale:1,rate:1};
+ // The condition's own art carries the level: faint and calm at 1, larger, brighter and faster at 4.
+ return {opacity:[.75,.86,.95,1][level-1],scale:[.9,1.05,1.2,1.35][level-1],rate:[.8,1.15,1.5,1.85][level-1]};
+}
 export function actorStates(actor,profile){
  const effects=Array.from(actor?.itemTypes?.effect??actor?.items??[]).filter(i=>i.type==='effect');
  // Native prepared conditions include synthetic GrantItem conditions and have
@@ -53,6 +65,11 @@ export function stateDocumentKey(item){return item.animaterAura?`aura:${item.ani
 export function storedStateDocument(item){
  const visited=new Set();let current=item.animaterAura?.source??item;
  while(current?.isInMemoryOnly){if(visited.has(current.id))return null;visited.add(current.id);current=current.appliedBy??current.grantedBy;}
+ // Derived conditions (Off-Guard from Grabbed, Quickened from Haste) carry an
+ // embedded-looking UUID that no stored document answers; Sequencer cannot tie
+ // to it, so those layers tie to the token and end through state reconciliation.
+ const owner=current?.parent;
+ if(current?.id&&owner?.items&&typeof owner.items.has==='function'&&!owner.items.has(current.id))return null;
  return current?.uuid??null;
 }
 
@@ -67,14 +84,19 @@ export class PersistentStates{
   const revision=++this.revision,desired=new Map(),h=this.host;
   if(!this.closed&&h.ready()){
    const saved=h.recipes?.()??[],catalog=h.catalog(),visibility=h.visibility?.()??{},scene=h.sceneId();
+   // The device quality setting caps how many states each token shows.
+   const budget=h.budget?.()??{states:Infinity,layers:Infinity};
    for(const token of h.tokens()){
     if(!token.actor)continue;
-    for(const item of (h.actorStates??actorStates)(token.actor)){
+    let shown=0;
+    const states=(h.actorStates??actorStates)(token.actor);
+    for(const item of states){
+     if(shown>=budget.states)break;
      if(!(h.activeState??activeState)(item)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
      const state=(h.normalizeState??normalizeStateCatalogState)(h.state(h.stateKind?.(item)??item.type)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog());if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType]);
-     if(!desired.has(key))desired.set(key,{key,signature,token,item,recipe,opacity:state.opacity});
+     if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget),token,item,recipe,opacity:state.opacity});shown++;}
     }
    }
   }
@@ -94,17 +116,20 @@ export class PersistentStates{
   const h=this.host,catalog=h.catalog(),grid=h.gridSize();
   const plan=planRecipe(r.recipe,catalog,{source:r.token,targets:[],gridSize:grid});
   const sequence=h.sequence();
+  const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=budget.layers;
+  let layers=0;
   for(const s of plan){
    if(s.kind!=='aura'||!s.persist)continue;
+   if(layers++>=maxLayers)continue;
    const media=mediaForReference(catalog,s.asset);
    const e=sequence.effect().file(s.asset).name(r.name).origin(r.item.uuid??r.recipe.itemUuid)
     .attachTo(r.token,{offset:offsetInGridSquares(s,r.token,grid),gridUnits:true,bindRotation:s.bindRotation,bindAlpha:true,bindVisibility:true,bindElevation:true})
-    .size(artworkSize(effectFootprint(s,r.token,grid,h.gridDistance?.()??5)*s.scale,media)).opacity(s.opacity*r.opacity)
+    .size(artworkSize(effectFootprint(s,r.token,grid,h.gridDistance?.()??5)*s.scale*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity))
     .persist().temporary().delay(s.delay).fadeIn(s.fadeIn).fadeOut(s.fadeOut);
    const documents=[r.token.document?.uuid,(h.storedDocument??storedStateDocument)(r.item)].filter(Boolean);
    if(documents.length)e.tieToDocuments(documents);
-   applyEffectOptions(e,{...s,oneShot:false});
-   if(s.below)e.belowTokens();if(s.maskToken)e.mask(r.token);
+   applyEffectOptions(e,{...s,oneShot:false,playbackRate:(s.playbackRate??1)*level.rate});
+   if(s.below)e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
   }
   if(r.cancelled||this.closed)return;
   const filters=plan.filter(s=>s.kind==='tokenfx'&&s.persist);

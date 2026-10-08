@@ -15,7 +15,7 @@ import {FEAT_MOTIFS,featRecipe} from '../scripts/feat-choreography.mjs';
 import {weaponRecipe} from '../scripts/weapon-choreography.mjs';
 import {stateRecipe} from '../scripts/state-catalog.mjs';
 import {statePresentation} from '../scripts/state-presentation.mjs';
-import {buildConditionDesign} from './pf2e-condition-designs.mjs';
+import {buildConditionDesign,CONDITION_PLANS} from './pf2e-condition-designs.mjs';
 import {buildAuraDesign} from './pf2e-aura-designs.mjs';
 import {frameFeatCatalog} from './feat-framing.mjs';
 import {diversifySpellMedia} from './spell-media-variety.mjs';
@@ -385,9 +385,10 @@ for(const entry of source.entries){
  }else if(['condition','effect'].includes(item.type)){
   const kind=entry.pack==='conditions'||item.type==='condition'?'condition':'effect',meta=metadata(entry,kind),slug=meta.slug,shared=pfStates.get(item._id),design={...classify(item),...(/^spell-effect-skyfire-wings-/.test(slug)?{theme:'fire'}:{})},profile=profiles[design.theme];
   const state={...(shared?structuredClone(shared):{}),...meta,id:`${entry.pack}-${item._id}`,systemId:'sf2e',slug,group:entry.pack,nativeDuration:s.duration??null,theme:design.theme,quality:design.quality,color:design.hex??profile.hex,description:s.description?.value??'',...selectStateMedia(databases,design.theme,slug,design.color),opacity:1,scale:1.35};
-  if(item.type==='condition')Object.assign(state,buildConditionDesign(state,databases));
+  // SF2e-only afflictions in the conditions pack (Glitching, Suppressed, Untethered)
+  // share the reviewed debuff plans with the PF2e conditions.
+  if(item.type==='condition'||kind==='condition'&&Object.hasOwn(CONDITION_PLANS,slug))Object.assign(state,buildConditionDesign(state,databases));
   else Object.assign(state,statePresentation(state));
-  if(slug==='suppressed')Object.assign(state,{theme:'slow',below:true,scale:1.4,offsetY:.2,assets:selectStateMedia(databases,'slow',slug,'red').assets});
   if(shared?.auras)state.auras=[];if(shared?.auraSources)state.auraSources=[];
   for(const rule of s.rules??[])if(rule.key==='Aura'){
    state.auras??=[];state.auras.push({slug:rule.slug??slug,radius:typeof rule.radius==='number'?rule.radius:null});

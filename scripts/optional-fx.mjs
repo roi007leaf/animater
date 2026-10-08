@@ -44,7 +44,7 @@ export function installedFxCatalog({modules, tokenMagic, fxmaster, config, local
   const tokenReady = !!(modules?.get('tokenmagic')?.active && transientVersion(modules.get('tokenmagic').version) && tokenMagic?.togglePreset && tokenMagic?.getPresets);
   const sceneReady = !!(modules?.get('fxmaster')?.active && fxmaster?.effects?.play && fxmaster?.effects?.stop);
   const presets = tokenReady ? ['tmfx-main','tmfx-region'].flatMap(library => {
-    try { return (tokenMagic.getPresets(library) ?? []).filter(p=>p?.name && p.params?.length).map(p=>tokenPresetMetadata(p,library)); }
+    try { return (tokenMagic.getPresets(library) ?? []).filter(p=>p?.name && p.params?.length && presetAssetsAvailable(p,modules)).map(p=>tokenPresetMetadata(p,library)); }
     catch { return []; }
   }) : [];
   const effects = sceneReady ? ['particle','filter'].flatMap(category =>
@@ -54,6 +54,15 @@ export function installedFxCatalog({modules, tokenMagic, fxmaster, config, local
       catch { return []; }
     })) : [];
   return {tokenReady,sceneReady,isGM,presets,effects};
+}
+// Token Magic keeps presets in world settings, so a preset can outlive the
+// module that ships its sprite images (Baileywiki '[BW]' overlays). Only offer
+// presets whose image modules are active.
+export function presetAssetsAvailable(preset, modules) {
+  return (preset.params ?? []).every(p => {
+    const id = /^modules\/([^/]+)\//.exec(String(p?.imagePath ?? ''))?.[1];
+    return !id || !!modules?.get?.(id)?.active;
+  });
 }
 // Discovery exposes metadata only. Native shader parameters stay with Token Magic.
 export function tokenPresetMetadata(preset, library = preset.library) {
