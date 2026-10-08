@@ -250,7 +250,7 @@ const sunburst = design('Brilliant sunlight flashes across the whole sphere, sea
 
 const sunbeamRecast = design('A new 5-foot-wide beam of brilliant sunlight blasts from the caster’s hand.', () => [
   cast('Sunlight in hand', ['divine_smite.caster.yellowwhite', 'divine_smite.caster.blueyellow'], { stageId: 'sbr-c', scale: 0.55, duration: 800 }),
-  area('Beam of sunlight', ['breath_weapons02.burst.line.holy.yellow.01', 'breath_weapons02.burst.line.fire.orange.01'], { stageId: 'sbr-t', after: 'sbr-c', anchor: 'start', offset: 300, duration: 1600, ...tint('#fff1a8') }),
+  area('Beam of sunlight', ['breath_weapons02.burst.line.holy.yellow.01', 'breath_weapons02.burst.line.fire.orange.01'], { stageId: 'sbr-t', after: 'sbr-c', anchor: 'start', offset: 300, duration: 1600, scale: 2.2, ...tint('#fff1a8') }),
   motion('cower', 'targets', { after: 'sbr-t', anchor: 'end', offset: -120, duration: 900, ...OPT }),
 ]);
 

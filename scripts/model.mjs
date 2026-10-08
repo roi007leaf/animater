@@ -377,7 +377,9 @@ function buildPlan(recipe, catalog, context, requireMedia) {
               s.subject === "targets")
           ? context.targets
           : [s.kind === "template" ? context.template : context.source];
-    if(destinations===context.targets && o.optionalTargets && !destinations?.length)continue;
+    // An area can catch no one (Fear aimed at empty ground): its creature
+    // reactions skip while the area itself still plays.
+    if(destinations===context.targets && (o.optionalTargets || context.template) && !destinations?.length)continue;
     if(destinations===context.targets&&o.targetSelection==='secondary'){
       destinations=destinations.slice(1);
       if(o.targetLimit>0)destinations=destinations.slice(0,o.targetLimit);

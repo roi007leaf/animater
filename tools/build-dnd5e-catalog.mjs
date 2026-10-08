@@ -171,7 +171,7 @@ function finiteRecipe(entry,row,raw,mode){
   if(d.nativeCounts?.layers===7){
    const colors=['#ff4040','#ff9f38','#ffe166','#62dc85','#73b9ff','#795dce','#b87afa'];
    for(const [i,tint]of colors.entries())add('template','area',`Prismatic layer ${i+1}`,{delay:350+i*100,scale:d.area.type==='line'?.2:.72+i*.05,areaLayout:layout,tintEnabled:true,colorize:true,tint,offsetY:d.area.type==='line'?(i-3)*.12:0});
-  }else add('template','area',a.name||'Area manifests',{delay:350,scale:1,areaLayout:layout});
+  }else add('template','area',a.name||'Area manifests',{delay:350,scale:d.areaScale??1,areaLayout:layout});
   gesture('source',0);
  }else{
   if(physical&&mode==='melee'&&!d.flyingWeapon)motion('lunge','source',0,1500,.22);

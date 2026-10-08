@@ -236,16 +236,13 @@ export class RecipePreview {
         video.currentTime >= opts.clipEnd / 1000
       )
         video.pause();
-      if (video.tagName === "AUDIO")
-        video.volume = Math.max(
-          0,
-          Math.min(
-            1,
-            opts.volume *
-              previewPose({ ...stage, opacity: 1, tracks: [] }, state.localTime)
-                .alpha,
-          ),
-        );
+      if (video.tagName === "AUDIO") {
+        // A stage without a volume, or a pose before its first key, must not
+        // hand the media element NaN (it throws and stops the preview frame).
+        const volume = opts.volume *
+          previewPose({ ...stage, opacity: 1, tracks: [] }, state.localTime).alpha;
+        video.volume = Number.isFinite(volume) ? Math.max(0, Math.min(1, volume)) : 0;
+      }
       if (state.state !== "playing") {
         video.pause();
       }

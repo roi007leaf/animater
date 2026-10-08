@@ -16,6 +16,8 @@ const named={
  'witch bolt':{theme:'electricity',delivery:'ray',bolt:'witch_bolt',sound:'lightningBolt'},
  'fire bolt':{theme:'fire',delivery:'missile',bolt:'fire_bolt',sound:'fireRay'},
  'guiding bolt':{theme:'light',delivery:'missile',bolt:'guiding_bolt',sound:'radiantRay'},
+ // A 5-foot sphere bursts evenly; the theme's side splash points one way.
+ 'acid splash':{theme:'acid',area:'liquid.splash.bright_green,liquid.splash.green'},
  'acid arrow':{theme:'acid',delivery:'missile',bolt:'arrow',sound:'acidSplash'},
  "melf's acid arrow":{theme:'acid',delivery:'missile',bolt:'arrow',sound:'acidSplash'},
  'chromatic orb':{theme:'force',delivery:'missile',bolt:'chromatic_orb,spell_projectile',sound:'force',note:'One elemental orb. Choose its damage material in Customize; 2024 bounce requires matching damage dice and is never fabricated automatically.'},
@@ -103,6 +105,8 @@ const overrides=[
  [/^haste$/,{aura:'wind_lines.01',hit:'wind_lines.01'}],
  [/^(?:thunderwave|shatter)$/,{cast:'cast_generic'}],
  [/\bof wounding$/,{theme:'blood'}],
+ // The holy line footage is a thin core in a tall frame: widen it to read as a 5-foot beam.
+ [/^sunbeam$/,{areaScale:2.2}],
  [/^hellish rebuke$/,{hit:'flames.green,flames.04.complete.green',aura:'flames.green,flames.04.loop.green',tints:{hit:'#62dc85',aura:'#62dc85'}},null,'2024'],
  [/^bestow curse$/,{theme:'curse',hit:'condition.curse',aura:'condition.curse'}],
  [/^mending$/,{theme:'transform',hit:'glint,swirling_sparkles',aura:'glint,swirling_sparkles'}],

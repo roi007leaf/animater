@@ -34,6 +34,14 @@ test("native PF2e cones retain vertex, reach and aperture instead of becoming ci
   for (const bad of [{ radius: 0 }, { angle: 180 }, { rotation: NaN }])
     assert.equal(templateArea({ ...region, shapes: [{ ...region.shapes[0], ...bad }] }), null);
 });
+test("Foundry 14 template documents read their Region's canvas geometry, not the 100px-grid distance", () => {
+  // A 15 ft cone on a 296px grid: the Region holds 888px, the template document reports 44.4.
+  const region = { documentName: "Region", shapes: [{ type: "cone", x: 300, y: 400, radius: 888, angle: 53.13, rotation: 0 }] };
+  const template = { documentName: "MeasuredTemplate", id: "t1", t: "cone", x: 300, y: 400, distance: 44.4, angle: 53.13, direction: 0, parent: { regions: new Map([["t1", region]]) } };
+  const area = templateArea(template, { gridSize: 296, gridDistance: 5 });
+  assert.equal(area.length, 888);
+  assert.deepEqual(area.endpoint, { x: 1188, y: 400 });
+});
 test("private cone preview preserves selected aperture and cleans up its own footprint", async () => {
   const recipe = { previewArea: { type: "cone", value: 30 }, stages: [{ kind: "template" }] };
   const f = fixture();

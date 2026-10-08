@@ -32,8 +32,12 @@ export function templateArea(
   template,
   { gridSize = 100, gridDistance = 5, source, spec } = {},
 ) {
-  const doc = template?.document ?? template;
+  let doc = template?.document ?? template;
   if (!doc) return null;
+  // Foundry 14 stores a MeasuredTemplate as a Region with the same id; the
+  // compatibility document's distance assumes a 100px grid (15 ft reads 44.4
+  // on a 296px grid). The Region holds the true canvas geometry.
+  if (doc.documentName === "MeasuredTemplate") doc = doc.parent?.regions?.get?.(doc.id) ?? doc;
   const scale = gridSize / gridDistance;
   if (doc.documentName === "Region") {
     const shapes = Array.from(doc.shapes ?? []);
