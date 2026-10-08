@@ -40,12 +40,16 @@ export class ConditionBody {
   constructor({ tokenMagic = () => globalThis.TokenMagic, now = () => performance.now(), frame = cb => requestAnimationFrame(cb), cancel = h => cancelAnimationFrame(h), busy = () => false, enabled = () => true } = {}) {
     Object.assign(this, { tokenMagic, now, frame, cancel, busy, enabled });
     this.records = new Map();
+    // One pose per token: several conditions (PF2e Dying brings Unconscious) must not
+    // each treat the other's offset as the natural pose, or the deltas compound
+    // every frame until the sprite collapses to nothing.
+    this.poses = new Map();
     this.handle = null;
   }
   add(name, token, kind, { strength = 1 } = {}) {
     if (!kind || !token?.mesh) return;
     this.remove(name);
-    const record = { token, kind, strength, start: this.now(), applied: null };
+    const record = { token, kind, strength, start: this.now() };
     if (kind === 'stone') {
       // Turned to stone: drain the colour, no overlay at all. A raw PIXI filter on
       // a v14 token mesh renders black with streaks, so Token Magic's transient
@@ -68,7 +72,7 @@ export class ConditionBody {
     const r = this.records.get(name);
     if (!r) return;
     this.records.delete(name);
-    this.restore(r);
+    if (![...this.records.values()].some(o => o.token === r.token)) this.restore(r.token);
     if (r.stone) void Promise.resolve(r.stone.api.togglePreset(r.token, r.stone.preset, { action: 'remove', transient: true })).catch(() => {});
     if (r.tint !== undefined && r.token.mesh && !r.token.mesh.destroyed) r.token.mesh.tint = r.tint;
     if (!this.records.size && this.handle) { this.cancel(this.handle); this.handle = null; }
@@ -76,24 +80,28 @@ export class ConditionBody {
   clear() { for (const name of [...this.records.keys()]) this.remove(name); }
   // Undo only what this treatment set; if the token refreshed in between, its
   // pose is already natural and there is nothing to undo.
-  restore(r) {
-    const mesh = r.token.mesh, a = r.applied;
-    if (!a || !mesh || mesh.destroyed) { r.applied = null; return; }
+  restore(token) {
+    const mesh = token?.mesh, a = this.poses.get(token);
+    this.poses.delete(token);
+    if (!a || !mesh || mesh.destroyed) return;
     if (mesh.position.x === a.setX) mesh.position.x = a.baseX;
     if (mesh.position.y === a.setY) mesh.position.y = a.baseY;
     if (mesh.rotation === a.setR) mesh.rotation = a.baseR;
     if (mesh.scale.y === a.setSY) mesh.scale.y = a.baseSY;
-    r.applied = null;
   }
   tick() {
     this.handle = null;
     if (!this.records.size) return;
     const time = this.now(), on = this.enabled();
-    for (const r of this.records.values()) {
-      const token = r.token, mesh = token?.mesh;
+    // The most recent moving treatment on each token is the one it shows.
+    const shown = new Map();
+    for (const r of this.records.values()) if (!['stone', 'still'].includes(r.kind)) shown.set(r.token, r);
+    for (const token of new Set([...this.records.values()].map(r => r.token))) if (!shown.has(token)) this.restore(token);
+    for (const [token, r] of shown) {
+      const mesh = token?.mesh;
       if (!mesh || mesh.destroyed || token.destroyed) continue;
-      if (!on || this.busy(token) || ['stone', 'still'].includes(r.kind)) { this.restore(r); continue; }
-      const a = r.applied;
+      if (!on || this.busy(token)) { this.restore(token); continue; }
+      const a = this.poses.get(token);
       // Natural pose: what Foundry last set, minus our own delta if still in place.
       const baseX = a && mesh.position.x === a.setX ? a.baseX : mesh.position.x;
       const baseY = a && mesh.position.y === a.setY ? a.baseY : mesh.position.y;
@@ -104,7 +112,7 @@ export class ConditionBody {
       mesh.position.y = baseY + (pose.y ?? 0) * w;
       mesh.rotation = baseR + ((pose.r ?? 0) * Math.PI) / 180;
       mesh.scale.y = baseSY * (pose.sy ?? 1);
-      r.applied = { baseX, baseY, baseR, baseSY, setX: mesh.position.x, setY: mesh.position.y, setR: mesh.rotation, setSY: mesh.scale.y };
+      this.poses.set(token, { baseX, baseY, baseR, baseSY, setX: mesh.position.x, setY: mesh.position.y, setR: mesh.rotation, setSY: mesh.scale.y });
     }
     if (this.records.size) this.handle = this.frame(() => this.tick());
   }

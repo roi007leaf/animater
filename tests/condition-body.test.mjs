@@ -61,3 +61,17 @@ test("with Token Magic, petrified uses a transient desaturating filter", () => {
   body.remove("s3");
   assert.deepEqual(calls, [["adjustment", 0.08, "add", true], ["adjustment", 0.08, "remove", true]]);
 });
+
+test("two conditions on one token share a pose instead of compounding (PF2e Dying + Unconscious)", () => {
+  const { body, step } = runner(), t = token();
+  body.add("dying", t, "breathe");
+  body.add("unconscious", t, "breathe");
+  for (let i = 0; i < 2000; i++) step(16);
+  assert.ok(t.mesh.scale.y > 0.95 && t.mesh.scale.y <= 1, `scale stays a breath, got ${t.mesh.scale.y}`);
+  body.remove("dying");
+  for (let i = 0; i < 50; i++) step(16);
+  assert.ok(t.mesh.scale.y > 0.95);
+  body.remove("unconscious");
+  assert.equal(t.mesh.scale.y, 1);
+  assert.deepEqual(t.mesh.position, { x: 500, y: 300 });
+});
