@@ -7,6 +7,7 @@ import { prepareRecipeSounds } from "./spell-sounds.mjs";
 import { registeredMedia, mediaForReference } from './media-library-model.mjs';
 import { stageTiers } from './quality.mjs';
 import { withLastingArea } from './lasting-area.mjs';
+import { withOutcome } from './outcome.mjs';
 const SOUND_PRELOAD_TIMEOUT = 2000;
 // The placed document a lasting area is tied to. Foundry 14 keeps a MeasuredTemplate
 // as a Region with the same id; deleting either removes the Region.
@@ -116,6 +117,8 @@ export class AnimaterRuntime {
     if (recipe.lifecycle === "document" && !preview)
       throw Error("Enable this condition or effect in its catalog. Native documents control its lifetime; use Local canvas preview to test it.");
     if (recipe.lifecycle === "document" && preview) this.host.previewBody?.(recipe, context.source);
+    // A miss never lands on the target; a critical hit lands harder.
+    if (context.outcome) recipe = validateRecipe(withOutcome(recipe, context));
     recipe = prepareRecipeSounds(recipe, this.host.soundCatalog?.());
     recipe = withWeaponScale(recipe, this.host.weaponScale?.() ?? 1);
     if (!this.host.ready())

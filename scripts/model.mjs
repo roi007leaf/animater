@@ -58,6 +58,7 @@ export const MOTIONS = {
   cower: "Cower in fear",
   slam: "Rise and slam down",
   drift: "Drift gently down",
+  collapse: "Collapse when dropped",
 };
 export const clone = (value) => structuredClone(value);
 export const normalize = (value) =>

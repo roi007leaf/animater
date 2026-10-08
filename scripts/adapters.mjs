@@ -1,3 +1,4 @@
+import { dnd5eAttackOutcome } from './outcome.mjs';
 import { twoeEventElement, dnd5eEventElement } from "./element-choice.mjs";
 // Normalize system events without changing rolls, items, HP, or system state.
 export const pf2eEvent=(message,userId)=>twoeEvent(message,userId,'pf2e');
@@ -87,8 +88,8 @@ export function dnd5eEvent(type, subject, { rolls = [], results = {} } = {}) {
     targetUuids: Array.from(message?.system?.targets ?? message?.data?.system?.targets ?? rolls[0]?.options?.targets ?? []).map(t=>typeof t==='string'?t:t.token).filter(Boolean),
     ...(subject.item.type==='weapon'?{weaponMode:String(rolls[0]?.options?.attackMode??'').startsWith('thrown')?'thrown':rolls[0]?.options?.attackMode==='ranged'||subject.attack?.type?.value==='ranged'?'ranged':'melee'}:{}),
     spellLevel: subject.item.type==='spell' ? Number(message?.system?.level??message?.data?.system?.level??subject.getRollData?.()?.item?.level??rolls[0]?.data?.item?.level??subject.item.getRollData?.()?.item?.level??subject.item.system?.level) : undefined,
-    // Core 5e does not provide a reliable per-target hit outcome in every roll.
-    outcome: null,
+    // Attack rolls: natural 20/1, or the total against a single target's AC.
+    outcome: type === "attack" ? dnd5eAttackOutcome(rolls, Array.from(message?.system?.targets ?? [])) : null,
     rolls,
   };
 }

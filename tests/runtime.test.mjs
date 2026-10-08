@@ -618,7 +618,8 @@ test("authoritative event ID plays once and preserves miss behavior", async () =
   };
   await runtime.dispatch(event);
   await runtime.dispatch(event);
-  assert.equal(calls.filter((c) => c[0] === "play").length, 3);
+  // Played once; a miss bends the flight wide and drops the impact on the target.
+  assert.equal(calls.filter((c) => c[0] === "play").length, 2);
   assert.ok(calls.some((c) => c[0] === "missed"));
 });
 test("preflight prevents partial sequences and enforces ownership", async () => {

@@ -16,6 +16,7 @@ export const GENERATED_MOTION_DURATION = Object.freeze({
   throw: 900,
   brace: 800,
   stagger: 900,
+  collapse: 1800,
   cower: 1100,
   slam: 1200,
   drift: 1800,

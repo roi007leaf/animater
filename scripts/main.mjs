@@ -267,6 +267,7 @@ function findRecipe(id) {
 // Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
 // (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
 const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
+const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
   if (!event.messageId || !dice?.waitFor3DAnimationByMessageID || !["attack", "damage"].includes(event.type)) return;
@@ -915,6 +916,19 @@ Hooks.once("ready", () => {
     context: () => ({ systemId: game.system.id, userId: game.user.id, twoe: ["pf2e", "sf2e"].includes(game.system.id) ? twoeEvent : null }),
   });
   registerSpellArsenal();
+  // A creature dropping to 0 HP collapses once (D&D 5e, PF2e and SF2e keep HP in the
+  // same place); its Unconscious or Dying body treatment takes over afterwards.
+  const hpOf = (actor) => Number(actor?.system?.attributes?.hp?.value);
+  Hooks.on("preUpdateActor", (actor, changes, options) => {
+    if (foundry.utils.hasProperty(changes, "system.attributes.hp.value")) options.animaterHpBefore = hpOf(actor);
+  });
+  Hooks.on("updateActor", (actor, changes, options, userId) => {
+    if (userId !== game.user.id || !acceptsEvents() || !(options.animaterHpBefore > 0) || !(hpOf(actor) <= 0)) return;
+    for (const token of actor.getActiveTokens?.() ?? []) {
+      if (token.document?.parent?.id !== canvas.scene?.id) continue;
+      void runtime.play(COLLAPSE, { source: token, targets: [] }).catch((error) => runtime.trace("Blocked", error.message));
+    }
+  });
   if (["pf2e","sf2e"].includes(game.system.id)) {
     Hooks.on("createChatMessage", (message) => {
       void dispatch((game.system.id==="sf2e"?sf2eEvent:pf2eEvent)(message, game.user.id));

@@ -142,6 +142,15 @@ export function motionPose(
       pose.scaleY = 1 - 0.15 * amount * impact;
       break;
     }
+    case "collapse": {
+      // Knocked down: tip to one side and sag, held, then ease back up (a lasting
+      // Unconscious or Dying body treatment takes over from there).
+      const side = stage.motionSide ?? 1;
+      pose.rotation = side * 0.45 * amount * envelope;
+      pose.y = distance * 0.35 * envelope;
+      pose.scaleY = 1 - 0.12 * amount * envelope;
+      break;
+    }
     case "drift":
       pose.y = distance * 0.35 * envelope;
       pose.x = Math.sin(p * Math.PI * 3) * distance * 0.25 * envelope;
