@@ -31,7 +31,25 @@ export function dndRecipe(entry,variantId,{motion=true,sounds,soundVolume=.35,fx
   const design={profile:variant.soundProfile,excludeRoles:variant.soundExcludeRoles};
   recipe.stages=variant.soundNamespace==='ability'?addAbilitySounds(item,recipe.stages,{sounds,soundVolume,mode:variant.weaponMode,design}):addSpellSounds(item,recipe.stages,{sounds,soundVolume,design});
  }
- return withCatalogFx(validateRecipe(recipe),entry,{fx,fxCatalog,variant,motion,sounds,soundVolume});
+ return withoutHexDome(withCatalogFx(validateRecipe(recipe),entry,{fx,fxCatalog,variant,motion,sounds,soundVolume}));
+}
+// JB2A's hexagonal force-field domes (shield.01-03) swamp the token at 1.15-1.8x and
+// read as sci-fi barriers. D&D wards, resistances and armour show the compact shield
+// marker instead (Free ships only the green one, so the hue is tinted), and themed
+// elemental shields stay close to the token.
+const HEX_DOME=/^jb2a.shield.0[1-3]./;
+const DOME_COLORS=[[/red|orange|pink/,'dark_red','#d0485a'],[/yellow|gold/,'yellow','#f0d060'],[/green/,'green',null],[/./,'blue','#6fa8ff']];
+export function withoutHexDome(recipe){
+ for(const s of recipe.stages){
+  // Force-field bubbles stay as areas (a sphere spell's footprint), never on a token.
+  const dome=s.assets?.find(a=>HEX_DOME.test(a)||s.kind!=='template'&&a.startsWith('jb2a.energy_field.'));
+  if(!dome){if(s.assets?.some(a=>a.startsWith('jb2a.shield_themed.'))&&(s.scale??1)>1.1)s.scale=1.1;continue;}
+  const [,color,hex]=DOME_COLORS.find(([re])=>re.test(dome.split('.').slice(3).join('.')));
+  s.assets=[`jb2a.markers.shield.${color}.03`,'jb2a.markers.shield.green.03'];
+  s.scale=Math.min(s.scale??1,1);
+  if(hex&&!s.tintEnabled)Object.assign(s,{tintEnabled:true,colorize:true,tint:hex});
+ }
+ return recipe;
 }
 export function findDndEntry(event){
  const item=event.item;if(!item)return null;
