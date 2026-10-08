@@ -6,6 +6,7 @@
   - **Same link:** when two enabled recipes are linked to the same item, condition or effect, the card that loses says "⚠ Not playing: “Spell Effect: Shield” is also linked to … and plays instead", and the winner says which recipe it overrides. The Studio header shows the warning too.
   - **Who wins:** a catalog copy beats a handmade lasting animation, a recipe bound to an item beats one matched by name, and otherwise the tie is broken by internal recipe ID.
   - **Not linked:** a recipe with a trigger but no names or item says "Not linked to anything yet" instead of looking ready to play.
+- **Studio trigger chip text is centered.** "Attack rolled · fire bolt" now sits in the middle of its pill instead of near the top.
 - **Studio buttons line up.** In a narrower window, "Save recipe" no longer wraps onto two lines and grows taller than Revert. The bar buttons share one height, and the recipe name shrinks instead.
 - **New recipe asks what kind of animation you want.**
   - **Action animation:** plays once when something happens: a spell, an attack, damage, or an area.
