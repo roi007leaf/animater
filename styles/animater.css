@@ -79,6 +79,14 @@
   font: inherit;
   color: var(--an-text);
 }
+/* System sheets (PF2e, SF2e, D&D) restyle form controls; these properties are
+   never set on controls by Animater, so they can be pinned more firmly. */
+.animater .an-root :is(button, input, select, textarea) {
+  font-family: inherit;
+  letter-spacing: normal;
+  text-transform: none;
+  text-shadow: none;
+}
 .animater button {
   height: auto;
   white-space: normal;
