@@ -87,9 +87,17 @@ export function studioHTML(w, r) {
     const canAdd = !w.busy && r.stages.length < MAX_STAGES && (!linked || LINKED_TRACKS.has(t.id));
     return `<div class="an-st-track${silenced(w).has(t.id) ? " is-muted" : ""}" data-st-track="${t.id}"><div class="an-st-head"><span class="an-st-head-icon">${t.icon}</span><b>${esc(t.name)}</b><button class="an-st-ms${w.studioMuted?.has(t.id) ? " is-on" : ""}" data-action="studio-mute" data-st-track="${t.id}" aria-pressed="${!!w.studioMuted?.has(t.id)}" title="Mute: hide this track in the monitor">M</button><button class="an-st-ms is-solo${w.studioSolo?.has(t.id) ? " is-on" : ""}" data-action="studio-solo" data-st-track="${t.id}" aria-pressed="${!!w.studioSolo?.has(t.id)}" title="Solo: show only soloed tracks in the monitor">S</button><button class="an-st-add" data-action="studio-add" data-st-track="${t.id}" title="Add a ${esc(KINDS[t.kind])} stage at the playhead" aria-label="Add ${esc(t.name)} stage at playhead" ${canAdd ? "" : "disabled"}>+</button></div><div class="an-st-lanes">${t.lanes.map((lane) => `<div class="an-tl-lane"><div class="an-tl-track">${lane.map((row) => w.timelineBarHTML(r, row, index, studio.total)).join("")}</div></div>`).join("")}</div></div>`;
   }).join("");
-  const timeline = `<section class="an-st-timeline" aria-label="Timeline"><div class="an-st-toolbar"><b>Timeline</b><button class="an-text-button" data-action="add-stage" ${r.stages.length >= MAX_STAGES || w.busy ? "disabled" : ""}>${linked ? "+ Layer" : "+ Stage"}</button>${linked ? "" : `<button class="an-text-button" data-action="add-motion" ${r.stages.length >= MAX_STAGES || w.busy ? "disabled" : ""}>+ Token motion</button>`}<small class="an-st-hint">M / S mute or solo a track in the monitor · drag clips to move · they snap to other clips and the playhead (Alt = free) · drag the right edge to trim · right-click for more</small><span class="an-st-spacer"></span><label class="an-st-zoom">Zoom<input type="range" min="${MIN_ZOOM}" max="${MAX_ZOOM}" step="0.25" value="${zoom}" data-st-zoom aria-label="Timeline zoom"></label><button class="an-text-button" data-action="studio-fit" title="Fit the whole recipe">Fit</button></div>
+  const timeline = `<section class="an-st-timeline" aria-label="Timeline">
     <div class="an-st-scroll" data-st-scroll style="--st-zoom:${zoom}"><div class="an-tl an-st-tl" data-tl-total="${studio.total}" data-studio-tl style="--tl-label:${HEAD_WIDTH}px">
-      <div class="an-st-ruler-row"><div class="an-st-corner" data-st-time-corner>${seconds(w.studioTime ?? 0)}</div><div class="an-tl-track an-st-ruler" data-st-ruler title="Click or drag to move the playhead">${rulerHTML(studio.total, zoom)}</div></div>
+      <div class="an-st-ruler-row"><div class="an-st-corner"><b data-st-time-corner>${seconds(w.studioTime ?? 0)}</b><span class="an-st-corner-tools"><button class="an-st-mini" data-action="studio-zoom-out" title="Zoom out (Ctrl+wheel)" aria-label="Zoom out">−</button><button class="an-st-mini" data-action="studio-zoom-in" title="Zoom in (Ctrl+wheel)" aria-label="Zoom in">+</button><button class="an-st-mini" data-action="studio-fit" title="Fit the whole recipe" aria-label="Fit the whole recipe">⤢</button><button class="an-st-mini" data-action="studio-help" aria-label="Timeline help" title="Timeline help:
+• M / S mute or solo a track in the monitor
+• + on a track adds a stage at the playhead
+• Drag clips to move; they snap to other clips and the playhead (hold Alt to place freely)
+• Drag a clip's right edge to change its length
+• Right-click a clip: start at playhead, duplicate, delete
+• Click or drag the ruler to scrub
+• Space play/pause · Home/End · , . or arrows step · L loop
+• Ctrl+D duplicate · Delete remove · Ctrl+S save · Ctrl+wheel zoom">?</button></span></div><div class="an-tl-track an-st-ruler" data-st-ruler title="Click or drag to move the playhead">${rulerHTML(studio.total, zoom)}</div></div>
       ${tracks}
       <div class="an-st-end" style="left:${w.timelineX(studio.total, studio.end)}" title="Recipe ends"></div>
       <svg class="an-st-links" data-st-links aria-hidden="true"></svg>
@@ -216,7 +224,9 @@ export function drawLinks(w) {
     const a = rect(from), b = rect(to);
     if (!a || !b) return;
     const withStart = stage.timingAnchor === "start";
-    const x1 = withStart ? a.l : a.r, x2 = b.l, dx = Math.max(18, Math.abs(x2 - x1) / 2);
+    const edge = withStart ? a.l : a.r, x2 = b.l;
+    const x1 = stage.timingAnchor === "end" || withStart ? Math.min(edge, Math.max(a.l, x2)) : Math.min(a.r, Math.max(a.l, x2));
+    const dx = Math.max(10, Math.abs(x2 - x1) / 2);
     links.push(`<path class="${withStart ? "is-with" : "is-after"}" d="M${x1} ${a.y} C${x1 + dx} ${a.y} ${x2 - dx} ${b.y} ${x2} ${b.y}"/><circle cx="${x1}" cy="${a.y}" r="3"/><circle cx="${x2}" cy="${b.y}" r="3"/>`);
   };
   if (s?.afterStage) { const from = r.stages.findIndex((o) => o.stageId === s.afterStage); if (from >= 0) add(from, i, s); }
@@ -394,6 +404,9 @@ export async function studioAction(w, action, b) {
       if (!w.studioPlaying) queueSeek(w);
       return true;
     }
+    case "studio-zoom-in": applyZoom(w, (w.studioZoom ?? 1) * 1.5); return true;
+    case "studio-zoom-out": applyZoom(w, (w.studioZoom ?? 1) / 1.5); return true;
+    case "studio-help": return true;
     case "studio-fit": applyZoom(w, 1); el(w, "[data-st-scroll]").scrollLeft = 0; return true;
     case "studio-add": addStage(w, b.dataset.stTrack); return true;
     case "studio-dup-stage": closeMenu(w); duplicateStage(w, Number(b.dataset.index)); return true;

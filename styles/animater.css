@@ -2184,3 +2184,18 @@
 }
 .animater .an-provider-cue.is-live[hidden] { display: none; }
 .animater .an-provider-cue.is-live small:last-child { display: none; }
+
+.animater .an-st-corner { justify-content: space-between; gap: 6px; }
+.animater .an-st-corner-tools { display: flex; gap: 3px; }
+.animater .an-st-corner .an-st-mini {
+  width: 22px;
+  height: 20px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 4px;
+  color: var(--an-muted);
+  background: transparent;
+}
+.animater .an-st-corner .an-st-mini:hover { color: var(--an-text); border-color: var(--an-accent); }
+.animater .an-st-corner .an-st-mini[data-action="studio-help"] { cursor: help; }
