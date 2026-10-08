@@ -491,13 +491,13 @@ export class Workspace {
       `<div class="an-shell${this.isStudio() ? " is-studio" : ""}">
       <aside class="an-nav"><div class="an-brand"><span class="an-logo">A</span><div>Animater<small>MAKE EVERY ACTION FELT</small></div></div>
         <div class="an-nav-caption">WORKSPACE</div>
-        ${[
+        ${(this.host.playerMode ? [["recipes", "✦", "My animations"], ["assets", "▦", "Assets"]] : [
           ["recipes", "✦", "Recipes"],
           ...catalogNavigation(env),
           ["assets", "▦", "Assets"],
           ["activity", "◷", "Activity"],
           ["setup", "⚙", "Setup"],
-        ]
+        ])
           .map(
             ([page, icon, name]) =>
               `<button class="an-nav-item ${this.page === page ? "is-active" : ""}" data-action="page" data-page="${page}"><span>${icon}</span>${name}${page === "recipes" ? `<small>${this.listedRecipes().length}</small>` : ""}</button>`,
@@ -1084,13 +1084,29 @@ export class Workspace {
             (
               r,
             ) => `<button data-action="select" data-id="${esc(r.id)}" class="an-card ${r.id === this.selected ? "is-selected" : ""}" style="--effect:${esc(r.color)}" aria-pressed="${r.id === this.selected}">
-        <div class="an-art"><div class="an-orbit"></div><span>${icons[r.category] ?? "◎"}</span><small>${esc(r.category)}</small></div><div class="an-card-body"><h2>${esc(r.name)}${this.dirty.has(r.id) ? " <sup>•</sup>" : ""}</h2><p>${esc(r.description)}</p><div class="an-card-meta"><span>${r.stages.length} stage${r.stages.length === 1 ? "" : "s"}</span><span>${r.enabled ? esc(EVENTS[r.trigger]) : "Disabled"}</span></div><div class="an-readiness ${this.status(r) !== "Ready to play" ? "is-missing" : ""}"><span>●</span> ${this.status(r)}</div></div></button>`,
+        <div class="an-art"><div class="an-orbit"></div><span>${icons[r.category] ?? "◎"}</span><small>${esc(r.category)}</small></div><div class="an-card-body"><h2>${esc(r.name)}${this.dirty.has(r.id) ? " <sup>•</sup>" : ""}</h2><p>${esc(r.description)}</p><div class="an-card-meta"><span>${r.stages.length} stage${r.stages.length === 1 ? "" : "s"}</span><span>${r.enabled ? esc(EVENTS[r.trigger]) : "Disabled"}</span></div><div class="an-readiness ${this.status(r) !== "Ready to play" ? "is-missing" : ""}"><span>●</span> ${this.status(r)}</div>${this.approvalBadgeHTML(r)}</div></button>`,
           )
           .join("") ||
         `<div class="an-empty">No recipes found.<small>Try another search or create your own.</small></div>`
       }</div>
+      ${this.playerReviewHTML()}
       <div class="an-tip"><span>✧</span><div><b>A little choreography goes a long way.</b><p>Start with a caster cue. Add travel. Finish with impact.</p></div></div></section>
       </div>`;
+  }
+  // Player recipes show where they stand with the GM.
+  approvalBadgeHTML(r) {
+    const state = this.host.approvalState?.(r);
+    if (!state) return "";
+    const label = { pending: "Waiting for GM approval", approved: "Approved by the GM", declined: "Declined by the GM" }[state];
+    return `<div class="an-approval is-${state}">${esc(label)}</div>`;
+  }
+  // The GM's review of player-made recipes: each version is approved or declined once.
+  playerReviewHTML() {
+    const rows = this.host.playerSubmissions?.() ?? [];
+    if (!rows.length) return "";
+    const pending = rows.filter((r) => r.state === "pending").length;
+    return `<div class="an-section-title"><span>Player animations${pending ? ` · ${pending} waiting` : ""}</span><small>Approved animations play for that player's own characters</small></div>
+      <div class="an-player-review">${rows.map(({ userId, userName, recipe, state }) => `<div class="an-review-row is-${state}"><div><b>${esc(recipe.name)}</b><small>${esc(userName)} · ${esc(EVENTS[recipe.trigger] ?? recipe.trigger)} · ${recipe.stages.length} stage${recipe.stages.length === 1 ? "" : "s"}</small></div><span class="an-approval is-${state}">${state === "pending" ? "Waiting" : state === "approved" ? "Approved" : "Declined"}</span><div class="an-review-actions"><button class="an-quiet" data-action="player-preview" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">▷ Preview</button>${state !== "approved" ? `<button class="an-primary" data-action="player-approve" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">Approve</button>` : ""}${state !== "declined" ? `<button class="an-quiet" data-action="player-decline" data-user="${esc(userId)}" data-id="${esc(recipe.id)}">${state === "approved" ? "Revoke" : "Decline"}</button>` : ""}</div></div>`).join("")}</div>`;
   }
   optionalFxPreviewHTML(stage,index) {
     if(stage.kind==='tokenfx')return '';
@@ -1971,6 +1987,21 @@ export class Workspace {
         return;
       }
       if (await studioAction(this, action, b)) return;
+      // The GM's review of a player's recipe: preview it locally, then approve or decline that version.
+      if (["player-preview", "player-approve", "player-decline"].includes(action)) {
+        const row = (this.host.playerSubmissions?.() ?? []).find((r) => r.userId === b.dataset.user && r.recipe.id === b.dataset.id);
+        if (!row) return;
+        if (action === "player-preview") {
+          await this.host.play(validateRecipe(row.recipe), true);
+          this.message = `Previewed ${row.userName}'s “${row.recipe.name}”.`;
+        } else {
+          const status = action === "player-approve" ? "approved" : "declined";
+          await this.host.decidePlayerRecipe(row.userId, row.recipe, status);
+          this.message = `${row.userName}'s “${row.recipe.name}” ${status === "approved" ? "approved: it now plays for their characters" : row.state === "approved" ? "revoked" : "declined"}.`;
+        }
+        this.render();
+        return;
+      }
       if (action === "card-include") { await this.toggleCardInclude(b.dataset.id); return; }
       if (action === "select") {
         if (this.selected === b.dataset.id && this.studio) return;

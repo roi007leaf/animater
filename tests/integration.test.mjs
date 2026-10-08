@@ -1055,16 +1055,15 @@ test("PF2e bootstrap: GM-only settings, source-token safety, effect/region hooks
   const f = await boot("pf2e");
   assert.equal(f.settings.get("automatic"), false);
   assert.equal(f.menus[0].restricted, true);
-  assert.equal(f.bindings[0].restricted, true);
+  // Players open their own Studio (recipes pending GM approval); configuration stays GM-only.
+  assert.equal(f.bindings[0].restricted, false);
   const controls = { tokens: { tools: {} } };
   await f.fire("getSceneControlButtons", controls);
   assert.equal(controls.tokens.tools.animater.visible, true);
   game.user.isGM = false;
   const playerControls = { tokens: { tools: {} } };
   await f.fire("getSceneControlButtons", playerControls);
-  assert.equal(playerControls.tokens.tools.animater.visible, false);
-  f.api.open();
-  assert.ok(f.calls.some((c) => Array.isArray(c) && c[0] === "warning"));
+  assert.equal(playerControls.tokens.tools.animater.visible, true);
   game.user.isGM = true;
   const ember = f.api.recipes()[0];
   ember.stages.forEach((s) => (s.delay = 0));
@@ -1101,7 +1100,11 @@ test("PF2e bootstrap: GM-only settings, source-token safety, effect/region hooks
   assert.ok(f.hooks.has("createRegion"));
   f.api.open();
   game.user.isGM = false;
-  await f.fire("updateUser", game.user);
+  // A player saving their own recipes updates their user: the Studio stays open.
+  await f.fire("updateUser", game.user, { flags: { animater: { playerRecipes: { schema: 1, recipes: [] } } } });
+  assert.ok(!f.calls.includes("close"));
+  // Losing the GM role re-renders the window for its new permissions.
+  await f.fire("updateUser", game.user, { role: 1 });
   assert.ok(f.calls.includes("close"));
 });
 test("PF2e 8.5 placed circle Region triggers the saved area recipe at its native size", async () => {

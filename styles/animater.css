@@ -2274,3 +2274,15 @@
 }
 .animater .an-asset-thumb-mini video,
 .animater .an-asset-thumb-mini img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+
+/* Player-made recipes: approval state on the player's cards and the GM's review list. */
+.animater .an-approval { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; border: 1px solid transparent; }
+.animater .an-approval.is-pending { color: #f3d27a; background: rgba(243, 210, 122, 0.12); border-color: rgba(243, 210, 122, 0.35); }
+.animater .an-approval.is-approved { color: #8be6a8; background: rgba(139, 230, 168, 0.12); border-color: rgba(139, 230, 168, 0.35); }
+.animater .an-approval.is-declined { color: #ff9a9a; background: rgba(255, 154, 154, 0.12); border-color: rgba(255, 154, 154, 0.35); }
+.animater .an-player-review { display: grid; gap: 6px; margin-bottom: 16px; }
+.animater .an-review-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 10px; background: var(--an-surface); border: 1px solid var(--an-line); }
+.animater .an-review-row small { display: block; color: var(--an-muted); font-size: 11px; }
+.animater .an-review-row .an-approval { margin-top: 0; }
+.animater .an-review-actions { display: flex; gap: 6px; }
+@container (max-width: 640px) { .animater .an-review-row { grid-template-columns: 1fr; } }

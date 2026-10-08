@@ -44,6 +44,7 @@ import { PF2E_CONDITIONS, PF2E_EFFECTS, PF2E_STATE_SOURCE, normalizeStateCatalog
 import { PersistentStates } from "./persistent-states.mjs";
 import { DND_KINDS,DND5E_SOURCE,dndEntries,dndEntry,dndRecipe,normalizeDndCatalogState,resolveDndAutomaticRecipe, addDndBookEntries } from './dnd5e-catalog.mjs';
 import { saveReaction, twoeSaveOutcome, dnd5eSaveOutcome } from './outcome.mjs';
+import { approvalState, approvedPlayerRecipe, playerSubmissions, validatePlayerRecipes, decide } from './player-recipes.mjs';
 import { dndSettingKey,sfSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
@@ -125,7 +126,13 @@ async function receiveMotion(data, { strict = false } = {}) {
 }
 const recipes = () =>
   clone(game.settings.get(ID, "recipes")?.recipes ?? starterRecipes());
+const playerDecisions = () => game.settings.get(ID, "playerApprovals") ?? {};
+const ownPlayerRecipes = () => clone(game.user?.getFlag?.(ID, "playerRecipes")?.recipes ?? []);
 const enabled = () => game.settings.get(ID, "automatic");
+// Players' approved recipes play for their own characters even when the GM's
+// automatic playback is off.
+const ownApprovedRecipe = (event) => game.user?.isGM ? null : approvedPlayerRecipe(event, ownPlayerRecipes(), playerDecisions()[game.user.id], { owns: (actor) => Boolean(actor?.isOwner) });
+const hasOwnApproved = () => !game.user?.isGM && ownPlayerRecipes().some((r) => approvalState(r, playerDecisions()[game.user.id]) === "approved");
 const acceptsEvents = () =>
   enabled() ||
   (game.system.id === "sf2e" && SF_KINDS.some(kind=>{const state=game.settings.get(ID,sfSettingKey(kind));return state?.enabled&&state.independent;})) ||
@@ -285,7 +292,7 @@ async function playSaveReaction(outcome, tokenId, messageId, sceneId) {
   await runtime.play(recipe, { source: token, targets: [] }).catch((error) => runtime.trace("Blocked", error.message));
 }
 async function dispatch(event) {
-  if (!event || !acceptsEvents()) return;
+  if (!event || !(acceptsEvents() || hasOwnApproved())) return;
   if (yieldsToAA(event)) return runtime.trace("Skipped", `${event.item?.name ?? "Unknown item"}: customized in Automated Animations.`);
   try {
     await afterDice(event);
@@ -310,10 +317,6 @@ export class AnimaterApp extends HandlebarsApplicationMixin(ApplicationV2) {
   }
   async _onRender(context, options) {
     await super._onRender(context, options);
-    if (!game.user.isGM) {
-      this.close();
-      return;
-    }
     const root = this.element.querySelector(".an-root");
     if (this.workspace?.root !== root) {
       this.workspace?.destroy();
@@ -326,11 +329,8 @@ export class AnimaterApp extends HandlebarsApplicationMixin(ApplicationV2) {
     return super.close(options);
   }
 }
+// Players open their own Studio (their recipes, pending GM approval); the GM gets everything.
 function open() {
-  if (!game.user.isGM) {
-    ui.notifications.warn("Animater configuration is GM-only.");
-    return;
-  }
   app ??= new AnimaterApp();
   return app.render({ force: true });
 }
@@ -477,7 +477,15 @@ function workspaceHost() {
     soundCatalog: () =>
       installedSoundCatalog(game.modules, globalThis.Sequencer?.Database),
     weaponScale: () => Number(game.settings.get(ID, "weaponScale")) || 1,
-    recipes,
+    // Players edit their own recipes (on their user); the GM's stay world-wide.
+    recipes: () => (game.user.isGM ? recipes() : ownPlayerRecipes()),
+    playerMode: !game.user.isGM,
+    approvalState: (recipe) => (game.user.isGM ? null : approvalState(recipe, playerDecisions()[game.user.id])),
+    playerSubmissions: () => (game.user.isGM ? playerSubmissions(Array.from(game.users?.contents ?? []), playerDecisions()) : []),
+    decidePlayerRecipe: async (userId, recipe, status) => {
+      if (!game.user.isGM) throw Error('Only a GM can approve player animations.');
+      await game.settings.set(ID, 'playerApprovals', decide(playerDecisions(), userId, recipe, status));
+    },
     catalog: () => runtime.getCatalog(),
     fxCatalog,
     createSceneFxPreview:(scene,recipe,grid)=>{
@@ -551,7 +559,8 @@ function workspaceHost() {
       persistentStates?.schedule();
     },
     async save(data) {
-      if (!game.user.isGM) throw Error("Only a GM can save recipes.");
+      // A player saves their own recipes; each new version waits for the GM.
+      if (!game.user.isGM) return game.user.setFlag(ID, "playerRecipes", { schema: 1, recipes: validatePlayerRecipes(data) });
       if (data.length > 200) throw Error("Maximum 200 recipes.");
       const valid = data.map(validateRecipe);
       if (new Set(valid.map((r) => r.id)).size !== valid.length)
@@ -672,6 +681,8 @@ Hooks.once("init", () => {
     type: Object,
     default: normalizeCatalogState(),
   });
+  // The GM's decisions on player-made recipes (players cannot write world settings).
+  game.settings.register(ID, "playerApprovals", { scope: "world", config: false, type: Object, default: {}, onChange: () => app?.workspace?.render() });
   game.settings.register(ID, "recipes", {
     scope: "world",
     config: false,
@@ -714,7 +725,8 @@ Hooks.once("init", () => {
   game.keybindings.register(ID, "open", {
     name: "Open Animater",
     editable: [{ key: "KeyA", modifiers: ["Alt", "Shift"] }],
-    restricted: true,
+    // Players open their own Studio too.
+    restricted: false,
     onDown: () => {
       open();
       return true;
@@ -817,13 +829,14 @@ Hooks.once("ready", () => {
     get database() {
       return globalThis.Sequencer?.Database;
     },
-    enabled: acceptsEvents,
+    enabled: () => acceptsEvents() || hasOwnApproved(),
     weaponScale: () => Number(game.settings.get(ID, "weaponScale")) || 1,
     usersFor: (tier) => usersForTier(Array.from(game.users?.contents ?? game.users?.values?.() ?? []), tier),
     soundUsers: () => usersForSound(Array.from(game.users?.contents ?? game.users?.values?.() ?? [])),
     recipes,
     riderRecipes: (event, saved) => game.system.id === "pf2e" ? riderRecipes(event, game.settings.get(ID, "featureCatalog"), saved, { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) }) : [],
-    resolveRecipe: systemRecipe,
+    // A player's GM-approved recipe animates their own characters first.
+    resolveRecipe: (event, saved) => ownApprovedRecipe(event) ?? systemRecipe(event, saved),
     ready: () => Boolean(canvas.ready && environment().ready),
     canPlay: (context) => Boolean(game.user.isGM || context.source?.isOwner),
     canSyncMotion: () => game.modules.get(ID)?.socket === true,
@@ -1164,12 +1177,17 @@ Hooks.on("getSceneControlButtons", (controls) => {
       title: "Animater",
       icon: "fas fa-wand-magic-sparkles",
       button: true,
-      visible: game.user.isGM,
+      // Players open their own Studio; the GM sees the full workspace.
+      visible: true,
       onChange: () => open(),
     };
 });
-Hooks.on("updateUser", (user) => {
-  if (user.id === game.user.id && !user.isGM) {
+// A role change re-renders the workspace for its new permissions. Players saving
+// their own recipes also update their user, which must not close their Studio.
+Hooks.on("updateUser", (user, changes) => {
+  // A player saved their recipes: the GM's review list shows the new version.
+  if (game.user.isGM && user.id !== game.user.id && changes?.flags?.[ID]) app?.workspace?.render();
+  if (user.id === game.user.id && "role" in (changes ?? {})) {
     void app?.close();
     ui.controls?.render();
   }
