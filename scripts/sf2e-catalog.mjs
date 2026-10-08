@@ -37,7 +37,7 @@ export function sfRecipe(entry,variantId,{motion=true,sounds,soundVolume=.35,cas
   const item={id:entry.documentId,slug:entry.slug,soundProfile:variant.soundProfile},design={profile:variant.soundProfile};
   recipe.stages=variant.soundNamespace==='ability'?addAbilitySounds(item,recipe.stages,{sounds,soundVolume,mode:variant.weaponMode,design}):addSpellSounds(item,recipe.stages,{sounds,soundVolume,design});
  }
- return withCatalogFx(validateRecipe(recipe),{...entry,...entry.spell,...entry.state},{fx,fxCatalog,motion,sounds,variant,damageType:damageType??variant.damageType});
+ return withCatalogFx(validateRecipe(recipe),{...entry,...entry.spell,...entry.state},{fx,fxCatalog,motion,sounds,soundVolume,variant,damageType:damageType??variant.damageType});
 }
 export function findSfEntry(event){
  if(event.systemId&&event.systemId!=='sf2e')return null;

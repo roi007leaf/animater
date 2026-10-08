@@ -31,7 +31,7 @@ export function dndRecipe(entry,variantId,{motion=true,sounds,soundVolume=.35,fx
   const design={profile:variant.soundProfile,excludeRoles:variant.soundExcludeRoles};
   recipe.stages=variant.soundNamespace==='ability'?addAbilitySounds(item,recipe.stages,{sounds,soundVolume,mode:variant.weaponMode,design}):addSpellSounds(item,recipe.stages,{sounds,soundVolume,design});
  }
- return withCatalogFx(validateRecipe(recipe),entry,{fx,fxCatalog,variant,motion,sounds});
+ return withCatalogFx(validateRecipe(recipe),entry,{fx,fxCatalog,variant,motion,sounds,soundVolume});
 }
 export function findDndEntry(event){
  const item=event.item;if(!item)return null;

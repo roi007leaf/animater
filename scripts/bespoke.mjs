@@ -101,6 +101,7 @@ export function applyBespoke(recipe, entry = {}, options = {}) {
     const stages = keepNativeSemantics(base, (built.stages ?? built).map((s, i) => ({ stageId: `${recipe.id}-b${i + 1}`, ...s })), options);
     let all;
     const sounds = options.sounds ?? options.soundCatalog;
+    // Re-cued sounds keep the catalog's volume setting (options.soundVolume).
     // Variant-level ability profiles (D&D weapon uses) re-cue on the new stages.
     const variantProfile = options.variant?.soundNamespace === 'ability' ? options.variant.soundProfile : undefined;
     const profile = design.sound !== undefined ? design.sound : variantProfile;
@@ -110,8 +111,8 @@ export function applyBespoke(recipe, entry = {}, options = {}) {
     else if (profile !== undefined && sounds) {
       const item = { id: entry.id ?? recipe.id, slug: entry.slug ?? recipe.id, design: entry.design, soundProfile: profile };
       all = profile === null ? stages
-        : namespace === 'ability' ? addAbilitySounds(item, stages, { sounds, mode: options.mode?.mode ?? options.mode, design: { profile } })
-        : addSpellSounds(item, stages, { sounds, design: { profile } });
+        : namespace === 'ability' ? addAbilitySounds(item, stages, { sounds, soundVolume: options.soundVolume, mode: options.mode?.mode ?? options.mode, design: { profile } })
+        : addSpellSounds(item, stages, { sounds, soundVolume: options.soundVolume, design: { profile } });
     } else all = [...stages, ...reanchorSounds(recipe.stages, stages)];
     result = validateRecipe({ ...base, bespoke: key, stages: all.slice(0, MAX_STAGES) });
     // Effects-only playback drops token motion but keeps every effect at its resolved time.
