@@ -6,6 +6,7 @@ import { tokenFootprint, effectFootprint, artworkSize, offsetInGridSquares, beam
 import { prepareRecipeSounds } from "./spell-sounds.mjs";
 import { registeredMedia, mediaForReference } from './media-library-model.mjs';
 import { stageTiers } from './quality.mjs';
+import { withLastingArea } from './lasting-area.mjs';
 const SOUND_PRELOAD_TIMEOUT = 2000;
 // The placed document a lasting area is tied to. Foundry 14 keeps a MeasuredTemplate
 // as a Region with the same id; deleting either removes the Region.
@@ -62,7 +63,10 @@ export class AnimaterRuntime {
     const resolved = this.host.resolveRecipe
       ? this.host.resolveRecipe(event, saved)
       : (matchRecipe(saved, event) ?? this.host.catalogRecipe?.(event, saved));
-    const recipe = applyEventElement(resolved, event.element);
+    // A lasting PF2e/SF2e area stays on its template (D&D marks it in its catalog).
+    const recipe = withLastingArea(applyEventElement(resolved, event.element), event, {
+      exists: (key) => Boolean(this.host.database?.entryExists?.(key)),
+    });
     // Damage riders (e.g. Sneak Attack) play alongside the event's own recipe.
     const riders = (this.host.riderRecipes?.(event, saved) ?? []).filter(Boolean);
     if (!recipe && !riders.length)
