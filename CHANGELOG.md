@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **All four degrees of success show.**
+  - **Attacks:** a critical failure is a fumble. The attack goes wide and the attacker stumbles, unlike a plain miss.
+  - **Saving throws against a spell or effect:** the saving creature reacts to its own result. It shrugs it off on a critical success, resists with a small shake on a success, staggers on a failure, and is overwhelmed on a critical failure.
+  - **Systems:** PF2e and SF2e use all four. D&D 5e saves against a known DC use success and failure.
+  - **Private rolls:** saves rolled privately or blind show nothing, so they give nothing away.
 - **PF2e and SF2e lasting emanations and sustained spells.**
   - An aura emanation (Divine Aura, Destructive Aura, Reaper's Lantern…) loops around the caster and follows them. Emanations without the aura trait (Synaptic Pulse, Confusing Cry) only affect whoever is inside when cast, so they still play once.
   - Emanations that apply a spell effect (Bless, Protector's Sphere…) already show their aura from that effect, so they are not doubled.

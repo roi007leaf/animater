@@ -43,6 +43,7 @@ import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normaliz
 import { PF2E_CONDITIONS, PF2E_EFFECTS, PF2E_STATE_SOURCE, normalizeStateCatalogState, catalogStateEntry, stateRecipe } from "./state-catalog.mjs";
 import { PersistentStates } from "./persistent-states.mjs";
 import { DND_KINDS,DND5E_SOURCE,dndEntries,dndEntry,dndRecipe,normalizeDndCatalogState,resolveDndAutomaticRecipe, addDndBookEntries } from './dnd5e-catalog.mjs';
+import { saveReaction, twoeSaveOutcome, dnd5eSaveOutcome } from './outcome.mjs';
 import { dndSettingKey,sfSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
@@ -270,11 +271,18 @@ const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
 const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
-  if (!event.messageId || !dice?.waitFor3DAnimationByMessageID || !["attack", "damage"].includes(event.type)) return;
+  if (!event.messageId || !dice?.waitFor3DAnimationByMessageID || !["attack", "damage", "save"].includes(event.type)) return;
   if (game.settings.get(ID, WAIT_FOR_DICE) === false) return;
   // Dice So Nice marks the message as animating from its own creation hook.
   await new Promise((resolve) => setTimeout(resolve, 60));
   await Promise.race([dice.waitFor3DAnimationByMessageID(event.messageId), new Promise((resolve) => setTimeout(resolve, DICE_WAIT_LIMIT))]);
+}
+async function playSaveReaction(outcome, tokenId, messageId, sceneId) {
+  if (!acceptsEvents() || (sceneId && sceneId !== canvas.scene?.id)) return;
+  const token = canvas.tokens?.get(tokenId), recipe = saveReaction(outcome);
+  if (!token || !recipe) return;
+  await afterDice({ type: "save", messageId });
+  await runtime.play(recipe, { source: token, targets: [] }).catch((error) => runtime.trace("Blocked", error.message));
 }
 async function dispatch(event) {
   if (!event || !acceptsEvents()) return;
@@ -931,6 +939,9 @@ Hooks.once("ready", () => {
   });
   if (["pf2e","sf2e"].includes(game.system.id)) {
     Hooks.on("createChatMessage", (message) => {
+      // A saving throw against a spell or effect: the saving creature reacts by degree.
+      const save = (message.author?.id ?? message.user?.id) === game.user.id ? twoeSaveOutcome(message, game.system.id) : null;
+      if (save) return void playSaveReaction(save, message.speaker?.token, message.id, message.speaker?.scene);
       void dispatch((game.system.id==="sf2e"?sf2eEvent:pf2eEvent)(message, game.user.id));
     });
     // A sustained spell's effect on its caster ends (expired, dismissed, not
@@ -963,6 +974,13 @@ Hooks.once("ready", () => {
     Hooks.on("dnd5e.rollAttackV2", (rolls, data) => {
       void dispatch(dnd5eEvent("attack", data?.subject, { rolls }));
     });
+    // A saving throw against a known DC: the saving creature reacts to passing or failing.
+    const onSave = (rolls, data) => {
+      const outcome = dnd5eSaveOutcome(rolls), actor = data?.subject;
+      const token = actor?.getActiveTokens?.()?.find((t) => t.document?.parent?.id === canvas.scene?.id);
+      if (outcome && token) void playSaveReaction(outcome, token.id, rolls[0]?.parent?.id, canvas.scene?.id);
+    };
+    Hooks.on("dnd5e.rollSavingThrow", onSave);
     Hooks.on("dnd5e.rollDamageV2", (rolls, data) => {
       void dispatch(dnd5eEvent("damage", data?.subject, { rolls }));
     });

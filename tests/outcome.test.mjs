@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { withOutcome, dnd5eAttackOutcome, CRIT_IMPACT_SCALE } from "../scripts/outcome.mjs";
+import { withOutcome, dnd5eAttackOutcome, CRIT_IMPACT_SCALE, saveReaction, twoeSaveOutcome, dnd5eSaveOutcome } from "../scripts/outcome.mjs";
 import { validateRecipe } from "../scripts/model.mjs";
 import { motionPose } from "../scripts/motion.mjs";
 
@@ -16,7 +16,7 @@ const bolt = () => validateRecipe({ id: "bolt", name: "Bolt", trigger: "attack",
 test("a miss flies but never lands: no impact, flinch or impact sound on the target", () => {
   const out = withOutcome(bolt(), { outcome: "failure", type: "attack" });
   assert.deepEqual(out.stages.map((s) => s.stageId), ["c", "t", "r"]);
-  assert.equal(withOutcome(bolt(), { outcome: "criticalFailure", type: "attack" }).stages.length, 3);
+  assert.equal(withOutcome(bolt(), { outcome: "criticalFailure", type: "attack" }).stages.length, 4, "the miss plus the fumble");
   // Damage and use events are never treated as misses.
   assert.equal(withOutcome(bolt(), { outcome: "failure", type: "damage" }).stages.length, 6);
 });
@@ -48,4 +48,34 @@ test("collapse tips the creature over and returns it to its pose", () => {
   assert.ok(Math.abs(mid.rotation) > 0.2 && mid.y > 0 && mid.scaleY < 1);
   const end = motionPose(stage, 1, { x: 1, y: 0 }, 100);
   assert.ok(Math.abs(end.rotation ?? 0) < 1e-6 && Math.abs(end.y ?? 0) < 1e-6);
+});
+
+test("four degrees on attacks: a critical failure is a fumble, a plain miss is not", () => {
+  const fumble = withOutcome(bolt(), { outcome: "criticalFailure", type: "attack" });
+  const stumble = fumble.stages.find((s) => s.stageId === "fumble");
+  assert.equal(stumble?.motion, "stagger");
+  assert.equal(stumble.subject, "source");
+  assert.ok(!fumble.stages.some((s) => s.kind === "impact"));
+  assert.doesNotThrow(() => validateRecipe(fumble));
+  assert.ok(!withOutcome(bolt(), { outcome: "failure", type: "attack" }).stages.some((s) => s.stageId === "fumble"));
+});
+
+test("four degrees on saves: the saving creature reacts by its result", () => {
+  const motion = (o) => saveReaction(o)?.stages[0];
+  assert.equal(motion("criticalSuccess").motion, "brace");
+  assert.equal(motion("success").motion, "shake");
+  assert.equal(motion("failure").motion, "stagger");
+  assert.ok(motion("criticalFailure").intensity > motion("failure").intensity);
+  assert.equal(saveReaction("nonsense"), null);
+  for (const o of ["criticalSuccess", "success", "failure", "criticalFailure"]) assert.doesNotThrow(() => validateRecipe(saveReaction(o)));
+  const message = (context, extra = {}) => ({ flags: { pf2e: { context } }, whisper: [], ...extra });
+  assert.equal(twoeSaveOutcome(message({ type: "saving-throw", outcome: "criticalFailure", origin: { item: "x" } })), "criticalFailure");
+  assert.equal(twoeSaveOutcome(message({ type: "saving-throw", outcome: "success" })), null, "a plain save with no spell or effect");
+  assert.equal(twoeSaveOutcome(message({ type: "saving-throw", outcome: "success", origin: {} }, { whisper: ["gm"] })), null, "a private save stays private");
+  assert.equal(twoeSaveOutcome(message({ type: "attack-roll", outcome: "success", origin: {} })), null);
+  assert.equal(twoeSaveOutcome({ flags: { sf2e: { context: { type: "saving-throw", outcome: "failure", origin: {} } } }, whisper: [] }, "sf2e"), "failure");
+  assert.equal(dnd5eSaveOutcome([{ total: 14, options: { target: 14 } }]), "success");
+  assert.equal(dnd5eSaveOutcome([{ total: 13, options: { target: 14 } }]), "failure");
+  assert.equal(dnd5eSaveOutcome([{ total: 13, options: {} }]), null, "no DC known");
+  assert.equal(dnd5eSaveOutcome([{ total: 20, options: { target: 14, rollMode: "gmroll" } }]), null);
 });
