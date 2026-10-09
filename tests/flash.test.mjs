@@ -103,3 +103,31 @@ test("portraits come from the encounter: party, enemies, never the hidden", asyn
   assert.equal(portraitPeople({ ...layer, side: "all", max: 2 }, people).length, 2);
   assert.ok(STARTER_FLASHES.find((f) => f.id === "start-faceoff").layers.filter((l) => l.kind === "portraits").length === 2);
 });
+
+test("moments: who fell decides enemy defeated, last enemy standing or party member down", async () => {
+  const { downMoment } = await import("../scripts/flash-combat.mjs");
+  const who = (id, disposition, hp, owner = false) => ({ actor: { id, hasPlayerOwner: owner, system: { attributes: { hp: { value: hp } } } }, token: { disposition }, defeated: false });
+  const orcA = who("a", -1, 0), orcB = who("b", -1, 5), orcC = who("c", -1, 7), hero = who("h", 1, 0, true);
+  const combat = (list) => ({ started: true, combatants: list });
+  assert.equal(downMoment(combat([orcA, orcB, orcC, hero]), orcA.actor), "enemyDown");
+  assert.equal(downMoment(combat([orcA, orcB, hero]), orcA.actor), "lastEnemy");
+  assert.equal(downMoment(combat([orcA, hero]), orcA.actor), null, "the last enemy falling is the combat's ending, not a moment");
+  assert.equal(downMoment(combat([orcA, hero]), hero.actor), "partyDown");
+  assert.equal(downMoment({ started: false, combatants: [orcA, orcB] }, orcA.actor), null);
+});
+
+test("boss spotlight, {boss} and {name}, backgrounds, and moment screens never stand in for start or end", async () => {
+  const { portraitPeople, bossOf, chooseFlash } = await import("../scripts/flash-model.mjs");
+  const people = [{ name: "Goblin", side: "enemies", level: 1 }, { name: "Dragon", side: "enemies", level: 9 }, { name: "Hero", side: "party", level: 12 }];
+  assert.equal(bossOf(people).name, "Dragon", "the party never counts as the boss");
+  const boss = validateFlash({ layers: [{ kind: "portraits", side: "boss" }] }).layers[0];
+  assert.deepEqual(portraitPeople(boss, people).map((p) => p.name), ["Dragon"]);
+  assert.equal(fillText("{boss} vs {name}", { combatants: people, name: "Ed" }), "Dragon vs Ed");
+  const s = validateFlash({ duck: false, backdrop: { media: "jb2a.darkness.black", mediaOpacity: 2 } });
+  assert.deepEqual([s.backdrop.media, s.backdrop.mediaOpacity, s.duck], ["jb2a.darkness.black", 1, false]);
+  assert.equal(validateFlash({ backdrop: { media: "https://x.com/a.webm" } }).backdrop.media, "");
+  const screens = [validateFlash({ id: "any", event: "any" }), validateFlash({ id: "r", event: "round" })];
+  assert.equal(chooseFlash(screens, "round", undefined, "random", () => 0).id, "r", "start-or-end screens don't play on new rounds");
+  assert.equal(chooseFlash(screens, "start", undefined, "random", () => 0).id, "any");
+  assert.ok(["round", "crit", "lastEnemy"].every((e) => STARTER_FLASHES.some((f) => f.event === e)));
+});

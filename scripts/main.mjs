@@ -497,6 +497,14 @@ function workspaceHost() {
       playFlash: (screen, options) => flash.play(screen, options),
       flashSound: (screen) => flash.sound(screen),
       flashPlaySound: (src, volume) => flash.playSound(src, volume),
+      downloadJSON: (data, name) => foundry.utils.saveDataToFile(JSON.stringify(data, null, 2), "application/json", name),
+      // A text file the GM picks, or null if they cancel.
+      pickTextFile: (accept) => new Promise((resolve) => {
+        const input = Object.assign(document.createElement("input"), { type: "file", accept });
+        input.addEventListener("change", async () => resolve(input.files?.[0] ? await input.files[0].text() : null));
+        input.addEventListener("cancel", () => resolve(null));
+        input.click();
+      }),
       flashVars: () => {
         const v = flash?.vars() ?? {};
         if (v.combatants?.length) return v;

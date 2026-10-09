@@ -1,7 +1,18 @@
 // Flash screens: full-screen title cards played to everyone when combat starts
 // or ends ("Roll for Initiative!", "Victory"). The GM builds them from text,
 // image and band layers, each with a position, timing, entrance and exit.
-export const FLASH_EVENTS = Object.freeze({ start: "Combat start", end: "Combat end", any: "Start or end" });
+export const FLASH_EVENTS = Object.freeze({
+  start: "Combat start", end: "Combat end", any: "Combat start or end",
+  round: "New round", crit: "Critical hit", enemyDown: "Enemy defeated", lastEnemy: "Last enemy standing", partyDown: "Party member down",
+});
+// Moments during combat (not start or end): one default each, set on the Flash screens page.
+export const MOMENT_EVENTS = ["round", "crit", "enemyDown", "lastEnemy", "partyDown"];
+// Animated backgrounds: JB2A loops that fill the screen behind the layers.
+export const FLASH_BACKGROUNDS = Object.freeze({
+  "": "None", "jb2a.screen_overlay.01.bad_omen": "Bad omen", "jb2a.ambient_fog.001.loop.large.white": "Fog",
+  "jb2a.ambient_fog.001.loop.large.purplered": "Crimson fog", "jb2a.call_lightning.low_res.blue": "Storm", "jb2a.darkness.black": "Darkness",
+  "jb2a.fireflies.many.01": "Fireflies", "jb2a.sleet_storm.01.blue": "Sleet", "jb2a.magic_signs.circle.02": "Runes", "jb2a.energy_field.01.blue": "Energy field",
+});
 export const FLASH_MOTIONS = Object.freeze({
   none: "None", fade: "Fade", "slide-left": "Slide from left", "slide-right": "Slide from right",
   "slide-up": "Rise from below", "slide-down": "Drop from above", zoom: "Zoom", slam: "Slam",
@@ -12,7 +23,7 @@ export const FLASH_LOOPS = Object.freeze({ none: "None", pulse: "Pulse", glow: "
 export const KEY_LIMIT = 12;
 export const FLASH_KINDS = Object.freeze({ text: "Text", image: "Image or video", portraits: "Portraits", band: "Color band", sound: "Sound", flash: "Screen flash", shake: "Screen shake" });
 // Portraits fill in from the encounter when the screen plays.
-export const PORTRAIT_SIDES = Object.freeze({ party: "The party", enemies: "The enemies", all: "Everyone in the encounter" });
+export const PORTRAIT_SIDES = Object.freeze({ party: "The party", enemies: "The enemies", boss: "The boss (strongest enemy)", all: "Everyone in the encounter" });
 export const PORTRAIT_SHAPES = Object.freeze({ circle: "Circle", square: "Rounded square", none: "No frame" });
 // Screen-wide moments (a flash, a shake) are short by default.
 const MOMENT = { flash: 300, shake: 450 };
@@ -78,7 +89,11 @@ export function validateFlash(s = {}) {
     event: pick(s.event, FLASH_EVENTS, "start"), duration,
     backdrop: { color: color(s.backdrop?.color, "#000000"), opacity: num(s.backdrop?.opacity, 0, 1, 0.55), vignette: s.backdrop?.vignette !== false,
       // Cinematic letterbox bars.
-      bars: s.backdrop?.bars === true, barSize: num(s.backdrop?.barSize, 2, 25, 11) },
+      bars: s.backdrop?.bars === true, barSize: num(s.backdrop?.barSize, 2, 25, 11),
+      // An animated background behind the layers (JB2A key or file), and how strongly it shows.
+      media: safeMedia(s.backdrop?.media), mediaOpacity: num(s.backdrop?.mediaOpacity, 0, 1, 0.6) },
+    // Playing music dips while the screen shows.
+    duck: s.duck !== false,
     sound: { file: text(s.sound?.file, 300).trim(), volume: num(s.sound?.volume, 0, 1, 0.6) },
     layers: (Array.isArray(s.layers) ? s.layers : []).slice(0, LAYER_LIMIT).map((l) => validateLayer(l, duration)),
   };
@@ -100,15 +115,20 @@ export function keyValueAt(layer, t) {
 }
 // Who appears in a portraits layer: the encounter's visible combatants on that side.
 export function portraitPeople(layer, combatants = []) {
+  if (layer.side === "boss") return bossOf(combatants) ? [bossOf(combatants)] : [];
   return combatants.filter((c) => layer.side === "all" || c.side === layer.side).slice(0, layer.max);
 }
+// The strongest enemy: highest level (or CR), first in initiative order on a tie.
+export const bossOf = (combatants = []) => combatants.filter((c) => c.side === "enemies").reduce((best, c) => (!best || Number(c.level) > Number(best.level) ? c : best), null);
 // {scene} in text becomes the scene's name, {round} the combat round.
-export const fillText = (value, vars = {}) => String(value ?? "").replace(/\{(scene|round)\}/g, (_, k) => vars[k] ?? "");
+// {boss} is the strongest enemy's name, {name} the creature of the moment (who crit, who fell).
+export const fillText = (value, vars = {}) => String(value ?? "").replace(/\{(scene|round|boss|name)\}/g, (_, k) => (k === "boss" ? bossOf(vars.combatants)?.name : vars[k]) ?? "");
 
 // The screen to play: the combat's own choice, else the world default, for this event.
 // A choice is a screen id, "random" (any screen for the event) or "none".
 export function chooseFlash(screens, event, choice, fallback, random = Math.random) {
-  const fits = screens.filter((s) => s.event === event || s.event === "any");
+  // "Combat start or end" screens fit only those two moments.
+  const fits = screens.filter((s) => s.event === event || (s.event === "any" && ["start", "end"].includes(event)));
   const resolve = (c) => (c === "none" ? null : c === "random" ? fits[Math.floor(random() * fits.length)] ?? null : screens.find((s) => s.id === c) ?? undefined);
   const picked = choice ? resolve(choice) : undefined;
   return picked !== undefined ? picked : fallback ? resolve(fallback) ?? null : null;
@@ -146,6 +166,22 @@ export const STARTER_FLASHES = [
     layers: [
       { kind: "text", name: "Title", text: "AMBUSH!", y: 50, size: 16, color: "#ffe1c2", glow: "#d10000", glowSize: 4, enter: "zoom", enterMs: 300, exit: "zoom", shake: true },
       { kind: "flash", name: "Red flash", start: 250, duration: 260, color: "#ff2a2a", strength: 0.55 },
+    ] },
+  { id: "round-next", name: "Next Round", event: "round", duration: 1800, backdrop: { color: "#000000", opacity: 0.3, vignette: true },
+    layers: [
+      { kind: "text", name: "Round", text: "ROUND {round}", y: 50, size: 9, color: "#ffffff", glow: "#7aa7ff", glowSize: 2.5, enter: "blur", enterMs: 350, exit: "blur", exitMs: 350, spacing: 0.15 },
+    ] },
+  { id: "crit-hit", name: "Critical!", event: "crit", duration: 1500, backdrop: { color: "#000000", opacity: 0.25, vignette: false },
+    layers: [
+      { kind: "text", name: "Crit", text: "CRITICAL!", y: 45, size: 13, gradient: true, color: "#ffffff", gradientTo: "#ff5a1a", glow: "#ff2a00", glowSize: 3, enter: "slam", enterMs: 260, exit: "zoom", exitMs: 250, rotate: -6 },
+      { kind: "text", name: "Who", text: "{name}", y: 60, size: 3.5, italic: true, bold: false, glowSize: 0, start: 250, enter: "fade" },
+      { kind: "flash", name: "Flash", start: 200, duration: 200, strength: 0.6 },
+      { kind: "shake", name: "Shake", start: 200, duration: 350, strength: 1.4 },
+    ] },
+  { id: "last-enemy", name: "Last One Standing", event: "lastEnemy", duration: 2400, backdrop: { color: "#140000", opacity: 0.55, bars: true, barSize: 9 },
+    layers: [
+      { kind: "portraits", name: "Survivor", side: "enemies", y: 42, size: 22, max: 1, ring: "#ff5a5a", names: true, enter: "zoom", enterMs: 400 },
+      { kind: "text", name: "Title", text: "LAST ONE STANDING", y: 70, size: 6, color: "#ffd2d2", glow: "#ff0000", glowSize: 2, spacing: 0.2, start: 400, enter: "type", enterMs: 600 },
     ] },
   { id: "end-victory", name: "Victory", event: "end", duration: 3600, backdrop: { color: "#1a1404", opacity: 0.5, bars: true, barSize: 9 },
     layers: [

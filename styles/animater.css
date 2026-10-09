@@ -2426,3 +2426,12 @@
 .an-flash-face.is-none img { object-fit: contain; }
 .an-flash-name { color: #fff; font-weight: 700; text-shadow: 0 0 0.8cqh #000, 0 0 0.3cqh #000; white-space: nowrap; max-width: 30cqw; overflow: hidden; text-overflow: ellipsis; }
 .animater .an-flash-row-bar.kind-portraits { background: #e0a84a; }
+.an-flash-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none; }
+/* Snap guides, keyframe copy, library sharing. */
+.an-flash-guide { position: absolute; z-index: 5; pointer-events: none; background: #ff4fd8; }
+.an-flash-guide.is-v { top: 0; bottom: 0; width: 1px; }
+.an-flash-guide.is-h { left: 0; right: 0; height: 1px; }
+.animater .an-flash-keycopy { display: flex; gap: 6px; flex-wrap: wrap; }
+.animater .an-flash-keycopy button { width: auto; height: 28px; font-size: 12px; }
+.animater .an-flash-share { display: flex; gap: 6px; }
+.animater .an-flash-share button { flex: 1; height: 30px; font-size: 12px; }

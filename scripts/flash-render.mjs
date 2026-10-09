@@ -156,7 +156,8 @@ export function createFlash(container, screen, { resolveMedia, vars = {}, editin
   const el = document.createElement("div");
   el.className = `an-flash${editing ? " is-editing" : ""}`;
   const b = screen.backdrop;
-  el.innerHTML = `<div class="an-flash-backdrop" style="background:${b.color}"></div>${b.vignette ? `<div class="an-flash-vignette"></div>` : ""}`
+  const bg = b.media ? resolveMedia?.(b.media) ?? b.media : "";
+  el.innerHTML = `<div class="an-flash-backdrop" style="background:${b.color}"></div>${bg ? (VIDEO.test(bg) ? `<video class="an-flash-bg" src="${esc(bg)}" muted autoplay loop playsinline></video>` : `<img class="an-flash-bg" src="${esc(bg)}" alt="">`) : ""}${b.vignette ? `<div class="an-flash-vignette"></div>` : ""}`
     + `<div class="an-flash-stage">${screen.layers.map((l, i) => (VISUAL(l) ? `<div class="an-flash-layer" data-flash-layer="${i}" style="left:${l.x}%;top:${l.y}%"><div class="an-flash-motion"><div class="an-flash-fx">${layerHTML(l, { resolveMedia, vars })}</div></div></div>` : "")).join("")}</div>`
     + screen.layers.map((l, i) => (l.kind === "flash" ? `<div class="an-flash-fill" data-flash-fill="${i}" style="background:${l.color}"></div>` : "")).join("")
     + (b.bars ? `<div class="an-flash-bar is-top" style="height:${b.barSize}cqh"></div><div class="an-flash-bar is-bottom" style="height:${b.barSize}cqh"></div>` : "");
@@ -168,6 +169,8 @@ export function createFlash(container, screen, { resolveMedia, vars = {}, editin
     ...[el.querySelector(".an-flash-backdrop"), el.querySelector(".an-flash-vignette")].filter(Boolean).map((node, i) => node.animate([
       { offset: 0, opacity: 0 }, { offset: fadeIn / total, opacity: i ? 1 : b.opacity },
       { offset: 1 - fadeOut / total, opacity: i ? 1 : b.opacity }, { offset: 1, opacity: 0 }], timing)),
+    ...[el.querySelector(".an-flash-bg")].filter(Boolean).map((node) => node.animate([
+      { offset: 0, opacity: 0 }, { offset: fadeIn / total, opacity: b.mediaOpacity }, { offset: 1 - fadeOut / total, opacity: b.mediaOpacity }, { offset: 1, opacity: 0 }], timing)),
     ...[...el.querySelectorAll(".an-flash-bar")].map((bar) => {
       const away = bar.classList.contains("is-top") ? "translateY(-100%)" : "translateY(100%)";
       return bar.animate([{ offset: 0, transform: away }, { offset: slide / total, transform: "translateY(0)", easing: "ease-in" }, { offset: 1 - slide / total, transform: "translateY(0)", easing: "ease-in" }, { offset: 1, transform: away }], timing);
