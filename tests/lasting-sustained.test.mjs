@@ -22,3 +22,35 @@ test("a lasting Darkness loops only its solid middle; other footage plays whole"
   applyMediaOptions(section, { persist: false, asset: "jb2a.darkness.black", clipStart: 0 });
   assert.deepEqual(calls, []);
 });
+
+import { withLastingArea } from "../scripts/lasting-area.mjs";
+const darknessRecipe = () => ({ id: "d", stages: [
+  { stageId: "cast", kind: "cast", assets: ["jb2a.smoke.puff.centered.dark_purple"] },
+  { stageId: "area", kind: "template", assets: ["jb2a.darkness.black"], delay: 200 },
+  { stageId: "puff", kind: "template", assets: ["jb2a.smoke.puff.centered.dark_purple"] },
+] });
+const darkness = spell("Darkness", "1 minute");
+
+test("a lasting Darkness grows in once, then holds as a seamless dark fog loop", () => {
+  const r = withLastingArea(darknessRecipe(), { template: {}, item: darkness }, { exists: () => true });
+  const area = r.stages.filter((s) => s.kind === "template");
+  assert.deepEqual(area.map((s) => [s.stageId, s.assets[0], !!s.persist]), [
+    ["area", "jb2a.darkness.black", false],
+    ["area-hold", "jb2a.ambient_fog.001.loop.large.white", true],
+    ["puff", "jb2a.smoke.puff.centered.dark_purple", false],
+  ]);
+  assert.equal(area[1].tintEnabled, true);
+  assert.equal(area[1].delay, 1400);
+});
+
+test("with PF2e Visioner drawing Darkness, Animater keeps only its flourishes", () => {
+  const r = withLastingArea(darknessRecipe(), { template: {}, item: darkness }, { exists: () => true, yieldDarkness: true });
+  assert.deepEqual(r.stages.map((s) => s.stageId), ["cast", "puff"]);
+});
+
+test("a D&D Darkness already marked lasting gets the same grow-in and dark loop", () => {
+  const recipe = { ...darknessRecipe(), systemId: "dnd5e" };
+  recipe.stages[1] = { ...recipe.stages[1], persist: true };
+  const r = withLastingArea(recipe, { template: {}, item: { type: "spell", name: "Darkness" } }, { exists: () => true });
+  assert.deepEqual(r.stages.filter((s) => s.persist).map((s) => s.assets[0]), ["jb2a.ambient_fog.001.loop.large.white"]);
+});

@@ -94,6 +94,7 @@ export class AnimaterRuntime {
     // A lasting PF2e/SF2e area stays on its template (D&D marks it in its catalog).
     const recipe = withLastingArea(applyEventElement(resolved, event.element), event, {
       exists: (key) => Boolean(this.host.database?.entryExists?.(key)),
+      yieldDarkness: this.host.yieldDarkness?.() === true,
     });
     // Damage riders (e.g. Sneak Attack) play alongside the event's own recipe.
     const riders = (this.host.riderRecipes?.(event, saved) ?? []).filter(Boolean);

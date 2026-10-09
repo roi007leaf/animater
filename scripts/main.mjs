@@ -1035,6 +1035,8 @@ Hooks.once("ready", () => {
     soundUsers: () => usersForSound(Array.from(game.users?.contents ?? game.users?.values?.() ?? [])),
     recipes,
     riderRecipes: (event, saved) => game.system.id === "pf2e" ? riderRecipes(event, game.settings.get(ID, "featureCatalog"), saved, { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) }) : [],
+    // PF2e Visioner draws Darkness itself (its region and darkness light); Animater steps aside.
+    yieldDarkness: () => Boolean(game.modules.get("pf2e-visioner")?.active),
     flashBefore: (recipe, context) => flash?.before(recipe, context),
     pickTeleport,
     teleport,

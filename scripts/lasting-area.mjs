@@ -55,14 +55,41 @@ export function lastingAsset(key, exists = () => false) {
 
 // The first area layer persists (later layers are one-off flourishes). A recipe that
 // already marks a lasting area (D&D 5e) is left as it is.
-export function withLastingArea(recipe, event, { exists } = {}) {
-  if (!recipe?.stages?.length || !event?.template || recipe.systemId === 'dnd5e') return recipe;
+// JB2A's Darkness grows in from nothing and dissolves within its clip, so it cannot loop.
+// A lasting Darkness plays it once to grow in, then holds as JB2A's seamless fog loop tinted
+// near-black. yieldDarkness: another module draws the darkness area (PF2e Visioner's region and
+// darkness light), so Animater keeps only its non-darkness flourishes.
+const DARKNESS = /^jb2a\.darkness\./;
+const DARK_LOOP = 'jb2a.ambient_fog.001.loop.large.white';
+const isDarknessStage = (s) => s.kind === 'template' && (s.assets ?? []).length > 0 && s.assets.every((k) => DARKNESS.test(k));
+export function withLastingArea(recipe, event, { exists, yieldDarkness = false } = {}) {
+  if (!recipe?.stages?.length || !event?.template) return recipe;
+  if (yieldDarkness && recipe.stages.some(isDarknessStage)) {
+    const stages = recipe.stages.filter((s) => !isDarknessStage(s));
+    return stages.length ? { ...recipe, stages } : recipe;
+  }
+  // An already-lasting Darkness (D&D marks it in its catalog) gets the same grow-in and dark loop.
+  const marked = recipe.stages.findIndex((s) => s.persist && isDarknessStage(s));
+  if (marked >= 0 && exists?.(DARK_LOOP)) return { ...recipe, stages: darknessHold(recipe.stages, marked, recipe.stages[marked]) };
+  if (recipe.systemId === 'dnd5e') return recipe;
   if (recipe.stages.some(s => s.kind === 'template' && s.persist)) return recipe;
   if (!isLastingArea(event.item)) return recipe;
   const i = recipe.stages.findIndex(s => s.kind === 'template');
   if (i < 0) return recipe;
   const stages = recipe.stages.slice();
   const s = stages[i];
-  stages[i] = { ...s, persist: true, oneShot: false, fadeOut: Math.max(s.fadeOut ?? 0, 800), ...(isEmanation(event.item) ? { followSource: true } : {}), assets: [...new Set((s.assets ?? []).map(k => lastingAsset(k, exists)))] };
+  const lasting = { ...s, persist: true, oneShot: false, fadeOut: Math.max(s.fadeOut ?? 0, 800), ...(isEmanation(event.item) ? { followSource: true } : {}), assets: [...new Set((s.assets ?? []).map(k => lastingAsset(k, exists)))] };
+  if (isDarknessStage(s) && exists?.(DARK_LOOP)) return { ...recipe, stages: darknessHold(stages, i, lasting) };
+  stages[i] = lasting;
   return { ...recipe, stages };
+}
+// Stage i (a lasting Darkness) becomes a one-off grow-in plus the dark fog loop that stays.
+function darknessHold(stages, i, lasting) {
+  const s = stages[i], next = stages.slice();
+  // The grow-in keeps the stage's id, so stages timed after it still follow it.
+  const grow = { ...s, persist: false, oneShot: true };
+  const hold = { ...lasting, persist: true, oneShot: false, stageId: `${s.stageId ?? 'darkness'}-hold`, assets: [DARK_LOOP], delay: (s.delay ?? 0) + 1200, fadeIn: 1500, tint: '#141219', tintEnabled: true, colorize: true, opacity: Math.min(1, (s.opacity ?? 1) * 1.1) };
+  delete hold.afterStage; delete hold.startMode; delete hold.startRef;
+  next.splice(i, 1, grow, hold);
+  return next;
 }
