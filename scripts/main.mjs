@@ -494,7 +494,11 @@ function workspaceHost() {
       saveFlashScreens: (list) => flash.save(list),
       flashDefaults: () => flash?.defaults() ?? {},
       setFlashDefault: (event, id) => flash.setDefault(event, id),
-      playFlash: (screen, options) => flash.play(screen, options),
+      playFlash: function (screen, options) {
+        // Played from the editor: the sample hero and action fill {name}, {action} and the cut-in.
+        const { name, action, actor } = this.flashVars?.() ?? {};
+        return flash.play(screen, { ...options, extra: { name, action, actor, ...options?.extra } });
+      },
       flashSound: (screen) => flash.sound(screen),
       flashPlaySound: (src, volume) => flash.playSound(src, volume),
       downloadJSON: (data, name) => foundry.utils.saveDataToFile(JSON.stringify(data, null, 2), "application/json", name),
@@ -507,6 +511,9 @@ function workspaceHost() {
       }),
       flashVars: () => {
         const v = { name: "Valeros", action: "Dragon's Fury", ...(flash?.vars() ?? {}) };
+        // The cut-in's stand-in: a selected token, else the first party member, else a silhouette.
+        const tok = canvas?.tokens?.controlled?.[0], party = v.combatants?.find((c) => c.side === "party");
+        v.actor = tok ? { name: tok.name, img: tok.document?.texture?.src ?? "", portrait: tok.actor?.img ?? "" } : party ?? { name: "Valeros", img: "icons/svg/mystery-man.svg", portrait: "icons/svg/mystery-man.svg" };
         if (v.combatants?.length) return v;
         const stand = (name, img, side) => ({ name, img, portrait: img, side });
         return { ...v, combatants: [stand("Hero", "icons/svg/mystery-man.svg", "party"), stand("Ally", "icons/svg/mystery-man.svg", "party"), stand("Friend", "icons/svg/mystery-man.svg", "party"), stand("Foe", "icons/svg/skull.svg", "enemies"), stand("Brute", "icons/svg/skull.svg", "enemies"), stand("Boss", "icons/svg/skull.svg", "enemies")] };

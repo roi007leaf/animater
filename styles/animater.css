@@ -2598,3 +2598,61 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 /* PF2e HUD's header is a 5-column grid; the ⚡ gets a sixth column at the right. */
 #pf2e-hud-tracker header:has(> .animater-flash-hud) { grid-template-columns: repeat(2, auto) 1fr repeat(3, auto); }
 #pf2e-hud-tracker header > .animater-flash-hud { grid-column: 6; }
+/* Drawn effects, the camera, cut-ins. */
+.an-flash-camera { position: absolute; inset: 0; transform-origin: 50% 50%; }
+.an-flash-camera > .an-flash-backdrop, .an-flash-camera > .an-flash-vignette { inset: -8%; }
+.an-flash-camera > .an-flash-bg { inset: -8%; width: 116%; height: 116%; }
+.an-flash-layer.is-lines, .an-flash-layer.is-burst, .an-flash-layer.is-particles, .an-flash-layer.is-slash { max-width: none; }
+.an-flash-drawn { display: block; overflow: visible; }
+.an-flash-slash { display: block; border-radius: 50%; }
+.an-flash-particles { position: relative; display: block; width: 100cqw; height: 100cqh; }
+.an-flash-particles > i { position: absolute; display: block; opacity: 0; }
+.an-flash-word { display: inline-block; }
+.an-flash-outline-wrap { position: relative; display: block; }
+.an-flash-text.is-outline { position: absolute; inset: 0; pointer-events: none; }
+.an-flash-face.is-slash { border: 0; border-radius: 0; box-shadow: none; clip-path: polygon(14% 0, 100% 0, 86% 100%, 0 100%); }
+/* Flash editor layout: inspector tabs, slim library, full window, kind icons, effects menu, gallery. */
+.animater .an-flash-tabs { display: flex; gap: 3px; padding: 3px; border-radius: 10px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--an-line); }
+.animater .an-flash-tabs button { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 28px; min-height: 28px; border: 0; border-radius: 7px; background: none; color: var(--an-muted); font-weight: 600; }
+.animater .an-flash-tabs button.is-on { background: rgba(158, 138, 255, 0.2); color: var(--an-text); }
+.animater .an-flash-page.is-slim { grid-template-columns: 44px minmax(0, 1fr) 270px; }
+.animater .an-flash-list.is-slim { display: flex; flex-direction: column; align-items: center; gap: 6px; padding-right: 0; }
+.animater .an-flash-list.is-slim .an-icon { width: 32px; padding: 0; }
+.animater .an-flash-slim-name { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 11px; color: var(--an-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-height: 60vh; }
+.animater .an-flash-libtools [data-action="flash-lib"] { font-size: 14px; }
+.animater:has(.an-flash-page.is-full) .an-nav { display: none; }
+.animater .an-flash-page.is-full { grid-template-columns: minmax(0, 1fr) 280px; }
+.animater .an-flash-page.is-full > .an-flash-list { display: none; }
+.animater .an-flash-row-name { display: flex; align-items: center; gap: 6px; }
+.animater .an-flash-row-icon { flex: 0 0 18px; display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 5px; font-size: 11px; font-weight: 800; line-height: 1; color: #1b1530; background: #b9a6ff; }
+.animater .an-flash-row-icon.kind-text { background: #ffd34d; }
+.animater .an-flash-row-icon.kind-image, .animater .an-flash-row-icon.kind-portraits { background: #7fd1ff; }
+.animater .an-flash-row-icon.kind-band { background: #ff9a7a; }
+.animater .an-flash-row-icon.kind-lines, .animater .an-flash-row-icon.kind-burst, .animater .an-flash-row-icon.kind-slash, .animater .an-flash-row-icon.kind-particles { background: #ffb36b; }
+.animater .an-flash-row-icon.kind-sound, .animater .an-flash-row-icon.kind-flash, .animater .an-flash-row-icon.kind-shake, .animater .an-flash-row-icon.kind-punch { background: #9be3a8; }
+.animater .an-flash-row { grid-template-columns: 120px auto minmax(0, 1fr) auto; }
+.animater .an-flash-row-ms button.is-eye { font-size: 11px; }
+.animater .an-flash-row-ms button.is-eye.is-on { color: var(--an-text); background: rgba(158, 138, 255, 0.35); border-color: rgba(158, 138, 255, 0.6); }
+.animater .an-flash-row-ms button.is-eye:disabled { visibility: hidden; }
+.animater .an-flash-effects { position: relative; }
+.animater .an-flash-effects-menu { position: absolute; right: 0; top: calc(100% + 4px); z-index: 20; display: grid; gap: 2px; width: 270px; padding: 5px; border-radius: 10px; background: var(--an-surface, #1d1830); border: 1px solid var(--an-line); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45); }
+.animater .an-flash-adds .an-flash-effects-menu button { display: grid; grid-template-columns: 22px 1fr; column-gap: 8px; width: 100%; height: auto; min-height: 0; padding: 6px 8px; text-align: left; border: 0; border-radius: 7px; background: none; }
+.animater .an-flash-effects-menu button:hover { background: rgba(158, 138, 255, 0.15); }
+.animater .an-flash-effects-menu .an-flash-row-icon { grid-row: span 2; align-self: center; }
+.animater .an-flash-effects-menu small { color: var(--an-muted); font-size: 10.5px; }
+.animater .an-flash-gallery { display: grid; gap: 14px; }
+.animater .an-flash-gallery-head { display: flex; align-items: end; justify-content: space-between; }
+.animater .an-flash-gallery-head h2 { margin: 2px 0 0; font-size: 20px; border: 0; }
+.animater .an-flash-gallery-head button { width: auto; padding: 0 14px; }
+.animater .an-flash-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.animater .an-flash-page .an-flash-tpl { display: grid; gap: 3px; height: auto; min-height: 0; padding: 8px; text-align: left; border-radius: 12px; background: var(--an-surface); border: 1px solid var(--an-line); }
+.animater .an-flash-tpl:hover { border-color: rgba(158, 138, 255, 0.6); }
+.animater .an-flash-tpl-thumb { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #0b0912; font-size: 28px; color: var(--an-muted); margin-bottom: 4px; }
+.animater .an-flash-tpl b { font-size: 13px; }
+.animater .an-flash-tpl small { color: var(--an-muted); font-size: 11px; }
+/* The editor column scrolls instead of squashing the stage when the layer list is long. */
+.animater .an-flash-main { display: flex; flex-direction: column; }
+.animater .an-flash-main > * { flex-shrink: 0; }
+/* Show me sits in the toolbar (not a snap guide line). */
+.animater .an-flash-guides > button.an-flash-guide { position: static; display: inline-flex; align-items: center; width: auto; height: 26px; min-height: 26px; padding: 0 10px; font-size: 12px; border-radius: 999px; pointer-events: auto; z-index: auto; }
+.animater .an-flash-effects-menu { top: auto; bottom: calc(100% + 4px); }

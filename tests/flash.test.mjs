@@ -165,3 +165,77 @@ test("a Signature Move starter is ready to put before an animation", () => {
   assert.equal(sig.event, "action");
   assert.ok(sig.layers.some((l) => l.kind === "text" && l.text === "{action}"));
 });
+
+test("new layer kinds: speed lines, burst, slash, particles and a camera punch are cleaned", async () => {
+  const s = validateFlash({ layers: [
+    { kind: "lines", density: 999, clear: -5 }, { kind: "burst" }, { kind: "slash", height: 99 },
+    { kind: "particles", ptype: "snow", count: 9999 }, { kind: "particles", ptype: "nope", direction: "sideways" },
+    { kind: "punch", strength: 9 }, { kind: "image", blend: "add" }, { kind: "image", blend: "weird" },
+  ] });
+  const [lines, burst, slash, snow, odd, punch, glow, plain] = s.layers;
+  assert.equal(lines.density, 90); assert.equal(lines.clear, 0);
+  assert.equal(burst.kind, "burst"); assert.equal(slash.height, 30);
+  assert.deepEqual([snow.count, snow.direction, snow.color], [150, "down", "#ffffff"], "snow falls by default");
+  assert.deepEqual([odd.ptype, odd.direction], ["embers", "up"], "embers rise");
+  assert.deepEqual([punch.strength, punch.duration], [1.6, 350]);
+  assert.equal(glow.blend, "add"); assert.equal(plain.blend, "normal");
+  const { punchKeyframes, particleSpecs, particleKeyframes } = await import("../scripts/flash-render.mjs");
+  const frames = punchKeyframes(s.layers, s.duration);
+  assert.ok(frames.some((f) => f.transform === "scale(1.6)"), "the punch zooms in");
+  const specs = particleSpecs(snow, s.duration);
+  assert.equal(specs.length, 150);
+  assert.deepEqual(particleSpecs(snow, s.duration)[3], specs[3], "the same layer always looks the same");
+  const path = particleKeyframes(snow, specs[0]);
+  assert.match(path[0].transform, /-6\.00cqh/); assert.match(path.at(-1).transform, /106\.00cqh/, "snow travels top to bottom");
+});
+
+test("text: words one by one, keyframed colour and glow, outline entrance", async () => {
+  const { colorKeyframes, outlineKeyframes, wordKeyframes } = await import("../scripts/flash-render.mjs");
+  const s = validateFlash({ layers: [{ kind: "text", text: "Burn them all", words: 120, enter: "outline", glowSize: 2, keys: [{ at: 0, color: "#ff0000" }, { at: 1000, glow: "#00ff00" }, { at: 1500, color: "bad" }] }] });
+  const t = s.layers[0];
+  assert.equal(t.words, 120); assert.equal(t.enter, "outline");
+  assert.equal(t.keys[0].color, "#ff0000"); assert.equal(t.keys[2].color, undefined, "bad colours are dropped");
+  const colors = colorKeyframes(t, s.duration);
+  assert.equal(colors[1].color, "#ff0000"); assert.equal(colors[2].color, t.color, "keys without a colour keep the layer colour");
+  assert.match(colors[2].textShadow, /#00ff00/);
+  assert.ok(outlineKeyframes(t, s.duration).line.length > 2);
+  assert.equal(wordKeyframes(t, 2, s.duration)[1].offset, (t.start + 240) / s.duration);
+  assert.equal(colorKeyframes(validateFlash({ layers: [{ kind: "text" }] }).layers[0], 3000), null);
+});
+
+test("cut-in: an actor portrait shows the one using the action; scenes can freeze", async () => {
+  const { portraitPeople } = await import("../scripts/flash-model.mjs");
+  const layer = validateFlash({ layers: [{ kind: "portraits", side: "actor", shape: "slash" }] }).layers[0];
+  assert.deepEqual([layer.side, layer.shape], ["actor", "slash"]);
+  assert.deepEqual(portraitPeople(layer, [{ name: "X", side: "party" }], { name: "Ed" }).map((p) => p.name), ["Ed"]);
+  assert.deepEqual(portraitPeople(layer, [{ name: "X", side: "party" }]), []);
+  assert.equal(validateFlash({ backdrop: { freeze: "grey" } }).backdrop.freeze, "grey");
+  assert.equal(validateFlash({ backdrop: { freeze: "melt" } }).backdrop.freeze, "normal");
+});
+
+test("editor: inspector tabs, slim library, row icons and hide, effects menu, template gallery", async () => {
+  const { FlashEditor } = await import("../scripts/flash-editor.mjs");
+  const screens = [validateFlash({ id: "s", name: "Test", layers: [{ kind: "text", text: "HI" }, { kind: "particles" }, { kind: "punch" }] })];
+  const host = { flashScreens: () => screens, flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
+  const ed = new FlashEditor({ host, page: "recipes", root: null, render() {} });
+  let html = ed.html();
+  assert.match(html, /data-action="flash-tab" data-tab="layer"[^>]*aria-selected="true"/);
+  assert.doesNotMatch(html, /backdrop\.freeze/, "screen settings wait on their tab");
+  assert.match(html, /an-flash-row-icon kind-particles/);
+  assert.match(html, /data-action="flash-eye"/);
+  assert.match(html, /data-action="flash-effects"/);
+  await ed.action("flash-tab", { dataset: { tab: "screen" } });
+  assert.match(ed.html(), /data-flash-field="backdrop.freeze"/);
+  await ed.action("flash-lib", { dataset: {} });
+  assert.match(ed.html(), /an-flash-list is-slim/);
+  await ed.action("flash-full", { dataset: {} });
+  assert.match(ed.html(), /an-flash-page is-slim is-full/);
+  await ed.action("flash-new", { dataset: {} });
+  html = ed.html();
+  assert.match(html, /data-action="flash-new-from" data-id="blank"/);
+  assert.match(html, /data-flash-thumb="start-boss"/);
+  ed.layerIndex = 0; ed.tab = "layer"; ed.showGallery = false;
+  html = ed.html();
+  assert.match(html, /data-flash-layer-field="words"/);
+  assert.match(html, /data-flash-layer-field="blend"/);
+});

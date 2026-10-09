@@ -16,17 +16,30 @@ export const FLASH_BACKGROUNDS = Object.freeze({
 export const FLASH_MOTIONS = Object.freeze({
   none: "None", fade: "Fade", "slide-left": "Slide from left", "slide-right": "Slide from right",
   "slide-up": "Rise from below", "slide-down": "Drop from above", zoom: "Zoom", slam: "Slam",
-  type: "Type on / wipe off", wipe: "Wipe", blur: "Blur in / out",
+  type: "Type on / wipe off", wipe: "Wipe", blur: "Blur in / out", outline: "Outline, then fill (text)",
 });
 // Effects that repeat while a layer is on screen.
 export const FLASH_LOOPS = Object.freeze({ none: "None", pulse: "Pulse", glow: "Glow pulse", heartbeat: "Heartbeat", glitch: "Glitch", flicker: "Flicker", wobble: "Wobble", float: "Float", spin: "Spin" });
 export const KEY_LIMIT = 12;
-export const FLASH_KINDS = Object.freeze({ text: "Text", image: "Image or video", portraits: "Portraits", band: "Color band", sound: "Sound", flash: "Screen flash", shake: "Screen shake" });
+export const FLASH_KINDS = Object.freeze({
+  text: "Text", image: "Image or video", portraits: "Portraits", band: "Color band",
+  lines: "Speed lines", burst: "Light burst", slash: "Slash streak", particles: "Particles",
+  sound: "Sound", flash: "Screen flash", shake: "Screen shake", punch: "Camera punch",
+});
+// Layers that are moments for the whole screen (no place on the stage).
+export const MOMENT_KINDS = Object.freeze(["sound", "flash", "shake", "punch"]);
+// How a layer mixes with what is under it (Screen and Add make black-backed JB2A videos glow).
+export const FLASH_BLENDS = Object.freeze({ normal: "Normal", screen: "Screen", add: "Add (glow)", multiply: "Multiply", overlay: "Overlay" });
+export const PARTICLE_TYPES = Object.freeze({ embers: "Embers", sparks: "Sparks", snow: "Snow", ash: "Ash", petals: "Petals", blood: "Blood" });
+const PARTICLE_DEFAULTS = { embers: ["up", "#ff8a2a"], sparks: ["up", "#ffe27a"], snow: ["down", "#ffffff"], ash: ["up", "#9a9a9a"], petals: ["down", "#ff9ec4"], blood: ["down", "#8a0000"] };
+export const PARTICLE_DIRECTIONS = Object.freeze({ up: "Up", down: "Down", left: "Left", right: "Right" });
+// The game scene behind the card while it shows (on each player's own screen).
+export const SCENE_LOOKS = Object.freeze({ normal: "As is", grey: "Frozen grey", dark: "Darkened", sepia: "Old photo" });
 // Portraits fill in from the encounter when the screen plays.
-export const PORTRAIT_SIDES = Object.freeze({ party: "The party", enemies: "The enemies", boss: "The boss (strongest enemy)", all: "Everyone in the encounter" });
-export const PORTRAIT_SHAPES = Object.freeze({ circle: "Circle", square: "Rounded square", none: "No frame" });
+export const PORTRAIT_SIDES = Object.freeze({ actor: "The one using the action (cut-in)", party: "The party", enemies: "The enemies", boss: "The boss (strongest enemy)", all: "Everyone in the encounter" });
+export const PORTRAIT_SHAPES = Object.freeze({ circle: "Circle", square: "Rounded square", slash: "Slash (cut-in)", none: "No frame" });
 // Screen-wide moments (a flash, a shake) are short by default.
-const MOMENT = { flash: 300, shake: 450 };
+const MOMENT = { flash: 300, shake: 450, punch: 350 };
 const safeAudio = (v) => { const s = text(v, 300).trim(); return s && !/^[a-z]+:/i.test(s) && !s.includes("..") && /\.(ogg|mp3|wav|flac|webm|m4a)$/i.test(s) ? s : ""; };
 export const FLASH_LIMIT = 40, LAYER_LIMIT = 12;
 const num = (v, min, max, fallback) => { const n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback; };
@@ -52,10 +65,13 @@ export function validateLayer(l = {}, duration = 4000) {
     enter: pick(l.enter, FLASH_MOTIONS, "fade"), enterMs: num(l.enterMs, 0, 4000, 400),
     exit: pick(l.exit, FLASH_MOTIONS, "fade"), exitMs: num(l.exitMs, 0, 4000, 400),
     opacity: num(l.opacity, 0, 1, 1), rotate: num(l.rotate, -180, 180, 0), shake: l.shake === true,
+    blend: pick(l.blend, FLASH_BLENDS, "normal"),
     // Keyframes: where the layer is (position, scale, rotation, opacity) at moments of the screen.
     keys: (Array.isArray(l.keys) ? l.keys : []).slice(0, KEY_LIMIT).map((k) => ({
       at: Math.round(num(k?.at, 0, duration, 0)), x: num(k?.x, -20, 120, 50), y: num(k?.y, -20, 120, 50),
       scale: num(k?.scale, 0.05, 10, 1), rotate: num(k?.rotate, -720, 720, 0), opacity: num(k?.opacity, 0, 1, 1),
+      // Text can also change colour and glow between keyframes.
+      ...(color(k?.color, "") ? { color: k.color } : {}), ...(color(k?.glow, "") ? { glow: k.glow } : {}),
     })).sort((a, b) => a.at - b.at),
     keyEase: pick(l.keyEase, { smooth: 1, linear: 1 }, "smooth"),
     loop: pick(l.loop, FLASH_LOOPS, "none"), loopMs: num(l.loopMs, 150, 5000, 900),
@@ -64,7 +80,7 @@ export function validateLayer(l = {}, duration = 4000) {
       color: color(l.color, "#ffffff"), outline: color(l.outline, "#000000"), glow: color(l.glow, "#ff7a1a"),
       glowSize: num(l.glowSize, 0, 10, 2), bold: l.bold !== false, italic: l.italic === true, spacing: num(l.spacing, -0.1, 1, 0.04),
       // A second colour fades the letters top to bottom; letters can arrive one after another.
-      gradient: l.gradient === true, gradientTo: color(l.gradientTo, "#ffd34d"), letters: num(l.letters, 0, 400, 0),
+      gradient: l.gradient === true, gradientTo: color(l.gradientTo, "#ffd34d"), letters: num(l.letters, 0, 400, 0), words: num(l.words, 0, 1500, 0),
     } : kind === "image" ? {
       src: safeMedia(l.src), width: num(l.width, 1, 150, 40),
     } : kind === "sound" ? {
@@ -75,6 +91,17 @@ export function validateLayer(l = {}, duration = 4000) {
       names: l.names !== false, ring: color(l.ring, "#ffffff"),
       // How many per row: 0 keeps everyone in one line, 2 makes "2 above 2", 1 a column.
       perRow: Math.round(num(l.perRow, 0, 12, 0)),
+    } : kind === "lines" ? {
+      color: color(l.color, "#ffffff"), density: Math.round(num(l.density, 6, 90, 36)), clear: num(l.clear, 0, 80, 30), width: num(l.width, 20, 300, 220),
+    } : kind === "burst" ? {
+      color: color(l.color, "#fff3c4"), density: Math.round(num(l.density, 6, 60, 18)), width: num(l.width, 20, 300, 160),
+    } : kind === "slash" ? {
+      color: color(l.color, "#ffffff"), width: num(l.width, 10, 300, 140), height: num(l.height, 0.3, 30, 2.5),
+    } : kind === "particles" ? (() => {
+      const ptype = pick(l.ptype, PARTICLE_TYPES, "embers"), [dir, tint] = PARTICLE_DEFAULTS[ptype];
+      return { ptype, count: Math.round(num(l.count, 5, 150, 50)), direction: pick(l.direction, PARTICLE_DIRECTIONS, dir), speed: num(l.speed, 0.3, 3, 1), size: num(l.size, 0.3, 3, 1), color: color(l.color, tint) };
+    })() : kind === "punch" ? {
+      strength: num(l.strength, 1.02, 1.6, 1.15),
     } : kind === "flash" ? {
       color: color(l.color, "#ffffff"), strength: num(l.strength, 0.05, 1, 0.85),
     } : kind === "shake" ? {
@@ -93,7 +120,8 @@ export function validateFlash(s = {}) {
       // Cinematic letterbox bars.
       bars: s.backdrop?.bars === true, barSize: num(s.backdrop?.barSize, 2, 25, 11),
       // An animated background behind the layers (JB2A key or file), and how strongly it shows.
-      media: safeMedia(s.backdrop?.media), mediaOpacity: num(s.backdrop?.mediaOpacity, 0, 1, 0.6) },
+      media: safeMedia(s.backdrop?.media), mediaOpacity: num(s.backdrop?.mediaOpacity, 0, 1, 0.6),
+      freeze: pick(s.backdrop?.freeze, SCENE_LOOKS, "normal") },
     // Playing music dips while the screen shows.
     duck: s.duck !== false,
     sound: { file: text(s.sound?.file, 300).trim(), volume: num(s.sound?.volume, 0, 1, 0.6) },
@@ -116,7 +144,8 @@ export function keyValueAt(layer, t) {
   return { at: Math.round(t), x: mix("x"), y: mix("y"), scale: mix("scale"), rotate: mix("rotate"), opacity: mix("opacity") };
 }
 // Who appears in a portraits layer: the encounter's visible combatants on that side.
-export function portraitPeople(layer, combatants = []) {
+export function portraitPeople(layer, combatants = [], actor = null) {
+  if (layer.side === "actor") return actor ? [actor] : [];
   if (layer.side === "boss") return bossOf(combatants) ? [bossOf(combatants)] : [];
   return combatants.filter((c) => layer.side === "all" || c.side === layer.side).slice(0, layer.max);
 }
@@ -177,6 +206,17 @@ export const STARTER_FLASHES = [
       { kind: "flash", name: "Impact flash", start: 650, duration: 220, strength: 0.6 },
       { kind: "shake", name: "Impact shake", start: 650, duration: 350, strength: 1.4 },
       { kind: "text", name: "Who", text: "{name}", y: 63, size: 3.4, italic: true, bold: false, glowSize: 0, start: 750, enter: "blur", enterMs: 350 },
+    ] },
+  { id: "action-cutin", name: "Cut-in", event: "action", duration: 2600, backdrop: { color: "#05030a", opacity: 0.55, bars: true, barSize: 8, freeze: "grey" },
+    layers: [
+      { kind: "lines", name: "Speed lines", x: 32, y: 50, color: "#ffffff", density: 48, clear: 26, width: 240, enter: "fade", enterMs: 120, opacity: 0.55 },
+      { kind: "band", name: "Band", x: 50, y: 50, width: 120, height: 38, color: "#1a1030", skew: -14, enter: "slide-left", enterMs: 220, exit: "slide-right", exitMs: 240, opacity: 0.9 },
+      { kind: "portraits", name: "Who", side: "actor", shape: "slash", art: "portrait", x: 30, y: 50, size: 34, max: 1, ring: "#ffd34d", enter: "none", start: 60 },
+      { kind: "slash", name: "Slash", x: 58, y: 50, width: 120, height: 1.6, color: "#ffd34d", rotate: -14, start: 380, duration: 700, enter: "none", exit: "fade", exitMs: 300 },
+      { kind: "text", name: "Action", text: "{action}", x: 66, y: 46, size: 9, gradient: true, color: "#ffffff", gradientTo: "#ffd34d", glow: "#ff7a00", glowSize: 2.5, words: 140, enter: "none", start: 420 },
+      { kind: "text", name: "Name", text: "{name}", x: 66, y: 60, size: 3.4, italic: true, bold: false, glowSize: 0, start: 750, enter: "blur", enterMs: 300 },
+      { kind: "punch", name: "Camera punch", start: 420, duration: 380, strength: 1.12 },
+      { kind: "flash", name: "Impact flash", start: 420, duration: 200, strength: 0.5 },
     ] },
   { id: "round-next", name: "Next Round", event: "round", duration: 1800, backdrop: { color: "#000000", opacity: 0.3, vignette: true },
     layers: [

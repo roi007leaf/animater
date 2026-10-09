@@ -88,8 +88,16 @@ export async function runFlashTour(editor, tour = "slide") {
       }
       cursor.classList.remove("is-down"); await pause(400);
     };
+    // A field on the inspector's other tab: click that tab first.
+    const find = async (selector) => {
+      let el = root.querySelector(selector);
+      const tab = el ? null : /data-flash-field="(backdrop|duck|sound)/.test(selector) ? "screen" : /data-flash-(layer|key)-field/.test(selector) ? "layer" : null;
+      if (tab) { await click(`[data-action="flash-tab"][data-tab="${tab}"]`); el = root.querySelector(selector); }
+      if (!el) throw new Interrupted();
+      return el;
+    };
     const reach = async (selector) => {
-      const el = root.querySelector(selector); if (!el) throw new Interrupted();
+      const el = await find(selector);
       el.scrollIntoView({ block: "nearest" }); await pause(150); await moveTo(center(el)); await press(); return el;
     };
     const choose = async (selector, value) => {
@@ -105,7 +113,7 @@ export async function runFlashTour(editor, tour = "slide") {
     };
     // Drag a number field's label sideways, the way a hand scrubs a value.
     const scrubLabel = async (selector, dx) => {
-      const input = root.querySelector(selector), label = input?.closest("label"); if (!label) throw new Interrupted();
+      const input = await find(selector), label = input?.closest("label"); if (!label) throw new Interrupted();
       label.scrollIntoView({ block: "nearest" }); await pause(150);
       const r = label.getBoundingClientRect(), from = { x: r.left + 12, y: r.top + 6 };
       await moveTo(from); cursor.classList.add("is-down");

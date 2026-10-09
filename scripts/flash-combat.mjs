@@ -59,6 +59,16 @@ export function flashScreens(host) {
     }
     return () => restore.forEach((r) => r());
   }
+  // The scene behind the card: frozen (Foundry's canvas stops drawing) and tinted, until the card is gone.
+  const LOOKS = { grey: "grayscale(1) brightness(0.8) contrast(1.1)", dark: "brightness(0.45)", sepia: "sepia(0.9) brightness(0.75)" };
+  function freeze(look) {
+    if (!LOOKS[look]) return () => {};
+    const board = document.getElementById("board"), ticker = canvas?.app?.ticker, was = board?.style.filter ?? "";
+    const running = ticker?.started;
+    if (board) { board.style.transition = "filter 0.25s"; board.style.filter = LOOKS[look]; }
+    if (running) ticker.stop();
+    return () => { if (board) board.style.filter = was; if (running) ticker.start(); };
+  }
   // Draw it full screen on this client.
   async function show(screen, v = vars()) {
     if (host.quietHere()) return;
@@ -69,9 +79,9 @@ export function flashScreens(host) {
     const valid = validateFlash(screen);
     const run = createFlash(layer, valid, { resolveMedia: host.resolveMedia, vars: v, playSound });
     showing = run;
-    const unduck = valid.duck ? duck() : () => {};
+    const unduck = valid.duck ? duck() : () => {}, thaw = freeze(valid.backdrop.freeze);
     sound(valid);
-    try { await run.play(); } finally { run.stop(); layer.remove(); unduck(); if (showing === run) showing = null; }
+    try { await run.play(); } finally { run.stop(); layer.remove(); unduck(); thaw(); if (showing === run) showing = null; }
   }
   function play(screen, { everyone = false, combat, extra } = {}) {
     if (!screen) return;
@@ -186,7 +196,10 @@ export function flashScreens(host) {
     const screen = screens().find((s) => s.id === recipe.flash);
     if (!screen) return;
     const actor = context.actor ?? context.source?.actor ?? context.source?.document?.actor;
-    play(screen, { everyone: true, extra: { name: context.source?.name ?? actor?.name ?? "", action: context.item?.name ?? recipe.name } });
+    const token = context.source?.document ?? context.source;
+    // Who is acting, for a cut-in portrait.
+    const who = actor || token ? { name: context.source?.name ?? actor?.name ?? "", img: token?.texture?.src ?? actor?.prototypeToken?.texture?.src ?? "", portrait: actor?.img ?? "" } : null;
+    play(screen, { everyone: true, extra: { name: context.source?.name ?? actor?.name ?? "", action: context.item?.name ?? recipe.name, ...(who ? { actor: who } : {}) } });
     await new Promise((r) => setTimeout(r, Math.max(0, screen.duration - 400)));
   }
   return {
