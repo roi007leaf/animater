@@ -10,7 +10,10 @@ export const FLASH_MOTIONS = Object.freeze({
 // Effects that repeat while a layer is on screen.
 export const FLASH_LOOPS = Object.freeze({ none: "None", pulse: "Pulse", glow: "Glow pulse", heartbeat: "Heartbeat", glitch: "Glitch", flicker: "Flicker", wobble: "Wobble", float: "Float", spin: "Spin" });
 export const KEY_LIMIT = 12;
-export const FLASH_KINDS = Object.freeze({ text: "Text", image: "Image or video", band: "Color band", sound: "Sound", flash: "Screen flash", shake: "Screen shake" });
+export const FLASH_KINDS = Object.freeze({ text: "Text", image: "Image or video", portraits: "Portraits", band: "Color band", sound: "Sound", flash: "Screen flash", shake: "Screen shake" });
+// Portraits fill in from the encounter when the screen plays.
+export const PORTRAIT_SIDES = Object.freeze({ party: "The party", enemies: "The enemies", all: "Everyone in the encounter" });
+export const PORTRAIT_SHAPES = Object.freeze({ circle: "Circle", square: "Rounded square", none: "No frame" });
 // Screen-wide moments (a flash, a shake) are short by default.
 const MOMENT = { flash: 300, shake: 450 };
 const safeAudio = (v) => { const s = text(v, 300).trim(); return s && !/^[a-z]+:/i.test(s) && !s.includes("..") && /\.(ogg|mp3|wav|flac|webm|m4a)$/i.test(s) ? s : ""; };
@@ -55,6 +58,10 @@ export function validateLayer(l = {}, duration = 4000) {
       src: safeMedia(l.src), width: num(l.width, 1, 150, 40),
     } : kind === "sound" ? {
       file: safeAudio(l.file), volume: num(l.volume, 0, 1, 0.7),
+    } : kind === "portraits" ? {
+      side: pick(l.side, PORTRAIT_SIDES, "party"), art: pick(l.art, { token: 1, portrait: 1 }, "token"), shape: pick(l.shape, PORTRAIT_SHAPES, "circle"),
+      size: num(l.size, 3, 60, 18), gap: num(l.gap, 0, 20, 2), max: Math.round(num(l.max, 1, 12, 6)), stagger: num(l.stagger, 0, 1000, 120),
+      names: l.names !== false, ring: color(l.ring, "#ffffff"),
     } : kind === "flash" ? {
       color: color(l.color, "#ffffff"), strength: num(l.strength, 0.05, 1, 0.85),
     } : kind === "shake" ? {
@@ -91,6 +98,10 @@ export function keyValueAt(layer, t) {
   const mix = (p) => a[p] + (b[p] - a[p]) * f;
   return { at: Math.round(t), x: mix("x"), y: mix("y"), scale: mix("scale"), rotate: mix("rotate"), opacity: mix("opacity") };
 }
+// Who appears in a portraits layer: the encounter's visible combatants on that side.
+export function portraitPeople(layer, combatants = []) {
+  return combatants.filter((c) => layer.side === "all" || c.side === layer.side).slice(0, layer.max);
+}
 // {scene} in text becomes the scene's name, {round} the combat round.
 export const fillText = (value, vars = {}) => String(value ?? "").replace(/\{(scene|round)\}/g, (_, k) => vars[k] ?? "");
 
@@ -120,6 +131,16 @@ export const STARTER_FLASHES = [
       { kind: "flash", name: "Impact flash", start: 950, duration: 300, color: "#d9d4ff", strength: 0.9 },
       { kind: "shake", name: "Impact shake", start: 950, duration: 600, strength: 2.6 },
       { kind: "text", name: "Subtitle", text: "{scene}", y: 64, size: 3.2, italic: true, bold: false, color: "#c9c3ff", glowSize: 0, start: 1500, enter: "type", enterMs: 700, loop: "glitch", loopMs: 1600 },
+    ] },
+  { id: "start-faceoff", name: "Face Off", event: "start", duration: 4200, backdrop: { color: "#06030c", opacity: 0.78, bars: true, barSize: 10 },
+    layers: [
+      { kind: "band", name: "Party side", x: 22, y: 50, width: 60, height: 52, color: "#123a6b", skew: -10, enter: "slide-left", enterMs: 350, exit: "slide-left", exitMs: 300 },
+      { kind: "band", name: "Enemy side", x: 78, y: 50, width: 60, height: 52, color: "#6b1212", skew: -10, enter: "slide-right", enterMs: 350, exit: "slide-right", exitMs: 300 },
+      { kind: "portraits", name: "Party", side: "party", x: 24, y: 50, size: 14, gap: 1.2, max: 4, start: 300, stagger: 130, ring: "#9fd0ff", enter: "none" },
+      { kind: "portraits", name: "Enemies", side: "enemies", x: 76, y: 50, size: 14, gap: 1.2, max: 4, start: 450, stagger: 130, ring: "#ff9a9a", enter: "none" },
+      { kind: "text", name: "VS", text: "VS", x: 50, y: 50, size: 16, gradient: true, color: "#ffffff", gradientTo: "#ffcf4a", glow: "#ff6a00", glowSize: 4, enter: "slam", enterMs: 380, start: 1200, loop: "heartbeat", loopMs: 1000 },
+      { kind: "flash", name: "Impact flash", start: 1450, duration: 260, strength: 0.75 },
+      { kind: "shake", name: "Impact shake", start: 1450, duration: 450, strength: 2 },
     ] },
   { id: "start-ambush", name: "Ambush!", event: "start", duration: 2600, backdrop: { color: "#000000", opacity: 0.7 },
     layers: [

@@ -2415,3 +2415,14 @@
 .an-flash-bar.is-bottom { bottom: 0; }
 .animater .an-flash-row-bar.kind-flash { background: #fff3c4; height: 6px; top: 6px; }
 .animater .an-flash-row-bar.kind-shake { background: repeating-linear-gradient(90deg, #ff8a4c 0 4px, transparent 4px 7px); height: 8px; top: 5px; }
+/* Portraits from the encounter. */
+.an-flash-portraits { display: flex; align-items: flex-start; justify-content: center; }
+.an-flash-person { display: flex; flex-direction: column; align-items: center; gap: 0.6cqh; }
+.an-flash-face { display: block; overflow: hidden; border: 0.45cqh solid #fff; box-shadow: 0 0 2cqh rgba(0, 0, 0, 0.8); background: #000; }
+.an-flash-face.is-circle { border-radius: 50%; }
+.an-flash-face.is-square { border-radius: 18%; }
+.an-flash-face.is-none { border: 0; box-shadow: none; background: none; }
+.an-flash-face img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.an-flash-face.is-none img { object-fit: contain; }
+.an-flash-name { color: #fff; font-weight: 700; text-shadow: 0 0 0.8cqh #000, 0 0 0.3cqh #000; white-space: nowrap; max-width: 30cqw; overflow: hidden; text-overflow: ellipsis; }
+.animater .an-flash-row-bar.kind-portraits { background: #e0a84a; }

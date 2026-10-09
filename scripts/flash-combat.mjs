@@ -6,6 +6,18 @@ import { STARTER_FLASHES, validateFlashes, validateFlash, chooseFlash, FLASH_EVE
 import { createFlash } from "./flash-render.mjs";
 
 export const FLASH_SETTING = "flashScreens", FLASH_DEFAULTS = "flashDefaults";
+// The encounter's visible combatants, as the portraits layer shows them: player-owned or
+// friendly tokens are the party, hostile ones the enemies. Hidden combatants never appear.
+export function encounterPeople(combat) {
+  const FRIENDLY = 1, HOSTILE = -1;
+  return Array.from(combat?.combatants ?? []).flatMap((c) => {
+    const token = c.token, actor = c.actor;
+    if (c.hidden || token?.hidden) return [];
+    const disposition = token?.disposition;
+    const side = actor?.hasPlayerOwner || disposition === FRIENDLY ? "party" : disposition === HOSTILE ? "enemies" : "other";
+    return [{ name: c.name ?? token?.name ?? actor?.name ?? "", img: token?.texture?.src ?? "", portrait: actor?.img ?? "", side }];
+  });
+}
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
 export function registerFlashSettings(ID) {
@@ -20,7 +32,7 @@ export function flashScreens(host) {
   const { ID } = host;
   const screens = () => validateFlashes(game.settings.get(ID, FLASH_SETTING)?.screens);
   const defaults = () => ({ start: "none", end: "none", ...game.settings.get(ID, FLASH_DEFAULTS) });
-  const vars = (combat = game.combat) => ({ scene: canvas.scene?.name ?? "", round: String(combat?.round ?? "") });
+  const vars = (combat = game.combat) => ({ scene: canvas.scene?.name ?? "", round: String(combat?.round ?? ""), combatants: encounterPeople(combat) });
   let showing = null;
   const playSound = (src, volume) => { if (src && !host.quietHere()) void foundry.audio.AudioHelper.play({ src, volume, loop: false }, false); };
   function sound(screen) { playSound(screen.sound.file, screen.sound.volume); }

@@ -89,3 +89,17 @@ test("starters show off the impacts", () => {
   assert.ok(["flash", "shake"].every((k) => boss.layers.some((l) => l.kind === k)));
   assert.ok(STARTER_FLASHES.find((f) => f.id === "start-initiative").layers.some((l) => l.letters > 0 && l.gradient));
 });
+
+test("portraits come from the encounter: party, enemies, never the hidden", async () => {
+  const { portraitPeople } = await import("../scripts/flash-model.mjs");
+  const { encounterPeople } = await import("../scripts/flash-combat.mjs");
+  const c = (name, disposition, extra = {}) => ({ name, hidden: false, token: { disposition, hidden: false, texture: { src: `${name}.webp` } }, actor: { img: `${name}-art.webp`, hasPlayerOwner: false }, ...extra });
+  const people = encounterPeople({ combatants: [
+    c("Ed", 1), c("Silva", 0, { actor: { img: "s.webp", hasPlayerOwner: true } }), c("Orc", -1), c("Spy", -1, { hidden: true }), c("Bystander", 0),
+  ] });
+  assert.deepEqual(people.map((p) => `${p.name}:${p.side}`), ["Ed:party", "Silva:party", "Orc:enemies", "Bystander:other"]);
+  const layer = validateFlash({ layers: [{ kind: "portraits", side: "enemies", max: 5 }] }).layers[0];
+  assert.deepEqual(portraitPeople(layer, people).map((p) => p.name), ["Orc"]);
+  assert.equal(portraitPeople({ ...layer, side: "all", max: 2 }, people).length, 2);
+  assert.ok(STARTER_FLASHES.find((f) => f.id === "start-faceoff").layers.filter((l) => l.kind === "portraits").length === 2);
+});

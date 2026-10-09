@@ -2,7 +2,7 @@
 // Web Animations spanning the whole screen, so the editor can scrub any moment
 // (seek) and the live overlay plays the same frames. Sizes use container units, so
 // a small editor frame and the full window look alike.
-import { fillText } from "./flash-model.mjs";
+import { fillText, portraitPeople } from "./flash-model.mjs";
 
 const VIDEO = /\.(webm|mp4)$/i;
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
@@ -70,6 +70,12 @@ export function letterKeyframes(layer, index, total) {
   const t = layer.start + index * layer.letters, from = "translateY(-0.35em) scale(2.4)";
   return [{ offset: 0, opacity: 0, transform: from }, { offset: o(t), opacity: 0, transform: from, easing: "cubic-bezier(.2,.9,.3,1.3)" }, { offset: o(t + 260), opacity: 1, transform: "none" }, { offset: 1, opacity: 1, transform: "none" }];
 }
+// Portraits pop up one after another.
+export function popKeyframes(layer, index, total) {
+  const o = (ms) => Math.min(1, Math.max(0, ms / total));
+  const t = layer.start + index * layer.stagger, from = "translateY(35%) scale(0.6)";
+  return [{ offset: 0, opacity: 0, transform: from }, { offset: o(t), opacity: 0, transform: from, easing: "cubic-bezier(.2,.9,.3,1.25)" }, { offset: o(t + 320), opacity: 1, transform: "none" }, { offset: 1, opacity: 1, transform: "none" }];
+}
 // Keyframed motion, relative to the layer's own place: position, scale, rotation, opacity.
 export function motionKeyframes(layer, total) {
   const keys = layer.keys ?? [];
@@ -129,8 +135,14 @@ function textHTML(layer, vars) {
     : esc(text);
   return `<span class="an-flash-text" style="font-family:'${esc(layer.font)}',Signika,sans-serif;font-size:${layer.size}cqh;${layer.gradient && layer.letters > 0 ? `color:${layer.color};` : fill}-webkit-text-stroke:${(layer.size * 0.035).toFixed(2)}cqh ${layer.outline};${glow}font-weight:${layer.bold ? 800 : 400};font-style:${layer.italic ? "italic" : "normal"};letter-spacing:${layer.spacing}em">${body}</span>`;
 }
+function portraitsHTML(layer, vars) {
+  const people = portraitPeople(layer, vars.combatants);
+  if (!people.length) return `<span class="an-flash-missing">No ${layer.side === "enemies" ? "enemies" : layer.side === "party" ? "party members" : "combatants"} in this encounter</span>`;
+  return `<span class="an-flash-portraits" style="gap:${layer.gap}cqw">${people.map((p, n) => `<span class="an-flash-person" data-flash-pop="${n}"><span class="an-flash-face is-${layer.shape}" style="width:${layer.size}cqh;height:${layer.size}cqh;border-color:${layer.ring}"><img src="${esc(layer.art === "portrait" ? p.portrait || p.img : p.img || p.portrait)}" alt=""></span>${layer.names ? `<span class="an-flash-name" style="font-size:${(layer.size * 0.13).toFixed(2)}cqh">${esc(p.name)}</span>` : ""}</span>`).join("")}</span>`;
+}
 function layerHTML(layer, { resolveMedia, vars }) {
   if (layer.kind === "text") return textHTML(layer, vars);
+  if (layer.kind === "portraits") return portraitsHTML(layer, vars);
   if (layer.kind === "image") {
     const src = resolveMedia?.(layer.src) ?? layer.src;
     if (!src) return `<span class="an-flash-missing" style="width:${layer.width}cqw">Choose an image</span>`;
@@ -171,6 +183,7 @@ export function createFlash(container, screen, { resolveMedia, vars = {}, editin
         ...(loop ? [node.querySelector(".an-flash-fx").animate(loop.keyframes, loop.options)] : []),
         ...(reveal && node.querySelector(".an-flash-fx > *") ? [node.querySelector(".an-flash-fx > *").animate(reveal, timing)] : []),
         ...[...node.querySelectorAll("[data-flash-char]")].map((c, n) => c.animate(letterKeyframes(l, n, total), timing)),
+        ...[...node.querySelectorAll("[data-flash-pop]")].map((p, n) => p.animate(popKeyframes(l, n, total), timing)),
       ];
     }),
   ];
