@@ -173,6 +173,13 @@ export class AnimaterRuntime {
       plan=plan.filter(s=>s.kind!=='tokenfx'||!s.catalogFx);
       this.trace('Skipped','Catalog token filters: synchronization channel unavailable.');
     }
+    // A linked flash screen shows to everyone first (only once the animation is sure to play);
+    // the animation follows as it fades. Stop during the screen cancels the animation too.
+    if (!preview && recipe.flash) {
+      const before = this.epoch;
+      await this.host.flashBefore?.(recipe, context)?.catch?.(() => {});
+      if (this.epoch !== before) return null;
+    }
     const session = `${ID}-${this.host.userId()}-${crypto.randomUUID()}`;
     const epoch = this.epoch;
     let failed = false;

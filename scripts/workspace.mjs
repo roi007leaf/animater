@@ -1110,6 +1110,12 @@ export class Workspace {
     const kind = catalogStateEntry(r.stateEntry)?.kind;
     return kind === "condition" ? "Condition" : kind === "effect" ? "Effect" : "Condition / effect";
   }
+  // A flash screen that plays for everyone right before this animation.
+  flashLinkHTML(r) {
+    const screens = this.host.flashScreens(), fits = screens.filter((s) => s.event === "action"), others = screens.filter((s) => s.event !== "action");
+    const opt = (s) => `<option value="${esc(s.id)}" ${r.flash === s.id ? "selected" : ""}>${esc(s.name)}</option>`;
+    return `<label>Flash screen first<select data-field="flash"><option value="">None</option>${fits.length ? `<optgroup label="Before an animation">${fits.map(opt).join("")}</optgroup>` : ""}${others.length ? `<optgroup label="Other screens">${others.map(opt).join("")}</optgroup>` : ""}</select></label><p class="an-hint">Shows to everyone right before this animation, which starts as the screen fades. Text can use {action} (this attack, spell or ability) and {name} (who used it). Make screens on the Flash screens page.</p>`;
+  }
   // Random variants: copies of a stage, each with its own asset, size and timing; one plays each time.
   randomVariantHTML(r, s) {
     const members = variantMembers(r.stages, s.variantGroup), full = r.stages.length >= MAX_STAGES || this.busy;
@@ -1203,7 +1209,7 @@ export class Workspace {
   motionSyncNoticeHTML() { return motionSyncNoticeHTML(this.host.environment()); }
   recipeSettingsHTML(r) {
     const linked = r.lifecycle === "document";
-    return `<div class="an-editor-section an-binding"><div class="an-section-title"><b>When it plays</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div><label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>${linked ? "" : `<label>Trigger<select data-field="trigger">${options(EVENTS, r.trigger)}</select></label>`}<label>${linked ? "Condition or effect names" : "Item names / slugs"}<input data-field="match" placeholder="${linked ? "frightened, spell effect: shield" : "fire bolt, ignition"}" value="${esc(r.match)}"></label><p class="an-hint">${linked ? "Plays while any of these is on a token. Exact names; commas separate alternatives. Drop a condition or effect here to bind only that one." : "Exact matches. Commas separate alternatives. Drop an item here to bind only that item."}</p>${r.itemUuid ? this.boundItemHTML(r.itemUuid) : ""}
+    return `<div class="an-editor-section an-binding"><div class="an-section-title"><b>When it plays</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div><label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>${linked ? "" : `<label>Trigger<select data-field="trigger">${options(EVENTS, r.trigger)}</select></label>`}<label>${linked ? "Condition or effect names" : "Item names / slugs"}<input data-field="match" placeholder="${linked ? "frightened, spell effect: shield" : "fire bolt, ignition"}" value="${esc(r.match)}"></label><p class="an-hint">${linked ? "Plays while any of these is on a token. Exact names; commas separate alternatives. Drop a condition or effect here to bind only that one." : "Exact matches. Commas separate alternatives. Drop an item here to bind only that item."}</p>${r.itemUuid ? this.boundItemHTML(r.itemUuid) : ""}${this.host.flashScreens ? this.flashLinkHTML(r) : ""}
       ${r.weaponMode || r.category === "Weapons" ? `<label>PF2e weapon use<select data-field="weaponMode">${options({ "": "Any usage", melee: "Melee Strike", ranged: "Ranged Strike", thrown: "Thrown Strike" }, r.weaponMode ?? "")}</select></label><p class="an-hint">PF2e's rolled usage selects this customization. Other uses keep their own animation.</p>` : ""}<div class="an-field-row"><label>Category<input data-field="category" value="${esc(r.category)}"></label><label>Accent<input type="color" aria-label="Recipe accent color" data-field="color" value="${esc(r.color)}"></label></div></div>`;
   }
   inspectorHTML(r) {

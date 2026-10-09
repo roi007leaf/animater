@@ -823,3 +823,22 @@ test("a stay-until-the-effect-ends layer stops if no effect is ever applied", as
   }
 });
 
+
+test("a recipe's linked flash screen plays first at the table, never in a preview", async () => {
+  const recipe = validateRecipe({ id: "f", name: "Fury", trigger: "manual", flash: "sig-move", stages: [{ kind: "cast", assets: ["jb2a.impact.001.orange"] }] });
+  assert.equal(recipe.flash, "sig-move");
+  assert.equal(validateRecipe({ ...recipe, flash: "bad id!" }).flash, undefined);
+  const { runtime, calls } = fixture();
+  runtime.catalog = [{ key: "jb2a.impact.001.orange" }];
+  runtime.wait = async () => true;
+  const order = [];
+  runtime.host.flashBefore = async (r) => { order.push(`flash:${r.flash}`); };
+  const realSequence = runtime.host.sequence;
+  runtime.host.sequence = () => { order.push("animation"); return realSequence(); };
+  await runtime.play(recipe, { source: { center: { x: 0, y: 0 } }, targets: [] });
+  assert.deepEqual(order.slice(0, 2), ["flash:sig-move", "animation"]);
+  order.length = 0;
+  await runtime.play(recipe, { source: { center: { x: 0, y: 0 } }, targets: [] }, { preview: true });
+  assert.ok(!order.includes("flash:sig-move"), "previews skip the flash screen");
+  assert.ok(calls.length > 0);
+});

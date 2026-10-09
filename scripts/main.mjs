@@ -506,7 +506,7 @@ function workspaceHost() {
         input.click();
       }),
       flashVars: () => {
-        const v = flash?.vars() ?? {};
+        const v = { name: "Valeros", action: "Dragon's Fury", ...(flash?.vars() ?? {}) };
         if (v.combatants?.length) return v;
         const stand = (name, img, side) => ({ name, img, portrait: img, side });
         return { ...v, combatants: [stand("Hero", "icons/svg/mystery-man.svg", "party"), stand("Ally", "icons/svg/mystery-man.svg", "party"), stand("Friend", "icons/svg/mystery-man.svg", "party"), stand("Foe", "icons/svg/skull.svg", "enemies"), stand("Brute", "icons/svg/skull.svg", "enemies"), stand("Boss", "icons/svg/skull.svg", "enemies")] };
@@ -892,6 +892,7 @@ Hooks.once("ready", () => {
     soundUsers: () => usersForSound(Array.from(game.users?.contents ?? game.users?.values?.() ?? [])),
     recipes,
     riderRecipes: (event, saved) => game.system.id === "pf2e" ? riderRecipes(event, game.settings.get(ID, "featureCatalog"), saved, { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) }) : [],
+    flashBefore: (recipe, context) => flash?.before(recipe, context),
     // Does the token still carry an effect from this item ("Effect: Shield")?
     hasItemEffect: (actor, item) => {
       const name = sameEffectName(item?.name), id = item?.id;

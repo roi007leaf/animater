@@ -97,6 +97,8 @@ export function validateRecipe(input) {
     trigger: input.trigger,
     match: text(input.match, 1000),
     itemUuid: text(input.itemUuid, 300),
+    // A flash screen shown to everyone right before this animation plays.
+    ...(/^[A-Za-z0-9-]{1,40}$/.test(input.flash ?? "") ? { flash: input.flash } : {}),
     ...(['pf2e','sf2e','dnd5e'].includes(input.systemId)?{systemId:input.systemId}:/^Compendium\.(pf2e|sf2e|dnd5e)\./.test(input.itemUuid??'')?{systemId:input.itemUuid.split('.')[1]}:{}),
     ...(text(input.catalogEntry,100)?{catalogEntry:text(input.catalogEntry,100)}:{}),
     ...(text(input.activityId,100)?{activityId:text(input.activityId,100)}:{}),

@@ -2564,3 +2564,12 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .an-tour-caption .an-tour-nav button { height: 28px; min-height: 28px; padding: 0 10px; font-size: 12px; border-radius: 7px; }
 .an-tour-caption .an-tour-nav button.is-primary { background: #9e8aff; color: #1b1530; border-color: #9e8aff; font-weight: 700; }
 .an-tour-caption .an-tour-nav button:disabled { opacity: 0.4; }
+.animater .an-flash-guides { position: relative; margin-left: auto; margin-right: 4px; }
+.animater .an-flash-guides > .an-flash-guide { margin: 0; }
+.animater .an-flash-tour-menu { position: absolute; right: 0; top: 30px; z-index: 20; display: grid; gap: 2px; width: 260px; padding: 4px; border-radius: 10px; background: var(--an-panel, #16141f); border: 1px solid var(--an-line); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); }
+.animater .an-flash-tour-menu button { display: grid; justify-items: start; gap: 1px; width: 100%; height: auto; min-height: 0; padding: 7px 9px; text-align: left; border: 0; border-radius: 7px; background: none; }
+.animater .an-flash-tour-menu button:hover { background: rgba(158, 138, 255, 0.14); }
+.animater .an-flash-tour-menu b { font-size: 12.5px; }
+.animater .an-flash-tour-menu small { font-size: 11px; color: var(--an-muted); }
+.animater .an-flash-guide { white-space: nowrap; }
+.animater .an-flash-list .an-flash-card.is-action { --flash-accent: #6fc7ff; }

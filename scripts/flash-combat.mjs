@@ -181,8 +181,16 @@ export function flashScreens(host) {
     place();
   });
 
+  // Before an animation: the recipe's screen plays for everyone, and the animation waits until it starts fading.
+  async function before(recipe, context = {}) {
+    const screen = screens().find((s) => s.id === recipe.flash);
+    if (!screen) return;
+    const actor = context.actor ?? context.source?.actor ?? context.source?.document?.actor;
+    play(screen, { everyone: true, extra: { name: context.source?.name ?? actor?.name ?? "", action: context.item?.name ?? recipe.name } });
+    await new Promise((r) => setTimeout(r, Math.max(0, screen.duration - 400)));
+  }
   return {
-    screens, defaults, vars, play, receive, sound, playSound,
+    screens, defaults, vars, play, receive, sound, playSound, before,
     save: (list) => game.settings.set(ID, FLASH_SETTING, { schema: 1, screens: validateFlashes(list) }),
     setDefault: (event, id) => game.settings.set(ID, FLASH_DEFAULTS, { ...defaults(), [event]: id }),
     events: FLASH_EVENTS,

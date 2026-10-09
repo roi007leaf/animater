@@ -2,7 +2,7 @@
 // or ends ("Roll for Initiative!", "Victory"). The GM builds them from text,
 // image and band layers, each with a position, timing, entrance and exit.
 export const FLASH_EVENTS = Object.freeze({
-  start: "Combat start", end: "Combat end", any: "Combat start or end",
+  start: "Combat start", end: "Combat end", any: "Combat start or end", action: "Before an animation",
   round: "New round", crit: "Critical hit", enemyDown: "Enemy defeated", lastEnemy: "Last enemy standing", partyDown: "Party member down",
 });
 // Moments during combat (not start or end): one default each, set on the Flash screens page.
@@ -10,7 +10,7 @@ export const MOMENT_EVENTS = ["round", "crit", "enemyDown", "lastEnemy", "partyD
 // Animated backgrounds: JB2A loops that fill the screen behind the layers.
 export const FLASH_BACKGROUNDS = Object.freeze({
   "": "None", "jb2a.screen_overlay.01.bad_omen": "Bad omen", "jb2a.ambient_fog.001.loop.large.white": "Fog",
-  "jb2a.ambient_fog.001.loop.large.purplered": "Crimson fog", "jb2a.call_lightning.low_res.blue": "Storm", "jb2a.darkness.black": "Darkness",
+  "jb2a.ambient_fog.001.loop.large.purplered": "Crimson fog", "jb2a.ambient_fog.001.loop.large.orangeyellow": "Ember fog", "jb2a.call_lightning.low_res.blue": "Storm", "jb2a.darkness.black": "Darkness",
   "jb2a.fireflies.many.01": "Fireflies", "jb2a.sleet_storm.01.blue": "Sleet", "jb2a.magic_signs.circle.02": "Runes", "jb2a.energy_field.01.blue": "Energy field",
 });
 export const FLASH_MOTIONS = Object.freeze({
@@ -123,8 +123,9 @@ export function portraitPeople(layer, combatants = []) {
 // The strongest enemy: highest level (or CR), first in initiative order on a tie.
 export const bossOf = (combatants = []) => combatants.filter((c) => c.side === "enemies").reduce((best, c) => (!best || Number(c.level) > Number(best.level) ? c : best), null);
 // {scene} in text becomes the scene's name, {round} the combat round.
-// {boss} is the strongest enemy's name, {name} the creature of the moment (who crit, who fell).
-export const fillText = (value, vars = {}) => String(value ?? "").replace(/\{(scene|round|boss|name)\}/g, (_, k) => (k === "boss" ? bossOf(vars.combatants)?.name : vars[k]) ?? "");
+// {boss} is the strongest enemy's name, {name} the creature of the moment (who crit, who fell, who
+// used the action), {action} the attack, spell or ability a screen plays before.
+export const fillText = (value, vars = {}) => String(value ?? "").replace(/\{(scene|round|boss|name|action)\}/g, (_, k) => (k === "boss" ? bossOf(vars.combatants)?.name : vars[k]) ?? "");
 
 // The screen to play: the combat's own choice, else the world default, for this event.
 // A choice is a screen id, "random" (any screen for the event) or "none".
@@ -168,6 +169,14 @@ export const STARTER_FLASHES = [
     layers: [
       { kind: "text", name: "Title", text: "AMBUSH!", y: 50, size: 16, color: "#ffe1c2", glow: "#d10000", glowSize: 4, enter: "zoom", enterMs: 300, exit: "zoom", shake: true },
       { kind: "flash", name: "Red flash", start: 250, duration: 260, color: "#ff2a2a", strength: 0.55 },
+    ] },
+  { id: "action-signature", name: "Signature Move", event: "action", duration: 2600, backdrop: { color: "#0a0303", opacity: 0.7, bars: true, barSize: 10, media: "jb2a.ambient_fog.001.loop.large.orangeyellow", mediaOpacity: 0.55 },
+    layers: [
+      { kind: "band", name: "Band", y: 48, height: 22, color: "#7a1400", skew: -10, enter: "slide-left", enterMs: 280, exit: "slide-right", exitMs: 260 },
+      { kind: "text", name: "Action", text: "{action}", y: 47, size: 11, gradient: true, color: "#fff6dc", gradientTo: "#ffb13b", glow: "#ff4a12", glowSize: 3, enter: "none", letters: 35, start: 120 },
+      { kind: "flash", name: "Impact flash", start: 650, duration: 220, strength: 0.6 },
+      { kind: "shake", name: "Impact shake", start: 650, duration: 350, strength: 1.4 },
+      { kind: "text", name: "Who", text: "{name}", y: 63, size: 3.4, italic: true, bold: false, glowSize: 0, start: 750, enter: "blur", enterMs: 350 },
     ] },
   { id: "round-next", name: "Next Round", event: "round", duration: 1800, backdrop: { color: "#000000", opacity: 0.3, vignette: true },
     layers: [

@@ -154,3 +154,14 @@ test("the flash editor page renders a screen with layers, keyframes and the time
   assert.match(html, /data-action="flash-align"/);
   assert.ok(!/kind-sound[^>]*>[^<]*<span class="an-flash-grip is-start"/.test(html), "sound bars only move");
 });
+
+test("{action} names the attack, spell or ability a screen plays before", () => {
+  assert.equal(fillText("{name} uses {action}!", { name: "Ed", action: "Fireball" }), "Ed uses Fireball!");
+  assert.equal(validateFlash({ event: "action" }).event, "action");
+});
+
+test("a Signature Move starter is ready to put before an animation", () => {
+  const sig = STARTER_FLASHES.find((f) => f.id === "action-signature");
+  assert.equal(sig.event, "action");
+  assert.ok(sig.layers.some((l) => l.kind === "text" && l.text === "{action}"));
+});

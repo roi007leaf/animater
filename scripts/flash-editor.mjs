@@ -3,7 +3,7 @@
 // an inspector for the selected layer.
 import { FLASH_BACKGROUNDS, MOMENT_EVENTS, validateFlashes, PORTRAIT_SIDES, PORTRAIT_SHAPES, FLASH_EVENTS, FLASH_MOTIONS, FLASH_KINDS, FLASH_LOOPS, LAYER_LIMIT, FLASH_LIMIT, KEY_LIMIT, validateFlash, validateLayer, keyValueAt } from "./flash-model.mjs";
 import { createFlash } from "./flash-render.mjs";
-import { runFlashTour } from "./flash-tour.mjs";
+import { runFlashTour, FLASH_TOURS } from "./flash-tour.mjs";
 
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const options = (choices, value) => Object.entries(choices).map(([k, v]) => `<option value="${esc(k)}" ${k === value ? "selected" : ""}>${esc(v)}</option>`).join("");
@@ -158,14 +158,14 @@ export class FlashEditor {
   html() {
     const list = this.screens(), s = this.current(), defaults = this.host.flashDefaults();
     // The library, grouped by when screens play; a default shows as a badge.
-    const group = (f) => (f.event === "start" || f.event === "any" ? "start" : f.event === "end" ? "end" : "moment");
+    const group = (f) => (f.event === "start" || f.event === "any" ? "start" : f.event === "end" ? "end" : f.event === "action" ? "action" : "moment");
     const card = (f) => {
       const isDefault = Object.keys(FLASH_EVENTS).some((ev) => defaults[ev] === f.id);
       const detail = f.event === "any" ? "Start or end" : group(f) === "moment" ? FLASH_EVENTS[f.event] : "";
       return `<button class="an-flash-card is-${group(f)} ${f.id === this.selectedId ? "is-selected" : ""}" data-action="flash-select" data-id="${esc(f.id)}"><span class="an-flash-card-name">${esc(f.name)}${f.id === this.selectedId && this.dirty ? " •" : ""}</span>${isDefault ? `<span class="an-flash-badge">Default</span>` : ""}${detail ? `<small>${esc(detail)}</small>` : ""}</button>`;
     };
     const section = (key, title) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><span class="an-flash-sub">${title}</span>${items.map(card).join("")}</div>` : ""; };
-    const listHTML = `<aside class="an-flash-list"><div class="an-flash-libhead"><span class="an-eyebrow">FLASH SCREENS</span><span class="an-flash-libtools"><button class="an-icon" data-action="flash-import" data-tooltip="Import screens from a file" aria-label="Import">↙</button><button class="an-icon" data-action="flash-export" ${list.length ? "" : "disabled"} data-tooltip="Export all screens to a file" aria-label="Export">↗</button></span></div><button class="an-primary an-flash-new" data-action="flash-new" ${list.length >= FLASH_LIMIT ? "disabled" : ""}>+ New flash screen</button>${list.length ? section("start", "Combat start") + section("moment", "During combat") + section("end", "Combat end") : `<p class="an-hint">No flash screens yet.</p>`}<p class="an-hint">Pick each combat's opening and ending in the Combat Tracker; defaults play otherwise.</p></aside>`;
+    const listHTML = `<aside class="an-flash-list"><div class="an-flash-libhead"><span class="an-eyebrow">FLASH SCREENS</span><span class="an-flash-libtools"><button class="an-icon" data-action="flash-import" data-tooltip="Import screens from a file" aria-label="Import">↙</button><button class="an-icon" data-action="flash-export" ${list.length ? "" : "disabled"} data-tooltip="Export all screens to a file" aria-label="Export">↗</button></span></div><button class="an-primary an-flash-new" data-action="flash-new" ${list.length >= FLASH_LIMIT ? "disabled" : ""}>+ New flash screen</button>${list.length ? section("start", "Combat start") + section("moment", "During combat") + section("end", "Combat end") + section("action", "Before an animation") : `<p class="an-hint">No flash screens yet.</p>`}<p class="an-hint">Pick each combat's opening and ending in the Combat Tracker; defaults play otherwise.</p></aside>`;
     if (!s) return `<section class="an-flash-page">${listHTML}<div class="an-flash-main an-preview-empty">Create a flash screen to begin.</div></section>`;
     const layer = s.layers[this.layerIndex];
     const isDefault = (ev) => defaults[ev] === s.id;
@@ -173,7 +173,7 @@ export class FlashEditor {
     const canAlign = layer && !["sound", "flash", "shake"].includes(layer.kind) ? "" : "disabled";
     const align = (attr, v, label, tip) => `<button data-action="flash-align" ${attr}="${v}" ${canAlign} data-tooltip="${tip}">${label}</button>`;
     const help = this.showHelp ? `<div class="an-flash-help"><b>Shortcuts</b><span><kbd>Drag</kbd> move · corner handle: size · round handle: rotate · band edges: stretch</span><span><kbd>Wheel</kbd> opacity · <kbd>Shift</kbd>+wheel: size</span><span><kbd>←↑→↓</kbd> nudge (<kbd>Shift</kbd> ×10) · <kbd>[</kbd> <kbd>]</kbd> rotate · <kbd>-</kbd> <kbd>=</kbd> smaller / bigger</span><span><kbd>K</kbd> keyframe · <kbd>Space</kbd> play · <kbd>,</kbd> <kbd>.</kbd> step (<kbd>Shift</kbd> 1s) · <kbd>Home</kbd> <kbd>End</kbd></span><span><kbd>Tab</kbd> next layer · <kbd>Ctrl+D</kbd> duplicate · <kbd>Delete</kbd> remove · <kbd>Ctrl+Z</kbd> undo</span><span>Drag any field's label to change its value (<kbd>Shift</kbd> faster, <kbd>Alt</kbd> finer). On the timeline, drag bars, their ends and the shaded entrance/exit; drag ◆ to retime. <kbd>Alt</kbd> turns snapping off.</span></div>` : "";
-    const stage = `<div class="an-flash-tools"><span class="an-flash-align">${align("data-x", 20, "⇤", "Left third")}${align("data-x", 50, "↔", "Centre horizontally")}${align("data-x", 80, "⇥", "Right third")}<i></i>${align("data-y", 20, "⤒", "Top third")}${align("data-y", 50, "↕", "Centre vertically")}${align("data-y", 80, "⤓", "Bottom third")}</span><button class="an-flash-guide" data-action="flash-tour" data-tooltip="Watch a short guide: making a title slide across with keyframes">🎓 Show me</button><button class="an-icon${this.showHelp ? " is-on" : ""}" data-action="flash-help" data-tooltip="Shortcuts (?)" aria-label="Shortcuts">?</button></div>${help}<div class="an-flash-stage-wrap"><div class="an-flash-frame" data-flash-stage aria-label="Flash screen preview: drag a layer to move it"></div></div>
+    const stage = `<div class="an-flash-tools"><span class="an-flash-align">${align("data-x", 20, "⇤", "Left third")}${align("data-x", 50, "↔", "Centre horizontally")}${align("data-x", 80, "⇥", "Right third")}<i></i>${align("data-y", 20, "⤒", "Top third")}${align("data-y", 50, "↕", "Centre vertically")}${align("data-y", 80, "⤓", "Bottom third")}</span><span class="an-flash-guides"><button class="an-flash-guide" data-action="flash-tours" aria-expanded="${!!this.showTours}" data-tooltip="Guided walkthroughs: watch how to build a flash screen, step by step">🎓 Show me ▾</button>${this.showTours ? `<span class="an-flash-tour-menu" role="menu">${Object.entries(FLASH_TOURS).map(([id, t]) => `<button role="menuitem" data-action="flash-tour" data-tour="${id}"><b>${esc(t.label)}</b><small>${esc(t.detail)}</small></button>`).join("")}</span>` : ""}</span><button class="an-icon${this.showHelp ? " is-on" : ""}" data-action="flash-help" data-tooltip="Shortcuts (?)" aria-label="Shortcuts">?</button></div>${help}<div class="an-flash-stage-wrap"><div class="an-flash-frame" data-flash-stage aria-label="Flash screen preview: drag a layer to move it"></div></div>
       <div class="an-flash-transport"><button class="an-primary" data-action="flash-preview">${this.playing ? "■ Stop" : "▶ Preview"}</button><button data-action="flash-play-all" data-tooltip="Play it now on every player's screen">Play for everyone</button><input type="range" min="0" max="${s.duration}" step="10" value="${this.time}" data-flash-time aria-label="Scrub"><span data-flash-clock>${seconds(this.time)} / ${seconds(s.duration)}</span></div>`;
     const pct = (ms) => ((ms / s.duration) * 100).toFixed(2);
     const rows = s.layers.map((l, i) => {
@@ -497,7 +497,8 @@ export class FlashEditor {
         break;
       }
       case "flash-help": this.showHelp = !this.showHelp; break;
-      case "flash-tour": void runFlashTour(this); return true;
+      case "flash-tours": this.showTours = !this.showTours; break;
+      case "flash-tour": this.showTours = false; void runFlashTour(this, b.dataset.tour); return true;
       case "flash-undo": case "flash-redo": this.history(action === "flash-undo" ? "undo" : "redo"); break;
       case "flash-layer-copy": {
         const i = Number(b.dataset.index), layers = this.edit().layers, copy = { ...clone(layers[i]), id: newId(), name: `${layers[i].name || FLASH_KINDS[layers[i].kind]} copy`, x: layers[i].x + 3, y: layers[i].y + 3, keys: (layers[i].keys ?? []).map((k) => ({ ...k, x: k.x + 3, y: k.y + 3 })) };
@@ -528,7 +529,10 @@ export class FlashEditor {
       case "flash-key-remove": { const layer = this.edit().layers[this.layerIndex], key = this.keyAtPlayhead(layer); layer.keys = layer.keys.filter((k) => k !== key); break; }
       case "flash-add": {
         const layer = validateLayer({ kind: b.dataset.kind, name: FLASH_KINDS[b.dataset.kind], ...(b.dataset.kind === "text" ? { text: "New text" } : {}), ...(["sound", "flash", "shake"].includes(b.dataset.kind) ? { start: this.time, enter: "none", exit: "none" } : {}) }, s.duration);
-        this.edit().layers.push(layer); this.layerIndex = s.layers.length - 1; this.time = this.restTime(s, this.layerIndex); break;
+        this.edit().layers.push(layer); this.layerIndex = s.layers.length - 1;
+        // Moments (flash, shake, sound) land at the playhead, which stays put; other layers show themselves.
+        if (!["sound", "flash", "shake"].includes(layer.kind)) this.time = this.restTime(s, this.layerIndex);
+        break;
       }
       case "flash-layer-up": case "flash-layer-down": {
         const i = Number(b.dataset.index), j = action === "flash-layer-up" ? i + 1 : i - 1, layers = this.edit().layers;

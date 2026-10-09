@@ -8,14 +8,20 @@ import { validateFlash } from "./flash-model.mjs";
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const center = (el) => { const r = el.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; };
 class Interrupted extends Error {}
+export const FLASH_TOURS = Object.freeze({
+  slide: { label: "A sliding title", detail: "Keyframes: move text across the screen." },
+  signature: { label: "A signature move", detail: "An attack's big moment: background, band, letters, impact, linked to a recipe." },
+});
 
-export async function runFlashTour(editor) {
+export async function runFlashTour(editor, tour = "slide") {
   const w = editor.w, root = w.root;
   if (editor.touring) return;
   editor.touring = true;
   const saved = { selectedId: editor.selectedId, draft: editor.draft, dirty: editor.dirty, layerIndex: editor.layerIndex, time: editor.time, undo: editor.undoStack, redo: editor.redoStack };
   editor.selectedId = "tour-practice";
-  editor.draft = validateFlash({ id: "tour-practice", name: "Practice: a sliding title", duration: 3200, backdrop: { color: "#05040c", opacity: 0.7 }, layers: [] });
+  editor.draft = validateFlash(tour === "signature"
+    ? { id: "tour-practice", name: "Practice: Dragon's Fury", event: "start", duration: 3800, backdrop: { color: "#0a0303", opacity: 0.75, vignette: true }, layers: [] }
+    : { id: "tour-practice", name: "Practice: a sliding title", duration: 3200, backdrop: { color: "#05040c", opacity: 0.7 }, layers: [] });
   editor.dirty = false; editor.layerIndex = 0; editor.time = 0; editor.undoStack = []; editor.redoStack = [];
   w.render();
 
@@ -82,23 +88,43 @@ export async function runFlashTour(editor) {
       }
       cursor.classList.remove("is-down"); await pause(400);
     };
-    return { pause, moveTo, press, click, at, drag, scrubTo };
+    const reach = async (selector) => {
+      const el = root.querySelector(selector); if (!el) throw new Interrupted();
+      el.scrollIntoView({ block: "nearest" }); await pause(150); await moveTo(center(el)); await press(); return el;
+    };
+    const choose = async (selector, value) => {
+      const el = await reach(selector);
+      el.value = value; el.dispatchEvent(new Event("input", { bubbles: true })); el.dispatchEvent(new Event("change", { bubbles: true })); await pause(600);
+    };
+    const tick = async (selector) => { const el = await reach(selector); el.click(); await pause(600); };
+    const type = async (selector, words) => {
+      const el = await reach(selector);
+      el.value = "";
+      for (const ch of words) { el.value += ch; el.dispatchEvent(new Event("input", { bubbles: true })); await pause(150); }
+      el.dispatchEvent(new Event("change", { bubbles: true })); await pause(450);
+    };
+    // Drag a number field's label sideways, the way a hand scrubs a value.
+    const scrubLabel = async (selector, dx) => {
+      const input = root.querySelector(selector), label = input?.closest("label"); if (!label) throw new Interrupted();
+      label.scrollIntoView({ block: "nearest" }); await pause(150);
+      const r = label.getBoundingClientRect(), from = { x: r.left + 12, y: r.top + 6 };
+      await moveTo(from); cursor.classList.add("is-down");
+      label.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, clientX: from.x, clientY: from.y, button: 0, pointerId: 1 }));
+      try {
+        for (let i = 1; i <= 24; i++) { check(); const p = { x: from.x + (dx * i) / 24, y: from.y }; place(p, 45); await wait(45); window.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: p.x, clientY: p.y, button: 0, pointerId: 1 })); }
+      } finally { window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientX: pos.x, clientY: pos.y, button: 0, pointerId: 1 })); cursor.classList.remove("is-down"); }
+      await pause(500);
+    };
+    return { pause, moveTo, press, click, at, drag, scrubTo, choose, tick, type, scrubLabel };
   };
   const text = () => root.querySelector('[data-flash-stage] [data-flash-layer="0"] .an-flash-text');
 
   // ---- the steps: what the caption says, and what the hand shows
-  const steps = [
+  const layerText = (index) => root.querySelector(`[data-flash-stage] [data-flash-layer="${index}"] .an-flash-text`);
+  const slide = [
     { say: "Let's make a title slide across the screen. We'll practise on a scratch screen that is never saved. Press <b>Next</b> when you're ready.", show: async () => {} },
     { say: "First, add a text layer with <b>+ Text</b>.", show: async (h) => { await h.click('[data-action="flash-add"][data-kind="text"]'); } },
-    { say: "Type your words in the inspector's <b>Text</b> box.", show: async (h) => {
-      const field = root.querySelector('textarea[data-flash-layer-field="text"]');
-      if (!field) throw new Interrupted();
-      field.scrollIntoView({ block: "nearest" }); await h.pause(200);
-      await h.moveTo(center(field)); await h.press();
-      field.value = "";
-      for (const ch of "CHARGE!") { field.value += ch; field.dispatchEvent(new Event("input", { bubbles: true })); await h.pause(180); }
-      field.dispatchEvent(new Event("change", { bubbles: true })); await h.pause(400);
-    } },
+    { say: "Type your words in the inspector's <b>Text</b> box.", show: async (h) => { await h.type('textarea[data-flash-layer-field="text"]', "CHARGE!"); } },
     { say: "Move the playhead (the slider under the stage) to where the motion should <b>start</b>, then drag the text to its starting spot on the left.", show: async (h) => { await h.scrubTo(400); await h.drag(text(), h.at(20, 50)); } },
     { say: "Click <b>◆ Add keyframe</b> (or press <b>K</b>). It pins the text here, at this moment.", show: async (h) => { await h.click('[data-action="flash-key-add"]'); } },
     { say: "Move the playhead to where the motion should <b>end</b>, and drag the text to the right. The layer already has a keyframe, so this adds a second one here.", show: async (h) => { await h.scrubTo(2400); await h.drag(text(), h.at(80, 50)); } },
@@ -108,6 +134,44 @@ export async function runFlashTour(editor) {
     { say: "Press <b>▶ Preview</b> (or Space) to watch it. Keyframes can also scale (corner handle), turn (round handle) and fade (mouse wheel).", show: async (h) => { await h.click('[data-action="flash-preview"]'); } },
     { say: "That's it! Use <b>+ New flash screen</b> to make your own. Press <b>Finish</b> and the practice screen goes away.", show: async () => {} },
   ];
+  const signature = [
+    { say: "Let's build a <b>signature move</b>: a card that plays right before an attack, spell or ability animation, with its name filled in. Practice screen, never saved. Press <b>Next</b>.", show: async () => {} },
+    { say: "Set <b>Plays at</b> to <b>Before an animation</b>, so recipes can use it.", show: async (h) => { await h.choose('select[data-flash-field="event"]', "action"); } },
+    { say: "In <b>Screen</b>, pick an animated background (<b>Ember fog</b>) and turn on <b>Cinematic bars</b>.", show: async (h) => {
+      await h.choose('select[data-flash-field="backdrop.media"]', "jb2a.ambient_fog.001.loop.large.orangeyellow");
+      await h.tick('input[data-flash-field="backdrop.bars"]');
+    } },
+    { say: "Add a <b>+ Band</b>: the slanted stripe the title sits on. Give it a deep red.", show: async (h) => {
+      await h.click('[data-action="flash-add"][data-kind="band"]');
+      await h.choose('input[data-flash-layer-field="color"]', "#7a1400");
+    } },
+    { say: "Add <b>+ Text</b> and type <b>{action}</b>. When the card plays it becomes the attack's name: here it shows a sample, “Dragon's Fury”.", show: async (h) => {
+      await h.click('[data-action="flash-add"][data-kind="text"]');
+      await h.type('textarea[data-flash-layer-field="text"]', "{action}");
+    } },
+    { say: "Make it big: <b>drag the Size label</b> to the right (any number label can be dragged like this).", show: async (h) => { await h.scrubLabel('input[data-flash-layer-field="size"]', 110); } },
+    { say: "Tick <b>Gradient to</b> for a hot fill, and set <b>Letters one by one</b> so each letter slams in.", show: async (h) => {
+      await h.tick('input[data-flash-layer-field="gradient"]');
+      await h.type('input[data-flash-layer-field="letters"]', "45");
+    } },
+    { say: "Move the playhead to where the last letter lands and add <b>+ Flash</b> and <b>+ Shake</b>: they hit at the playhead.", show: async (h) => {
+      await h.scrubTo(1100);
+      await h.click('[data-action="flash-add"][data-kind="flash"]');
+      await h.click('[data-action="flash-add"][data-kind="shake"]');
+    } },
+    { say: "Add one more <b>+ Text</b> with <b>{name}</b> (who uses the move), and drag it under the title.", show: async (h) => {
+      await h.click('[data-action="flash-add"][data-kind="text"]');
+      await h.type('textarea[data-flash-layer-field="text"]', "{name}");
+      await h.scrubTo(2400);
+      await h.drag(layerText(editor.layerIndex), h.at(50, 66));
+    } },
+    { say: "Press <b>▶ Preview</b> to watch it.", show: async (h) => { await h.click('[data-action="flash-preview"]'); } },
+    { say: "To use it: open a recipe in the Studio, click its trigger (⚙ <b>Recipe settings</b>) and pick it under <b>Flash screen first</b>. It plays for everyone right before that animation.", show: async (h) => {
+      const recipes = root.querySelector('[data-action="page"][data-page="recipes"]'); if (recipes) { await h.moveTo(center(recipes)); await h.pause(900); }
+    } },
+    { say: "Done! Press <b>Finish</b> and the practice screen goes away.", show: async () => {} },
+  ];
+  const steps = tour === "signature" ? signature : slide;
   const snapshots = [];
   const snap = () => ({ draft: JSON.stringify(editor.draft), time: editor.time, layerIndex: editor.layerIndex });
   const restore = (s) => {
@@ -120,16 +184,14 @@ export async function runFlashTour(editor) {
     const id = ++run;
     index = i;
     if (replay || snapshots[i]) restore(snapshots[i]); else snapshots[i] = snap();
-    caption.innerHTML = `<span class="an-tour-step">Step ${i + 1} of ${steps.length}</span><span class="an-tour-text">${steps[i].say}</span><span class="an-tour-nav"><button type="button" data-tour="back" ${i === 0 ? "disabled" : ""}>‹ Back</button><button type="button" data-tour="replay" title="Show this step again">↺</button><button type="button" data-tour="next" class="is-primary">${i === steps.length - 1 ? "Finish" : "Next ›"}</button><button type="button" data-tour="stop" title="Stop the guide">✕</button></span>`;
+    caption.innerHTML = `<span class="an-tour-step">Step ${i + 1} of ${steps.length}</span><span class="an-tour-text">${steps[i].say}</span><span class="an-tour-nav"><button type="button" data-tour="back" ${i === 0 ? "disabled" : ""}>‹ Back</button><button type="button" data-tour="replay" title="Show this step again">↺</button><button type="button" data-tour="next" class="is-primary" disabled title="Available once this step has been shown">${i === steps.length - 1 ? "Finish" : "Next ›"}</button><button type="button" data-tour="stop" title="Stop the guide">✕</button></span>`;
     caption.querySelector('[data-tour="back"]').onclick = () => void go(index - 1, { replay: true });
     caption.querySelector('[data-tour="replay"]').onclick = () => void go(index, { replay: true });
-    caption.querySelector('[data-tour="next"]').onclick = () => {
-      if (index === steps.length - 1) return end();
-      run++; // stop any demonstration still running, keep its result
-      void go(index + 1);
-    };
+    caption.querySelector('[data-tour="next"]').onclick = () => { if (index === steps.length - 1) return end(); void go(index + 1); };
     caption.querySelector('[data-tour="stop"]').onclick = end;
+    // Next waits until the step has been shown, so a step is never left half done.
     try { await wait(700); if (id === run) await steps[i].show(make(id)); } catch (error) { if (!(error instanceof Interrupted)) end(); }
+    if (id === run) { const next = caption.querySelector('[data-tour="next"]'); if (next) { next.disabled = false; next.removeAttribute("title"); } }
   };
   void go(0);
   await done;
