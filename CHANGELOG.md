@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Turn every catalog on in one click.** Animater's Setup page has an *Every catalog* card: one button turns on every built-in catalog for your system (spells, feats, actions, features, weapons, items, conditions, effects) and Automatic playback. Exclusions and your own versions stay.
+- **First-run welcome.** On a world's first load, the GM is asked once whether to turn every catalog on. Saying yes posts a short whispered chat note. Worlds that already have a catalog on are never asked.
 - **No more PSFX install prompt when you have PSFX Patreon.** Foundry offered to install free PSFX even with the Patreon version installed, because it checks recommended modules by id. Installing both loads the same sounds twice and fills the console with Sequencer errors on world load. Animater no longer recommends PSFX in its manifest. It still uses whichever PSFX you have.
   - If you already ended up with both, disable one of them (keep the Patreon version).
 - **PSFX Patreon sounds are used.** Animater only recognised free PSFX (`psfx`), so tables with only PSFX Patreon (`psfx-patreon`) got no PSFX sounds in the catalogs. Both now count.

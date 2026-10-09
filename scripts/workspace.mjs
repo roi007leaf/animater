@@ -1482,8 +1482,15 @@ export class Workspace {
     const logs = this.host.logs();
     return `<div class="an-activity"><div class="an-info">Playback explained<p>Automatic events appear here with matching recipe, played effect count, or reason playback was blocked.</p></div>${logs.map((l) => `<div class="an-log"><time>${esc(l.time)}</time><span class="an-badge ${l.status === "Blocked" ? "is-missing" : ""}">${esc(l.status)}</span><div><b>${esc(l.recipe)}</b><p>${esc(l.detail)}</p></div></div>`).join("") || `<div class="an-empty">No activity yet.<small>Preview a recipe or enable automatic playback.</small></div>`}</div>`;
   }
+  // One click for every built-in catalog of this system.
+  everyCatalogHTML(env) {
+    const state = this.host.catalogsOn?.();
+    if (!state?.total) return "";
+    const all = state.on === state.total;
+    return `<section class="an-settings-card"><div><h3>Every catalog</h3><p>${all ? `All ${state.total} catalogs are on: spells, feats, actions, weapons, conditions and effects animate when used.` : `${state.on} of ${state.total} catalogs are on. Turn them all on in one click: everything animates when used. Exclusions and your own versions stay.`}</p></div><button data-action="use-every-catalog" class="${all ? "an-quiet" : "an-primary"}" ${env.demo || !env.ready || all ? "disabled" : ""}>${all ? "All on ✓" : "Turn every catalog on"}</button></section>`;
+  }
   setupHTML(env) {
-    return `<div class="an-setup"><section class="an-setup-hero"><span>✧</span><h2>From dice roll to spectacle.</h2><p>Install your assets. Pick a recipe. Let your table do the rest.</p></section><div class="an-setup-grid">${env.dependencies.map((d) => `<div class="an-dependency"><span class="${d.ok ? "an-ok" : "an-missing"}">${d.ok ? "✓" : "!"}</span><div><h3>${esc(d.name)}</h3><p>${esc(d.detail)}</p></div></div>`).join("")}</div><section class="an-settings-card"><div><h3>Automatic playback</h3><p>${env.conflicts.length ? `Other animation engines active: ${esc(env.conflicts.join(", "))}. Overlapping triggers may play twice.` : "Your saved recipes respond to supported game events."}</p></div><button data-action="automation" class="an-toggle ${this.host.enabled() ? "is-on" : ""}" role="switch" aria-checked="${this.host.enabled()}" ${env.demo || !env.ready ? "disabled" : ""}>${this.host.enabled() ? "On" : "Off"}</button></section>${this.catalogFxControlsHTML(env)}<div class="an-guide"><h3>First animation in three steps</h3><ol><li><b>Choose a recipe.</b> Open Recipes, pick an effect, check its asset preview.</li><li><b>Try it locally.</b> Select a caster token, target a token, then Local preview.</li><li><b>Make it yours.</b> Set trigger and item names, save, then enable automatic playback.</li></ol><p>Area previews create a temporary template automatically and remove it afterward. Select a native area to override placement and size. Rerolls and private PF2e messages are skipped. D&D 5e hit/miss resolution is not inferred from target AC.</p><button data-action="restore-starters">Add missing starter recipes</button></div></div>`;
+    return `<div class="an-setup"><section class="an-setup-hero"><span>✧</span><h2>From dice roll to spectacle.</h2><p>Install your assets. Pick a recipe. Let your table do the rest.</p></section><div class="an-setup-grid">${env.dependencies.map((d) => `<div class="an-dependency"><span class="${d.ok ? "an-ok" : "an-missing"}">${d.ok ? "✓" : "!"}</span><div><h3>${esc(d.name)}</h3><p>${esc(d.detail)}</p></div></div>`).join("")}</div><section class="an-settings-card"><div><h3>Automatic playback</h3><p>${env.conflicts.length ? `Other animation engines active: ${esc(env.conflicts.join(", "))}. Overlapping triggers may play twice.` : "Your saved recipes respond to supported game events."}</p></div><button data-action="automation" class="an-toggle ${this.host.enabled() ? "is-on" : ""}" role="switch" aria-checked="${this.host.enabled()}" ${env.demo || !env.ready ? "disabled" : ""}>${this.host.enabled() ? "On" : "Off"}</button></section>${this.everyCatalogHTML(env)}${this.catalogFxControlsHTML(env)}<div class="an-guide"><h3>First animation in three steps</h3><ol><li><b>Choose a recipe.</b> Open Recipes, pick an effect, check its asset preview.</li><li><b>Try it locally.</b> Select a caster token, target a token, then Local preview.</li><li><b>Make it yours.</b> Set trigger and item names, save, then enable automatic playback.</li></ol><p>Area previews create a temporary template automatically and remove it afterward. Select a native area to override placement and size. Rerolls and private PF2e messages are skipped. D&D 5e hit/miss resolution is not inferred from target AC.</p><button data-action="restore-starters">Add missing starter recipes</button></div></div>`;
   }
   catalogFxControlsHTML(env) {
     const state=this.host.catalogFxSettings?.()??{token:true,scene:true},fx=this.host.fxCatalog?.()??{};
@@ -2469,6 +2476,10 @@ export class Workspace {
       if (action === "refresh") {
         this.host.refreshCatalog();
         this.message = "Asset library refreshed.";
+      }
+      if (action === "use-every-catalog") {
+        const { on, total } = await this.host.useEveryCatalog();
+        this.message = `${on} of ${total} catalogs are on. Everything animates when used.`;
       }
       if (action === "automation") {
         await this.host.setEnabled(!this.host.enabled());

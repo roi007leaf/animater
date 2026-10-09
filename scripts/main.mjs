@@ -428,6 +428,36 @@ async function receiveTeleport(data) {
   if (caster?.documentName !== "Token" || caster.parent !== doc.parent || !caster.testUserPermission(user, "OWNER")) return;
   await moveToken(doc, data.x, data.y);
 }
+// Every built-in catalog of this system: turn them all on at once (exclusions and your own
+// recipes stay), as each catalog's own "Use the catalog" button does.
+const CATALOG_KINDS = { pf2e: ["spellCatalog", "featCatalog", "actionCatalog", "featureCatalog", "weaponCatalog", "conditionCatalog", "effectCatalog"],
+  sf2e: ["spell", "feat", "action", "feature", "weapon", "item", "condition", "effect"].map(sfSettingKey),
+  dnd5e: ["spell", "feat", "weapon", "item", "condition", "effect"].map(dndSettingKey) };
+const catalogKeys = () => (CATALOG_KINDS[game.system.id] ?? []).filter((key) => game.settings.settings.has(`${ID}.${key}`));
+const catalogOn = (key) => { const s = game.settings.get(ID, key) ?? {}; return s.enabled === true && (s.scope ?? "all") === "all"; };
+function catalogsOn() { const keys = catalogKeys(); return { on: keys.filter(catalogOn).length, total: keys.length }; }
+async function useEveryCatalog() {
+  if (!game.user.isGM) throw Error("Only a GM can turn catalogs on.");
+  for (const key of catalogKeys()) await game.settings.set(ID, key, { ...(game.settings.get(ID, key) ?? {}), enabled: true, scope: "all", independent: true, preferCatalog: true });
+  if (!game.settings.get(ID, "automatic")) await game.settings.set(ID, "automatic", true);
+  persistentStates?.schedule();
+  return catalogsOn();
+}
+// Once per world, on first load as the active GM: offer to turn every catalog on (only when
+// none is on yet, so a table that already chose its catalogs is never asked).
+async function welcome() {
+  if (!game.user.isGM || !(game.users.activeGM?.isSelf ?? true) || game.settings.get(ID, "welcomed")) return;
+  await game.settings.set(ID, "welcomed", true);
+  if (catalogsOn().on > 0) return;
+  const yes = await foundry.applications.api.DialogV2.confirm({
+    window: { title: "Animater: welcome" },
+    content: "<p><b>Turn on every built-in animation?</b></p><p>Spells, feats, actions, weapons, conditions and effects then animate automatically when used: no setup. You can pause any catalog, exclude single entries or customize them later in Animater.</p>",
+    yes: { label: "Turn them all on" }, no: { label: "Not now" },
+  }).catch(() => false);
+  if (!yes) return void ui.notifications.info("Animater: open Animater → Setup to turn every catalog on later.");
+  const { on, total } = await useEveryCatalog();
+  ChatMessage.create({ whisper: [game.user.id], speaker: { alias: "Animater" }, content: `<p><b>Animater is ready.</b> ${on} of ${total} catalogs are on: spells, feats, actions, weapons, conditions and effects animate when used. Open Animater to pause a catalog, exclude an entry or make your own version.</p>` });
+}
 function builtinRecipe(id) {
  if(game.system.id==='sf2e'){
   const entry=sfEntry(id);if(!entry)return null;
@@ -575,6 +605,8 @@ function workspaceHost() {
     ...(game.user.isGM ? {
       flashScreens: () => flash?.screens() ?? [],
       saveFlashScreens: (list) => flash.save(list),
+      useEveryCatalog,
+      catalogsOn,
       flashDefaults: () => flash?.defaults() ?? {},
       setFlashDefault: (event, id) => flash.setDefault(event, id),
       playFlash: function (screen, options) {
@@ -862,6 +894,7 @@ Hooks.once("init", () => {
     hint: "Teleport spells (Translocate, Misty Step, Friendfetch…) let whoever cast them click a spot, and the token jumps there. Turn off if another module already moves tokens for these spells: they then only play their animation.",
     scope: "world", config: true, type: Boolean, default: true,
   });
+  game.settings.register(ID, "welcomed", { scope: "world", config: false, type: Boolean, default: false });
   game.settings.register(ID, DRAMATIC_DEATHS, {
     name: "Damage-typed knockouts",
     hint: "A creature dropping to 0 HP goes down in the look of the damage that dropped it: burned to ash, frozen and shattered, fried by lightning. Off: a plain collapse.",
@@ -943,6 +976,7 @@ async function loadDndBooks() {
 }
 Hooks.once("ready", () => {
   void loadDndBooks();
+  setTimeout(() => void welcome().catch((e) => console.warn("Animater welcome:", e.message)), 1500);
   // Item sheets (GM): a shortcut to the item's animation. AppV1 sheets get a header button;
   // AppV2 sheets (D&D 5e) get an entry in the header's menu.
   if (game.user.isGM) {

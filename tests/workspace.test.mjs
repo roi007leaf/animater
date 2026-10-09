@@ -556,3 +556,16 @@ test('reveal opens a catalog page searched to an item, or a saved recipe in the 
  const id='r1';
  assert.equal(f.w.reveal({recipeId:id}),true);assert.equal(f.w.page,'recipes');assert.equal(f.w.studio,true);assert.equal(f.w.selected,id);
 });
+
+test('Setup offers to turn every catalog on, and says when all are on', () => {
+ const w = Object.create(Workspace.prototype);
+ const env = { ready: true, demo: false };
+ w.host = { catalogsOn: () => ({ on: 2, total: 7 }) };
+ assert.match(w.everyCatalogHTML(env), /2 of 7 catalogs are on/);
+ assert.match(w.everyCatalogHTML(env), /data-action="use-every-catalog" class="an-primary" >Turn every catalog on/);
+ w.host = { catalogsOn: () => ({ on: 7, total: 7 }) };
+ assert.match(w.everyCatalogHTML(env), /All 7 catalogs are on/);
+ assert.match(w.everyCatalogHTML(env), /disabled>All on ✓/);
+ w.host = {};
+ assert.equal(w.everyCatalogHTML(env), '');
+});
