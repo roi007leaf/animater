@@ -2511,3 +2511,36 @@
 .animater-flash-pick.is-hud label { justify-content: space-between; }
 .animater-flash-pick.is-hud select { flex: 1; max-width: none; min-width: 0; }
 .animater-flash-pick.is-hud button { grid-column: 2; justify-self: end; width: auto; padding: 0 8px; }
+/* ---------- Flash editor: direct manipulation ---------- */
+/* Scrubby labels. */
+.animater :where(.an-flash-page) label:has(> input[type="number"]) { cursor: ew-resize; user-select: none; }
+.animater :where(.an-flash-page) label:has(> input[type="number"]) input { cursor: text; }
+body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-select: none !important; }
+/* Stage toolbar and shortcut list. */
+.animater .an-flash-tools { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.animater .an-flash-align { display: flex; align-items: center; gap: 2px; }
+.animater .an-flash-align i { width: 1px; height: 18px; margin: 0 6px; background: var(--an-line); }
+.animater .an-flash-align button, .animater .an-flash-tools .an-icon { width: 28px; height: 26px; min-height: 26px; padding: 0; font-size: 14px; border-radius: 6px; }
+.animater .an-flash-tools .an-icon.is-on { color: #1b1530; background: #b9a6ff; }
+.animater .an-flash-help { display: grid; gap: 3px; padding: 8px 10px; border-radius: 8px; background: var(--an-surface); border: 1px solid var(--an-line); font-size: 11.5px; color: var(--an-muted); }
+.animater .an-flash-help b { color: var(--an-text); font-size: 12px; }
+.animater .an-flash-help kbd { padding: 0 4px; border-radius: 4px; border: 1px solid var(--an-line); background: rgba(255, 255, 255, 0.06); color: var(--an-text); font-size: 10.5px; font-family: inherit; }
+/* Stage handles. */
+.an-flash-rotate { position: absolute; left: 50%; top: -28px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #fff; border: 2px solid #9e8aff; cursor: grab; pointer-events: auto; }
+.an-flash-rotate::after { content: ""; position: absolute; left: 4px; top: 12px; width: 1px; height: 14px; background: rgba(255, 255, 255, 0.7); }
+.an-flash-edge { position: absolute; width: 10px; height: 10px; border-radius: 2px; background: #9e8aff; border: 1px solid #fff; pointer-events: auto; }
+.an-flash-edge.is-x { right: -6px; top: 50%; margin-top: -5px; cursor: ew-resize; }
+.an-flash-edge.is-y { bottom: -6px; left: 50%; margin-left: -5px; cursor: ns-resize; }
+/* Draggable timeline bars: shaded entrance/exit and grips. */
+.animater .an-flash-row-track { overflow: visible; }
+.animater .an-flash-row-bar { pointer-events: auto; cursor: grab; overflow: hidden; }
+.animater .an-flash-seg { position: absolute; top: 0; bottom: 0; pointer-events: none; background: rgba(0, 0, 0, 0.28); }
+.animater .an-flash-seg.is-enter { left: 0; background: linear-gradient(90deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.12)); }
+.animater .an-flash-seg.is-exit { right: 0; background: linear-gradient(270deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.12)); }
+.animater .an-flash-grip { position: absolute; top: 0; bottom: 0; width: 7px; cursor: ew-resize; }
+.animater .an-flash-grip.is-start { left: 0; }
+.animater .an-flash-grip.is-end { right: 0; }
+.animater .an-flash-grip.is-mid { width: 6px; margin-left: -3px; }
+.animater .an-flash-grip:hover, .animater .an-flash-grip.is-mid:hover { background: rgba(255, 255, 255, 0.45); }
+.animater .an-flash-grip.is-mid::after { content: ""; position: absolute; left: 2px; top: 2px; bottom: 2px; width: 2px; border-radius: 1px; background: rgba(255, 255, 255, 0.55); }
+.animater .an-flash-key { cursor: ew-resize; }

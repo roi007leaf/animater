@@ -138,3 +138,19 @@ test("portraits can be arranged in rows: 2 per row makes 2 above 2", () => {
   assert.equal(validateFlash({ layers: [{ kind: "portraits", perRow: 99 }] }).layers[0].perRow, 12);
   assert.equal(validateFlash({ layers: [{ kind: "portraits" }] }).layers[0].perRow, 0, "one line by default");
 });
+
+test("the flash editor page renders a screen with layers, keyframes and the timeline grips", async () => {
+  const { FlashEditor } = await import("../scripts/flash-editor.mjs");
+  const screens = [validateFlash({ id: "s", name: "Test", layers: [
+    { kind: "text", text: "HI", keys: [{ at: 500, x: 40, y: 50 }] }, { kind: "band" }, { kind: "sound", file: "a.ogg" }, { kind: "shake", start: 300 },
+  ] })];
+  const host = { flashScreens: () => screens, flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
+  const ed = new FlashEditor({ host, page: "recipes", root: null });
+  const html = ed.html();
+  assert.match(html, /an-flash-row-bar kind-text/);
+  assert.match(html, /data-flash-part="enter"/, "entrance grip on visual layers");
+  assert.match(html, /data-flash-part="start"/);
+  assert.match(html, /an-flash-key/, "keyframe diamonds");
+  assert.match(html, /data-action="flash-align"/);
+  assert.ok(!/kind-sound[^>]*>[^<]*<span class="an-flash-grip is-start"/.test(html), "sound bars only move");
+});

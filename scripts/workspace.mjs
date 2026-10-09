@@ -230,7 +230,6 @@ export class Workspace {
     root.addEventListener(
       "keydown",
       (e) => {
-        if (this.page === "flash" && this.flashEditor?.key(e)) return;
         const dialog = this.root.querySelector('[role="dialog"]');
         if (dialog) {
           if (e.key === "Escape") {

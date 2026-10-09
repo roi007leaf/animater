@@ -11,7 +11,15 @@ const newId = () => crypto.randomUUID().slice(0, 12);
 const seconds = (ms) => `${(ms / 1000).toFixed(1)}s`;
 
 export class FlashEditor {
-  constructor(w) { this.w = w; this.host = w.host; this.selectedId = null; this.draft = null; this.dirty = false; this.layerIndex = 0; this.time = 0; this.preview = null; }
+  constructor(w) {
+    this.w = w; this.host = w.host; this.selectedId = null; this.draft = null; this.dirty = false; this.layerIndex = 0; this.time = 0; this.preview = null;
+    // Shortcuts work while you are working in the editor (your last click was inside it), and are
+    // caught before Foundry so arrows and Delete never pan the map or delete tokens.
+    const signal = w.abort?.signal;
+    if (typeof window === "undefined") return;
+    window.addEventListener("pointerdown", (e) => { this.engaged = w.page === "flash" && !!w.root?.contains(e.target); }, { capture: true, signal });
+    window.addEventListener("keydown", (e) => { if (this.engaged && w.page === "flash" && w.root?.isConnected && this.key(e)) e.stopPropagation(); }, { capture: true, signal });
+  }
   screens() { return this.host.flashScreens(); }
   current() {
     if (!this.draft || this.draft.id !== this.selectedId) {
@@ -47,14 +55,95 @@ export class FlashEditor {
     this.layerIndex = Math.min(this.layerIndex, Math.max(0, this.draft.layers.length - 1));
     return true;
   }
-  // Ctrl+Z / Ctrl+Shift+Z (or Ctrl+Y) on the Flash screens page, outside text fields.
+  // Editor shortcuts (outside text fields): undo/redo, nudge, rotate, resize, keyframe, play,
+  // step, next layer, duplicate, delete, and ? for the list.
   key(e) {
-    if (!(e.ctrlKey || e.metaKey) || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target?.tagName ?? "")) return false;
-    const k = e.key.toLowerCase(), dir = k === "z" ? (e.shiftKey ? "redo" : "undo") : k === "y" ? "redo" : null;
-    if (!dir) return false;
-    e.preventDefault();
-    if (this.history(dir)) this.w.render();
-    return true;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target?.tagName ?? "") || e.target?.isContentEditable) return false;
+    const s = this.current();
+    if (!s) return false;
+    const k = e.key, mod = e.ctrlKey || e.metaKey, layer = s.layers[this.layerIndex], visual = layer && !["sound", "flash", "shake"].includes(layer.kind);
+    const done = (render = true) => { e.preventDefault(); if (render) this.w.render(); return true; };
+    if (mod) {
+      const low = k.toLowerCase(), dir = low === "z" ? (e.shiftKey ? "redo" : "undo") : low === "y" ? "redo" : null;
+      if (dir) { this.history(dir); return done(); }
+      if (low === "d" && layer && s.layers.length < LAYER_LIMIT) { void this.action("flash-layer-copy", { dataset: { index: String(this.layerIndex) } }); e.preventDefault(); return true; }
+      return false;
+    }
+    const step = e.shiftKey ? 5 : 0.5, round = (v) => Math.round(v * 10) / 10;
+    switch (k) {
+      case "ArrowLeft": case "ArrowRight": case "ArrowUp": case "ArrowDown": {
+        if (!visual) return false;
+        const t = this.target(this.edit().layers[this.layerIndex]);
+        if (k === "ArrowLeft") t.x = round(Math.max(-20, t.x - step)); if (k === "ArrowRight") t.x = round(Math.min(120, t.x + step));
+        if (k === "ArrowUp") t.y = round(Math.max(-20, t.y - step)); if (k === "ArrowDown") t.y = round(Math.min(120, t.y + step));
+        this.mount(); this.later(); return done(false);
+      }
+      case "[": case "]": {
+        if (!visual) return false;
+        const t = this.target(this.edit().layers[this.layerIndex]), d = (k === "]" ? 1 : -1) * (e.shiftKey ? 15 : 5);
+        t.rotate = Math.max(t === layer ? -180 : -720, Math.min(t === layer ? 180 : 720, t.rotate + d));
+        this.mount(); this.later(); return done(false);
+      }
+      case "-": case "_": case "=": case "+":
+        if (!visual) return false;
+        this.grow(this.edit().layers[this.layerIndex], k === "-" || k === "_" ? 1 / 1.08 : 1.08); this.mount(); this.later(); return done(false);
+      case "k": case "K":
+        if (!visual) return false;
+        this.keyForEdit(this.edit().layers[this.layerIndex]); return done();
+      case " ": void this.togglePlay(); return done(false);
+      case ",": case "<": case ".": case ">": this.setTime(this.time + (k === "," || k === "<" ? -1 : 1) * (e.shiftKey ? 1000 : 100)); return done(false);
+      case "Home": this.setTime(0); return done(false);
+      case "End": this.setTime(s.duration); return done(false);
+      case "Tab":
+        if (!s.layers.length) return false;
+        this.layerIndex = (this.layerIndex + (e.shiftKey ? s.layers.length - 1 : 1)) % s.layers.length; return done();
+      case "Delete": case "Backspace":
+        if (!layer) return false;
+        this.edit().layers.splice(this.layerIndex, 1); this.layerIndex = Math.max(0, Math.min(this.layerIndex, s.layers.length - 1)); return done();
+      case "?": this.showHelp = !this.showHelp; return done();
+      default: return false;
+    }
+  }
+  // What a gesture changes: the layer itself, or (once it has keyframes) its keyframe at the playhead.
+  target(layer) { return layer.keys?.length ? this.keyForEdit(layer) ?? layer : layer; }
+  // Grow or shrink: keyframed layers scale; others change their own size (text size, image width, band both ways).
+  grow(layer, f) {
+    const r = (v, lo, hi) => Math.round(Math.min(hi, Math.max(lo, v)) * 10) / 10;
+    if (layer.keys?.length) { const k = this.keyForEdit(layer); if (k) k.scale = Math.round(Math.min(10, Math.max(0.05, k.scale * f)) * 100) / 100; return; }
+    if (layer.kind === "text") layer.size = r(layer.size * f, 1, 40);
+    else if (layer.kind === "portraits") layer.size = r(layer.size * f, 3, 60);
+    else if (layer.kind === "image") layer.width = r(layer.width * f, 1, 150);
+    else if (layer.kind === "band") { layer.width = r(layer.width * f, 1, 150); layer.height = r(layer.height * f, 1, 100); }
+  }
+  // A timeline bar: its entrance and exit shaded at the ends, with grips to drag the start, end,
+  // entrance and exit; the body moves the whole layer in time.
+  barHTML(l, total) {
+    const pct = (ms) => ((ms / total) * 100).toFixed(2);
+    const end = l.duration > 0 ? Math.min(total, l.start + l.duration) : total, len = Math.max(1, end - l.start);
+    const share = (ms) => ((Math.min(ms, len) / len) * 100).toFixed(1);
+    const visual = !["sound", "flash", "shake"].includes(l.kind);
+    const segs = visual ? `<span class="an-flash-seg is-enter" style="width:${share(l.enterMs)}%"></span><span class="an-flash-seg is-exit" style="width:${share(l.exitMs)}%"></span><span class="an-flash-grip is-mid" data-flash-part="enter" style="left:${share(l.enterMs)}%" title="Drag: entrance length"></span><span class="an-flash-grip is-mid" data-flash-part="exit" style="left:${(100 - share(l.exitMs)).toFixed(1)}%" title="Drag: exit length"></span>` : "";
+    const edges = l.kind === "sound" ? "" : `${l.kind === "flash" || l.kind === "shake" ? "" : `<span class="an-flash-grip is-start" data-flash-part="start" title="Drag: when it starts"></span>`}<span class="an-flash-grip is-end" data-flash-part="end" title="Drag: when it ends"></span>`;
+    return `<span class="an-flash-row-bar kind-${l.kind}" data-flash-part="move" style="left:${pct(l.start)}%;width:${pct(len)}%" title="Drag to move in time">${segs}${edges}</span>`;
+  }
+  trackHTML(l, i, total) {
+    const pct = (ms) => ((ms / total) * 100).toFixed(2);
+    return `${this.barHTML(l, total)}${(l.keys ?? []).map((k) => `<button class="an-flash-key${i === this.layerIndex && Math.abs(k.at - this.time) <= 40 ? " is-on" : ""}" style="left:${pct(k.at)}%" data-action="flash-key-go" data-index="${i}" data-at="${k.at}" aria-label="Keyframe at ${seconds(k.at)}" title="Click to go there; drag to retime"></button>`).join("")}<span class="an-flash-row-head" style="left:${pct(this.time)}%"></span>`;
+  }
+  // The inspector catches up after wheel and key tweaks, without redrawing on every notch.
+  later() { clearTimeout(this.laterTimer); this.laterTimer = setTimeout(() => this.w.render(), 250); }
+  // Space: play the preview from the start, or stop it.
+  async togglePlay() {
+    const s = this.current(), frame = this.w.root.querySelector("[data-flash-stage]");
+    if (!s || !frame) return;
+    if (this.playing) { this.playing = false; this.mount(); return; }
+    this.preview?.stop();
+    frame.replaceChildren();
+    const run = createFlash(frame, validateFlash(s), { resolveMedia: (src) => this.host.resolveFlashMedia(src), vars: this.host.flashVars(), editing: true, skip: this.skipped(), playSound: (src, volume) => this.host.flashPlaySound(src, volume) });
+    this.preview = run; this.playing = true;
+    this.host.flashSound(s);
+    await run.play();
+    if (this.preview === run) { this.playing = false; this.mount(); }
   }
   // The selected layer's keyframe at the playhead (within a frame or two), if any.
   keyAtPlayhead(layer = this.draft?.layers[this.layerIndex]) { return layer?.keys?.find((k) => Math.abs(k.at - this.time) <= 40) ?? null; }
@@ -80,15 +169,18 @@ export class FlashEditor {
     const layer = s.layers[this.layerIndex];
     const isDefault = (ev) => defaults[ev] === s.id;
     const head = `<div class="an-flash-head"><input class="an-st-name" aria-label="Flash screen name" data-flash-field="name" value="${esc(s.name)}"><label>Plays at<select data-flash-field="event">${options(FLASH_EVENTS, s.event)}</select></label><label>Length (s)<input type="number" min="1" max="12" step="0.1" data-flash-field="duration" value="${(s.duration / 1000).toFixed(1)}"></label><div class="an-flash-actions"><button class="an-icon" data-action="flash-undo" ${this.undoStack?.length ? "" : "disabled"} data-tooltip="Undo (Ctrl+Z)" aria-label="Undo">↶</button><button class="an-icon" data-action="flash-redo" ${this.redoStack?.length ? "" : "disabled"} data-tooltip="Redo (Ctrl+Shift+Z)" aria-label="Redo">↷</button><button class="an-icon" data-action="flash-duplicate" data-tooltip="Duplicate" aria-label="Duplicate">⧉</button><button class="an-icon is-danger" data-action="flash-delete" data-tooltip="Delete" aria-label="Delete"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="flash-revert" ${this.dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="flash-save" ${this.dirty ? "" : "disabled"}>${this.dirty ? "Save" : "Saved ✓"}</button></div></div>`;
-    const stage = `<div class="an-flash-stage-wrap"><div class="an-flash-frame" data-flash-stage aria-label="Flash screen preview: drag a layer to move it"></div></div>
-      <div class="an-flash-transport"><button class="an-primary" data-action="flash-preview">▶ Preview</button><button data-action="flash-play-all" data-tooltip="Play it now on every player's screen">Play for everyone</button><input type="range" min="0" max="${s.duration}" step="10" value="${this.time}" data-flash-time aria-label="Scrub"><span data-flash-clock>${seconds(this.time)} / ${seconds(s.duration)}</span></div>`;
+    const canAlign = layer && !["sound", "flash", "shake"].includes(layer.kind) ? "" : "disabled";
+    const align = (attr, v, label, tip) => `<button data-action="flash-align" ${attr}="${v}" ${canAlign} data-tooltip="${tip}">${label}</button>`;
+    const help = this.showHelp ? `<div class="an-flash-help"><b>Shortcuts</b><span><kbd>Drag</kbd> move · corner handle: size · round handle: rotate · band edges: stretch</span><span><kbd>Wheel</kbd> opacity · <kbd>Shift</kbd>+wheel: size</span><span><kbd>←↑→↓</kbd> nudge (<kbd>Shift</kbd> ×10) · <kbd>[</kbd> <kbd>]</kbd> rotate · <kbd>-</kbd> <kbd>=</kbd> smaller / bigger</span><span><kbd>K</kbd> keyframe · <kbd>Space</kbd> play · <kbd>,</kbd> <kbd>.</kbd> step (<kbd>Shift</kbd> 1s) · <kbd>Home</kbd> <kbd>End</kbd></span><span><kbd>Tab</kbd> next layer · <kbd>Ctrl+D</kbd> duplicate · <kbd>Delete</kbd> remove · <kbd>Ctrl+Z</kbd> undo</span><span>Drag any field's label to change its value (<kbd>Shift</kbd> faster, <kbd>Alt</kbd> finer). On the timeline, drag bars, their ends and the shaded entrance/exit; drag ◆ to retime. <kbd>Alt</kbd> turns snapping off.</span></div>` : "";
+    const stage = `<div class="an-flash-tools"><span class="an-flash-align">${align("data-x", 20, "⇤", "Left third")}${align("data-x", 50, "↔", "Centre horizontally")}${align("data-x", 80, "⇥", "Right third")}<i></i>${align("data-y", 20, "⤒", "Top third")}${align("data-y", 50, "↕", "Centre vertically")}${align("data-y", 80, "⤓", "Bottom third")}</span><button class="an-icon${this.showHelp ? " is-on" : ""}" data-action="flash-help" data-tooltip="Shortcuts (?)" aria-label="Shortcuts">?</button></div>${help}<div class="an-flash-stage-wrap"><div class="an-flash-frame" data-flash-stage aria-label="Flash screen preview: drag a layer to move it"></div></div>
+      <div class="an-flash-transport"><button class="an-primary" data-action="flash-preview">${this.playing ? "■ Stop" : "▶ Preview"}</button><button data-action="flash-play-all" data-tooltip="Play it now on every player's screen">Play for everyone</button><input type="range" min="0" max="${s.duration}" step="10" value="${this.time}" data-flash-time aria-label="Scrub"><span data-flash-clock>${seconds(this.time)} / ${seconds(s.duration)}</span></div>`;
     const pct = (ms) => ((ms / s.duration) * 100).toFixed(2);
     const rows = s.layers.map((l, i) => {
       const end = l.duration > 0 ? Math.min(s.duration, l.start + l.duration) : s.duration;
-      return `<div class="an-flash-row ${i === this.layerIndex ? "is-selected" : ""}"><button class="an-flash-row-name" data-action="flash-layer" data-index="${i}">${esc(l.name || FLASH_KINDS[l.kind])}</button><span class="an-flash-row-ms"><button class="${this.muted?.has(l.id) ? "is-on" : ""}" data-action="flash-mute" data-index="${i}" aria-pressed="${!!this.muted?.has(l.id)}" data-tooltip="Mute: leave this layer out of the editor preview">M</button><button class="is-solo ${this.soloed?.has(l.id) ? "is-on" : ""}" data-action="flash-solo" data-index="${i}" aria-pressed="${!!this.soloed?.has(l.id)}" data-tooltip="Solo: preview only soloed layers">S</button></span><div class="an-flash-row-track" data-action="flash-layer" data-index="${i}"><span class="an-flash-row-bar kind-${l.kind}" style="left:${pct(l.start)}%;width:${pct(end - l.start)}%"></span>${(l.keys ?? []).map((k) => `<button class="an-flash-key${i === this.layerIndex && Math.abs(k.at - this.time) <= 40 ? " is-on" : ""}" style="left:${pct(k.at)}%" data-action="flash-key-go" data-index="${i}" data-at="${k.at}" aria-label="Keyframe at ${seconds(k.at)}"></button>`).join("")}<span class="an-flash-row-head" style="left:${pct(this.time)}%"></span></div><span class="an-flash-row-tools"><button data-action="flash-layer-up" data-index="${i}" aria-label="Bring forward" ${i === s.layers.length - 1 ? "disabled" : ""}>▲</button><button data-action="flash-layer-down" data-index="${i}" aria-label="Send back" ${i === 0 ? "disabled" : ""}>▼</button><button data-action="flash-layer-copy" data-index="${i}" aria-label="Duplicate layer" ${s.layers.length >= LAYER_LIMIT ? "disabled" : ""}>⧉</button><button data-action="flash-layer-remove" data-index="${i}" aria-label="Remove layer">×</button></span></div>`;
+      return `<div class="an-flash-row ${i === this.layerIndex ? "is-selected" : ""}"><button class="an-flash-row-name" data-action="flash-layer" data-index="${i}">${esc(l.name || FLASH_KINDS[l.kind])}</button><span class="an-flash-row-ms"><button class="${this.muted?.has(l.id) ? "is-on" : ""}" data-action="flash-mute" data-index="${i}" aria-pressed="${!!this.muted?.has(l.id)}" data-tooltip="Mute: leave this layer out of the editor preview">M</button><button class="is-solo ${this.soloed?.has(l.id) ? "is-on" : ""}" data-action="flash-solo" data-index="${i}" aria-pressed="${!!this.soloed?.has(l.id)}" data-tooltip="Solo: preview only soloed layers">S</button></span><div class="an-flash-row-track" data-action="flash-layer" data-index="${i}">${this.trackHTML(l, i, s.duration)}</div><span class="an-flash-row-tools"><button data-action="flash-layer-up" data-index="${i}" aria-label="Bring forward" ${i === s.layers.length - 1 ? "disabled" : ""}>▲</button><button data-action="flash-layer-down" data-index="${i}" aria-label="Send back" ${i === 0 ? "disabled" : ""}>▼</button><button data-action="flash-layer-copy" data-index="${i}" aria-label="Duplicate layer" ${s.layers.length >= LAYER_LIMIT ? "disabled" : ""}>⧉</button><button data-action="flash-layer-remove" data-index="${i}" aria-label="Remove layer">×</button></span></div>`;
     }).reverse().join("");
     const full = s.layers.length >= LAYER_LIMIT ? "disabled" : "";
-    const layersHTML = `<div class="an-flash-layers"><div class="an-flash-layers-head"><b>Layers</b><span class="an-flash-adds"><button data-action="flash-add" data-kind="text" ${full}>+ Text</button><button data-action="flash-add" data-kind="image" ${full}>+ Image</button><button data-action="flash-add" data-kind="portraits" ${full} data-tooltip="The party's or enemies' pictures, from the encounter">+ Portraits</button><button data-action="flash-add" data-kind="band" ${full}>+ Band</button><button data-action="flash-add" data-kind="sound" ${full}>+ Sound</button><button data-action="flash-add" data-kind="flash" ${full} data-tooltip="A full-screen flash at one moment">+ Flash</button><button data-action="flash-add" data-kind="shake" ${full} data-tooltip="Shake the whole screen at one moment">+ Shake</button></span></div>${rows || `<p class="an-hint">Add a text, image or band layer.</p>`}<p class="an-hint">M mutes and S solos a layer in this editor only; saved screens always play every layer. Top of the list draws on top. Click a row to edit that layer; drag it on the stage to move it (it snaps to the centre and other layers; hold Alt to place freely) and its corner to resize. ◆ marks keyframes.</p></div>`;
+    const layersHTML = `<div class="an-flash-layers"><div class="an-flash-layers-head"><b>Layers</b><span class="an-flash-adds"><button data-action="flash-add" data-kind="text" ${full}>+ Text</button><button data-action="flash-add" data-kind="image" ${full}>+ Image</button><button data-action="flash-add" data-kind="portraits" ${full} data-tooltip="The party's or enemies' pictures, from the encounter">+ Portraits</button><button data-action="flash-add" data-kind="band" ${full}>+ Band</button><button data-action="flash-add" data-kind="sound" ${full}>+ Sound</button><button data-action="flash-add" data-kind="flash" ${full} data-tooltip="A full-screen flash at one moment">+ Flash</button><button data-action="flash-add" data-kind="shake" ${full} data-tooltip="Shake the whole screen at one moment">+ Shake</button></span></div>${rows || `<p class="an-hint">Add a text, image or band layer.</p>`}<p class="an-hint">M mutes and S solos a layer in this editor only; saved screens always play every layer. Top of the list draws on top. Drag a bar to move it in time, its ends to trim it, the shaded ends to set its entrance and exit, and ◆ to retime a keyframe. Press ? for all shortcuts.</p></div>`;
     const scene = `<div class="an-editor-section an-flash-card-box"><span class="an-eyebrow">SCREEN</span><div class="an-field-row"><label>Backdrop<input type="color" data-flash-field="backdrop.color" value="${s.backdrop.color}"></label><label>Darkness<input type="number" min="0" max="1" step="0.05" data-flash-field="backdrop.opacity" value="${s.backdrop.opacity}"></label></div><label class="an-check"><input type="checkbox" data-flash-field="backdrop.vignette" ${s.backdrop.vignette ? "checked" : ""}> Dark edges</label><div class="an-field-row"><label class="an-check"><input type="checkbox" data-flash-field="backdrop.bars" ${s.backdrop.bars ? "checked" : ""}> Cinematic bars</label>${s.backdrop.bars ? `<label>Bar size<input type="number" min="2" max="25" step="1" data-flash-field="backdrop.barSize" value="${s.backdrop.barSize}"></label>` : ""}</div><label>Animated background<select data-flash-field="backdrop.media">${options(Object.hasOwn(FLASH_BACKGROUNDS, s.backdrop.media) ? FLASH_BACKGROUNDS : { ...FLASH_BACKGROUNDS, [s.backdrop.media]: "Custom file" }, s.backdrop.media)}</select></label><div class="an-field-row"><label>Or a file<span class="an-flash-sound"><input data-flash-field="backdrop.media" placeholder="JB2A key or video" value="${esc(s.backdrop.media)}"><button data-action="flash-browse" data-target="background" aria-label="Browse backgrounds">…</button></span></label>${s.backdrop.media ? `<label>Strength<input type="number" min="0" max="1" step="0.05" data-flash-field="backdrop.mediaOpacity" value="${s.backdrop.mediaOpacity}"></label>` : ""}</div><label class="an-check"><input type="checkbox" data-flash-field="duck" ${s.duck ? "checked" : ""}> Lower the music while it plays</label><label>Sound<span class="an-flash-sound"><input data-flash-field="sound.file" placeholder="sounds/drums.ogg" value="${esc(s.sound.file)}"><button data-action="flash-browse" data-target="sound" aria-label="Browse sounds">…</button></span></label><label>Volume<input type="number" min="0" max="1" step="0.05" data-flash-field="sound.volume" value="${s.sound.volume}"></label><div class="an-flash-defaults">${(s.event === "any" ? ["start", "end"] : [s.event]).map((ev) => `<button class="${isDefault(ev) ? "an-primary" : ""}" data-action="flash-default" data-event="${ev}">${isDefault(ev) ? "✓ " : ""}Use for: ${esc(FLASH_EVENTS[ev])}</button>`).join("")}</div><p class="an-hint">${MOMENT_EVENTS.includes(s.event) ? "Plays during combat whenever this happens. Turn it on with the button above." : "The default plays for every combat unless the Combat Tracker picks another."} Text can use {scene}, {round}, {boss} (strongest enemy) and {name} (who crit or fell).</p></div>`;
     return `<section class="an-flash-page">${listHTML}<div class="an-flash-main">${head}${stage}${layersHTML}</div><aside class="an-flash-inspector">${layer ? this.layerHTML(layer) : ""}${scene}</aside></section>`;
   }
@@ -144,7 +236,20 @@ export class FlashEditor {
     this.preview = createFlash(frame, validateFlash(s), { resolveMedia: (src) => this.host.resolveFlashMedia(src), vars: this.host.flashVars(), editing: true, skip: this.skipped() });
     const picked = this.preview.el.querySelector(`[data-flash-layer="${this.layerIndex}"]`);
     // The outline and resize handle ride on the moving part, so keyframed layers show them where they are.
-    if (picked) { picked.classList.add("is-selected"); picked.querySelector(".an-flash-motion")?.insertAdjacentHTML("beforeend", `<span class="an-flash-handle" data-flash-resize title="Drag to resize"></span>`); }
+    const kind = s.layers[this.layerIndex]?.kind, keyed = (s.layers[this.layerIndex]?.keys?.length ?? 0) > 0;
+    if (picked) { picked.classList.add("is-selected"); picked.querySelector(".an-flash-motion")?.insertAdjacentHTML("beforeend", `<span class="an-flash-handle" data-flash-resize title="Drag to resize"></span><span class="an-flash-rotate" data-flash-rotate title="Drag to rotate (Shift snaps to 15°)"></span>${kind === "band" && !keyed ? `<span class="an-flash-edge is-x" data-flash-edge="x" title="Drag: width"></span><span class="an-flash-edge is-y" data-flash-edge="y" title="Drag: height"></span>` : ""}`); }
+    // Wheel over the selected layer: opacity; Shift+wheel: size.
+    if (!frame.dataset.wheel) {
+      frame.dataset.wheel = "1";
+      frame.addEventListener("wheel", (e) => {
+        if (!e.target.closest?.(`[data-flash-layer="${this.layerIndex}"]`)) return;
+        e.preventDefault();
+        const layer = this.edit().layers[this.layerIndex], up = e.deltaY < 0;
+        if (e.shiftKey) this.grow(layer, up ? 1.05 : 1 / 1.05);
+        else { const t = this.target(layer); t.opacity = Math.round(Math.min(1, Math.max(0, t.opacity + (up ? 0.05 : -0.05))) * 100) / 100; }
+        this.mount(); this.later();
+      }, { passive: false });
+    }
     this.preview.seek(this.time);
   }
   setTime(ms) {
@@ -198,12 +303,87 @@ export class FlashEditor {
     if (sy !== undefined) { y = sy; frame.insertAdjacentHTML("beforeend", `<span class="an-flash-guide is-h" style="top:${y}%"></span>`); }
     return { x, y };
   }
-  // Drag a layer on the stage to move it.
   pointer(e) {
-    const el = e.target.closest?.("[data-flash-stage] [data-flash-layer]"), frame = el?.closest("[data-flash-stage]");
-    if (!el || e.button !== 0) return false;
+    if (e.button !== 0) return false;
+    const handled = this.scrubLabel(e) || this.timelineDrag(e) || this.stageDrag(e);
+    // Working on the stage or timeline leaves any text field, so shortcuts apply.
+    if (handled && e.target.closest?.("[data-flash-stage], .an-flash-row-track")) document.activeElement?.blur?.();
+    return handled;
+  }
+  // Drag a number field's label sideways to change it (Shift ×10, Alt finer); release commits.
+  scrubLabel(e) {
+    const label = e.target.closest?.(".an-flash-page label");
+    if (!label || e.target.closest("input, select, textarea, button")) return false;
+    const input = label.querySelector('input[type="number"]');
+    if (!input || input.disabled) return false;
     e.preventDefault();
-    const i = Number(el.dataset.flashLayer), resize = !!e.target.closest("[data-flash-resize]");
+    const step = Number(input.step) || 1, min = input.min === "" ? -Infinity : Number(input.min), max = input.max === "" ? Infinity : Number(input.max);
+    const places = (String(input.step).split(".")[1] ?? "").length, from = Number(input.value) || 0, x0 = e.clientX;
+    let moved = false;
+    const move = (ev) => {
+      const dx = ev.clientX - x0;
+      if (!moved && Math.abs(dx) < 2) return;
+      if (!moved) { moved = true; document.body.classList.add("an-scrubbing"); }
+      const mult = ev.shiftKey ? 10 : ev.altKey ? 0.1 : 1, digits = places + (ev.altKey ? 1 : 0);
+      const v = Math.min(max, Math.max(min, from + (dx / 4) * step * mult));
+      input.value = v.toFixed(digits);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up);
+      document.body.classList.remove("an-scrubbing");
+      if (moved) input.dispatchEvent(new Event("change", { bubbles: true })); else input.focus();
+    };
+    window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+    return true;
+  }
+  // Timeline: drag a bar to move it in time, its ends to trim, its shaded ends to set the entrance
+  // and exit, and ◆ to retime. Snaps to the playhead and other layers' starts and ends (Alt: free).
+  timelineDrag(e) {
+    const track = e.target.closest?.(".an-flash-row-track"), keyEl = e.target.closest?.(".an-flash-key"), bar = e.target.closest?.(".an-flash-row-bar");
+    if (!track || (!keyEl && !bar)) return false;
+    e.preventDefault();
+    const s = this.draft, i = Number(track.dataset.index), layer = s.layers[i], total = s.duration;
+    const rect = track.getBoundingClientRect(), msPer = total / Math.max(1, rect.width), x0 = e.clientX;
+    const part = e.target.closest("[data-flash-part]")?.dataset.flashPart ?? "move";
+    const from = { start: layer.start, end: layer.duration > 0 ? Math.min(total, layer.start + layer.duration) : total, enter: layer.enterMs, exit: layer.exitMs, toEnd: !(layer.duration > 0) };
+    const key = keyEl ? layer.keys.find((k) => k.at === Number(keyEl.dataset.at)) : null, at0 = key?.at;
+    const marks = [this.time, 0, total, ...s.layers.flatMap((l, j) => (j === i ? [] : [l.start, l.duration > 0 ? l.start + l.duration : total]))];
+    const snapT = (t, ev) => (ev.altKey ? t : marks.find((c) => Math.abs(c - t) <= 6 * msPer) ?? t);
+    const clamp = (v, lo, hi) => Math.round(Math.min(hi, Math.max(lo, v)));
+    let moved = false;
+    const move = (ev) => {
+      const dt = (ev.clientX - x0) * msPer;
+      if (!moved && Math.abs(ev.clientX - x0) < 3) return;
+      if (!moved) { moved = true; this.edit(); this.layerIndex = i; }
+      if (key) { key.at = clamp(snapT(at0 + dt, ev), 0, total); layer.keys.sort((a, b) => a.at - b.at); }
+      else if (part === "move") {
+        const len = from.end - from.start, start = clamp(snapT(from.start + dt, ev), 0, total - (from.toEnd ? 50 : len));
+        layer.start = start;
+      } else if (part === "start") {
+        const start = clamp(snapT(from.start + dt, ev), 0, from.end - 50);
+        layer.start = start; if (!from.toEnd) layer.duration = from.end - start;
+      } else if (part === "end") {
+        const end = clamp(snapT(from.end + dt, ev), from.start + 50, total);
+        layer.duration = end >= total - 5 && !["flash", "shake"].includes(layer.kind) ? 0 : end - from.start;
+      } else if (part === "enter") layer.enterMs = clamp(from.enter + dt, 0, Math.min(4000, from.end - from.start - layer.exitMs));
+      else if (part === "exit") layer.exitMs = clamp(from.exit - dt, 0, Math.min(4000, from.end - from.start - layer.enterMs));
+      track.innerHTML = this.trackHTML(layer, i, total);
+      this.mount();
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up);
+      if (moved) { this.suppressClick = true; setTimeout(() => { this.suppressClick = false; }, 60); this.w.render(); }
+    };
+    window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+    return true;
+  }
+  // Stage: drag a layer to move it, the corner to resize, the round handle to rotate, band edges to stretch.
+  stageDrag(e) {
+    const el = e.target.closest?.("[data-flash-stage] [data-flash-layer]"), frame = el?.closest("[data-flash-stage]");
+    if (!el) return false;
+    e.preventDefault();
+    const i = Number(el.dataset.flashLayer), resize = !!e.target.closest("[data-flash-resize]"), rotate = !!e.target.closest("[data-flash-rotate]"), edge = e.target.closest("[data-flash-edge]")?.dataset.flashEdge;
     if (i !== this.layerIndex) { this.layerIndex = i; this.w.render(); }
     const box = frame.getBoundingClientRect(), layer = this.draft.layers[i];
     const cx = box.left + (layer.x / 100) * box.width, cy = box.top + (layer.y / 100) * box.height;
@@ -211,9 +391,27 @@ export class FlashEditor {
     const px = keyed ? box.left + (now.x / 100) * box.width : cx, py = keyed ? box.top + (now.y / 100) * box.height : cy;
     const start = { x: e.clientX, y: e.clientY, dx: Math.max(4, Math.abs(e.clientX - px)), dy: Math.max(4, Math.abs(e.clientY - py)), size: layer.size, width: layer.width, height: layer.height, scale: now.scale };
     let moved = false, key = null;
+    const angle = (x, y) => (Math.atan2(y - py, x - px) * 180) / Math.PI, a0 = angle(e.clientX, e.clientY), rot0 = keyed ? now.rotate : layer.rotate;
     const move = (ev) => {
       if (!moved && Math.hypot(ev.clientX - start.x, ev.clientY - start.y) < 3) return;
       if (!moved) { moved = true; this.edit(); if (keyed) key = this.keyForEdit(layer); }
+      if (rotate) {
+        // Round handle: turn around the layer's centre; Shift snaps to 15°.
+        let r = rot0 + angle(ev.clientX, ev.clientY) - a0;
+        if (ev.shiftKey) r = Math.round(r / 15) * 15;
+        const t = key ?? layer, lim = key ? 720 : 180;
+        t.rotate = Math.round(((((r + lim) % (2 * lim)) + 2 * lim) % (2 * lim)) - lim);
+        this.mount();
+        return;
+      }
+      if (edge && !key) {
+        // Band edges stretch one way.
+        const round = (v) => Math.round(v * 10) / 10;
+        if (edge === "x") layer.width = round(Math.min(150, Math.max(1, start.width * (Math.abs(ev.clientX - cx) / start.dx))));
+        else layer.height = round(Math.min(100, Math.max(1, start.height * (Math.abs(ev.clientY - cy) / start.dy))));
+        this.mount();
+        return;
+      }
       if (key) {
         // A keyframed layer: drag sets this keyframe's position, the handle its scale.
         if (resize) key.scale = Math.round(Math.min(10, Math.max(0.05, start.scale * Math.max(Math.abs(ev.clientX - px) / start.dx, Math.abs(ev.clientY - py) / start.dy))) * 100) / 100;
@@ -244,6 +442,8 @@ export class FlashEditor {
 
   async action(action, b) {
     if (!action.startsWith("flash-")) return false;
+    // A timeline drag ends with a click on the same row; that click should not also jump the playhead.
+    if (this.suppressClick && ["flash-layer", "flash-key-go"].includes(action)) return true;
     const list = this.screens();
     const s = this.current();
     const commit = async (next, message) => { await this.host.saveFlashScreens(next); this.dirty = false; this.w.message = message; };
@@ -271,16 +471,7 @@ export class FlashEditor {
         await commit(list.map((f) => (f.id === s.id ? validateFlash(s) : f)), `${s.name} saved.`); break;
       case "flash-revert": this.draft = null; this.dirty = false; break;
       case "flash-default": await this.host.setFlashDefault(b.dataset.event, this.host.flashDefaults()[b.dataset.event] === s.id ? "none" : s.id); break;
-      case "flash-preview": {
-        this.preview?.stop();
-        const frame = this.w.root.querySelector("[data-flash-stage]");
-        frame.replaceChildren();
-        this.preview = createFlash(frame, validateFlash(s), { resolveMedia: (src) => this.host.resolveFlashMedia(src), vars: this.host.flashVars(), editing: true, skip: this.skipped(), playSound: (src, volume) => this.host.flashPlaySound(src, volume) });
-        this.host.flashSound(s);
-        await this.preview.play();
-        this.mount();
-        return true;
-      }
+      case "flash-preview": { const p = this.togglePlay(); this.w.render(); await p; this.w.render(); return true; }
       case "flash-play-all": this.host.playFlash(validateFlash(s), { everyone: true }); this.w.message = `Playing “${s.name}” for everyone.`; break;
       case "flash-layer": this.layerIndex = Number(b.dataset.index); this.time = this.restTime(s, this.layerIndex); break;
       case "flash-mute": case "flash-solo": {
@@ -288,6 +479,15 @@ export class FlashEditor {
         if (id) { if (set.has(id)) set.delete(id); else set.add(id); }
         break;
       }
+      case "flash-align": {
+        const layer = this.edit().layers[this.layerIndex];
+        if (!layer || !!["sound", "flash", "shake"].includes(layer.kind)) return true;
+        const t = this.target(layer);
+        if (b.dataset.x) t.x = Number(b.dataset.x);
+        if (b.dataset.y) t.y = Number(b.dataset.y);
+        break;
+      }
+      case "flash-help": this.showHelp = !this.showHelp; break;
       case "flash-undo": case "flash-redo": this.history(action === "flash-undo" ? "undo" : "redo"); break;
       case "flash-layer-copy": {
         const i = Number(b.dataset.index), layers = this.edit().layers, copy = { ...clone(layers[i]), id: newId(), name: `${layers[i].name || FLASH_KINDS[layers[i].kind]} copy`, x: layers[i].x + 3, y: layers[i].y + 3, keys: (layers[i].keys ?? []).map((k) => ({ ...k, x: k.x + 3, y: k.y + 3 })) };
