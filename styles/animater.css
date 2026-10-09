@@ -2550,3 +2550,11 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater-flash-pick .animater-flash-defaults { display: flex; flex-wrap: wrap; gap: 4px 8px; flex-basis: 100%; padding-top: 4px; border-top: 1px dashed rgba(255, 255, 255, 0.15); }
 .animater-flash-pick.is-hud .animater-flash-tools { grid-column: 2; justify-self: end; }
 .animater-flash-pick.is-hud .animater-flash-defaults { grid-column: 1 / -1; display: grid; gap: 4px; }
+/* Show me: the guided walkthrough. */
+.animater .an-flash-tools > button.an-flash-guide { width: auto; height: 26px; min-height: 26px; padding: 0 10px; margin-left: auto; margin-right: 4px; font-size: 12px; border-radius: 999px; }
+.an-tour-cursor { position: fixed; left: 0; top: 0; z-index: 100000; pointer-events: none; margin: -3px 0 0 -4px; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)); }
+.an-tour-cursor::after { content: ""; position: absolute; left: -10px; top: -9px; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #ffd34d; opacity: 0; transform: scale(0.4); transition: opacity 0.12s, transform 0.12s; }
+.an-tour-cursor.is-down::after { opacity: 1; transform: scale(1); }
+.an-tour-caption { position: fixed; left: 50%; bottom: 28px; z-index: 100001; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; max-width: min(640px, 92vw); padding: 10px 14px; border-radius: 12px; background: rgba(20, 16, 34, 0.96); border: 1px solid #9e8aff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); color: #f2efff; font-size: 13.5px; line-height: 1.4; }
+.an-tour-caption .an-tour-step { flex: none; padding: 2px 8px; border-radius: 999px; background: #9e8aff; color: #1b1530; font-size: 11px; font-weight: 700; }
+.an-tour-caption button { flex: none; width: auto; height: 28px; padding: 0 10px; font-size: 12px; }
