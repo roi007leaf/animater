@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **No darkness over unconscious creatures (PF2e, SF2e).** Unconscious automatically adds Blinded, and Blinded's dark cloud covered the sleeping token and its sleep symbol. While a creature is Unconscious, the Blinded animation now stays off. Blinded on its own still shows.
+- **A better Blinded (PF2e, SF2e).** The black darkness disc that hid the whole token is gone. Now a dark blindfold of haze lies across the eyes, with a dim eye under it that keeps fading out, so you can still see who is blinded.
 - **Updates from inside Foundry work again.** The update link in Animater's manifest pointed at GitHub's "latest" release, which skips prereleases, so Foundry could never find an update and each version had to be installed by hand. A permanent *Update link* release now always carries the newest manifest, and the release pipeline refreshes it with every version. Copies already installed (0.2.x, 0.3.0) pick up updates with no reinstall.
 - **Finish Him! flash screen.** A new ready-made screen in a fighting-game style: when one enemy is left standing, the scene freezes dark, a red burst and embers flare, and *FINISH HIM!* slams in with a camera punch, red flash and shake. Find it in **+ New flash screen**, then switch it on under *During combat*. The text is yours to change, for example to *FINISH THEM!*.
 

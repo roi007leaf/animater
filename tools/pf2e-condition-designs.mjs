@@ -10,7 +10,7 @@ const palettes={vividRed:['red','#ff4a5a'],clock:['blue','#8fb0ff'],fire:['orang
  // pick the nearest footage by affinity and always colorize it to the muted hex,
  // so Patreon never swaps in a saturated native colour.
  ash:['gray','#9aa0aa'],umber:['gray','#9a6a3c'],amber:['gold','#e3a338'],crimson:['dark_red','#c8344c'],dusk:['violet','#8b7bd0'],violetMind:['violet','#a35ae0'],bruise:['violet','#c04aa8'],grave:['violet','#7a3fc0'],blood:['dark_red','#d03040'],rust:['crimson','#c4502e'],
- bile:['gold','#8fc23a'],slate:['cyan','#3f6fe0'],numb:['gold','#e0c83a'],mustard:['gold','#e0902e'],glare:['silver','#d6d0b2'],teal:['teal','#2fb8b0'],rime:['cyan','#8fb3c8'],spectral:['silver','#c3cad6']};
+ bile:['gold','#8fc23a'],slate:['cyan','#3f6fe0'],numb:['gold','#e0c83a'],mustard:['gold','#e0902e'],glare:['silver','#d6d0b2'],teal:['teal','#2fb8b0'],blindfold:['dark_black','#262833'],rime:['cyan','#8fb3c8'],spectral:['silver','#c3cad6']};
 const track=(property,from,to,duration,pingPong=true)=>({property,from,to,duration,loop:true,pingPong,ease:'easeInOutQuad'});
 const flatten=value=>[{property:'scale.y',from:value,to:value,duration:6000}];
 const art=(roots,palette='grey',options={})=>({roots:Array.isArray(roots)?roots:[roots],palette,scale:1,opacity:.92,below:false,offsetX:0,offsetY:0,offsetUnits:'token',playbackRate:.8,...options});
@@ -43,7 +43,11 @@ const sink=(ms,drop=.14,from=.9)=>[track('position.y',-.04,drop,ms,false),track(
 const lurch=(deg,ms)=>[track('rotation',-deg,deg,ms),track('scale.x',.86,1.06,ms*1.2)];
 const shadow=(options={})=>art('drop_shadow','black',{scale:1.15,offsetY:.15,below:true,opacity:.55,playbackRate:.5,...options});
 export const CONDITION_PLANS={
- blinded:plan('vision','symbolic',art('darkness.black','black',{offsetY:-.12,scale:.85,opacity:.78})),
+ // Sight gone, the token still readable: a dim eye over the eyes keeps fading out under a
+ // dark blindfold of haze (the old darkness disc hid the whole token).
+ blinded:plan('vision','symbolic',
+  art('eyes.01','ash',{style:'.single',scale:.4,offsetY:-.26,opacity:.85,playbackRate:.6,tracks:[track('alpha',.1,.8,2400)]}),
+  art(['fog_cloud.01.white','ambient_fog.001.loop.small.white'],'blindfold',{scale:.62,offsetY:-.24,opacity:.9,playbackRate:.5,tracks:[...flatten(.45),track('alpha',.75,.95,2600)]})),
  broken:plan('broken','themed',glyph('shield_cracked','ash',{scale:.95})),
  // Stumbling: native yellow dizzy stars wobbling over the head, drawn above the token art.
  clumsy:plan('coordination','symbolic',art('dizzy_stars.200px','yellow',{scale:.95,offsetY:-.4,opacity:1,above:true,playbackRate:.7,tracks:[track('rotation',-12,12,1100)]})),

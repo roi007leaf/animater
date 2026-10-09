@@ -62,6 +62,13 @@ export function nativeAuraStates(actor,{findStateEntry:lookup=findStateEntry,aur
  return states;
 }
 const slug=item=>item.slug??item.system?.slug??item.name;
+// A condition that comes with another adds nothing to show. PF2e's Unconscious brings
+// Blinded, whose darkness cloud would cover the sleeping token and its sleep symbol.
+const IMPLIED={blinded:['unconscious']};
+export function shownStates(states){
+ const key=i=>String(slug(i)??'').toLowerCase(),on=new Set(states.filter(i=>i.type==='condition').map(key));
+ return states.filter(i=>!(i.type==='condition'&&IMPLIED[key(i)]?.some(s=>on.has(s))));
+}
 export function stateDocumentKey(item){return item.animaterAura?`aura:${item.animaterAura.slug}:${item.uuid}`:item.type==='condition'?`condition:${slug(item)}:${item.system?.persistent?.damageType??''}`:`effect:${item.uuid??item.id}`;}
 export function storedStateDocument(item){
  const visited=new Set();let current=item.animaterAura?.source??item;
@@ -90,7 +97,7 @@ export class PersistentStates{
    for(const token of h.tokens()){
     if(!token.actor)continue;
     let shown=0;
-    const states=(h.actorStates??actorStates)(token.actor);
+    const states=shownStates((h.actorStates??actorStates)(token.actor));
     for(const item of states){
      if(shown>=budget.states)break;
      if(!(h.activeState??activeState)(item)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;

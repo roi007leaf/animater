@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {PersistentStates,activeState,stateVisible,storedStateDocument,nativeAuraStates} from '../scripts/persistent-states.mjs';
+import {PersistentStates,activeState,stateVisible,storedStateDocument,nativeAuraStates,shownStates} from '../scripts/persistent-states.mjs';
 import {PF2E_CONDITIONS,PF2E_EFFECTS,stateRecipe,useStateEntry} from '../scripts/state-catalog.mjs';
 const fear=PF2E_CONDITIONS.find(e=>e.slug==='frightened'),damage=PF2E_CONDITIONS.find(e=>e.slug==='persistent-damage'),bless=PF2E_EFFECTS.find(e=>e.name==='Spell Effect: Bless');
 const native=(e,id='i')=>({id,uuid:`Actor.a.Item.${id}`,type:e.kind,name:e.name,slug:e.kind==='condition'?e.slug:undefined,sourceId:e.uuid,system:{active:true,value:{isValued:e.kind==='condition',value:1}},active:true});
@@ -169,4 +169,11 @@ test('custom edits replace exact layers, disabled recipes stop them, and deletio
  f.setSaved([{...custom,stages:custom.stages.map(s=>({...s,scale:1.5}))}]);await f.manager.reconcile();assert.notEqual([...f.manager.active.values()][0].name,old);assert.equal(f.manager.accepts(old),false);
  const fresh=[...f.manager.active.values()][0].name;f.setSaved([{...custom,enabled:false}]);await f.manager.reconcile();assert.equal(f.manager.accepts(fresh),false);assert.equal(f.manager.active.size,0);
  assert.equal(f.manager.accepts('other-module-animation'),true);await f.manager.destroy();
+});
+
+test('Unconscious hides the darkness of the Blinded it brings; Blinded alone still shows',()=>{
+ const c=(slug)=>({type:'condition',slug,name:slug});
+ assert.deepEqual(shownStates([c('unconscious'),c('blinded'),c('off-guard')]).map(i=>i.slug),['unconscious','off-guard']);
+ assert.deepEqual(shownStates([c('blinded')]).map(i=>i.slug),['blinded']);
+ assert.deepEqual(shownStates([{type:'effect',slug:'blinded'},c('unconscious')]).length,2,'only conditions are folded');
 });
