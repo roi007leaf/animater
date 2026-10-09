@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Restrained no longer shows fog clouds.** Its web layer used the Web spell's 5×5 area footage, which looks like grey clouds around the token. It now uses a token-sized spider web.
 - **Teleport spells really teleport.** When a teleport spell plays, whoever cast it clicks where to go. A ring shows the spell's range and a ghost of the token follows the mouse (red when out of range); Esc or right-click cancels. The token vanishes in a misty step, jumps there without walking, and reappears. It's the only Animater setting that actually moves a token.
   - **Spells:** on by default for PF2e Translocate and Dimension Door, Friendfetch (brings the first target to a spot next to you), and D&D Misty Step, Thunder Step, Far Step and Dimension Door.
   - **Any recipe:** turn it on in the Studio's recipe settings (*Teleport*: the caster or the first target, a range in feet or the spell's own, optionally *Next to the caster*), or off for a spell you'd rather move by hand.

@@ -100,8 +100,9 @@ export const CONDITION_PLANS={
  // shadow and a low dust patch on the ground plane.
  prone:plan('slow','symbolic',shadow({scale:.8,offsetY:.28,opacity:.75,tracks:flatten(.4)}),art(['ambient_fog.001.loop.small.white','fog_cloud.01.white'],'umber',{scale:1.2,offsetY:.3,opacity:.7,below:true,playbackRate:.5,tracks:flatten(.35)})),
  quickened:plan('speed','symbolic',art('token_border.circle.spinning','blue',{scale:1.4,below:true,playbackRate:.75})),
- // Bound tighter than Grabbed: the chains plus a faint web holding the body.
- restrained:plan('chains','themed',art('markers.chain.standard.loop.02','grey',{scale:1.5}),art('web','white',{scale:1.2,opacity:.45,playbackRate:.6})),
+ // Bound tighter than Grabbed: the chains plus a faint web holding the body (the token-sized
+ // web: web.loop is the Web spell's 5x5 area and reads as fog clouds around the token).
+ restrained:plan('chains','themed',art('markers.chain.standard.loop.02','grey',{scale:1.5}),art('web','white',{style:'.01',scale:1.15,opacity:.5,playbackRate:.6})),
  // Nausea: a sickly green smoke ring curling around the bearer (not a bubble, not poison).
  sickened:plan('fog','symbolic',art('markers.smoke.ring.loop','green',{scale:1.2,opacity:.95,playbackRate:.6,tracks:[track('rotation',-8,8,2200)]})),
  // Mired: a slate tar pool drags at the feet while a heavy haze sinks into it.
