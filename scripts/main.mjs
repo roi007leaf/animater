@@ -1,4 +1,5 @@
-import { ID, validateRecipe, clone, matchRecipe } from "./model.mjs";
+import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mjs";
+import { damageFromMessage, damageFromParts, recallDamage, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
 import { applyEventElement } from "./element-choice.mjs";
@@ -282,6 +283,7 @@ function findRecipe(id) {
 // Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
 // (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
 const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
+const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths";
 const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
@@ -729,6 +731,16 @@ Hooks.once("init", () => {
     // Your own lasting animations start or stop with it.
     onChange: () => persistentStates?.schedule(),
   });
+  game.settings.register(ID, DAMAGE_REACTIONS, {
+    name: "Damage reactions",
+    hint: "A token that takes energy damage (fire, cold, lightning, acid, poison and so on) flashes in that damage's look. Physical damage keeps its weapon animation only.",
+    scope: "world", config: true, type: Boolean, default: true,
+  });
+  game.settings.register(ID, DRAMATIC_DEATHS, {
+    name: "Damage-typed knockouts",
+    hint: "A creature dropping to 0 HP goes down in the look of the damage that dropped it: burned to ash, frozen and shattered, fried by lightning. Off: a plain collapse.",
+    scope: "world", config: true, type: Boolean, default: true,
+  });
   game.settings.registerMenu(ID, "workspace", {
     name: "Animater workspace",
     label: "Open Animater",
@@ -1036,17 +1048,37 @@ Hooks.once("ready", () => {
     context: () => ({ systemId: game.system.id, userId: game.user.id, twoe: ["pf2e", "sf2e"].includes(game.system.id) ? twoeEvent : null }),
   });
   registerSpellArsenal();
+  // Damage rolls are remembered briefly so the HP change that follows knows its damage type.
+  // D&D reports the damage it applies on the applying client; PF2e/SF2e through the roll message.
+  const damageLog = [];
+  const remember = (damage) => {
+    if (!damage) return;
+    damageLog.push({ ...damage, at: Date.now() });
+    if (damageLog.length > 30) damageLog.shift();
+  };
+  if (game.system.id === "dnd5e") Hooks.on("dnd5e.calculateDamage", (actor, damages) => remember(damageFromParts(damages, actor?.id)));
+  else Hooks.on("createChatMessage", (message) => remember(damageFromMessage(message, game.system.id)));
+  // Stages whose artwork is not installed (Free vs Patreon) are left out rather than blocking the rest.
+  const installedStages = (recipe) => ({ ...recipe, stages: recipe.stages.filter((s) => ["motion", "sound"].includes(s.kind) || resolveAsset(s, runtime.getCatalog())) });
   // A creature dropping to 0 HP collapses once (D&D 5e, PF2e and SF2e keep HP in the
-  // same place); its Unconscious or Dying body treatment takes over afterwards.
+  // same place), finished in the damage's look; its Unconscious or Dying body treatment
+  // takes over afterwards. Energy damage short of that flashes on the token.
   const hpOf = (actor) => Number(actor?.system?.attributes?.hp?.value);
   Hooks.on("preUpdateActor", (actor, changes, options) => {
     if (foundry.utils.hasProperty(changes, "system.attributes.hp.value")) options.animaterHpBefore = hpOf(actor);
   });
   Hooks.on("updateActor", (actor, changes, options, userId) => {
-    if (userId !== game.user.id || !acceptsEvents() || !(options.animaterHpBefore > 0) || !(hpOf(actor) <= 0)) return;
+    const before = options.animaterHpBefore, after = hpOf(actor);
+    if (userId !== game.user.id || !acceptsEvents() || !(before > 0) || !(after < before)) return;
+    const dropped = after <= 0;
+    if (!dropped && !game.settings.get(ID, DAMAGE_REACTIONS)) return;
     for (const token of actor.getActiveTokens?.() ?? []) {
       if (token.document?.parent?.id !== canvas.scene?.id) continue;
-      void runtime.play(COLLAPSE, { source: token, targets: [] }).catch((error) => runtime.trace("Blocked", error.message));
+      const type = recallDamage(damageLog, { actorId: actor.id, tokenId: token.id })?.type;
+      const recipe = dropped ? (game.settings.get(ID, DRAMATIC_DEATHS) ? deathRecipe(type, COLLAPSE) : COLLAPSE) : hitRecipe(type);
+      const playable = recipe && installedStages(recipe);
+      if (!playable?.stages.length) continue;
+      void runtime.play(playable, { source: token, targets: [] }).catch((error) => runtime.trace("Blocked", error.message));
     }
   });
   if (["pf2e","sf2e"].includes(game.system.id)) {

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Damage reactions.** A token that takes energy damage now flashes in that damage's look: flames for fire, an ice shard for cold, crackle for electricity, a splash for acid, and so on for poison, void/necrotic, vitality/radiant, force, mental/psychic, sonic/thunder and spirit. Physical damage keeps its weapon animation only. Works in PF2e, SF2e and D&D 5e. Setting: *Damage reactions* (on by default).
+- **Damage-typed knockouts.** Dropping to 0 HP still collapses the token, and now finishes in the look of the damage that did it: burned to ash, frozen and shattered, fried by lightning, dissolved in acid, blasted apart by force. Physical damage keeps the plain collapse. Setting: *Damage-typed knockouts* (on by default). Artwork missing from JB2A Free is skipped, never blocking the collapse.
 - **Clearer JB2A status when JB2A is active but not loaded.**
   - **Sidebar dot:** it used to turn green as soon as Sequencer was running, even when JB2A's animations weren't in Sequencer's database. It now stays grey in that case.
   - **Setup card:** it now says "Active, but Sequencer has no JB2A animations · reload Foundry; if it stays, press F12 and look for JB2A errors" instead of the misleading "Optional for custom media".
