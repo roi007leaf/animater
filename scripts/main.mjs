@@ -1,4 +1,5 @@
 import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mjs";
+import { combatMoments, COMBAT_MOMENTS, COMBAT_CHOICES } from "./combat-moments.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
@@ -65,6 +66,7 @@ const mediaLibraryLoader=new MediaLibraryLoader(()=>({modules:game.modules,datab
 let motions;
 let optionalFx;
 let persistentStates;
+let moments;
 const clientId = crypto.randomUUID();
 const fxCatalog = () => installedFxCatalog({
   modules:game.modules, tokenMagic:globalThis.TokenMagic, fxmaster:globalThis.FXMASTER?.api,
@@ -731,6 +733,12 @@ Hooks.once("init", () => {
     // Your own lasting animations start or stop with it.
     onChange: () => persistentStates?.schedule(),
   });
+  game.settings.register(ID, COMBAT_MOMENTS, {
+    name: "Combat moments",
+    hint: "Optional. A ring under whoever's turn it is, and a pulse on every combatant when combat starts. Drawn once by the GM; players who set Animation quality to Off don't see them.",
+    scope: "world", config: true, type: String, choices: COMBAT_CHOICES, default: "off",
+    onChange: () => void moments?.markTurn(game.combat),
+  });
   game.settings.register(ID, DAMAGE_REACTIONS, {
     name: "Damage reactions",
     hint: "A token that takes energy damage (fire, cold, lightning, acid, poison and so on) flashes in that damage's look. Physical damage keeps its weapon animation only.",
@@ -1049,6 +1057,24 @@ Hooks.once("ready", () => {
   });
   registerSpellArsenal();
   // Damage rolls are remembered briefly so the HP change that follows knows its damage type.
+  // Combat moments: the active GM moves the turn ring and pulses combat start.
+  if (globalThis.Sequencer) {
+    moments = combatMoments({
+      mode: () => game.settings.get(ID, COMBAT_MOMENTS),
+      isActiveGM: () => game.user.isGM && (game.users.activeGM ? game.users.activeGM.isSelf : true),
+      sceneId: () => canvas.scene?.id,
+      tokenOf: (c) => c?.token?.object ?? canvas.tokens?.get(c?.tokenId) ?? null,
+      firstInstalled: (keys) => keys.map((k) => resolveAsset({ kind: "cast", assets: [k] }, runtime.getCatalog())).find(Boolean) ?? null,
+      users: () => usersForTier(Array.from(game.users?.contents ?? []), 1),
+      sequence: () => new Sequence({ moduleName: ID }),
+      end: (name) => Sequencer.EffectManager.endEffects({ name }),
+    });
+    const markTurn = (combat) => void moments.markTurn(combat).catch((error) => runtime.trace("Blocked", `Turn marker: ${error.message}`));
+    Hooks.on("combatStart", (combat) => { void moments.pulseStart(combat).catch((error) => runtime.trace("Blocked", `Combat start: ${error.message}`)); markTurn(combat); });
+    Hooks.on("updateCombat", (combat, changes) => { if (["turn", "round", "started"].some((k) => k in changes)) markTurn(combat); });
+    Hooks.on("deleteCombat", () => void moments.clearMarker());
+    Hooks.on("canvasReady", () => markTurn(game.combat));
+  }
   // D&D reports the damage it applies on the applying client; PF2e/SF2e through the roll message.
   const damageLog = [];
   const remember = (damage) => {
