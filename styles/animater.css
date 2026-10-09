@@ -2324,7 +2324,9 @@
 /* A random-variant group: one clip with numbered tabs on top, like folder tabs. */
 .animater .an-st-tl .an-tl-track:has(.is-deck) { height: 50px; }
 .animater .an-st-tl .an-tl-bar.is-deck { top: 17px; }
-.animater .an-tl-variant-tabs { position: absolute; top: 2px; z-index: 3; display: flex; gap: 2px; padding-left: 6px; }
-.animater .an-tl-variant-tabs button { width: auto; min-width: 20px; height: 15px; min-height: 0; padding: 0 6px; font-size: 10px; line-height: 15px; font-weight: 700; border: 1px solid rgba(255, 255, 255, 0.2); border-bottom: 0; border-radius: 5px 5px 0 0; color: var(--an-muted); background: var(--an-surface); }
-.animater .an-tl-variant-tabs button:hover { color: var(--an-text); }
-.animater .an-tl-variant-tabs button.is-on { color: #1b1530; background: #b9a6ff; border-color: #b9a6ff; }
+.animater .an-tl-variant-tabs { position: absolute; top: 3px; z-index: 3; display: flex; gap: 1px; height: 14px; overflow: hidden; border-radius: 6px 6px 0 0; }
+.animater .an-tl-variant-tabs button { flex: 1 1 0; min-width: 0; width: auto; height: 14px; min-height: 0; padding: 0; overflow: hidden; font-size: 9px; line-height: 14px; font-weight: 700; border: 0; border-radius: 0; color: rgba(255, 255, 255, 0.7); background: rgba(0, 0, 0, 0.45); }
+.animater .an-tl-variant-tabs button:hover { color: #fff; background: rgba(0, 0, 0, 0.3); }
+.animater .an-tl-variant-tabs button.is-on { color: #1b1530; background: #b9a6ff; }
+.animater .an-tl-variant-tabs button[data-action="variant-add"] { flex: 0 0 14px; }
+.animater .an-st-tl .an-tl-bar.is-deck { border-top-left-radius: 0; border-top-right-radius: 0; }
