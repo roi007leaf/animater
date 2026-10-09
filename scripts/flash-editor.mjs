@@ -129,7 +129,40 @@ export class FlashEditor {
   }
   trackHTML(l, i, total) {
     const pct = (ms) => ((ms / total) * 100).toFixed(2);
-    return `${this.barHTML(l, total)}${(l.keys ?? []).map((k) => `<button class="an-flash-key${i === this.layerIndex && Math.abs(k.at - this.time) <= 40 ? " is-on" : ""}" style="left:${pct(k.at)}%" data-action="flash-key-go" data-index="${i}" data-at="${k.at}" aria-label="Keyframe at ${seconds(k.at)}" title="Click to go there; drag to retime"></button>`).join("")}<span class="an-flash-row-head" style="left:${pct(this.time)}%"></span>`;
+    return `<div class="an-flash-lane" style="width:${(this.tlZoom ?? 1) * 100}%">${this.barHTML(l, total)}${(l.keys ?? []).map((k) => `<button class="an-flash-key${i === this.layerIndex && Math.abs(k.at - this.time) <= 40 ? " is-on" : ""}" style="left:${pct(k.at)}%" data-action="flash-key-go" data-index="${i}" data-at="${k.at}" aria-label="Keyframe at ${seconds(k.at)}" title="Click to go there; drag to retime"></button>`).join("")}<span class="an-flash-row-head" style="left:${pct(this.time)}%"></span></div>`;
+  }
+  // The seconds ruler above the rows (click or drag it to move the playhead), finer as you zoom in.
+  rulerHTML(total) {
+    const z = this.tlZoom ?? 1, step = z < 2 ? 500 : z < 4 ? 250 : z < 8 ? 100 : 50, label = z < 2 ? 1000 : z < 4 ? 500 : z < 8 ? 250 : 100;
+    const ticks = [];
+    for (let t = 0; t <= total; t += step) ticks.push(`<span class="an-flash-tick${t % label === 0 ? " is-major" : ""}" style="left:${((t / total) * 100).toFixed(3)}%">${t % label === 0 ? `<b>${(t / 1000).toFixed(label < 1000 ? 2 : 0).replace(/\.?0+$/, "") || "0"}s</b>` : ""}</span>`);
+    return `<div class="an-flash-lane" style="width:${z * 100}%">${ticks.join("")}<span class="an-flash-row-head" style="left:${((this.time / total) * 100).toFixed(2)}%"></span></div>`;
+  }
+  // Every row's track, the ruler and the scrollbar share one horizontal scroll.
+  syncScroll(px = this.tlScroll ?? 0) {
+    const root = this.w.root, bar = root.querySelector("[data-flash-tl-scroll]");
+    const max = bar ? bar.scrollWidth - bar.clientWidth : 0;
+    this.tlScroll = Math.max(0, Math.min(max, px));
+    for (const el of root.querySelectorAll(".an-flash-row-track, [data-flash-tl-scroll]")) el.scrollLeft = this.tlScroll;
+  }
+  // Zoom the timeline, keeping the moment under the pointer (or the view's centre) in place.
+  zoomTimeline(next, anchorX) {
+    const track = this.w.root.querySelector(".an-flash-row-track:not(.an-flash-ruler)") ?? this.w.root.querySelector(".an-flash-ruler");
+    const z0 = this.tlZoom ?? 1, z = Math.max(1, Math.min(16, next));
+    if (!track || z === z0) { this.tlZoom = z; return this.w.render(); }
+    const rect = track.getBoundingClientRect(), x = (anchorX ?? rect.left + rect.width / 2) - rect.left;
+    const frac = ((this.tlScroll ?? 0) + x) / (rect.width * z0);
+    this.tlZoom = z;
+    this.w.render();
+    this.syncScroll(frac * rect.width * z - x);
+  }
+  // The clock, slider and every row's playhead line, without moving the editing time.
+  showTime(ms) {
+    const s = this.current(), root = this.w.root;
+    const clock = root.querySelector("[data-flash-clock]"), range = root.querySelector("[data-flash-time]");
+    if (clock) clock.textContent = `${seconds(ms)} / ${seconds(s.duration)}`;
+    if (range) range.value = Math.round(ms);
+    for (const head of root.querySelectorAll(".an-flash-row-head")) head.style.left = `${((ms / s.duration) * 100).toFixed(2)}%`;
   }
   // The inspector catches up after wheel and key tweaks, without redrawing on every notch.
   later() { clearTimeout(this.laterTimer); this.laterTimer = setTimeout(() => this.w.render(), 250); }
@@ -143,8 +176,13 @@ export class FlashEditor {
     const run = createFlash(frame, validateFlash(s), { resolveMedia: (src) => this.host.resolveFlashMedia(src), vars: this.host.flashVars(), editing: true, skip: this.skipped(), playSound: (src, volume) => this.host.flashPlaySound(src, volume) });
     this.preview = run; this.playing = true;
     this.host.flashSound(s);
-    await run.play();
+    const finished = run.play();
+    // The slider, clock and playhead lines follow the preview, then return to where you were editing.
+    const follow = () => { if (!this.playing || this.preview !== run) return; this.showTime(run.time()); requestAnimationFrame(follow); };
+    requestAnimationFrame(follow);
+    await finished;
     if (this.preview === run) { this.playing = false; this.mount(); }
+    this.showTime(this.time);
   }
   // The selected layer's keyframe at the playhead (within a frame or two), if any.
   keyAtPlayhead(layer = this.draft?.layers[this.layerIndex]) { return layer?.keys?.find((k) => Math.abs(k.at - this.time) <= 40) ?? null; }
@@ -180,8 +218,13 @@ export class FlashEditor {
       const end = l.duration > 0 ? Math.min(s.duration, l.start + l.duration) : s.duration;
       return `<div class="an-flash-row ${i === this.layerIndex ? "is-selected" : ""}"><button class="an-flash-row-name" data-action="flash-layer" data-index="${i}">${esc(l.name || FLASH_KINDS[l.kind])}</button><span class="an-flash-row-ms"><button class="${this.muted?.has(l.id) ? "is-on" : ""}" data-action="flash-mute" data-index="${i}" aria-pressed="${!!this.muted?.has(l.id)}" data-tooltip="Mute: leave this layer out of the editor preview">M</button><button class="is-solo ${this.soloed?.has(l.id) ? "is-on" : ""}" data-action="flash-solo" data-index="${i}" aria-pressed="${!!this.soloed?.has(l.id)}" data-tooltip="Solo: preview only soloed layers">S</button></span><div class="an-flash-row-track" data-action="flash-layer" data-index="${i}">${this.trackHTML(l, i, s.duration)}</div><span class="an-flash-row-tools"><button data-action="flash-layer-up" data-index="${i}" aria-label="Bring forward" ${i === s.layers.length - 1 ? "disabled" : ""}>▲</button><button data-action="flash-layer-down" data-index="${i}" aria-label="Send back" ${i === 0 ? "disabled" : ""}>▼</button><button data-action="flash-layer-copy" data-index="${i}" aria-label="Duplicate layer" ${s.layers.length >= LAYER_LIMIT ? "disabled" : ""}>⧉</button><button data-action="flash-layer-remove" data-index="${i}" aria-label="Remove layer">×</button></span></div>`;
     }).reverse().join("");
+    // Spacers sized like a row's name, M/S and tools keep the ruler and scrollbar in the track column.
+    const spacers = (track) => `<span></span><span class="an-flash-row-ms is-spacer" aria-hidden="true"><button tabindex="-1">M</button><button tabindex="-1">S</button></span>${track}<span class="an-flash-row-tools is-spacer" aria-hidden="true"><button tabindex="-1">▲</button><button tabindex="-1">▼</button><button tabindex="-1">⧉</button><button tabindex="-1">×</button></span>`;
+    const ruler = s.layers.length ? `<div class="an-flash-row is-ruler">${spacers(`<div class="an-flash-row-track an-flash-ruler" data-flash-ruler title="Click or drag to move the playhead">${this.rulerHTML(s.duration)}</div>`)}</div>` : "";
+    const scroller = s.layers.length && (this.tlZoom ?? 1) > 1 ? `<div class="an-flash-row is-scroll">${spacers(`<div class="an-flash-tl-scroll" data-flash-tl-scroll><div style="width:${(this.tlZoom ?? 1) * 100}%;height:1px"></div></div>`)}</div>` : "";
+    const zoom = `<span class="an-flash-zoom"><button data-action="flash-zoom" data-zoom="out" ${(this.tlZoom ?? 1) <= 1 ? "disabled" : ""} data-tooltip="Zoom out (Ctrl+wheel)" aria-label="Zoom out">−</button><button data-action="flash-zoom" data-zoom="in" ${(this.tlZoom ?? 1) >= 16 ? "disabled" : ""} data-tooltip="Zoom in (Ctrl+wheel)" aria-label="Zoom in">+</button><button data-action="flash-zoom" data-zoom="fit" ${(this.tlZoom ?? 1) <= 1 ? "disabled" : ""} data-tooltip="Fit the whole screen" aria-label="Fit">Fit</button></span>`;
     const full = s.layers.length >= LAYER_LIMIT ? "disabled" : "";
-    const layersHTML = `<div class="an-flash-layers"><div class="an-flash-layers-head"><b>Layers</b><span class="an-flash-adds"><button data-action="flash-add" data-kind="text" ${full}>+ Text</button><button data-action="flash-add" data-kind="image" ${full}>+ Image</button><button data-action="flash-add" data-kind="portraits" ${full} data-tooltip="The party's or enemies' pictures, from the encounter">+ Portraits</button><button data-action="flash-add" data-kind="band" ${full}>+ Band</button><button data-action="flash-add" data-kind="sound" ${full}>+ Sound</button><button data-action="flash-add" data-kind="flash" ${full} data-tooltip="A full-screen flash at one moment">+ Flash</button><button data-action="flash-add" data-kind="shake" ${full} data-tooltip="Shake the whole screen at one moment">+ Shake</button></span></div>${rows || `<p class="an-hint">Add a text, image or band layer.</p>`}<p class="an-hint">M mutes and S solos a layer in this editor only; saved screens always play every layer. Top of the list draws on top. Drag a bar to move it in time, its ends to trim it, the shaded ends to set its entrance and exit, and ◆ to retime a keyframe. Press ? for all shortcuts.</p></div>`;
+    const layersHTML = `<div class="an-flash-layers"><div class="an-flash-layers-head"><b>Layers</b>${zoom}<span class="an-flash-adds"><button data-action="flash-add" data-kind="text" ${full}>+ Text</button><button data-action="flash-add" data-kind="image" ${full}>+ Image</button><button data-action="flash-add" data-kind="portraits" ${full} data-tooltip="The party's or enemies' pictures, from the encounter">+ Portraits</button><button data-action="flash-add" data-kind="band" ${full}>+ Band</button><button data-action="flash-add" data-kind="sound" ${full}>+ Sound</button><button data-action="flash-add" data-kind="flash" ${full} data-tooltip="A full-screen flash at one moment">+ Flash</button><button data-action="flash-add" data-kind="shake" ${full} data-tooltip="Shake the whole screen at one moment">+ Shake</button></span></div>${ruler}${rows || `<p class="an-hint">Add a text, image or band layer.</p>`}${scroller}<p class="an-hint">M mutes and S solos a layer in this editor only; saved screens always play every layer. Top of the list draws on top. Drag a bar to move it in time, its ends to trim it, the shaded ends to set its entrance and exit, and ◆ to retime a keyframe. Press ? for all shortcuts.</p></div>`;
     const scene = `<div class="an-editor-section an-flash-card-box"><span class="an-eyebrow">SCREEN</span><div class="an-field-row"><label>Backdrop<input type="color" data-flash-field="backdrop.color" value="${s.backdrop.color}"></label><label>Darkness<input type="number" min="0" max="1" step="0.05" data-flash-field="backdrop.opacity" value="${s.backdrop.opacity}"></label></div><label class="an-check"><input type="checkbox" data-flash-field="backdrop.vignette" ${s.backdrop.vignette ? "checked" : ""}> Dark edges</label><div class="an-field-row"><label class="an-check"><input type="checkbox" data-flash-field="backdrop.bars" ${s.backdrop.bars ? "checked" : ""}> Cinematic bars</label>${s.backdrop.bars ? `<label>Bar size<input type="number" min="2" max="25" step="1" data-flash-field="backdrop.barSize" value="${s.backdrop.barSize}"></label>` : ""}</div><label>Animated background<select data-flash-field="backdrop.media">${options(Object.hasOwn(FLASH_BACKGROUNDS, s.backdrop.media) ? FLASH_BACKGROUNDS : { ...FLASH_BACKGROUNDS, [s.backdrop.media]: "Custom file" }, s.backdrop.media)}</select></label><div class="an-field-row"><label>Or a file<span class="an-flash-sound"><input data-flash-field="backdrop.media" placeholder="JB2A key or video" value="${esc(s.backdrop.media)}"><button data-action="flash-browse" data-target="background" aria-label="Browse backgrounds">…</button></span></label>${s.backdrop.media ? `<label>Strength<input type="number" min="0" max="1" step="0.05" data-flash-field="backdrop.mediaOpacity" value="${s.backdrop.mediaOpacity}"></label>` : ""}</div><label class="an-check"><input type="checkbox" data-flash-field="duck" ${s.duck ? "checked" : ""}> Lower the music while it plays</label><label>Sound<span class="an-flash-sound"><input data-flash-field="sound.file" placeholder="sounds/drums.ogg" value="${esc(s.sound.file)}"><button data-action="flash-browse" data-target="sound" aria-label="Browse sounds">…</button></span></label><label>Volume<input type="number" min="0" max="1" step="0.05" data-flash-field="sound.volume" value="${s.sound.volume}"></label><div class="an-flash-defaults">${(s.event === "any" ? ["start", "end"] : [s.event]).map((ev) => `<button class="${isDefault(ev) ? "an-primary" : ""}" data-action="flash-default" data-event="${ev}">${isDefault(ev) ? "✓ " : ""}Use for: ${esc(FLASH_EVENTS[ev])}</button>`).join("")}</div><p class="an-hint">${MOMENT_EVENTS.includes(s.event) ? "Plays during combat whenever this happens. Turn it on with the button above." : "The default plays for every combat unless the Combat Tracker picks another."} Text can use {scene}, {round}, {boss} (strongest enemy) and {name} (who crit or fell).</p></div>`;
     return `<section class="an-flash-page">${listHTML}<div class="an-flash-main">${head}${stage}${layersHTML}</div><aside class="an-flash-inspector">${layer ? this.layerHTML(layer) : ""}${scene}</aside></section>`;
   }
@@ -229,6 +272,20 @@ export class FlashEditor {
   // Redraw the stage at the current time (after every render or edit).
   mount() {
     const frame = this.w.root.querySelector("[data-flash-stage]");
+    this.syncScroll();
+    const layersBox = this.w.root.querySelector(".an-flash-layers"), bar = this.w.root.querySelector("[data-flash-tl-scroll]");
+    if (bar && !bar.dataset.bound) { bar.dataset.bound = "1"; bar.addEventListener("scroll", () => this.syncScroll(bar.scrollLeft)); }
+    if (layersBox && !layersBox.dataset.wheel) {
+      layersBox.dataset.wheel = "1";
+      // Over the timeline: Ctrl+wheel zooms around the pointer; Shift+wheel (or a sideways swipe) scrolls.
+      layersBox.addEventListener("wheel", (e) => {
+        if (!e.target.closest?.(".an-flash-row-track, [data-flash-tl-scroll]")) return;
+        if (e.ctrlKey || e.metaKey) { e.preventDefault(); this.zoomTimeline((this.tlZoom ?? 1) * (e.deltaY < 0 ? 1.25 : 0.8), e.clientX); return; }
+        const dx = e.shiftKey ? e.deltaY : e.deltaX;
+        if (!dx || (this.tlZoom ?? 1) <= 1) return;
+        e.preventDefault(); this.syncScroll((this.tlScroll ?? 0) + dx);
+      }, { passive: false });
+    }
     // A redraw while the preview plays keeps it playing (put back if the redraw emptied the stage).
     if (this.playing && this.preview?.el) { if (frame && !frame.contains(this.preview.el)) frame.append(this.preview.el); return; }
     this.preview?.stop();
@@ -259,10 +316,7 @@ export class FlashEditor {
     const s = this.current();
     this.time = Math.max(0, Math.min(s.duration, Math.round(ms)));
     this.preview?.seek(this.time);
-    const clock = this.w.root.querySelector("[data-flash-clock]"), range = this.w.root.querySelector("[data-flash-time]");
-    if (clock) clock.textContent = `${seconds(this.time)} / ${seconds(s.duration)}`;
-    if (range && Number(range.value) !== this.time) range.value = this.time;
-    for (const head of this.w.root.querySelectorAll(".an-flash-row-head")) head.style.left = `${((this.time / s.duration) * 100).toFixed(2)}%`;
+    this.showTime(this.time);
   }
 
   // Inputs update the draft and the stage live; structural changes re-render on change.
@@ -308,7 +362,7 @@ export class FlashEditor {
   }
   pointer(e) {
     if (e.button !== 0) return false;
-    const handled = this.scrubLabel(e) || this.timelineDrag(e) || this.stageDrag(e);
+    const handled = this.scrubLabel(e) || this.rulerDrag(e) || this.timelineDrag(e) || this.stageDrag(e);
     // Working on the stage or timeline leaves any text field, so shortcuts apply.
     if (handled && e.target.closest?.("[data-flash-stage], .an-flash-row-track")) document.activeElement?.blur?.();
     return handled;
@@ -340,6 +394,19 @@ export class FlashEditor {
     window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
     return true;
   }
+  // The ruler: click or drag to move the playhead.
+  rulerDrag(e) {
+    const ruler = e.target.closest?.("[data-flash-ruler]");
+    if (!ruler) return false;
+    e.preventDefault();
+    const lane = ruler.querySelector(".an-flash-lane") ?? ruler, total = this.current().duration;
+    const to = (x) => { const r = lane.getBoundingClientRect(); this.setTime(((x - r.left) / r.width) * total); };
+    to(e.clientX);
+    const move = (ev) => to(ev.clientX);
+    const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); this.w.render(); };
+    window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+    return true;
+  }
   // Timeline: drag a bar to move it in time, its ends to trim, its shaded ends to set the entrance
   // and exit, and ◆ to retime. Snaps to the playhead and other layers' starts and ends (Alt: free).
   timelineDrag(e) {
@@ -347,7 +414,7 @@ export class FlashEditor {
     if (!track || (!keyEl && !bar)) return false;
     e.preventDefault();
     const s = this.draft, i = Number(track.dataset.index), layer = s.layers[i], total = s.duration;
-    const rect = track.getBoundingClientRect(), msPer = total / Math.max(1, rect.width), x0 = e.clientX;
+    const rect = (track.querySelector(".an-flash-lane") ?? track).getBoundingClientRect(), msPer = total / Math.max(1, rect.width), x0 = e.clientX;
     const part = e.target.closest("[data-flash-part]")?.dataset.flashPart ?? "move";
     const from = { start: layer.start, end: layer.duration > 0 ? Math.min(total, layer.start + layer.duration) : total, enter: layer.enterMs, exit: layer.exitMs, toEnd: !(layer.duration > 0) };
     const key = keyEl ? layer.keys.find((k) => k.at === Number(keyEl.dataset.at)) : null, at0 = key?.at;
@@ -497,6 +564,12 @@ export class FlashEditor {
         break;
       }
       case "flash-help": this.showHelp = !this.showHelp; break;
+      case "flash-zoom": {
+        const z = this.tlZoom ?? 1;
+        if (b.dataset.zoom === "fit") { this.tlZoom = 1; this.tlScroll = 0; break; }
+        this.zoomTimeline(b.dataset.zoom === "in" ? z * 1.5 : z / 1.5);
+        return true;
+      }
       case "flash-tours": this.showTours = !this.showTours; break;
       case "flash-tour": this.showTours = false; void runFlashTour(this, b.dataset.tour); return true;
       case "flash-undo": case "flash-redo": this.history(action === "flash-undo" ? "undo" : "redo"); break;

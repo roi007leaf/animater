@@ -2573,3 +2573,16 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-tour-menu small { font-size: 11px; color: var(--an-muted); }
 .animater .an-flash-guide { white-space: nowrap; }
 .animater .an-flash-list .an-flash-card.is-action { --flash-accent: #6fc7ff; }
+/* Zoomable timeline: lanes as wide as the zoom, a ruler, a shared scrollbar. */
+.animater .an-flash-row-track { overflow: hidden; }
+.animater .an-flash-lane { position: relative; height: 100%; min-width: 100%; }
+.animater .an-flash-row.is-ruler, .animater .an-flash-row.is-scroll { min-height: 0; padding-top: 0; padding-bottom: 0; }
+.animater .an-flash-row .is-spacer { visibility: hidden; }
+.animater .an-flash-row-tools.is-spacer { opacity: 1; }
+.animater .an-flash-ruler { height: 18px; background: none; cursor: col-resize; border-bottom: 1px solid var(--an-line); border-radius: 0; }
+.animater .an-flash-tick { position: absolute; bottom: 0; width: 1px; height: 4px; background: rgba(255, 255, 255, 0.25); pointer-events: none; }
+.animater .an-flash-tick.is-major { height: 8px; background: rgba(255, 255, 255, 0.5); }
+.animater .an-flash-tick b { position: absolute; bottom: 8px; left: 3px; font-size: 9.5px; font-weight: 600; color: var(--an-muted); white-space: nowrap; }
+.animater .an-flash-tl-scroll { overflow-x: auto; overflow-y: hidden; height: 12px; }
+.animater .an-flash-zoom { display: flex; gap: 2px; margin-right: auto; margin-left: 8px; }
+.animater .an-flash-zoom button { width: auto; min-width: 24px; height: 22px; min-height: 22px; padding: 0 6px; font-size: 12px; border-radius: 6px; }

@@ -200,6 +200,8 @@ export function createFlash(container, screen, { resolveMedia, vars = {}, editin
   return {
     el,
     seek(ms) { for (const a of animations) { a.pause(); a.currentTime = Math.max(0, Math.min(total, ms)); } },
+    // Where playback is now (ms).
+    time: () => Number(animations[0]?.currentTime ?? 0),
     play() {
       for (const a of animations) { a.currentTime = 0; a.play(); }
       // Sound layers fire at their start times.
