@@ -189,3 +189,12 @@ test('a condition whose value changes (Frightened 2 to 1 at turn end) keeps show
  assert.equal(f.manager.active.size,1);
  await f.manager.destroy();
 });
+
+test('the catalog Token motion switch decides whether creatures react to their conditions',async()=>{
+ const f=fixture([native(fear)]),bodies=[];f.manager.host.body={add:(name,token,kind)=>bodies.push(kind),remove:()=>{}};
+ await f.manager.reconcile();await flush();assert.deepEqual(bodies,['tremble']);
+ f.states.condition.motion=false;await f.manager.reconcile();await flush();
+ assert.deepEqual(bodies,['tremble'],'Effects only: the visuals replay without the body motion');
+ assert.equal(f.manager.active.size,1);
+ await f.manager.destroy();
+});

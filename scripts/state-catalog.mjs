@@ -10,7 +10,7 @@ for(const e of entries){const key=`${e.kind}:${normalize(e.name)}`;if(!byName.ha
 export const catalogStateEntry=id=>byId.get(String(id).replace(/^pf2e-state-/,''))??null;
 export function normalizeStateCatalogState(state={}){
  state??={};const ids=vs=>[...new Set((Array.isArray(vs)?vs:[]).filter(id=>byId.has(id)))];
- return {enabled:state.enabled===true,scope:state.scope==='selected'?'selected':'all',selected:ids(state.selected),excluded:ids(state.excluded),customized:ids(state.customized),opacity:Number.isFinite(Number(state.opacity))?Math.min(1,Math.max(.1,Number(state.opacity))):1};
+ return {enabled:state.enabled===true,scope:state.scope==='selected'?'selected':'all',selected:ids(state.selected),excluded:ids(state.excluded),customized:ids(state.customized),motion:state.motion!==false,opacity:Number.isFinite(Number(state.opacity))?Math.min(1,Math.max(.1,Number(state.opacity))):1};
 }
 export function stateEntryEnabled(id,state){return state?.enabled===true&&!state.excluded?.includes(id)&&(state.scope!=='selected'||state.selected?.includes(id)||state.customized?.includes(id));}
 export function useStateEntry(state,id){
