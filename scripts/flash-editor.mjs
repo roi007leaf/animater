@@ -229,6 +229,8 @@ export class FlashEditor {
   // Redraw the stage at the current time (after every render or edit).
   mount() {
     const frame = this.w.root.querySelector("[data-flash-stage]");
+    // A redraw while the preview plays keeps it playing (put back if the redraw emptied the stage).
+    if (this.playing && this.preview?.el) { if (frame && !frame.contains(this.preview.el)) frame.append(this.preview.el); return; }
     this.preview?.stop();
     this.preview = null;
     const s = this.current();
@@ -472,7 +474,13 @@ export class FlashEditor {
         await commit(list.map((f) => (f.id === s.id ? validateFlash(s) : f)), `${s.name} saved.`); break;
       case "flash-revert": this.draft = null; this.dirty = false; break;
       case "flash-default": await this.host.setFlashDefault(b.dataset.event, this.host.flashDefaults()[b.dataset.event] === s.id ? "none" : s.id); break;
-      case "flash-preview": { const p = this.togglePlay(); this.w.render(); await p; this.w.render(); return true; }
+      case "flash-preview": {
+        // No redraw while it plays: the label changes in place, and the page catches up after.
+        b.textContent = this.playing ? "▶ Preview" : "■ Stop";
+        await this.togglePlay();
+        this.w.render();
+        return true;
+      }
       case "flash-play-all": this.host.playFlash(validateFlash(s), { everyone: true }); this.w.message = `Playing “${s.name}” for everyone.`; break;
       case "flash-layer": this.layerIndex = Number(b.dataset.index); this.time = this.restTime(s, this.layerIndex); break;
       case "flash-mute": case "flash-solo": {
