@@ -10,6 +10,8 @@ const STANDING = /\b(wall|walls|mist|fog|cloud|clouds|darkness|web|webs|grease|s
 const NOT_AREA = /pave ground|restore ground|storm lord|shroud of flame|wall of stone|ash-strewn ending/i;
 // One-off blasts sometimes share those words ("Fiery Storm Blast", "Thunder Sphere").
 const BLAST = /\b(blast|burst|bolt|ray|strike|spray|wave|nova|explosion|eruption|breath)\b/i;
+// The description says the area keeps acting: on whoever enters it or starts or ends a turn in it.
+const STAYS = /\b(?:enters?|entering|moves? (?:into|through)|(?:starts?|ends?|start of|end of) (?:its|their|your) turns?)\b[^.]{0,40}\b(?:in|within|into) the (?:area|cloud|zone|field|darkness|fog|mist|web|wall|emanation)\b|\bthe area (?:becomes|is) (?:greater )?difficult terrain\b/i;
 
 export function lastingDuration(text) {
   const t = String(text ?? '').toLowerCase().trim();
@@ -31,10 +33,13 @@ export function isLastingArea(item) {
   const duration = item.system?.duration?.value ?? item.system?.duration;
   const lasting = lastingDuration(typeof duration === 'object' ? duration?.value : duration) || item.system?.duration?.sustained === true;
   if (!lasting || BLAST.test(name) || NOT_AREA.test(name)) return false;
+  const sustained = item.system?.duration?.sustained === true || /sustain/i.test(String(typeof duration === 'object' ? duration?.value : duration));
+  const stays = STAYS.test(String(item.system?.description?.value ?? '').replace(/<[^>]+>/g, ' '));
   // An emanation only stays when the system calls it an aura (Divine Aura, Reaper's
   // Lantern); others just affect whoever is inside when cast (Synaptic Pulse).
   if (isEmanation(item)) return hasAuraTrait(item) && !appliesEffect(item);
-  return STANDING.test(name);
+  // A sustained area (Pernicious Poltergeist) or one the text says keeps acting stays too, whatever its name.
+  return STANDING.test(name) || sustained || stays;
 }
 
 // Loop footage for an area that stays: JB2A's .loop twin of .complete/.burst art,
