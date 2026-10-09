@@ -822,3 +822,16 @@ test("a stay-until-the-effect-ends layer stops if no effect is ever applied", as
     for (const l of runtime.lasting) clearTimeout(l.grace);
   }
 });
+
+test("a stage set to pick at random plays a different installed asset from its list", async () => {
+  const { planRecipe, installedAssets } = await import("../scripts/model.mjs");
+  const catalog = [{ key: "jb2a.impact.001.orange" }, { key: "jb2a.impact.002.orange" }];
+  const recipe = validateRecipe({ id: "r", name: "R", trigger: "manual", stages: [{ kind: "cast", assets: ["jb2a.impact.001.orange", "jb2a.missing", "jb2a.impact.002.orange"], randomAsset: true }] });
+  assert.deepEqual(installedAssets(recipe.stages[0], catalog), ["jb2a.impact.001.orange", "jb2a.impact.002.orange"]);
+  const pick = (random) => planRecipe(recipe, catalog, { source: { center: { x: 0, y: 0 } }, targets: [], random: () => random })[0].asset;
+  assert.equal(pick(0.1), "jb2a.impact.001.orange");
+  assert.equal(pick(0.9), "jb2a.impact.002.orange");
+  const fixed = validateRecipe({ ...recipe, stages: [{ ...recipe.stages[0], randomAsset: false }] });
+  assert.equal(fixed.stages[0].randomAsset, undefined, "off is not stored");
+  assert.equal(planRecipe(fixed, catalog, { source: { center: { x: 0, y: 0 } }, targets: [], random: () => 0.9 })[0].asset, "jb2a.impact.001.orange");
+});

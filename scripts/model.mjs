@@ -146,6 +146,8 @@ export function validateRecipe(input) {
           scale: number(s.scale, 0.1, 5, 1),
           opacity: number(s.opacity, 0.1, 1, 1),
           below: s.below === true,
+          // Each play picks one of the installed assets in the list at random.
+          ...(s.randomAsset === true ? { randomAsset: true } : {}),
           // Drawn over the bearer's artwork (head-level stars, strands across the body).
           ...(s.above === true && s.below !== true ? { above: true } : {}),
           // Editor start mode; the link itself lives in afterStage/timingAnchor/startOffset.
@@ -308,15 +310,19 @@ export function matchRecipe(recipes, event) {
   );
 }
 export function resolveAsset(stage, catalog) {
-  if (["motion", "sprite", "sound"].includes(stage.kind)) return null;
-  const keys = catalog.map((e) => e.key);
+  return installedAssets(stage, catalog, 1)[0] ?? null;
+}
+// Every installed asset in the stage's list, in list order (the first is the one that plays,
+// unless the stage picks at random).
+export function installedAssets(stage, catalog, limit = Infinity) {
+  if (["motion", "sprite", "sound"].includes(stage.kind)) return [];
+  const keys = catalog.map((e) => e.key), found = [];
   for (const key of stage.assets) {
-    if (keys.includes(key)) return key;
-    if (safeMediaFile(key) && mediaType(key) !== 'audio') return key;
-    const child = keys.find((k) => k.startsWith(key + "."));
-    if (child) return child;
+    if (found.length >= limit) break;
+    const hit = keys.includes(key) ? key : safeMediaFile(key) && mediaType(key) !== 'audio' ? key : keys.find((k) => k.startsWith(key + "."));
+    if (hit && !found.includes(hit)) found.push(hit);
   }
-  return null;
+  return found;
 }
 export function planRecipe(recipe, catalog, context) {
   return buildPlan(recipe, catalog, context, true);
@@ -359,7 +365,8 @@ function buildPlan(recipe, catalog, context, requireMedia) {
     const areaFan = ["travel", "projectile"].includes(s.kind) && s.travelDestination === "area" && o.areaLayout === "fan";
     if (areaFan && s.travelOrigin !== "source") throw Error("Cone fans travel outward from their area origin.");
     if (requireMedia && s.kind === "sound") validateSoundFile(o.soundFile);
-    const asset = resolveAsset(s, catalog);
+    const pool = s.randomAsset ? installedAssets(s, catalog) : [];
+    const asset = pool.length > 1 ? pool[Math.floor((context.random ?? Math.random)() * pool.length)] : resolveAsset(s, catalog);
     const parity = fallbackColorParity(s, asset);
     if (
       requireMedia &&
