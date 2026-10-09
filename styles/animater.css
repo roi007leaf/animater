@@ -2674,10 +2674,33 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 /* Editor header: back, name and actions; then the screen's timing. */
 .animater .an-flash-page .an-flash-head { display: grid; gap: 8px; }
 .animater .an-flash-head-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.animater .an-flash-head-row .an-st-name { flex: 1 1 auto; width: auto; min-width: 120px; height: 34px; }
-.animater .an-flash-head-row .an-flash-actions { margin-left: 0; flex: 0 0 auto; }
+.animater .an-flash-head-row .an-st-name { flex: 1 1 160px; max-width: 300px; width: auto; min-width: 100px; height: 34px; }
+.animater .an-flash-head-row .an-flash-actions { margin-left: auto; flex: 0 0 auto; }
 .animater .an-flash-page .an-flash-head .an-flash-back { flex: 0 0 34px; width: 34px; height: 34px; min-height: 34px; padding: 0; font-size: 17px; }
-.animater .an-flash-head-row.is-meta { gap: 16px; padding-left: 42px; }
+.animater .an-flash-head-row.is-meta { gap: 16px; }
 .animater .an-flash-page .an-flash-head label.an-flash-inline { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--an-muted); }
 .animater .an-flash-head label.an-flash-inline select { width: auto; min-width: 160px; height: 30px; min-height: 30px; padding: 0 8px; font-size: 12.5px; }
 .animater .an-flash-head label.an-flash-inline input[type="number"] { width: 64px; height: 30px; min-height: 30px; padding: 0 8px; font-size: 12.5px; }
+/* The screen's end on the ruler: a grip to drag its length. */
+.animater .an-flash-length-grip { position: absolute; right: 0; top: 0; bottom: 0; width: 8px; border-radius: 3px; background: #ffd34d; cursor: ew-resize; z-index: 3; }
+.animater .an-flash-length-grip::after { content: ""; position: absolute; left: 3px; top: 25%; bottom: 25%; width: 2px; border-radius: 1px; background: rgba(27, 21, 48, 0.6); }
+.animater .an-flash-length-grip:hover { background: #ffe58a; }
+/* Text variables: the list in ? and the insert chips. */
+.animater .an-flash-help .an-flash-help-vars { margin-top: 6px; }
+.animater .an-flash-vars { width: 100%; border-collapse: collapse; margin: 2px 0; font-size: 11.5px; }
+.animater .an-flash-vars td { padding: 3px 8px 3px 0; vertical-align: top; border-top: 1px solid var(--an-line); }
+.animater .an-flash-vars td:last-child { color: var(--an-muted); white-space: nowrap; }
+.animater .an-flash-help code, .animater .an-flash-vars code { padding: 0 4px; border-radius: 4px; background: rgba(255, 211, 77, 0.12); color: #ffd34d; font-size: 11px; white-space: nowrap; }
+.animater .an-flash-varchips { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: -4px; font-size: 11px; color: var(--an-muted); }
+.animater .an-flash-page .an-flash-varchips button { width: auto; height: 22px; min-height: 22px; padding: 0 7px; font-size: 11px; border-radius: 999px; color: #ffd34d; background: rgba(255, 211, 77, 0.08); border: 1px solid rgba(255, 211, 77, 0.3); }
+.animater .an-flash-head-row { flex-wrap: wrap; row-gap: 8px; }
+/* Quick tools for the selected layer. */
+.animater .an-flash-quick { display: flex; align-items: center; flex-wrap: wrap; gap: 3px; min-width: 0; }
+.animater .an-flash-quick.is-empty { font-size: 11.5px; color: var(--an-muted); }
+.animater .an-flash-quick > .an-flash-row-icon { margin-right: 4px; }
+.animater .an-flash-quick i { width: 1px; height: 18px; margin: 0 5px; background: var(--an-line); }
+.animater .an-flash-page .an-flash-quick button { width: auto; min-width: 28px; height: 26px; min-height: 26px; padding: 0 8px; font-size: 12px; border-radius: 6px; white-space: nowrap; }
+.animater .an-flash-page .an-flash-quick button.is-on { color: #1b1530; background: #b9a6ff; border-color: #b9a6ff; }
+.animater .an-flash-quick [data-op="toggle:bold"] { font-weight: 800; }
+.animater .an-flash-quick [data-op="toggle:italic"] { font-style: italic; }
+.animater .an-flash-head-row label.an-flash-inline select { min-width: 140px; }

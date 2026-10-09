@@ -14,6 +14,10 @@
   - Opening a screen takes you to the editor on its own page, with Animater's menu shrunk to icons like the recipe Studio. **←** (or the Flash screens menu item) goes back to the library.
   - The editor header is two compact rows: name and actions, then *Plays at* and *Length*.
   - The inspector has **Layer** and **Screen** tabs.
+  - The toolbar over the stage changes with the selected layer, offering its most used actions. Text: bold, italic, gradient, size and entrance. Images: choose a file, size and blend. Portraits: who, frame and names. Particles: type, direction, amount and speed. Sounds: move to the playhead and listen. Flash, shake and punch: move to the playhead and strength. Placed layers also get centre buttons and a keyframe button.
+  - *Plays at* sits in the header row beside a shorter name field.
+  - The screen's length is set on the timeline: drag the yellow end of the ruler. The Length field is gone.
+  - The **?** panel lists the words that fill themselves in ({scene}, {round}, {boss}, {name}, {action}): what each one shows and when it is available. Text layers have chips to insert them.
   - Timeline rows show an icon for each kind of layer, plus a 👁 that hides a layer while you edit (Preview still plays it).
   - **+ New flash screen** opens a gallery: start from a blank screen or a copy of any ready-made one, each shown as a small preview.
   - The editor column now scrolls instead of squashing the stage when there are many layers.

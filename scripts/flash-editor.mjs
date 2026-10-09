@@ -12,6 +12,14 @@ const newId = () => crypto.randomUUID().slice(0, 12);
 const seconds = (ms) => `${(ms / 1000).toFixed(1)}s`;
 // A small sign for each kind of layer (timeline rows and the add menu).
 export const KIND_ICONS = { text: "T", image: "▣", portraits: "☺", band: "▬", lines: "✺", burst: "☀", slash: "⟋", particles: "❄", sound: "♪", flash: "⚡", shake: "≋", punch: "⊕" };
+// Words in a text layer that fill themselves in when the screen plays.
+export const FLASH_VARS = [
+  ["{scene}", "The scene's name", "Every screen"],
+  ["{round}", "The combat round number", "Combat screens"],
+  ["{boss}", "The strongest enemy in the encounter (highest level)", "Combat screens"],
+  ["{name}", "Who it is about: who crit, who fell, or who is using the action", "During combat and before an animation"],
+  ["{action}", "The attack, spell or ability being used", "Before an animation"],
+];
 const EFFECTS = { lines: "Manga speed lines rushing to a point", burst: "Rays of light bursting from behind", slash: "A bright streak that cuts across", particles: "Embers, sparks, snow, ash, petals or blood", punch: "The whole card zooms in hard, then back" };
 
 export class FlashEditor {
@@ -141,7 +149,7 @@ export class FlashEditor {
     const z = this.tlZoom ?? 1, step = z < 2 ? 500 : z < 4 ? 250 : z < 8 ? 100 : 50, label = z < 2 ? 1000 : z < 4 ? 500 : z < 8 ? 250 : 100;
     const ticks = [];
     for (let t = 0; t <= total; t += step) ticks.push(`<span class="an-flash-tick${t % label === 0 ? " is-major" : ""}" style="left:${((t / total) * 100).toFixed(3)}%">${t % label === 0 ? `<b>${(t / 1000).toFixed(label < 1000 ? 2 : 0).replace(/\.?0+$/, "") || "0"}s</b>` : ""}</span>`);
-    return `<div class="an-flash-lane" style="width:${z * 100}%">${ticks.join("")}<span class="an-flash-row-head" style="left:${((this.time / total) * 100).toFixed(2)}%"></span></div>`;
+    return `<div class="an-flash-lane" style="width:${z * 100}%">${ticks.join("")}<span class="an-flash-row-head" style="left:${((this.time / total) * 100).toFixed(2)}%"></span><span class="an-flash-length-grip" data-flash-length data-tooltip="The screen ends here (${seconds(total)}): drag to make it longer or shorter"></span></div>`;
   }
   // Every row's track, the ruler and the scrollbar share one horizontal scroll.
   syncScroll(px = this.tlScroll ?? 0) {
@@ -225,12 +233,10 @@ export class FlashEditor {
     const pageClass = "an-flash-page is-editor";
     const layer = s.layers[this.layerIndex];
     const isDefault = (ev) => defaults[ev] === s.id;
-    // Two rows: back, name and actions; then when it plays and how long.
-    const head = `<div class="an-flash-head"><div class="an-flash-head-row"><button class="an-icon an-flash-back" data-action="flash-back" data-tooltip="Back to all flash screens" aria-label="Back to all flash screens">←</button><input class="an-st-name" aria-label="Flash screen name" data-flash-field="name" value="${esc(s.name)}"><div class="an-flash-actions"><button class="an-icon" data-action="flash-undo" ${this.undoStack?.length ? "" : "disabled"} data-tooltip="Undo (Ctrl+Z)" aria-label="Undo">↶</button><button class="an-icon" data-action="flash-redo" ${this.redoStack?.length ? "" : "disabled"} data-tooltip="Redo (Ctrl+Shift+Z)" aria-label="Redo">↷</button><button class="an-icon" data-action="flash-duplicate" data-tooltip="Duplicate" aria-label="Duplicate">⧉</button><button class="an-icon is-danger" data-action="flash-delete" data-tooltip="Delete" aria-label="Delete"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="flash-revert" ${this.dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="flash-save" ${this.dirty ? "" : "disabled"}>${this.dirty ? "Save" : "Saved ✓"}</button></div></div><div class="an-flash-head-row is-meta"><label class="an-flash-inline">Plays at<select data-flash-field="event">${options(FLASH_EVENTS, s.event)}</select></label><label class="an-flash-inline">Length<input type="number" min="1" max="12" step="0.1" data-flash-field="duration" value="${(s.duration / 1000).toFixed(1)}"><span>s</span></label></div></div>`;
-    const canAlign = layer && !MOMENT_KINDS.includes(layer.kind) ? "" : "disabled";
-    const align = (attr, v, label, tip) => `<button data-action="flash-align" ${attr}="${v}" ${canAlign} data-tooltip="${tip}">${label}</button>`;
-    const help = this.showHelp ? `<div class="an-flash-help"><b>Shortcuts</b><span><kbd>Drag</kbd> move · corner handle: size · round handle: rotate · band edges: stretch</span><span><kbd>Wheel</kbd> opacity · <kbd>Shift</kbd>+wheel: size</span><span><kbd>←↑→↓</kbd> nudge (<kbd>Shift</kbd> ×10) · <kbd>[</kbd> <kbd>]</kbd> rotate · <kbd>-</kbd> <kbd>=</kbd> smaller / bigger</span><span><kbd>K</kbd> keyframe · <kbd>Space</kbd> play · <kbd>,</kbd> <kbd>.</kbd> step (<kbd>Shift</kbd> 1s) · <kbd>Home</kbd> <kbd>End</kbd></span><span><kbd>Tab</kbd> next layer · <kbd>Ctrl+D</kbd> duplicate · <kbd>Delete</kbd> remove · <kbd>Ctrl+Z</kbd> undo</span><span>Drag any field's label to change its value (<kbd>Shift</kbd> faster, <kbd>Alt</kbd> finer). On the timeline, drag bars, their ends and the shaded entrance/exit; drag ◆ to retime. <kbd>Alt</kbd> turns snapping off.</span></div>` : "";
-    const stage = `<div class="an-flash-tools"><span class="an-flash-align">${align("data-x", 20, "⇤", "Left third")}${align("data-x", 50, "↔", "Centre horizontally")}${align("data-x", 80, "⇥", "Right third")}<i></i>${align("data-y", 20, "⤒", "Top third")}${align("data-y", 50, "↕", "Centre vertically")}${align("data-y", 80, "⤓", "Bottom third")}</span><span class="an-flash-guides"><button class="an-flash-guide" data-action="flash-tours" aria-expanded="${!!this.showTours}" data-tooltip="Guided walkthroughs: watch how to build a flash screen, step by step">🎓 Show me ▾</button>${this.showTours ? `<span class="an-flash-tour-menu" role="menu">${Object.entries(FLASH_TOURS).map(([id, t]) => `<button role="menuitem" data-action="flash-tour" data-tour="${id}"><b>${esc(t.label)}</b><small>${esc(t.detail)}</small></button>`).join("")}</span>` : ""}</span><button class="an-icon${this.showHelp ? " is-on" : ""}" data-action="flash-help" data-tooltip="Shortcuts (?)" aria-label="Shortcuts">?</button></div>${help}<div class="an-flash-stage-wrap"><div class="an-flash-frame" data-flash-stage aria-label="Flash screen preview: drag a layer to move it"></div></div>
+    // One row: back, name, when it plays, and the actions.
+    const head = `<div class="an-flash-head"><div class="an-flash-head-row"><button class="an-icon an-flash-back" data-action="flash-back" data-tooltip="Back to all flash screens" aria-label="Back to all flash screens">←</button><input class="an-st-name" aria-label="Flash screen name" data-flash-field="name" value="${esc(s.name)}"><label class="an-flash-inline">Plays at<select data-flash-field="event">${options(FLASH_EVENTS, s.event)}</select></label><div class="an-flash-actions"><button class="an-icon" data-action="flash-undo" ${this.undoStack?.length ? "" : "disabled"} data-tooltip="Undo (Ctrl+Z)" aria-label="Undo">↶</button><button class="an-icon" data-action="flash-redo" ${this.redoStack?.length ? "" : "disabled"} data-tooltip="Redo (Ctrl+Shift+Z)" aria-label="Redo">↷</button><button class="an-icon" data-action="flash-duplicate" data-tooltip="Duplicate" aria-label="Duplicate">⧉</button><button class="an-icon is-danger" data-action="flash-delete" data-tooltip="Delete" aria-label="Delete"><i class="fas fa-trash" aria-hidden="true"></i></button><button class="an-icon" data-action="flash-revert" ${this.dirty ? "" : "disabled"} data-tooltip="Revert to the saved version" aria-label="Revert">↺</button><button class="an-primary" data-action="flash-save" ${this.dirty ? "" : "disabled"}>${this.dirty ? "Save" : "Saved ✓"}</button></div></div></div>`;
+    const help = this.showHelp ? `<div class="an-flash-help"><b>Shortcuts</b><span><kbd>Drag</kbd> move · corner handle: size · round handle: rotate · band edges: stretch</span><span><kbd>Wheel</kbd> opacity · <kbd>Shift</kbd>+wheel: size</span><span><kbd>←↑→↓</kbd> nudge (<kbd>Shift</kbd> ×10) · <kbd>[</kbd> <kbd>]</kbd> rotate · <kbd>-</kbd> <kbd>=</kbd> smaller / bigger</span><span><kbd>K</kbd> keyframe · <kbd>Space</kbd> play · <kbd>,</kbd> <kbd>.</kbd> step (<kbd>Shift</kbd> 1s) · <kbd>Home</kbd> <kbd>End</kbd></span><span><kbd>Tab</kbd> next layer · <kbd>Ctrl+D</kbd> duplicate · <kbd>Delete</kbd> remove · <kbd>Ctrl+Z</kbd> undo</span><span>Drag any field's label to change its value (<kbd>Shift</kbd> faster, <kbd>Alt</kbd> finer). On the timeline, drag bars, their ends and the shaded entrance/exit; drag ◆ to retime. <kbd>Alt</kbd> turns snapping off.</span><b class="an-flash-help-vars">Words that fill themselves in</b><span>Type these into any text layer; they are replaced when the screen plays (in the editor, sample values show).</span><table class="an-flash-vars">${FLASH_VARS.map(([v, what, when]) => `<tr><td><code>${v}</code></td><td>${esc(what)}</td><td>${esc(when)}</td></tr>`).join("")}</table><span>Example: <code>{name} unleashes {action}!</code></span></div>` : "";
+    const stage = `<div class="an-flash-tools">${this.quickHTML(layer)}<span class="an-flash-guides"><button class="an-flash-guide" data-action="flash-tours" aria-expanded="${!!this.showTours}" data-tooltip="Guided walkthroughs: watch how to build a flash screen, step by step">🎓 Show me ▾</button>${this.showTours ? `<span class="an-flash-tour-menu" role="menu">${Object.entries(FLASH_TOURS).map(([id, t]) => `<button role="menuitem" data-action="flash-tour" data-tour="${id}"><b>${esc(t.label)}</b><small>${esc(t.detail)}</small></button>`).join("")}</span>` : ""}</span><button class="an-icon${this.showHelp ? " is-on" : ""}" data-action="flash-help" data-tooltip="Shortcuts (?)" aria-label="Shortcuts">?</button></div>${help}<div class="an-flash-stage-wrap"><div class="an-flash-frame" data-flash-stage aria-label="Flash screen preview: drag a layer to move it"></div></div>
       <div class="an-flash-transport"><button class="an-primary" data-action="flash-preview">${this.playing ? "■ Stop" : "▶ Preview"}</button><button data-action="flash-play-all" data-tooltip="Play it now on every player's screen">Play for everyone</button><input type="range" min="0" max="${s.duration}" step="10" value="${this.time}" data-flash-time aria-label="Scrub"><span data-flash-clock>${seconds(this.time)} / ${seconds(s.duration)}</span></div>`;
     const pct = (ms) => ((ms / s.duration) * 100).toFixed(2);
     const rows = s.layers.map((l, i) => {
@@ -243,12 +249,40 @@ export class FlashEditor {
     const scroller = s.layers.length && (this.tlZoom ?? 1) > 1 ? `<div class="an-flash-row is-scroll">${spacers(`<div class="an-flash-tl-scroll" data-flash-tl-scroll><div style="width:${(this.tlZoom ?? 1) * 100}%;height:1px"></div></div>`)}</div>` : "";
     const zoom = `<span class="an-flash-zoom"><button data-action="flash-zoom" data-zoom="out" ${(this.tlZoom ?? 1) <= 1 ? "disabled" : ""} data-tooltip="Zoom out (Ctrl+wheel)" aria-label="Zoom out">−</button><button data-action="flash-zoom" data-zoom="in" ${(this.tlZoom ?? 1) >= 16 ? "disabled" : ""} data-tooltip="Zoom in (Ctrl+wheel)" aria-label="Zoom in">+</button><button data-action="flash-zoom" data-zoom="fit" ${(this.tlZoom ?? 1) <= 1 ? "disabled" : ""} data-tooltip="Fit the whole screen" aria-label="Fit">Fit</button></span>`;
     const full = s.layers.length >= LAYER_LIMIT ? "disabled" : "";
-    const layersHTML = `<div class="an-flash-layers"><div class="an-flash-layers-head"><b>Layers</b>${zoom}<span class="an-flash-adds"><button data-action="flash-add" data-kind="text" ${full}>+ Text</button><button data-action="flash-add" data-kind="image" ${full}>+ Image</button><button data-action="flash-add" data-kind="portraits" ${full} data-tooltip="The party's or enemies' pictures, from the encounter">+ Portraits</button><button data-action="flash-add" data-kind="band" ${full}>+ Band</button><button data-action="flash-add" data-kind="sound" ${full}>+ Sound</button><button data-action="flash-add" data-kind="flash" ${full} data-tooltip="A full-screen flash at one moment">+ Flash</button><button data-action="flash-add" data-kind="shake" ${full} data-tooltip="Shake the whole screen at one moment">+ Shake</button><span class="an-flash-effects"><button data-action="flash-effects" ${full} aria-expanded="${!!this.showEffects}" data-tooltip="Speed lines, light burst, slash, particles, camera punch">✦ Effects ▾</button>${this.showEffects ? `<span class="an-flash-effects-menu" role="menu">${Object.entries(EFFECTS).map(([k, tip]) => `<button role="menuitem" data-action="flash-add" data-kind="${k}"><span class="an-flash-row-icon kind-${k}">${KIND_ICONS[k]}</span><b>${esc(FLASH_KINDS[k])}</b><small>${esc(tip)}</small></button>`).join("")}</span>` : ""}</span></span></div>${ruler}${rows || `<p class="an-hint">Add a text, image or band layer.</p>`}${scroller}<p class="an-hint">M mutes and S solos a layer in this editor only; saved screens always play every layer. Top of the list draws on top. Drag a bar to move it in time, its ends to trim it, the shaded ends to set its entrance and exit, and ◆ to retime a keyframe. Press ? for all shortcuts.</p></div>`;
+    const layersHTML = `<div class="an-flash-layers"><div class="an-flash-layers-head"><b>Layers</b>${zoom}<span class="an-flash-adds"><button data-action="flash-add" data-kind="text" ${full}>+ Text</button><button data-action="flash-add" data-kind="image" ${full}>+ Image</button><button data-action="flash-add" data-kind="portraits" ${full} data-tooltip="The party's or enemies' pictures, from the encounter">+ Portraits</button><button data-action="flash-add" data-kind="band" ${full}>+ Band</button><button data-action="flash-add" data-kind="sound" ${full}>+ Sound</button><button data-action="flash-add" data-kind="flash" ${full} data-tooltip="A full-screen flash at one moment">+ Flash</button><button data-action="flash-add" data-kind="shake" ${full} data-tooltip="Shake the whole screen at one moment">+ Shake</button><span class="an-flash-effects"><button data-action="flash-effects" ${full} aria-expanded="${!!this.showEffects}" data-tooltip="Speed lines, light burst, slash, particles, camera punch">✦ Effects ▾</button>${this.showEffects ? `<span class="an-flash-effects-menu" role="menu">${Object.entries(EFFECTS).map(([k, tip]) => `<button role="menuitem" data-action="flash-add" data-kind="${k}"><span class="an-flash-row-icon kind-${k}">${KIND_ICONS[k]}</span><b>${esc(FLASH_KINDS[k])}</b><small>${esc(tip)}</small></button>`).join("")}</span>` : ""}</span></span></div>${ruler}${rows || `<p class="an-hint">Add a text, image or band layer.</p>`}${scroller}<p class="an-hint">M mutes and S solos a layer in this editor only; saved screens always play every layer. Top of the list draws on top. Drag a bar to move it in time, its ends to trim it, the shaded ends to set its entrance and exit, and ◆ to retime a keyframe. Drag the yellow end of the ruler to make the whole screen longer or shorter. Press ? for all shortcuts.</p></div>`;
     const scene = `<div class="an-editor-section an-flash-card-box"><span class="an-eyebrow">SCREEN</span><div class="an-field-row"><label>Backdrop<input type="color" data-flash-field="backdrop.color" value="${s.backdrop.color}"></label><label>Darkness<input type="number" min="0" max="1" step="0.05" data-flash-field="backdrop.opacity" value="${s.backdrop.opacity}"></label></div><label class="an-check"><input type="checkbox" data-flash-field="backdrop.vignette" ${s.backdrop.vignette ? "checked" : ""}> Dark edges</label><div class="an-field-row"><label class="an-check"><input type="checkbox" data-flash-field="backdrop.bars" ${s.backdrop.bars ? "checked" : ""}> Cinematic bars</label>${s.backdrop.bars ? `<label>Bar size<input type="number" min="2" max="25" step="1" data-flash-field="backdrop.barSize" value="${s.backdrop.barSize}"></label>` : ""}</div><label>Animated background<select data-flash-field="backdrop.media">${options(Object.hasOwn(FLASH_BACKGROUNDS, s.backdrop.media) ? FLASH_BACKGROUNDS : { ...FLASH_BACKGROUNDS, [s.backdrop.media]: "Custom file" }, s.backdrop.media)}</select></label><div class="an-field-row"><label>Or a file<span class="an-flash-sound"><input data-flash-field="backdrop.media" placeholder="JB2A key or video" value="${esc(s.backdrop.media)}"><button data-action="flash-browse" data-target="background" aria-label="Browse backgrounds">…</button></span></label>${s.backdrop.media ? `<label>Strength<input type="number" min="0" max="1" step="0.05" data-flash-field="backdrop.mediaOpacity" value="${s.backdrop.mediaOpacity}"></label>` : ""}</div><label>Game scene behind it<select data-flash-field="backdrop.freeze">${options(SCENE_LOOKS, s.backdrop.freeze)}</select></label>${s.backdrop.freeze !== "normal" ? `<p class="an-hint">The map stops moving and takes this look until the screen ends. Lower the Darkness to see it.</p>` : ""}<label class="an-check"><input type="checkbox" data-flash-field="duck" ${s.duck ? "checked" : ""}> Lower the music while it plays</label><label>Sound<span class="an-flash-sound"><input data-flash-field="sound.file" placeholder="sounds/drums.ogg" value="${esc(s.sound.file)}"><button data-action="flash-browse" data-target="sound" aria-label="Browse sounds">…</button></span></label><label>Volume<input type="number" min="0" max="1" step="0.05" data-flash-field="sound.volume" value="${s.sound.volume}"></label><div class="an-flash-defaults">${(s.event === "any" ? ["start", "end"] : [s.event]).map((ev) => `<button class="${isDefault(ev) ? "an-primary" : ""}" data-action="flash-default" data-event="${ev}">${isDefault(ev) ? "✓ " : ""}Use for: ${esc(FLASH_EVENTS[ev])}</button>`).join("")}</div><p class="an-hint">${MOMENT_EVENTS.includes(s.event) ? "Plays during combat whenever this happens. Turn it on with the button above." : "The default plays for every combat unless the Combat Tracker picks another."} Text can use {scene}, {round}, {boss} (strongest enemy), {name} (who crit, fell or acted) and {action}.</p></div>`;
     // Inspector tabs: the selected layer, or the screen as a whole.
     const tab = this.tab === "screen" || !layer ? "screen" : "layer";
     const tabs = `<div class="an-flash-tabs" role="tablist"><button role="tab" data-action="flash-tab" data-tab="layer" aria-selected="${tab === "layer"}" class="${tab === "layer" ? "is-on" : ""}" ${layer ? "" : "disabled"}>${layer ? `<span class="an-flash-row-icon kind-${layer.kind}" aria-hidden="true">${KIND_ICONS[layer.kind]}</span>` : ""}Layer</button><button role="tab" data-action="flash-tab" data-tab="screen" aria-selected="${tab === "screen"}" class="${tab === "screen" ? "is-on" : ""}">Screen</button></div>`;
     return `<section class="${pageClass}"><div class="an-flash-main">${head}${stage}${layersHTML}</div><aside class="an-flash-inspector">${tabs}${tab === "layer" ? this.layerHTML(layer) : scene}</aside></section>`;
+  }
+  // The toolbar over the stage: the most used actions for the selected kind of layer.
+  quickTools(l) {
+    if (!l) return [];
+    const grow = [["grow:0.9", "−", "Smaller (-)"], ["grow:1.1", "+", "Bigger (=)"]];
+    const place = [["align:x:50", "↔", "Centre across"], ["align:y:50", "↕", "Centre up and down"], ["key", "◆", "Keyframe at the playhead (K)", !!this.keyAtPlayhead(l)]];
+    const cycle = (key, choices, tip, short = choices) => [`cycle:${key}`, `${short[l[key]] ?? choices[l[key]]} ▸`, tip];
+    const moment = (step, unit) => [[["here", "⇥ Here", "Move it to the playhead"]], [[`add:strength:${-step}`, "−", `Weaker${unit}`], [`add:strength:${step}`, "+", `Stronger${unit}`]]];
+    switch (l.kind) {
+      case "text": return [[["toggle:bold", "B", "Bold", l.bold], ["toggle:italic", "I", "Italic", l.italic], ["toggle:gradient", "▤", "Gradient fill", l.gradient]], [["grow:0.9", "A−", "Smaller text (-)"], ["grow:1.1", "A+", "Bigger text (=)"]], [cycle("enter", FLASH_MOTIONS, "Entrance: click for the next")], place];
+      case "image": return [[["browse", "…", "Choose an image or video"]], grow, [cycle("blend", FLASH_BLENDS, "Blend: Screen or Add hides black backgrounds")], place];
+      case "portraits": return [[cycle("side", PORTRAIT_SIDES, "Who to show: click for the next", { actor: "Actor", party: "Party", enemies: "Enemies", boss: "Boss", all: "Everyone" }), cycle("shape", PORTRAIT_SHAPES, "Frame: click for the next"), ["toggle:names", "Aa", "Show names", l.names]], grow, place];
+      case "band": return [grow, [["add:skew:-5", "⟍", "Less slant"], ["add:skew:5", "⟋", "More slant"]], place];
+      case "lines": return [grow, [["add:density:-6", "− lines", "Fewer lines"], ["add:density:6", "+ lines", "More lines"]], place];
+      case "burst": return [grow, [["add:density:-3", "− rays", "Fewer rays"], ["add:density:3", "+ rays", "More rays"]], place];
+      case "slash": return [grow, [["add:rotate:-15", "⟲", "Turn left 15°"], ["add:rotate:15", "⟳", "Turn right 15°"]], place];
+      case "particles": return [[cycle("ptype", PARTICLE_TYPES, "Particles: click for the next"), cycle("direction", PARTICLE_DIRECTIONS, "Direction: click for the next")], [["add:count:-15", "Fewer", "Fewer particles"], ["add:count:15", "More", "More particles"]], [["add:speed:-0.2", "Slower", "Slower"], ["add:speed:0.2", "Faster", "Faster"]]];
+      case "sound": return [[["here", "⇥ Here", "Play it at the playhead"], ["hear", "▶ Hear", "Listen to it"], ["browse", "…", "Choose a sound"]]];
+      case "flash": return moment(0.1, " (brightness)");
+      case "shake": return moment(0.3, "");
+      case "punch": return moment(0.03, " (zoom)");
+      default: return [place];
+    }
+  }
+  quickHTML(l) {
+    const groups = this.quickTools(l);
+    if (!groups.length) return `<span class="an-flash-quick is-empty">Select a layer for its quick tools</span>`;
+    return `<span class="an-flash-quick"><span class="an-flash-row-icon kind-${l.kind}" aria-hidden="true">${KIND_ICONS[l.kind]}</span>${groups.map((g) => g.map(([op, label, tip, on]) => `<button data-action="flash-quick" data-op="${op}" class="${on ? "is-on" : ""}" ${on === undefined ? "" : `aria-pressed="${!!on}"`} data-tooltip="${esc(tip)}">${esc(label)}</button>`).join("")).join("<i></i>")}</span>`;
   }
   // + New: start from a blank screen or a copy of a ready-made one (thumbnails drawn by mount).
   galleryHTML() {
@@ -262,7 +296,7 @@ export class FlashEditor {
     const sel = (key, label, choices, value) => `<label>${label}<select data-flash-layer-field="${key}">${options(choices, value)}</select></label>`;
     const fonts = Object.fromEntries(this.host.flashFonts().map((name) => [name, name]));
     const kind = l.kind === "text"
-      ? `<label>Text<textarea rows="2" data-flash-layer-field="text">${esc(l.text)}</textarea></label>${sel("font", "Font", fonts, l.font)}<div class="an-field-row">${n("size", "Size", l.size, 1, 40, 0.5)}${n("spacing", "Spacing", l.spacing, -0.1, 1, 0.01)}</div><div class="an-field-row">${c("color", "Color", l.color)}${c("outline", "Outline", l.outline)}${c("glow", "Glow", l.glow)}</div>${n("glowSize", "Glow size", l.glowSize, 0, 10, 0.5)}<div class="an-field-row"><label class="an-check"><input type="checkbox" data-flash-layer-field="bold" ${l.bold ? "checked" : ""}> Bold</label><label class="an-check"><input type="checkbox" data-flash-layer-field="italic" ${l.italic ? "checked" : ""}> Italic</label></div><div class="an-field-row"><label class="an-check"><input type="checkbox" data-flash-layer-field="gradient" ${l.gradient ? "checked" : ""}> Gradient to</label>${l.gradient ? c("gradientTo", "Bottom color", l.gradientTo) : ""}</div><div class="an-field-row">${n("letters", "Letters one by one (ms apart)", l.letters, 0, 400, 10)}${n("words", "Words one by one (ms apart)", l.words, 0, 1500, 10)}</div><p class="an-hint">0 = all at once. Letters win if both are set. Enters "Outline, then fill" draws the outline before the colour pours in.</p>`
+      ? `<label>Text<textarea rows="2" data-flash-layer-field="text">${esc(l.text)}</textarea></label><div class="an-flash-varchips"><span>Insert:</span>${FLASH_VARS.map(([v, what]) => `<button data-action="flash-insert-var" data-var="${v}" data-tooltip="${esc(what)}">${v}</button>`).join("")}</div>${sel("font", "Font", fonts, l.font)}<div class="an-field-row">${n("size", "Size", l.size, 1, 40, 0.5)}${n("spacing", "Spacing", l.spacing, -0.1, 1, 0.01)}</div><div class="an-field-row">${c("color", "Color", l.color)}${c("outline", "Outline", l.outline)}${c("glow", "Glow", l.glow)}</div>${n("glowSize", "Glow size", l.glowSize, 0, 10, 0.5)}<div class="an-field-row"><label class="an-check"><input type="checkbox" data-flash-layer-field="bold" ${l.bold ? "checked" : ""}> Bold</label><label class="an-check"><input type="checkbox" data-flash-layer-field="italic" ${l.italic ? "checked" : ""}> Italic</label></div><div class="an-field-row"><label class="an-check"><input type="checkbox" data-flash-layer-field="gradient" ${l.gradient ? "checked" : ""}> Gradient to</label>${l.gradient ? c("gradientTo", "Bottom color", l.gradientTo) : ""}</div><div class="an-field-row">${n("letters", "Letters one by one (ms apart)", l.letters, 0, 400, 10)}${n("words", "Words one by one (ms apart)", l.words, 0, 1500, 10)}</div><p class="an-hint">0 = all at once. Letters win if both are set. Enters "Outline, then fill" draws the outline before the colour pours in.</p>`
       : l.kind === "lines"
       ? `<div class="an-field-row">${c("color", "Color", l.color)}${n("density", "Lines", l.density, 6, 90, 1)}</div><div class="an-field-row">${n("clear", "Clear middle %", l.clear, 0, 80, 1)}${n("width", "Size % of screen", l.width, 20, 300, 5)}</div><p class="an-hint">Put the middle where the eye should go (drag it on the stage). They flicker while shown.</p>`
       : l.kind === "burst"
@@ -414,7 +448,7 @@ export class FlashEditor {
   }
   pointer(e) {
     if (e.button !== 0) return false;
-    const handled = this.scrubLabel(e) || this.rulerDrag(e) || this.timelineDrag(e) || this.stageDrag(e);
+    const handled = this.scrubLabel(e) || this.lengthDrag(e) || this.rulerDrag(e) || this.timelineDrag(e) || this.stageDrag(e);
     // Working on the stage or timeline leaves any text field, so shortcuts apply.
     if (handled && e.target.closest?.("[data-flash-stage], .an-flash-row-track")) document.activeElement?.blur?.();
     return handled;
@@ -442,6 +476,27 @@ export class FlashEditor {
       window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up);
       document.body.classList.remove("an-scrubbing");
       if (moved) input.dispatchEvent(new Event("change", { bubbles: true })); else input.focus();
+    };
+    window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+    return true;
+  }
+  // The ruler's end grip: drag to set the screen's length (1 to 12 seconds, in tenths).
+  lengthDrag(e) {
+    const grip = e.target.closest?.("[data-flash-length]");
+    if (!grip) return false;
+    e.preventDefault(); e.stopPropagation();
+    const lane = grip.closest(".an-flash-lane"), r = lane.getBoundingClientRect(), d0 = this.draft.duration;
+    let moved = false, frame = 0;
+    const move = (ev) => {
+      const d = Math.round(Math.min(12000, Math.max(1000, (d0 * (ev.clientX - r.left)) / Math.max(1, r.width))) / 100) * 100;
+      if (d === this.draft.duration) return;
+      if (!moved) { moved = true; this.edit(); }
+      this.draft.duration = d; this.time = Math.min(this.time, d);
+      cancelAnimationFrame(frame); frame = requestAnimationFrame(() => this.w.render());
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); cancelAnimationFrame(frame);
+      if (moved) { Object.assign(this.draft, validateFlash(this.draft)); this.suppressClick = true; setTimeout(() => { this.suppressClick = false; }, 60); this.w.render(); }
     };
     window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
     return true;
@@ -623,6 +678,33 @@ export class FlashEditor {
         break;
       }
       case "flash-help": this.showHelp = !this.showHelp; break;
+      case "flash-quick": {
+        const current = s.layers[this.layerIndex];
+        if (!current) return true;
+        const [op, key, value] = b.dataset.op.split(":");
+        if (op === "hear") { if (current.file) this.host.flashPlaySound(current.file, current.volume); return true; }
+        if (op === "browse") return this.action("flash-browse", { dataset: { target: current.kind === "sound" ? "layer-sound" : "image" } });
+        const layer = this.edit().layers[this.layerIndex];
+        if (op === "toggle") layer[key] = !layer[key];
+        else if (op === "grow") this.grow(layer, Number(key));
+        else if (op === "add") { const t = key === "rotate" ? this.target(layer) : layer; t[key] = Math.round((Number(t[key]) + Number(value)) * 100) / 100; }
+        else if (op === "align") this.target(layer)[key] = Number(value);
+        else if (op === "key") { layer.keys ??= []; this.keyForEdit(layer); }
+        else if (op === "here") layer.start = this.time;
+        else if (op === "cycle") {
+          const choices = Object.keys({ enter: FLASH_MOTIONS, blend: FLASH_BLENDS, side: PORTRAIT_SIDES, shape: PORTRAIT_SHAPES, ptype: PARTICLE_TYPES, direction: PARTICLE_DIRECTIONS }[key]);
+          layer[key] = choices[(choices.indexOf(layer[key]) + 1) % choices.length];
+          // A new kind of particle starts with its own colour and direction.
+          if (key === "ptype") { delete layer.color; delete layer.direction; }
+        }
+        Object.assign(this.draft, validateFlash(this.draft));
+        break;
+      }
+      case "flash-insert-var": {
+        const layer = this.edit().layers[this.layerIndex];
+        if (layer?.kind === "text") layer.text = `${layer.text}${layer.text && !/\s$/.test(layer.text) ? " " : ""}${b.dataset.var}`;
+        break;
+      }
       case "flash-tab": this.tab = b.dataset.tab; break;
       case "flash-effects": this.showEffects = !this.showEffects; break;
       case "flash-eye": {

@@ -152,7 +152,7 @@ test("the flash editor page renders a screen with layers, keyframes and the time
   assert.match(html, /data-flash-part="enter"/, "entrance grip on visual layers");
   assert.match(html, /data-flash-part="start"/);
   assert.match(html, /an-flash-key/, "keyframe diamonds");
-  assert.match(html, /data-action="flash-align"/);
+  assert.match(html, /data-action="flash-quick" data-op="toggle:bold"/, "text layers get text quick tools");
   assert.ok(!/kind-sound[^>]*>[^<]*<span class="an-flash-grip is-start"/.test(html), "sound bars only move");
 });
 
@@ -245,4 +245,34 @@ test("editor: library page, inspector tabs, row icons and hide, effects menu, te
   html = ed.html();
   assert.match(html, /data-flash-layer-field="words"/);
   assert.match(html, /data-flash-layer-field="blend"/);
+});
+
+test("the ? panel lists every text variable and the text box can insert them", async () => {
+  const { FlashEditor, FLASH_VARS } = await import("../scripts/flash-editor.mjs");
+  const screens = [validateFlash({ id: "s", name: "T", layers: [{ kind: "text", text: "Hi" }] })];
+  const host = { flashScreens: () => screens, flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
+  const ed = new FlashEditor({ host, page: "recipes", root: null, render() {} });
+  ed.editing = true; ed.showHelp = true;
+  const html = ed.html();
+  for (const [v] of FLASH_VARS) { assert.match(html, new RegExp(`<code>\\${v.slice(0, -1)}\\}</code>`)); assert.ok(fillText(v, {}) === "", `${v} is a real variable`); }
+  await ed.action("flash-insert-var", { dataset: { var: "{action}" } });
+  assert.equal(ed.draft.layers[0].text, "Hi {action}");
+});
+
+test("quick tools follow the selected layer and change it", async () => {
+  const { FlashEditor } = await import("../scripts/flash-editor.mjs");
+  const screens = [validateFlash({ id: "s", name: "T", layers: [{ kind: "text", text: "Hi" }, { kind: "particles", ptype: "snow" }, { kind: "shake", start: 100 }] })];
+  const host = { flashScreens: () => screens, flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
+  const ed = new FlashEditor({ host, page: "recipes", root: null, render() {} });
+  ed.editing = true;
+  await ed.action("flash-quick", { dataset: { op: "toggle:italic" } });
+  assert.equal(ed.draft.layers[0].italic, true);
+  ed.layerIndex = 1;
+  assert.match(ed.html(), /data-op="cycle:ptype"[^>]*>Snow ▸/);
+  await ed.action("flash-quick", { dataset: { op: "cycle:ptype" } });
+  assert.deepEqual([ed.draft.layers[1].ptype, ed.draft.layers[1].direction], ["ash", "up"], "the next particle brings its own direction");
+  ed.layerIndex = 2; ed.time = 900;
+  assert.doesNotMatch(ed.html(), /data-op="align/);
+  await ed.action("flash-quick", { dataset: { op: "here" } });
+  assert.equal(ed.draft.layers[2].start, 900);
 });
