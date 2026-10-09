@@ -222,10 +222,13 @@ export class AnimaterRuntime {
           .effect()
           .name(session)
           .playIf(() => this.epoch === epoch && !failed)
-          // Sequencer uses media milliseconds before applying skips/rate.
-          // Recipe durations, motion and stage links use elapsed milliseconds.
-          .duration(s.duration * s.playbackRate + (s.clipEnd ? 0 : s.clipStart))
           .opacity(s.opacity);
+        // Sequencer uses media milliseconds before applying skips/rate.
+        // Recipe durations, motion and stage links use elapsed milliseconds.
+        // A lasting layer loops its whole clip: a stage duration would make Sequencer loop
+        // only that much of it and jump back (a lasting Darkness looped 2.3s of its 5s clip).
+        const lasts = s.persist && !preview && (s.kind !== "template" || templateDocument(context.template));
+        if (!lasts) e.duration(s.duration * s.playbackRate + (s.clipEnd ? 0 : s.clipStart));
         if (users) e.forUsers(users);
         if (s.kind === "sprite") e.copySprite(s.destination);
         else e.file(s.asset);

@@ -842,3 +842,14 @@ test("a recipe's linked flash screen plays first at the table, never in a previe
   assert.ok(!order.includes("flash:sig-move"), "previews skip the flash screen");
   assert.ok(calls.length > 0);
 });
+test("a lasting layer loops its whole clip: no stage duration cuts its loop short", async () => {
+  const { runtime, calls } = fixture();
+  const r = starterRecipes()[0];
+  r.stages = [{ ...r.stages[0], kind: "aura", persist: true, duration: 2300 }];
+  await runtime.play(r, { source: {}, targets: [] });
+  assert.ok(calls.some((c) => c[0] === "persist"));
+  assert.ok(!calls.some((c) => c[0] === "duration"), "a persisted effect must not get .duration()");
+  calls.length = 0;
+  await runtime.play(r, { source: {}, targets: [] }, { preview: true });
+  assert.ok(calls.some((c) => c[0] === "duration"), "a preview still plays its stage length");
+});

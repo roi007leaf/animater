@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- **Darkness holds steady.** JB2A's Darkness clip can't loop without a visible jump, even looping just its middle. A lasting Darkness now grows in with that clip once, then holds as JB2A's seamless fog loop tinted near-black, so it never jumps or re-forms. This applies to PF2e, SF2e and D&D 5e.
+- **Lasting areas loop their whole clip.** Animater gave every lasting layer its short stage length, so Sequencer looped only that part of the clip and jumped back. For example, Darkness looped 2.3 seconds of its 5-second clip, which looked like it kept re-forming. Lasting areas, auras and conditions now loop the full footage, which JB2A makes seamless. This replaces 0.3.5's middle-only Darkness loop.
 - **PF2e Visioner draws Darkness.** With PF2e Visioner active, Animater leaves the Darkness area to Visioner (its template and darkness light) and plays only the cast and smoke flourishes, so the two never stack.
 
 ## 0.3.5 (2026-10-09)

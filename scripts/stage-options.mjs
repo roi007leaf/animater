@@ -208,11 +208,7 @@ export function applyMediaOptions(section, s) {
       throw Error("Clip end must be after its opening skip.");
     section.timeRange(s.clipStart, s.clipEnd);
   } else if (s.clipStart) section.startTime(s.clipStart);
-  // A lasting area whose footage grows in and dissolves away (Darkness) loops only its solid
-  // middle, so it never vanishes and re-forms every few seconds.
-  else if (s.persist && GROWS_AND_DISSOLVES.test(String(s.asset ?? s.assets?.[0] ?? ""))) section.startTimePerc(0.2).endTimePerc(0.2);
 }
-export const GROWS_AND_DISSOLVES = /^jb2a\.darkness\./;
 export function stageSpan(stage, targetCount = 1) {
   const s = { ...stage, ...normalizeOptions(stage) };
   const targets =
