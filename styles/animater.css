@@ -2406,3 +2406,12 @@
 .animater .an-flash-keybox > span { font-size: 12px; font-weight: 700; color: #ffd34d; }
 .animater .an-flash-keybox button { width: auto; justify-self: start; height: 28px; font-size: 12px; }
 .animater .an-flash-keybox button.is-danger { color: #ff8a8a; }
+/* Badass flash screens: letters, screen flash and shake, cinematic bars. */
+.an-flash-stage { position: absolute; inset: 0; }
+.an-flash-char { display: inline-block; }
+.an-flash-fill { position: absolute; inset: 0; opacity: 0; pointer-events: none; mix-blend-mode: screen; }
+.an-flash-bar { position: absolute; left: 0; right: 0; background: #000; pointer-events: none; }
+.an-flash-bar.is-top { top: 0; }
+.an-flash-bar.is-bottom { bottom: 0; }
+.animater .an-flash-row-bar.kind-flash { background: #fff3c4; height: 6px; top: 6px; }
+.animater .an-flash-row-bar.kind-shake { background: repeating-linear-gradient(90deg, #ff8a4c 0 4px, transparent 4px 7px); height: 8px; top: 5px; }

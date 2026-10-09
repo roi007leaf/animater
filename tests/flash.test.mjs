@@ -65,3 +65,27 @@ test("sound layers keep a safe audio file and volume", () => {
   assert.deepEqual([ok.file, ok.volume, ok.start], ["sounds/drums.ogg", 1, 500]);
   assert.equal(bad.file, "");
 });
+
+test("impacts: shakes fade out, flashes peak fast, letters arrive one after another", async () => {
+  const { shakeKeyframes, screenFlashKeyframes, letterKeyframes } = await import("../scripts/flash-render.mjs");
+  const s = validateFlash({ duration: 4000, layers: [{ kind: "shake", start: 1000, strength: 2 }, { kind: "flash", start: 1000 }, { kind: "text", text: "GO", start: 500, letters: 100 }] });
+  assert.deepEqual([s.layers[0].duration, s.layers[1].duration], [450, 300], "short by default");
+  const shake = shakeKeyframes(s.layers, 4000);
+  assert.ok(shake.every((f, i) => i === 0 || f.offset >= shake[i - 1].offset));
+  assert.equal(shake.at(-1).transform, "none");
+  const amp = (f) => Math.abs(Number(/translate\(([-\d.]+)/.exec(f.transform)?.[1] ?? 0));
+  const moves = shake.filter((f) => f.transform !== "none");
+  assert.ok(amp(moves[0]) > amp(moves.at(-1)), "the jolt dies down");
+  const flash = screenFlashKeyframes(s.layers[1], 4000);
+  assert.equal(Math.max(...flash.map((f) => f.opacity)), 0.85);
+  const second = letterKeyframes(s.layers[2], 1, 4000);
+  assert.equal(second[1].offset, 0.15, "the second letter starts 100ms after the first");
+  assert.equal(shakeKeyframes([], 4000), null);
+});
+
+test("starters show off the impacts", () => {
+  const boss = STARTER_FLASHES.find((f) => f.id === "start-boss");
+  assert.ok(boss && boss.backdrop.bars);
+  assert.ok(["flash", "shake"].every((k) => boss.layers.some((l) => l.kind === k)));
+  assert.ok(STARTER_FLASHES.find((f) => f.id === "start-initiative").layers.some((l) => l.letters > 0 && l.gradient));
+});

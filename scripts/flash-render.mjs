@@ -1,11 +1,12 @@
 // Draws a flash screen as DOM: a backdrop plus positioned layers, each driven by
-// one Web Animation spanning the whole screen, so the editor can scrub any moment
+// Web Animations spanning the whole screen, so the editor can scrub any moment
 // (seek) and the live overlay plays the same frames. Sizes use container units, so
 // a small editor frame and the full window look alike.
 import { fillText } from "./flash-model.mjs";
 
 const VIDEO = /\.(webm|mp4)$/i;
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const VISUAL = (l) => !["sound", "flash", "shake"].includes(l.kind);
 
 // Off-stage state for an entrance (or, mirrored, the exit continuing the same way).
 function offstage(motion, exit) {
@@ -18,7 +19,7 @@ function offstage(motion, exit) {
     case "slide-down": return { dy: `${-60 * flip}cqh` };
     case "zoom": return { scale: exit ? 1.6 : 0.2, opacity: 0 };
     case "slam": return { scale: exit ? 0.4 : 3, opacity: 0 };
-    case "type": case "wipe": return {};
+    case "blur": return { blur: "1.8cqh", scale: exit ? 1.08 : 1.18, opacity: 0 };
     default: return {};
   }
 }
@@ -29,13 +30,16 @@ const frame = (layer, state = {}, offset, easing) => ({
   offset,
   ...(easing ? { easing } : {}),
   opacity: state.opacity ?? layer.opacity,
+  filter: `blur(${state.blur ?? "0px"})`,
   transform: `translate(-50%, -50%) translate(${state.dx ?? "0px"}, ${state.dy ?? "0px"}) rotate(${layer.rotate}deg) scale(${state.scale ?? 1})`,
 });
+const endOf = (layer, total) => (layer.duration > 0 ? Math.min(total, layer.start + layer.duration) : total);
+const sorted = (frames) => { frames.sort((a, b) => a.offset - b.offset); return frames; };
 
 // Keyframes for one layer over the whole screen (offsets are fractions of it).
 export function layerKeyframes(layer, total) {
   const o = (ms) => Math.min(1, Math.max(0, ms / total));
-  const start = layer.start, end = layer.duration > 0 ? Math.min(total, start + layer.duration) : total;
+  const start = layer.start, end = endOf(layer, total);
   const shown = Math.min(end, start + layer.enterMs), leave = Math.max(shown, end - layer.exitMs);
   const hidden = { ...offstage(layer.enter, false), opacity: 0 };
   if (CLIP[layer.enter]) hidden.opacity = layer.opacity;
@@ -55,10 +59,16 @@ export function layerKeyframes(layer, total) {
 export function revealKeyframes(layer, total) {
   if (!CLIP[layer.enter] && !CLIP[layer.exit]) return null;
   const o = (ms) => Math.min(1, Math.max(0, ms / total));
-  const start = layer.start, end = layer.duration > 0 ? Math.min(total, layer.start + layer.duration) : total;
+  const start = layer.start, end = endOf(layer, total);
   const shown = Math.min(end, start + layer.enterMs), leave = Math.max(shown, end - layer.exitMs);
   const from = CLIP[layer.enter]?.from ?? OPEN, to = CLIP[layer.exit]?.to ?? OPEN;
   return [{ offset: 0, clipPath: from }, { offset: o(start), clipPath: from }, { offset: o(shown), clipPath: OPEN }, { offset: o(leave), clipPath: OPEN }, { offset: o(end), clipPath: to }, { offset: 1, clipPath: to }];
+}
+// Letters one by one: each slams in after the one before.
+export function letterKeyframes(layer, index, total) {
+  const o = (ms) => Math.min(1, Math.max(0, ms / total));
+  const t = layer.start + index * layer.letters, from = "translateY(-0.35em) scale(2.4)";
+  return [{ offset: 0, opacity: 0, transform: from }, { offset: o(t), opacity: 0, transform: from, easing: "cubic-bezier(.2,.9,.3,1.3)" }, { offset: o(t + 260), opacity: 1, transform: "none" }, { offset: 1, opacity: 1, transform: "none" }];
 }
 // Keyframed motion, relative to the layer's own place: position, scale, rotation, opacity.
 export function motionKeyframes(layer, total) {
@@ -71,6 +81,9 @@ export function motionKeyframes(layer, total) {
 // A repeating effect while the layer is on screen.
 const LOOPS = {
   pulse: [{ transform: "scale(1)" }, { transform: "scale(1.08)" }, { transform: "scale(1)" }],
+  glow: [{ filter: "brightness(1)" }, { filter: "brightness(1.6)" }, { filter: "brightness(1)" }],
+  heartbeat: [{ offset: 0, transform: "scale(1)" }, { offset: 0.14, transform: "scale(1.12)" }, { offset: 0.28, transform: "scale(1)" }, { offset: 0.42, transform: "scale(1.07)" }, { offset: 0.6, transform: "scale(1)" }, { offset: 1, transform: "scale(1)" }],
+  glitch: [{ offset: 0, transform: "none", filter: "none" }, { offset: 0.04, transform: "translate(-0.8cqw, 0) skewX(-14deg)", filter: "hue-rotate(90deg) saturate(2)" }, { offset: 0.08, transform: "translate(0.7cqw, 0.3cqh)", filter: "hue-rotate(-70deg)" }, { offset: 0.12, transform: "none", filter: "none" }, { offset: 1, transform: "none", filter: "none" }],
   flicker: [{ opacity: 1 }, { opacity: 0.55 }, { opacity: 1 }, { opacity: 0.8 }, { opacity: 1 }],
   wobble: [{ transform: "rotate(0deg)" }, { transform: "rotate(-3deg)" }, { transform: "rotate(3deg)" }, { transform: "rotate(0deg)" }],
   float: [{ transform: "translateY(0)" }, { transform: "translateY(-1.2cqh)" }, { transform: "translateY(0)" }],
@@ -78,16 +91,46 @@ const LOOPS = {
 };
 export function loopTiming(layer, total) {
   if (!LOOPS[layer.loop]) return null;
-  const end = layer.duration > 0 ? Math.min(total, layer.start + layer.duration) : total;
-  return { keyframes: LOOPS[layer.loop], options: { delay: layer.start, duration: layer.loopMs, iterations: Math.max(1, (end - layer.start) / layer.loopMs), easing: "ease-in-out", fill: "none" } };
+  const end = endOf(layer, total);
+  return { keyframes: LOOPS[layer.loop], options: { delay: layer.start, duration: layer.loopMs, iterations: Math.max(1, (end - layer.start) / layer.loopMs), easing: layer.loop === "glitch" ? "linear" : "ease-in-out", fill: "none" } };
+}
+// A full-screen flash: up fast, then fading.
+export function screenFlashKeyframes(layer, total) {
+  const o = (ms) => Math.min(1, Math.max(0, ms / total));
+  const peak = layer.start + Math.min(60, layer.duration / 4);
+  return [{ offset: 0, opacity: 0 }, { offset: o(layer.start), opacity: 0 }, { offset: o(peak), opacity: layer.strength, easing: "ease-out" }, { offset: o(layer.start + layer.duration), opacity: 0 }, { offset: 1, opacity: 0 }];
+}
+// Screen shakes jolt every visual layer together, fading out over each shake.
+export function shakeKeyframes(layers, total) {
+  const shakes = layers.filter((l) => l.kind === "shake" && l.duration > 0);
+  if (!shakes.length) return null;
+  const o = (ms) => Math.min(1, Math.max(0, ms / total));
+  const X = [1, -0.8, 0.6, -1, 0.9, -0.5], Y = [-0.6, 0.9, -1, 0.4, -0.7, 1];
+  const frames = [{ offset: 0, transform: "none" }, { offset: 1, transform: "none" }];
+  for (const s of shakes) {
+    frames.push({ offset: o(s.start), transform: "none" });
+    for (let t = s.start + 35, k = 0; t < s.start + s.duration; t += 35, k++) {
+      const amp = s.strength * (1 - (t - s.start) / s.duration);
+      frames.push({ offset: o(t), transform: `translate(${(X[k % 6] * amp).toFixed(2)}cqh, ${(Y[k % 6] * amp).toFixed(2)}cqh)` });
+    }
+    frames.push({ offset: o(s.start + s.duration), transform: "none" });
+  }
+  return sorted(frames);
 }
 
+function textHTML(layer, vars) {
+  const glowParts = [1, 2, 3].map((k) => (layer.glowSize * 0.5 * k).toFixed(2));
+  // A gradient fill needs the glow as a filter (a text shadow would show through the clear letters).
+  const glow = layer.glowSize > 0 ? (layer.gradient ? `filter:${glowParts.slice(0, 2).map((g) => `drop-shadow(0 0 ${g}cqh ${layer.glow})`).join(" ")};` : `text-shadow:${glowParts.map((g) => `0 0 ${g}cqh ${layer.glow}`).join(",")};`) : "";
+  const fill = layer.gradient ? `background:linear-gradient(180deg, ${layer.color} 15%, ${layer.gradientTo} 85%);-webkit-background-clip:text;background-clip:text;color:transparent;` : `color:${layer.color};`;
+  const text = fillText(layer.text, vars);
+  const body = layer.letters > 0
+    ? [...text].map((c, i) => (c === " " || c === "\n" ? esc(c) : `<span class="an-flash-char" data-flash-char="${i}"${layer.gradient ? ` style="${fill}"` : ""}>${esc(c)}</span>`)).join("")
+    : esc(text);
+  return `<span class="an-flash-text" style="font-family:'${esc(layer.font)}',Signika,sans-serif;font-size:${layer.size}cqh;${layer.gradient && layer.letters > 0 ? `color:${layer.color};` : fill}-webkit-text-stroke:${(layer.size * 0.035).toFixed(2)}cqh ${layer.outline};${glow}font-weight:${layer.bold ? 800 : 400};font-style:${layer.italic ? "italic" : "normal"};letter-spacing:${layer.spacing}em">${body}</span>`;
+}
 function layerHTML(layer, { resolveMedia, vars }) {
-  if (layer.kind === "sound") return "";
-  if (layer.kind === "text") {
-    const shadow = layer.glowSize > 0 ? [1, 2, 3].map((k) => `0 0 ${(layer.glowSize * 0.5 * k).toFixed(2)}cqh ${layer.glow}`).join(",") : "none";
-    return `<span class="an-flash-text" style="font-family:'${esc(layer.font)}',Signika,sans-serif;font-size:${layer.size}cqh;color:${layer.color};-webkit-text-stroke:${(layer.size * 0.035).toFixed(2)}cqh ${layer.outline};text-shadow:${shadow};font-weight:${layer.bold ? 800 : 400};font-style:${layer.italic ? "italic" : "normal"};letter-spacing:${layer.spacing}em">${esc(fillText(layer.text, vars))}</span>`;
-  }
+  if (layer.kind === "text") return textHTML(layer, vars);
   if (layer.kind === "image") {
     const src = resolveMedia?.(layer.src) ?? layer.src;
     if (!src) return `<span class="an-flash-missing" style="width:${layer.width}cqw">Choose an image</span>`;
@@ -100,22 +143,34 @@ function layerHTML(layer, { resolveMedia, vars }) {
 export function createFlash(container, screen, { resolveMedia, vars = {}, editing = false, playSound } = {}) {
   const el = document.createElement("div");
   el.className = `an-flash${editing ? " is-editing" : ""}`;
-  el.innerHTML = `<div class="an-flash-backdrop" style="background:${screen.backdrop.color}"></div>${screen.backdrop.vignette ? `<div class="an-flash-vignette"></div>` : ""}${screen.layers.map((l, i) => `<div class="an-flash-layer" data-flash-layer="${i}" style="left:${l.x}%;top:${l.y}%"><div class="an-flash-motion"><div class="an-flash-fx">${layerHTML(l, { resolveMedia, vars })}</div></div></div>`).join("")}`;
+  const b = screen.backdrop;
+  el.innerHTML = `<div class="an-flash-backdrop" style="background:${b.color}"></div>${b.vignette ? `<div class="an-flash-vignette"></div>` : ""}`
+    + `<div class="an-flash-stage">${screen.layers.map((l, i) => (VISUAL(l) ? `<div class="an-flash-layer" data-flash-layer="${i}" style="left:${l.x}%;top:${l.y}%"><div class="an-flash-motion"><div class="an-flash-fx">${layerHTML(l, { resolveMedia, vars })}</div></div></div>` : "")).join("")}</div>`
+    + screen.layers.map((l, i) => (l.kind === "flash" ? `<div class="an-flash-fill" data-flash-fill="${i}" style="background:${l.color}"></div>` : "")).join("")
+    + (b.bars ? `<div class="an-flash-bar is-top" style="height:${b.barSize}cqh"></div><div class="an-flash-bar is-bottom" style="height:${b.barSize}cqh"></div>` : "");
   container.append(el);
   const total = screen.duration, timing = { duration: total, fill: "both" };
-  const fadeIn = Math.min(300, total / 4), fadeOut = Math.min(400, total / 4);
+  const fadeIn = Math.min(300, total / 4), fadeOut = Math.min(400, total / 4), slide = Math.min(450, total / 4);
+  const shake = shakeKeyframes(screen.layers, total);
   const animations = [
-    ...[el.querySelector(".an-flash-backdrop"), el.querySelector(".an-flash-vignette")].filter(Boolean).map((b, i) => b.animate([
-      { offset: 0, opacity: 0 }, { offset: fadeIn / total, opacity: i ? 1 : screen.backdrop.opacity },
-      { offset: 1 - fadeOut / total, opacity: i ? 1 : screen.backdrop.opacity }, { offset: 1, opacity: 0 }], timing)),
+    ...[el.querySelector(".an-flash-backdrop"), el.querySelector(".an-flash-vignette")].filter(Boolean).map((node, i) => node.animate([
+      { offset: 0, opacity: 0 }, { offset: fadeIn / total, opacity: i ? 1 : b.opacity },
+      { offset: 1 - fadeOut / total, opacity: i ? 1 : b.opacity }, { offset: 1, opacity: 0 }], timing)),
+    ...[...el.querySelectorAll(".an-flash-bar")].map((bar) => {
+      const away = bar.classList.contains("is-top") ? "translateY(-100%)" : "translateY(100%)";
+      return bar.animate([{ offset: 0, transform: away }, { offset: slide / total, transform: "translateY(0)", easing: "ease-in" }, { offset: 1 - slide / total, transform: "translateY(0)", easing: "ease-in" }, { offset: 1, transform: away }], timing);
+    }),
+    ...(shake ? [el.querySelector(".an-flash-stage").animate(shake, timing)] : []),
     ...screen.layers.flatMap((l, i) => {
-      if (l.kind === "sound") return [];
-      const node = el.querySelector(`[data-flash-layer="${i}"]`), motion = motionKeyframes(l, total), loop = loopTiming(l, total);
+      if (l.kind === "flash") return [el.querySelector(`[data-flash-fill="${i}"]`).animate(screenFlashKeyframes(l, total), timing)];
+      if (!VISUAL(l)) return [];
+      const node = el.querySelector(`[data-flash-layer="${i}"]`), motion = motionKeyframes(l, total), loop = loopTiming(l, total), reveal = revealKeyframes(l, total);
       return [
         node.animate(layerKeyframes(l, total), timing),
         ...(motion ? [node.querySelector(".an-flash-motion").animate(motion, timing)] : []),
         ...(loop ? [node.querySelector(".an-flash-fx").animate(loop.keyframes, loop.options)] : []),
-        ...(revealKeyframes(l, total) && node.querySelector(".an-flash-fx > *") ? [node.querySelector(".an-flash-fx > *").animate(revealKeyframes(l, total), timing)] : []),
+        ...(reveal && node.querySelector(".an-flash-fx > *") ? [node.querySelector(".an-flash-fx > *").animate(reveal, timing)] : []),
+        ...[...node.querySelectorAll("[data-flash-char]")].map((c, n) => c.animate(letterKeyframes(l, n, total), timing)),
       ];
     }),
   ];

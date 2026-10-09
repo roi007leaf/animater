@@ -5,12 +5,14 @@ export const FLASH_EVENTS = Object.freeze({ start: "Combat start", end: "Combat 
 export const FLASH_MOTIONS = Object.freeze({
   none: "None", fade: "Fade", "slide-left": "Slide from left", "slide-right": "Slide from right",
   "slide-up": "Rise from below", "slide-down": "Drop from above", zoom: "Zoom", slam: "Slam",
-  type: "Type on / wipe off", wipe: "Wipe",
+  type: "Type on / wipe off", wipe: "Wipe", blur: "Blur in / out",
 });
 // Effects that repeat while a layer is on screen.
-export const FLASH_LOOPS = Object.freeze({ none: "None", pulse: "Pulse", flicker: "Flicker", wobble: "Wobble", float: "Float", spin: "Spin" });
+export const FLASH_LOOPS = Object.freeze({ none: "None", pulse: "Pulse", glow: "Glow pulse", heartbeat: "Heartbeat", glitch: "Glitch", flicker: "Flicker", wobble: "Wobble", float: "Float", spin: "Spin" });
 export const KEY_LIMIT = 12;
-export const FLASH_KINDS = Object.freeze({ text: "Text", image: "Image or video", band: "Color band", sound: "Sound" });
+export const FLASH_KINDS = Object.freeze({ text: "Text", image: "Image or video", band: "Color band", sound: "Sound", flash: "Screen flash", shake: "Screen shake" });
+// Screen-wide moments (a flash, a shake) are short by default.
+const MOMENT = { flash: 300, shake: 450 };
 const safeAudio = (v) => { const s = text(v, 300).trim(); return s && !/^[a-z]+:/i.test(s) && !s.includes("..") && /\.(ogg|mp3|wav|flac|webm|m4a)$/i.test(s) ? s : ""; };
 export const FLASH_LIMIT = 40, LAYER_LIMIT = 12;
 const num = (v, min, max, fallback) => { const n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback; };
@@ -32,7 +34,7 @@ export function validateLayer(l = {}, duration = 4000) {
   return {
     id: id(l.id), kind, name: text(l.name, 60),
     x: num(l.x, -20, 120, 50), y: num(l.y, -20, 120, 50),
-    start, duration: num(l.duration, 0, duration, 0),
+    start, duration: num(l.duration, 0, duration, MOMENT[kind] ?? 0),
     enter: pick(l.enter, FLASH_MOTIONS, "fade"), enterMs: num(l.enterMs, 0, 4000, 400),
     exit: pick(l.exit, FLASH_MOTIONS, "fade"), exitMs: num(l.exitMs, 0, 4000, 400),
     opacity: num(l.opacity, 0, 1, 1), rotate: num(l.rotate, -180, 180, 0), shake: l.shake === true,
@@ -47,10 +49,16 @@ export function validateLayer(l = {}, duration = 4000) {
       text: text(l.text, 200, "Roll for Initiative!"), font: text(l.font, 60, "Signika"), size: num(l.size, 1, 40, 9),
       color: color(l.color, "#ffffff"), outline: color(l.outline, "#000000"), glow: color(l.glow, "#ff7a1a"),
       glowSize: num(l.glowSize, 0, 10, 2), bold: l.bold !== false, italic: l.italic === true, spacing: num(l.spacing, -0.1, 1, 0.04),
+      // A second colour fades the letters top to bottom; letters can arrive one after another.
+      gradient: l.gradient === true, gradientTo: color(l.gradientTo, "#ffd34d"), letters: num(l.letters, 0, 400, 0),
     } : kind === "image" ? {
       src: safeMedia(l.src), width: num(l.width, 1, 150, 40),
     } : kind === "sound" ? {
       file: safeAudio(l.file), volume: num(l.volume, 0, 1, 0.7),
+    } : kind === "flash" ? {
+      color: color(l.color, "#ffffff"), strength: num(l.strength, 0.05, 1, 0.85),
+    } : kind === "shake" ? {
+      strength: num(l.strength, 0.2, 5, 1.5),
     } : {
       color: color(l.color, "#7a1010"), width: num(l.width, 1, 150, 120), height: num(l.height, 1, 100, 22), skew: num(l.skew, -45, 45, -8),
     }),
@@ -61,7 +69,9 @@ export function validateFlash(s = {}) {
   return {
     id: id(s.id), name: text(s.name, 80, "Untitled flash").trim() || "Untitled flash",
     event: pick(s.event, FLASH_EVENTS, "start"), duration,
-    backdrop: { color: color(s.backdrop?.color, "#000000"), opacity: num(s.backdrop?.opacity, 0, 1, 0.55), vignette: s.backdrop?.vignette !== false },
+    backdrop: { color: color(s.backdrop?.color, "#000000"), opacity: num(s.backdrop?.opacity, 0, 1, 0.55), vignette: s.backdrop?.vignette !== false,
+      // Cinematic letterbox bars.
+      bars: s.backdrop?.bars === true, barSize: num(s.backdrop?.barSize, 2, 25, 11) },
     sound: { file: text(s.sound?.file, 300).trim(), volume: num(s.sound?.volume, 0, 1, 0.6) },
     layers: (Array.isArray(s.layers) ? s.layers : []).slice(0, LAYER_LIMIT).map((l) => validateLayer(l, duration)),
   };
@@ -94,23 +104,35 @@ export function chooseFlash(screens, event, choice, fallback, random = Math.rand
 }
 
 export const STARTER_FLASHES = [
-  { id: "start-initiative", name: "Roll for Initiative!", event: "start", duration: 3200, backdrop: { color: "#140303", opacity: 0.6 },
+  { id: "start-initiative", name: "Roll for Initiative!", event: "start", duration: 3400, backdrop: { color: "#140303", opacity: 0.65, bars: true, barSize: 11 },
     layers: [
-      { kind: "band", name: "Band", y: 50, height: 26, color: "#8a1111", enter: "slide-left", enterMs: 350, exit: "slide-right", exitMs: 350 },
-      { kind: "text", name: "Title", text: "ROLL FOR INITIATIVE!", y: 48, size: 10, glow: "#ff5a1a", enter: "slam", enterMs: 450, start: 150, shake: true },
-      { kind: "text", name: "Scene", text: "{scene}", y: 62, size: 3.5, bold: false, italic: true, glow: "#000000", glowSize: 0, start: 600, enter: "fade" },
+      { kind: "band", name: "Band", y: 50, height: 24, color: "#7a0d0d", enter: "slide-left", enterMs: 320, exit: "slide-right", exitMs: 320 },
+      { kind: "text", name: "Title", text: "ROLL FOR INITIATIVE!", y: 48, size: 10, gradient: true, color: "#ffffff", gradientTo: "#ffb13b", glow: "#ff4a12", glowSize: 3, enter: "none", letters: 40, start: 150, loop: "glow", loopMs: 900 },
+      { kind: "flash", name: "Impact flash", start: 950, duration: 260, strength: 0.8 },
+      { kind: "shake", name: "Impact shake", start: 950, duration: 450, strength: 1.8 },
+      { kind: "text", name: "Scene", text: "{scene}", y: 62, size: 3.5, bold: false, italic: true, glow: "#000000", glowSize: 0, start: 1150, enter: "blur", enterMs: 500 },
+    ] },
+  { id: "start-boss", name: "Boss Battle", event: "start", duration: 4200, backdrop: { color: "#05000d", opacity: 0.8, bars: true, barSize: 14 },
+    layers: [
+      { kind: "text", name: "Warning", text: "WARNING", y: 34, size: 4, color: "#ff3b3b", glow: "#ff0000", glowSize: 2, spacing: 0.6, enter: "fade", enterMs: 200, loop: "flicker", loopMs: 350 },
+      { kind: "text", name: "Title", text: "BOSS BATTLE", y: 50, size: 15, gradient: true, color: "#f2f6ff", gradientTo: "#7a8cff", glow: "#4b2bff", glowSize: 4, enter: "slam", enterMs: 420, start: 700, loop: "heartbeat", loopMs: 1100,
+        keys: [{ at: 1100, x: 50, y: 50, scale: 1 }, { at: 3600, x: 50, y: 50, scale: 1.12 }] },
+      { kind: "flash", name: "Impact flash", start: 950, duration: 300, color: "#d9d4ff", strength: 0.9 },
+      { kind: "shake", name: "Impact shake", start: 950, duration: 600, strength: 2.6 },
+      { kind: "text", name: "Subtitle", text: "{scene}", y: 64, size: 3.2, italic: true, bold: false, color: "#c9c3ff", glowSize: 0, start: 1500, enter: "type", enterMs: 700, loop: "glitch", loopMs: 1600 },
     ] },
   { id: "start-ambush", name: "Ambush!", event: "start", duration: 2600, backdrop: { color: "#000000", opacity: 0.7 },
     layers: [
       { kind: "text", name: "Title", text: "AMBUSH!", y: 50, size: 16, color: "#ffe1c2", glow: "#d10000", glowSize: 4, enter: "zoom", enterMs: 300, exit: "zoom", shake: true },
+      { kind: "flash", name: "Red flash", start: 250, duration: 260, color: "#ff2a2a", strength: 0.55 },
     ] },
-  { id: "end-victory", name: "Victory", event: "end", duration: 3500, backdrop: { color: "#1a1404", opacity: 0.5 },
+  { id: "end-victory", name: "Victory", event: "end", duration: 3600, backdrop: { color: "#1a1404", opacity: 0.5, bars: true, barSize: 9 },
     layers: [
       { kind: "band", name: "Band", y: 50, height: 20, color: "#a7801c", skew: 0, enter: "fade", exit: "fade" },
-      { kind: "text", name: "Title", text: "VICTORY", y: 49, size: 12, color: "#fff6d8", glow: "#ffd34d", glowSize: 3, enter: "slide-up", enterMs: 500, start: 200 },
+      { kind: "text", name: "Title", text: "VICTORY", y: 49, size: 12, gradient: true, color: "#fffbe8", gradientTo: "#ffcc33", glow: "#ffd34d", glowSize: 3, enter: "blur", enterMs: 600, start: 200, letters: 70, loop: "glow", loopMs: 1400 },
     ] },
   { id: "end-over", name: "Battle Over", event: "end", duration: 2800, backdrop: { color: "#000000", opacity: 0.45 },
     layers: [
-      { kind: "text", name: "Title", text: "The battle is over", y: 50, size: 7, italic: true, bold: false, glow: "#7aa7ff", glowSize: 2, enter: "fade", enterMs: 700, exitMs: 700 },
+      { kind: "text", name: "Title", text: "The battle is over", y: 50, size: 7, italic: true, bold: false, glow: "#7aa7ff", glowSize: 2, enter: "blur", enterMs: 800, exit: "blur", exitMs: 700 },
     ] },
 ].map(validateFlash);
