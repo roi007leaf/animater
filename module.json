@@ -37,15 +37,9 @@
         "manifest": "https://github.com/ChasarooniZ/GGG-Sequencer-Sound-DB-Collection/releases/latest/download/module.json"
       },
       {
-        "id": "psfx",
-        "type": "module",
-        "reason": "Preferred spell and weapon sound effects.",
-        "manifest": "https://github.com/JimHPerry/psfx/releases/latest/download/module.json"
-      },
-      {
         "id": "soundfxlibrary",
         "type": "module",
-        "reason": "Fallback sounds when GGG or PSFX are missing.",
+        "reason": "Fallback sounds when GGG or PSFX (free or Patreon) are missing.",
         "manifest": "https://github.com/MaterialFoundry/SoundFxLibrary/releases/latest/download/module.json"
       },
       {
