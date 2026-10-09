@@ -131,3 +131,47 @@ export function targetDistance(source, target, grid = 100) {
     b = centerOf(target);
   return Math.hypot(b.x - a.x, b.y - a.y) / Math.max(1, grid);
 }
+
+// Random variants: stages sharing a variantGroup are alternatives; each play keeps
+// one of them. Each variant is a full stage with its own asset, size and timing.
+export function variantMembers(stages, group) {
+  return group ? stages.filter((s) => s.variantGroup === group) : [];
+}
+export function pickVariants(recipe, random = Math.random) {
+  const groups = new Map();
+  for (const s of recipe.stages) if (s.variantGroup) groups.set(s.variantGroup, [...(groups.get(s.variantGroup) ?? []), s]);
+  const dropped = new Map();
+  for (const members of groups.values()) {
+    if (members.length < 2) continue;
+    const kept = members[Math.min(members.length - 1, Math.floor(random() * members.length))];
+    for (const s of members) if (s !== kept) dropped.set(s.stageId, kept.stageId);
+  }
+  if (!dropped.size) return recipe;
+  // A stage linked to a variant that did not play follows the one that did.
+  // (A variant linked to its own dropped sibling keeps its plain start time instead.)
+  const follow = (id, self) => { const to = dropped.get(id) ?? id; return to === self ? "" : to; };
+  return {
+    ...recipe,
+    stages: recipe.stages.filter((s) => !dropped.has(s.stageId)).map((s) => {
+      const next = { ...s };
+      if (s.afterStage) next.afterStage = follow(s.afterStage, s.stageId);
+      if (s.startRef) next.startRef = follow(s.startRef, s.stageId) || undefined;
+      if (!next.afterStage) { delete next.startMode; delete next.startRef; }
+      return next;
+    }),
+  };
+}
+// Studio monitor: show one variant per group (the selected one if it is a variant,
+// else the first) without changing stage positions, so the timeline still lines up.
+export function previewVariants(recipe, selectedIndex = -1) {
+  const selected = recipe.stages[selectedIndex];
+  const shown = new Map();
+  for (const s of recipe.stages) if (s.variantGroup && !shown.has(s.variantGroup)) shown.set(s.variantGroup, s);
+  if (selected?.variantGroup) shown.set(selected.variantGroup, selected);
+  if (![...shown.keys()].some((g) => variantMembers(recipe.stages, g).length > 1)) return recipe;
+  return {
+    ...recipe,
+    stages: recipe.stages.map((s) => (s.variantGroup && shown.get(s.variantGroup) !== s && variantMembers(recipe.stages, s.variantGroup).length > 1
+      ? { ...s, opacity: 0, volume: 0, skipSound: true } : s)),
+  };
+}

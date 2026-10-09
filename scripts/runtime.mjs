@@ -8,6 +8,7 @@ import { registeredMedia, mediaForReference } from './media-library-model.mjs';
 import { stageTiers } from './quality.mjs';
 import { withLastingArea } from './lasting-area.mjs';
 import { withOutcome } from './outcome.mjs';
+import { pickVariants } from './composition.mjs';
 const SOUND_PRELOAD_TIMEOUT = 2000;
 // "Stay until the effect ends": if no effect from the item shows up on the token
 // within this time (never applied), the layer ends instead of lingering.
@@ -144,6 +145,8 @@ export class AnimaterRuntime {
     if (recipe.lifecycle === "document" && !preview)
       throw Error("Enable this condition or effect in its catalog. Native documents control its lifetime; use Local canvas preview to test it.");
     if (recipe.lifecycle === "document" && preview) this.host.previewBody?.(recipe, context.source);
+    // Random variants: each play keeps one stage of every variant group.
+    recipe = pickVariants(recipe);
     // A miss never lands on the target; a critical hit lands harder.
     if (context.outcome) recipe = validateRecipe(withOutcome(recipe, context));
     recipe = prepareRecipeSounds(recipe, this.host.soundCatalog?.());

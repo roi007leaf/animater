@@ -5,7 +5,7 @@
 // playhead and zoom are presentation only.
 import { KINDS, EVENTS, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
 import { timelineLayout, packLanes, linkStartModes } from "./choreography.mjs";
-import { sampleRecipe, timedStages } from "./composition.mjs";
+import { sampleRecipe, timedStages, previewVariants } from "./composition.mjs";
 import { previewRecipeSounds } from "./spell-sounds.mjs";
 import { RecipePreview } from "./recipe-preview.mjs";
 
@@ -149,13 +149,17 @@ function ensureRun(w) {
   const scene = el(w, "[data-recipe-scene]");
   if (!scene || w.busy) return null;
   const run = w.previewRun;
-  if (run?.scene === scene && run.seek && !run.abort.signal.aborted) return run;
+  // Selecting another random variant rebuilds the preview so that variant shows.
+  const edited = w.recipe()?.stages[w.stageIndex], variantKey = edited?.variantGroup ? edited.stageId : "";
+  if (run?.scene === scene && run.variantKey === variantKey && run.seek && !run.abort.signal.aborted) return run;
   run?.stop?.();
   try {
     let recipe;
     try { recipe = validateRecipe(w.recipe()); } catch { recipe = clone(w.recipe()); }
-    recipe = previewRecipeSounds({ ...recipe, previewDistance: 3 }, w.host.soundCatalog?.());
+    // One variant per group plays in the monitor: the one being edited.
+    recipe = previewRecipeSounds(previewVariants({ ...recipe, previewDistance: 3 }, w.stageIndex), w.host.soundCatalog?.());
     const next = new RecipePreview(scene, recipe, (frame) => w.updatePlayback(frame), { tokenFx: w.host.createTokenFxPreview, sceneFx: w.host.createSceneFxPreview });
+    next.variantKey = variantKey;
     next.setMuted(mutedStages(w));
     w.previewRun = next;
     return next;

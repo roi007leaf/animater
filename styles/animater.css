@@ -2313,3 +2313,11 @@
 /* Linked to nothing, or sharing its link with another recipe: said on the card. */
 .animater .an-link-note { margin-top: 6px; font-size: 11px; line-height: 1.35; color: var(--an-muted); }
 .animater .an-link-note.is-warn { color: #ffb86b; }
+/* Random variants: a framed note under Type, with small actions. */
+.animater .an-variant { display: grid; gap: 6px; margin: 4px 0 10px; padding: 10px 12px; border-radius: 10px; background: rgba(158, 138, 255, 0.07); border: 1px solid rgba(158, 138, 255, 0.3); }
+.animater .an-variant b { font-size: 13px; }
+.animater .an-variant small { display: block; color: var(--an-muted); font-size: 11px; line-height: 1.4; }
+.animater .an-variant-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.animater .an-variant button { width: auto; height: 28px; padding: 0 10px; font-size: 12px; white-space: nowrap; flex: none; }
+.animater .an-variant.is-empty { padding: 0; background: none; border: 0; }
+.animater .an-variant.is-empty button { justify-self: start; }

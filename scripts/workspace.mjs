@@ -44,7 +44,7 @@ import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem
 import {DndCatalogWorkspace} from './dnd5e-catalog-ui.mjs';
 import {sfCatalogProfile} from './sf2e-catalog.mjs';
 import { ORB_ELEMENTS, orbRecipe } from "./orb-builder.mjs";
-import { sampleRecipe, timedStages } from "./composition.mjs";
+import { sampleRecipe, timedStages, variantMembers, previewVariants } from "./composition.mjs";
 import {
   OPTION_GROUPS,
   normalizeOptions,
@@ -640,7 +640,7 @@ export class Workspace {
   timelineBarHTML(r, row, index, total) {
     const pct = ms => ((ms / total) * 100).toFixed(3);
     const i = row.index, s = r.stages[i], name = this.stageLabel(s), when = this.timelineWhen(s, r), length = ((row.end - row.start) / 1000).toFixed(2);
-    return `<div class="an-tl-bar kind-${esc(s.kind)}${i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" data-tooltip="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${esc(name)}</span><small class="an-tl-bar-when">${esc(when)}</small><span class="an-tl-resize" data-tl-resize="${i}" data-tooltip="Drag to change length"></span></div>`;
+    return `<div class="an-tl-bar kind-${esc(s.kind)}${i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" data-tooltip="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${variantMembers(r.stages, s.variantGroup).length > 1 ? "🎲 " : ""}${esc(name)}</span><small class="an-tl-bar-when">${esc(when)}</small><span class="an-tl-resize" data-tl-resize="${i}" data-tooltip="Drag to change length"></span></div>`;
   }
   timelineX(total, ms) { return `calc(var(--tl-label) + (100% - var(--tl-label)) * ${Math.max(0, Math.min(1, ms / total))})`; }
   onTimelinePointer(e) {
@@ -751,7 +751,7 @@ export class Workspace {
     if (status) status.textContent = "Ready · canvas tokens updated";
   }
   recipePreviewHTML(recipe, tokens = this.host.previewTokens?.() ?? {}) {
-    recipe = previewRecipeSounds(recipe, this.host.soundCatalog?.());
+    recipe = previewRecipeSounds(previewVariants(recipe, this.stageIndex), this.host.soundCatalog?.());
     if (
       recipe.stages.every(
         (s) =>
@@ -1000,7 +1000,7 @@ export class Workspace {
       "Loading recipe assets…";
     const run = new RecipePreview(
       this.root.querySelector("[data-recipe-scene]"),
-      recipe,
+      previewVariants(recipe, this.stageIndex),
       (frame) => this.updatePlayback(frame),
       {tokenFx:this.host.createTokenFxPreview,sceneFx:this.host.createSceneFxPreview},
     );
@@ -1101,6 +1101,13 @@ export class Workspace {
     if (r?.lifecycle !== "document") return "";
     const kind = catalogStateEntry(r.stateEntry)?.kind;
     return kind === "condition" ? "Condition" : kind === "effect" ? "Effect" : "Condition / effect";
+  }
+  // Random variants: copies of a stage, each with its own asset, size and timing; one plays each time.
+  randomVariantHTML(r, s) {
+    const members = variantMembers(r.stages, s.variantGroup), full = r.stages.length >= MAX_STAGES || this.busy;
+    if (members.length < 2)
+      return `<div class="an-variant is-empty"><button class="an-quiet" data-action="variant-add" ${full ? "disabled" : ""}>🎲 Add a random variant</button><small>A copy of this stage you can give different art, size or timing. Each play picks one of them.</small></div>`;
+    return `<div class="an-variant"><b>🎲 Random variant ${members.indexOf(s) + 1} of ${members.length}</b><small>Each play picks one of these ${members.length} stages. Give each its own asset, size and timing; the others are hidden in the preview while you edit this one.</small><div class="an-variant-actions"><button class="an-quiet" data-action="variant-add" ${full ? "disabled" : ""}>+ Add variant</button><button class="an-quiet" data-action="variant-leave">Make it a normal stage</button></div></div>`;
   }
   // Whether a recipe can play: linked to nothing yet, or sharing its link with another recipe.
   linkNote(r) {
@@ -1205,7 +1212,7 @@ export class Workspace {
     const assetFree = ["motion", "sprite", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind);
     return `<div class="an-inspector-head"><span class="an-eyebrow">STAGE ${index + 1} OF ${r.stages.length}</span><span class="an-inspector-tools"><span class="an-st-kind kind-${esc(s.kind)}">${esc(KINDS[s.kind])}</span><button class="an-icon is-danger an-stage-remove" data-action="remove-stage" aria-label="Remove this stage" data-tooltip="${r.stages.length === 1 ? "A recipe needs at least one stage" : "Remove this stage"}" ${r.stages.length === 1 || this.busy ? "disabled" : ""}><i class="fas fa-trash" aria-hidden="true"></i></button></span></div>
       <div class="an-editor-section an-stage-fields">
-        <label>Stage name<input data-field="label" data-index="${index}" value="${esc(s.label ?? "")}" placeholder="${esc(KINDS[s.kind])}"></label>${this.stageVariantHTML(s, index, linked)}
+        <label>Stage name<input data-field="label" data-index="${index}" value="${esc(s.label ?? "")}" placeholder="${esc(KINDS[s.kind])}"></label>${this.stageVariantHTML(s, index, linked)}${linked ? "" : this.randomVariantHTML(r, s)}
         ${OPTIONAL_FX_KINDS.has(s.kind) ? this.optionalFxControlsHTML(s,index) : s.kind === "motion" ? this.motionControlsHTML(s, index) : s.kind === "sound" ? `<label>Audio file<input data-field="soundFile" data-index="${index}" placeholder="sounds/spell.ogg" value="${esc(s.soundFile)}"></label>${this.host.soundCatalog || this.host.pickMedia ? `<button data-action="browse-sound">Browse sounds</button>` : ""}${this.soundVolumeHTML(s, index, audioPreview)}<p class="an-hint">Relative Foundry audio path. Sound plays with recipe; Stop ends it too.</p>` : s.kind === "sprite" ? `<p class="an-hint">Copies token artwork into Sequencer. Configure copies, shadows and tracks below.</p>` : `<label>Visual asset<button class="an-asset-picker" data-action="browse">${this.assetThumbHTML(file)}<span class="an-asset-picker-text">${esc(key ?? s.assets[0] ?? "Choose an asset")}<span>Browse ↗</span></span></button></label>${key && key !== s.assets[0] ? `<p class="an-hint">Using installed fallback variant. Choose another in Assets anytime.</p>` : ""}`}
         ${["sprite", "aura", "tokenfx"].includes(s.kind) && !linked ? `<label>Subject<select data-field="subject" data-index="${index}">${options({ source: "Caster token", targets: "Target tokens" }, s.subject ?? "source")}</select></label>` : ""}
         ${r.stages.length > 1 && !linked ? `<div class="an-field-row an-start-row"><label>Start<select data-field="startMode" data-index="${index}">${options({ with: "With", after: "After", time: "At a set time", ...(s.afterStage && !s.startMode ? { link: "Linked (custom)" } : {}) }, s.startMode ?? (s.afterStage ? "link" : "time"))}</select></label>${s.startMode ? `<label>Stage<select data-field="startRef" data-index="${index}">${options(Object.fromEntries(r.stages.filter((o, j) => j !== index).map(o => [o.stageId, this.stageLabel(o)])), s.startRef ?? s.afterStage)}</select></label>` : ""}${s.startMode === "after" ? `<label>Gap (ms)<input type="number" min="0" max="30000" step="50" data-field="startOffset" data-index="${index}" value="${s.startOffset ?? 0}"></label>` : ""}</div>` : ""}
@@ -1213,7 +1220,7 @@ export class Workspace {
         ${linked && ["aura", "tokenfx"].includes(s.kind) ? `<p class="an-hint">Stays on the affected token for as long as the condition or effect is on it. Duration only sets the preview length.</p>` : ""}${s.kind === "aura" && !linked ? `<label class="an-check an-stay"><input type="checkbox" data-field="persist" data-index="${index}" ${s.persist ? "checked" : ""}> Stay until the effect ends</label><p class="an-hint">${s.persist ? "Loops on the token until the spell's effect (for example “Effect: Shield”) is removed, the spell ends or you press Stop. If no effect is applied within a minute, it stops on its own. Duration only sets the preview length." : "Tick to keep a looping asset on the token for as long as the spell's effect lasts."}</p>` : ""}
         ${this.compositionHTML(r, s, index)}
         ${this.stageOptionsHTML(s, index, linked)}
-        <details class="an-advanced" data-options-group="basic"><summary>Asset & visibility</summary>${assetFree ? "" : `<label>Asset list (comma separated)<textarea rows="2" data-field="assets" data-index="${index}">${esc(s.assets.join(","))}</textarea></label><label class="an-check"><input type="checkbox" data-field="randomAsset" data-index="${index}" ${s.randomAsset ? "checked" : ""}> Pick a random one each play</label><p class="an-hint">${s.randomAsset ? "Each play picks one of the installed assets in the list, so repeated plays look different." : "The first installed asset plays; the rest are fallbacks. Tick to pick one at random each play instead."}</p>`}${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Opacity<input type="number" min="0.1" max="1" step="0.1" data-field="opacity" data-index="${index}" value="${s.opacity}"></label><label class="an-check"><input type="checkbox" data-field="below" data-index="${index}" ${s.below ? "checked" : ""}> Below tokens</label>`}</details></div>
+        <details class="an-advanced" data-options-group="basic"><summary>Asset & visibility</summary>${assetFree ? "" : `<label>Fallback keys (comma separated)<textarea rows="2" data-field="assets" data-index="${index}">${esc(s.assets.join(","))}</textarea></label>`}${["motion", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind) ? "" : `<label>Opacity<input type="number" min="0.1" max="1" step="0.1" data-field="opacity" data-index="${index}" value="${s.opacity}"></label><label class="an-check"><input type="checkbox" data-field="below" data-index="${index}" ${s.below ? "checked" : ""}> Below tokens</label>`}</details></div>
 `;
   }
   builderHTML() {
@@ -2097,6 +2104,27 @@ export class Workspace {
         this.updateInspector();
         return;
       }
+      if (action === "variant-add" || action === "variant-leave") {
+        const r = this.edit(), i = Math.min(this.stageIndex, r.stages.length - 1), s = r.stages[i];
+        if (action === "variant-add") {
+          if (r.stages.length >= MAX_STAGES) throw Error(`Recipes support up to ${MAX_STAGES} stages.`);
+          s.variantGroup ??= crypto.randomUUID().slice(0, 8);
+          const n = variantMembers(r.stages, s.variantGroup).length + 1;
+          const copy = { ...clone(s), stageId: crypto.randomUUID(), label: `${(s.label || KINDS[s.kind]).replace(/ · variant \d+$/, "")} · variant ${n}` };
+          const last = r.stages.lastIndexOf(variantMembers(r.stages, s.variantGroup).at(-1));
+          r.stages.splice(last + 1, 0, copy);
+          this.stageIndex = last + 1;
+          this.message = "Variant added at the same time. Change its asset, size or timing; each play picks one of them.";
+        } else {
+          const group = s.variantGroup;
+          delete s.variantGroup;
+          const rest = variantMembers(r.stages, group);
+          if (rest.length === 1) delete rest[0].variantGroup;
+          this.message = "It now plays every time.";
+        }
+        this.render();
+        return;
+      }
       if (action === "browse") {
         this.mediaLibrary ??= new MediaLibrary(this);
         this.mediaLibrary.open('animation');
@@ -2349,7 +2377,7 @@ export class Workspace {
                 };
                 const visual =
                   scene &&
-                  new RecipePreview(scene, recipe, (frame) =>
+                  new RecipePreview(scene, previewVariants(recipe, this.stageIndex), (frame) =>
                     this.updatePlayback(frame),
                   {tokenFx:this.host.createTokenFxPreview,sceneFx:this.host.createSceneFxPreview});
                 void visual?.prepareTokenFx();
