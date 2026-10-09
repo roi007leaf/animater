@@ -28,7 +28,8 @@ export function downMoment(combat, actor) {
   if (side === "party") return "partyDown";
   if (side !== "enemies") return null;
   const standing = Array.from(combat.combatants).filter((c) => sideOf(c.actor, c.token) === "enemies" && !c.defeated && hpOf(c.actor) > 0);
-  return standing.length === 1 ? "lastEnemy" : standing.length ? "enemyDown" : null;
+  // The last one dropping is its own moment (Finish Him!); the combat's ending plays later, when it is closed.
+  return standing.length === 1 ? "lastEnemy" : standing.length ? "enemyDown" : "finalEnemy";
 }
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
@@ -100,8 +101,11 @@ export function flashScreens(host) {
   // The combat a moment belongs to: the one given, else a started combat on this scene (an
   // unstarted encounter may be the "current" one), else the current one.
   const runningCombat = (actor) => game.combats?.find((c) => c.started && (actor ? Array.from(c.combatants).some((cb) => cb.actor?.id === actor.id) : c.scene?.id === canvas.scene?.id)) ?? game.combat;
+  // The last enemy falls once per combat (dropping to 0 HP, then being marked defeated, is one fall).
+  const finales = new Set();
   function moment(event, extra = {}, combat = runningCombat()) {
     if (!combat?.started) return;
+    if (event === "finalEnemy" && activeGM()) { if (finales.has(combat.id)) return; finales.add(combat.id); }
     if (!activeGM()) return void game.socket.emit(`module.${ID}`, { type: "flash-moment", sender: host.clientId, event, extra, combatId: combat.id });
     if (showing) return;
     play(forCombat(combat, event), { everyone: true, combat, extra });
@@ -119,6 +123,12 @@ export function flashScreens(host) {
     if (userId !== game.user.id || !(options.animaterHpBefore > 0) || !(hpOf(actor) <= 0)) return;
     const combat = runningCombat(actor), event = downMoment(combat, actor);
     if (event) moment(event, { name: actor.name }, combat);
+  });
+  // A creature marked defeated (dead) without dropping to 0 HP first: told by the client that marked it.
+  Hooks.on("updateCombatant", (combatant, changes, options, userId) => {
+    if (userId !== game.user.id || changes.defeated !== true || !(hpOf(combatant.actor) > 0)) return;
+    const event = downMoment(combatant.combat, combatant.actor);
+    if (event) moment(event, { name: combatant.name ?? combatant.actor?.name ?? "" }, combatant.combat);
   });
   // A critical hit: told by the client that rolled it.
   if (["pf2e", "sf2e"].includes(game.system.id)) Hooks.on("createChatMessage", (message) => {

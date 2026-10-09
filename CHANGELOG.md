@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- **New moment: Last enemy falls.** A during-combat flash screen can now play when the final enemy drops to 0 HP or is marked defeated, once per combat. Before, nothing marked that moment; the combat's ending screen only plays when the combat is closed.
+- **Finish Him! plays when the last enemy falls**, not when one enemy is left standing (that is still *Last One Standing*). A copy you already made from the gallery keeps *Last enemy standing*; switch its *Plays at* to *Last enemy falls*.
+
 ## 0.3.1 (2026-10-09)
 
 ### Updates from inside Foundry work again

@@ -111,7 +111,9 @@ test("moments: who fell decides enemy defeated, last enemy standing or party mem
   const combat = (list) => ({ started: true, combatants: list });
   assert.equal(downMoment(combat([orcA, orcB, orcC, hero]), orcA.actor), "enemyDown");
   assert.equal(downMoment(combat([orcA, orcB, hero]), orcA.actor), "lastEnemy");
-  assert.equal(downMoment(combat([orcA, hero]), orcA.actor), null, "the last enemy falling is the combat's ending, not a moment");
+  assert.equal(downMoment(combat([orcA, hero]), orcA.actor), "finalEnemy", "the last enemy falling is its own moment");
+  const dead = { ...orcB, defeated: true };
+  assert.equal(downMoment(combat([dead, hero]), dead.actor), "finalEnemy", "marked defeated with HP left still counts as falling");
   assert.equal(downMoment(combat([orcA, hero]), hero.actor), "partyDown");
   assert.equal(downMoment({ started: false, combatants: [orcA, orcB] }, orcA.actor), null);
 });
@@ -277,9 +279,9 @@ test("quick tools follow the selected layer and change it", async () => {
   assert.equal(ed.draft.layers[2].start, 900);
 });
 
-test("a Finish Him! starter plays when one enemy is left", () => {
+test("a Finish Him! starter plays when the last enemy falls", () => {
   const s = STARTER_FLASHES.find((f) => f.id === "last-finish");
-  assert.equal(s.event, "lastEnemy");
+  assert.equal(s.event, "finalEnemy", "Finish Him! plays when the last enemy falls");
   assert.ok(s.layers.some((l) => l.kind === "text" && l.text === "FINISH HIM!"));
   assert.ok(s.layers.some((l) => l.kind === "punch"));
   assert.equal(s.backdrop.freeze, "dark");

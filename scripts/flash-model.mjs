@@ -3,10 +3,10 @@
 // image and band layers, each with a position, timing, entrance and exit.
 export const FLASH_EVENTS = Object.freeze({
   start: "Combat start", end: "Combat end", any: "Combat start or end", action: "Before an animation",
-  round: "New round", crit: "Critical hit", enemyDown: "Enemy defeated", lastEnemy: "Last enemy standing", partyDown: "Party member down",
+  round: "New round", crit: "Critical hit", enemyDown: "Enemy defeated", lastEnemy: "Last enemy standing", finalEnemy: "Last enemy falls", partyDown: "Party member down",
 });
 // Moments during combat (not start or end): one default each, set on the Flash screens page.
-export const MOMENT_EVENTS = ["round", "crit", "enemyDown", "lastEnemy", "partyDown"];
+export const MOMENT_EVENTS = ["round", "crit", "enemyDown", "lastEnemy", "finalEnemy", "partyDown"];
 // Animated backgrounds: JB2A loops that fill the screen behind the layers.
 export const FLASH_BACKGROUNDS = Object.freeze({
   "": "None", "jb2a.screen_overlay.01.bad_omen": "Bad omen", "jb2a.ambient_fog.001.loop.large.white": "Fog",
@@ -235,7 +235,7 @@ export const STARTER_FLASHES = [
       { kind: "text", name: "Title", text: "LAST ONE STANDING", y: 70, size: 6, color: "#ffd2d2", glow: "#ff0000", glowSize: 2, spacing: 0.2, start: 400, enter: "type", enterMs: 600 },
     ] },
   // Fighting-game style: the world freezes, a red burst, and the call booms in with a camera hit.
-  { id: "last-finish", name: "Finish Him!", event: "lastEnemy", duration: 2600, backdrop: { color: "#0a0000", opacity: 0.6, vignette: true, freeze: "dark" },
+  { id: "last-finish", name: "Finish Him!", event: "finalEnemy", duration: 2600, backdrop: { color: "#0a0000", opacity: 0.6, vignette: true, freeze: "dark" },
     layers: [
       { kind: "burst", name: "Red burst", y: 48, color: "#ff3a12", density: 22, width: 150, opacity: 0.38, start: 280, enter: "zoom", enterMs: 260, exit: "fade", exitMs: 400 },
       { kind: "particles", name: "Embers", ptype: "embers", count: 40, speed: 1.2, start: 280, enter: "fade", enterMs: 300, exit: "fade", exitMs: 400 },
