@@ -2330,3 +2330,65 @@
 .animater .an-tl-variant-tabs button.is-on { color: #1b1530; background: #b9a6ff; }
 .animater .an-tl-variant-tabs button[data-action="variant-add"] { flex: 0 0 14px; }
 .animater .an-st-tl .an-tl-bar.is-deck { border-top-left-radius: 0; border-top-right-radius: 0; }
+.animater .an-variant button.is-danger { color: #ff8a8a; }
+
+/* ---------- Combat flash screens ---------- */
+/* The screen itself (editor frame and live overlay): container units keep both alike. */
+.an-flash { position: absolute; inset: 0; overflow: hidden; container-type: size; pointer-events: none; }
+.an-flash-overlay { position: fixed; inset: 0; z-index: 9000; pointer-events: none; }
+.an-flash-backdrop, .an-flash-vignette { position: absolute; inset: 0; }
+.an-flash-vignette { background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.75) 100%); }
+.an-flash-layer { position: absolute; width: max-content; max-width: 96cqw; transform: translate(-50%, -50%); text-align: center; line-height: 1; will-change: transform, opacity; }
+.an-flash-text { display: block; white-space: pre-wrap; max-width: 95cqw; }
+.an-flash-band { display: block; }
+.an-flash-layer img, .an-flash-layer video { display: block; height: auto; }
+.an-flash-missing { display: block; padding: 2cqh; border: 1px dashed rgba(255, 255, 255, 0.7); color: #fff; font-size: 2.5cqh; }
+.an-flash.is-editing { pointer-events: auto; }
+.an-flash.is-editing .an-flash-layer { cursor: move; }
+.an-flash.is-editing .an-flash-layer.is-selected { outline: 1px dashed rgba(255, 255, 255, 0.8); outline-offset: 4px; }
+
+/* The editor page: library, stage and layers, inspector. */
+.animater .an-flash-page { display: grid; grid-template-columns: 200px minmax(0, 1fr) 290px; gap: 14px; align-items: start; }
+.animater .an-flash-list { display: grid; gap: 6px; }
+.animater .an-flash-list .an-section-title button { width: auto; padding: 4px 10px; }
+.animater .an-flash-card { display: grid; gap: 2px; width: 100%; height: auto; padding: 8px 10px; text-align: left; border-radius: 10px; background: var(--an-surface); border: 1px solid var(--an-line); }
+.animater .an-flash-card small { color: var(--an-muted); font-size: 11px; }
+.animater .an-flash-card.is-selected { border-color: var(--an-accent, #9e8aff); background: rgba(158, 138, 255, 0.1); }
+.animater .an-flash-main { display: grid; gap: 10px; min-width: 0; }
+.animater .an-flash-head { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; }
+.animater .an-flash-head label { display: grid; gap: 2px; font-size: 11px; color: var(--an-muted); }
+.animater .an-flash-head label input, .animater .an-flash-head label select { width: auto; min-width: 80px; }
+.animater .an-flash-head .an-st-name { flex: 1 1 220px; min-width: 160px; }
+.animater .an-flash-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
+.animater .an-flash-actions button { width: auto; height: 34px; white-space: nowrap; }
+.animater .an-flash-stage-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--an-line); }
+.animater .an-flash-frame { position: relative; aspect-ratio: 16 / 9; background: repeating-conic-gradient(#20242e 0 25%, #1a1d26 0 50%) 0 0 / 24px 24px; }
+.animater .an-flash-transport { display: flex; align-items: center; gap: 8px; }
+.animater .an-flash-transport button { width: auto; height: 32px; white-space: nowrap; }
+.animater .an-flash-transport input[type="range"] { flex: 1; }
+.animater .an-flash-transport span { font-size: 12px; color: var(--an-muted); white-space: nowrap; }
+.animater .an-flash-layers { display: grid; gap: 4px; }
+.animater .an-flash-layers .an-section-title span { display: flex; gap: 6px; }
+.animater .an-flash-layers .an-section-title button { width: auto; padding: 3px 9px; font-size: 12px; }
+.animater .an-flash-row { display: grid; grid-template-columns: 130px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 3px 6px; border-radius: 8px; }
+.animater .an-flash-row.is-selected { background: rgba(158, 138, 255, 0.12); }
+.animater .an-flash-row-name { width: 100%; height: 24px; padding: 0 6px; text-align: left; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: none; border: 0; }
+.animater .an-flash-row-track { position: relative; height: 18px; border-radius: 4px; background: rgba(255, 255, 255, 0.05); cursor: pointer; }
+.animater .an-flash-row-bar { position: absolute; top: 2px; bottom: 2px; border-radius: 4px; background: #9e8aff; pointer-events: none; }
+.animater .an-flash-row-bar.kind-band { background: #c0563b; }
+.animater .an-flash-row-bar.kind-image { background: #3fa7d6; }
+.animater .an-flash-row-head { position: absolute; top: -2px; bottom: -2px; width: 2px; margin-left: -1px; background: #ffd34d; pointer-events: none; }
+.animater .an-flash-row-tools { display: flex; gap: 2px; }
+.animater .an-flash-row-tools button { width: 22px; height: 22px; min-height: 0; padding: 0; font-size: 10px; }
+.animater .an-flash-inspector { display: grid; gap: 10px; }
+.animater .an-flash-sound { display: flex; gap: 4px; }
+.animater .an-flash-sound button { width: 30px; flex: none; }
+.animater .an-flash-defaults { display: flex; flex-wrap: wrap; gap: 6px; }
+.animater .an-flash-defaults button { width: auto; height: 30px; font-size: 12px; }
+@container (max-width: 1100px) { .animater .an-flash-page { grid-template-columns: minmax(0, 1fr); } }
+
+/* Combat Tracker: this combat's opening and ending flash screens. */
+.animater-flash-pick { display: flex; align-items: center; gap: 6px; padding: 4px 6px; font-size: 11px; flex-wrap: wrap; }
+.animater-flash-pick label { display: flex; align-items: center; gap: 4px; margin: 0; }
+.animater-flash-pick select { height: 22px; max-width: 120px; font-size: 11px; padding: 0 4px; }
+.animater-flash-pick button { flex: none; width: 24px; height: 22px; min-height: 0; padding: 0; line-height: 1; }

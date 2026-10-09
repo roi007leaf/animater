@@ -1,5 +1,5 @@
 import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mjs";
-import { combatMoments, COMBAT_MOMENTS, COMBAT_CHOICES } from "./combat-moments.mjs";
+import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
@@ -51,7 +51,7 @@ import { dndSettingKey,sfSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
 import {sfStateHost} from './sf2e-states.mjs';
-import {QUALITY_CHOICES,allowsMotion,allowsTokenFx,stateBudget,usersForTier,usersForSound} from './quality.mjs';
+import {QUALITY_CHOICES,qualityRank,allowsMotion,allowsTokenFx,stateBudget,usersForTier,usersForSound} from './quality.mjs';
 import {ConditionBody,bodyTreatment} from './condition-body.mjs';
 let conditionBody;
 const localQuality=()=>{try{return game.settings.get('animater','quality');}catch{return 'full';}};
@@ -66,7 +66,7 @@ const mediaLibraryLoader=new MediaLibraryLoader(()=>({modules:game.modules,datab
 let motions;
 let optionalFx;
 let persistentStates;
-let moments;
+let flash;
 const clientId = crypto.randomUUID();
 const fxCatalog = () => installedFxCatalog({
   modules:game.modules, tokenMagic:globalThis.TokenMagic, fxmaster:globalThis.FXMASTER?.api,
@@ -488,6 +488,19 @@ function workspaceHost() {
     soundCatalog: () =>
       installedSoundCatalog(game.modules, globalThis.Sequencer?.Database),
     weaponScale: () => Number(game.settings.get(ID, "weaponScale")) || 1,
+    // Flash screens (GM): the library, defaults and playback for the editor page.
+    ...(game.user.isGM ? {
+      flashScreens: () => flash?.screens() ?? [],
+      saveFlashScreens: (list) => flash.save(list),
+      flashDefaults: () => flash?.defaults() ?? {},
+      setFlashDefault: (event, id) => flash.setDefault(event, id),
+      playFlash: (screen, options) => flash.play(screen, options),
+      flashSound: (screen) => flash.sound(screen),
+      flashVars: () => flash?.vars() ?? {},
+      flashFonts: () => [...new Set(["Signika", "Modesto Condensed", "Amiri", ...Object.keys(CONFIG.fontDefinitions ?? {})])],
+      resolveFlashMedia: (src) => (!src || /\.(webm|mp4|png|jpe?g|webp|gif|svg)$/i.test(src) ? src : runtime.getCatalog().find((i) => i.key === src || i.key.startsWith(`${src}.`))?.file ?? ""),
+      confirm: (content) => foundry.applications.api.DialogV2.confirm({ window: { title: "Animater" }, content: `<p>${content}</p>` }),
+    } : {}),
     // Players edit their own recipes (on their user); the GM's stay world-wide.
     // While the GM reviews a player, the Studio shows and saves that player's recipes.
     recipes: () => { const user = reviewedUser(); return user ? clone(user.getFlag(ID, "playerRecipes")?.recipes ?? []) : game.user.isGM ? recipes() : ownPlayerRecipes(); },
@@ -733,12 +746,7 @@ Hooks.once("init", () => {
     // Your own lasting animations start or stop with it.
     onChange: () => persistentStates?.schedule(),
   });
-  game.settings.register(ID, COMBAT_MOMENTS, {
-    name: "Combat moments",
-    hint: "Optional. A ring under whoever's turn it is, and a pulse on every combatant when combat starts. Drawn once by the GM; players who set Animation quality to Off don't see them.",
-    scope: "world", config: true, type: String, choices: COMBAT_CHOICES, default: "off",
-    onChange: () => void moments?.markTurn(game.combat),
-  });
+  registerFlashSettings(ID);
   game.settings.register(ID, DAMAGE_REACTIONS, {
     name: "Damage reactions",
     hint: "A token that takes energy damage (fire, cold, lightning, acid, poison and so on) flashes in that damage's look. Physical damage keeps its weapon animation only.",
@@ -837,7 +845,7 @@ Hooks.once("ready", () => {
     regionFx,
     trace:(status,detail)=>runtime?.trace(status,detail)});
   game.socket?.on(`module.${ID}`, (data) => {
-    if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); }
+    if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); flash?.receive(data); }
   });
   Hooks.on("canvasTearDown", () => {
     void persistentStates?.clear();
@@ -1056,25 +1064,14 @@ Hooks.once("ready", () => {
     context: () => ({ systemId: game.system.id, userId: game.user.id, twoe: ["pf2e", "sf2e"].includes(game.system.id) ? twoeEvent : null }),
   });
   registerSpellArsenal();
+  // Combat flash screens: the active GM plays one to everyone when combat starts or ends.
+  flash = flashScreens({
+    ID, clientId,
+    quietHere: () => qualityRank(localQuality()) === 0,
+    resolveMedia: (src) => (!src || /\.(webm|mp4|png|jpe?g|webp|gif|svg)$/i.test(src) ? src : runtime.getCatalog().find((i) => i.key === src || i.key.startsWith(`${src}.`))?.file ?? ""),
+    trace: (status, detail) => runtime.trace(status, detail),
+  });
   // Damage rolls are remembered briefly so the HP change that follows knows its damage type.
-  // Combat moments: the active GM moves the turn ring and pulses combat start.
-  if (globalThis.Sequencer) {
-    moments = combatMoments({
-      mode: () => game.settings.get(ID, COMBAT_MOMENTS),
-      isActiveGM: () => game.user.isGM && (game.users.activeGM ? game.users.activeGM.isSelf : true),
-      sceneId: () => canvas.scene?.id,
-      tokenOf: (c) => c?.token?.object ?? canvas.tokens?.get(c?.tokenId) ?? null,
-      firstInstalled: (keys) => keys.map((k) => resolveAsset({ kind: "cast", assets: [k] }, runtime.getCatalog())).find(Boolean) ?? null,
-      users: () => usersForTier(Array.from(game.users?.contents ?? []), 1),
-      sequence: () => new Sequence({ moduleName: ID }),
-      end: (name) => Sequencer.EffectManager.endEffects({ name }),
-    });
-    const markTurn = (combat) => void moments.markTurn(combat).catch((error) => runtime.trace("Blocked", `Turn marker: ${error.message}`));
-    Hooks.on("combatStart", (combat) => { void moments.pulseStart(combat).catch((error) => runtime.trace("Blocked", `Combat start: ${error.message}`)); markTurn(combat); });
-    Hooks.on("updateCombat", (combat, changes) => { if (["turn", "round", "started"].some((k) => k in changes)) markTurn(combat); });
-    Hooks.on("deleteCombat", () => void moments.clearMarker());
-    Hooks.on("canvasReady", () => markTurn(game.combat));
-  }
   // D&D reports the damage it applies on the applying client; PF2e/SF2e through the roll message.
   const damageLog = [];
   const remember = (damage) => {

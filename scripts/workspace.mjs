@@ -38,6 +38,7 @@ import { weaponCatalogHTML } from "./weapon-catalog-ui.mjs";
 import { openCatalogDetails } from "./catalog-details.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, catalogStateEntry, stateRecipe, normalizeStateCatalogState, useStateEntry } from "./state-catalog.mjs";
 import { stateCatalogHTML } from "./state-catalog-ui.mjs";
+import { FlashEditor } from "./flash-editor.mjs";
 import { recipeConflicts, unlinked } from "./recipe-conflicts.mjs";
 import { handleStateCatalogAction } from "./state-catalog-actions.mjs";
 import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem} from './catalog-system.mjs';
@@ -265,7 +266,7 @@ export class Workspace {
     root.addEventListener("drop", (e) => this.onDrop(e), {
       signal: this.abort.signal,
     });
-    root.addEventListener("pointerdown", (e) => { if (studioPointer(this, e)) return; this.onSplitterPointer(e); this.onTimelinePointer(e); }, { signal: this.abort.signal });
+    root.addEventListener("pointerdown", (e) => { if (this.page === "flash" && this.flashEditor?.pointer(e)) return; if (studioPointer(this, e)) return; this.onSplitterPointer(e); this.onTimelinePointer(e); }, { signal: this.abort.signal });
     root.addEventListener("wheel", (e) => studioWheel(this, e), { passive: false, signal: this.abort.signal });
     root.addEventListener("contextmenu", (e) => studioContextMenu(this, e), { signal: this.abort.signal });
     root.addEventListener("dblclick", (e) => {
@@ -497,6 +498,7 @@ export class Workspace {
           ["recipes", "✦", "Recipes"],
           ...catalogNavigation(env),
           ["assets", "▦", "Assets"],
+          ...(this.host.flashScreens ? [["flash", "⚡", "Flash screens"]] : []),
           ["activity", "◷", "Activity"],
           ["setup", "⚙", "Setup"],
         ])
@@ -512,12 +514,14 @@ export class Workspace {
         ${this.reviewBannerHTML()}
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
         ${this.envBannerHTML(env)}
-        ${this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
+        ${this.page === "flash" && this.host.flashScreens ? (this.flashEditor ??= new FlashEditor(this)).html() : this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
       </main>${this.pendingImport !== null ? this.importHTML() : ""}${this.newChooser ? this.newChooserHTML() : ""}</div>`,
     );
     this.root.querySelectorAll("details[data-options-group]").forEach((e) => {
       e.open = openGroups.includes(e.dataset.optionsGroup);
     });
+    // The flash stage is drawn after the page, at the editor's current time.
+    if (this.page === "flash") this.flashEditor?.mount(); else if (this.flashEditor?.preview) { this.flashEditor.preview.stop(); this.flashEditor.preview = null; }
     this.root.querySelectorAll("audio[data-cue-volume]").forEach((audio) => {
       audio.volume = Number(audio.dataset.cueVolume);
     });
@@ -1111,7 +1115,7 @@ export class Workspace {
     const members = variantMembers(r.stages, s.variantGroup), full = r.stages.length >= MAX_STAGES || this.busy;
     if (members.length < 2)
       return `<div class="an-variant is-empty"><button class="an-quiet" data-action="variant-add" ${full ? "disabled" : ""}>🎲 Add a random variant</button><small>A copy of this stage you can give different art, size or timing. Each play picks one of them.</small></div>`;
-    return `<div class="an-variant"><b>🎲 Random variant ${members.indexOf(s) + 1} of ${members.length}</b><small>Each play picks one of these ${members.length} stages. Give each its own asset, size and timing; the others are hidden in the preview while you edit this one.</small><div class="an-variant-actions"><button class="an-quiet" data-action="variant-add" ${full ? "disabled" : ""}>+ Add variant</button><button class="an-quiet" data-action="variant-leave">Make it a normal stage</button></div></div>`;
+    return `<div class="an-variant"><b>🎲 Random variant ${members.indexOf(s) + 1} of ${members.length}</b><small>Each play picks one of these ${members.length} stages. Give each its own asset, size and timing; the others are hidden in the preview while you edit this one.</small><div class="an-variant-actions"><button class="an-quiet" data-action="variant-add" ${full ? "disabled" : ""}>+ Add variant</button><button class="an-quiet" data-action="variant-leave">Make it a normal stage</button><button class="an-quiet is-danger" data-action="remove-stage" ${this.busy ? "disabled" : ""}>Remove this variant</button></div></div>`;
   }
   // Whether a recipe can play: linked to nothing yet, or sharing its link with another recipe.
   linkNote(r) {
@@ -1466,6 +1470,7 @@ export class Workspace {
     if (studioInput(this, t)) return;
     if(this.mediaLibrary?.input(t))return;
     if(this.dndCatalog?.input(t))return;
+    if(this.flashEditor?.input(t))return;
     if (t.dataset.builder) {
       this.stopEditorPreview();
       this.builder[t.dataset.builder] =
@@ -1501,6 +1506,7 @@ export class Workspace {
   }
   onChange(e) {
     if(this.mediaLibrary?.change(e.target))return;
+    if(this.flashEditor?.change(e.target))return;
     if(e.target.hasAttribute('data-dnd-variant')||e.target.dataset.dndFilter||e.target.dataset.dndOption){void this.dndCatalog?.change(e.target).catch(error=>{this.message=error.message;this.render();});return;}
     if (e.target.hasAttribute("data-state-damage")) { this.stateDamageType = e.target.value; this.render(); return; }
     if (e.target.hasAttribute("data-state-aura-variant")) { this.stateAuraVariant = e.target.value; this.render(); return; }
@@ -1833,6 +1839,7 @@ export class Workspace {
     try {
       if(await this.mediaLibrary?.action(action,b))return;
       if(await this.dndCatalog?.action(action,b))return;
+      if(await this.flashEditor?.action(action,b))return;
       if (await handleStateCatalogAction(this, action, b)) return;
       if (action === "item-details") {
         await openCatalogDetails(this, b.dataset.kind, b.dataset.id);
