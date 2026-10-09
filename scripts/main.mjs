@@ -292,7 +292,7 @@ function findRecipe(id) {
 // Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
 // (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
 const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
-const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths";
+const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens";
 const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
@@ -396,6 +396,7 @@ async function openForItem(item) {
 // Teleport (recipes that ask for it): pick the spot on the canvas, then vanish and reappear.
 const placeable = (t) => t?.object ?? t;
 async function pickTeleport(recipe, context) {
+  if (!game.settings.get(ID, TELEPORT_TOKENS)) return null;
   const plan = teleportPlan(recipe);
   if (!plan) return null;
   const caster = placeable(context.source), mover = plan.who === "target" ? placeable(context.targets?.[0]) : caster;
@@ -853,6 +854,12 @@ Hooks.once("init", () => {
   game.settings.register(ID, DAMAGE_REACTIONS, {
     name: "Damage reactions",
     hint: "A token that takes energy damage (fire, cold, lightning, acid, poison and so on) flashes in that damage's look. Physical damage keeps its weapon animation only.",
+    scope: "world", config: true, type: Boolean, default: true,
+  });
+  // A table with its own teleport automation (D&D premade modules, rule engines) turns this off.
+  game.settings.register(ID, TELEPORT_TOKENS, {
+    name: "Teleport tokens",
+    hint: "Teleport spells (Translocate, Misty Step, Friendfetch…) let whoever cast them click a spot, and the token jumps there. Turn off if another module already moves tokens for these spells: they then only play their animation.",
     scope: "world", config: true, type: Boolean, default: true,
   });
   game.settings.register(ID, DRAMATIC_DEATHS, {

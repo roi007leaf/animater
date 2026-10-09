@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Teleport tokens setting.** A world setting (*Configure Settings → Animater → Teleport tokens*, on by default) turns Animater's teleporting off. Use it at tables where another module already moves tokens for teleport spells, such as D&D premade-spell modules. When it's off, those spells only play their animation.
+
 ## 0.3.4 (2026-10-09)
 
 - **No more fog clouds around bound creatures.** JB2A's first chain animations pull the chains out of dark smoke portals, which looked like grey fog clouds around the token. *Grabbed*, *Immobilized*, Animate Rope and D&D's shackles, ropes, traps and held creatures now use the clean chain rings.
