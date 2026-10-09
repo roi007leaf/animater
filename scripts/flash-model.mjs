@@ -234,6 +234,16 @@ export const STARTER_FLASHES = [
       { kind: "portraits", name: "Survivor", side: "enemies", y: 42, size: 22, max: 1, ring: "#ff5a5a", names: true, enter: "zoom", enterMs: 400 },
       { kind: "text", name: "Title", text: "LAST ONE STANDING", y: 70, size: 6, color: "#ffd2d2", glow: "#ff0000", glowSize: 2, spacing: 0.2, start: 400, enter: "type", enterMs: 600 },
     ] },
+  // Fighting-game style: the world freezes, a red burst, and the call booms in with a camera hit.
+  { id: "last-finish", name: "Finish Him!", event: "lastEnemy", duration: 2600, backdrop: { color: "#0a0000", opacity: 0.6, vignette: true, freeze: "dark" },
+    layers: [
+      { kind: "burst", name: "Red burst", y: 48, color: "#ff3a12", density: 22, width: 150, opacity: 0.38, start: 280, enter: "zoom", enterMs: 260, exit: "fade", exitMs: 400 },
+      { kind: "particles", name: "Embers", ptype: "embers", count: 40, speed: 1.2, start: 280, enter: "fade", enterMs: 300, exit: "fade", exitMs: 400 },
+      { kind: "text", name: "Finish him", text: "FINISH HIM!", y: 48, size: 17, font: "Modesto Condensed", bold: true, spacing: 0.04, gradient: true, color: "#fff4b0", gradientTo: "#d11a00", outline: "#2a0000", glow: "#ff2a00", glowSize: 3.5, enter: "slam", enterMs: 300, start: 300, exit: "zoom", exitMs: 300, loop: "heartbeat", loopMs: 900 },
+      { kind: "punch", name: "Camera punch", start: 470, duration: 380, strength: 1.14 },
+      { kind: "flash", name: "Red flash", start: 470, duration: 240, color: "#ff2a2a", strength: 0.6 },
+      { kind: "shake", name: "Impact shake", start: 470, duration: 500, strength: 2.4 },
+    ] },
   { id: "end-victory", name: "Victory", event: "end", duration: 3600, backdrop: { color: "#1a1404", opacity: 0.5, bars: true, barSize: 9 },
     layers: [
       { kind: "band", name: "Band", y: 50, height: 20, color: "#a7801c", skew: 0, enter: "fade", exit: "fade" },

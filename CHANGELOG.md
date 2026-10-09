@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Finish Him! flash screen.** A new ready-made screen in a fighting-game style: when one enemy is left standing, the scene freezes dark, a red burst and embers flare, and *FINISH HIM!* slams in with a camera punch, red flash and shake. Find it in **+ New flash screen**, then switch it on under *During combat*. The text is yours to change, for example to *FINISH THEM!*.
+
 ## 0.3.0 (2026-10-09)
 
 The big one: **flash screens**, full-screen title cards for your table, with their own editor. Also random variants, damage reactions and damage-typed knockouts.

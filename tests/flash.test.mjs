@@ -276,3 +276,11 @@ test("quick tools follow the selected layer and change it", async () => {
   await ed.action("flash-quick", { dataset: { op: "here" } });
   assert.equal(ed.draft.layers[2].start, 900);
 });
+
+test("a Finish Him! starter plays when one enemy is left", () => {
+  const s = STARTER_FLASHES.find((f) => f.id === "last-finish");
+  assert.equal(s.event, "lastEnemy");
+  assert.ok(s.layers.some((l) => l.kind === "text" && l.text === "FINISH HIM!"));
+  assert.ok(s.layers.some((l) => l.kind === "punch"));
+  assert.equal(s.backdrop.freeze, "dark");
+});
