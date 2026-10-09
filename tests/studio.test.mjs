@@ -99,3 +99,17 @@ test("muting the filters track silences Token Magic in chain previews", async ()
   assert.equal(fx.state(entry, frame).state, "playing");
   assert.equal(fx.state(entry, { ...frame, muted: new Set([plan[at].index]) }).state, "pending");
 });
+
+test("a random-variant group shows as one clip: the variant being edited, else the first", async () => {
+  const { studioTracks: tracksOf } = await import("../scripts/studio.mjs");
+  const { validateRecipe: v } = await import("../scripts/model.mjs");
+  const recipe = v({ id: "r", name: "R", trigger: "manual", stages: [
+    { stageId: "a", kind: "cast", assets: ["jb2a.impact.001.orange"], variantGroup: "g" },
+    { stageId: "b", kind: "cast", assets: ["jb2a.impact.002.blue"], variantGroup: "g", delay: 500 },
+    { stageId: "c", kind: "cast", assets: ["jb2a.impact.003.green"] },
+  ] });
+  const shown = (sel) => tracksOf(recipe, sel).tracks.flatMap((t) => t.lanes.flat()).map((row) => recipe.stages[row.index].stageId).sort();
+  assert.deepEqual(shown(-1), ["a", "c"]);
+  assert.deepEqual(shown(1), ["b", "c"], "editing variant 2 shows its own clip and timing");
+  assert.deepEqual(shown(2), ["a", "c"]);
+});

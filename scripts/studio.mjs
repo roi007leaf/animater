@@ -5,7 +5,7 @@
 // playhead and zoom are presentation only.
 import { KINDS, EVENTS, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
 import { timelineLayout, packLanes, linkStartModes } from "./choreography.mjs";
-import { sampleRecipe, timedStages, previewVariants } from "./composition.mjs";
+import { sampleRecipe, timedStages, previewVariants, variantMembers } from "./composition.mjs";
 import { previewRecipeSounds } from "./spell-sounds.mjs";
 import { RecipePreview } from "./recipe-preview.mjs";
 
@@ -41,11 +41,19 @@ export function trackOf(stage) {
   return "target";
 }
 // Tracks with their lanes; empty tracks still show so stages can be added there.
-export function studioTracks(recipe) {
+// A random-variant group shows as one stacked clip: the variant being edited (else the first).
+export function shownVariant(recipe, stage, selectedIndex = -1) {
+  const members = variantMembers(recipe.stages, stage?.variantGroup);
+  if (members.length < 2) return stage;
+  const selected = recipe.stages[selectedIndex];
+  return members.includes(selected) ? selected : members[0];
+}
+export function studioTracks(recipe, selectedIndex = -1) {
   const layout = timelineLayout(recipe);
   const linked = recipe.lifecycle === "document";
+  const visible = layout.rows.filter((row) => shownVariant(recipe, recipe.stages[row.index], selectedIndex) === recipe.stages[row.index]);
   const tracks = STUDIO_TRACKS.map((t) => {
-    const rows = layout.rows.filter((row) => trackOf(recipe.stages[row.index]) === t.id);
+    const rows = visible.filter((row) => trackOf(recipe.stages[row.index]) === t.id);
     return { ...t, lanes: rows.length ? packLanes(rows) : [[]] };
   }).filter((t) => !linked || LINKED_TRACKS.has(t.id) || t.lanes[0].length);
   // Leave room past the last stage so clips can be dragged later.
@@ -71,7 +79,7 @@ export function studioHTML(w, r) {
   const env = w.host.environment(), canvasUnavailable = Boolean(env.demo), linked = r.lifecycle === "document";
   const motionBlocked = w.motionBlocked(r), unconfigured = w.status(r) === "Choose an asset";
   const index = Math.min(w.stageIndex, r.stages.length - 1), dirty = w.dirty.has(r.id), status = w.status(r), link = w.linkNote?.(r);
-  const duration = w.previewDuration(r), studio = studioTracks(r), zoom = w.studioZoom ?? 1;
+  const duration = w.previewDuration(r), studio = studioTracks(r, w.stageIndex), zoom = w.studioZoom ?? 1;
   w.previewMode = "recipe";
   const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" data-tooltip="Back to all recipes">← Recipes</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}">${triggerChipHTML(w, r)}<span class="an-st-state ${status !== "Ready to play" || link?.warn ? "is-missing" : ""}" ${link ? `data-tooltip="${esc(link.text)}"` : ""}>${link?.warn ? "⚠" : "●"} ${esc(dirty ? "Unsaved changes" : link?.warn ? link.short : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" data-tooltip="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon is-danger" data-action="delete" data-tooltip="Delete recipe" aria-label="Delete recipe"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" data-tooltip="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? "Save recipe" : "Saved ✓"}</button></div></header>`;
   const transport = `<div class="an-st-transport" role="group" aria-label="Playback">
