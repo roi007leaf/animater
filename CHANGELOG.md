@@ -1,18 +1,26 @@
 # Changelog
 
-## Unreleased
+## 0.3.3 (2026-10-09)
 
-- **Restrained no longer shows fog clouds.** Its web layer used the Web spell's 5×5 area footage, which looks like grey clouds around the token. It now uses a token-sized spider web.
-- **Teleport spells really teleport.** When a teleport spell plays, whoever cast it clicks where to go. A ring shows the spell's range and a ghost of the token follows the mouse (red when out of range); Esc or right-click cancels. The token vanishes in a misty step, jumps there without walking, and reappears. It's the only Animater setting that actually moves a token.
-  - **Spells:** on by default for PF2e Translocate and Dimension Door, Friendfetch (brings the first target to a spot next to you), and D&D Misty Step, Thunder Step, Far Step and Dimension Door.
-  - **Any recipe:** turn it on in the Studio's recipe settings (*Teleport*: the caster or the first target, a range in feet or the spell's own, optionally *Next to the caster*), or off for a spell you'd rather move by hand.
-  - **Moving someone else:** a player moving a creature they don't own (an ally fetched to them) has the GM's client move it.
+### New
+- **Teleport spells really teleport.** When a teleport spell plays, whoever cast it clicks where to go.
+  - A ring shows the spell's range, and a ghost of the token follows the mouse (red when out of range). Esc or right-click cancels.
+  - The token vanishes in a misty step, jumps there without walking, and reappears.
+  - It's the only Animater setting that actually moves a token.
+  - **Spells:** on by default for PF2e Translocate, Dimension Door and Friendfetch (which brings the first target to a spot next to you), and D&D Misty Step, Thunder Step, Far Step and Dimension Door.
+  - **Any recipe:** turn it on in the Studio's recipe settings: *Teleport* (the caster or the first target), a range in feet or the spell's own, and optionally *Next to the caster*. Or turn it off for a spell you'd rather move by hand.
+  - **Moving someone else:** if a player moves a creature they don't own (an ally fetched to them), the GM's client moves it, but only if that player owns the caster on the same scene.
 - **Animation button on item sheets (GM).** Spell, feat, action, feature, weapon, condition and effect sheets have an *Animation* button in their header (D&D 5e: in the header's ⋮ menu).
-  - **If you made your own recipe for the item**, it opens in the Studio.
-  - **Otherwise** it opens that item's entry in its catalog, ready to preview or customize, so you can customize your players' spells without searching for them.
-  - **Lookup:** entries are found by the item's compendium source, so an NPC's *Slow (2/day)* opens *Slow* and a *+1 Flaming Kukri* opens *Kukri*.
-- **Token motion switch for conditions and effects.** The condition and effect catalogs (PF2e, SF2e and D&D 5e) now have the *Token motion* switch the other catalogs have. Turn it to *Effects only* to keep the visuals without the creature trembling, swaying or lying down.
-- **Condition animations no longer blink out when a turn passes.** When a condition's value changes, such as PF2e lowering Frightened 2 to 1 at the end of a turn, its animation used to end and then start again at the new strength, leaving a gap. The old animation now stays until the new one is playing.
+  - **Your own recipe:** if you made one for the item, it opens in the Studio.
+  - **Otherwise:** the item's catalog entry opens, ready to preview or customize.
+
+  Entries are found by the item's compendium source, so an NPC's *Slow (2/day)* opens *Slow* and a *+1 Flaming Kukri* opens *Kukri*.
+- **Token motion switch for conditions and effects.** The condition and effect catalogs (PF2e, SF2e and D&D 5e) now have the *Token motion* switch the other catalogs have. Choose *Effects only* to keep the visuals without the creature trembling, swaying or lying down.
+
+### Fixed
+- **Condition animations no longer blink out when a turn passes.** When a condition's value changes, such as PF2e lowering Frightened 2 to 1 at the end of a turn, its animation used to end and then restart at the new strength, leaving a gap. The old animation now stays until the new one is playing.
+- **Restrained no longer shows fog clouds.** Its web layer used the Web spell's 5×5 area footage, which looks like grey clouds around the token. It now uses a token-sized spider web.
+- **Condition markers vanishing while a token is selected (PF2e Visioner users).** This is fixed in PF2e Visioner, not Animater. While you view through a selected token, Visioner lowered every lasting effect under token art, including markers attached to that token. Update PF2e Visioner once its fix is released.
 
 ## 0.3.2 (2026-10-09)
 
