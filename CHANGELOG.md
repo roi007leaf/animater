@@ -1,9 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.3.2 (2026-10-09)
 
-- **New moment: Last enemy falls.** A during-combat flash screen can now play when the final enemy drops to 0 HP or is marked defeated, once per combat. Before, nothing marked that moment; the combat's ending screen only plays when the combat is closed.
-- **Finish Him! plays when the last enemy falls**, not when one enemy is left standing (that is still *Last One Standing*). A copy you already made from the gallery keeps *Last enemy standing*; switch its *Plays at* to *Last enemy falls*.
+### Flash screens
+- **New moment: Last enemy falls.** A during-combat flash screen can now play when the final enemy drops to 0 HP, or is marked defeated while it still has HP. It plays once per combat, so dropping to 0 and then being marked defeated doesn't play it twice. Before, nothing marked that moment: the combat's ending screen only plays when the combat is closed. Switch it on like any other moment: the On/Off switch under *During combat*, or the ⚙ panel in the Combat Tracker.
+- **Finish Him! plays when the last enemy falls**, not when one enemy is left standing (that is still *Last One Standing*). If you already made a copy from the gallery, it still says *Last enemy standing*: open it, set *Plays at* to *Last enemy falls*, save, and switch it on.
 
 ## 0.3.1 (2026-10-09)
 
