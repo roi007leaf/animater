@@ -1,15 +1,21 @@
 # Changelog
 
-## Unreleased
+## 0.3.5 (2026-10-09)
 
-- **Sustained area spells stay on the map (PF2e, SF2e).** A lasting spell placed as an area kept its animation only if its name sounded like a standing area (wall, cloud, fog, darkness…). So *Pernicious Poltergeist* and similar played once and vanished. Now a sustained area spell stays until its template is removed, and so does any area whose description says it keeps acting (on whoever enters it or starts a turn in it). Spells that only affect creatures when cast (Calm, Fear, Slow) still play once.
-- **Darkness loops smoothly.** Its footage grows in from nothing and dissolves away, so looping it made the darkness vanish and re-form every 5 seconds. A lasting Darkness now loops only its solid middle.
-- **Turn every catalog on in one click.** Animater's Setup page has an *Every catalog* card: one button turns on every built-in catalog for your system (spells, feats, actions, features, weapons, items, conditions, effects) and Automatic playback. Exclusions and your own versions stay.
+### New
+- **Turn every catalog on in one click.** Animater's Setup page has an *Every catalog* card. One button turns on every built-in catalog for your system (spells, feats, actions, features, weapons, items, conditions, effects) and Automatic playback. Exclusions and your own versions stay.
 - **First-run welcome.** On a world's first load, the GM is asked once whether to turn every catalog on. Saying yes posts a short whispered chat note. Worlds that already have a catalog on are never asked.
-- **No more PSFX install prompt when you have PSFX Patreon.** Foundry offered to install free PSFX even with the Patreon version installed, because it checks recommended modules by id. Installing both loads the same sounds twice and fills the console with Sequencer errors on world load. Animater no longer recommends PSFX in its manifest. It still uses whichever PSFX you have.
-  - If you already ended up with both, disable one of them (keep the Patreon version).
-- **PSFX Patreon sounds are used.** Animater only recognised free PSFX (`psfx`), so tables with only PSFX Patreon (`psfx-patreon`) got no PSFX sounds in the catalogs. Both now count.
 - **Teleport tokens setting.** A world setting (*Configure Settings → Animater → Teleport tokens*, on by default) turns Animater's teleporting off. Use it at tables where another module already moves tokens for teleport spells, such as D&D premade-spell modules. When it's off, those spells only play their animation.
+
+### Fixed
+- **Sustained area spells stay on the map (PF2e, SF2e).** A lasting spell placed as an area kept its animation only if its name sounded like a standing area (wall, cloud, fog, darkness…), so *Pernicious Poltergeist* and similar played once and vanished.
+  - Now a sustained area spell stays until its template is removed.
+  - So does any area whose description says it keeps acting (on whoever enters it or starts a turn in it).
+  - Spells that only affect creatures when cast (Calm, Fear, Slow) still play once.
+- **Darkness loops smoothly.** Its footage grows in from nothing and dissolves away, so looping it made the darkness vanish and re-form every 5 seconds. A lasting Darkness now loops only its solid middle.
+- **PSFX Patreon sounds are used.** Animater only recognised free PSFX (`psfx`), so tables with only PSFX Patreon (`psfx-patreon`) got no PSFX sounds in the catalogs. Both now count.
+- **No more PSFX install prompt when you have PSFX Patreon.** Foundry checks recommended modules by id, so it offered free PSFX even with the Patreon version installed. Installing both loads the same sounds twice and fills the console with Sequencer errors on world load. Animater no longer recommends PSFX in its manifest; it uses whichever PSFX you have.
+  - If you already ended up with both, disable one of them (keep the Patreon version).
 
 ## 0.3.4 (2026-10-09)
 
