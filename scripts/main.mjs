@@ -40,6 +40,7 @@ import {
 import { PF2E_ACTION_CATALOG, PF2E_FEATURE_CATALOG, isFeatureItem, riderRecipes } from "./ability-catalog.mjs";
 // PF2e ability catalogs beside feats: setting key → catalog.
 import { findCatalogSpell as findSpellEntry } from "./spell-catalog.mjs";
+import { teleportPlan, itemRangeFeet, pickTeleportSpot } from "./teleport.mjs";
 import { findCatalogFeat as findFeatEntry } from "./feat-catalog.mjs";
 import { findCatalogWeapon as findWeaponEntry } from "./weapon-catalog.mjs";
 import { findStateEntry as findConditionEntry } from "./state-catalog.mjs";
@@ -391,6 +392,40 @@ async function openForItem(item) {
   const entry = saved ? null : catalogEntryFor(item);
   if (!w.reveal(saved ? { recipeId: saved.id } : { page: itemPage(item), name: entry?.name ?? item.name.replace(/\s*\([^)]*\)\s*$/, ""), id: entry?.id })) w.message = `No Animater catalog covers ${item.name}; make a recipe for it with + New recipe.`;
   w.render();
+}
+// Teleport (recipes that ask for it): pick the spot on the canvas, then vanish and reappear.
+const placeable = (t) => t?.object ?? t;
+async function pickTeleport(recipe, context) {
+  const plan = teleportPlan(recipe);
+  if (!plan) return null;
+  const caster = placeable(context.source), mover = plan.who === "target" ? placeable(context.targets?.[0]) : caster;
+  if (!caster?.center) return null;
+  if (!mover?.center) { ui.notifications.warn("Teleport: target the creature to move first."); return null; }
+  const feet = plan.adjacent ? 5 : plan.range || itemRangeFeet(context.item) || Infinity;
+  ui.notifications.info(`Teleport ${mover.name}: click a spot${Number.isFinite(feet) ? ` within ${feet} feet` : ""} (Esc to cancel).`);
+  const spot = await pickTeleportSpot({ caster, mover, feet, notify: (text) => ui.notifications.warn(text) });
+  return spot ? { mover, caster, ...spot } : null;
+}
+async function moveToken(doc, x, y) { await doc.update({ x, y }, { animate: false, animater: { teleport: true } }); }
+async function teleport({ mover, caster, x, y }) {
+  const doc = mover.document, size = mover.w * 1.8, from = { ...mover.center }, to = { x: x + mover.w / 2, y: y + mover.h / 2 };
+  await new Promise((r) => setTimeout(r, 450));
+  new Sequence({ moduleName: ID }).effect().file("jb2a.misty_step.01.blue").atLocation(from).size(size).play();
+  await new Promise((r) => setTimeout(r, 700));
+  // A creature this player does not own (an ally fetched to them) is moved by the active GM.
+  if (doc.isOwner) await moveToken(doc, x, y);
+  else game.socket.emit(`module.${ID}`, { type: "teleport", sender: clientId, userId: game.user.id, uuid: doc.uuid, casterUuid: caster?.document?.uuid, x, y });
+  new Sequence({ moduleName: ID }).effect().file("jb2a.misty_step.02.blue").atLocation(to).size(size).play();
+}
+// The active GM moves a teleported token for the player who cast the spell: only when that
+// player owns the caster, and only a token on the caster's scene.
+async function receiveTeleport(data) {
+  if (data?.type !== "teleport" || !game.users.activeGM?.isSelf) return;
+  const user = game.users.get(data.userId), doc = await fromUuid(String(data.uuid ?? ""));
+  const caster = await fromUuid(String(data.casterUuid ?? ""));
+  if (!user || !doc || doc.documentName !== "Token" || !Number.isFinite(data.x) || !Number.isFinite(data.y)) return;
+  if (caster?.documentName !== "Token" || caster.parent !== doc.parent || !caster.testUserPermission(user, "OWNER")) return;
+  await moveToken(doc, data.x, data.y);
 }
 function builtinRecipe(id) {
  if(game.system.id==='sf2e'){
@@ -926,7 +961,7 @@ Hooks.once("ready", () => {
     regionFx,
     trace:(status,detail)=>runtime?.trace(status,detail)});
   game.socket?.on(`module.${ID}`, (data) => {
-    if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); flash?.receive(data); }
+    if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); flash?.receive(data); void receiveTeleport(data).catch((e) => console.warn("Animater teleport:", e.message)); }
   });
   Hooks.on("canvasTearDown", () => {
     void persistentStates?.clear();
@@ -960,6 +995,8 @@ Hooks.once("ready", () => {
     recipes,
     riderRecipes: (event, saved) => game.system.id === "pf2e" ? riderRecipes(event, game.settings.get(ID, "featureCatalog"), saved, { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) }) : [],
     flashBefore: (recipe, context) => flash?.before(recipe, context),
+    pickTeleport,
+    teleport,
     // Does the token still carry an effect from this item ("Effect: Shield")?
     hasItemEffect: (actor, item) => {
       const name = sameEffectName(item?.name), id = item?.id;

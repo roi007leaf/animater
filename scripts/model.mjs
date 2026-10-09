@@ -99,6 +99,10 @@ export function validateRecipe(input) {
     itemUuid: text(input.itemUuid, 300),
     // A flash screen shown to everyone right before this animation plays.
     ...(/^[A-Za-z0-9-]{1,40}$/.test(input.flash ?? "") ? { flash: input.flash } : {}),
+    // Teleport: the caster or first target moves to a spot the one who cast clicks (see teleport.mjs).
+    ...(["none", "source", "target"].includes(input.teleport) ? { teleport: input.teleport } : {}),
+    ...(Number(input.teleportRange) > 0 ? { teleportRange: Math.min(5280, Math.round(Number(input.teleportRange))) } : {}),
+    ...(typeof input.teleportAdjacent === "boolean" ? { teleportAdjacent: input.teleportAdjacent } : {}),
     ...(['pf2e','sf2e','dnd5e'].includes(input.systemId)?{systemId:input.systemId}:/^Compendium\.(pf2e|sf2e|dnd5e)\./.test(input.itemUuid??'')?{systemId:input.itemUuid.split('.')[1]}:{}),
     ...(text(input.catalogEntry,100)?{catalogEntry:text(input.catalogEntry,100)}:{}),
     ...(text(input.activityId,100)?{activityId:text(input.activityId,100)}:{}),

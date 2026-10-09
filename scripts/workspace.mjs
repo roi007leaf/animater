@@ -77,6 +77,7 @@ const options = (items, value) =>
         `<option value="${esc(k)}" ${k === value ? "selected" : ""}>${esc(v)}</option>`,
     )
     .join("");
+import { teleportPlan, TELEPORT_WHO } from "./teleport.mjs";
 export const JB2A_MISSING = "Neither JB2A module is active, so built-in animations have no artwork to play. Activate JB2A Free (JB2A_DnD5e) or JB2A Patreon (jb2a_patreon), then reload Foundry.";
 export class Workspace {
   // Open the animation for something: a saved recipe in the Studio, or a catalog page
@@ -1132,6 +1133,12 @@ export class Workspace {
     const kind = catalogStateEntry(r.stateEntry)?.kind;
     return kind === "condition" ? "Condition" : kind === "effect" ? "Effect" : "Condition / effect";
   }
+  // Teleport: who moves to the spot the one who cast clicks, how far, or next to the caster.
+  teleportHTML(r) {
+    const plan = teleportPlan(r), mode = r.teleport ?? plan?.who ?? "none";
+    const known = r.teleport === undefined && plan ? " (on for this spell)" : "";
+    return `<label>Teleport${known}<select data-field="teleport">${Object.entries(TELEPORT_WHO).map(([k, v]) => `<option value="${k}" ${k === mode ? "selected" : ""}>${k === "none" ? v : `${v}, to a spot you click`}</option>`).join("")}</select></label>${mode === "none" ? "" : `<div class="an-field-row"><label>Range in feet (0 = the spell's range)<input type="number" min="0" max="5280" step="5" data-field="teleportRange" value="${r.teleportRange ?? 0}"></label><label class="an-check"><input type="checkbox" data-field="teleportAdjacent" ${plan?.adjacent ? "checked" : ""}> Next to the caster</label></div>`}<p class="an-hint">When it plays, the one who cast clicks where to go (a ring shows the range, Esc cancels). The token vanishes and reappears there: the only Animater setting that really moves a token.</p>`;
+  }
   // A flash screen that plays for everyone right before this animation.
   flashLinkHTML(r) {
     const screens = this.host.flashScreens(), fits = screens.filter((s) => s.event === "action"), others = screens.filter((s) => s.event !== "action");
@@ -1231,7 +1238,7 @@ export class Workspace {
   motionSyncNoticeHTML() { return motionSyncNoticeHTML(this.host.environment()); }
   recipeSettingsHTML(r) {
     const linked = r.lifecycle === "document";
-    return `<div class="an-editor-section an-binding"><div class="an-section-title"><b>When it plays</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div><label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>${linked ? "" : `<label>Trigger<select data-field="trigger">${options(EVENTS, r.trigger)}</select></label>`}<label>${linked ? "Condition or effect names" : "Item names / slugs"}<input data-field="match" placeholder="${linked ? "frightened, spell effect: shield" : "fire bolt, ignition"}" value="${esc(r.match)}"></label><p class="an-hint">${linked ? "Plays while any of these is on a token. Exact names; commas separate alternatives. Drop a condition or effect here to bind only that one." : "Exact matches. Commas separate alternatives. Drop an item here to bind only that item."}</p>${r.itemUuid ? this.boundItemHTML(r.itemUuid) : ""}${this.host.flashScreens ? this.flashLinkHTML(r) : ""}
+    return `<div class="an-editor-section an-binding"><div class="an-section-title"><b>When it plays</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div><label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>${linked ? "" : `<label>Trigger<select data-field="trigger">${options(EVENTS, r.trigger)}</select></label>`}<label>${linked ? "Condition or effect names" : "Item names / slugs"}<input data-field="match" placeholder="${linked ? "frightened, spell effect: shield" : "fire bolt, ignition"}" value="${esc(r.match)}"></label><p class="an-hint">${linked ? "Plays while any of these is on a token. Exact names; commas separate alternatives. Drop a condition or effect here to bind only that one." : "Exact matches. Commas separate alternatives. Drop an item here to bind only that item."}</p>${r.itemUuid ? this.boundItemHTML(r.itemUuid) : ""}${this.host.flashScreens ? this.flashLinkHTML(r) : ""}${this.teleportHTML(r)}
       ${r.weaponMode || r.category === "Weapons" ? `<label>PF2e weapon use<select data-field="weaponMode">${options({ "": "Any usage", melee: "Melee Strike", ranged: "Ranged Strike", thrown: "Thrown Strike" }, r.weaponMode ?? "")}</select></label><p class="an-hint">PF2e's rolled usage selects this customization. Other uses keep their own animation.</p>` : ""}<div class="an-field-row"><label>Category<input data-field="category" value="${esc(r.category)}"></label><label>Accent<input type="color" aria-label="Recipe accent color" data-field="color" value="${esc(r.color)}"></label></div></div>`;
   }
   inspectorHTML(r) {

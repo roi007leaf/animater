@@ -180,6 +180,13 @@ export class AnimaterRuntime {
       await this.host.flashBefore?.(recipe, context)?.catch?.(() => {});
       if (this.epoch !== before) return null;
     }
+    // Teleport: the one who cast clicks the spot first; the jump plays alongside the animation.
+    // Cancelling the pick still plays the animation, without moving anyone.
+    if (!preview && this.host.pickTeleport) {
+      const before = this.epoch, spot = await this.host.pickTeleport(recipe, context)?.catch?.(() => null);
+      if (this.epoch !== before) return null;
+      if (spot) void this.host.teleport?.(spot)?.catch?.((error) => this.trace("Blocked", `Teleport: ${error.message}`));
+    }
     const session = `${ID}-${this.host.userId()}-${crypto.randomUUID()}`;
     const epoch = this.epoch;
     let failed = false;

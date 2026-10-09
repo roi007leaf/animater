@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **Teleport spells really teleport.** When a teleport spell plays, whoever cast it clicks where to go. A ring shows the spell's range and a ghost of the token follows the mouse (red when out of range); Esc or right-click cancels. The token vanishes in a misty step, jumps there without walking, and reappears. It's the only Animater setting that actually moves a token.
+  - **Spells:** on by default for PF2e Translocate and Dimension Door, Friendfetch (brings the first target to a spot next to you), and D&D Misty Step, Thunder Step, Far Step and Dimension Door.
+  - **Any recipe:** turn it on in the Studio's recipe settings (*Teleport*: the caster or the first target, a range in feet or the spell's own, optionally *Next to the caster*), or off for a spell you'd rather move by hand.
+  - **Moving someone else:** a player moving a creature they don't own (an ally fetched to them) has the GM's client move it.
 - **Animation button on item sheets (GM).** Spell, feat, action, feature, weapon, condition and effect sheets have an *Animation* button in their header (D&D 5e: in the header's ⋮ menu).
   - **If you made your own recipe for the item**, it opens in the Studio.
   - **Otherwise** it opens that item's entry in its catalog, ready to preview or customize, so you can customize your players' spells without searching for them.
