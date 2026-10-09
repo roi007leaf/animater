@@ -2615,14 +2615,6 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-tabs { display: flex; gap: 3px; padding: 3px; border-radius: 10px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--an-line); }
 .animater .an-flash-tabs button { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 28px; min-height: 28px; border: 0; border-radius: 7px; background: none; color: var(--an-muted); font-weight: 600; }
 .animater .an-flash-tabs button.is-on { background: rgba(158, 138, 255, 0.2); color: var(--an-text); }
-.animater .an-flash-page.is-slim { grid-template-columns: 44px minmax(0, 1fr) 270px; }
-.animater .an-flash-list.is-slim { display: flex; flex-direction: column; align-items: center; gap: 6px; padding-right: 0; }
-.animater .an-flash-list.is-slim .an-icon { width: 32px; padding: 0; }
-.animater .an-flash-slim-name { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 11px; color: var(--an-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-height: 60vh; }
-.animater .an-flash-libtools [data-action="flash-lib"] { font-size: 14px; }
-.animater:has(.an-flash-page.is-full) .an-nav { display: none; }
-.animater .an-flash-page.is-full { grid-template-columns: minmax(0, 1fr) 280px; }
-.animater .an-flash-page.is-full > .an-flash-list { display: none; }
 .animater .an-flash-row-name { display: flex; align-items: center; gap: 6px; }
 .animater .an-flash-row-icon { flex: 0 0 18px; display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 5px; font-size: 11px; font-weight: 800; line-height: 1; color: #1b1530; background: #b9a6ff; }
 .animater .an-flash-row-icon.kind-text { background: #ffd34d; }
@@ -2656,3 +2648,36 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 /* Show me sits in the toolbar (not a snap guide line). */
 .animater .an-flash-guides > button.an-flash-guide { position: static; display: inline-flex; align-items: center; width: auto; height: 26px; min-height: 26px; padding: 0 10px; font-size: 12px; border-radius: 999px; pointer-events: auto; z-index: auto; }
 .animater .an-flash-effects-menu { top: auto; bottom: calc(100% + 4px); }
+/* Flash screens: a library page of cards, and the editor on its own page. */
+.animater .an-flash-page.is-editor { grid-template-columns: minmax(0, 1fr) 280px; }
+.animater .an-flash-page.is-library { display: block; overflow-y: auto; padding-bottom: 20px; }
+.animater .an-flash-page.is-library .an-flash-libgroup { display: grid; gap: 10px; margin-bottom: 22px; }
+.animater .an-flash-libgroup-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.animater .an-flash-libgroup-head .an-flash-sub { margin: 0; font-size: 12px; }
+.animater .an-flash-libgroup-head small { color: var(--an-muted); font-size: 11.5px; }
+.animater .an-flash-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.animater .an-flash-tile { position: relative; --flash-accent: #9e8aff; }
+.animater .an-flash-tile.is-start { --flash-accent: #ff8a4c; }
+.animater .an-flash-tile.is-moment { --flash-accent: #ffd34d; }
+.animater .an-flash-tile.is-end { --flash-accent: #7ad1a1; }
+.animater .an-flash-tile.is-action { --flash-accent: #6fc7ff; }
+.animater .an-flash-page .an-flash-tile-open { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 4px 8px; width: 100%; height: auto; min-height: 0; padding: 8px 8px 10px; text-align: left; border-radius: 12px; background: var(--an-surface); border: 1px solid var(--an-line); border-top: 3px solid var(--flash-accent); }
+.animater .an-flash-tile-open:hover { border-color: rgba(158, 138, 255, 0.6); border-top-color: var(--flash-accent); background: rgba(255, 255, 255, 0.05); }
+.animater .an-flash-tile-open .an-flash-tpl-thumb { grid-column: 1 / -1; margin: 0 0 2px; }
+.animater .an-flash-tile-text { display: grid; gap: 1px; min-width: 0; }
+.animater .an-flash-tile-text .an-flash-card-name { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.animater .an-flash-tile-text small { color: var(--an-muted); font-size: 11px; }
+.animater .an-flash-tile .an-flash-badge { align-self: center; }
+.animater .an-flash-unsaved { color: #ffd34d; }
+.animater .an-flash-tile .an-flash-switch { top: auto; bottom: 12px; right: 10px; transform: none; }
+.animater .an-brand small { white-space: nowrap; letter-spacing: 0.06em; }
+/* Editor header: back, name and actions; then the screen's timing. */
+.animater .an-flash-page .an-flash-head { display: grid; gap: 8px; }
+.animater .an-flash-head-row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.animater .an-flash-head-row .an-st-name { flex: 1 1 auto; width: auto; min-width: 120px; height: 34px; }
+.animater .an-flash-head-row .an-flash-actions { margin-left: 0; flex: 0 0 auto; }
+.animater .an-flash-page .an-flash-head .an-flash-back { flex: 0 0 34px; width: 34px; height: 34px; min-height: 34px; padding: 0; font-size: 17px; }
+.animater .an-flash-head-row.is-meta { gap: 16px; padding-left: 42px; }
+.animater .an-flash-page .an-flash-head label.an-flash-inline { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--an-muted); }
+.animater .an-flash-head label.an-flash-inline select { width: auto; min-width: 160px; height: 30px; min-height: 30px; padding: 0 8px; font-size: 12.5px; }
+.animater .an-flash-head label.an-flash-inline input[type="number"] { width: 64px; height: 30px; min-height: 30px; padding: 0 8px; font-size: 12.5px; }

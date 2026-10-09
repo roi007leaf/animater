@@ -17,8 +17,8 @@ export async function runFlashTour(editor, tour = "slide") {
   const w = editor.w, root = w.root;
   if (editor.touring) return;
   editor.touring = true;
-  const saved = { selectedId: editor.selectedId, draft: editor.draft, dirty: editor.dirty, layerIndex: editor.layerIndex, time: editor.time, undo: editor.undoStack, redo: editor.redoStack };
-  editor.selectedId = "tour-practice";
+  const saved = { editing: editor.editing, selectedId: editor.selectedId, draft: editor.draft, dirty: editor.dirty, layerIndex: editor.layerIndex, time: editor.time, undo: editor.undoStack, redo: editor.redoStack };
+  editor.selectedId = "tour-practice"; editor.editing = true;
   editor.draft = validateFlash(tour === "signature"
     ? { id: "tour-practice", name: "Practice: Dragon's Fury", event: "start", duration: 3800, backdrop: { color: "#0a0303", opacity: 0.75, vignette: true }, layers: [] }
     : { id: "tour-practice", name: "Practice: a sliding title", duration: 3200, backdrop: { color: "#05040c", opacity: 0.7 }, layers: [] });
@@ -208,7 +208,7 @@ export async function runFlashTour(editor, tour = "slide") {
   window.removeEventListener("keydown", onKey, { capture: true });
   cursor.remove(); caption.remove();
   editor.preview?.stop(); editor.playing = false;
-  Object.assign(editor, { selectedId: saved.selectedId, draft: saved.draft, dirty: saved.dirty, layerIndex: saved.layerIndex, time: saved.time, undoStack: saved.undo, redoStack: saved.redo });
+  Object.assign(editor, { editing: saved.editing, selectedId: saved.selectedId, draft: saved.draft, dirty: saved.dirty, layerIndex: saved.layerIndex, time: saved.time, undoStack: saved.undo, redoStack: saved.redo });
   editor.touring = false;
   w.render();
 }

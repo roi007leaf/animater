@@ -62,7 +62,7 @@ export class FlashEditor {
   // Editor shortcuts (outside text fields): undo/redo, nudge, rotate, resize, keyframe, play,
   // step, next layer, duplicate, delete, and ? for the list.
   key(e) {
-    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target?.tagName ?? "") || e.target?.isContentEditable) return false;
+    if (!this.editing || /^(INPUT|TEXTAREA|SELECT)$/.test(e.target?.tagName ?? "") || e.target?.isContentEditable) return false;
     const s = this.current();
     if (!s) return false;
     const k = e.key, mod = e.ctrlKey || e.metaKey, layer = s.layers[this.layerIndex], visual = layer && !MOMENT_KINDS.includes(layer.kind);
@@ -198,32 +198,39 @@ export class FlashEditor {
     return key;
   }
 
-  html() {
-    const list = this.screens(), s = this.current(), defaults = this.host.flashDefaults();
-    // The library, grouped by when screens play; a default shows as a badge.
+  // The library: every screen as a card with a small preview, grouped by when it plays (like the recipes page).
+  libraryHTML() {
+    const list = this.screens(), defaults = this.host.flashDefaults();
+    if (this.showGallery) return `<section class="an-flash-page is-library">${this.galleryHTML()}</section>`;
     const group = (f) => (f.event === "start" || f.event === "any" ? "start" : f.event === "end" ? "end" : f.event === "action" ? "action" : "moment");
     const card = (f) => {
       const isDefault = Object.keys(FLASH_EVENTS).some((ev) => defaults[ev] === f.id);
-      const detail = f.event === "any" ? "Start or end" : group(f) === "moment" ? FLASH_EVENTS[f.event] : "";
+      const detail = f.event === "any" ? "Start or end" : FLASH_EVENTS[f.event];
       // During combat, the GM decides: each moment's screen has its own On/Off switch (off until turned on).
-      const moment = group(f) === "moment", on = moment && defaults[f.event] === f.id;
-      const card = `<button class="an-flash-card is-${group(f)} ${f.id === this.selectedId ? "is-selected" : ""}" data-action="flash-select" data-id="${esc(f.id)}"><span class="an-flash-card-name">${esc(f.name)}${f.id === this.selectedId && this.dirty ? " •" : ""}</span>${isDefault && !moment ? `<span class="an-flash-badge">Default</span>` : ""}${detail ? `<small>${esc(detail)}</small>` : ""}</button>`;
-      return moment ? `<div class="an-flash-cardwrap">${card}<button class="an-flash-switch${on ? " is-on" : ""}" data-action="flash-moment-toggle" data-id="${esc(f.id)}" data-event="${esc(f.event)}" role="switch" aria-checked="${on}" data-tooltip="${on ? `Plays on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}: click to turn off` : `Off: click to play it on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}`}"><span></span>${on ? "On" : "Off"}</button></div>` : card;
+      const moment = group(f) === "moment", on = moment && defaults[f.event] === f.id, unsaved = f.id === this.selectedId && this.dirty;
+      const open = `<button class="an-flash-tile-open" data-action="flash-select" data-id="${esc(f.id)}" aria-label="Edit ${esc(f.name)}"><span class="an-flash-tpl-thumb" data-flash-thumb="mine:${esc(f.id)}"></span><span class="an-flash-tile-text"><span class="an-flash-card-name">${esc(f.name)}${unsaved ? ` <span class="an-flash-unsaved" title="Unsaved changes">•</span>` : ""}</span><small>${esc(detail)}</small></span>${isDefault && !moment ? `<span class="an-flash-badge">Default</span>` : ""}</button>`;
+      const toggle = moment ? `<button class="an-flash-switch${on ? " is-on" : ""}" data-action="flash-moment-toggle" data-id="${esc(f.id)}" data-event="${esc(f.event)}" role="switch" aria-checked="${on}" data-tooltip="${on ? `Plays on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}: click to turn off` : `Off: click to play it on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}`}"><span></span>${on ? "On" : "Off"}</button>` : "";
+      return `<div class="an-flash-tile is-${group(f)}">${open}${toggle}</div>`;
     };
-    const section = (key, title) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><span class="an-flash-sub">${title}</span>${items.map(card).join("")}</div>` : ""; };
-    const listHTML = this.libSlim
-      ? `<aside class="an-flash-list is-slim"><button class="an-icon" data-action="flash-lib" data-tooltip="Show the library" aria-label="Show the library" aria-expanded="false">»</button><button class="an-icon" data-action="flash-new" ${list.length >= FLASH_LIMIT ? "disabled" : ""} data-tooltip="New flash screen" aria-label="New flash screen">+</button><span class="an-flash-slim-name">${esc(s?.name ?? "")}</span></aside>`
-      : `<aside class="an-flash-list"><div class="an-flash-libhead"><span class="an-eyebrow">FLASH SCREENS</span><span class="an-flash-libtools"><button class="an-icon" data-action="flash-lib" data-tooltip="Hide the library: more room to edit" aria-label="Hide the library" aria-expanded="true">«</button><button class="an-icon" data-action="flash-import" data-tooltip="Import screens from a file" aria-label="Import">↙</button><button class="an-icon" data-action="flash-export" ${list.length ? "" : "disabled"} data-tooltip="Export all screens to a file" aria-label="Export">↗</button></span></div><button class="an-primary an-flash-new" data-action="flash-new" ${list.length >= FLASH_LIMIT ? "disabled" : ""}>+ New flash screen</button>${list.length ? section("start", "Combat start") + section("moment", "During combat") + section("end", "Combat end") + section("action", "Before an animation") : `<p class="an-hint">No flash screens yet.</p>`}<p class="an-hint">Pick each combat's opening and ending in the Combat Tracker; defaults play otherwise.</p></aside>`;
-    const pageClass = `an-flash-page${this.libSlim ? " is-slim" : ""}${this.full ? " is-full" : ""}`;
-    if (this.showGallery) return `<section class="${pageClass}">${listHTML}<div class="an-flash-main">${this.galleryHTML()}</div></section>`;
-    if (!s) return `<section class="${pageClass}">${listHTML}<div class="an-flash-main an-preview-empty">Create a flash screen to begin.</div></section>`;
+    const section = (key, title, hint) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><div class="an-flash-libgroup-head"><span class="an-flash-sub">${title}</span><small>${hint}</small></div><div class="an-flash-tiles">${items.map(card).join("")}</div></div>` : ""; };
+    return `<section class="an-flash-page is-library">${list.length
+      ? section("start", "Combat start", "Pick one per combat in the Combat Tracker; the default plays otherwise.") + section("moment", "During combat", "Switch on the ones that should play.") + section("end", "Combat end", "Pick one per combat in the Combat Tracker; the default plays otherwise.") + section("action", "Before an animation", "Attach one to a recipe in its settings.")
+      : `<div class="an-preview-empty">No flash screens yet. Make one with <b>+ New flash screen</b>.</div>`}</section>`;
+  }
+
+  html() {
+    if (!this.editing) return this.libraryHTML();
+    const s = this.current(), defaults = this.host.flashDefaults();
+    if (!s) { this.editing = false; return this.libraryHTML(); }
+    const pageClass = "an-flash-page is-editor";
     const layer = s.layers[this.layerIndex];
     const isDefault = (ev) => defaults[ev] === s.id;
-    const head = `<div class="an-flash-head"><input class="an-st-name" aria-label="Flash screen name" data-flash-field="name" value="${esc(s.name)}"><label>Plays at<select data-flash-field="event">${options(FLASH_EVENTS, s.event)}</select></label><label>Length (s)<input type="number" min="1" max="12" step="0.1" data-flash-field="duration" value="${(s.duration / 1000).toFixed(1)}"></label><div class="an-flash-actions"><button class="an-icon" data-action="flash-undo" ${this.undoStack?.length ? "" : "disabled"} data-tooltip="Undo (Ctrl+Z)" aria-label="Undo">↶</button><button class="an-icon" data-action="flash-redo" ${this.redoStack?.length ? "" : "disabled"} data-tooltip="Redo (Ctrl+Shift+Z)" aria-label="Redo">↷</button><button class="an-icon" data-action="flash-duplicate" data-tooltip="Duplicate" aria-label="Duplicate">⧉</button><button class="an-icon is-danger" data-action="flash-delete" data-tooltip="Delete" aria-label="Delete"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="flash-revert" ${this.dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="flash-save" ${this.dirty ? "" : "disabled"}>${this.dirty ? "Save" : "Saved ✓"}</button></div></div>`;
+    // Two rows: back, name and actions; then when it plays and how long.
+    const head = `<div class="an-flash-head"><div class="an-flash-head-row"><button class="an-icon an-flash-back" data-action="flash-back" data-tooltip="Back to all flash screens" aria-label="Back to all flash screens">←</button><input class="an-st-name" aria-label="Flash screen name" data-flash-field="name" value="${esc(s.name)}"><div class="an-flash-actions"><button class="an-icon" data-action="flash-undo" ${this.undoStack?.length ? "" : "disabled"} data-tooltip="Undo (Ctrl+Z)" aria-label="Undo">↶</button><button class="an-icon" data-action="flash-redo" ${this.redoStack?.length ? "" : "disabled"} data-tooltip="Redo (Ctrl+Shift+Z)" aria-label="Redo">↷</button><button class="an-icon" data-action="flash-duplicate" data-tooltip="Duplicate" aria-label="Duplicate">⧉</button><button class="an-icon is-danger" data-action="flash-delete" data-tooltip="Delete" aria-label="Delete"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="flash-revert" ${this.dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="flash-save" ${this.dirty ? "" : "disabled"}>${this.dirty ? "Save" : "Saved ✓"}</button></div></div><div class="an-flash-head-row is-meta"><label class="an-flash-inline">Plays at<select data-flash-field="event">${options(FLASH_EVENTS, s.event)}</select></label><label class="an-flash-inline">Length<input type="number" min="1" max="12" step="0.1" data-flash-field="duration" value="${(s.duration / 1000).toFixed(1)}"><span>s</span></label></div></div>`;
     const canAlign = layer && !MOMENT_KINDS.includes(layer.kind) ? "" : "disabled";
     const align = (attr, v, label, tip) => `<button data-action="flash-align" ${attr}="${v}" ${canAlign} data-tooltip="${tip}">${label}</button>`;
     const help = this.showHelp ? `<div class="an-flash-help"><b>Shortcuts</b><span><kbd>Drag</kbd> move · corner handle: size · round handle: rotate · band edges: stretch</span><span><kbd>Wheel</kbd> opacity · <kbd>Shift</kbd>+wheel: size</span><span><kbd>←↑→↓</kbd> nudge (<kbd>Shift</kbd> ×10) · <kbd>[</kbd> <kbd>]</kbd> rotate · <kbd>-</kbd> <kbd>=</kbd> smaller / bigger</span><span><kbd>K</kbd> keyframe · <kbd>Space</kbd> play · <kbd>,</kbd> <kbd>.</kbd> step (<kbd>Shift</kbd> 1s) · <kbd>Home</kbd> <kbd>End</kbd></span><span><kbd>Tab</kbd> next layer · <kbd>Ctrl+D</kbd> duplicate · <kbd>Delete</kbd> remove · <kbd>Ctrl+Z</kbd> undo</span><span>Drag any field's label to change its value (<kbd>Shift</kbd> faster, <kbd>Alt</kbd> finer). On the timeline, drag bars, their ends and the shaded entrance/exit; drag ◆ to retime. <kbd>Alt</kbd> turns snapping off.</span></div>` : "";
-    const stage = `<div class="an-flash-tools"><span class="an-flash-align">${align("data-x", 20, "⇤", "Left third")}${align("data-x", 50, "↔", "Centre horizontally")}${align("data-x", 80, "⇥", "Right third")}<i></i>${align("data-y", 20, "⤒", "Top third")}${align("data-y", 50, "↕", "Centre vertically")}${align("data-y", 80, "⤓", "Bottom third")}</span><span class="an-flash-guides"><button class="an-flash-guide" data-action="flash-tours" aria-expanded="${!!this.showTours}" data-tooltip="Guided walkthroughs: watch how to build a flash screen, step by step">🎓 Show me ▾</button>${this.showTours ? `<span class="an-flash-tour-menu" role="menu">${Object.entries(FLASH_TOURS).map(([id, t]) => `<button role="menuitem" data-action="flash-tour" data-tour="${id}"><b>${esc(t.label)}</b><small>${esc(t.detail)}</small></button>`).join("")}</span>` : ""}</span><button class="an-icon${this.showHelp ? " is-on" : ""}" data-action="flash-help" data-tooltip="Shortcuts (?)" aria-label="Shortcuts">?</button><button class="an-icon${this.full ? " is-on" : ""}" data-action="flash-full" aria-pressed="${!!this.full}" data-tooltip="${this.full ? "Leave full window" : "Full window: hide Animater's menu and the library"}" aria-label="Full window">⛶</button></div>${help}<div class="an-flash-stage-wrap"><div class="an-flash-frame" data-flash-stage aria-label="Flash screen preview: drag a layer to move it"></div></div>
+    const stage = `<div class="an-flash-tools"><span class="an-flash-align">${align("data-x", 20, "⇤", "Left third")}${align("data-x", 50, "↔", "Centre horizontally")}${align("data-x", 80, "⇥", "Right third")}<i></i>${align("data-y", 20, "⤒", "Top third")}${align("data-y", 50, "↕", "Centre vertically")}${align("data-y", 80, "⤓", "Bottom third")}</span><span class="an-flash-guides"><button class="an-flash-guide" data-action="flash-tours" aria-expanded="${!!this.showTours}" data-tooltip="Guided walkthroughs: watch how to build a flash screen, step by step">🎓 Show me ▾</button>${this.showTours ? `<span class="an-flash-tour-menu" role="menu">${Object.entries(FLASH_TOURS).map(([id, t]) => `<button role="menuitem" data-action="flash-tour" data-tour="${id}"><b>${esc(t.label)}</b><small>${esc(t.detail)}</small></button>`).join("")}</span>` : ""}</span><button class="an-icon${this.showHelp ? " is-on" : ""}" data-action="flash-help" data-tooltip="Shortcuts (?)" aria-label="Shortcuts">?</button></div>${help}<div class="an-flash-stage-wrap"><div class="an-flash-frame" data-flash-stage aria-label="Flash screen preview: drag a layer to move it"></div></div>
       <div class="an-flash-transport"><button class="an-primary" data-action="flash-preview">${this.playing ? "■ Stop" : "▶ Preview"}</button><button data-action="flash-play-all" data-tooltip="Play it now on every player's screen">Play for everyone</button><input type="range" min="0" max="${s.duration}" step="10" value="${this.time}" data-flash-time aria-label="Scrub"><span data-flash-clock>${seconds(this.time)} / ${seconds(s.duration)}</span></div>`;
     const pct = (ms) => ((ms / s.duration) * 100).toFixed(2);
     const rows = s.layers.map((l, i) => {
@@ -241,11 +248,11 @@ export class FlashEditor {
     // Inspector tabs: the selected layer, or the screen as a whole.
     const tab = this.tab === "screen" || !layer ? "screen" : "layer";
     const tabs = `<div class="an-flash-tabs" role="tablist"><button role="tab" data-action="flash-tab" data-tab="layer" aria-selected="${tab === "layer"}" class="${tab === "layer" ? "is-on" : ""}" ${layer ? "" : "disabled"}>${layer ? `<span class="an-flash-row-icon kind-${layer.kind}" aria-hidden="true">${KIND_ICONS[layer.kind]}</span>` : ""}Layer</button><button role="tab" data-action="flash-tab" data-tab="screen" aria-selected="${tab === "screen"}" class="${tab === "screen" ? "is-on" : ""}">Screen</button></div>`;
-    return `<section class="${pageClass}">${listHTML}<div class="an-flash-main">${head}${stage}${layersHTML}</div><aside class="an-flash-inspector">${tabs}${tab === "layer" ? this.layerHTML(layer) : scene}</aside></section>`;
+    return `<section class="${pageClass}"><div class="an-flash-main">${head}${stage}${layersHTML}</div><aside class="an-flash-inspector">${tabs}${tab === "layer" ? this.layerHTML(layer) : scene}</aside></section>`;
   }
   // + New: start from a blank screen or a copy of a ready-made one (thumbnails drawn by mount).
   galleryHTML() {
-    const card = (id, name, detail) => `<button class="an-flash-tpl" data-action="flash-new-from" data-id="${esc(id)}"><span class="an-flash-tpl-thumb" data-flash-thumb="${esc(id)}">${id === "blank" ? "<b>+</b>" : ""}</span><b>${esc(name)}</b><small>${esc(detail)}</small></button>`;
+    const card = (id, name, detail) => `<button class="an-flash-tpl" data-action="flash-new-from" data-id="${esc(id)}"><span class="an-flash-tpl-thumb" data-flash-thumb="tpl:${esc(id)}">${id === "blank" ? "<b>+</b>" : ""}</span><b>${esc(name)}</b><small>${esc(detail)}</small></button>`;
     return `<div class="an-flash-gallery"><div class="an-flash-gallery-head"><div><span class="an-eyebrow">NEW FLASH SCREEN</span><h2>Start from…</h2></div><button data-action="flash-gallery-close">Cancel</button></div><div class="an-flash-gallery-grid">${card("blank", "Blank", "One title, nothing else")}${STARTER_FLASHES.map((t) => card(t.id, t.name, FLASH_EVENTS[t.event])).join("")}</div><p class="an-hint">You get your own copy to change; the ready-made screens stay as they are.</p></div>`;
   }
   layerHTML(l) {
@@ -348,7 +355,8 @@ export class FlashEditor {
     for (const run of this.thumbRuns ?? []) run.stop();
     this.thumbRuns = [];
     for (const box of this.w.root?.querySelectorAll?.("[data-flash-thumb]") ?? []) {
-      const tpl = STARTER_FLASHES.find((t) => t.id === box.dataset.flashThumb);
+      const [from, id] = box.dataset.flashThumb.split(/:(.*)/s);
+      const tpl = (from === "tpl" ? STARTER_FLASHES : this.screens()).find((t) => t.id === id);
       if (!tpl) continue;
       const run = createFlash(box, tpl, { resolveMedia: (src) => this.host.resolveFlashMedia(src), vars: this.host.flashVars(), editing: false });
       run.seek(Math.round(tpl.duration * 0.55));
@@ -565,10 +573,12 @@ export class FlashEditor {
     const commit = async (next, message) => { await this.host.saveFlashScreens(next); this.dirty = false; this.w.message = message; };
     switch (action) {
       case "flash-select":
-        if (b.dataset.id === this.selectedId) return true;
+        this.editing = true;
+        if (b.dataset.id === this.selectedId) break;
         if (this.dirty && !(await this.host.confirm(`Discard your unsaved changes to “${s.name}”?`))) return true;
         this.selectedId = b.dataset.id; this.draft = null; this.dirty = false; break;
-      case "flash-new": this.showGallery = true; break;
+      case "flash-back": this.editing = false; this.playing = false; break;
+      case "flash-new": this.showGallery = true; this.editing = false; break;
       case "flash-gallery-close": this.showGallery = false; break;
       case "flash-new-from": case "flash-duplicate": {
         if (this.dirty && !(await this.host.confirm(`Discard your unsaved changes to “${s.name}”?`))) return true;
@@ -579,12 +589,12 @@ export class FlashEditor {
           : { ...clone(s), id: newId(), name: `${s.name} copy` };
         base.id = newId();
         await commit([...list, validateFlash(base)], `${base.name} created.`);
-        this.selectedId = base.id; this.draft = null; break;
+        this.selectedId = base.id; this.draft = null; this.editing = true; break;
       }
       case "flash-delete": {
         if (!(await this.host.confirm(`Delete the flash screen “${s.name}”?`))) return true;
         await commit(list.filter((f) => f.id !== s.id), `${s.name} deleted.`);
-        this.selectedId = null; this.draft = null; break;
+        this.selectedId = null; this.draft = null; this.editing = false; break;
       }
       case "flash-save":
         await commit(list.map((f) => (f.id === s.id ? validateFlash(s) : f)), `${s.name} saved.`); break;
@@ -614,8 +624,6 @@ export class FlashEditor {
       }
       case "flash-help": this.showHelp = !this.showHelp; break;
       case "flash-tab": this.tab = b.dataset.tab; break;
-      case "flash-lib": this.libSlim = !this.libSlim; break;
-      case "flash-full": this.full = !this.full; break;
       case "flash-effects": this.showEffects = !this.showEffects; break;
       case "flash-eye": {
         const id = s.layers[Number(b.dataset.index)]?.id, set = (this.hidden ??= new Set());
@@ -659,7 +667,7 @@ export class FlashEditor {
         if (room <= 0) throw Error(`You already have the most flash screens (${FLASH_LIMIT}).`);
         const added = incoming.slice(0, room).map((x) => (ids.has(x.id) ? { ...x, id: newId() } : x));
         await commit([...list, ...added], `Imported ${added.length} flash screen${added.length === 1 ? "" : "s"}${added.length < incoming.length ? ` (${incoming.length - added.length} over the limit were skipped)` : ""}.`);
-        this.selectedId = added[0].id; this.draft = null; break;
+        this.selectedId = added[0].id; this.draft = null; this.editing = false; break;
       }
       case "flash-key-go": this.layerIndex = Number(b.dataset.index); this.time = Number(b.dataset.at); break;
       case "flash-key-add": { const layer = this.edit().layers[this.layerIndex]; layer.keys ??= []; this.keyForEdit(layer); break; }

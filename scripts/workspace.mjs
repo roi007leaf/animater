@@ -491,8 +491,8 @@ export class Workspace {
     const env = this.host.environment();
     patchDOM(
       this.root,
-      `<div class="an-shell${this.isStudio() ? " is-studio" : ""}">
-      <aside class="an-nav"><div class="an-brand"><span class="an-logo">A</span><div>Animater<small>MAKE EVERY ACTION FELT</small></div></div>
+      `<div class="an-shell${this.isStudio() || (this.page === "flash" && this.flashEditor?.editing) ? " is-studio" : ""}">
+      <aside class="an-nav"><div class="an-brand"><span class="an-logo">A</span><div>Animater<small>MAKE EVERY MOMENT FELT</small></div></div>
         <div class="an-nav-caption">WORKSPACE</div>
         ${(this.host.playerMode ? [["recipes", "✦", this.host.reviewing?.() ? `${esc(this.host.reviewing().userName)}'s animations` : "My animations"],["assets", "▦", "Assets"]] : [
           ["recipes", "✦", "Recipes"],
@@ -509,7 +509,7 @@ export class Workspace {
           .join("")}
         <div class="an-nav-bottom"><div class="an-pack"><span class="an-dot ${env.ready && env.jb2aRegistered !== false ? "is-ready" : ""}" ${env.jb2aRegistered === false ? `data-tooltip="${esc(env.pack)} is active, but Sequencer has no JB2A animations. See Setup."` : ""}></span><div>${esc(env.pack)}<small>${this.host.catalog().length.toLocaleString()} asset variants</small></div></div><button data-action="stop" class="an-stop">■ Stop my effects</button><small class="an-version">v0.2 · ${esc(env.system)}${env.demo ? " · PREVIEW" : ""}</small></div>
       </aside>
-      <main class="an-main">${this.isStudio() || this.page === "flash" ? "" : `<header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : ""}</div></header>`}
+      <main class="an-main">${this.isStudio() || (this.page === "flash" && (this.flashEditor?.editing || !this.host.flashScreens)) ? "" : `<header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : this.page === "flash" ? "TITLE CARDS FOR EVERY FIGHT" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : this.page === "flash" ? this.flashEditor?.showGallery ? "" : `<button data-action="flash-export" class="an-quiet" ${this.host.flashScreens().length ? "" : "disabled"}>↗ Export</button><button data-action="flash-import" class="an-quiet">↙ Import</button><button data-action="flash-new" class="an-primary">+ New flash screen</button>` : ""}</div></header>`}
         <div role="status" aria-live="polite" class="an-toast ${this.message ? "is-visible" : ""}">${esc(this.message)}</div>
         ${this.reviewBannerHTML()}
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
@@ -2047,6 +2047,8 @@ export class Workspace {
         if(!catalogPageAllowed(b.dataset.page,this.host.environment()))return;
         if (this.page === b.dataset.page) {
           if (this.page === "recipes" && this.studio) { this.studio = false; this.render(); }
+          // The Flash screens menu item returns from the editor to the library.
+          if (this.page === "flash" && this.flashEditor?.editing) { this.flashEditor.editing = false; this.flashEditor.playing = false; this.render(); }
           return;
         }
         this.page = b.dataset.page;

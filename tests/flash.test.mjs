@@ -146,6 +146,7 @@ test("the flash editor page renders a screen with layers, keyframes and the time
   ] })];
   const host = { flashScreens: () => screens, flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
   const ed = new FlashEditor({ host, page: "recipes", root: null });
+  ed.editing = true;
   const html = ed.html();
   assert.match(html, /an-flash-row-bar kind-text/);
   assert.match(html, /data-flash-part="enter"/, "entrance grip on visual layers");
@@ -213,11 +214,12 @@ test("cut-in: an actor portrait shows the one using the action; scenes can freez
   assert.equal(validateFlash({ backdrop: { freeze: "melt" } }).backdrop.freeze, "normal");
 });
 
-test("editor: inspector tabs, slim library, row icons and hide, effects menu, template gallery", async () => {
+test("editor: library page, inspector tabs, row icons and hide, effects menu, template gallery", async () => {
   const { FlashEditor } = await import("../scripts/flash-editor.mjs");
   const screens = [validateFlash({ id: "s", name: "Test", layers: [{ kind: "text", text: "HI" }, { kind: "particles" }, { kind: "punch" }] })];
   const host = { flashScreens: () => screens, flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
   const ed = new FlashEditor({ host, page: "recipes", root: null, render() {} });
+  ed.editing = true;
   let html = ed.html();
   assert.match(html, /data-action="flash-tab" data-tab="layer"[^>]*aria-selected="true"/);
   assert.doesNotMatch(html, /backdrop\.freeze/, "screen settings wait on their tab");
@@ -226,15 +228,20 @@ test("editor: inspector tabs, slim library, row icons and hide, effects menu, te
   assert.match(html, /data-action="flash-effects"/);
   await ed.action("flash-tab", { dataset: { tab: "screen" } });
   assert.match(ed.html(), /data-flash-field="backdrop.freeze"/);
-  await ed.action("flash-lib", { dataset: {} });
-  assert.match(ed.html(), /an-flash-list is-slim/);
-  await ed.action("flash-full", { dataset: {} });
-  assert.match(ed.html(), /an-flash-page is-slim is-full/);
+  await ed.action("flash-back", { dataset: {} });
+  html = ed.html();
+  assert.match(html, /an-flash-page is-library/, "the library is its own page");
+  assert.match(html, /data-flash-thumb="mine:s"/, "each screen shows a small preview");
+  assert.doesNotMatch(html, /data-flash-stage/);
+  await ed.action("flash-select", { dataset: { id: "s" } });
+  assert.match(ed.html(), /an-flash-page is-editor/, "opening a screen goes to the editor");
+  assert.match(ed.html(), /data-action="flash-back"/);
+  assert.doesNotMatch(ed.html(), /flash-full|flash-lib/);
   await ed.action("flash-new", { dataset: {} });
   html = ed.html();
   assert.match(html, /data-action="flash-new-from" data-id="blank"/);
-  assert.match(html, /data-flash-thumb="start-boss"/);
-  ed.layerIndex = 0; ed.tab = "layer"; ed.showGallery = false;
+  assert.match(html, /data-flash-thumb="tpl:start-boss"/);
+  ed.layerIndex = 0; ed.tab = "layer"; ed.showGallery = false; ed.editing = true;
   html = ed.html();
   assert.match(html, /data-flash-layer-field="words"/);
   assert.match(html, /data-flash-layer-field="blend"/);

@@ -10,13 +10,15 @@
   - **Blend modes:** on every layer (Screen, Add, Multiply, Overlay). Screen or Add hides the black around JB2A videos so they glow.
   - **Text:** words can arrive one by one, a new *Outline, then fill* entrance draws the outline before the colour pours in, and keyframes can change a text's colour and glow over time.
 - **Flash screen editor layout.**
+  - **Flash screens has its own library page**, like Recipes: every screen is a card with a small preview, grouped into combat start, during combat (each with its On/Off switch), combat end and before an animation. Import, Export and **+ New flash screen** are in the page header.
+  - Opening a screen takes you to the editor on its own page, with Animater's menu shrunk to icons like the recipe Studio. **←** (or the Flash screens menu item) goes back to the library.
+  - The editor header is two compact rows: name and actions, then *Plays at* and *Length*.
   - The inspector has **Layer** and **Screen** tabs.
-  - The library folds into a slim strip («).
-  - **⛶ Full window** hides Animater's menu and the library, leaving a bigger stage.
   - Timeline rows show an icon for each kind of layer, plus a 👁 that hides a layer while you edit (Preview still plays it).
   - **+ New flash screen** opens a gallery: start from a blank screen or a copy of any ready-made one, each shown as a small preview.
   - The editor column now scrolls instead of squashing the stage when there are many layers.
   - The *Show me* button stays in the toolbar.
+- The tagline is now *Make every moment felt*.
 
 - **Combat flash screens.** Full-screen title cards play for everyone when combat starts or ends (for example "Roll for Initiative!" or "Victory"). They replace the short-lived Combat moments option; Foundry already marks the current turn.
   - **Editor:** a new *Flash screens* page (GM only) with a 16:9 stage. Add text, image/video and colour-band layers, drag them into place and drag the corner handle to resize them (text size, image width, band width and height), and give each a font, size, colour, outline, glow, entrance and exit (fade, slide, zoom, slam), timing and optional shake. Each screen also has a backdrop, dark edges and a sound. Scrub its timeline, preview it locally, or play it for everyone. Text can use {scene} and {round}.
