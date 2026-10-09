@@ -25,6 +25,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # The "manifest" release only holds the update link; it is never built.
+    if: github.event_name != 'release' || github.event.release.tag_name != 'manifest'
     permissions:
       contents: write
 
@@ -90,6 +92,24 @@ jobs:
           artifacts: './module.json, ./module.zip'
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
+
+      # Foundry's update link is releases/latest/download/module.json, and GitHub's
+      # "latest" skips prereleases. One full release, tagged "manifest", always holds
+      # the newest module.json (whose download points at this version's zip), so
+      # installed copies find every update, prerelease or not.
+      - name: Point The Update Link At This Version
+        if: github.event_name == 'release' && github.event.release.draft != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NOTES: "Not a version: this release only carries the newest module.json so Foundry's update link (releases/latest/download/module.json) always works. Pick a real version below."
+        run: |
+          if gh release view manifest >/dev/null 2>&1; then
+            gh release upload manifest module.json --clobber
+            gh release edit manifest --latest --prerelease=false
+          else
+            gh release create manifest module.json --title "Update link (latest manifest)" --notes "$NOTES" --latest --target "${{ github.sha }}"
+          fi
+          echo "Update link now serves $(jq -r .version module.json)"
 
   publish-to-foundry:
     runs-on: ubuntu-latest
