@@ -21,7 +21,7 @@ const glow = () => [L('Soft radiance', ['markers.light.loop.yellow02', 'markers.
 const eyesDark = () => [L('Watchful eyes', ['eyes.01.dark_yellow.single', 'eyes.01.dark_green.single'], { ...tint('#ffd75e'), scale: 1.1 })];
 const eyesMany = () => [L('Eyes all around', ['eyes.01.dark_yellow.many', 'eyes.01.dark_green.many'], { ...tint('#d9b8ff'), scale: 1.3 })];
 const eyesMenace = () => [L('Baleful eye', ['eyes.01.dark_red.single', 'eyes.01.dark_green.single'], { ...tint('#ff5a5a'), scale: 1.1 })];
-const web = () => [L('Clinging web', ['web.loop.002.white'], { scale: 1.5, opacity: 0.9 })];
+const web = () => [L('Clinging web', ['web.01', 'web.02'], { scale: 1.2, opacity: 0.8 })];
 const entangle = () => [L('Grasping growth', ['entangle.02.loop.02.green'], { scale: 1.3 })];
 const vines = () => [L('Living vines', ['vine.loop.nature.group.01.green'], { scale: 1.4 })];
 const ice = () => [L('Frost motes', ['aura_themed.01.orbit.loop.cold.01.blue'], { scale: 1.5, opacity: 0.8 }), L('Snowflake', ['markers.snowflake.blue.01'], { scale: 0.75 })];

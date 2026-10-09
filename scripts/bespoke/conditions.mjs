@@ -74,7 +74,7 @@ put('conditions-dnd5eprone000000', state('Prone: a flattened shadow and a dust p
   dust({ scale: 1.2, offsetY: 0.34, opacity: 0.8, ...tint('#b9a98c') }),
 ]));
 put('conditions-dnd5egrappled000', state('Grappled: a grey chain loop holds the creature in place.', [
-  ['Held', ['markers.chain.standard.loop.01.grey', 'markers.chain.standard.loop.01.red'], { scale: 1, opacity: 0.95, ...tint('#9a9ca3') }],
+  ['Held', ['markers.chain.standard.loop.02.grey', 'markers.chain.standard.loop.02.red'], { scale: 1, opacity: 0.95, ...tint('#9a9ca3') }],
 ]));
 put('conditions-dnd5ecursed00000', state('Cursed: dark-red runes circle the creature.', [
   ['Curse', ['markers.runes.dark_red.03', 'markers.runes.dark_orange.03'], { scale: 1, opacity: 1, ...tint('#c0303c') }],

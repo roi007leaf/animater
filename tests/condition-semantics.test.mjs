@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {PF2E_CONDITIONS,stateRecipe,resolveStateRecipe,useStateEntry} from '../scripts/state-catalog.mjs';
+import {PF2E_CONDITIONS,PF2E_EFFECTS,stateRecipe,resolveStateRecipe,useStateEntry} from '../scripts/state-catalog.mjs';
 const entry=slug=>PF2E_CONDITIONS.find(e=>e.slug===slug);
 const assets=slug=>stateRecipe(entry(slug)).stages.flatMap(s=>s.assets).join(' ');
 
@@ -61,4 +61,13 @@ test('installed edition selection retains condition-specific layout while custom
  const state={...useStateEntry({},e.id),customized:[e.id]};
  const item={type:'condition',name:e.name,slug:e.slug,system:{active:true}};
  assert.equal(resolveStateRecipe(item,state,[custom]).stages[0].offsetY,-1.1);
+});
+
+test('lasting conditions and effects never use footage that reads as fog clouds on a token', () => {
+ // The *_01 chain loops pull chains out of dark smoke portals; web.loop is the Web spell's 5x5 area.
+ const smoky = /markers\.chain\.[a-z_]+\.loop\.01|web\.loop/;
+ for (const e of [...PF2E_CONDITIONS, ...PF2E_EFFECTS]) {
+  const keys = stateRecipe(e).stages.flatMap(s => s.assets).join(' ');
+  assert.doesNotMatch(keys, smoky, e.name);
+ }
 });

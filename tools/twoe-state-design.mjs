@@ -44,7 +44,7 @@ export const profiles={
  water:{match:['bubble.001.001.loop','aura_themed.01.orbit.loop.cold'],color:'blue',hex:'#87d6ee',note:'Water-like bubbles follow a sustained aquatic effect.'},
  void:{match:['aura_themed.01.orbit.loop.cold','markers.runes'],color:'purple',hex:'#b99be5',note:'A dark arcane orbit symbolizes void energy.'},
  sonic:{match:['markers.music','energy_field.01'],color:'blue',hex:'#bfa8ef',note:'A restrained resonance cue denotes sustained sonic energy.'},
- web:{match:['web.loop','markers.chain'],color:'white',hex:'#d3d8e8',note:'A web or binding loop marks entanglement.'},
+ web:{match:['web.0','markers.chain'],color:'white',hex:'#d3d8e8',note:'A web or binding loop marks entanglement.'},
  rage:{match:['aura_themed.01.orbit.loop.metal','token_border.circle.spinning'],color:'red',hex:'#ed978c',note:'A red orbit suggests a continuing battle state.'},
  penalty:{match:['condition.curse','token_border.circle.static'],color:'dark_red',hex:'#e07a84',note:'A dim red marker identifies a penalty or hindrance, distinct from beneficial effects.'},
  temphp:{match:['markers.heart','condition.boon'],color:'green',hex:'#8be6c4',note:'A heart marker identifies temporary Hit Points.'},
@@ -166,7 +166,7 @@ export function selectStateMedia(db,theme,seed,color){
   // A match entry is one art family or a pool of equally fitting families
   // (lightning: an orb, static crackle or a ball of lightning).
   for(const group of p.match){
-   candidates=rows.filter(r=>[group].flat().some(prefix=>r.key.startsWith(`jb2a.${prefix}`))&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst|pulse/.test(r.key)&&!r.key.startsWith('jb2a.icon.'));
+   candidates=rows.filter(r=>[group].flat().some(prefix=>r.key.startsWith(`jb2a.${prefix}`))&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst|pulse/.test(r.key)&&!/markers\.chain\.[a-z_]+\.loop\.01|web\.loop/.test(r.key)&&!r.key.startsWith('jb2a.icon.'));
    if(candidates.length)break;
   }
   if(!candidates.length)throw Error(`No sustained localized ${theme} asset in ${edition}`);

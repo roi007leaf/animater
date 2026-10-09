@@ -79,13 +79,15 @@ export const CONDITION_PLANS={
  fleeing:plan('fear','symbolic',glyph('horror','blood',{style:'.03',scale:.95})),
  friendly:plan('attitude','symbolic',glyph('heart','pink',{scale:.65})),
  frightened:plan('fear','themed',glyph('fear','purple',{scale:1})),
- grabbed:plan('chains','themed',art('markers.chain.standard.loop.01','grey',{scale:1.5})),
+ // The *_02 chain loops are clean rings; the *_01 loops pull chains out of dark smoke portals,
+ // which read as fog clouds around the token. Each binding keeps its own chain shape.
+ grabbed:plan('chains','themed',art(['markers.chain.spike.loop.02','markers.chain.standard.loop.02'],'grey',{scale:1.5})),
  helpful:plan('attitude','symbolic',glyph('heart','pink',{scale:.65}),glyph('heart','pink',{scale:.55,mirrorX:true})),
  hidden:plan('invisible','symbolic',veil('grey'),rim(6,'grey',{opacity:.85})),
  // Aggression: a targeting sigil over the dark red attitude rim.
  hostile:plan('attitude','symbolic',rim(7,'red',{scale:1.4}),art('hunters_mark.loop','red',{scale:.6,opacity:.8})),
  // Held in place: the binding motif of Grabbed/Restrained, shackled flat at the feet.
- immobilized:plan('chains','symbolic',art(['markers.chain.square.loop.01','markers.chain.standard.loop.01'],'grey',{scale:1.45,offsetY:.25,tracks:flatten(.55)})),
+ immobilized:plan('chains','symbolic',art(['markers.chain.square.loop.02','markers.chain.standard.loop.02'],'grey',{scale:1.45,offsetY:.25,tracks:flatten(.55)})),
  indifferent:plan('attitude','symbolic',rim(1,'grey')),
  invisible:plan('invisible','symbolic',art('condition.boon.02.001.refraction','white',{scale:1.35,opacity:.8})),
  observed:plan('neutral','symbolic',rim(2,'white',{scale:1.3})),
@@ -161,7 +163,7 @@ function build(entry,definition,db,id){
   for(const [edition,rows] of Object.entries(db)){
    let candidates=[];
    for(const root of roots){
-    candidates=rows.filter(r=>(r.key===`jb2a.${root}`||r.key.startsWith(`jb2a.${root}.`))&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst|pulse/.test(r.key)&&(!style||r.key.endsWith(style)));
+    candidates=rows.filter(r=>(r.key===`jb2a.${root}`||r.key.startsWith(`jb2a.${root}.`))&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst|pulse/.test(r.key)&&!/markers\.chain\.[a-z_]+\.loop\.01|web\.loop/.test(r.key)&&(!style||r.key.endsWith(style)));
     if(candidates.length)break;
    }
    if(!candidates.length)throw Error(`Missing ${id} layer ${index+1}: ${roots} (${edition})`);

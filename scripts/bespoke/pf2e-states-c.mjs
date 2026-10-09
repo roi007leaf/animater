@@ -87,7 +87,7 @@ export default {
     P('Freedom', ['token_border.circle.spinning.blue.007'], { scale: 1.35, opacity: 0.5 }),
   ]),
   [key('OwvrQKuMLEktNWzA')]: design('Animate Rope binds the legs (Speed penalty): coiled rope, not the haste ring of a Speed bonus.', () => [
-    P('Coiled rope', ['markers.chain.standard.loop.01.grey', 'markers.chain.standard.loop.01.red'], { scale: 1.3, opacity: 0.85, ...tint('#b08a5a') }),
+    P('Coiled rope', ['markers.chain.standard.loop.02.grey', 'markers.chain.standard.loop.02.red'], { scale: 1.3, opacity: 0.85, ...tint('#b08a5a') }),
   ]),
   [key('fcalovjrB3bzpiDH')]: design('Swampcall mires the target (Speed penalty, off-guard): clinging mud under a slowed border, not the haste ring.', () => [
     P('Sucking mud', ['grease.dark_brown.loop'], { scale: 1.2, opacity: 0.8, below: true }),

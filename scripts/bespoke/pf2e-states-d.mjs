@@ -274,7 +274,7 @@ export default {
   ]),
   // Silkspinner's Shield (Climb): spider climbing.
   'pf2e:equipment-effects-SbYcOry1cxbndSve': design("Silkspinner's Shield grants a climb Speed: faint spider silk instead of a shield dome.", () => [
-    P('Spider silk', ['web.loop.002.white'], { scale: 1.3, opacity: 0.55 }),
+    P('Spider silk', ['web.02', 'web.01'], { scale: 1.15, opacity: 0.55 }),
   ]),
 
   // ---------------- misread benefits ----------------

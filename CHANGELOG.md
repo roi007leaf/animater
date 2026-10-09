@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- **No more fog clouds around bound creatures.** JB2A's first chain animations pull the chains out of dark smoke portals, which looked like grey fog clouds around the token. *Grabbed*, *Immobilized*, Animate Rope and D&D's shackles, ropes, traps and held creatures now use the clean chain rings.
+  - **Each its own chain:** Grabbed has spiked chains and Immobilized square chains (JB2A Free shows the plain ring for both). Restrained keeps its plain ring with a web.
+  - **Webs:** PF2e *Clinging web* and *Spider silk* use a token-sized web instead of the Web spell's area.
+
 ## 0.3.3 (2026-10-09)
 
 ### New
