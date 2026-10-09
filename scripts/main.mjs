@@ -39,6 +39,12 @@ import {
 } from "./feat-catalog.mjs";
 import { PF2E_ACTION_CATALOG, PF2E_FEATURE_CATALOG, isFeatureItem, riderRecipes } from "./ability-catalog.mjs";
 // PF2e ability catalogs beside feats: setting key → catalog.
+import { findCatalogSpell as findSpellEntry } from "./spell-catalog.mjs";
+import { findCatalogFeat as findFeatEntry } from "./feat-catalog.mjs";
+import { findCatalogWeapon as findWeaponEntry } from "./weapon-catalog.mjs";
+import { findStateEntry as findConditionEntry } from "./state-catalog.mjs";
+import { findDndEntry as findDndCatalogEntry } from "./dnd5e-catalog.mjs";
+import { findSfEntry as findSfCatalogEntry } from "./sf2e-catalog.mjs";
 const ABILITY_CATALOGS = { actionCatalog: PF2E_ACTION_CATALOG, featureCatalog: PF2E_FEATURE_CATALOG };
 const abilitySettingKey = item => item?.type === "action" ? "actionCatalog" : isFeatureItem(item) ? "featureCatalog" : null;
 import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, resolveAutomaticWeaponRecipe } from "./weapon-catalog.mjs";
@@ -344,6 +350,47 @@ export class AnimaterApp extends HandlebarsApplicationMixin(ApplicationV2) {
 function open() {
   app ??= new AnimaterApp();
   return app.render({ force: true });
+}
+// The catalog page an item's animation lives on (by system and item type).
+function itemPage(item) {
+  const type = item?.type, sys = game.system.id;
+  if (type === "spell") return "spells";
+  if (type === "weapon" || (sys !== "dnd5e" && type === "shield")) return "weapons";
+  if (type === "condition") return "conditions";
+  if (type === "effect") return "effects";
+  if (sys === "dnd5e") return type === "feat" ? "feats" : ["consumable", "equipment", "tool", "loot", "container"].includes(type) ? "items" : null;
+  if (type === "action") return "actions";
+  if (type === "feat") return sys === "pf2e" && isFeatureItem(item) ? "features" : "feats";
+  return null;
+}
+// The catalog entry for an item (by its compendium source, like playback finds it), or null.
+function catalogEntryFor(item) {
+  const event = { type: "use", item, actor: item.actor, systemId: game.system.id };
+  try {
+    if (game.system.id === "dnd5e") return findDndCatalogEntry(event);
+    if (game.system.id === "sf2e") return findSfCatalogEntry(event);
+    if (item.type === "spell") return findSpellEntry(event);
+    if (["weapon", "shield"].includes(item.type)) return findWeaponEntry(event);
+    if (["condition", "effect"].includes(item.type)) return findConditionEntry(item);
+    const key = abilitySettingKey(item);
+    if (key) return ABILITY_CATALOGS[key].find(event);
+    if (item.type === "feat") return findFeatEntry(event);
+  } catch {}
+  return null;
+}
+// An item sheet's Animater button: your own recipe for it in the Studio, else its catalog entry.
+async function openForItem(item) {
+  if (!game.user.isGM || !item) return;
+  let recipe = null;
+  try { recipe = resolveEvent({ type: "use", item, actor: item.actor, systemId: game.system.id }); } catch {}
+  const saved = recipe && recipes().find((r) => r.id === recipe.id);
+  await open();
+  const w = app?.workspace;
+  if (!w) return;
+  // An NPC's "Slow (2/day)" is the catalog's "Slow".
+  const entry = saved ? null : catalogEntryFor(item);
+  if (!w.reveal(saved ? { recipeId: saved.id } : { page: itemPage(item), name: entry?.name ?? item.name.replace(/\s*\([^)]*\)\s*$/, ""), id: entry?.id })) w.message = `No Animater catalog covers ${item.name}; make a recipe for it with + New recipe.`;
+  w.render();
 }
 function builtinRecipe(id) {
  if(game.system.id==='sf2e'){
@@ -854,6 +901,19 @@ async function loadDndBooks() {
 }
 Hooks.once("ready", () => {
   void loadDndBooks();
+  // Item sheets (GM): a shortcut to the item's animation. AppV1 sheets get a header button;
+  // AppV2 sheets (D&D 5e) get an entry in the header's menu.
+  if (game.user.isGM) {
+    Hooks.on("getItemSheetHeaderButtons", (sheet, buttons) => {
+      if (!sheet.item || buttons.some((b) => b.class === "animater-open")) return;
+      buttons.unshift({ label: "Animation", class: "animater-open", icon: "fa-solid fa-wand-magic-sparkles", onclick: () => void openForItem(sheet.item) });
+    });
+    Hooks.on("getHeaderControlsApplicationV2", (sheet, controls) => {
+      const item = sheet.document;
+      if (!(item instanceof Item) || controls.some((c) => c.action === "animaterOpen")) return;
+      controls.push({ icon: "fa-solid fa-wand-magic-sparkles", label: "Animater animation", action: "animaterOpen", onClick: () => void openForItem(item) });
+    });
+  }
   syncQuality();
   const env = environment();
   if (game.user.isGM && env.ready && !env.jb2a) ui.notifications.warn(`Animater: ${JB2A_MISSING}`, { permanent: true });

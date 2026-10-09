@@ -79,6 +79,28 @@ const options = (items, value) =>
     .join("");
 export const JB2A_MISSING = "Neither JB2A module is active, so built-in animations have no artwork to play. Activate JB2A Free (JB2A_DnD5e) or JB2A Patreon (jb2a_patreon), then reload Foundry.";
 export class Workspace {
+  // Open the animation for something: a saved recipe in the Studio, or a catalog page
+  // searched to a name (its first match is shown). Returns false for an unknown page.
+  reveal({ recipeId, page, name = "", id } = {}) {
+    const fresh = (filters) => ({ ...Object.fromEntries(Object.keys(filters ?? {}).map((k) => [k, "all"])), search: name });
+    if (recipeId) { this.page = "recipes"; this.selected = recipeId; this.studio = true; this.studioTime = 0; this.stageIndex = 0; this.search = ""; this.category = "All"; return true; }
+    const pages = ["spells", "feats", "actions", "features", "weapons", "items", "conditions", "effects"];
+    if (!pages.includes(page)) return false;
+    this.page = page; this.studio = false; this.message = "";
+    if (this.dndCatalog?.isCatalogPage()) {
+      const kind = this.dndCatalog.kind;
+      this.dndCatalog.filters[kind] = { search: name, edition: "all", level: "all", theme: "all" };
+      this.dndCatalog.selected[kind] = id; this.dndCatalog.pages[kind] = 0;
+      return true;
+    }
+    const profile = abilityProfileForPage(page);
+    if (page === "spells") { this.spellFilters = fresh(this.spellFilters); this.selectedSpell = id; this.spellPage = 0; }
+    else if (profile) { this[profile.filtersKey] = fresh(this[profile.filtersKey]); this[profile.selectedKey] = id; this[profile.pageKey] = 0; }
+    else if (page === "weapons") { this.weaponFilters = fresh(this.weaponFilters); this.selectedWeapon = id; this.weaponPage = 0; }
+    else if (page === "conditions" || page === "effects") { const kind = page === "conditions" ? "condition" : "effect"; this.stateFilters[kind] = fresh(this.stateFilters[kind]); this.selectedState[kind] = id; this.statePages[kind] = 0; }
+    else return false;
+    return true;
+  }
   constructor(root, host) {
     this.root = root;
     this.host = host;

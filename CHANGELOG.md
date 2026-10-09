@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- **Animation button on item sheets (GM).** Spell, feat, action, feature, weapon, condition and effect sheets have an *Animation* button in their header (D&D 5e: in the header's ⋮ menu).
+  - **If you made your own recipe for the item**, it opens in the Studio.
+  - **Otherwise** it opens that item's entry in its catalog, ready to preview or customize, so you can customize your players' spells without searching for them.
+  - **Lookup:** entries are found by the item's compendium source, so an NPC's *Slow (2/day)* opens *Slow* and a *+1 Flaming Kukri* opens *Kukri*.
 - **Token motion switch for conditions and effects.** The condition and effect catalogs (PF2e, SF2e and D&D 5e) now have the *Token motion* switch the other catalogs have. Turn it to *Effects only* to keep the visuals without the creature trembling, swaying or lying down.
 - **Condition animations no longer blink out when a turn passes.** When a condition's value changes, such as PF2e lowering Frightened 2 to 1 at the end of a turn, its animation used to end and then start again at the new strength, leaving a gap. The old animation now stays until the new one is playing.
 

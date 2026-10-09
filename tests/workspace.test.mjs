@@ -545,3 +545,14 @@ test("New recipe asks for the kind; a lasting animation follows conditions and e
   await f.click({ action: "new" });
   assert.ok(!f.w.newChooser, "players only make action animations");
 });
+
+test('reveal opens a catalog page searched to an item, or a saved recipe in the Studio',()=>{
+ const w=Object.assign(Object.create(Workspace.prototype),{spellFilters:{search:'',rank:'3'},actionFilters:{search:'',level:'2'},weaponFilters:{search:''},stateFilters:{condition:{search:'',group:'x'},effect:{search:''}},selectedState:{},statePages:{},dndCatalog:null});const f={w}; assert.equal(f.w.reveal({page:'spells',name:'Fireball'}),true);
+ assert.equal(f.w.page,'spells');assert.equal(f.w.spellFilters.search,'Fireball');assert.equal(f.w.spellFilters.rank,'all');
+ assert.equal(f.w.reveal({page:'conditions',name:'Frightened'}),true);
+ assert.equal(f.w.stateFilters.condition.search,'Frightened');assert.equal(f.w.page,'conditions');
+ assert.equal(f.w.reveal({page:'actions',name:'Demoralize'}),true);assert.equal(f.w.actionFilters.search,'Demoralize');
+ assert.equal(f.w.reveal({page:'nowhere',name:'x'}),false);
+ const id='r1';
+ assert.equal(f.w.reveal({recipeId:id}),true);assert.equal(f.w.page,'recipes');assert.equal(f.w.studio,true);assert.equal(f.w.selected,id);
+});
