@@ -54,6 +54,8 @@ test("energy damage flashes on the token; physical damage does not; knockouts fi
   assert.equal(hit.stages[0].kind, "cast", "plays on the damaged token");
   assert.equal(deathRecipe("piercing", collapse), collapse, "physical keeps the plain collapse");
   const death = validateRecipe(deathRecipe("cold", collapse));
-  assert.deepEqual(death.stages.map((s) => s.kind), ["motion", "cast", "cast"]);
+  assert.deepEqual(death.stages.map((s) => s.kind), ["motion", "tokenfx", "cast", "cast"]);
+  assert.equal(death.stages[1].fxPreset, "pure-ice-aura", "a Token Magic frost filter on the token");
+  assert.deepEqual(hit.stages.map((s) => s.kind), ["cast", "tokenfx"]);
   assert.match(death.name, /freezes and shatters/);
 });

@@ -29,6 +29,19 @@ const LOOKS = {
   spirit: { color: "#dfe6f2", hit: ["jb2a.impact.005.white", "jb2a.impact.003.yellow"], death: ["jb2a.smoke.puff.ring.01.white", "jb2a.impact.005.white"], after: [], label: "loses its spirit" },
 };
 export const damageLook = (type) => LOOKS[normalizeDamageType(type)] ?? null;
+// Token Magic FX on the token's own artwork, using the presets the catalogs already use.
+const FILTERS = {
+  fire: { preset: "fire", tint: "#ff9b45" }, cold: { preset: "pure-ice-aura", tint: "#9cdeff" },
+  electricity: { preset: "electric", tint: "#88cfff" }, acid: { preset: "fumes", tint: "#a2dc48" },
+  poison: { preset: "smoke", tint: "#78bc57" }, void: { preset: "smoke", tint: "#5b3f7a" },
+  vitality: { preset: "glow", tint: "#ffe9a3" }, force: { preset: "glow", tint: "#ba9cff" },
+  mental: { preset: "glow", tint: "#b07cff" }, sonic: { preset: "distortion", tint: "" },
+  spirit: { preset: "spectral-body", tint: "#dfe6f2" },
+};
+const filterStage = (stageId, type, extra) => {
+  const f = FILTERS[normalizeDamageType(type)];
+  return f ? [{ stageId, kind: "tokenfx", assets: [], catalogFx: true, fxProfile: "damage", fxPreset: f.preset, fxLibrary: "tmfx-main", fxTint: f.tint, ...extra }] : [];
+};
 
 // The main damage type of a damage roll message, and who it was aimed at.
 export function damageFromMessage(message, systemId) {
@@ -72,7 +85,7 @@ const stage = (stageId, assets, extra) => ({ stageId, kind: "cast", assets, ...e
 export function hitRecipe(type) {
   const look = damageLook(type);
   if (!look) return null;
-  return { id: `animater-hit-${normalizeDamageType(type)}`, name: `Took ${normalizeDamageType(type)} damage`, trigger: "manual", color: look.color, stages: [stage("hit", look.hit, { duration: 1200, scale: 0.9, opacity: 0.9 })] };
+  return { id: `animater-hit-${normalizeDamageType(type)}`, name: `Took ${normalizeDamageType(type)} damage`, trigger: "manual", color: look.color, stages: [stage("hit", look.hit, { duration: 1200, scale: 0.9, opacity: 0.9 }), ...filterStage("hit-filter", type, { duration: 1400 })] };
 }
 // The 0 HP collapse, finished in the damage's look (or plain for physical damage).
 export function deathRecipe(type, collapse) {
@@ -81,6 +94,7 @@ export function deathRecipe(type, collapse) {
   return {
     ...collapse, id: `animater-death-${normalizeDamageType(type)}`, name: `Dropped to 0 HP: ${look.label}`, color: look.color,
     stages: [...collapse.stages,
+      ...filterStage("death-filter", type, { duration: 2400 }),
       stage("death", look.death, { delay: 150, duration: 2000, scale: 1.2 }),
       ...(look.after.length ? [stage("after", look.after, { delay: 1400, duration: 1800, scale: 1, opacity: 0.85 })] : [])],
   };

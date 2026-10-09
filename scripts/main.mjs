@@ -1085,7 +1085,8 @@ Hooks.once("ready", () => {
   if (game.system.id === "dnd5e") Hooks.on("dnd5e.calculateDamage", (actor, damages) => remember(damageFromParts(damages, actor?.id)));
   else Hooks.on("createChatMessage", (message) => remember(damageFromMessage(message, game.system.id)));
   // Stages whose artwork is not installed (Free vs Patreon) are left out rather than blocking the rest.
-  const installedStages = (recipe) => ({ ...recipe, stages: recipe.stages.filter((s) => ["motion", "sound"].includes(s.kind) || resolveAsset(s, runtime.getCatalog())) });
+  // Token Magic layers play only where Token Magic FX is available.
+  const installedStages = (recipe) => ({ ...recipe, stages: recipe.stages.filter((s) => ["motion", "sound"].includes(s.kind) || (s.kind === "tokenfx" ? fxCatalog().tokenReady : resolveAsset(s, runtime.getCatalog()))) });
   // A creature dropping to 0 HP collapses once (D&D 5e, PF2e and SF2e keep HP in the
   // same place), finished in the damage's look; its Unconscious or Dying body treatment
   // takes over afterwards. Energy damage short of that flashes on the token.
