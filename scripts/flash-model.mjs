@@ -5,8 +5,13 @@ export const FLASH_EVENTS = Object.freeze({ start: "Combat start", end: "Combat 
 export const FLASH_MOTIONS = Object.freeze({
   none: "None", fade: "Fade", "slide-left": "Slide from left", "slide-right": "Slide from right",
   "slide-up": "Rise from below", "slide-down": "Drop from above", zoom: "Zoom", slam: "Slam",
+  type: "Type on / wipe off", wipe: "Wipe",
 });
-export const FLASH_KINDS = Object.freeze({ text: "Text", image: "Image or video", band: "Color band" });
+// Effects that repeat while a layer is on screen.
+export const FLASH_LOOPS = Object.freeze({ none: "None", pulse: "Pulse", flicker: "Flicker", wobble: "Wobble", float: "Float", spin: "Spin" });
+export const KEY_LIMIT = 12;
+export const FLASH_KINDS = Object.freeze({ text: "Text", image: "Image or video", band: "Color band", sound: "Sound" });
+const safeAudio = (v) => { const s = text(v, 300).trim(); return s && !/^[a-z]+:/i.test(s) && !s.includes("..") && /\.(ogg|mp3|wav|flac|webm|m4a)$/i.test(s) ? s : ""; };
 export const FLASH_LIMIT = 40, LAYER_LIMIT = 12;
 const num = (v, min, max, fallback) => { const n = Number(v); return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : fallback; };
 const text = (v, max, fallback = "") => (typeof v === "string" ? v.slice(0, max) : fallback);
@@ -31,12 +36,21 @@ export function validateLayer(l = {}, duration = 4000) {
     enter: pick(l.enter, FLASH_MOTIONS, "fade"), enterMs: num(l.enterMs, 0, 4000, 400),
     exit: pick(l.exit, FLASH_MOTIONS, "fade"), exitMs: num(l.exitMs, 0, 4000, 400),
     opacity: num(l.opacity, 0, 1, 1), rotate: num(l.rotate, -180, 180, 0), shake: l.shake === true,
+    // Keyframes: where the layer is (position, scale, rotation, opacity) at moments of the screen.
+    keys: (Array.isArray(l.keys) ? l.keys : []).slice(0, KEY_LIMIT).map((k) => ({
+      at: Math.round(num(k?.at, 0, duration, 0)), x: num(k?.x, -20, 120, 50), y: num(k?.y, -20, 120, 50),
+      scale: num(k?.scale, 0.05, 10, 1), rotate: num(k?.rotate, -720, 720, 0), opacity: num(k?.opacity, 0, 1, 1),
+    })).sort((a, b) => a.at - b.at),
+    keyEase: pick(l.keyEase, { smooth: 1, linear: 1 }, "smooth"),
+    loop: pick(l.loop, FLASH_LOOPS, "none"), loopMs: num(l.loopMs, 150, 5000, 900),
     ...(kind === "text" ? {
       text: text(l.text, 200, "Roll for Initiative!"), font: text(l.font, 60, "Signika"), size: num(l.size, 1, 40, 9),
       color: color(l.color, "#ffffff"), outline: color(l.outline, "#000000"), glow: color(l.glow, "#ff7a1a"),
       glowSize: num(l.glowSize, 0, 10, 2), bold: l.bold !== false, italic: l.italic === true, spacing: num(l.spacing, -0.1, 1, 0.04),
     } : kind === "image" ? {
       src: safeMedia(l.src), width: num(l.width, 1, 150, 40),
+    } : kind === "sound" ? {
+      file: safeAudio(l.file), volume: num(l.volume, 0, 1, 0.7),
     } : {
       color: color(l.color, "#7a1010"), width: num(l.width, 1, 150, 120), height: num(l.height, 1, 100, 22), skew: num(l.skew, -45, 45, -8),
     }),
@@ -54,6 +68,19 @@ export function validateFlash(s = {}) {
 }
 export const validateFlashes = (list) => (Array.isArray(list) ? list : []).slice(0, FLASH_LIMIT).map(validateFlash);
 
+// A layer's keyframed values at a moment (between keyframes, eased; outside them, held).
+export function keyValueAt(layer, t) {
+  const keys = layer.keys ?? [];
+  const base = { x: layer.x, y: layer.y, scale: 1, rotate: 0, opacity: 1 };
+  if (!keys.length) return base;
+  if (t <= keys[0].at) return { ...keys[0] };
+  if (t >= keys.at(-1).at) return { ...keys.at(-1) };
+  const i = keys.findIndex((k) => k.at > t), a = keys[i - 1], b = keys[i];
+  let f = (t - a.at) / Math.max(1, b.at - a.at);
+  if (layer.keyEase !== "linear") f = f < 0.5 ? 2 * f * f : 1 - (-2 * f + 2) ** 2 / 2;
+  const mix = (p) => a[p] + (b[p] - a[p]) * f;
+  return { at: Math.round(t), x: mix("x"), y: mix("y"), scale: mix("scale"), rotate: mix("rotate"), opacity: mix("opacity") };
+}
 // {scene} in text becomes the scene's name, {round} the combat round.
 export const fillText = (value, vars = {}) => String(value ?? "").replace(/\{(scene|round)\}/g, (_, k) => vars[k] ?? "");
 

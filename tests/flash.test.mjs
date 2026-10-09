@@ -42,3 +42,26 @@ test("text placeholders and layer keyframes", () => {
   assert.equal(frames.at(-1).opacity, 0, "hidden after it ends");
   assert.ok(frames.some((f) => f.offset === 0.25), "starts at 1s of 4s");
 });
+
+test("keyframes: held outside, eased between, and drawn relative to the layer's place", async () => {
+  const { keyValueAt } = await import("../scripts/flash-model.mjs");
+  const { motionKeyframes, loopTiming } = await import("../scripts/flash-render.mjs");
+  const layer = validateFlash({ duration: 4000, layers: [{ kind: "text", x: 50, y: 50, keyEase: "linear", loop: "pulse", loopMs: 500, start: 1000, duration: 2000,
+    keys: [{ at: 2000, x: 80, y: 50, scale: 2 }, { at: 0, x: 20, y: 50 }] }] }).layers[0];
+  assert.deepEqual(layer.keys.map((k) => k.at), [0, 2000], "sorted by time");
+  assert.equal(keyValueAt(layer, 1000).x, 50, "halfway, linear");
+  assert.equal(keyValueAt(layer, 3500).x, 80, "held after the last keyframe");
+  assert.equal(keyValueAt({ ...layer, keyEase: "smooth" }, 500).x < 35, true, "smooth starts slow");
+  const frames = motionKeyframes(layer, 4000);
+  assert.match(frames[1].transform, /translate\(-30\.00cqw, 0\.00cqh\)/);
+  assert.match(frames.at(-1).transform, /scale\(2\)/);
+  assert.equal(motionKeyframes({ ...layer, keys: [] }, 4000), null);
+  const loop = loopTiming(layer, 4000);
+  assert.deepEqual([loop.options.delay, loop.options.duration, loop.options.iterations], [1000, 500, 4]);
+});
+
+test("sound layers keep a safe audio file and volume", () => {
+  const [ok, bad] = validateFlash({ layers: [{ kind: "sound", file: "sounds/drums.ogg", volume: 3, start: 500 }, { kind: "sound", file: "http://x/y.ogg" }] }).layers;
+  assert.deepEqual([ok.file, ok.volume, ok.start], ["sounds/drums.ogg", 1, 500]);
+  assert.equal(bad.file, "");
+});

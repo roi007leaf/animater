@@ -496,6 +496,7 @@ function workspaceHost() {
       setFlashDefault: (event, id) => flash.setDefault(event, id),
       playFlash: (screen, options) => flash.play(screen, options),
       flashSound: (screen) => flash.sound(screen),
+      flashPlaySound: (src, volume) => flash.playSound(src, volume),
       flashVars: () => flash?.vars() ?? {},
       flashFonts: () => [...new Set(["Signika", "Modesto Condensed", "Amiri", ...Object.keys(CONFIG.fontDefinitions ?? {})])],
       resolveFlashMedia: (src) => (!src || /\.(webm|mp4|png|jpe?g|webp|gif|svg)$/i.test(src) ? src : runtime.getCatalog().find((i) => i.key === src || i.key.startsWith(`${src}.`))?.file ?? ""),

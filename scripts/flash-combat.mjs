@@ -22,10 +22,8 @@ export function flashScreens(host) {
   const defaults = () => ({ start: "none", end: "none", ...game.settings.get(ID, FLASH_DEFAULTS) });
   const vars = (combat = game.combat) => ({ scene: canvas.scene?.name ?? "", round: String(combat?.round ?? "") });
   let showing = null;
-  function sound(screen) {
-    if (!screen.sound.file || host.quietHere()) return;
-    void foundry.audio.AudioHelper.play({ src: screen.sound.file, volume: screen.sound.volume, loop: false }, false);
-  }
+  const playSound = (src, volume) => { if (src && !host.quietHere()) void foundry.audio.AudioHelper.play({ src, volume, loop: false }, false); };
+  function sound(screen) { playSound(screen.sound.file, screen.sound.volume); }
   // Draw it full screen on this client.
   async function show(screen, v = vars()) {
     if (host.quietHere()) return;
@@ -33,7 +31,7 @@ export function flashScreens(host) {
     const layer = document.createElement("div");
     layer.className = "an-flash-overlay";
     document.body.append(layer);
-    const run = createFlash(layer, validateFlash(screen), { resolveMedia: host.resolveMedia, vars: v });
+    const run = createFlash(layer, validateFlash(screen), { resolveMedia: host.resolveMedia, vars: v, playSound });
     showing = run;
     sound(screen);
     try { await run.play(); } finally { run.stop(); layer.remove(); if (showing === run) showing = null; }
@@ -82,7 +80,7 @@ export function flashScreens(host) {
   });
 
   return {
-    screens, defaults, vars, play, receive, sound,
+    screens, defaults, vars, play, receive, sound, playSound,
     save: (list) => game.settings.set(ID, FLASH_SETTING, { schema: 1, screens: validateFlashes(list) }),
     setDefault: (event, id) => game.settings.set(ID, FLASH_DEFAULTS, { ...defaults(), [event]: id }),
     events: FLASH_EVENTS,
