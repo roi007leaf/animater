@@ -1,14 +1,32 @@
 # Changelog
 
-## Unreleased
+## 0.3.1 (2026-10-09)
 
-- **No darkness over unconscious creatures (PF2e, SF2e).** Unconscious automatically adds Blinded, and Blinded's dark cloud covered the sleeping token and its sleep symbol. While a creature is Unconscious, the Blinded animation now stays off. Blinded on its own still shows.
+### Updates from inside Foundry work again
+Animater's update link pointed at GitHub's "latest" release, which never includes prereleases. So Foundry could never find an update, and each version had to be installed by hand with a new manifest.
+
+A permanent *Update link* release now always carries the newest manifest, and the release pipeline refreshes it with every version. Copies already installed (0.2.x, 0.3.0) find this update and every later one, with no reinstall.
+
+### Conditions
+- **Prone creatures lie down.**
+  - A prone token falls onto its side (about 80°), sits a little lower, and gets back up smoothly when the condition ends or a preview finishes.
+  - Before, Prone only drew a shadow and dust under the token, which barely showed.
+  - Only the token's picture moves, on each screen; the token itself never moves.
+  - An unconscious creature, which PF2e also makes prone, now lies down instead of only breathing.
+  - Works in PF2e, SF2e and D&D 5e.
 - **A better Blinded (PF2e, SF2e).** The black darkness disc that hid the whole token is gone. Now a dark blindfold of haze lies across the eyes, with a dim eye under it that keeps fading out, so you can still see who is blinded.
-- **Prone creatures lie down.** A prone token now falls onto its side (about 80°, easing over in under half a second, and standing back up the same way when the condition ends or a preview finishes) and sits a little lower until it stands up, over the existing ground shadow and dust that barely showed before. It only moves the token picture on each screen; the token itself never moves. An unconscious creature, which PF2e also makes prone, lies down instead of only breathing. Works in PF2e, SF2e and D&D 5e.
+- **No darkness over unconscious creatures (PF2e, SF2e).** Unconscious automatically adds Blinded, whose animation covered the sleeping token and its sleep symbol. While a creature is Unconscious, the Blinded animation stays off. Blinded on its own still shows.
 - **Concealed** is a lighter haze, so the token stays readable through it.
 - **Restrained** adds a faint web over the chains, so it no longer looks the same as Grabbed.
-- **Updates from inside Foundry work again.** The update link in Animater's manifest pointed at GitHub's "latest" release, which skips prereleases, so Foundry could never find an update and each version had to be installed by hand. A permanent *Update link* release now always carries the newest manifest, and the release pipeline refreshes it with every version. Copies already installed (0.2.x, 0.3.0) pick up updates with no reinstall.
-- **Finish Him! flash screen.** A new ready-made screen in a fighting-game style: when one enemy is left standing, the scene freezes dark, a red burst and embers flare, and *FINISH HIM!* slams in with a camera punch, red flash and shake. Find it in **+ New flash screen**, then switch it on under *During combat*. The text is yours to change, for example to *FINISH THEM!*.
+- **Steadier body motions.** Condition body motions (trembling, swaying, lying down…) now move in step with Foundry's own drawing, so a token no longer flickers back to its natural pose for a frame when it is hovered, selected or updated.
+
+### Flash screens
+- **Finish Him!** A new ready-made screen in a fighting-game style. When one enemy is left standing:
+  - the scene freezes dark;
+  - a red burst and embers flare;
+  - *FINISH HIM!* slams in with a camera punch, a red flash and a shake.
+
+  Find it in **+ New flash screen**, then switch it on under *During combat*. The text is yours to change, for example to *FINISH THEM!*.
 
 ## 0.3.0 (2026-10-09)
 
