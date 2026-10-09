@@ -1,58 +1,167 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 (2026-10-09)
 
-- **Flash screens: new effects.**
-  - **Cut-in:** a Portraits layer can show *the one using the action*, and a new *Slash* frame tears it in from the side. A new **Cut-in** ready-made screen uses it for signature moves.
-  - **Drawn effects** in the new *✦ Effects* menu: **Speed lines** that rush to a point, a **Light burst** of turning rays, a **Slash streak** that cuts across, and **Particles** (embers, sparks, snow, ash, petals or blood) with direction, amount, speed and size.
-  - **Camera punch:** the whole card zooms in hard at a moment, then eases back. Pair it with a flash and a shake.
-  - **Freeze-frame:** the game scene behind the card can stop and turn grey, dark or sepia while the card shows. Each player's map comes back as soon as the card ends.
-  - **Blend modes:** on every layer (Screen, Add, Multiply, Overlay). Screen or Add hides the black around JB2A videos so they glow.
-  - **Text:** words can arrive one by one, a new *Outline, then fill* entrance draws the outline before the colour pours in, and keyframes can change a text's colour and glow over time.
-- **Flash screen editor layout.**
-  - **Flash screens has its own library page**, like Recipes: every screen is a card with a small preview, grouped into combat start, during combat (each with its On/Off switch), combat end and before an animation. Import, Export and **+ New flash screen** are in the page header.
-  - Opening a screen takes you to the editor on its own page, with Animater's menu shrunk to icons like the recipe Studio. **←** (or the Flash screens menu item) goes back to the library.
-  - The editor header is two compact rows: name and actions, then *Plays at* and *Length*.
-  - The inspector has **Layer** and **Screen** tabs.
-  - The toolbar over the stage changes with the selected layer, offering its most used actions. Text: bold, italic, gradient, size and entrance. Images: choose a file, size and blend. Portraits: who, frame and names. Particles: type, direction, amount and speed. Sounds: move to the playhead and listen. Flash, shake and punch: move to the playhead and strength. Placed layers also get centre buttons and a keyframe button.
-  - *Plays at* sits in the header row beside a shorter name field.
-  - The screen's length is set on the timeline: drag the yellow end of the ruler. The Length field is gone.
-  - The **?** panel lists the words that fill themselves in ({scene}, {round}, {boss}, {name}, {action}): what each one shows and when it is available. Text layers have chips to insert them.
-  - Timeline rows show an icon for each kind of layer, plus a 👁 that hides a layer while you edit (Preview still plays it).
-  - **+ New flash screen** opens a gallery: start from a blank screen or a copy of any ready-made one, each shown as a small preview.
-  - The editor column now scrolls instead of squashing the stage when there are many layers.
-  - The *Show me* button stays in the toolbar.
+The big one: **flash screens**, full-screen title cards for your table, with their own editor. Also random variants, damage reactions and damage-typed knockouts.
+
+### Flash screens
+
+Full-screen title cards ("Roll for Initiative!", "Boss Battle", "Victory"…) that play on every player's screen at the moments you choose. They replace the short-lived *Combat moments* option; Foundry already marks the current turn.
+
+**When they play**
+- **Combat start and end.** The Combat Tracker shows *Opening* and *Ending* menus for the current combat: a screen, *Random* or *None*, plus ▶ to preview. PF2e HUD's tracker has the same menus behind a ⚡ button in its header. A combat that picks nothing uses the world default.
+- **Off until you choose.** No screen plays by default. Set the defaults in the ⚙ panel of the tracker picker, or with *Use for* on the screen's *Screen* tab.
+- **During combat.** Screens can play on a *new round*, a *critical hit*, an *enemy defeated*, the *last enemy standing* or a *party member down*. Each is off until you switch it on, using the *On/Off* switch on its card in the library or the tracker's ⚙ panel. A moment never interrupts a screen that is already showing.
+- **Before an animation.** A recipe can show a flash screen right before it plays (Studio, ⚙ *Recipe settings*, *Flash screen first*). The animation starts as the screen fades. The screen shows only once the animation is sure to play, and *Stop* cancels both.
+- Only the active GM triggers screens, so each plays once for everyone. Players with Animation quality *Off* don't see them. Playing music dips while a screen shows (per screen, on by default).
+
+**The library**
+- *Flash screens* is its own page in the Animater menu, like Recipes.
+  - Every screen is a card with a small live preview.
+  - Cards are grouped into *Combat start*, *During combat*, *Combat end* and *Before an animation*.
+  - Import, Export and **+ New flash screen** are in the page header.
+- **+ New flash screen** opens a gallery: start from a blank screen or a copy of any ready-made one.
+- **Twelve ready-made screens:**
+  - *Roll for Initiative!*, *Boss Battle*, *Face Off* (party vs enemies) and *Ambush!*
+  - *Signature Move* and *Cut-in* (before an animation)
+  - *Next Round*, *Critical!* and *Last One Standing*
+  - *Victory* and *Battle Over*
+- **Share:** *Export* saves every screen to a file; *Import* adds screens from one.
+
+**The editor**
+- Opening a card takes you to the editor on its own page. Animater's menu shrinks to icons, like the recipe Studio. **←** (or the *Flash screens* menu item) goes back to the library; unsaved changes are kept and marked •.
+- **Layout:**
+  - A one-row header: the name, *Plays at*, then undo, redo, duplicate, delete, revert and save.
+  - A 16:9 stage.
+  - A timeline with a seconds ruler.
+  - An inspector with **Layer** and **Screen** tabs.
+- **Quick tools.** The toolbar over the stage changes with the selected layer to offer its most used actions:
+  - text: bold, italic, gradient, size, entrance;
+  - images: choose a file, size, blend;
+  - portraits: who, frame, names;
+  - particles: type, direction, amount, speed;
+  - sounds: move to the playhead, listen;
+  - flash, shake and punch: move to the playhead, strength.
+
+  Every layer on the stage also gets centre buttons and a keyframe button.
+- **On the stage:**
+  - drag a layer to move it;
+  - the corner handle resizes it;
+  - the round handle rotates it (*Shift* snaps to 15°);
+  - band edges stretch a band.
+
+  The mouse wheel sets opacity, and *Shift*+wheel sets size. Layers snap to the centre and to each other with pink guide lines; hold *Alt* to place freely.
+- **On the timeline:**
+  - drag a bar to move it in time;
+  - drag its ends to trim it;
+  - drag its shaded ends to set the entrance and exit;
+  - drag ◆ to retime a keyframe;
+  - drag the **yellow end of the ruler** to make the whole screen longer or shorter.
+
+  Zoom with −, + and *Fit* or Ctrl+wheel, and scroll with Shift+wheel. Click or drag the ruler to move the playhead.
+- **Rows:** each has an icon for its kind of layer, 👁 to hide it while you edit, and **M**/**S** to mute or solo it in the editor's preview. Saved screens always play every layer.
+- **Fields:** drag any number field's label to change it (*Shift* faster, *Alt* finer).
+- **Preview** plays the screen in the editor, with the slider, clock and playhead following along. *Play for everyone* shows it on every player's screen now.
+- **Undo and redo** (Ctrl+Z, Ctrl+Shift+Z). You can also duplicate layers, and copy keyframes from one layer and paste them onto another.
+- **Shortcuts:**
+  - arrows nudge (*Shift* ×10);
+  - `[` `]` rotate;
+  - `-` `=` resize;
+  - `K` adds a keyframe;
+  - Space plays;
+  - `,` `.` step the playhead;
+  - Tab picks the next layer;
+  - Ctrl+D duplicates;
+  - Delete removes.
+
+  They only act while you work in the editor, so the map never moves.
+- **?** lists every shortcut and the words that fill themselves in.
+- **Show me:** guided walkthroughs (*A sliding title*, *A signature move*). A virtual mouse builds a screen on the real interface one step at a time, with *Next*, *Back*, ↺ replay and ✕. It all happens on a practice screen that is never saved.
+
+**Layers**
+- **Text:**
+  - font, size, colour, outline, glow, bold, italic and spacing;
+  - a two-colour *gradient*;
+  - *letters* or *words* arriving one by one.
+- **Image or video:** any file, or a JB2A key.
+- **Portraits:** fill in from the encounter when the screen plays:
+  - who: *the party* (player-owned or friendly tokens), *the enemies*, *the boss* (highest level or CR), *everyone*, or *the one using the action*;
+  - token images or actor portraits;
+  - framed as circles, rounded squares or a **Slash** cut-in;
+  - optional names;
+  - popping in one after another, in rows (*Per row*: 2 makes "2 above 2").
+
+  Hidden combatants never appear. With no encounter, stand-ins show in the editor.
+- **Colour band:** a slanted strip of colour behind a title.
+- **Speed lines:** manga lines rushing to a point you place.
+- **Light burst:** turning rays from behind.
+- **Slash streak:** a bright cut across the screen.
+- **Particles:** embers, sparks, snow, ash, petals or blood, with direction, amount, speed and size.
+- **Moments:**
+  - *Sound* cues at exact times;
+  - *Screen flash*;
+  - *Screen shake*;
+  - **Camera punch** (the whole card zooms in hard, then eases back).
+
+**Animating layers**
+- **Entrances and exits:**
+  - fade;
+  - slide (four ways);
+  - zoom;
+  - slam;
+  - type on;
+  - wipe;
+  - blur;
+  - *Outline, then fill*: the outline draws itself, then the colour pours in.
+- **Keyframes:** add a ◆, move the playhead, then drag or resize the layer. It moves, scales, turns and fades smoothly between keyframes. A text's keyframes can also change its colour and glow.
+- **Loop effects** while a layer shows, at a chosen speed:
+  - pulse;
+  - glow;
+  - heartbeat;
+  - glitch;
+  - flicker;
+  - wobble;
+  - float;
+  - spin.
+- **Blend modes** on every layer: Screen, Add, Multiply, Overlay. *Screen* or *Add* hides the black around JB2A videos so they glow.
+
+**The screen**
+- **Backdrop:** a colour and darkness, dark edges, and *Cinematic bars*.
+- **Animated background:** a JB2A loop (bad omen, fog, crimson or ember fog, storm, darkness, fireflies, sleet, runes, energy field) or any video.
+- **A sound** for the whole screen.
+- **Game scene behind it:** freeze the map and turn it grey, dark or sepia while the card shows. Each player's map comes back when the card ends.
+- **Words that fill themselves in.** Text layers have chips to insert them.
+
+  | Word | Shows |
+  |---|---|
+  | `{scene}` | the scene name |
+  | `{round}` | the round number |
+  | `{boss}` | the strongest enemy |
+  | `{name}` | who crit, fell or acted |
+  | `{action}` | the attack, spell or ability |
+
+### Random variants
+- A stage can have random variants: copies with their own asset, size and timing. Each play picks one, so repeated attacks don't look identical.
+- To add one, select a stage in the Studio and click *🎲 Add a random variant* under Type, then change the copy as you like.
+- In the timeline, a group is one clip with numbered tabs on top (*1 2 3 +*). Click a number to edit that variant, or *+* to add another.
+- *Remove this variant* in the stage panel deletes one.
+- While you edit a variant, the others are hidden in the preview. Stages linked to a variant follow whichever one played.
+
+### Damage reactions and knockouts
+- **Damage reactions:** a token that takes energy damage flashes in that damage's look:
+  - flames for fire;
+  - an ice shard for cold;
+  - crackle for electricity;
+  - a splash for acid;
+  - also poison, void/necrotic, vitality/radiant, force, mental/psychic, sonic/thunder and spirit.
+
+  With Token Magic FX, the token's own artwork also burns, frosts, crackles or glows for a moment. Physical damage keeps its weapon animation only. Setting: *Damage reactions* (on by default).
+- **Damage-typed knockouts:** dropping to 0 HP still collapses the token, and now finishes in the look of the damage that did it: burned to ash, frozen and shattered, fried by lightning, dissolved in acid, or blasted apart by force. With Token Magic FX, the matching filter plays on the falling token. Physical damage keeps the plain collapse. Setting: *Damage-typed knockouts* (on by default). Artwork missing from JB2A Free is skipped and never blocks the collapse.
+- Both work in PF2e, SF2e and D&D 5e.
+
+### Smaller changes
+- **JB2A status is honest.** The sidebar dot used to turn green as soon as Sequencer was running, even when JB2A's animations weren't in Sequencer's database. It now stays grey in that case. The Setup card says "Active, but Sequencer has no JB2A animations · reload Foundry; if it stays, press F12 and look for JB2A errors".
 - The tagline is now *Make every moment felt*.
-
-- **Combat flash screens.** Full-screen title cards play for everyone when combat starts or ends (for example "Roll for Initiative!" or "Victory"). They replace the short-lived Combat moments option; Foundry already marks the current turn.
-  - **Editor:** a new *Flash screens* page (GM only) with a 16:9 stage. Add text, image/video and colour-band layers, drag them into place and drag the corner handle to resize them (text size, image width, band width and height), and give each a font, size, colour, outline, glow, entrance and exit (fade, slide, zoom, slam), timing and optional shake. Each screen also has a backdrop, dark edges and a sound. Scrub its timeline, preview it locally, or play it for everyone. Text can use {scene} and {round}.
-  - **Keyframes:** animate any layer over time. Add a ◆ keyframe, move the playhead, then drag or resize the layer on the stage; it moves, scales, turns and fades smoothly between keyframes. Keyframes show as diamonds on the layer's timeline row, and each one's position, scale, rotation and opacity can be typed in.
-  - **Loop effects:** Pulse, Flicker, Wobble, Float or Spin while a layer is on screen, at a chosen speed. New entrances and exits: *Type on* (reveals text left to right) and *Wipe*.
-  - **Sound layers:** place sound cues on the timeline (a drum hit as the title lands, a horn as it leaves), each at its own moment and volume. Image layers take videos too.
-  - **Impact effects:** *Screen flash* and *Screen shake* layers hit at an exact moment (pair them where a title lands), *Cinematic bars* letterbox the screen, text can arrive *letters one by one*, fill with a *gradient*, or *blur* into focus, and new loops add *Glow pulse*, *Heartbeat* and *Glitch*.
-  - **Portraits:** a layer that fills in from the encounter when the screen plays: the party (player-owned or friendly tokens), the enemies (hostile tokens) or everyone, as token images or actor portraits, framed as circles or rounded squares, with optional names, popping in one after another, in one line or in rows (*Per row*: 2 makes "2 above 2", 1 a column). Hidden combatants never appear. With no encounter, stand-ins show in the editor.
-  - **Moments during combat:** screens can also play on a *new round*, a *critical hit*, an *enemy defeated*, the *last enemy standing* or a *party member down*. They are off until the GM turns one on: each during-combat screen has an *On/Off* switch in the library, and the tracker picker's ⚙ panel lists every moment too. Moments never interrupt a screen that's already showing. Starters: *Next Round*, *Critical!* and *Last One Standing*.
-  - **Boss spotlight:** portraits can show just the boss (the highest-level or highest-CR enemy), and text can use {boss}, plus {name} for who crit or fell.
-  - **Animated backgrounds:** pick a JB2A loop (bad omen, fog, crimson fog, storm, darkness, fireflies, sleet, runes, energy field) or any video behind the layers, with a strength.
-  - **Music ducking:** playing music dips while a screen shows, then comes back (on by default, per screen).
-  - **Editor comfort:** mute (M) and solo (S) per layer in the editor (saved screens always play every layer), undo and redo (Ctrl+Z, Ctrl+Shift+Z), duplicate a layer, copy keyframes from one layer and paste them onto another, and snapping to the centre and other layers with pink guide lines (hold Alt to place freely).
-  - **Before an animation:** a recipe can show a flash screen to everyone right before it plays (Studio, ⚙ *Recipe settings*, *Flash screen first*). The animation starts as the screen fades, the screen only shows once the animation is sure to play, and Stop cancels both. Screens made for this use *Plays at: Before an animation* and can use {action} (the attack, spell or ability) and {name} (who used it). A *Signature Move* starter is included.
-  - **Show me:** guided walkthroughs in the editor (*A sliding title*, and *A signature move*: animated background, band, {action} letters, impact and linking it to a recipe). A virtual mouse moves over the real interface and builds a title that slides across the screen with keyframes, one step at a time: each step shows its caption, demonstrates once and waits for *Next* (available once the step has been shown); *Back* returns to the previous step as it was, and ↺ replays a step. It all happens on a practice screen that is never saved; ✕, Esc or a click elsewhere stops it.
-  - **Direct editing:** drag any number field's label to change it (*Shift* faster, *Alt* finer); on the stage, a round handle rotates the selected layer (*Shift* snaps to 15°), band edges stretch it, and the mouse wheel sets opacity (*Shift*+wheel: size). Quick align buttons centre a layer or put it on a third.
-  - **Draggable timeline:** drag a layer's bar to move it in time, its ends to trim it, its shaded ends to set the entrance and exit, and ◆ keyframes to retime them; everything snaps to the playhead and other layers (*Alt* places freely).
-  - **Timeline zoom:** −, + and Fit buttons, or Ctrl+wheel to zoom around the pointer and Shift+wheel to scroll; a seconds ruler (click or drag it to move the playhead) gets finer as you zoom, and all rows scroll together. During *Preview*, the slider, clock and playhead lines follow along, then return to where you were editing.
-  - **Shortcuts:** arrows nudge (*Shift* ×10), [ ] rotate, - = resize, K adds a keyframe, Space plays, , . step the playhead, Tab picks the next layer, Ctrl+D duplicates, Delete removes, and ? lists them all. They only act while you work in the editor, so the map never moves.
-  - **Share:** *Export* saves all flash screens to a file; *Import* adds screens from one.
-  - **Library:** keep as many screens as you like, each for combat start, end or either. Ten starters are included, including a new *Face Off* (party vs enemies), *Boss Battle* and a punchier *Roll for Initiative!*.
-  - **Off until you choose:** no screen plays by default. Set the default opening and ending with the ⚙ in the tracker picker, or with *Use for* on the Flash screens page.
-  - **Quick pick:** the Combat Tracker (and PF2e HUD's tracker, behind a ⚡ button in its header) shows *Opening* and *Ending* menus for the current combat (a screen, Random or None), plus a ▶ to preview. Otherwise the defaults play (None until you set them).
-  - Only the active GM triggers them, so each plays once. Players with Animation quality Off don't see them.
-- **Random variants.** A stage can have random variants: copies with their own asset, size and timing, of which each play picks one, so repeated attacks don't look identical. In the Studio, select a stage and click *🎲 Add a random variant* under Type, then change the copy as you like. In the timeline, a group is one clip with numbered tabs on top (*1 2 3 +*): click a number to edit that variant (the clip shows its timing), or *+* to add another. *Remove this variant* in the stage panel deletes one. The panel says *Random variant 2 of 3*. While you edit one, the others are hidden in the preview. Stages linked to a variant follow whichever one played.
-- **Damage reactions.** A token that takes energy damage now flashes in that damage's look: flames for fire, an ice shard for cold, crackle for electricity, a splash for acid, and so on for poison, void/necrotic, vitality/radiant, force, mental/psychic, sonic/thunder and spirit. With Token Magic FX active, the token's own artwork also burns, frosts, crackles or glows for a moment. Physical damage keeps its weapon animation only. Works in PF2e, SF2e and D&D 5e. Setting: *Damage reactions* (on by default).
-- **Damage-typed knockouts.** Dropping to 0 HP still collapses the token, and now finishes in the look of the damage that did it: burned to ash, frozen and shattered, fried by lightning, dissolved in acid, blasted apart by force. With Token Magic FX, the matching filter plays on the falling token too. Physical damage keeps the plain collapse. Setting: *Damage-typed knockouts* (on by default). Artwork missing from JB2A Free is skipped, never blocking the collapse.
-- **Clearer JB2A status when JB2A is active but not loaded.**
-  - **Sidebar dot:** it used to turn green as soon as Sequencer was running, even when JB2A's animations weren't in Sequencer's database. It now stays grey in that case.
-  - **Setup card:** it now says "Active, but Sequencer has no JB2A animations · reload Foundry; if it stays, press F12 and look for JB2A errors" instead of the misleading "Optional for custom media".
 
 ## 0.2.7 (2026-10-08)
 
