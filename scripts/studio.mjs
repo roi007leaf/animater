@@ -325,7 +325,8 @@ export function studioPointer(w, e) {
     return true;
   }
   const track = e.target.closest(".an-st-ruler, .an-st-tl .an-tl-track");
-  if (!track || e.target.closest("[data-tl-bar]")) return false;
+  // Clip drags and the random-variant tabs are not scrubs.
+  if (!track || e.target.closest("[data-tl-bar], .an-tl-variant-tabs")) return false;
   e.preventDefault();
   if (w.previewMode !== "recipe") { w.previewMode = "recipe"; w.render(); }
   const scrub = (ev) => {
