@@ -31,6 +31,7 @@ export function bodyTreatment(name = '') {
   const key = String(name).toLowerCase().replace(/^(?:condition|effect)\s*:\s*/, '').replace(/\s+\d+$/, '').trim();
   return BY_NAME[key] ?? null;
 }
+const RISE = 400;
 const TAU = Math.PI * 2, wave = (t, period) => Math.sin((TAU * t) / period);
 // Pose deltas: x/y in token widths, rotation in degrees, sy as a scale factor.
 export function bodyPose(kind, t, strength = 1) {
@@ -72,7 +73,7 @@ export class ConditionBody {
   }
   add(name, token, kind, { strength = 1 } = {}) {
     if (!kind || !token?.mesh) return;
-    this.remove(name);
+    this.remove(name, { immediate: true });
     const record = { token, kind, strength, start: this.now() };
     if (kind === 'stone') {
       // Turned to stone: drain the colour, no overlay at all. A raw PIXI filter on
@@ -92,16 +93,23 @@ export class ConditionBody {
     this.records.set(name, record);
     if (!this.handle) this.handle = this.frame(() => this.tick());
   }
-  remove(name) {
+  // A token lying down stands back up over RISE ms (the end of a preview, or the condition
+  // removed) instead of snapping upright; everything else ends at once.
+  remove(name, { immediate = false } = {}) {
     const r = this.records.get(name);
     if (!r) return;
+    if (!immediate && r.kind === 'prone' && this.enabled()) {
+      r.leaving ??= this.now();
+      if (!this.handle) this.handle = this.frame(() => this.tick());
+      return;
+    }
     this.records.delete(name);
     if (![...this.records.values()].some(o => o.token === r.token)) this.restore(r.token);
     if (r.stone) void Promise.resolve(r.stone.api.togglePreset(r.token, r.stone.preset, { action: 'remove', transient: true })).catch(() => {});
     if (r.tint !== undefined && r.token.mesh && !r.token.mesh.destroyed) r.token.mesh.tint = r.tint;
     if (!this.records.size && this.handle) { this.cancel(this.handle); this.handle = null; }
   }
-  clear() { for (const name of [...this.records.keys()]) this.remove(name); }
+  clear() { for (const name of [...this.records.keys()]) this.remove(name, { immediate: true }); }
   // Undo only what this treatment set; if the token refreshed in between, its
   // pose is already natural and there is nothing to undo.
   restore(token) {
@@ -117,6 +125,8 @@ export class ConditionBody {
     this.handle = null;
     if (!this.records.size) return;
     const time = this.now(), on = this.enabled();
+    for (const [name, r] of [...this.records]) if (r.leaving !== undefined && time - r.leaving >= RISE) this.remove(name, { immediate: true });
+    if (!this.records.size) return;
     // Each token shows its highest-priority treatment (see BODY_PRIORITY); stone or
     // stillness anywhere on the token holds it in its natural pose.
     const byToken = new Map();
@@ -137,7 +147,10 @@ export class ConditionBody {
       const baseY = a && mesh.position.y === a.setY ? a.baseY : mesh.position.y;
       const baseR = a && mesh.rotation === a.setR ? a.baseR : mesh.rotation;
       const baseSY = a && mesh.scale.y === a.setSY ? a.baseSY : mesh.scale.y;
-      const pose = bodyPose(r.kind, (time - r.start) / 1000, r.strength), w = token.w ?? 100;
+      const full = bodyPose(r.kind, (time - r.start) / 1000, r.strength), w = token.w ?? 100;
+      // Standing back up: the pose eases away.
+      const f = r.leaving === undefined ? 1 : (1 - Math.min(1, (time - r.leaving) / RISE)) ** 2;
+      const pose = { x: (full.x ?? 0) * f, y: (full.y ?? 0) * f, r: (full.r ?? 0) * f, sy: 1 - (1 - (full.sy ?? 1)) * f };
       mesh.position.x = baseX + (pose.x ?? 0) * w;
       mesh.position.y = baseY + (pose.y ?? 0) * w;
       mesh.rotation = baseR + ((pose.r ?? 0) * Math.PI) / 180;

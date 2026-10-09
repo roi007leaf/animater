@@ -112,3 +112,17 @@ test("prone tips the token onto its side and outranks the breathing of Unconscio
   assert.equal(shownTreatment(["breathe", "prone"]), "prone");
   assert.equal(shownTreatment(["prone", "still"]), null, "the dead stay as they are");
 });
+
+test("a prone token falls over, then stands back up smoothly when it ends", () => {
+  const { body, step } = runner(), t = token();
+  body.add("p", t, "prone");
+  step(1000);
+  assert.ok(Math.abs(t.mesh.rotation - (80 * Math.PI) / 180) < 1e-9, "lying on its side");
+  body.remove("p");
+  step(200);
+  const mid = t.mesh.rotation;
+  assert.ok(mid > 0 && mid < (80 * Math.PI) / 180, "rising, not snapped upright");
+  step(250);
+  assert.deepEqual([t.mesh.rotation, t.mesh.position.y, t.mesh.scale.y], [0, 300, 1], "upright again exactly");
+  assert.equal(body.records.size, 0);
+});
