@@ -166,6 +166,8 @@ function environment() {
     ready,
     // Built-in animations draw on JB2A artwork: one of the two packs must be active.
     jb2a: Boolean(patreon?.active || free?.active),
+    // Active is not enough: its animations must also be registered in Sequencer's database.
+    jb2aRegistered: databaseReady,
     motionReady: game.modules.get(ID)?.socket === true,
     motionServerVersion: game.modules.get(ID)?.version,
     systemId: game.system.id,
@@ -192,7 +194,9 @@ function environment() {
         ok: databaseReady,
         detail: databaseReady
           ? "Installed variants available · no assets bundled"
-          : "Optional for custom media · required for built-in animations",
+          : patreon?.active || free?.active
+            ? "Active, but Sequencer has no JB2A animations · reload Foundry; if it stays, press F12 and look for JB2A errors"
+            : "Not active · required for built-in animations",
       },
       {
         name: system,
