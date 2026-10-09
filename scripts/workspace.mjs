@@ -341,6 +341,7 @@ export class Workspace {
     this.render();
   }
   destroy() {
+    clearInterval(this.activityTimer);
     void this.mediaLibrary?.stopTokenPreview();
     this.stopEditorPreview();
     this.abort.abort();
@@ -544,6 +545,7 @@ export class Workspace {
       e.open = openGroups.includes(e.dataset.optionsGroup);
     });
     // The flash stage is drawn after the page, at the editor's current time.
+    this.watchActivity();
     if (this.page === "flash") this.flashEditor?.mount(); else if (this.flashEditor?.preview) { this.flashEditor.preview.stop(); this.flashEditor.preview = null; }
     this.root.querySelectorAll("audio[data-cue-volume]").forEach((audio) => {
       audio.volume = Number(audio.dataset.cueVolume);
@@ -1478,9 +1480,22 @@ export class Workspace {
     this.mediaLibrary ??= new MediaLibrary(this);
     return this.mediaLibrary.html(recipe);
   }
+  // The Activity page follows new entries while it is open: a cheap check each second redraws
+  // only when the log changed (each entry also asks for a redraw as it is logged).
+  watchActivity() {
+    if (this.page !== "activity") { clearInterval(this.activityTimer); this.activityTimer = null; return; }
+    const mark = () => { const l = this.host.logs?.() ?? []; return `${l.length}:${l[0]?.time}:${l[0]?.detail}`; };
+    this.activitySeen = mark();
+    if (this.activityTimer) return;
+    this.activityTimer = setInterval(() => {
+      if (this.page !== "activity" || !this.root?.isConnected) { clearInterval(this.activityTimer); this.activityTimer = null; return; }
+      const now = mark();
+      if (now !== this.activitySeen) { this.activitySeen = now; this.render(); }
+    }, 1000);
+  }
   activityHTML() {
     const logs = this.host.logs();
-    return `<div class="an-activity"><div class="an-info">Playback explained<p>Automatic events appear here with matching recipe, played effect count, or reason playback was blocked.</p></div>${logs.map((l) => `<div class="an-log"><time>${esc(l.time)}</time><span class="an-badge ${l.status === "Blocked" ? "is-missing" : ""}">${esc(l.status)}</span><div><b>${esc(l.recipe)}</b><p>${esc(l.detail)}</p></div></div>`).join("") || `<div class="an-empty">No activity yet.<small>Preview a recipe or enable automatic playback.</small></div>`}</div>`;
+    return `<div class="an-activity"><div class="an-info">Playback explained<p>Automatic events appear here with matching recipe, played effect count, or reason playback was blocked. The list updates live while this page is open. It shows what this browser played: each player's own casts are listed on their own Activity page.</p></div>${logs.map((l) => `<div class="an-log"><time>${esc(l.time)}</time><span class="an-badge ${l.status === "Blocked" ? "is-missing" : ""}">${esc(l.status)}</span><div><b>${esc(l.recipe)}</b><p>${esc(l.detail)}</p></div></div>`).join("") || `<div class="an-empty">No activity yet.<small>Preview a recipe or enable automatic playback.</small></div>`}</div>`;
   }
   // One click for every built-in catalog of this system.
   everyCatalogHTML(env) {

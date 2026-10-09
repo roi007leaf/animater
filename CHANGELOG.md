@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **The Activity page updates live.** While it's open, new playback entries appear within a second, with no need to switch pages. It now also says that it lists what *this* browser played: each player's own casts appear on their own Activity page.
 - **Lasting areas loop their whole clip.** Animater gave every lasting layer its short stage length, so Sequencer looped only that part of the clip and jumped back. For example, Darkness looped 2.3 seconds of its 5-second clip, which looked like it kept re-forming. Lasting areas and auras now loop the full footage, which JB2A makes seamless. This replaces 0.3.5's middle-only Darkness loop.
 
 ## 0.3.5 (2026-10-09)

@@ -569,3 +569,23 @@ test('Setup offers to turn every catalog on, and says when all are on', () => {
  w.host = {};
  assert.equal(w.everyCatalogHTML(env), '');
 });
+
+test('the Activity page follows new entries while open, and stops watching elsewhere', (t) => {
+ t.mock.timers.enable({ apis: ['setInterval'] });
+ const log = [];
+ const w = Object.create(Workspace.prototype);
+ let renders = 0;
+ Object.assign(w, { page: 'activity', root: { isConnected: true }, host: { logs: () => log }, render() { renders++; this.watchActivity(); } });
+ w.watchActivity();
+ t.mock.timers.tick(1000);
+ assert.equal(renders, 0, 'nothing new, no redraw');
+ log.unshift({ time: '10:00:01', detail: 'Fireball played' });
+ t.mock.timers.tick(1000);
+ assert.equal(renders, 1, 'a new entry shows within a second');
+ t.mock.timers.tick(3000);
+ assert.equal(renders, 1);
+ w.page = 'recipes'; w.watchActivity();
+ log.unshift({ time: '10:00:05', detail: 'Shield played' });
+ t.mock.timers.tick(3000);
+ assert.equal(renders, 1, 'no polling off the Activity page');
+});
