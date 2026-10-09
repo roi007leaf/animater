@@ -104,3 +104,10 @@ test("D&D, PF2e and SF2e condition names share the treatments", () => {
   for (const [name, kind] of [["Dead", "still"], ["Stable", "breathe"], ["Dehydration", "sag"], ["Slowed 1", "sag"], ["Controlled", "sway"], ["Glitching 2", "tremble"], ["Untethered", "sway"], ["Dying 3", "breathe"]])
     assert.equal(bodyTreatment(name), kind, name);
 });
+
+test("prone tips the token onto its side and outranks the breathing of Unconscious", () => {
+  assert.equal(bodyTreatment("Prone"), "prone");
+  assert.equal(bodyPose("prone", 0).r, 80);
+  assert.equal(shownTreatment(["breathe", "prone"]), "prone");
+  assert.equal(shownTreatment(["prone", "still"]), null, "the dead stay as they are");
+});

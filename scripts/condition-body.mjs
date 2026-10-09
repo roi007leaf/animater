@@ -13,13 +13,13 @@ const BY_NAME = {
   grappled: 'struggle', grabbed: 'struggle', restrained: 'struggle', immobilized: 'struggle',
   blinded: 'search',
   unconscious: 'breathe', sleeping: 'breathe', dying: 'breathe', stable: 'breathe',
-  petrified: 'stone',
+  petrified: 'stone', prone: 'prone',
   paralyzed: 'still', dead: 'still',
 };
 // With several conditions, the token shows the most telling one: a body turned to
-// stone or held still does not move at all, a body on the ground only breathes, and
+// stone or held still does not move at all, a body knocked down lies on its side, a body on the ground only breathes, and
 // a grapple outweighs fear, sickness or weariness. Equal ranks: the latest applied.
-export const BODY_PRIORITY = ['stone', 'still', 'breathe', 'struggle', 'wobble', 'tremble', 'sway', 'search', 'sag'];
+export const BODY_PRIORITY = ['stone', 'still', 'prone', 'breathe', 'struggle', 'wobble', 'tremble', 'sway', 'search', 'sag'];
 const rank = (kind) => { const i = BODY_PRIORITY.indexOf(kind); return i < 0 ? BODY_PRIORITY.length : i; };
 // The treatment a token shows for its active treatments (null: none, or no motion).
 export function shownTreatment(kinds) {
@@ -43,6 +43,8 @@ export function bodyPose(kind, t, strength = 1) {
     case 'struggle': { const burst = wave(t, 1.7) > 0.3 ? 1 : 0.2; return { x: 0.008 * k * burst * wave(t, 0.23), r: 3 * k * burst * wave(t, 0.33) }; }
     case 'search': return { r: 9 * k * wave(t, 3.2) };
     case 'breathe': return { sy: 1 - 0.025 * k * (0.5 + 0.5 * wave(t, 4)) };
+    // Knocked down: the token lies on its side, a little lower, still breathing.
+    case 'prone': return { r: 80, y: 0.06, sy: 1 - 0.02 * (0.5 + 0.5 * wave(t, 4)) };
     default: return {};
   }
 }

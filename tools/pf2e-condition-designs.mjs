@@ -51,7 +51,8 @@ export const CONDITION_PLANS={
  broken:plan('broken','themed',glyph('shield_cracked','ash',{scale:.95})),
  // Stumbling: native yellow dizzy stars wobbling over the head, drawn above the token art.
  clumsy:plan('coordination','symbolic',art('dizzy_stars.200px','yellow',{scale:.95,offsetY:-.4,opacity:1,above:true,playbackRate:.7,tracks:[track('rotation',-12,12,1100)]})),
- concealed:plan('fog','themed',art('fog_cloud.01.white','grey',{scale:1.45,opacity:.8})),
+ // A light haze: the token stays readable through it.
+ concealed:plan('fog','themed',art('fog_cloud.01.white','grey',{scale:1.3,opacity:.5})),
  // Reeling: a murky ring of stars lurching erratically around the head.
  confused:plan('mind','symbolic',glyph('circle_of_stars','mustard',{scale:1,offsetY:-.15,opacity:1,tracks:[track('rotation',-35,35,1700),track('position.x',-.05,.05,2300)]})),
  // Dominated: a dim violet control sigil with faint puppet strands over the body.
@@ -95,10 +96,12 @@ export const CONDITION_PLANS={
  'persistent-damage':plan('neutral','symbolic',art('energy_strands.overlay','blood',{scale:1.1,opacity:.85,playbackRate:.6})),
  // Turned to stone: grey mineral settling inward with a faint dust haze.
  petrified:plan('stone','symbolic',art('aura_themed.01.inward.loop.metal','ash',{scale:1.3,opacity:.9,playbackRate:.4}),art(['ambient_fog.001.loop.small.white','fog_cloud.01.white'],'ash',{scale:1.1,opacity:.35,below:true,playbackRate:.4})),
- // Lying in the dirt: a flattened shadow at the feet with a low dust patch on the ground plane.
+ // Lying in the dirt: the token tips onto its side (condition-body.mjs) over a flattened
+ // shadow and a low dust patch on the ground plane.
  prone:plan('slow','symbolic',shadow({scale:.8,offsetY:.28,opacity:.75,tracks:flatten(.4)}),art(['ambient_fog.001.loop.small.white','fog_cloud.01.white'],'umber',{scale:1.2,offsetY:.3,opacity:.7,below:true,playbackRate:.5,tracks:flatten(.35)})),
  quickened:plan('speed','symbolic',art('token_border.circle.spinning','blue',{scale:1.4,below:true,playbackRate:.75})),
- restrained:plan('chains','themed',art('markers.chain.standard.loop.02','grey',{scale:1.5})),
+ // Bound tighter than Grabbed: the chains plus a faint web holding the body.
+ restrained:plan('chains','themed',art('markers.chain.standard.loop.02','grey',{scale:1.5}),art('web','white',{scale:1.2,opacity:.45,playbackRate:.6})),
  // Nausea: a sickly green smoke ring curling around the bearer (not a bubble, not poison).
  sickened:plan('fog','symbolic',art('markers.smoke.ring.loop','green',{scale:1.2,opacity:.95,playbackRate:.6,tracks:[track('rotation',-8,8,2200)]})),
  // Mired: a slate tar pool drags at the feet while a heavy haze sinks into it.
