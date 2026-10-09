@@ -200,7 +200,10 @@ export class FlashEditor {
     const card = (f) => {
       const isDefault = Object.keys(FLASH_EVENTS).some((ev) => defaults[ev] === f.id);
       const detail = f.event === "any" ? "Start or end" : group(f) === "moment" ? FLASH_EVENTS[f.event] : "";
-      return `<button class="an-flash-card is-${group(f)} ${f.id === this.selectedId ? "is-selected" : ""}" data-action="flash-select" data-id="${esc(f.id)}"><span class="an-flash-card-name">${esc(f.name)}${f.id === this.selectedId && this.dirty ? " •" : ""}</span>${isDefault ? `<span class="an-flash-badge">Default</span>` : ""}${detail ? `<small>${esc(detail)}</small>` : ""}</button>`;
+      // During combat, the GM decides: each moment's screen has its own On/Off switch (off until turned on).
+      const moment = group(f) === "moment", on = moment && defaults[f.event] === f.id;
+      const card = `<button class="an-flash-card is-${group(f)} ${f.id === this.selectedId ? "is-selected" : ""}" data-action="flash-select" data-id="${esc(f.id)}"><span class="an-flash-card-name">${esc(f.name)}${f.id === this.selectedId && this.dirty ? " •" : ""}</span>${isDefault && !moment ? `<span class="an-flash-badge">Default</span>` : ""}${detail ? `<small>${esc(detail)}</small>` : ""}</button>`;
+      return moment ? `<div class="an-flash-cardwrap">${card}<button class="an-flash-switch${on ? " is-on" : ""}" data-action="flash-moment-toggle" data-id="${esc(f.id)}" data-event="${esc(f.event)}" role="switch" aria-checked="${on}" data-tooltip="${on ? `Plays on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}: click to turn off` : `Off: click to play it on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}`}"><span></span>${on ? "On" : "Off"}</button></div>` : card;
     };
     const section = (key, title) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><span class="an-flash-sub">${title}</span>${items.map(card).join("")}</div>` : ""; };
     const listHTML = `<aside class="an-flash-list"><div class="an-flash-libhead"><span class="an-eyebrow">FLASH SCREENS</span><span class="an-flash-libtools"><button class="an-icon" data-action="flash-import" data-tooltip="Import screens from a file" aria-label="Import">↙</button><button class="an-icon" data-action="flash-export" ${list.length ? "" : "disabled"} data-tooltip="Export all screens to a file" aria-label="Export">↗</button></span></div><button class="an-primary an-flash-new" data-action="flash-new" ${list.length >= FLASH_LIMIT ? "disabled" : ""}>+ New flash screen</button>${list.length ? section("start", "Combat start") + section("moment", "During combat") + section("end", "Combat end") + section("action", "Before an animation") : `<p class="an-hint">No flash screens yet.</p>`}<p class="an-hint">Pick each combat's opening and ending in the Combat Tracker; defaults play otherwise.</p></aside>`;
@@ -564,6 +567,12 @@ export class FlashEditor {
         break;
       }
       case "flash-help": this.showHelp = !this.showHelp; break;
+      case "flash-moment-toggle": {
+        const on = this.host.flashDefaults()[b.dataset.event] === b.dataset.id;
+        await this.host.setFlashDefault(b.dataset.event, on ? "none" : b.dataset.id);
+        this.w.message = on ? "Turned off." : `It now plays on every ${FLASH_EVENTS[b.dataset.event].toLowerCase()}.`;
+        break;
+      }
       case "flash-zoom": {
         const z = this.tlZoom ?? 1;
         if (b.dataset.zoom === "fit") { this.tlZoom = 1; this.tlScroll = 0; break; }

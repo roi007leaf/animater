@@ -2586,3 +2586,15 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-tl-scroll { overflow-x: auto; overflow-y: hidden; height: 12px; }
 .animater .an-flash-zoom { display: flex; gap: 2px; margin-right: auto; margin-left: 8px; }
 .animater .an-flash-zoom button { width: auto; min-width: 24px; height: 22px; min-height: 22px; padding: 0 6px; font-size: 12px; border-radius: 6px; }
+/* During-combat cards: the GM's On/Off switch. */
+.animater .an-flash-cardwrap { position: relative; }
+.animater .an-flash-cardwrap .an-flash-card { padding-right: 62px; }
+.animater .an-flash-switch { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; gap: 5px; width: auto; height: 22px; min-height: 22px; padding: 0 7px 0 3px; border-radius: 999px; font-size: 10.5px; font-weight: 700; color: var(--an-muted); background: rgba(255, 255, 255, 0.05); border: 1px solid var(--an-line); }
+.animater .an-flash-switch span { width: 14px; height: 14px; border-radius: 50%; background: var(--an-muted); transition: transform 0.15s, background 0.15s; }
+.animater .an-flash-switch.is-on { color: #1b1530; background: #ffd34d; border-color: #ffd34d; padding: 0 3px 0 7px; flex-direction: row-reverse; }
+.animater .an-flash-switch.is-on span { background: #1b1530; }
+.animater-flash-pick .animater-flash-moments-title { flex-basis: 100%; margin-top: 2px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+.animater-flash-pick.is-hud .animater-flash-moments-title { grid-column: 1 / -1; }
+/* PF2e HUD's header is a 5-column grid; the ⚡ gets a sixth column at the right. */
+#pf2e-hud-tracker header:has(> .animater-flash-hud) { grid-template-columns: repeat(2, auto) 1fr repeat(3, auto); }
+#pf2e-hud-tracker header > .animater-flash-hud { grid-column: 6; }
