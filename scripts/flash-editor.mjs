@@ -79,7 +79,8 @@ export class FlashEditor {
     if (!frame || !s) return;
     frame.replaceChildren();
     this.preview = createFlash(frame, validateFlash(s), { resolveMedia: (src) => this.host.resolveFlashMedia(src), vars: this.host.flashVars(), editing: true });
-    this.preview.el.querySelector(`[data-flash-layer="${this.layerIndex}"]`)?.classList.add("is-selected");
+    const picked = this.preview.el.querySelector(`[data-flash-layer="${this.layerIndex}"]`);
+    if (picked) { picked.classList.add("is-selected"); picked.insertAdjacentHTML("beforeend", `<span class="an-flash-handle" data-flash-resize title="Drag to resize"></span>`); }
     this.preview.seek(this.time);
   }
   setTime(ms) {
@@ -121,16 +122,31 @@ export class FlashEditor {
     const el = e.target.closest?.("[data-flash-stage] [data-flash-layer]"), frame = el?.closest("[data-flash-stage]");
     if (!el || e.button !== 0) return false;
     e.preventDefault();
-    const i = Number(el.dataset.flashLayer);
+    const i = Number(el.dataset.flashLayer), resize = !!e.target.closest("[data-flash-resize]");
     if (i !== this.layerIndex) { this.layerIndex = i; this.w.render(); }
-    const box = frame.getBoundingClientRect(), s = this.edit(), layer = s.layers[i];
+    const box = frame.getBoundingClientRect(), layer = this.draft.layers[i];
+    const cx = box.left + (layer.x / 100) * box.width, cy = box.top + (layer.y / 100) * box.height;
+    const start = { x: e.clientX, y: e.clientY, dx: Math.max(4, Math.abs(e.clientX - cx)), dy: Math.max(4, Math.abs(e.clientY - cy)), size: layer.size, width: layer.width, height: layer.height };
+    let moved = false;
     const move = (ev) => {
+      if (!moved && Math.hypot(ev.clientX - start.x, ev.clientY - start.y) < 3) return;
+      if (!moved) { moved = true; this.edit(); }
+      if (resize) {
+        // Corner handle: text grows in size, images in width, bands in width and height.
+        const fx = Math.abs(ev.clientX - cx) / start.dx, fy = Math.abs(ev.clientY - cy) / start.dy, f = Math.max(fx, fy);
+        const round = (v) => Math.round(v * 10) / 10;
+        if (layer.kind === "text") layer.size = round(Math.min(40, Math.max(1, start.size * f)));
+        else if (layer.kind === "image") layer.width = round(Math.min(150, Math.max(1, start.width * f)));
+        else { layer.width = round(Math.min(150, Math.max(1, start.width * fx))); layer.height = round(Math.min(100, Math.max(1, start.height * fy))); }
+        this.mount();
+        return;
+      }
       layer.x = Math.round(((ev.clientX - box.left) / box.width) * 1000) / 10;
       layer.y = Math.round(((ev.clientY - box.top) / box.height) * 1000) / 10;
       const live = frame.querySelector(`[data-flash-layer="${i}"]`);
       if (live) { live.style.left = `${layer.x}%`; live.style.top = `${layer.y}%`; }
     };
-    const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); this.w.render(); };
+    const up = () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); if (moved) this.w.render(); };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
     return true;
@@ -143,10 +159,12 @@ export class FlashEditor {
     const commit = async (next, message) => { await this.host.saveFlashScreens(next); this.dirty = false; this.w.message = message; };
     switch (action) {
       case "flash-select":
-        if (this.dirty && b.dataset.id !== this.selectedId) throw Error("Save or revert this flash screen first.");
-        this.selectedId = b.dataset.id; this.draft = null; break;
+        if (b.dataset.id === this.selectedId) return true;
+        if (this.dirty && !(await this.host.confirm(`Discard your unsaved changes to “${s.name}”?`))) return true;
+        this.selectedId = b.dataset.id; this.draft = null; this.dirty = false; break;
       case "flash-new": case "flash-duplicate": {
-        if (this.dirty) throw Error("Save or revert this flash screen first.");
+        if (this.dirty && !(await this.host.confirm(`Discard your unsaved changes to “${s.name}”?`))) return true;
+        this.dirty = false;
         const base = action === "flash-new"
           ? validateFlash({ name: "New flash screen", event: "start", layers: [{ kind: "text", name: "Title", text: "TO BATTLE!", enter: "slam", shake: true }] })
           : { ...clone(s), id: newId(), name: `${s.name} copy` };

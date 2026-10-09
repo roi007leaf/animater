@@ -2348,17 +2348,20 @@
 .an-flash.is-editing .an-flash-layer.is-selected { outline: 1px dashed rgba(255, 255, 255, 0.8); outline-offset: 4px; }
 
 /* The editor page: library, stage and layers, inspector. */
-.animater .an-flash-page { display: grid; grid-template-columns: 200px minmax(0, 1fr) 290px; gap: 14px; align-items: start; }
+.animater .an-flash-page { display: grid; grid-template-columns: 180px minmax(0, 1fr) 270px; gap: 14px; align-items: start; }
+.animater .an-flash-page > * { min-width: 0; }
 .animater .an-flash-list { display: grid; gap: 6px; }
 .animater .an-flash-list .an-section-title button { width: auto; padding: 4px 10px; }
-.animater .an-flash-card { display: grid; gap: 2px; width: 100%; height: auto; padding: 8px 10px; text-align: left; border-radius: 10px; background: var(--an-surface); border: 1px solid var(--an-line); }
+.animater .an-flash-card { display: grid; justify-items: start; justify-content: stretch; align-content: start; gap: 2px; width: 100%; height: auto; padding: 8px 10px; text-align: left; border-radius: 10px; background: var(--an-surface); border: 1px solid var(--an-line); }
 .animater .an-flash-card small { color: var(--an-muted); font-size: 11px; }
 .animater .an-flash-card.is-selected { border-color: var(--an-accent, #9e8aff); background: rgba(158, 138, 255, 0.1); }
 .animater .an-flash-main { display: grid; gap: 10px; min-width: 0; }
-.animater .an-flash-head { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; }
+.animater .an-flash-head { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 10px; }
 .animater .an-flash-head label { display: grid; gap: 2px; font-size: 11px; color: var(--an-muted); }
 .animater .an-flash-head label input, .animater .an-flash-head label select { width: auto; min-width: 80px; }
-.animater .an-flash-head .an-st-name { flex: 1 1 220px; min-width: 160px; }
+.animater .an-flash-head .an-st-name { flex: 1 1 100%; width: 100%; min-width: 0; height: 34px; }
+.animater .an-flash-head label input[type="number"] { width: 70px; min-width: 0; }
+
 .animater .an-flash-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
 .animater .an-flash-actions button { width: auto; height: 34px; white-space: nowrap; }
 .animater .an-flash-stage-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--an-line); }
@@ -2368,9 +2371,10 @@
 .animater .an-flash-transport input[type="range"] { flex: 1; }
 .animater .an-flash-transport span { font-size: 12px; color: var(--an-muted); white-space: nowrap; }
 .animater .an-flash-layers { display: grid; gap: 4px; }
-.animater .an-flash-layers .an-section-title span { display: flex; gap: 6px; }
+.animater .an-flash-layers .an-section-title { flex-wrap: wrap; gap: 6px; }
+.animater .an-flash-layers .an-section-title span { display: flex; gap: 6px; flex-wrap: wrap; }
 .animater .an-flash-layers .an-section-title button { width: auto; padding: 3px 9px; font-size: 12px; }
-.animater .an-flash-row { display: grid; grid-template-columns: 130px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 3px 6px; border-radius: 8px; }
+.animater .an-flash-row { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 3px 6px; border-radius: 8px; }
 .animater .an-flash-row.is-selected { background: rgba(158, 138, 255, 0.12); }
 .animater .an-flash-row-name { width: 100%; height: 24px; padding: 0 6px; text-align: left; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: none; border: 0; }
 .animater .an-flash-row-track { position: relative; height: 18px; border-radius: 4px; background: rgba(255, 255, 255, 0.05); cursor: pointer; }
@@ -2392,3 +2396,4 @@
 .animater-flash-pick label { display: flex; align-items: center; gap: 4px; margin: 0; }
 .animater-flash-pick select { height: 22px; max-width: 120px; font-size: 11px; padding: 0 4px; }
 .animater-flash-pick button { flex: none; width: 24px; height: 22px; min-height: 0; padding: 0; line-height: 1; }
+.an-flash-handle { position: absolute; right: -9px; bottom: -9px; width: 12px; height: 12px; border-radius: 3px; background: #fff; border: 2px solid #9e8aff; cursor: nwse-resize; pointer-events: auto; }

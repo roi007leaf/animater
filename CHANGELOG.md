@@ -3,7 +3,7 @@
 ## Unreleased
 
 - **Combat flash screens.** Full-screen title cards play for everyone when combat starts or ends (for example "Roll for Initiative!" or "Victory"). They replace the short-lived Combat moments option; Foundry already marks the current turn.
-  - **Editor:** a new *Flash screens* page (GM only) with a 16:9 stage. Add text, image/video and colour-band layers, drag them into place, and give each a font, size, colour, outline, glow, entrance and exit (fade, slide, zoom, slam), timing and optional shake. Each screen also has a backdrop, dark edges and a sound. Scrub its timeline, preview it locally, or play it for everyone. Text can use {scene} and {round}.
+  - **Editor:** a new *Flash screens* page (GM only) with a 16:9 stage. Add text, image/video and colour-band layers, drag them into place and drag the corner handle to resize them (text size, image width, band width and height), and give each a font, size, colour, outline, glow, entrance and exit (fade, slide, zoom, slam), timing and optional shake. Each screen also has a backdrop, dark edges and a sound. Scrub its timeline, preview it locally, or play it for everyone. Text can use {scene} and {round}.
   - **Library:** keep as many screens as you like, each for combat start, end or either. Four starters are included.
   - **Quick pick:** the Combat Tracker shows *Opening* and *Ending* menus for the current combat (a screen, Random or None), plus a ▶ to preview. Otherwise the defaults set on the Flash screens page play.
   - Only the active GM triggers them, so each plays once. Players with Animation quality Off don't see them.
