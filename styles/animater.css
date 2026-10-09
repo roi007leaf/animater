@@ -2558,3 +2558,9 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .an-tour-caption { position: fixed; left: 50%; bottom: 28px; z-index: 100001; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; max-width: min(640px, 92vw); padding: 10px 14px; border-radius: 12px; background: rgba(20, 16, 34, 0.96); border: 1px solid #9e8aff; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); color: #f2efff; font-size: 13.5px; line-height: 1.4; }
 .an-tour-caption .an-tour-step { flex: none; padding: 2px 8px; border-radius: 999px; background: #9e8aff; color: #1b1530; font-size: 11px; font-weight: 700; }
 .an-tour-caption button { flex: none; width: auto; height: 28px; padding: 0 10px; font-size: 12px; }
+.an-tour-caption { max-width: min(760px, 94vw); }
+.an-tour-caption .an-tour-text { flex: 1; }
+.an-tour-caption .an-tour-nav { display: flex; gap: 4px; flex: none; }
+.an-tour-caption .an-tour-nav button { height: 28px; min-height: 28px; padding: 0 10px; font-size: 12px; border-radius: 7px; }
+.an-tour-caption .an-tour-nav button.is-primary { background: #9e8aff; color: #1b1530; border-color: #9e8aff; font-weight: 700; }
+.an-tour-caption .an-tour-nav button:disabled { opacity: 0.4; }
