@@ -2510,7 +2510,7 @@
 .animater-flash-pick.is-hud > span { grid-row: span 2; align-self: center; font-size: 14px; }
 .animater-flash-pick.is-hud label { justify-content: space-between; }
 .animater-flash-pick.is-hud select { flex: 1; max-width: none; min-width: 0; }
-.animater-flash-pick.is-hud button { grid-column: 2; justify-self: end; width: auto; padding: 0 8px; }
+.animater-flash-pick.is-hud .animater-flash-tools button { width: auto; padding: 0 8px; }
 /* ---------- Flash editor: direct manipulation ---------- */
 /* Scrubby labels. */
 .animater :where(.an-flash-page) label:has(> input[type="number"]) { cursor: ew-resize; user-select: none; }
@@ -2544,3 +2544,9 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-grip:hover, .animater .an-flash-grip.is-mid:hover { background: rgba(255, 255, 255, 0.45); }
 .animater .an-flash-grip.is-mid::after { content: ""; position: absolute; left: 2px; top: 2px; bottom: 2px; width: 2px; border-radius: 1px; background: rgba(255, 255, 255, 0.55); }
 .animater .an-flash-key { cursor: ew-resize; }
+/* Tracker picker: ⚙ reveals the world defaults. */
+.animater-flash-pick .animater-flash-tools { display: inline-flex; gap: 4px; margin-left: auto; }
+.animater-flash-pick .animater-flash-tools button.active { color: #ffd34d; }
+.animater-flash-pick .animater-flash-defaults { display: flex; flex-wrap: wrap; gap: 4px 8px; flex-basis: 100%; padding-top: 4px; border-top: 1px dashed rgba(255, 255, 255, 0.15); }
+.animater-flash-pick.is-hud .animater-flash-tools { grid-column: 2; justify-self: end; }
+.animater-flash-pick.is-hud .animater-flash-defaults { grid-column: 1 / -1; display: grid; gap: 4px; }

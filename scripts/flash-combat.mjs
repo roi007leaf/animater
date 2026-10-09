@@ -35,7 +35,7 @@ const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 export function registerFlashSettings(ID) {
   game.settings.register(ID, FLASH_SETTING, { scope: "world", config: false, type: Object, default: { schema: 1, screens: STARTER_FLASHES },
     onChange: () => ui.combat?.render() });
-  game.settings.register(ID, FLASH_DEFAULTS, { scope: "world", config: false, type: Object, default: { start: "start-initiative", end: "end-victory" },
+  game.settings.register(ID, FLASH_DEFAULTS, { scope: "world", config: false, type: Object, default: { start: "none", end: "none" },
     onChange: () => ui.combat?.render() });
 }
 
@@ -121,8 +121,10 @@ export function flashScreens(host) {
   });
 
   // The GM picks a combat's opening and ending screens in two small menus, plus a preview.
+  let showDefaults = false;
   function picker(combat) {
     const all = screens(), d = defaults();
+    const fitting = (event) => all.filter((s) => s.event === event || s.event === "any");
     const menu = (event) => {
       const fits = all.filter((s) => s.event === event || s.event === "any");
       const fallback = d[event] === "random" ? "Random" : all.find((s) => s.id === d[event])?.name ?? "None";
@@ -132,8 +134,13 @@ export function flashScreens(host) {
     };
     const bar = document.createElement("div");
     bar.className = "animater-flash-pick";
-    bar.innerHTML = `<span aria-hidden="true">⚡</span>${menu("start")}${menu("end")}<button type="button" data-animater-flash-test title="Preview this combat's opening on your screen" aria-label="Preview opening flash screen">▶</button>`;
+    // The world defaults (used when a combat picks nothing), behind the ⚙.
+    const defaultMenu = (event) => `<label>${event === "start" ? "Default opening" : "Default ending"}<select data-animater-flash-default="${event}">${[["none", "None"], ["random", "Random"], ...fitting(event).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[event] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`;
+    bar.innerHTML = `<span aria-hidden="true">⚡</span>${menu("start")}${menu("end")}<span class="animater-flash-tools"><button type="button" data-animater-flash-defaults class="${showDefaults ? "active" : ""}" title="Defaults for every combat" aria-label="Defaults for every combat" aria-expanded="${showDefaults}"><i class="fa-solid fa-gear"></i></button><button type="button" data-animater-flash-test title="Preview this combat's opening on your screen" aria-label="Preview opening flash screen">▶</button></span>${showDefaults ? `<span class="animater-flash-defaults">${defaultMenu("start")}${defaultMenu("end")}</span>` : ""}`;
+    bar.querySelector("[data-animater-flash-defaults]").addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); showDefaults = !showDefaults; bar.replaceWith(Object.assign(picker(combat), { className: bar.className })); });
     bar.addEventListener("change", (e) => {
+      const world = e.target.dataset.animaterFlashDefault;
+      if (world) return void game.settings.set(ID, FLASH_DEFAULTS, { ...defaults(), [world]: e.target.value });
       const event = e.target.dataset.animaterFlash;
       if (event) void (e.target.value ? combat.setFlag(ID, flagKey(event), e.target.value) : combat.unsetFlag(ID, flagKey(event)));
     });
