@@ -44,13 +44,24 @@ export function bodyPose(kind, t, strength = 1) {
     case 'search': return { r: 9 * k * wave(t, 3.2) };
     case 'breathe': return { sy: 1 - 0.025 * k * (0.5 + 0.5 * wave(t, 4)) };
     // Knocked down: the token lies on its side, a little lower, still breathing.
-    case 'prone': return { r: 80, y: 0.06, sy: 1 - 0.02 * (0.5 + 0.5 * wave(t, 4)) };
+    case 'prone': { const f = Math.min(1, t / 0.4), fall = 1 - (1 - f) ** 3; return { r: 80 * fall, y: 0.06 * fall, sy: 1 - 0.02 * (0.5 + 0.5 * wave(t, 4)) }; }
     default: return {};
   }
 }
 
+// Poses run on Foundry's canvas ticker after it refreshes tokens (priority 23) and before
+// it draws (-25). On a separate animation frame, a token refresh could be drawn for a frame
+// in its natural pose, which flickers a lying-down (prone) token upright.
+function nextFrame(cb) {
+  const ticker = globalThis.canvas?.app?.ticker;
+  if (!ticker) return { raf: requestAnimationFrame(cb) };
+  ticker.addOnce(cb, null, (globalThis.PIXI?.UPDATE_PRIORITY?.NORMAL ?? 0) + 1);
+  return { ticker, cb };
+}
+function cancelFrame(h) { if (h?.ticker) h.ticker.remove(h.cb); else if (h?.raf) cancelAnimationFrame(h.raf); }
+
 export class ConditionBody {
-  constructor({ tokenMagic = () => globalThis.TokenMagic, now = () => performance.now(), frame = cb => requestAnimationFrame(cb), cancel = h => cancelAnimationFrame(h), busy = () => false, enabled = () => true } = {}) {
+  constructor({ tokenMagic = () => globalThis.TokenMagic, now = () => performance.now(), frame = nextFrame, cancel = cancelFrame, busy = () => false, enabled = () => true } = {}) {
     Object.assign(this, { tokenMagic, now, frame, cancel, busy, enabled });
     this.records = new Map();
     // One pose per token: several conditions (PF2e Dying brings Unconscious) must not
