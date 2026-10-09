@@ -55,16 +55,8 @@ export function lastingAsset(key, exists = () => false) {
 
 // The first area layer persists (later layers are one-off flourishes). A recipe that
 // already marks a lasting area (D&D 5e) is left as it is.
-// yieldDarkness: another module draws the darkness area (PF2e Visioner's region and darkness
-// light), so Animater keeps only its non-darkness flourishes.
-const DARKNESS = /^jb2a\.darkness\./;
-const isDarknessStage = (s) => s.kind === 'template' && (s.assets ?? []).length > 0 && s.assets.every((k) => DARKNESS.test(k));
-export function withLastingArea(recipe, event, { exists, yieldDarkness = false } = {}) {
+export function withLastingArea(recipe, event, { exists } = {}) {
   if (!recipe?.stages?.length || !event?.template) return recipe;
-  if (yieldDarkness && recipe.stages.some(isDarknessStage)) {
-    const stages = recipe.stages.filter((s) => !isDarknessStage(s));
-    return stages.length ? { ...recipe, stages } : recipe;
-  }
   if (recipe.systemId === 'dnd5e') return recipe;
   if (recipe.stages.some(s => s.kind === 'template' && s.persist)) return recipe;
   if (!isLastingArea(event.item)) return recipe;

@@ -21,11 +21,6 @@ const darknessRecipe = () => ({ id: "d", stages: [
 ] });
 const darkness = spell("Darkness", "1 minute");
 
-test("with PF2e Visioner drawing Darkness, Animater keeps only its flourishes", () => {
-  const r = withLastingArea(darknessRecipe(), { template: {}, item: darkness }, { exists: () => true, yieldDarkness: true });
-  assert.deepEqual(r.stages.map((s) => s.stageId), ["cast", "puff"]);
-});
-
 test("a lasting Darkness keeps its own looping clip", () => {
   const r = withLastingArea(darknessRecipe(), { template: {}, item: darkness }, { exists: () => true });
   assert.deepEqual(r.stages.filter((s) => s.persist).map((s) => s.assets[0]), ["jb2a.darkness.black"]);
