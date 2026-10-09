@@ -177,3 +177,15 @@ test('Unconscious hides the darkness of the Blinded it brings; Blinded alone sti
  assert.deepEqual(shownStates([c('blinded')]).map(i=>i.slug),['blinded']);
  assert.deepEqual(shownStates([{type:'effect',slug:'blinded'},c('unconscious')]).length,2,'only conditions are folded');
 });
+test('a condition whose value changes (Frightened 2 to 1 at turn end) keeps showing until its replacement plays',async()=>{
+ const item=native(fear);item.system.value.value=2;const f=fixture([item]);
+ await f.manager.reconcile();await flush();
+ const first=[...f.manager.active.values()][0].name;
+ f.setPending(true);item.system.value.value=1;
+ const done=f.manager.reconcile();await flush();
+ assert.ok(!f.calls.some(c=>c[0]==='end'&&c[1]===first),'the old look is still up while the new one loads');
+ f.waits.forEach(w=>w.resolve());await done;await flush();
+ assert.ok(f.calls.some(c=>c[0]==='end'&&c[1]===first),'then it ends');
+ assert.equal(f.manager.active.size,1);
+ await f.manager.destroy();
+});

@@ -108,16 +108,23 @@ export class PersistentStates{
     }
    }
   }
-  const stops=[];
-  for(const [key,record] of this.active)if(desired.get(key)?.signature!==record.signature){this.active.delete(key);record.cancelled=true;stops.push(this.end(record));}
+  // A state that changed (Frightened 2 becoming 1 at the end of a turn) keeps showing until its
+  // replacement is up, so it never blinks out; states that are gone end now.
+  const stops=[],replaced=new Map();
+  for(const [key,record] of this.active){const d=desired.get(key);if(d?.signature===record.signature)continue;this.active.delete(key);if(d)replaced.set(key,record);else{record.cancelled=true;stops.push(this.end(record));}}
   await Promise.all(stops);
-  if(revision!==this.revision)return;
+  const retire=key=>{const old=replaced.get(key);if(!old)return;replaced.delete(key);old.cancelled=true;return this.end(old);};
+  if(revision!==this.revision){await Promise.all([...replaced.keys()].map(retire));return;}
+  const replacing=new Set();
   for(const [key,d] of desired){
    if(this.closed||this.active.has(key))continue;
+   replacing.add(key);
    const record={...d,name:`animater-state-${h.clientId}-${++this.serial}`,cancelled:false};this.active.set(key,record);
-   const work=this.start(record).catch(async error=>{if(this.active.get(key)===record)this.active.delete(key);await this.end(record);h.trace?.('Blocked',`${record.recipe.name}: ${error.message}`);});
+   const work=this.start(record).then(()=>retire(key),async error=>{await retire(key);if(this.active.get(key)===record)this.active.delete(key);await this.end(record);h.trace?.('Blocked',`${record.recipe.name}: ${error.message}`);});
    this.pending.add(work);void work.finally(()=>this.pending.delete(work));
   }
+  // Anything changed but not restarted (the manager closed meanwhile) ends now.
+  await Promise.all([...replaced.keys()].filter(key=>!replacing.has(key)).map(retire));
   h.changed?.(this.active.size);
  }
  async start(r){

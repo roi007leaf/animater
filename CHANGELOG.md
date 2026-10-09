@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Condition animations no longer blink out when a turn passes.** When a condition's value changes, such as PF2e lowering Frightened 2 to 1 at the end of a turn, its animation used to end and then start again at the new strength, leaving a gap. The old animation now stays until the new one is playing.
+
 ## 0.3.2 (2026-10-09)
 
 ### Flash screens
