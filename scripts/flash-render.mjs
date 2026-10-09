@@ -152,19 +152,20 @@ function layerHTML(layer, { resolveMedia, vars }) {
 }
 
 // container: the element to draw into. Returns { el, seek(ms), play(), stop() }.
-export function createFlash(container, screen, { resolveMedia, vars = {}, editing = false, playSound } = {}) {
+// skip: layer indexes muted in the editor (kept in place, but not drawn, flashed, shaken or heard).
+export function createFlash(container, screen, { resolveMedia, vars = {}, editing = false, playSound, skip = new Set() } = {}) {
   const el = document.createElement("div");
   el.className = `an-flash${editing ? " is-editing" : ""}`;
   const b = screen.backdrop;
   const bg = b.media ? resolveMedia?.(b.media) ?? b.media : "";
   el.innerHTML = `<div class="an-flash-backdrop" style="background:${b.color}"></div>${bg ? (VIDEO.test(bg) ? `<video class="an-flash-bg" src="${esc(bg)}" muted autoplay loop playsinline></video>` : `<img class="an-flash-bg" src="${esc(bg)}" alt="">`) : ""}${b.vignette ? `<div class="an-flash-vignette"></div>` : ""}`
-    + `<div class="an-flash-stage">${screen.layers.map((l, i) => (VISUAL(l) ? `<div class="an-flash-layer" data-flash-layer="${i}" style="left:${l.x}%;top:${l.y}%"><div class="an-flash-motion"><div class="an-flash-fx">${layerHTML(l, { resolveMedia, vars })}</div></div></div>` : "")).join("")}</div>`
-    + screen.layers.map((l, i) => (l.kind === "flash" ? `<div class="an-flash-fill" data-flash-fill="${i}" style="background:${l.color}"></div>` : "")).join("")
+    + `<div class="an-flash-stage">${screen.layers.map((l, i) => (VISUAL(l) ? `<div class="an-flash-layer${skip.has(i) ? " is-muted" : ""}" data-flash-layer="${i}" style="left:${l.x}%;top:${l.y}%"><div class="an-flash-motion"><div class="an-flash-fx">${layerHTML(l, { resolveMedia, vars })}</div></div></div>` : "")).join("")}</div>`
+    + screen.layers.map((l, i) => (l.kind === "flash" && !skip.has(i) ? `<div class="an-flash-fill" data-flash-fill="${i}" style="background:${l.color}"></div>` : "")).join("")
     + (b.bars ? `<div class="an-flash-bar is-top" style="height:${b.barSize}cqh"></div><div class="an-flash-bar is-bottom" style="height:${b.barSize}cqh"></div>` : "");
   container.append(el);
   const total = screen.duration, timing = { duration: total, fill: "both" };
   const fadeIn = Math.min(300, total / 4), fadeOut = Math.min(400, total / 4), slide = Math.min(450, total / 4);
-  const shake = shakeKeyframes(screen.layers, total);
+  const shake = shakeKeyframes(screen.layers.filter((l, i) => !skip.has(i)), total);
   const animations = [
     ...[el.querySelector(".an-flash-backdrop"), el.querySelector(".an-flash-vignette")].filter(Boolean).map((node, i) => node.animate([
       { offset: 0, opacity: 0 }, { offset: fadeIn / total, opacity: i ? 1 : b.opacity },
@@ -177,7 +178,7 @@ export function createFlash(container, screen, { resolveMedia, vars = {}, editin
     }),
     ...(shake ? [el.querySelector(".an-flash-stage").animate(shake, timing)] : []),
     ...screen.layers.flatMap((l, i) => {
-      if (l.kind === "flash") return [el.querySelector(`[data-flash-fill="${i}"]`).animate(screenFlashKeyframes(l, total), timing)];
+      if (l.kind === "flash") return skip.has(i) ? [] : [el.querySelector(`[data-flash-fill="${i}"]`).animate(screenFlashKeyframes(l, total), timing)];
       if (!VISUAL(l)) return [];
       const node = el.querySelector(`[data-flash-layer="${i}"]`), motion = motionKeyframes(l, total), loop = loopTiming(l, total), reveal = revealKeyframes(l, total);
       return [
@@ -198,7 +199,7 @@ export function createFlash(container, screen, { resolveMedia, vars = {}, editin
     play() {
       for (const a of animations) { a.currentTime = 0; a.play(); }
       // Sound layers fire at their start times.
-      for (const l of screen.layers) if (l.kind === "sound" && l.file && playSound) timers.push(setTimeout(() => playSound(l.file, l.volume), l.start));
+      for (const [i, l] of screen.layers.entries()) if (l.kind === "sound" && l.file && playSound && !skip.has(i)) timers.push(setTimeout(() => playSound(l.file, l.volume), l.start));
       return animations[0] ? animations[0].finished.catch(() => {}) : Promise.resolve();
     },
     stop() { for (const t of timers) clearTimeout(t); timers.length = 0; for (const a of animations) a.cancel(); el.remove(); },

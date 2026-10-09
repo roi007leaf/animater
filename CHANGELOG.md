@@ -13,7 +13,7 @@
   - **Boss spotlight:** portraits can show just the boss (the highest-level or highest-CR enemy), and text can use {boss}, plus {name} for who crit or fell.
   - **Animated backgrounds:** pick a JB2A loop (bad omen, fog, crimson fog, storm, darkness, fireflies, sleet, runes, energy field) or any video behind the layers, with a strength.
   - **Music ducking:** playing music dips while a screen shows, then comes back (on by default, per screen).
-  - **Editor comfort:** undo and redo (Ctrl+Z, Ctrl+Shift+Z), duplicate a layer, copy keyframes from one layer and paste them onto another, and snapping to the centre and other layers with pink guide lines (hold Alt to place freely).
+  - **Editor comfort:** mute (M) and solo (S) per layer in the editor (saved screens always play every layer), undo and redo (Ctrl+Z, Ctrl+Shift+Z), duplicate a layer, copy keyframes from one layer and paste them onto another, and snapping to the centre and other layers with pink guide lines (hold Alt to place freely).
   - **Share:** *Export* saves all flash screens to a file; *Import* adds screens from one.
   - **Library:** keep as many screens as you like, each for combat start, end or either. Nine starters are included, including a new *Face Off* (party vs enemies), *Boss Battle* and a punchier *Roll for Initiative!*.
   - **Quick pick:** the Combat Tracker shows *Opening* and *Ending* menus for the current combat (a screen, Random or None), plus a ▶ to preview. Otherwise the defaults set on the Flash screens page play.
