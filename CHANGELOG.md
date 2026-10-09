@@ -4,6 +4,7 @@
 
 - **No more PSFX install prompt when you have PSFX Patreon.** Foundry offered to install free PSFX even with the Patreon version installed, because it checks recommended modules by id. Installing both loads the same sounds twice and fills the console with Sequencer errors on world load. Animater no longer recommends PSFX in its manifest. It still uses whichever PSFX you have.
   - If you already ended up with both, disable one of them (keep the Patreon version).
+- **PSFX Patreon sounds are used.** Animater only recognised free PSFX (`psfx`), so tables with only PSFX Patreon (`psfx-patreon`) got no PSFX sounds in the catalogs. Both now count.
 - **Teleport tokens setting.** A world setting (*Configure Settings → Animater → Teleport tokens*, on by default) turns Animater's teleporting off. Use it at tables where another module already moves tokens for teleport spells, such as D&D premade-spell modules. When it's off, those spells only play their animation.
 
 ## 0.3.4 (2026-10-09)

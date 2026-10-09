@@ -54,9 +54,11 @@ const resolvedOptionalCue = (stage, candidate) => {
 };
 // Check current activation and database registration on every request. Cached
 // absence during Foundry startup must not silence a pack registered later.
+// A pack's Patreon edition has its own module id but registers the same Sequencer sounds.
+export const SOUND_PACK_EDITIONS = { psfx: ["psfx-patreon"] };
 export function installedSoundCatalog(modules, database) {
   const packs = SOUND_SOURCE.packs.filter(
-    (p) => modules?.get?.(p.module)?.active,
+    (p) => [p.module, ...(SOUND_PACK_EDITIONS[p.module] ?? [])].some((id) => modules?.get?.(id)?.active),
   );
   const resolved = new Map();
   // Spell wards and physical shield impacts intentionally share a profile label,
