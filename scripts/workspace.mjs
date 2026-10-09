@@ -640,14 +640,14 @@ export class Workspace {
   timelineBarHTML(r, row, index, total) {
     const pct = ms => ((ms / total) * 100).toFixed(3);
     const i = row.index, s = r.stages[i], name = this.stageLabel(s), when = this.timelineWhen(s, r), length = ((row.end - row.start) / 1000).toFixed(2);
-    // A random-variant group is one stacked clip; its "2/4" button steps to the next variant to edit.
-    const members = variantMembers(r.stages, s.variantGroup), deck = members.length > 1, at = members.indexOf(s);
-    const tabs = deck ? `<button class="an-tl-variant-step" data-action="variant-pick" data-variant-pick="${r.stages.indexOf(members[(at + 1) % members.length])}" data-tooltip="Editing variant ${at + 1} of ${members.length} · click for the next" aria-label="Edit the next variant">${at + 1}/${members.length}</button>` : "";
-    return `<div class="an-tl-bar kind-${esc(s.kind)}${deck ? " is-deck" : ""}${deck && members.includes(r.stages[index]) || i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" data-tooltip="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${deck ? `🎲 ${esc(name.replace(/ · variant \d+$/, ""))} ×${members.length}` : esc(name)}</span>${tabs}<small class="an-tl-bar-when">${esc(when)}</small><span class="an-tl-resize" data-tl-resize="${i}" data-tooltip="Drag to change length"></span></div>`;
+    // A random-variant group is one stacked clip with numbered tabs on top: click one to edit it, + adds another.
+    const members = variantMembers(r.stages, s.variantGroup), deck = members.length > 1;
+    const tabs = deck ? `<div class="an-tl-variant-tabs" style="left:${pct(row.start)}%" role="tablist" aria-label="Random variants">${members.map((m, n) => { const at = r.stages.indexOf(m); return `<button role="tab" data-action="variant-pick" data-variant-pick="${at}" class="${m === s ? "is-on" : ""}" aria-selected="${m === s}" data-tooltip="Variant ${n + 1}: ${esc(this.stageLabel(m))}">${n + 1}</button>`; }).join("")}<button data-action="variant-add" data-variant-pick="${i}" data-tooltip="Add a random variant" aria-label="Add a random variant">+</button></div>` : "";
+    return `${tabs}<div class="an-tl-bar kind-${esc(s.kind)}${deck ? " is-deck" : ""}${deck && members.includes(r.stages[index]) || i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" data-tooltip="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${deck ? `🎲 ${esc(name.replace(/ · variant \d+$/, ""))}` : esc(name)}</span><small class="an-tl-bar-when">${esc(when)}</small><span class="an-tl-resize" data-tl-resize="${i}" data-tooltip="Drag to change length"></span></div>`;
   }
   timelineX(total, ms) { return `calc(var(--tl-label) + (100% - var(--tl-label)) * ${Math.max(0, Math.min(1, ms / total))})`; }
   onTimelinePointer(e) {
-    if (e.target.closest?.("[data-variant-pick]")) return;
+    if (e.target.closest?.(".an-tl-variant-tabs")) return;
     const bar = e.target.closest?.("[data-tl-bar]");
     if (!bar || this.busy || e.button !== 0) return;
     e.preventDefault();
@@ -2114,6 +2114,7 @@ export class Workspace {
         return;
       }
       if (action === "variant-add" || action === "variant-leave") {
+        if (b.dataset.variantPick) this.stageIndex = Number(b.dataset.variantPick);
         const r = this.edit(), i = Math.min(this.stageIndex, r.stages.length - 1), s = r.stages[i];
         if (action === "variant-add") {
           if (r.stages.length >= MAX_STAGES) throw Error(`Recipes support up to ${MAX_STAGES} stages.`);
