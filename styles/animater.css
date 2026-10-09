@@ -2417,7 +2417,8 @@
 .animater .an-flash-row-bar.kind-flash { background: #fff3c4; height: 6px; top: 6px; }
 .animater .an-flash-row-bar.kind-shake { background: repeating-linear-gradient(90deg, #ff8a4c 0 4px, transparent 4px 7px); height: 8px; top: 5px; }
 /* Portraits from the encounter. */
-.an-flash-portraits { display: flex; align-items: flex-start; justify-content: center; }
+.an-flash-portraits { display: flex; flex-direction: column; align-items: center; }
+.an-flash-portrait-row { display: flex; align-items: flex-start; justify-content: center; }
 .an-flash-person { display: flex; flex-direction: column; align-items: center; gap: 0.6cqh; }
 .an-flash-face { display: block; overflow: hidden; border: 0.45cqh solid #fff; box-shadow: 0 0 2cqh rgba(0, 0, 0, 0.8); background: #000; }
 .an-flash-face.is-circle { border-radius: 50%; }
@@ -2501,3 +2502,12 @@
 .animater .an-flash-row-ms button { width: 20px; height: 20px; min-height: 20px; padding: 0; font-size: 10px; font-weight: 700; border-radius: 5px; color: var(--an-muted); background: rgba(255, 255, 255, 0.05); border: 1px solid var(--an-line); }
 .animater .an-flash-row-ms button.is-on { color: #1b1530; background: #ff8a8a; border-color: #ff8a8a; }
 .animater .an-flash-row-ms button.is-solo.is-on { background: #ffd34d; border-color: #ffd34d; }
+/* PF2e HUD tracker: the flash picker opens above its footer. */
+.animater-flash-hud.active { color: #ffd34d; }
+#pf2e-hud-tracker header .animater-flash-hud { flex: 0 0 auto; }
+.animater-flash-pick.is-hud { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.animater-flash-pick.is-hud { display: grid; grid-template-columns: auto 1fr; gap: 4px 6px; padding: 6px 8px; margin: 0; border-top: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.35); font-size: 11px; }
+.animater-flash-pick.is-hud > span { grid-row: span 2; align-self: center; font-size: 14px; }
+.animater-flash-pick.is-hud label { justify-content: space-between; }
+.animater-flash-pick.is-hud select { flex: 1; max-width: none; min-width: 0; }
+.animater-flash-pick.is-hud button { grid-column: 2; justify-self: end; width: auto; padding: 0 8px; }

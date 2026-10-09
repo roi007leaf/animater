@@ -120,12 +120,8 @@ export function flashScreens(host) {
     if (rolls?.[0]?.isCritical) moment("crit", { name: data?.subject?.actor?.name ?? data?.subject?.item?.actor?.name ?? "" });
   });
 
-  // Combat Tracker: the GM picks this combat's opening and ending screens in two small menus.
-  Hooks.on("renderCombatTracker", (app, html) => {
-    const root = html instanceof HTMLElement ? html : html?.[0];
-    const combat = app.viewed ?? game.combat;
-    if (!game.user.isGM || !root || !combat) return;
-    root.querySelector(".animater-flash-pick")?.remove();
+  // The GM picks a combat's opening and ending screens in two small menus, plus a preview.
+  function picker(combat) {
     const all = screens(), d = defaults();
     const menu = (event) => {
       const fits = all.filter((s) => s.event === event || s.event === "any");
@@ -142,8 +138,40 @@ export function flashScreens(host) {
       if (event) void (e.target.value ? combat.setFlag(ID, flagKey(event), e.target.value) : combat.unsetFlag(ID, flagKey(event)));
     });
     bar.querySelector("[data-animater-flash-test]").addEventListener("click", () => play(forCombat(combat, "start"), { combat }));
-    const header = root.querySelector(".combat-tracker-header, header");
+    return bar;
+  }
+  // Foundry's Combat Tracker: the menus sit in its header.
+  Hooks.on("renderCombatTracker", (app, html) => {
+    const root = html instanceof HTMLElement ? html : html?.[0];
+    const combat = app.viewed ?? game.combat;
+    if (!game.user.isGM || !root || !combat) return;
+    root.querySelector(".animater-flash-pick")?.remove();
+    const bar = picker(combat), header = root.querySelector(".combat-tracker-header, header");
     if (header) header.append(bar); else root.prepend(bar);
+  });
+  // PF2e HUD's tracker: a ⚡ button in its header (its footer has no room) opens the same menus.
+  let hudOpen = false;
+  Hooks.on("renderApplicationV2", (app, element) => {
+    if (app.id !== "pf2e-hud-tracker" || !game.user.isGM) return;
+    const root = element instanceof HTMLElement ? element : app.element, combat = app.viewed ?? app.combat ?? game.combat;
+    const header = root?.querySelector(":scope > header, header"), footer = root?.querySelector("footer");
+    if (!(header || footer) || !combat) return;
+    root.querySelector(".animater-flash-hud")?.remove();
+    root.querySelector(".animater-flash-pick")?.remove();
+    const toggle = document.createElement("a");
+    toggle.className = `combat-control animater-flash-hud${hudOpen ? " active" : ""}`;
+    toggle.dataset.tooltip = "Flash screens: this combat's opening and ending";
+    toggle.setAttribute("aria-label", "Flash screens");
+    toggle.innerHTML = `<i class="fa-solid fa-bolt"></i>`;
+    const place = () => {
+      root.querySelector(".animater-flash-pick")?.remove();
+      const panel = Object.assign(picker(combat), { className: "animater-flash-pick is-hud" });
+      if (hudOpen) { if (header) header.after(panel); else footer.before(panel); }
+    };
+    toggle.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); hudOpen = !hudOpen; toggle.classList.toggle("active", hudOpen); place(); });
+    if (header) header.append(toggle);
+    else { const settings = footer.querySelector(".settings"); if (settings) settings.before(toggle); else footer.append(toggle); }
+    place();
   });
 
   return {

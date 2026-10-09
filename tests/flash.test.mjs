@@ -131,3 +131,10 @@ test("boss spotlight, {boss} and {name}, backgrounds, and moment screens never s
   assert.equal(chooseFlash(screens, "start", undefined, "random", () => 0).id, "any");
   assert.ok(["round", "crit", "lastEnemy"].every((e) => STARTER_FLASHES.some((f) => f.event === e)));
 });
+
+test("portraits can be arranged in rows: 2 per row makes 2 above 2", () => {
+  const layer = validateFlash({ layers: [{ kind: "portraits", side: "all", perRow: 2, max: 6 }] }).layers[0];
+  assert.equal(layer.perRow, 2);
+  assert.equal(validateFlash({ layers: [{ kind: "portraits", perRow: 99 }] }).layers[0].perRow, 12);
+  assert.equal(validateFlash({ layers: [{ kind: "portraits" }] }).layers[0].perRow, 0, "one line by default");
+});

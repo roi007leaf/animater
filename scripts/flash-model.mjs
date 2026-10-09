@@ -73,6 +73,8 @@ export function validateLayer(l = {}, duration = 4000) {
       side: pick(l.side, PORTRAIT_SIDES, "party"), art: pick(l.art, { token: 1, portrait: 1 }, "token"), shape: pick(l.shape, PORTRAIT_SHAPES, "circle"),
       size: num(l.size, 3, 60, 18), gap: num(l.gap, 0, 20, 2), max: Math.round(num(l.max, 1, 12, 6)), stagger: num(l.stagger, 0, 1000, 120),
       names: l.names !== false, ring: color(l.ring, "#ffffff"),
+      // How many per row: 0 keeps everyone in one line, 2 makes "2 above 2", 1 a column.
+      perRow: Math.round(num(l.perRow, 0, 12, 0)),
     } : kind === "flash" ? {
       color: color(l.color, "#ffffff"), strength: num(l.strength, 0.05, 1, 0.85),
     } : kind === "shake" ? {

@@ -138,7 +138,11 @@ function textHTML(layer, vars) {
 function portraitsHTML(layer, vars) {
   const people = portraitPeople(layer, vars.combatants);
   if (!people.length) return `<span class="an-flash-missing">No ${layer.side === "enemies" ? "enemies" : layer.side === "party" ? "party members" : "combatants"} in this encounter</span>`;
-  return `<span class="an-flash-portraits" style="gap:${layer.gap}cqw">${people.map((p, n) => `<span class="an-flash-person" data-flash-pop="${n}"><span class="an-flash-face is-${layer.shape}" style="width:${layer.size}cqh;height:${layer.size}cqh;border-color:${layer.ring}"><img src="${esc(layer.art === "portrait" ? p.portrait || p.img : p.img || p.portrait)}" alt=""></span>${layer.names ? `<span class="an-flash-name" style="font-size:${(layer.size * 0.13).toFixed(2)}cqh">${esc(p.name)}</span>` : ""}</span>`).join("")}</span>`;
+  const face = (p, n) => `<span class="an-flash-person" data-flash-pop="${n}"><span class="an-flash-face is-${layer.shape}" style="width:${layer.size}cqh;height:${layer.size}cqh;border-color:${layer.ring}"><img src="${esc(layer.art === "portrait" ? p.portrait || p.img : p.img || p.portrait)}" alt=""></span>${layer.names ? `<span class="an-flash-name" style="font-size:${(layer.size * 0.13).toFixed(2)}cqh">${esc(p.name)}</span>` : ""}</span>`;
+  // Rows of perRow (0 = one line); each row is centred, so a short last row sits in the middle.
+  const per = layer.perRow > 0 ? layer.perRow : people.length, rows = [];
+  for (let i = 0; i < people.length; i += per) rows.push(people.slice(i, i + per).map((p, k) => face(p, i + k)).join(""));
+  return `<span class="an-flash-portraits" style="gap:${layer.gap}cqw">${rows.map((r) => `<span class="an-flash-portrait-row" style="gap:${layer.gap}cqw">${r}</span>`).join("")}</span>`;
 }
 function layerHTML(layer, { resolveMedia, vars }) {
   if (layer.kind === "text") return textHTML(layer, vars);
