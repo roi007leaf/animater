@@ -2349,8 +2349,9 @@
 .an-flash-motion { position: relative; }
 
 /* The editor page: library, stage and layers, inspector. */
-.animater .an-flash-page { display: grid; grid-template-columns: 180px minmax(0, 1fr) 270px; gap: 14px; align-items: start; }
-.animater .an-flash-page > * { min-width: 0; }
+/* The page fills the window; each column scrolls on its own so the stage stays in view. */
+.animater .an-flash-page { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: 180px minmax(0, 1fr) 270px; grid-template-rows: minmax(0, 1fr); gap: 14px; align-items: stretch; overflow: hidden; }
+.animater .an-flash-page > * { min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; padding-bottom: 16px; align-content: start; }
 .animater .an-flash-list { display: grid; gap: 6px; }
 .animater .an-flash-list .an-section-title button { width: auto; padding: 4px 10px; }
 .animater .an-flash-card { display: grid; justify-items: start; justify-content: stretch; align-content: start; gap: 2px; width: 100%; height: auto; padding: 8px 10px; text-align: left; border-radius: 10px; background: var(--an-surface); border: 1px solid var(--an-line); }
@@ -2435,3 +2436,42 @@
 .animater .an-flash-keycopy button { width: auto; height: 28px; font-size: 12px; }
 .animater .an-flash-share { display: flex; gap: 6px; }
 .animater .an-flash-share button { flex: 1; height: 30px; font-size: 12px; }
+/* ---------- Flash editor style pass: compact, grouped, consistent ---------- */
+.animater .an-flash-page { padding-top: 12px; }
+.animater :where(.an-flash-page) :where(input:not([type="checkbox"]):not([type="range"]):not([type="color"]), select) { height: 30px; min-height: 30px; padding: 0 8px; font-size: 12.5px; border-radius: 7px; }
+.animater :where(.an-flash-page) :where(input[type="color"]) { height: 30px; padding: 2px; border-radius: 7px; }
+.animater :where(.an-flash-page) :where(textarea) { font-size: 12.5px; padding: 6px 8px; border-radius: 7px; min-height: 52px; }
+.animater :where(.an-flash-page) :where(label) { display: grid; gap: 3px; font-size: 11px; color: var(--an-muted); }
+.animater :where(.an-flash-page) :where(label.an-check) { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--an-text); }
+.animater :where(.an-flash-page) :where(button) { height: 30px; min-height: 30px; font-size: 12.5px; }
+.animater .an-flash-page .an-hint { font-size: 11px; line-height: 1.4; margin: 0; }
+/* Library */
+.animater .an-flash-list .an-section-title { margin-bottom: 4px; }
+.animater .an-flash-card { height: auto; min-height: 0; padding: 7px 10px; border-radius: 9px; }
+.animater .an-flash-card b { font-size: 13.5px; }
+.animater .an-flash-card small { font-size: 11px; }
+/* Head */
+.animater .an-flash-head .an-st-name { font-size: 18px; font-weight: 700; }
+.animater .an-flash-head .an-icon { width: 30px; padding: 0; font-size: 16px; }
+/* Layers */
+.animater .an-flash-layers-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 2px 0 4px; flex-wrap: wrap; }
+.animater .an-flash-layers-head > b { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--an-muted); }
+.animater .an-flash-adds { display: flex; flex-wrap: wrap; gap: 4px; }
+.animater .an-flash-adds button { width: auto; height: 26px; min-height: 26px; padding: 0 9px; font-size: 11.5px; border-radius: 999px; }
+.animater .an-flash-row { padding: 2px 6px; gap: 6px; min-height: 28px; }
+.animater .an-flash-row-name { height: 24px; font-size: 12px; }
+.animater .an-flash-row-track { height: 16px; }
+.animater .an-flash-row-tools { opacity: 0; transition: opacity 0.12s; }
+.animater .an-flash-row:hover .an-flash-row-tools, .animater .an-flash-row.is-selected .an-flash-row-tools, .animater .an-flash-row:focus-within .an-flash-row-tools { opacity: 1; }
+.animater .an-flash-row-tools button { width: 22px; height: 22px; min-height: 22px; font-size: 10px; }
+/* Inspector cards */
+.animater .an-flash-inspector { gap: 10px; }
+.animater .an-flash-card-box { display: grid; gap: 10px; padding: 12px; border-radius: 12px; background: var(--an-surface); border: 1px solid var(--an-line); margin: 0; }
+.animater .an-flash-card-box > .an-eyebrow { margin: 0; }
+.animater .an-flash-group { display: grid; gap: 8px; padding-top: 10px; border-top: 1px solid var(--an-line); }
+.animater .an-flash-sub { font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--an-muted); }
+.animater .an-flash-inspector .an-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: end; }
+.animater .an-flash-inspector .an-field-row.is-3 { grid-template-columns: 1fr 1fr 1fr; }
+.animater .an-flash-inspector .an-field-row.is-wide { grid-template-columns: minmax(0, 1fr) 76px; }
+.animater .an-flash-keyadd { width: 100%; }
+.animater .an-flash-motion-box .an-field-row { grid-template-columns: minmax(0, 1fr) 90px; }
