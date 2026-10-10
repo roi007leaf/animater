@@ -69,9 +69,20 @@ export function grantedByOtherAura(item,token){const origin=item?.flags?.pf2e?.a
 // A condition that comes with another adds nothing to show. PF2e's Unconscious brings
 // Blinded, whose darkness cloud would cover the sleeping token and its sleep symbol.
 const IMPLIED={blinded:['unconscious']};
+// Conditions about how a creature perceives others are shown through the others, not on itself:
+// select a Dazzled token and everyone else looks Concealed to you; Blinded, they look Hidden.
+export const PERCEPTION={blinded:'hidden',dazzled:'concealed'};
 export function shownStates(states){
  const key=i=>String(slug(i)??'').toLowerCase(),on=new Set(states.filter(i=>i.type==='condition').map(key));
- return states.filter(i=>!(i.type==='condition'&&IMPLIED[key(i)]?.some(s=>on.has(s))));
+ return states.filter(i=>!(i.type==='condition'&&(IMPLIED[key(i)]?.some(s=>on.has(s))||(PERCEPTION[key(i)]&&!i.animaterPerceived))));
+}
+// How the selected observer sees this token: a stand-in Concealed or Hidden condition (this client only).
+export function perceivedStates(observerSlugs,token,observer){
+ if(!observer||observer===token)return [];
+ const slugs=new Set([...observerSlugs].map(s=>String(s).toLowerCase()));
+ const seen=Object.entries(PERCEPTION).find(([cause])=>slugs.has(cause))?.[1];
+ if(!seen)return [];
+ return [{id:`perceived-${seen}`,uuid:`perceived:${token.id}:${seen}`,type:'condition',slug:seen,name:seen[0].toUpperCase()+seen.slice(1),system:{slug:seen,active:true},active:true,animaterPerceived:true}];
 }
 export function stateDocumentKey(item){return item.animaterAura?`aura:${item.animaterAura.slug}:${item.uuid}`:item.type==='condition'?`condition:${slug(item)}:${item.system?.persistent?.damageType??''}`:`effect:${item.uuid??item.id}`;}
 export function storedStateDocument(item){
@@ -111,7 +122,7 @@ export class PersistentStates{
    for(const token of h.tokens()){
     if(!token.actor)continue;
     let shown=0;
-    const states=shownStates((h.actorStates??actorStates)(token.actor));
+    const states=shownStates([...(h.actorStates??actorStates)(token.actor),...(h.perceivedStates?.(token)??[])]);
     for(const item of states){
      if(shown>=budget.states)break;
      if(!(h.activeState??activeState)(item)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;

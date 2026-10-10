@@ -50,7 +50,7 @@ const ABILITY_CATALOGS = { actionCatalog: PF2E_ACTION_CATALOG, featureCatalog: P
 const abilitySettingKey = item => item?.type === "action" ? "actionCatalog" : isFeatureItem(item) ? "featureCatalog" : null;
 import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, resolveAutomaticWeaponRecipe } from "./weapon-catalog.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, PF2E_STATE_SOURCE, normalizeStateCatalogState, catalogStateEntry, stateRecipe } from "./state-catalog.mjs";
-import { PersistentStates } from "./persistent-states.mjs";
+import { PersistentStates, perceivedStates } from "./persistent-states.mjs";
 import { DND_KINDS,DND5E_SOURCE,dndEntries,dndEntry,dndRecipe,normalizeDndCatalogState,resolveDndAutomaticRecipe, addDndBookEntries } from './dnd5e-catalog.mjs';
 import { saveReaction, twoeSaveOutcome, dnd5eSaveOutcome } from './outcome.mjs';
 import { approvalState, approvedPlayerRecipe, playerSubmissions, validatePlayerRecipes, decide } from './player-recipes.mjs';
@@ -1163,10 +1163,17 @@ Hooks.once("ready", () => {
       retainFx:(stage,{session})=>allowsTokenFx(localQuality())?optionalFx.retain(stage,{session,userId:`state:${clientId}`}):undefined,
       budget:()=>stateBudget(localQuality()),
       stopFx:session=>optionalFx.stop({session}),
+      // The selected Dazzled or Blinded token sees everyone else as Concealed or Hidden (PF2e Visioner shows this itself).
+      perceivedStates:(token)=>{
+        if(["pf2e","sf2e"].includes(game.system.id)===false||game.modules.get("pf2e-visioner")?.active)return [];
+        const controlled=canvas.tokens?.controlled??[],observer=controlled.length===1?controlled[0]:null;
+        const slugs=observer?.actor?.itemTypes?.condition?.map((c)=>c.slug)??[];
+        return perceivedStates(slugs,token,observer);
+      },
       body:{add:(...a)=>conditionBody?.add(...a),remove:(...a)=>conditionBody?.remove(...a)},
       trace: (status, detail) => runtime.trace(status, detail),
     });
-    for (const hook of ["createActiveEffect","updateActiveEffect","deleteActiveEffect","createItem", "updateItem", "deleteItem", "updateActor", "createToken", "updateToken", "deleteToken", "refreshToken", "canvasReady", "updateWorldTime", "updateCombat", "deleteCombat", "updateUser"])
+    for (const hook of ["createActiveEffect","updateActiveEffect","deleteActiveEffect","createItem", "updateItem", "deleteItem", "updateActor", "createToken", "updateToken", "deleteToken", "refreshToken", "canvasReady", "updateWorldTime", "updateCombat", "deleteCombat", "updateUser", "controlToken"])
       Hooks.on(hook, () => persistentStates.schedule());
     Hooks.on("preCreateSequencerEffect", (data) => persistentStates.accepts(data.name) ? undefined : false);
     Hooks.on("createSequencerEffect", (effect) => {

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {PersistentStates,activeState,stateVisible,storedStateDocument,nativeAuraStates,shownStates} from '../scripts/persistent-states.mjs';
+import {PersistentStates,perceivedStates,activeState,stateVisible,storedStateDocument,nativeAuraStates,shownStates} from '../scripts/persistent-states.mjs';
 import {PF2E_CONDITIONS,PF2E_EFFECTS,stateRecipe,useStateEntry} from '../scripts/state-catalog.mjs';
 const fear=PF2E_CONDITIONS.find(e=>e.slug==='frightened'),damage=PF2E_CONDITIONS.find(e=>e.slug==='persistent-damage'),bless=PF2E_EFFECTS.find(e=>e.name==='Spell Effect: Bless');
 const native=(e,id='i')=>({id,uuid:`Actor.a.Item.${id}`,type:e.kind,name:e.name,slug:e.kind==='condition'?e.slug:undefined,sourceId:e.uuid,system:{active:true,value:{isValued:e.kind==='condition',value:1}},active:true});
@@ -171,11 +171,20 @@ test('custom edits replace exact layers, disabled recipes stop them, and deletio
  assert.equal(f.manager.accepts('other-module-animation'),true);await f.manager.destroy();
 });
 
-test('Unconscious hides the darkness of the Blinded it brings; Blinded alone still shows',()=>{
+test('Blinded and Dazzled show through the others, not on the token itself',()=>{
  const c=(slug)=>({type:'condition',slug,name:slug});
  assert.deepEqual(shownStates([c('unconscious'),c('blinded'),c('off-guard')]).map(i=>i.slug),['unconscious','off-guard']);
- assert.deepEqual(shownStates([c('blinded')]).map(i=>i.slug),['blinded']);
+ assert.deepEqual(shownStates([c('blinded'),c('dazzled')]).map(i=>i.slug),[]);
  assert.deepEqual(shownStates([{type:'effect',slug:'blinded'},c('unconscious')]).length,2,'only conditions are folded');
+});
+test('the selected Dazzled or Blinded token sees everyone else as Concealed or Hidden',()=>{
+ const me={id:'me'},other={id:'o'};
+ assert.deepEqual(perceivedStates(['dazzled'],other,me).map(i=>i.slug),['concealed']);
+ assert.deepEqual(perceivedStates(['dazzled','blinded'],other,me).map(i=>i.slug),['hidden'],'Blinded wins');
+ assert.deepEqual(perceivedStates(['dazzled'],me,me),[],'not on the observer itself');
+ assert.deepEqual(perceivedStates(['off-guard'],other,me),[]);
+ assert.deepEqual(perceivedStates(['dazzled'],other,null),[]);
+ const [seen]=perceivedStates(['blinded'],other,me);assert.deepEqual(shownStates([seen]),[seen],'the stand-in itself still shows');
 });
 test('a condition whose value changes (Frightened 2 to 1 at turn end) keeps showing until its replacement plays',async()=>{
  const item=native(fear);item.system.value.value=2;const f=fixture([item]);
