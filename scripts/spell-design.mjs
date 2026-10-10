@@ -2447,7 +2447,7 @@ export function applySpellDesign(spell, base, stage, { motion = true, castRank =
           {
             scale: glass ? 1.05 : 1.35,
             opacity: glass ? 0.45 : 1,
-            offsetX: 0.25,
+            // Centred: every shield/ward clip is a dome around the body, not a shield held out in front.
             scaleIn: 0.1,
             scaleInDuration: 450,
             brightness: bone ? 0.65 : 1.05,

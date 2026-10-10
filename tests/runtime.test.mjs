@@ -842,6 +842,10 @@ test("a recipe's linked flash screen plays first at the table, never in a previe
   assert.ok(!order.includes("flash:sig-move"), "previews skip the flash screen");
   assert.ok(calls.length > 0);
 });
+test("Shield's force dome is centred on the caster, not pushed off to one side", () => {
+  const r = spellRecipe(PF2E_SPELLS.find((s) => s.name === "Shield"), undefined, {});
+  for (const s of r.stages.filter((s) => s.kind !== "motion")) assert.equal(s.offsetX ?? 0, 0, s.label);
+});
 test("a one-time animation stuck on a client is ended everywhere shortly after its planned end; lasting ones are left alone", async (t) => {
   t.mock.timers.enable({ apis: ["setTimeout"] });
   const { runtime, calls } = fixture();
