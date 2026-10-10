@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.7 (2026-10-10)
+
 - **Asset variants are chips, like colors.** In the media library, the long "Style / version" dropdown is replaced by a row of chips for each part of the asset that varies: Style, Version, School, Playback (intro, loop, outro, complete), Shade. Each row offers only what exists under the choices above it, and picking a chip keeps the rest of your pick where it can (switching school keeps a loop a loop).
 - **PF2e 8.6.0 content is animated.** The PF2e catalogs are now built from the PF2e 8.6.0 release (they were built from 8.5.1).
   - **New spells:** 19 spells get animations, among them Turnip Lantern, Brimstone Rain, Searing Rain, Silver Spear, Spray of Salt, Piercing Jet, Gloom Mantle and The Night is Mine.
@@ -24,7 +26,7 @@
   - The tall flame clip that rose above the token is now a fire ring.
   - Elysian Dew is an outward ring of growth with green motes; Form a Flock, Protector's Sphere, Blazing Banner, Mantle of the Unwavering Heart and Stink Sap get a reach layer too.
 - **No more smoke over tokens.**
-  - **Auras:** aura effects no longer use smoke, fume or fog footage, which buried the tokens inside them. Their hazes are coloured drifting motes; Fuming Cloak, Creeping Ashes, Ghosts in the Storm and Miasma get rings, ash motes and storm currents instead.
+  - **Auras:** aura effects no longer use smoke, fume or fog footage, which buried the tokens inside them. Their hazes are coloured drifting motes; Creeping Ashes, Ghosts in the Storm and Miasma get rings, ash motes and storm currents instead. Fuming Cloak, which is literally smoke, is the one exception (see above).
   - **Hidden, Undetected and Unnoticed** show only their rim, not a fog veil over the token.
   - **Concealed** is a faint refractive ring.
   - **Effects:** poison, acid, fog, invisible and fiend effects pick sigils, bubbles, shimmer rings or energy strands instead of smoke. D&D 5e Invisible uses the same shimmer instead of a skull mask.
