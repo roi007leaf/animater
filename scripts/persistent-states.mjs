@@ -87,6 +87,16 @@ export class PersistentStates{
  constructor(host){this.host=host;this.active=new Map();this.serial=0;this.revision=0;this.timer=null;this.closed=false;this.pending=new Set();}
  async end(record){this.host.body?.remove(record.name);await Promise.all([this.host.end(record.name),this.host.stopFx?.(record.name)]);}
  schedule(){if(this.closed)return;clearTimeout(this.timer);this.timer=setTimeout(()=>{this.timer=null;void this.reconcile().catch(e=>this.host.trace?.('Blocked',`Persistent effects: ${e.message}`));},35);}
+ // Would a lasting animation show for this condition or effect (its catalog on, or your own
+ // version)? Taking over Automated Animations stops AA's animation for the same document.
+ covers(item){
+  const h=this.host;if(this.closed||!item||!h.ready?.())return false;
+  try{
+   const state=(h.normalizeState??normalizeStateCatalogState)(h.state(h.stateKind?.(item)??item.type));
+   const recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,h.recipes?.()??[],h.catalog(),{customEnabled:h.customEnabled?.()??true});
+   return Boolean(recipe?.stages?.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist));
+  }catch{return false;}
+ }
  accepts(name){if(!String(name??'').startsWith(`animater-state-${this.host.clientId}-`))return true;return !this.closed&&[...this.active.values()].some(r=>r.name===name&&!r.cancelled);}
  async reconcile(){
   const revision=++this.revision,desired=new Map(),h=this.host;

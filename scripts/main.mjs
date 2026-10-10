@@ -1220,7 +1220,8 @@ Hooks.once("ready", () => {
   };
   registerAATakeover({
     enabled: () => acceptsEvents() && aaTakeover(),
-    resolve: resolveEvent,
+    // Conditions and effects are Animater's lasting animations, not recipes: AA stops for those too.
+    resolve: (event) => resolveEvent(event) ?? (event.type === "effect" && persistentStates?.covers(event.item) ? true : null),
     context: () => ({ systemId: game.system.id, userId: game.user.id, twoe: ["pf2e", "sf2e"].includes(game.system.id) ? twoeEvent : null }),
   });
   registerSpellArsenal();

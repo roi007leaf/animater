@@ -198,3 +198,10 @@ test('the catalog Token motion switch decides whether creatures react to their c
  assert.equal(f.manager.active.size,1);
  await f.manager.destroy();
 });
+test('covers: a condition Animater shows itself is reported, so Automated Animations can be stopped for it',()=>{
+ const f=fixture([native(fear)]);
+ assert.equal(f.manager.covers(native(fear)),true,'catalog on: Animater shows Frightened');
+ f.states.condition.enabled=false;
+ assert.equal(f.manager.covers(native(fear)),false,'catalog paused: AA may play it');
+ assert.equal(f.manager.covers(null),false);
+});

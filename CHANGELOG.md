@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Taking over Automated Animations covers conditions and effects.** With *Take over Automated Animations* on, both modules still animated the same condition or effect (Frightened, Grabbed, Bless…), because the takeover only checked Animater's recipes and conditions are its lasting animations. Now Automated Animations also stands down for every condition or effect Animater shows itself: its catalog is on, or you made your own version. Conditions Animater doesn't animate, such as a paused catalog or excluded entries, still play in Automated Animations.
+
 ## 0.3.6 (2026-10-09)
 
 - **The Activity page updates live.** While it's open, new playback entries appear within a second, with no need to switch pages. It now also says that it lists what *this* browser played: each player's own casts appear on their own Activity page.
