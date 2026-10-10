@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Asset variants are chips, like colors.** In the media library, the long "Style / version" dropdown is replaced by a row of chips for each part of the asset that varies: Style, Version, School, Playback (intro, loop, outro, complete), Shade. Each row offers only what exists under the choices above it, and picking a chip keeps the rest of your pick where it can (switching school keeps a loop a loop).
 - **PF2e 8.6.0 content is animated.** The PF2e catalogs are now built from the PF2e 8.6.0 release (they were built from 8.5.1).
   - **New spells:** 19 spells get animations, among them Turnip Lantern, Brimstone Rain, Searing Rain, Silver Spear, Spray of Salt, Piercing Jet, Gloom Mantle and The Night is Mine.
   - **New feats:** 31 feats from the infernal pactbreaker, bugbear, fetchling and strix lines get animations.

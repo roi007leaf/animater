@@ -61,6 +61,31 @@ export function mediaVariantChoices(variants, current) {
     variants:variants.filter(item => item.color === current.color && variantSize(item) === variantSize(current)),
   };
 }
+// Style/version picks as chip rows instead of one long list. Each part of the key that varies becomes a
+// row ("circle · 02 · necromancy · loop" → style, version, school, playback); a row offers only values that
+// exist under the parts chosen before it, and each chip jumps to the variant closest to the current one.
+const PLAYBACK_PARTS = new Set(['intro','loop','outro','complete','burst','outburst','in','out','pulse','start','end','idle','cast','fade','explode']);
+const SCHOOLS = new Set(['abjuration','conjuration','divination','enchantment','evocation','illusion','necromancy','transmutation']);
+const keyParts = (item) => item.key ? item.key.split('.').slice(2) : [String(item.label ?? item.id)];
+export function mediaVariantFacets(variants, current) {
+  const cur = keyParts(current), rows = [];
+  for (let i = 0; i < cur.length; i++) {
+    const pool = variants.filter(v => { const p = keyParts(v); return cur.slice(0, i).every((s, j) => p[j] === s); });
+    const values = [...new Set(pool.map(v => keyParts(v)[i]).filter(v => v !== undefined))].sort(compareNames);
+    if (values.length < 2) continue;
+    const closest = (value) => pool.filter(v => keyParts(v)[i] === value).map(v => {
+      const p = keyParts(v); let same = 0;
+      for (let j = i + 1; j < Math.max(p.length, cur.length); j++) if (p[j] === cur[j]) same++;
+      return { v, same, gap: Math.abs(p.length - cur.length) };
+    }).sort((a, b) => b.same - a.same || a.gap - b.gap || compareNames(a.v.key ?? a.v.id, b.v.key ?? b.v.id))[0]?.v;
+    const label = values.every(v => /^\d+$/.test(v)) ? 'Version' : values.some(v => PLAYBACK_PARTS.has(v)) ? 'Playback'
+      : values.every(v => SCHOOLS.has(v)) ? 'School' : values.some(v => v.startsWith('dark_')) ? 'Shade'
+      : rows.some(r => r.label === 'Style') ? 'Variant' : 'Style';
+    const chipLabel = (value) => label === 'Shade' ? (value.startsWith('dark_') ? 'Dark' : 'Regular') : /^\d+$/.test(value) ? String(Number(value)) : value.replaceAll('_', ' ');
+    rows.push({ position: i, label, chips: values.map(value => ({ value, label: chipLabel(value), selected: value === cur[i], id: closest(value)?.id })) });
+  }
+  return rows;
+}
 export function assetCategory(text, type) {
   text = words(text).toLowerCase();
   if (type === 'audio') {

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {registeredMedia,mergeMedia,mediaGroups,libraryItem,mediaForReference,safeMediaFile,variantSize,matchingMediaVariant,mediaVariantChoices,tokenFxAssets} from '../scripts/media-library-model.mjs';
+import {registeredMedia,mergeMedia,mediaGroups,libraryItem,mediaForReference,safeMediaFile,variantSize,matchingMediaVariant,mediaVariantChoices,mediaVariantFacets,tokenFxAssets} from '../scripts/media-library-model.mjs';
 import {installedMediaLibrary} from '../scripts/media-library-sources.mjs';
 import {MediaLibrary,libraryPreferences} from '../scripts/media-library.mjs';
 import {validateRecipe,planRecipe} from '../scripts/model.mjs';
@@ -472,4 +472,15 @@ test('size selection preserves a compatible color filter without rebuilding resu
   await f.library.action('media-color',{dataset:{value:'brown'}});
   assert.equal(f.library.selected.key,'jb2a.ball_bearing.top.001.2x2.brown');
   assert.equal(f.library.filters.color,'all');assert.equal(updates,1);assert.equal(f.renders,0);
+});
+test('style and version picks are chip rows: each varying part of the key, closest variant per chip',()=>{
+ const v=(key)=>({id:key,key,label:key,color:'blue'});
+ const items=['jb2a.magic_signs.circle.02.abjuration.loop.blue','jb2a.magic_signs.circle.02.abjuration.intro.blue','jb2a.magic_signs.circle.02.necromancy.loop.blue','jb2a.magic_signs.circle.02.necromancy.intro.blue','jb2a.magic_signs.circle.01.abjuration.blue','jb2a.magic_signs.rune.02.complete.01.blue','jb2a.magic_signs.rune.02.loop.01.blue'].map(v);
+ const rows=mediaVariantFacets(items,items[0]);
+ assert.deepEqual(rows.map(r=>r.label),['Style','Version','School','Playback']);
+ assert.deepEqual(rows[0].chips.map(c=>[c.value,c.selected]),[['circle',true],['rune',false]]);
+ assert.equal(rows[2].chips.find(c=>c.value==='necromancy').id,'jb2a.magic_signs.circle.02.necromancy.loop.blue','switching school keeps loop playback');
+ assert.equal(rows[3].chips.find(c=>c.value==='intro').id,'jb2a.magic_signs.circle.02.abjuration.intro.blue');
+ assert.equal(rows[1].chips.find(c=>c.value==='01').label,'1');
+ assert.deepEqual(mediaVariantFacets([items[0]],items[0]),[],'a single variant shows no rows');
 });
