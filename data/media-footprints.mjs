@@ -637,12 +637,6 @@ export const MEDIA_FOOTPRINTS = {
     667.9688,
     682.0313
   ],
-  "AuraLoop02_01_Regular_Yellow_900x900.webm": [
-    900,
-    900,
-    752.3438,
-    682.0313
-  ],
   "AuraThemedInwardCompleteCold01_01_Regular_Blue_700x700.webm": [
     700,
     700,
