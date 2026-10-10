@@ -145,17 +145,20 @@ export class PersistentStates{
   const h=this.host,catalog=h.catalog(),grid=h.gridSize();
   const plan=planRecipe(r.recipe,catalog,{source:r.token,targets:[],gridSize:grid});
   const sequence=h.sequence();
-  // Inside someone else's aura: a quiet copy (its first layer, token-sized, dimmer). The ring is the owner's.
+  // Inside someone else's aura: a quiet copy (one telling layer, token-sized, a little dimmer). The ring is the owner's.
   const granted=grantedByOtherAura(r.item,r.token);
   const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=granted?Math.min(1,budget.layers):budget.layers;
   let layers=0;
-  for(const s of plan){
-   if(s.kind!=='aura'||!s.persist)continue;
+  // An ally's copy keeps the aura's most telling layer (its glyph, motes, flame), not the generic ring every
+  // aura shares, so different auras stay recognisable on the allies inside them.
+  const lasting=plan.filter(s=>s.kind==='aura'&&s.persist),generic=s=>/template_circle\.|token_border\./.test(String(s.asset));
+  const shown=granted?[lasting.find(s=>!generic(s))??lasting[0]].filter(Boolean):lasting;
+  for(const s of shown){
    if(layers++>=maxLayers)continue;
    const media=mediaForReference(catalog,s.asset);
    const e=sequence.effect().file(s.asset).name(r.name).origin(r.item.uuid??r.recipe.itemUuid)
     .attachTo(r.token,{offset:offsetInGridSquares(s,r.token,grid),gridUnits:true,bindRotation:s.bindRotation,bindAlpha:true,bindVisibility:true,bindElevation:true})
-    .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted?Math.min(s.scale,.9):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.5:1)))
+    .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted?Math.min(s.scale,1):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.8:1)))
     .persist().temporary().delay(s.delay).fadeIn(s.fadeIn).fadeOut(s.fadeOut);
    const documents=[r.token.document?.uuid,(h.storedDocument??storedStateDocument)(r.item)].filter(Boolean);
    if(documents.length)e.tieToDocuments(documents);

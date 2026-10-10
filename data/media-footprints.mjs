@@ -1,6 +1,10 @@
 // Measured frame/visible alpha dimensions [width, height, visibleWidth, visibleHeight].
 // Rebuild: rtk proxy node tools/audit-media-footprints.mjs --all-systems --fetch-missing-free --write
 export const MEDIA_FOOTPRINTS = {
+  "EnergyStrandsOverlay_01_Regular_PinkYellow_600x600.webm": [600,600,510.9375,464.0625],
+  "EnergyStrandsOverlay_01_Regular_Grey_600x600.webm": [600,600,501.5625,459.375],
+  "Vortex_01_Dark_Black_600x600.webm": [600,600,487.5,482.8125],
+  "ParticlesSwirl01_01_Regular_Red_400x400.webm": [400,400,337.5,325],
   "3Chevrons_01_Regular_Yellow_200x200.webm": [
     200,
     200,

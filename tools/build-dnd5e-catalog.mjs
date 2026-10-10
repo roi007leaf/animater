@@ -38,7 +38,7 @@ function media(direction,row,id){
  const resolved=mediaCache.get(key);
  return Object.fromEntries(Object.entries(resolved).map(([slot,keys])=>[slot,[...new Set(['patreon','free'].map(edition=>{const key=keys.find(k=>db[edition].some(r=>r.key===k));return siblings(key,id+slot,edition);} ))]]));
 }
-const sustained={blinded:'markers.runes',charmed:'markers.heart',deafened:'markers.mute',exhaustion:'token_border.circle.static',frightened:'markers.fear',grappled:'markers.chain',incapacitated:'markers.stun',invisible:'markers.on_token_mask,markers.smoke',paralyzed:'markers.chain',petrified:'token_border.circle.static',poisoned:'markers.poison',prone:'token_border.circle.static',restrained:'web.0,markers.chain',stunned:'markers.stun',unconscious:'markers.sleep,token_border.circle.static',dead:'markers.skull',concentrating:'markers.runes',bloodied:'markers.drop'};
+const sustained={blinded:'markers.runes',charmed:'markers.heart',deafened:'markers.mute',exhaustion:'token_border.circle.static',frightened:'markers.fear',grappled:'markers.chain',incapacitated:'markers.stun',invisible:'condition.boon.02.001.refraction,token_border.circle.static',paralyzed:'markers.chain',petrified:'token_border.circle.static',poisoned:'markers.poison',prone:'token_border.circle.static',restrained:'web.0,markers.chain',stunned:'markers.stun',unconscious:'markers.sleep,token_border.circle.static',dead:'markers.skull',concentrating:'markers.runes',bloodied:'markers.drop'};
 // Marker grammar: icon = category, color = valence or damage type. Variants are
 // chosen deterministically by color affinity (never a random color per entry)
 // and substituted colors are tinted so Advantage/Disadvantage, buffs/penalties

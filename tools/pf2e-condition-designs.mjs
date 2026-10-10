@@ -51,8 +51,8 @@ export const CONDITION_PLANS={
  broken:plan('broken','themed',glyph('shield_cracked','ash',{scale:.95})),
  // Stumbling: native yellow dizzy stars wobbling over the head, drawn above the token art.
  clumsy:plan('coordination','symbolic',art('dizzy_stars.200px','yellow',{scale:.95,offsetY:-.4,opacity:1,above:true,playbackRate:.7,tracks:[track('rotation',-12,12,1100)]})),
- // A light haze: the token stays readable through it.
- concealed:plan('fog','themed',art('fog_cloud.01.white','grey',{scale:1.3,opacity:.5})),
+ // A faint refractive ring: the token stays readable (no fog over it).
+ concealed:plan('fog','themed',art('template_circle.aura.04.outward.001.loop.combined','grey',{scale:1.2,opacity:.55,below:true})),
  // Reeling: a murky ring of stars lurching erratically around the head.
  confused:plan('mind','symbolic',glyph('circle_of_stars','mustard',{scale:1,offsetY:-.15,opacity:1,tracks:[track('rotation',-35,35,1700),track('position.x',-.05,.05,2300)]})),
  // Dominated: a dim violet control sigil with faint puppet strands over the body.
@@ -83,7 +83,7 @@ export const CONDITION_PLANS={
  // which read as fog clouds around the token. Each binding keeps its own chain shape.
  grabbed:plan('chains','themed',art(['markers.chain.spike.loop.02','markers.chain.standard.loop.02'],'grey',{scale:1.5})),
  helpful:plan('attitude','symbolic',glyph('heart','pink',{scale:.65}),glyph('heart','pink',{scale:.55,mirrorX:true})),
- hidden:plan('invisible','symbolic',veil('grey'),rim(6,'grey',{opacity:.85})),
+ hidden:plan('invisible','symbolic',rim(6,'grey',{opacity:.85})),
  // Aggression: a targeting sigil over the dark red attitude rim.
  hostile:plan('attitude','symbolic',rim(7,'red',{scale:1.4}),art('hunters_mark.loop','red',{scale:.6,opacity:.8})),
  // Held in place: the binding motif of Grabbed/Restrained, shackled flat at the feet.
@@ -114,9 +114,9 @@ export const CONDITION_PLANS={
  // Dulled mind: a blue rune marker circling the head.
  stupefied:plan('mind','symbolic',glyph('runes03','blue',{scale:1})),
  unconscious:plan('slow','themed',art('sleep.symbol','blue',{scale:.95,offsetY:-.2,playbackRate:.7,mediaAnchors:sleepAnchors})),
- undetected:plan('invisible','symbolic',veil('black'),rim(5,'grey',{opacity:.85})),
+ undetected:plan('invisible','symbolic',rim(5,'grey',{opacity:.85})),
  unfriendly:plan('attitude','symbolic',rim(3,'rust',{scale:1.35})),
- unnoticed:plan('invisible','symbolic',veil('black',{scale:.9}),rim(4,'grey',{opacity:.85})),
+ unnoticed:plan('invisible','symbolic',rim(4,'grey',{opacity:.85})),
  wounded:plan('health','symbolic',glyph('heart','blood',{scale:.75})),
  // Starfinder 2e afflictions (conditions pack entries without a PF2e twin).
  // Malfunction: steel-blue static that sputters on and off.

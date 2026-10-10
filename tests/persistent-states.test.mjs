@@ -222,6 +222,7 @@ test('an ally inside someone else\'s aura gets a quiet copy: one layer, dimmer; 
  await ally.manager.reconcile();await flush();
  assert.ok(ownerFiles>=1);
  assert.equal(ally.calls.filter(c=>c[0]==='file').length,1,'the ally shows one quiet layer');
- assert.ok(ally.calls.find(c=>c[0]==='opacity')[1]<=ownerOpacity/2+1e-9);
+ assert.ok(ally.calls.find(c=>c[0]==='opacity')[1]<=ownerOpacity*.8+1e-9);
+ assert.doesNotMatch(String(ally.calls.find(c=>c[0]==='file')[1]),/template_circle/,"the aura's own glyph, not the generic ring");
  await owner.manager.destroy();await ally.manager.destroy();
 });
