@@ -72,5 +72,5 @@ test('Free fallback markers use marker placement (a ring under the token) rather
  const entry={...damage,damageVariants:{cold:{assets:['jb2a.aura_themed.01.orbit.loop.cold.blue','jb2a.markers.snowflake.blue'],scale:1.85,opacity:.84,below:false}}};
  const patreon=stateRecipe(entry,{damageType:'cold',catalog:[{key:entry.damageVariants.cold.assets[0]}]}).stages[0];
  const free=stateRecipe(entry,{damageType:'cold',catalog:[{key:entry.damageVariants.cold.assets[1]}]}).stages[0];
- assert.equal(patreon.scale,1.5);assert.ok(free.scale<patreon.scale);assert.equal(free.offsetY,0);assert.equal(free.below,true);
+ assert.equal(patreon.scale,1.5);assert.equal(free.offsetY,0);assert.equal(free.below,true);
 });

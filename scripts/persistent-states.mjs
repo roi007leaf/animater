@@ -160,18 +160,22 @@ export class PersistentStates{
   const sequence=h.sequence();
   // Inside someone else's aura: a quiet copy (one telling layer, token-sized, a little dimmer). The ring is the owner's.
   const granted=grantedByOtherAura(r.item,r.token);
-  const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=granted?Math.min(1,budget.layers):budget.layers;
+  // An ally's copy keeps the aura's most telling layer (its glyph, orbit, flame), not the plain ring every
+  // aura shares, so different auras stay recognisable on the allies inside them. Sparse footage (glints,
+  // motes, streaks) vanishes at token size, so it comes with the aura's own coloured ring.
+  const lasting=plan.filter(s=>s.kind==='aura'&&s.persist),generic=s=>/template_circle\.aura\.|token_border\./.test(String(s.asset));
+  const sparse=s=>/twinkling_stars\.|particles\.|wind_lines\.|swirling_leaves\.|butterflies\./.test(String(s.asset));
+  const telling=lasting.find(s=>!generic(s)&&!sparse(s))??lasting.find(s=>!generic(s))??lasting[0];
+  const allyCopy=!telling?[]:sparse(telling)?[lasting.find(generic),telling].filter(Boolean):[telling];
+  const shown=r.bodyOnly?[]:granted?allyCopy:lasting;
+  const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=granted?Math.min(shown.length,budget.layers):budget.layers;
   let layers=0;
-  // An ally's copy keeps the aura's most telling layer (its glyph, motes, flame), not the generic ring every
-  // aura shares, so different auras stay recognisable on the allies inside them.
-  const lasting=plan.filter(s=>s.kind==='aura'&&s.persist),generic=s=>/template_circle\.|token_border\./.test(String(s.asset));
-  const shown=r.bodyOnly?[]:granted?[lasting.find(s=>!generic(s))??lasting[0]].filter(Boolean):lasting;
   for(const s of shown){
    if(layers++>=maxLayers)continue;
    const media=mediaForReference(catalog,s.asset);
    const e=sequence.effect().file(s.asset).name(r.name).origin(r.item.uuid??r.recipe.itemUuid)
     .attachTo(r.token,{offset:offsetInGridSquares(s,r.token,grid),gridUnits:true,bindRotation:s.bindRotation,bindAlpha:true,bindVisibility:true,bindElevation:true})
-    .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted?Math.min(s.scale,1):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.8:1)))
+    .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted&&s.auraRadius?Math.min(s.scale,1):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.8:1)))
     .persist().temporary().delay(s.delay).fadeIn(s.fadeIn).fadeOut(s.fadeOut);
    // A perceived Concealed/Hidden is a stand-in with no document of its own: tie it to the token only.
    const documents=[r.token.document?.uuid,r.item.animaterPerceived?null:(h.storedDocument??storedStateDocument)(r.item)].filter(Boolean);

@@ -233,6 +233,15 @@ test('an effect handed out by another creature\'s aura is drawn token-sized on t
  assert.equal(grantedByOtherAura({flags:{pf2e:{aura:{origin:'Actor.ally'}}}},token),false,'the aura owner keeps the ring');
  assert.equal(grantedByOtherAura({flags:{pf2e:{}}},token),false,'cast directly on the creature');
 });
+test('an ally inside Angelic Halo keeps its marker ring at full width under the token, not squeezed behind the art',async()=>{
+ const halo=PF2E_EFFECTS.find(e=>/Angelic Halo/.test(e.name)&&e.auraDesign);
+ const ally=fixture([{...native(halo),flags:{pf2e:{aura:{origin:'Actor.caster',slug:'angelic-halo'}}}}]);ally.actor.uuid='Actor.ally';
+ await ally.manager.reconcile();await flush();
+ assert.match(String(ally.calls.find(c=>c[0]==='file')[1]),/markers\./);
+ assert.ok(ally.calls.find(c=>c[0]==='size')[1].width>=150,'the ring reaches past a round token');
+ assert.ok(ally.calls.some(c=>c[0]==='belowTokens'));
+ await ally.manager.destroy();
+});
 test('an ally inside someone else\'s aura gets a quiet copy: one layer, dimmer; the owner keeps every layer',async()=>{
  const wards=PF2E_EFFECTS.find(e=>e.name==='Spell Effect: Protective Wards');
  const owner=fixture([native(wards)]);

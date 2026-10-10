@@ -3,7 +3,8 @@
 ## Unreleased
 
 - **Dazzled shows how the token sees others (PF2e, SF2e).** Select a Dazzled token and every other token shows the Concealed look on your screen. The Dazzled token keeps its own motion but no longer wears an overlay. Works with PF2e Visioner too.
-- **Markers no longer float over heads.** Effects drawn with a JB2A marker (hearts, shields, runes, drops and so on, about 840 effects) are now a ring of icons around the token's base, under its art, instead of hovering above the head into the next square.
+- **Markers no longer float over heads.** Effects drawn with a JB2A marker (hearts, shields, runes, drops and so on, about 840 effects, Shield among them) are now a ring of icons under the token, wide enough that the icons orbit just outside its art, instead of hovering above the head into the next square.
+- **Allies inside an aura see its effect clearly.** An ally's copy is no longer squeezed to token size unless it is the aura's own ring, so effects like Angelic Halo's marker are no longer hidden behind the token art. When an aura's telling layer is only glints or motes, the ally also gets the aura's ring in its colour.
 - **Conditions never blink out.**
   - Blinded, Fascinated, Clumsy, Fatigued, Unconscious, Prone and Encumbered used clips that fade in and out once; they now loop only the steady part of the clip.
   - Invisible is a steady refractive shimmer instead of a one-time burst.
