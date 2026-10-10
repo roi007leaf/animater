@@ -4,6 +4,11 @@
 
 - **Dazzled shows how the token sees others (PF2e, SF2e).** Select a Dazzled token and every other token shows the Concealed look on your screen. The Dazzled token keeps its own motion but no longer wears an overlay. Works with PF2e Visioner too.
 - **Markers no longer float over heads.** Effects drawn with a JB2A marker (hearts, shields, runes, drops and so on, about 840 effects) are now a ring of icons around the token's base, under its art, instead of hovering above the head into the next square.
+- **Conditions never blink out.**
+  - Blinded, Fascinated, Clumsy, Fatigued, Unconscious, Prone and Encumbered used clips that fade in and out once; they now loop only the steady part of the clip.
+  - Invisible is a steady refractive shimmer instead of a one-time burst.
+- **Enfeebled** is dim crimson motes drawn out of the body into a slowly draining ring at the feet, while the token sags.
+- **Fuming Cloak** is thick black smoke filling its 15-foot aura, drawn under the tokens, as the item describes. It no longer looks like a demonic energy aura.
 - **Auras show their size and keep looping.**
   - Every aura now has a layer that fills its whole radius, and the build checks this.
   - Layers that played once and vanished (sparkles, the second energy field, radar pings) are replaced with continuous loops.

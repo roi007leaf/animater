@@ -41,16 +41,19 @@ export const EFFECT_PLANS={
 // so every base look here stays between roughly 0.8x and 1.4x the token.
 const sink=(ms,drop=.14,from=.9)=>[track('position.y',-.04,drop,ms,false),track('alpha',from,.1,ms,false)];
 const lurch=(deg,ms)=>[track('rotation',-deg,deg,ms),track('scale.x',.86,1.06,ms*1.2)];
-const shadow=(options={})=>art('drop_shadow','black',{scale:1.15,offsetY:.15,below:true,opacity:.55,playbackRate:.5,...options});
+// One-shot footage (eyes, sleep Zs, dizzy stars, a growing drop shadow) fades in and out; a lasting layer
+// loops only its steady stretch (clipStart-clipEnd, ms of the clip) so it never blinks to nothing.
+const EYES={clipStart:500,clipEnd:4000},SLEEP={clipStart:500,clipEnd:2000};
+const shadow=(options={})=>art('drop_shadow','black',{scale:1.15,offsetY:.15,below:true,opacity:.55,playbackRate:.5,clipStart:1900,clipEnd:2300,...options});
 export const CONDITION_PLANS={
  // Sight gone, the token still readable: a dim eye over the eyes keeps fading out under a
  // dark blindfold of haze (the old darkness disc hid the whole token).
  blinded:plan('vision','symbolic',
-  art('eyes.01','ash',{style:'.single',scale:.4,offsetY:-.26,opacity:.85,playbackRate:.6,tracks:[track('alpha',.1,.8,2400)]}),
+  art('eyes.01','ash',{style:'.single',scale:.4,offsetY:-.26,opacity:.85,playbackRate:.6,...EYES,tracks:[track('alpha',.1,.8,2400)]}),
   art(['fog_cloud.01.white','ambient_fog.001.loop.small.white'],'blindfold',{scale:.62,offsetY:-.24,opacity:.9,playbackRate:.5,tracks:[...flatten(.45),track('alpha',.75,.95,2600)]})),
  broken:plan('broken','themed',glyph('shield_cracked','ash',{scale:.95})),
  // Stumbling: native yellow dizzy stars wobbling over the head, drawn above the token art.
- clumsy:plan('coordination','symbolic',art('dizzy_stars.200px','yellow',{scale:.95,offsetY:-.4,opacity:1,above:true,playbackRate:.7,tracks:[track('rotation',-12,12,1100)]})),
+ clumsy:plan('coordination','symbolic',art('dizzy_stars.200px','yellow',{scale:.95,offsetY:-.4,opacity:1,above:true,playbackRate:.7,clipStart:300,clipEnd:1100,tracks:[track('rotation',-12,12,1100)]})),
  // A faint refractive ring: the token stays readable (no fog over it).
  concealed:plan('fog','themed',art('template_circle.aura.04.outward.001.loop.combined','grey',{scale:1.2,opacity:.55,below:true})),
  // Reeling: a murky ring of stars lurching erratically around the head.
@@ -69,12 +72,13 @@ export const CONDITION_PLANS={
  dying:plan('death','symbolic',glyph('heart','blood',{scale:1,tracks:[track('alpha',.55,1,1600)]}),art('darkness.black','black',{scale:1.2,offsetY:.1,below:true,opacity:.6})),
  // Overburdened: a heavy shadow pressed flat at the feet and laboured breath.
  encumbered:plan('slow','symbolic',shadow({scale:.8,offsetY:.28,opacity:.75,tracks:flatten(.55)}),art('smoke.plumes_loop','umber',{scale:.8,offsetY:-.28,opacity:.75,playbackRate:.45})),
- // Strength sapped: red strands drawn inward across the body (life force pulled away, not blood).
- enfeebled:plan('weakness','symbolic',art('energy_strands.in','vividRed',{scale:1.15,opacity:1,above:true,playbackRate:.6})),
+ // Strength sapped: dim crimson motes drawn out of the body into a slowly draining ring at the feet,
+ // while the body sags (condition-body.mjs). Both loop; the old strand burst played once and vanished.
+ enfeebled:plan('weakness','symbolic',art('particles.inward','crimson',{scale:1.1,opacity:.8,playbackRate:.6}),art('template_circle.aura.03.inward.002.loop','crimson',{scale:1.3,opacity:.6,below:true,playbackRate:.6})),
  // Entranced: a glazed, unblinking stare.
- fascinated:plan('mind','symbolic',art('eyes.01','bruise',{style:'.single',scale:.75,offsetY:-.2,opacity:1,playbackRate:.5,tracks:[track('alpha',.75,1,3000)]})),
+ fascinated:plan('mind','symbolic',art('eyes.01','bruise',{style:'.single',scale:.75,offsetY:-.2,opacity:1,playbackRate:.5,...EYES,tracks:[track('alpha',.75,1,3000)]})),
  // Weary: a small, fading sleep cue over a sagging shadow (Unconscious uses the full symbol).
- fatigued:plan('slow','symbolic',art('sleep.symbol','dusk',{style:'.dark_pink',scale:.8,offsetY:-.2,opacity:.95,playbackRate:.45,mediaAnchors:sleepAnchors,tracks:[track('alpha',.6,.95,3500)]})),
+ fatigued:plan('slow','symbolic',art('sleep.symbol','dusk',{style:'.dark_pink',scale:.8,offsetY:-.2,opacity:.95,playbackRate:.45,...SLEEP,mediaAnchors:sleepAnchors,tracks:[track('alpha',.6,.95,3500)]})),
  // Panic: a dark-red horror marker circling the bearer.
  fleeing:plan('fear','symbolic',glyph('horror','blood',{style:'.03',scale:.95})),
  friendly:plan('attitude','symbolic',glyph('heart','pink',{scale:.65})),
@@ -89,7 +93,8 @@ export const CONDITION_PLANS={
  // Held in place: the binding motif of Grabbed/Restrained, shackled flat at the feet.
  immobilized:plan('chains','symbolic',art(['markers.chain.square.loop.02','markers.chain.standard.loop.02'],'grey',{scale:1.45,offsetY:.25,tracks:flatten(.55)})),
  indifferent:plan('attitude','symbolic',rim(1,'grey')),
- invisible:plan('invisible','symbolic',art('condition.boon.02.001.refraction','white',{scale:1.35,opacity:.8})),
+ // A steady refractive shimmer over the body (the boon refraction was a single burst).
+ invisible:plan('invisible','symbolic',art('template_circle.aura.04.inward.001.loop.combined','white',{scale:1.3,opacity:.75})),
  observed:plan('neutral','symbolic',rim(2,'white',{scale:1.3})),
  'off-guard':plan('broken','symbolic',glyph('shield_cracked','blood',{scale:.75})),
  // Locked rigid: numb, barely-moving nerve crackle over a still shadow (no chains or ice).
@@ -113,7 +118,7 @@ export const CONDITION_PLANS={
  stunned:plan('stun','themed',glyph('stun','teal',{scale:.95})),
  // Dulled mind: a blue rune marker circling the head.
  stupefied:plan('mind','symbolic',glyph('runes03','blue',{scale:1})),
- unconscious:plan('slow','themed',art('sleep.symbol','blue',{scale:.95,offsetY:-.2,playbackRate:.7,mediaAnchors:sleepAnchors})),
+ unconscious:plan('slow','themed',art('sleep.symbol','blue',{scale:.95,offsetY:-.2,playbackRate:.7,...SLEEP,mediaAnchors:sleepAnchors})),
  undetected:plan('invisible','symbolic',rim(5,'grey',{opacity:.85})),
  unfriendly:plan('attitude','symbolic',rim(3,'rust',{scale:1.35})),
  unnoticed:plan('invisible','symbolic',rim(4,'grey',{opacity:.85})),

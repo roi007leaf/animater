@@ -1,6 +1,8 @@
 // Measured frame/visible alpha dimensions [width, height, visibleWidth, visibleHeight].
 // Rebuild: rtk proxy node tools/audit-media-footprints.mjs --all-systems --fetch-missing-free --write
 export const MEDIA_FOOTPRINTS = {
+  "SmokeCircleLoop001_001_GreenPurple_05ft_400x400.webm": [400,400,343.75,350],
+  "SmokeCircleLoop001_001_OrangeYellow_05ft_400x400.webm": [400,400,346.875,350],
   "RadarLoop_002_001_GreenPurple_15ft_800x800.webm": [800,800,687.5,700],
   "RadarLoop_002_001_BlueTeal_15ft_800x800.webm": [800,800,681.25,693.75],
   "RadarLoop_Pulse_002_GreenPurple_15ft_800x800.webm": [800,800,575,575],
