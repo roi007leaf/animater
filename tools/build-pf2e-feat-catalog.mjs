@@ -33,7 +33,7 @@ const RIDERS = { "sneak-attack": "sneak-attack", "precise-strike": "precise-stri
 // Native compendium ids from the PF2e system manifest (packs/actions → actionspf2e, etc.).
 const NATIVE_PACKS = { actions: "actionspf2e", "class-features": "classfeatures", "ancestry-features": "ancestryfeatures" };
 const nativeUuid = (path,id) => { const pack = NATIVE_PACKS[path.split("/").at(path.startsWith("packs/pf2e/") ? 2 : 1)]; if (!pack) throw Error(`No native pack for ${path}.`); return `Compendium.pf2e.${pack}.Item.${id}`; };
-const [source,databases] =await Promise.all([featSources("pf2e-8.5.1", CFG.pack),assetDatabases()]);
+const [source,databases] =await Promise.all([featSources("pf2e-8.6.0", CFG.pack),assetDatabases()]);
 const reviews=await loadFeatReviews();
 const previousModule = process.argv.includes("--reuse-media") ? await import(`../${CFG.data}`) : null;
 const previous = previousModule ? { PF2E_FEAT_SOURCE: previousModule[CFG.meta], PF2E_FEATS: previousModule[CFG.items] } : null;

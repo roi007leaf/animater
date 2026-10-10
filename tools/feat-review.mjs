@@ -6,7 +6,7 @@ import { ensureFeatReviews } from "./ensure-feat-reviews.mjs";
 export async function loadFeatReviews() {
   ensureFeatReviews();
   const reviews={};
-  for(const file of ["feat-early-review","feat-description-review","feat-support-review","feat-late-review"]){
+  for(const file of ["feat-early-review","feat-description-review","feat-support-review","feat-late-review","feat-update-review"]){
     const url=new URL(`../data/${file}.mjs`,import.meta.url);
     if(!existsSync(url))continue;
     const exports=await import(url.href);

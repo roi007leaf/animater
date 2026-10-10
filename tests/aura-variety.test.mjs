@@ -36,7 +36,7 @@ test('prepared aura effect parent takes precedence over a shared base kinetic au
  assert.deepEqual(nativeAuraStates(actor).map(i=>i.animaterAura.entryId),[specific.id]);
 });
 test('every reviewed field has distinct resolved artwork beyond labels, timing, size or opacity; only same-ability aliases share',()=>{
- const fields=PF2E_EFFECTS.filter(e=>e.auras||e.auraSources);assert.equal(fields.length,114);
+ const fields=PF2E_EFFECTS.filter(e=>e.auras||e.auraSources);assert.equal(fields.length,117);
  for(const edition of ['free','patreon']){
   const groups=new Map(),structures=new Map();
   for(const e of fields){
@@ -48,7 +48,7 @@ test('every reviewed field has distinct resolved artwork beyond labels, timing, 
    const old=structures.get(structure);if(old)assert.equal(old,e.auraDesign.id,`${edition} color-independent: ${e.name}`);else structures.set(structure,e.auraDesign.id);
    for(const s of r.stages){assert.equal(assetGeometry(media(s,edition)),'radial');assert.equal(s.scale,1);assert.equal(s.offsetX,0);assert.equal(s.offsetY,0);assert.equal(s.persist,true);assert.ok(!/markers|token_border/.test(s.assets.join(' ')));}
   }
-  assert.equal(groups.size,88);assert.equal(structures.size,88);
+  assert.equal(groups.size,90);assert.equal(structures.size,90);
  }
 });
 test('native thermal and tradition selections change the field; unspecified choices stay neutral',()=>{

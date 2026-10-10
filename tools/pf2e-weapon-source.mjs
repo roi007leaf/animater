@@ -1,5 +1,5 @@
 import {readFile,readdir,writeFile} from 'node:fs/promises';
-export const WEAPON_SOURCE_SHA='563fd52708673ddd4f66c76921efbf6a938fffed';
+export const WEAPON_SOURCE_SHA='581c2bf2ca9734f4dd83f034fbcc93f8e4fd96eb';
 // Same pinned official PF2e revision as spells and feats. Entire equipment pack
 // is inspected: name filters cannot establish complete weapon coverage.
 export async function weaponSources(){
@@ -14,7 +14,7 @@ export async function weaponSources(){
     if(source.type==='weapon')weapons.push({source,path:`packs/pf2e/equipment/${name}`});
     else excluded.push({id:source._id,type:source.type,path:name});
   }
-  return {sha:WEAPON_SOURCE_SHA,ref:'pf2e-8.5.1',total:names.length,weapons:weapons.sort((a,b)=>a.source.name.localeCompare(b.source.name)),excluded};
+  return {sha:WEAPON_SOURCE_SHA,ref:'pf2e-8.6.0',total:names.length,weapons:weapons.sort((a,b)=>a.source.name.localeCompare(b.source.name)),excluded};
 }
 if(process.argv.includes('--inspect')){
  const s=await weaponSources(),count=key=>Object.fromEntries([...new Set(s.weapons.map(e=>e.source.system[key]))].map(k=>[k,s.weapons.filter(e=>e.source.system[key]===k).length]));

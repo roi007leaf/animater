@@ -78,7 +78,7 @@ await writeFile(
 );
 const metadata = {
   system: "pf2e",
-  version: "8.5.1",
+  version: "8.6.0",
   ref: source.ref,
   sha: source.sha,
   source: `https://github.com/foundryvtt/pf2e/tree/${source.sha}/packs/pf2e/spells`,

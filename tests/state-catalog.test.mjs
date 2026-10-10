@@ -12,7 +12,7 @@ const native=e=>({type:e.kind,name:e.name,slug:e.kind==='condition'?e.slug:undef
 
 test('all native effect Aura rules retain literal radii; formulas remain native rather than being guessed',async()=>{
  const base=await ensureStateSources(),emitters=PF2E_EFFECTS.filter(e=>e.auras);
- assert.equal(emitters.length,59);
+ assert.equal(emitters.length,61);
  for(const e of emitters){
   const source=JSON.parse(await readFile(`${base}/${e.sourceUrl.split('/packs/pf2e/')[1]}`,'utf8'));
   const rules=source.system.rules.filter(r=>r.key==='Aura');
@@ -53,7 +53,7 @@ test('every localized native description resolves against the pinned English sou
 });
 
 test('core condition and every native effect-pack document have catalog entries and sustained localized footage in both editions',async()=>{
- assert.equal(PF2E_CONDITIONS.length,43);assert.equal(PF2E_EFFECTS.length,2929);
+ assert.equal(PF2E_CONDITIONS.length,43);assert.equal(PF2E_EFFECTS.length,2962);
  const entries=[...PF2E_CONDITIONS,...PF2E_EFFECTS];assert.equal(new Set(entries.map(e=>e.id)).size,entries.length);
  assert.equal(PF2E_STATE_SOURCE.packs['campaign-effects'],68);assert.equal(PF2E_STATE_SOURCE.packs['boons-and-curses'],7);
  // Use the inventories used by the builder. An unversioned local snapshot can

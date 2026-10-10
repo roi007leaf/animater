@@ -71,7 +71,7 @@ export async function auditSpellGroups({sources=false}={}){
 export function spellGroupReportMarkdown(report){
  const p=report.editions.patreon,f=report.editions.free;
  const themes=Object.entries(p.themes).sort((a,b)=>Math.max(f.themes[b[0]].repeatedAcrossCatalog,b[1].repeatedAcrossCatalog)-Math.max(f.themes[a[0]].repeatedAcrossCatalog,a[1].repeatedAcrossCatalog));
- const lines=['# PF2e spell group audit','',`Source: PF2e 8.5.1, commit \`${report.source}\`. Scope: ${p.total} spells across ${report.themes} themes, both JB2A editions.`,
+ const lines=['# PF2e spell group audit','',`Source: PF2e 8.6.0, commit \`${report.source}\`. Scope: ${p.total} spells across ${report.themes} themes, both JB2A editions.`,
   '',`**${report.affectedInEitherEdition} spells share a main-effect body in at least one edition.** Patreon: ${p.affectedSpells} spells in ${p.sharedGroups} shared groups. Free: ${f.affectedSpells} spells in ${f.sharedGroups} shared groups.`,
   '',report.method,'','## Summary','',
   '| Check | Patreon | Free |','| --- | ---: | ---: |',

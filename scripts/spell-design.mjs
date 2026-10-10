@@ -1015,6 +1015,26 @@ export const AUTHORED_SPELL_DESIGNS = {
   ...GAP_SPELL_DESIGNS,
   ...FIRE_SPELL_DESIGNS,
   ...FIX_SPELL_DESIGNS,
+  // PF2e 8.6.0 additions, reviewed against their complete descriptions.
+  "brimstone-rain": ["lavaColumn", "Smoldering brimstone globs rupture out of the ground across the burst. Lingering sulfurous fumes, difficult terrain and persistent poison stay native."],
+  "control-currents": ["waterLine", "A water current runs along the line in the chosen direction. Forced movement only applies where the line meets water and stays native."],
+  "curse-of-slippery-steps": ["grease", "A glossy wet slick settles under the cursed creature's feet. Difficult terrain and the water trail depend on the Reflex save."],
+  "devils-horseshoe": ["lockSeal", "A conjured silver horseshoe seals over the chosen entrance. Damage and conditions apply later to fiends passing through, never on cast."],
+  "gift-of-dusk": ["strengthSap", "Inky energy seeps into the target's shadow and its strength ebbs inward. The curse stages and a detached shadow creature remain native."],
+  "glimpse-the-netherworld": ["materialArea-shadow", "Netherworld shadows tear open around the slain enemy and fill the 10-foot emanation. Cold and persistent damage depend on Reflex saves."],
+  "gloom-mantle": ["darkShroud", "A dark shroud closes around the caster for the concealment. Bright light ending it stays native."],
+  "infernal-supervision": ["diabolicTask", "An infernal contract seal settles on the caster to guide their words. Lore and social bonuses are native modifiers."],
+  "piercing-jet": ["waterBolt", "A thin pressurized stream of water flies to the target on a ranged spell attack. No push: the jet pierces rather than shoves."],
+  "pin-the-spears-in-the-lamb": ["shadowTendrils", "Shadow spikes rise and grasp each target's shadow on the ground. Speed penalty or immobilization depends on each Reflex save."],
+  "rude-awakening": ["gapC-rousing-splash", "Frigid conjured water splashes over the chosen ally to fortify their resolve. The Will save and saving-throw bonuses stay native."],
+  "saturate": ["materialArea-water", "Water drawn from the air soaks the burst. Difficult terrain or quicksand depends on the native surface."],
+  "searing-rain": ["gapA-downpour", "A torrential downpour of boiling water fills the burst and leaves steam. Persistent fire and concealment stay native."],
+  "silver-spear": ["thrownSpear", "A great conjured silver lance is hurled at the target. Extra spirit damage and teleport tether against fiends stay native."],
+  "spray-of-salt": ["materialSand", "A wave of purified white salt sprays through the cone. Acid and persistent spirit damage depend on Fortitude saves and creature traits."],
+  "tenebrous-freedom": ["devouringShadow", "The target's shadow tears free and becomes an independent shape. Its later movement and the enfeebled/clumsy penalties remain native."],
+  "the-night-is-mine": ["localShadow", "The darkness around the target rises and strikes it with cold. Damage depends on the basic Reflex save; the reaction trigger is native."],
+  "turnip-lantern": ["lightOrb", "A carved turnip lantern lights in the caster's hand. Its 20-foot bright-light aura and bonus against unholy creatures run as the native aura effect."],
+  "unending-tears": ["privateGrief", "Sorrow wells over the target and their eyes stream with tears. Dazzled, stupefied and emotion suppression depend on the Will save."],
 };
 
 const track = (property, from, to, duration, extra = {}) => ({

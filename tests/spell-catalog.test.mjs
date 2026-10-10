@@ -156,7 +156,7 @@ test("ready-made catalog defaults and explicit customizations work without enabl
 });
 
 test("complete pinned PF2e spell inventory includes cantrips, focus, ranked, ritual and legacy entries", () => {
-  assert.equal(PF2E_SPELLS.length, 1994);
+  assert.equal(PF2E_SPELLS.length, 2017);
   assert.equal(PF2E_SOURCE.sourceFiles, PF2E_SPELLS.length);
   assert.equal(new Set(PF2E_SPELLS.map((s) => s.id)).size, PF2E_SOURCE.total);
   assert.equal(
@@ -171,7 +171,7 @@ test("complete pinned PF2e spell inventory includes cantrips, focus, ranked, rit
   );
   for (const kind of ["cantrip", "focus", "ritual", "spell"])
     assert.equal(filterSpells({ kind }).length, PF2E_SOURCE.kinds[kind]);
-  assert.equal(filterSpells({ edition: "legacy" }).length, 410);
+  assert.equal(filterSpells({ edition: "legacy" }).length, 409);
 });
 test("every catalog animation validates, stays bounded, and round-trips as an editable recipe", () => {
   for (const record of PF2E_SPELLS) {

@@ -42,12 +42,12 @@ test("each edition keeps visible feat variety with token motion and copies remov
       const key=JSON.stringify(visibleFeatComposition(featRecipe(feat,{motion:false}),keys,{motion:false}));
       assert.ok(!seen.has(key),`${edition}: ${seen.get(key)} duplicates ${feat.name}`);seen.set(key,feat.name);
     }
-    assert.equal(seen.size,2308);
+    assert.equal(seen.size,2338);
   }
 });
 
 test("all active feats preserve full-description semantic provenance and art direction",()=>{
-  assert.equal(audit.source.reviewed,2308);assert.deepEqual(audit.source.unreviewed,[]);
+  assert.equal(audit.source.reviewed,2338);assert.deepEqual(audit.source.unreviewed,[]);
   for(const feat of PF2E_FEATS){
     assert.equal(feat.review?.fullDescriptionRead,true,feat.name);
     assert.equal(feat.review.descriptionHash,createHash("sha256").update(feat.description).digest("hex"));

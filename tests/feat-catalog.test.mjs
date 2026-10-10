@@ -13,10 +13,10 @@ const token=(id,x)=>({id,center:{x,y:100},document:{x:x-50,y:50,width:1,height:1
 const context={source:token("s",100),targets:[token("t",400),token("secondary",700)],gridSize:100,gridDistance:5,area:{center:{x:400,y:100},diameter:400}};
 
 test("pinned complete feats compendium accounts for every active and passive item",()=>{
-  assert.equal(PF2E_FEAT_SOURCE.version,"8.5.1");assert.equal(PF2E_FEAT_SOURCE.total,6284);assert.equal(PF2E_FEATS.length,2308);
-  assert.equal(PF2E_FEAT_SOURCE.excluded,3976);assert.equal(audit.sourceAudit.length,6284);assert.equal(new Set(PF2E_FEATS.map(f=>f.id)).size,2308);
+  assert.equal(PF2E_FEAT_SOURCE.version,"8.6.0");assert.equal(PF2E_FEAT_SOURCE.total,6366);assert.equal(PF2E_FEATS.length,2338);
+  assert.equal(PF2E_FEAT_SOURCE.excluded,4028);assert.equal(audit.sourceAudit.length,6366);assert.equal(new Set(PF2E_FEATS.map(f=>f.id)).size,2338);
   assert.equal(PF2E_FEAT_SOURCE.count+PF2E_FEAT_SOURCE.excluded,PF2E_FEAT_SOURCE.total);
-  assert.deepEqual(PF2E_FEAT_SOURCE.actionTypes,{action:1619,free:216,reaction:473});
+  assert.deepEqual(PF2E_FEAT_SOURCE.actionTypes,{action:1639,free:219,reaction:480});
   assert.equal(audit.issues.length,0);
   for(const feat of PF2E_FEATS){assert.ok(["action","reaction","free"].includes(feat.actionType));assert.equal(feat.trigger,"use");assert.equal(feat.classification,"native-active");assert.ok(feat.img);}
 });

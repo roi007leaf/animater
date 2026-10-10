@@ -14,7 +14,7 @@ async function fetchJSON(url) {
 // have no visible act of their own.
 const META_ACTIONS = new Set(["strike", "cast-a-spell", "sustain", "sustain-a-spell", "delay", "ready", "interact", "release", "activate-an-item"]);
 // pack: "feats" (default), "classfeatures" or "actions" — separate catalogs built by the same pipeline.
-export async function featSources(ref = "pf2e-8.5.1", pack = "feats") {
+export async function featSources(ref = "pf2e-8.6.0", pack = "feats") {
   const repository = "foundryvtt/pf2e";
   const tree = await fetchJSON(`https://api.github.com/repos/${repository}/git/trees/${ref}?recursive=1`);
   if (tree.truncated) throw Error("PF2e source tree truncated; feat coverage cannot be established.");

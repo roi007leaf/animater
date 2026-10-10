@@ -1,23 +1,6 @@
 // Measured frame/visible alpha dimensions [width, height, visibleWidth, visibleHeight].
 // Rebuild: rtk proxy node tools/audit-media-footprints.mjs --all-systems --fetch-missing-free --write
 export const MEDIA_FOOTPRINTS = {
-  "SmokeCircleLoop001_001_GreenPurple_05ft_400x400.webm": [400,400,343.75,350],
-  "SmokeCircleLoop001_001_OrangeYellow_05ft_400x400.webm": [400,400,346.875,350],
-  "RadarLoop_002_001_GreenPurple_15ft_800x800.webm": [800,800,687.5,700],
-  "RadarLoop_002_001_BlueTeal_15ft_800x800.webm": [800,800,681.25,693.75],
-  "RadarLoop_Pulse_002_GreenPurple_15ft_800x800.webm": [800,800,575,575],
-  "RadarLoop_BG_001_GreenPurple_15ft_800x800.webm": [800,800,687.5,700],
-  "RadarLoop_001_001_GreenPurple_15ft_800x800.webm": [800,800,687.5,700],
-  "Aura003_Outward_Loop_002_PinkYellow_1400x1400.webm": [1400,1400,1082.8125,1115.625],
-  "Aura003_Outward_Loop_004_GreenPurple_1400x1400.webm": [1400,1400,1093.75,1104.6875],
-  "RadarLoop_Pulse_002_BlueTeal_15ft_800x800.webm": [800,800,600,600],
-  "RadarLoop_BG_001_BlueTeal_15ft_800x800.webm": [800,800,681.25,693.75],
-  "RadarLoop_001_001_BlueTeal_15ft_800x800.webm": [800,800,681.25,693.75],
-  "Aura003_Inward_Loop_001_PurpleRed_1400x1400.webm": [1400,1400,1170.3125,1192.1875],
-  "EnergyStrandsOverlay_01_Regular_PinkYellow_600x600.webm": [600,600,510.9375,464.0625],
-  "EnergyStrandsOverlay_01_Regular_Grey_600x600.webm": [600,600,501.5625,459.375],
-  "Vortex_01_Dark_Black_600x600.webm": [600,600,487.5,482.8125],
-  "ParticlesSwirl01_01_Regular_Red_400x400.webm": [400,400,337.5,325],
   "3Chevrons_01_Regular_Yellow_200x200.webm": [
     200,
     200,
@@ -198,12 +181,6 @@ export const MEDIA_FOOTPRINTS = {
     918.75,
     1003.125
   ],
-  "AmbientFog001_001_Loop_GreenYellow_500x500.webm": [
-    500,
-    500,
-    417.9688,
-    445.3125
-  ],
   "AmbientFog001_001_Loop_OrangeYellow_500x500.webm": [
     500,
     500,
@@ -366,6 +343,12 @@ export const MEDIA_FOOTPRINTS = {
     1225,
     1225
   ],
+  "Aura003_Inward_Loop_001_PurpleRed_1400x1400.webm": [
+    1400,
+    1400,
+    1170.3125,
+    1192.1875
+  ],
   "Aura003_Inward_Loop_001_White_1400x1400.webm": [
     1400,
     1400,
@@ -510,6 +493,12 @@ export const MEDIA_FOOTPRINTS = {
     918.75,
     984.375
   ],
+  "Aura003_Outward_Loop_002_PinkYellow_1400x1400.webm": [
+    1400,
+    1400,
+    1082.8125,
+    1115.625
+  ],
   "Aura003_Outward_Loop_003_Blue_1400x1400.webm": [
     1400,
     1400,
@@ -535,6 +524,12 @@ export const MEDIA_FOOTPRINTS = {
     918.75
   ],
   "Aura003_Outward_Loop_004_Blue_1400x1400.webm": [
+    1400,
+    1400,
+    1093.75,
+    1104.6875
+  ],
+  "Aura003_Outward_Loop_004_GreenPurple_1400x1400.webm": [
     1400,
     1400,
     1093.75,
@@ -642,6 +637,12 @@ export const MEDIA_FOOTPRINTS = {
     667.9688,
     682.0313
   ],
+  "AuraLoop02_01_Regular_Yellow_900x900.webm": [
+    900,
+    900,
+    752.3438,
+    682.0313
+  ],
   "AuraThemedInwardCompleteCold01_01_Regular_Blue_700x700.webm": [
     700,
     700,
@@ -709,6 +710,12 @@ export const MEDIA_FOOTPRINTS = {
     503.125
   ],
   "AuraThemedInwardLoopWood01_01_Regular_Green_700x700.webm": [
+    700,
+    700,
+    552.3438,
+    519.5313
+  ],
+  "AuraThemedInwardLoopWood01_01_Regular_Purple_700x700.webm": [
     700,
     700,
     552.3438,
@@ -2467,6 +2474,12 @@ export const MEDIA_FOOTPRINTS = {
     318.75
   ],
   "ConditionCurse01_015_Purple_600x600.webm": [
+    600,
+    600,
+    318.75,
+    318.75
+  ],
+  "ConditionCurse01_015_Red_600x600.webm": [
     600,
     600,
     318.75,
@@ -4374,7 +4387,19 @@ export const MEDIA_FOOTPRINTS = {
     510.9375,
     464.0625
   ],
+  "EnergyStrandsOverlay_01_Regular_Grey_600x600.webm": [
+    600,
+    600,
+    501.5625,
+    459.375
+  ],
   "EnergyStrandsOverlay_01_Regular_Orange_600x600.webm": [
+    600,
+    600,
+    510.9375,
+    464.0625
+  ],
+  "EnergyStrandsOverlay_01_Regular_PinkYellow_600x600.webm": [
     600,
     600,
     510.9375,
@@ -8094,19 +8119,13 @@ export const MEDIA_FOOTPRINTS = {
     381.25,
     384.375
   ],
-  "MarkerChainDiamond01_01_Regular_Grey_Loop_400x400.webm": [
-    400,
-    400,
-    331.25,
-    343.75
-  ],
-  "MarkerChainDiamond01_01_Regular_Yellow_Loop_400x400.webm": [
-    400,
-    400,
-    328.125,
-    331.25
-  ],
   "MarkerChainDiamond01_02_Regular_Grey_Loop_400x400.webm": [
+    400,
+    400,
+    256.25,
+    256.25
+  ],
+  "MarkerChainDiamond01_02_Regular_Yellow_Loop_400x400.webm": [
     400,
     400,
     256.25,
@@ -8142,12 +8161,6 @@ export const MEDIA_FOOTPRINTS = {
     250,
     250
   ],
-  "MarkerChainSpike01_01_Regular_Grey_Loop_400x400.webm": [
-    400,
-    400,
-    331.25,
-    343.75
-  ],
   "MarkerChainSpike01_02_Regular_Grey_Complete_400x400.webm": [
     400,
     400,
@@ -8166,23 +8179,11 @@ export const MEDIA_FOOTPRINTS = {
     331.25,
     359.375
   ],
-  "MarkerChainSquare01_01_Regular_Grey_Loop_400x400.webm": [
-    400,
-    400,
-    331.25,
-    343.75
-  ],
   "MarkerChainSquare01_02_Regular_Grey_Loop_400x400.webm": [
     400,
     400,
     250,
     250
-  ],
-  "MarkerChainStandard01_01_Regular_Grey_Loop_400x400.webm": [
-    400,
-    400,
-    331.25,
-    343.75
   ],
   "MarkerChainStandard01_01_Regular_Red_Loop_400x400.webm": [
     400,
@@ -9780,12 +9781,6 @@ export const MEDIA_FOOTPRINTS = {
     274.2188,
     271.875
   ],
-  "OnTokenMask01_01_Regular_Green_Loop_300x300.webm": [
-    300,
-    300,
-    269.5313,
-    267.1875
-  ],
   "OnTokenMask01_01_Regular_Orange_Complete_300x300.webm": [
     300,
     300,
@@ -9809,24 +9804,6 @@ export const MEDIA_FOOTPRINTS = {
     300,
     269.5313,
     269.5313
-  ],
-  "OnTokenMask01_01_Regular_Red_Loop_300x300.webm": [
-    300,
-    300,
-    262.5,
-    269.5313
-  ],
-  "OnTokenMask01_01_Regular_Yellow02_Loop_300x300.webm": [
-    300,
-    300,
-    257.8125,
-    262.5
-  ],
-  "OnTokenMask01_01_Regular_Yellow_Loop_300x300.webm": [
-    300,
-    300,
-    269.5313,
-    267.1875
   ],
   "Ontoken_Buff001_001_BluePurple_400x400.webm": [
     400,
@@ -10458,12 +10435,6 @@ export const MEDIA_FOOTPRINTS = {
     346.875,
     350
   ],
-  "ParticlesOutward02_05_Regular_Orange_400x400.webm": [
-    400,
-    400,
-    346.875,
-    350
-  ],
   "ParticlesOutward02_05_Regular_Purple_400x400.webm": [
     400,
     400,
@@ -10489,6 +10460,12 @@ export const MEDIA_FOOTPRINTS = {
     325
   ],
   "ParticlesSwirl01_01_Regular_Purple_400x400.webm": [
+    400,
+    400,
+    337.5,
+    325
+  ],
+  "ParticlesSwirl01_01_Regular_Red_400x400.webm": [
     400,
     400,
     337.5,
@@ -11070,6 +11047,78 @@ export const MEDIA_FOOTPRINTS = {
     150,
     179.6875
   ],
+  "RadarLoop_001_001_BlueTeal_15ft_800x800.webm": [
+    800,
+    800,
+    681.25,
+    693.75
+  ],
+  "RadarLoop_001_001_GreenPurple_15ft_800x800.webm": [
+    800,
+    800,
+    687.5,
+    700
+  ],
+  "RadarLoop_001_002_BlueTeal_15ft_800x800.webm": [
+    800,
+    800,
+    681.25,
+    693.75
+  ],
+  "RadarLoop_001_002_GreenPurple_15ft_800x800.webm": [
+    800,
+    800,
+    687.5,
+    700
+  ],
+  "RadarLoop_001_003_BlueTeal_15ft_800x800.webm": [
+    800,
+    800,
+    681.25,
+    693.75
+  ],
+  "RadarLoop_001_003_GreenPurple_15ft_800x800.webm": [
+    800,
+    800,
+    687.5,
+    700
+  ],
+  "RadarLoop_002_001_BlueTeal_15ft_800x800.webm": [
+    800,
+    800,
+    681.25,
+    693.75
+  ],
+  "RadarLoop_002_001_GreenPurple_15ft_800x800.webm": [
+    800,
+    800,
+    687.5,
+    700
+  ],
+  "RadarLoop_002_002_BlueTeal_15ft_800x800.webm": [
+    800,
+    800,
+    681.25,
+    693.75
+  ],
+  "RadarLoop_002_002_GreenPurple_15ft_800x800.webm": [
+    800,
+    800,
+    687.5,
+    700
+  ],
+  "RadarLoop_002_003_BlueTeal_15ft_800x800.webm": [
+    800,
+    800,
+    681.25,
+    693.75
+  ],
+  "RadarLoop_002_003_GreenPurple_15ft_800x800.webm": [
+    800,
+    800,
+    687.5,
+    700
+  ],
   "RadarLoop_01_Circle_Normal_500x500.webm": [
     500,
     500,
@@ -11082,6 +11131,18 @@ export const MEDIA_FOOTPRINTS = {
     460.9375,
     460.9375
   ],
+  "RadarLoop_BG_001_BlueTeal_15ft_800x800.webm": [
+    800,
+    800,
+    681.25,
+    693.75
+  ],
+  "RadarLoop_BG_001_GreenPurple_15ft_800x800.webm": [
+    800,
+    800,
+    687.5,
+    700
+  ],
   "RadarLoop_PingRound_001_BlueTeal_Size1_300x300.webm": [
     300,
     300,
@@ -11093,30 +11154,6 @@ export const MEDIA_FOOTPRINTS = {
     300,
     194.5313,
     194.5313
-  ],
-  "RadarLoop_PingSquare_001_BlueTeal_Size1_300x300.webm": [
-    300,
-    300,
-    180.4688,
-    178.125
-  ],
-  "RadarLoop_PingSquare_001_GreenPurple_Size1_300x300.webm": [
-    300,
-    300,
-    173.4375,
-    173.4375
-  ],
-  "RadarLoop_PingTriangle_001_BlueTeal_Size1_300x300.webm": [
-    300,
-    300,
-    182.8125,
-    164.0625
-  ],
-  "RadarLoop_PingTriangle_001_GreenPurple_Size1_300x300.webm": [
-    300,
-    300,
-    175.7813,
-    157.0313
   ],
   "RadarLoop_Sweep_001_BlueTeal_15ft_800x800.webm": [
     800,
@@ -11951,6 +11988,18 @@ export const MEDIA_FOOTPRINTS = {
     800,
     718.75,
     725
+  ],
+  "SmokeCircleLoop001_001_GreenPurple_05ft_400x400.webm": [
+    400,
+    400,
+    343.75,
+    350
+  ],
+  "SmokeCircleLoop001_001_OrangeYellow_05ft_400x400.webm": [
+    400,
+    400,
+    346.875,
+    350
   ],
   "SmokeLine_01_Regular_LightBlue_05x05ft_400x400.webm": [
     400,
@@ -13452,6 +13501,12 @@ export const MEDIA_FOOTPRINTS = {
     606.25,
     481.25
   ],
+  "TemplateCone5eLightning01_01_Regular_BluePurple_30ft_Complete_800x800.webm": [
+    800,
+    800,
+    687.5,
+    568.75
+  ],
   "TemplateCone5eLightning01_01_Regular_BluePurple_30ft_Loop_800x800.webm": [
     800,
     800,
@@ -13860,23 +13915,35 @@ export const MEDIA_FOOTPRINTS = {
     225,
     228.125
   ],
+  "TokenBorderCircleSpin_02_Regular_Orange_400x400.webm": [
+    400,
+    400,
+    225,
+    231.25
+  ],
   "TokenBorderCircleSpin_03_Regular_Blue_400x400.webm": [
     400,
     400,
     284.375,
     265.625
   ],
-  "TokenBorderCircleSpin_03_Regular_Orange_400x400.webm": [
+  "TokenBorderCircleSpin_03_Regular_Purple_400x400.webm": [
     400,
     400,
     287.5,
-    271.875
+    275
   ],
   "TokenBorderCircleSpin_04_Regular_Blue_400x400.webm": [
     400,
     400,
     271.875,
     275
+  ],
+  "TokenBorderCircleSpin_04_Regular_Orange_400x400.webm": [
+    400,
+    400,
+    259.375,
+    256.25
   ],
   "TokenBorderCircleSpin_05_Regular_Blue_400x400.webm": [
     400,
@@ -13901,6 +13968,12 @@ export const MEDIA_FOOTPRINTS = {
     400,
     290.625,
     287.5
+  ],
+  "TokenBorderCircleSpin_06_Regular_Orange_400x400.webm": [
+    400,
+    400,
+    306.25,
+    296.875
   ],
   "TokenBorderCircleSpin_06_Regular_Purple_400x400.webm": [
     400,
@@ -13932,17 +14005,17 @@ export const MEDIA_FOOTPRINTS = {
     253.125,
     259.375
   ],
-  "TokenBorderCircleSpin_09_Regular_Green_400x400.webm": [
-    400,
-    400,
-    243.75,
-    243.75
-  ],
   "TokenBorderCircleSpin_10_Regular_Blue_400x400.webm": [
     400,
     400,
     253.125,
     253.125
+  ],
+  "TokenBorderCircleSpin_10_Regular_Green_400x400.webm": [
+    400,
+    400,
+    243.75,
+    240.625
   ],
   "TokenBorderCircleSpin_10_Regular_Purple_400x400.webm": [
     400,
@@ -13968,17 +14041,17 @@ export const MEDIA_FOOTPRINTS = {
     250,
     250
   ],
+  "TokenBorderCircleSpin_11_Regular_Purple_400x400.webm": [
+    400,
+    400,
+    253.125,
+    256.25
+  ],
   "TokenBorderCircleSpin_12_Regular_Blue_400x400.webm": [
     400,
     400,
     268.75,
     275
-  ],
-  "TokenBorderCircleSpin_12_Regular_Green_400x400.webm": [
-    400,
-    400,
-    256.25,
-    256.25
   ],
   "TokenBorderCircleSpin_12_Regular_Orange_400x400.webm": [
     400,
@@ -13992,11 +14065,11 @@ export const MEDIA_FOOTPRINTS = {
     237.5,
     240.625
   ],
-  "TokenBorderCircleSpin_13_Regular_Orange_400x400.webm": [
+  "TokenBorderCircleSpin_13_Regular_Green_400x400.webm": [
     400,
     400,
-    237.5,
-    240.625
+    228.125,
+    231.25
   ],
   "TokenBorderCircle_01_Dark_Red_400x400.webm": [
     400,
@@ -14843,6 +14916,12 @@ export const MEDIA_FOOTPRINTS = {
     600,
     482.8125,
     478.125
+  ],
+  "Vortex_01_Dark_Black_600x600.webm": [
+    600,
+    600,
+    487.5,
+    482.8125
   ],
   "Vortex_01_Regular_Blue_600x600.webm": [
     600,

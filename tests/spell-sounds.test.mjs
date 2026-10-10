@@ -63,7 +63,7 @@ const context = {
 const sounds = (r) => r.stages.filter((s) => s.kind === "sound");
 test("complete description audit has no unclassified entries and every referenced file exists", async () => {
   assert.equal(Object.keys(SPELL_SOUND_DESIGNS).length, PF2E_SPELLS.length);
-  assert.equal(SOUND_SOURCE.sha, "563fd52708673ddd4f66c76921efbf6a938fffed");
+  assert.equal(SOUND_SOURCE.sha, "581c2bf2ca9734f4dd83f034fbcc93f8e4fd96eb");
   for (const s of PF2E_SPELLS) {
     const d = SPELL_SOUND_DESIGNS[s.id];
     assert.ok(d.reason);

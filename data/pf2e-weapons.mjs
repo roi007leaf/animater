@@ -1,23 +1,23 @@
 // Generated from pinned official PF2e full equipment descriptions. References only.
 export const PF2E_WEAPON_SOURCE = {
-  "version": "8.5.1",
-  "sha": "563fd52708673ddd4f66c76921efbf6a938fffed",
+  "version": "8.6.0",
+  "sha": "581c2bf2ca9734f4dd83f034fbcc93f8e4fd96eb",
   "repository": "foundryvtt/pf2e",
-  "equipmentDocuments": 5870,
-  "weaponDocuments": 1018,
-  "count": 1018,
+  "equipmentDocuments": 5914,
+  "weaponDocuments": 1021,
+  "count": 1021,
   "excluded": [],
-  "usageCount": 1127,
-  "descriptionAudit": 1018,
+  "usageCount": 1130,
+  "descriptionAudit": 1021,
   "missingDescriptions": [
     "IF6qUrR3i030v0dH"
   ],
   "probedKeys": 139,
   "missingTiming": [],
   "modes": {
-    "melee": 695,
+    "melee": 697,
     "ranged": 163,
-    "thrown": 269
+    "thrown": 270
   }
 };
 export const PF2E_WEAPONS = [
@@ -3149,10 +3149,10 @@ export const PF2E_WEAPONS = [
     "edition": "legacy",
     "publication": "Pathfinder Treasure Vault",
     "path": "packs/pf2e/equipment/alghollthu-lash.json",
-    "description": "<p>This fleshy <em>+1 striking whip</em> is obviously crafted from the tentacle of some fearsome beast, likely an alghollthu, and constantly drips slime.</p>\n<p><strong>Activate</strong> <span class=\"action-glyph\">1</span> command</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> The next creature you successfully Strike with this weapon is exposed to alghollthu slime.</p>\n<p><strong>Alghollthu Slime</strong> (curse, occult)</p>\n<p><strong>Saving Throw</strong> @Check[fortitude|dc:25|traits:curse,occult]</p>\n<p><strong>Stage 1</strong> no ill effect (1 round)</p>\n<p><strong>Stage 2</strong> the victim's skin softens, making the creature @UUID[Compendium.pf2e.conditionitems.Item.Drained]{Drained 1} (1 round)</p>\n<p><strong>Stage 3</strong> the victim's skin transforms into a clear, slimy membrane, making it @UUID[Compendium.pf2e.conditionitems.Item.Drained]{Drained 2} until the curse ends; every hour this membrane remains dry, the creature's drained condition increases by 1 (permanent). A remove disease spell can counteract this curse, but immunity to disease offers no protection against it.</p><hr /><p><strong>Craft Requirements</strong> The initial raw materials must include a tentacle from an alghollthu.</p>",
-    "plainDescription": "This fleshy +1 striking whip is obviously crafted from the tentacle of some fearsome beast, likely an alghollthu, and constantly drips slime. Activate 1 command Frequency once per day Effect The next creature you successfully Strike with this weapon is exposed to alghollthu slime. Alghollthu Slime (curse, occult) Saving Throw @Check[fortitude|dc:25|traits:curse,occult] Stage 1 no ill effect (1 round) Stage 2 the victim's skin softens, making the creature Drained 1 (1 round) Stage 3 the victim's skin transforms into a clear, slimy membrane, making it Drained 2 until the curse ends; every hour this membrane remains dry, the creature's drained condition increases by 1 (permanent). A remove disease spell can counteract this curse, but immunity to disease offers no protection against it. Craft Requirements The initial raw materials must include a tentacle from an alghollthu.",
-    "descriptionHash": "9a33bb965a12da7a",
-    "descriptionChars": 882,
+    "description": "<p>This fleshy <em>+1 striking whip</em> is obviously crafted from the tentacle of some fearsome beast, likely an alghollthu, and constantly drips slime.</p>\n<p><strong>Activate</strong> <span class=\"action-glyph\">1</span> command</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> The next creature you successfully Strike with this weapon is exposed to alghollthu slime.</p>\n<p><strong>Alghollthu Slime</strong> (curse, occult)</p>\n<p><strong>Saving Throw</strong> @Check[fortitude|dc:25|traits:curse,occult]</p>\n<p><strong>Stage 1</strong> no ill effect (1 round)</p>\n<p><strong>Stage 2</strong> the victim's skin softens, making the creature @UUID[Compendium.pf2e.conditionitems.Item.Drained]{Drained 1} (1 round)</p>\n<p><strong>Stage 3</strong> the victim's skin transforms into a clear, slimy membrane, making it @UUID[Compendium.pf2e.conditionitems.Item.Drained]{Drained 2} until the curse ends; every hour this membrane remains dry, the creature's drained condition increases by 1 (permanent). A @UUID[Compendium.pf2e.spells-srd.Item.Cleanse Affliction] spell can counteract this curse, but immunity to disease offers no protection against it.</p><hr /><p><strong>Craft Requirements</strong> The initial raw materials must include a tentacle from an alghollthu.</p>",
+    "plainDescription": "This fleshy +1 striking whip is obviously crafted from the tentacle of some fearsome beast, likely an alghollthu, and constantly drips slime. Activate 1 command Frequency once per day Effect The next creature you successfully Strike with this weapon is exposed to alghollthu slime. Alghollthu Slime (curse, occult) Saving Throw @Check[fortitude|dc:25|traits:curse,occult] Stage 1 no ill effect (1 round) Stage 2 the victim's skin softens, making the creature Drained 1 (1 round) Stage 3 the victim's skin transforms into a clear, slimy membrane, making it Drained 2 until the curse ends; every hour this membrane remains dry, the creature's drained condition increases by 1 (permanent). A spell can counteract this curse, but immunity to disease offers no protection against it. Craft Requirements The initial raw materials must include a tentacle from an alghollthu.",
+    "descriptionHash": "ec4547bf0a8d67cb",
+    "descriptionChars": 867,
     "modes": [
       {
         "mode": "melee",
@@ -20246,7 +20246,7 @@ export const PF2E_WEAPONS = [
   {
     "id": "h7RtjyqHouB3pGgr",
     "name": "Branch of the Great Sugi",
-    "img": "systems/pf2e/icons/equipment/weapons/whip.webp",
+    "img": "icons/magic/nature/root-vine-coiled-crook.webp",
     "slug": "branch-of-the-great-sugi",
     "level": 7,
     "base": "whip",
@@ -20264,10 +20264,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/branch-of-the-great-sugi.json",
-    "description": "<p>This large tree branch is alive, despite having been harvested from the sugi tree it once belonged to. This long, flexible, and limber branch is a <em>+1 striking whip</em>. When used to Strike, the branch snaps with the sound of a cracking whip but fills the air surrounding the point of impact with the pleasant scent of freshly cut cedar and a sprinkling of fallen leaves on the ground.</p>\n<p><strong>Activate—A Multitude of Branches</strong> <span class=\"action-glyph\">3</span> (concentrate, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You place the <em>branch of the great sugi</em> on the corpse of an unholy creature, then cause the branch to suddenly grow into a sugi tree, up to 25 feet tall with a 2-foot-wide trunk. As it grows, it emits a pulse of soothing energy, restoring 3d8+8 Hit Points to all creatures in a @Template[type:burst|distance:10]. A character can Climb the tree with a successful @Check[athletics|dc:10] check, and its branches effortlessly support the weight of any Medium or smaller creature. The sugi tree reverts to its whip form after 1 hour unless you transform it back before then.</p>\n<p><strong>Activate—A Single Branch</strong> <span class=\"action-glyph\">1</span> (manipulate)</p>\n<p>You transform the <em>branch of the great sugi</em> from its tree form back into its whip form.</p>",
-    "plainDescription": "This large tree branch is alive, despite having been harvested from the sugi tree it once belonged to. This long, flexible, and limber branch is a +1 striking whip . When used to Strike, the branch snaps with the sound of a cracking whip but fills the air surrounding the point of impact with the pleasant scent of freshly cut cedar and a sprinkling of fallen leaves on the ground. Activate—A Multitude of Branches 3 (concentrate, manipulate) Frequency once per day Effect You place the branch of the great sugi on the corpse of an unholy creature, then cause the branch to suddenly grow into a sugi tree, up to 25 feet tall with a 2-foot-wide trunk. As it grows, it emits a pulse of soothing energy, restoring 3d8+8 Hit Points to all creatures in a @Template[type:burst|distance:10]. A character can Climb the tree with a successful @Check[athletics|dc:10] check, and its branches effortlessly support the weight of any Medium or smaller creature. The sugi tree reverts to its whip form after 1 hour unless you transform it back before then. Activate—A Single Branch 1 (manipulate) You transform the branch of the great sugi from its tree form back into its whip form.",
-    "descriptionHash": "06f2579335bf5669",
-    "descriptionChars": 1169,
+    "description": "<p>This large tree branch is alive, despite having been harvested from the sugi tree it once belonged to. This long, flexible, and limber branch is a <em>+1 striking whip</em>. When used to Strike, the branch snaps with the sound of a cracking whip but fills the air surrounding the point of impact with the pleasant scent of freshly cut cedar and a sprinkling of fallen leaves on the ground.</p><hr /><p><strong>Activate—A Multitude of Branches</strong> <span class=\"action-glyph\">3</span> (concentrate, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You place the <em>branch of the great sugi</em> on the corpse of an unholy creature, then cause the branch to suddenly grow into a sugi tree, up to 25 feet tall with a 2-foot-wide trunk. As it grows, it emits a pulse of soothing energy, restoring @Damage[(3d8+8)[healing]] Hit Points to all creatures in a @Template[burst|distance:10]. A character can [[/act climb dc=10 show-dc=all]] the tree with a successful DC 10 Athletics check, and its branches effortlessly support the weight of any Medium or smaller creature. The sugi tree reverts to its whip form after 1 hour unless you transform it back before then.</p><hr /><p><strong>Activate—A Single Branch</strong> <span class=\"action-glyph\">1</span> (manipulate) You transform the <em>branch of the great sugi</em> from its tree form back into its whip form.</p>",
+    "plainDescription": "This large tree branch is alive, despite having been harvested from the sugi tree it once belonged to. This long, flexible, and limber branch is a +1 striking whip . When used to Strike, the branch snaps with the sound of a cracking whip but fills the air surrounding the point of impact with the pleasant scent of freshly cut cedar and a sprinkling of fallen leaves on the ground. Activate—A Multitude of Branches 3 (concentrate, manipulate) Frequency once per day Effect You place the branch of the great sugi on the corpse of an unholy creature, then cause the branch to suddenly grow into a sugi tree, up to 25 feet tall with a 2-foot-wide trunk. As it grows, it emits a pulse of soothing energy, restoring @Damage[(3d8+8)[healing]] Hit Points to all creatures in a @Template[burst|distance:10]. A character can [[/act climb dc=10 show-dc=all]] the tree with a successful DC 10 Athletics check, and its branches effortlessly support the weight of any Medium or smaller creature. The sugi tree reverts to its whip form after 1 hour unless you transform it back before then. Activate—A Single Branch 1 (manipulate) You transform the branch of the great sugi from its tree form back into its whip form.",
+    "descriptionHash": "5fcc5453996deb4c",
+    "descriptionChars": 1203,
     "modes": [
       {
         "mode": "melee",
@@ -35776,10 +35776,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/dragonfire-halfbow.json",
-    "description": "<p>Crafted by layering bamboo with strips of sliced scales harvested from a fire-breathing dragon, this bow has a significant draw strength. This design is commonly seen in Hongal, as the shorter limb allows for easier maneuvering on horseback. While the wielder of this <em>+2 striking composite shortbow</em> is mounted, they apply the bow's item bonus to Nature checks to Command their mount.</p>\n<p><strong>Activate—Dragon's Arrow</strong> <span class=\"action-glyph\">2</span> (concentrate, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You draw the bow back to its maximum draw length without nocking an arrow, and as you release the string, the dragonfire halfbow casts @UUID[Compendium.pf2e.spells-srd.Item.Fireball] (heightened to 5th rank; @Check[reflex|dc:29] save), targeted at a point of your choosing within the spell's range. You and your mount are immune to the effects of this <em>fireball</em>.</p>",
-    "plainDescription": "Crafted by layering bamboo with strips of sliced scales harvested from a fire-breathing dragon, this bow has a significant draw strength. This design is commonly seen in Hongal, as the shorter limb allows for easier maneuvering on horseback. While the wielder of this +2 striking composite shortbow is mounted, they apply the bow's item bonus to Nature checks to Command their mount. Activate—Dragon's Arrow 2 (concentrate, manipulate) Frequency once per day Effect You draw the bow back to its maximum draw length without nocking an arrow, and as you release the string, the dragonfire halfbow casts Fireball (heightened to 5th rank; @Check[reflex|dc:29] save), targeted at a point of your choosing within the spell's range. You and your mount are immune to the effects of this fireball .",
-    "descriptionHash": "cf19698b8c1bbdde",
-    "descriptionChars": 789,
+    "description": "<p>Crafted by layering bamboo with strips of sliced scales harvested from a fire-breathing dragon, this bow has a significant draw strength. This design is commonly seen in Hongal, as the shorter limb allows for easier maneuvering on horseback. While the wielder of this <em>+2 striking composite shortbow</em> is mounted, they apply the bow's item bonus to Nature checks to [[/act command-an-animal options=dragonfire-halfbow]]{Command} their mount.</p><hr /><p><strong>Activate—Dragon's Arrow</strong> <span class=\"action-glyph\">2</span> (concentrate, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You draw the bow back to its maximum draw length without nocking an arrow, and as you release the string, the dragonfire halfbow casts @UUID[Compendium.pf2e.spells-srd.Item.Fireball] (heightened to 5th rank; @Check[reflex|dc:29|basic|showDC:all|options:area-effect|traits:concentrate,fire,manipulate] save), targeted at a point of your choosing within the spell's range. You and your mount are immune to the effects of this <em>fireball</em>.</p>",
+    "plainDescription": "Crafted by layering bamboo with strips of sliced scales harvested from a fire-breathing dragon, this bow has a significant draw strength. This design is commonly seen in Hongal, as the shorter limb allows for easier maneuvering on horseback. While the wielder of this +2 striking composite shortbow is mounted, they apply the bow's item bonus to Nature checks to [[/act command-an-animal options=dragonfire-halfbow]]{Command} their mount. Activate—Dragon's Arrow 2 (concentrate, manipulate) Frequency once per day Effect You draw the bow back to its maximum draw length without nocking an arrow, and as you release the string, the dragonfire halfbow casts Fireball (heightened to 5th rank; @Check[reflex|dc:29|basic|showDC:all|options:area-effect|traits:concentrate,fire,manipulate] save), targeted at a point of your choosing within the spell's range. You and your mount are immune to the effects of this fireball .",
+    "descriptionHash": "a12634d570a69e49",
+    "descriptionChars": 916,
     "modes": [
       {
         "mode": "ranged",
@@ -42134,10 +42134,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/fiends-hunger.json",
-    "description": "<p>The blade of this <em>+1 low-grade silver dagger</em> has a sickly red tinge. Though once used to send souls to empower Kugaptee, the fury of those slain by the blade now allow its wielder to periodically strike back against fiends.</p>\n<p><strong>Activate - Avenging Soul</strong> <span class=\"action-glyph\">f</span> (concentrate, divine, mental)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Trigger</strong> You score a critical hit against a fiend</p><hr /><p><strong>Effect</strong> Vengeful echoes of sacrificed souls lance out into the psyche of the fiend struck. After the normal effects of the critical hit, the target must roll a @Check[fortitude|dc:18|traits:concentrate,divine,mental] save.</p><hr /><p><strong>Critical Success</strong> The creature is unaffected.</p>\n<p><strong>Success</strong> The creature becomes distracted by vengeful spirits and becomes @UUID[Compendium.pf2e.conditionitems.Item.Off-Guard] until the start of your next turn.</p>\n<p><strong>Failure</strong> As success, but the creature is also @UUID[Compendium.pf2e.conditionitems.Item.Slowed]{Slowed 1} for 1 round.</p>\n<p><strong>Critical Failure</strong> As failure, but the creature is slowed 1 for 1 minute.</p>",
-    "plainDescription": "The blade of this +1 low-grade silver dagger has a sickly red tinge. Though once used to send souls to empower Kugaptee, the fury of those slain by the blade now allow its wielder to periodically strike back against fiends. Activate - Avenging Soul f (concentrate, divine, mental) Frequency once per day Trigger You score a critical hit against a fiend Effect Vengeful echoes of sacrificed souls lance out into the psyche of the fiend struck. After the normal effects of the critical hit, the target must roll a @Check[fortitude|dc:18|traits:concentrate,divine,mental] save. Critical Success The creature is unaffected. Success The creature becomes distracted by vengeful spirits and becomes Off Guard until the start of your next turn. Failure As success, but the creature is also Slowed 1 for 1 round. Critical Failure As failure, but the creature is slowed 1 for 1 minute.",
-    "descriptionHash": "d08ef589a82cb00c",
-    "descriptionChars": 875,
+    "description": "<p>The blade of this <em>+1 low-grade silver dagger</em> has a sickly red tinge. Though once used to send souls to empower Kugaptee, the fury of those slain by the blade now allows its wielder to periodically strike back against fiends.</p><hr /><p><strong>Activate—Avenging Soul</strong> <span class=\"action-glyph\">f</span> (concentrate, divine, mental)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Trigger</strong> You score a critical hit against a fiend</p>\n<p><strong>Effect</strong> Vengeful echoes of sacrificed souls lance into the psyche of the fiend struck. After the normal effects of the critical hit, the target must roll a @Check[fortitude|dc:18|showDC:all|options:inflicts:off-guard,inflicts:slowed] save.</p><hr /><p><strong>Critical Success</strong> The creature is unaffected.</p>\n<p><strong>Success</strong> The creature becomes distracted by vengeful spirits and becomes @UUID[Compendium.pf2e.conditionitems.Item.Off-Guard] until the start of your next turn.</p>\n<p><strong>Failure</strong> As success, but the creature is also @UUID[Compendium.pf2e.conditionitems.Item.Slowed]{Slowed 1} for 1 round.</p>\n<p><strong>Critical Failure</strong> As failure, but the creature is slowed 1 for 1 minute.</p>",
+    "plainDescription": "The blade of this +1 low-grade silver dagger has a sickly red tinge. Though once used to send souls to empower Kugaptee, the fury of those slain by the blade now allows its wielder to periodically strike back against fiends. Activate—Avenging Soul f (concentrate, divine, mental) Frequency once per day Trigger You score a critical hit against a fiend Effect Vengeful echoes of sacrificed souls lance into the psyche of the fiend struck. After the normal effects of the critical hit, the target must roll a @Check[fortitude|dc:18|showDC:all|options:inflicts:off-guard,inflicts:slowed] save. Critical Success The creature is unaffected. Success The creature becomes distracted by vengeful spirits and becomes Off Guard until the start of your next turn. Failure As success, but the creature is also Slowed 1 for 1 round. Critical Failure As failure, but the creature is slowed 1 for 1 minute.",
+    "descriptionHash": "fd7f1608476a8a10",
+    "descriptionChars": 891,
     "modes": [
       {
         "mode": "melee",
@@ -45860,10 +45860,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/four-tiger-blade.json",
-    "description": "<p>When a once-in-a-lifetime alignment of the stars shone through the roof of a secluded blacksmith's forge, the smith took advantage to craft their masterpiece. For two hours, they hammered a lump of ordinary steel into a divine blade, etching constellations and wards down its length, then shared their creation's formula with a small group of close associates before passing away.</p>\n<p>These weapons are the four-tiger blades, and currently, only a dozen are known to exist—one associated with each month of the year. Each weapon is a <em>+2 striking ghost touch longsword</em> that leaves a noticeable trail of light originating from the engraved stars when it's swung. Those who pay close attention to the pattern of stars that shine on the blade might note that the depicted constellations change according to those currently in the night sky above.</p>\n<p><strong>Activate—Ghost Blocking Tiger</strong> <span class=\"action-glyph\">r</span> (concentrate)</p>\n<p><strong>Trigger</strong> You attempt a Strike with the four-tiger-blade</p><hr /><p><strong>Effect</strong> Until the start of your next turn, you gain void resistance 10.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Four-Tiger Blade]</p>\n<p><strong>Activate—Ghost Chasing Tiger</strong> <span class=\"action-glyph\">2</span> (concentrate, divine, incapacitation, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> Attempt a Strike against a creature you believe to be possessed. This attack deals no damage to the creature, but if the target is possessed, the possessing creature must attempt a @Check[will|dc:29] save.</p><hr /><p><strong>Critical Success</strong> The possessing creature is unaffected, and you remain unaware of if the target is actually possessed or not.</p>\n<p><strong>Success</strong> The possessing creature is unaffected, but you sense that creature's control over the target and confirm that the target is possessed.</p>\n<p><strong>Failure</strong> You confirm that the target is possessed. The possessing creature can't control the target for 1 minute.</p>\n<p><strong>Critical Failure</strong> You confirm the target is possessed an instant before you automatically counteract the possession, causing the possessing creature to vacate the target's body.</p>",
-    "plainDescription": "When a once-in-a-lifetime alignment of the stars shone through the roof of a secluded blacksmith's forge, the smith took advantage to craft their masterpiece. For two hours, they hammered a lump of ordinary steel into a divine blade, etching constellations and wards down its length, then shared their creation's formula with a small group of close associates before passing away. These weapons are the four-tiger blades, and currently, only a dozen are known to exist—one associated with each month of the year. Each weapon is a +2 striking ghost touch longsword that leaves a noticeable trail of light originating from the engraved stars when it's swung. Those who pay close attention to the pattern of stars that shine on the blade might note that the depicted constellations change according to those currently in the night sky above. Activate—Ghost Blocking Tiger r (concentrate) Trigger You attempt a Strike with the four-tiger-blade Effect Until the start of your next turn, you gain void resistance 10. Activate—Ghost Chasing Tiger 2 (concentrate, divine, incapacitation, manipulate) Frequency once per day Effect Attempt a Strike against a creature you believe to be possessed. This attack deals no damage to the creature, but if the target is possessed, the possessing creature must attempt a @Check[will|dc:29] save. Critical Success The possessing creature is unaffected, and you remain unaware of if the target is actually possessed or not. Success The possessing creature is unaffected, but you sense that creature's control over the target and confirm that the target is possessed. Failure You confirm that the target is possessed. The possessing creature can't control the target for 1 minute. Critical Failure You confirm the target is possessed an instant before you automatically counteract the possession, causing the possessing creature to vacate the target's body.",
-    "descriptionHash": "6f5f82cabd76b8ee",
-    "descriptionChars": 1886,
+    "description": "<p>When a once-in-a-lifetime alignment of the stars shone through the roof of a secluded blacksmith's forge, the smith took advantage to craft their masterpiece. For two hours, they hammered a lump of ordinary steel into a divine blade, etching constellations and wards down its length, then shared their creation's formula with a small group of close associates before passing away.</p>\n<p>These weapons are the <em>four-tiger blades</em>, and currently, only a dozen are known to exist—one associated with each month of the year. Each weapon is a <em>+2 striking ghost touch longsword</em> that leaves a noticeable trail of light originating from the engraved stars when it's swung. Those who pay close attention to the pattern of stars that shine on the blade might note that the depicted constellations change according to those currently in the night sky above.</p><hr /><p><strong>Activate—Ghost Blocking Tiger</strong> <span class=\"action-glyph\">r</span> (concentrate)</p>\n<p><strong>Trigger</strong> You attempt a Strike with the <em>four-tiger-blade</em></p>\n<p><strong>Effect</strong> Until the start of your next turn, you gain void resistance 10.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Ghost Blocking Tiger]</p><hr /><p><strong>Activate—Ghost Chasing Tiger</strong> <span class=\"action-glyph\">2</span> (concentrate, divine, incapacitation, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> Attempt a Strike against a creature you believe to be possessed. This attack deals no damage to the creature, but if the target is possessed, the possessing creature must attempt a @Check[will|dc:29|showDC:all|traits:concentrate,divine,incapacitation,manipulate] save.</p><hr /><p><strong>Critical Success</strong> The possessing creature is unaffected, and you remain unaware of if the target is actually possessed or not.</p>\n<p><strong>Success</strong> The possessing creature is unaffected, but you sense that creature's control over the target and confirm that the target is possessed.</p>\n<p><strong>Failure</strong> You confirm that the target is possessed. The possessing creature can't control the target for 1 minute.</p>\n<p><strong>Critical Failure</strong> You confirm the target is possessed an instant before you automatically counteract the possession, causing the possessing creature to vacate the target's body.</p>",
+    "plainDescription": "When a once-in-a-lifetime alignment of the stars shone through the roof of a secluded blacksmith's forge, the smith took advantage to craft their masterpiece. For two hours, they hammered a lump of ordinary steel into a divine blade, etching constellations and wards down its length, then shared their creation's formula with a small group of close associates before passing away. These weapons are the four-tiger blades , and currently, only a dozen are known to exist—one associated with each month of the year. Each weapon is a +2 striking ghost touch longsword that leaves a noticeable trail of light originating from the engraved stars when it's swung. Those who pay close attention to the pattern of stars that shine on the blade might note that the depicted constellations change according to those currently in the night sky above. Activate—Ghost Blocking Tiger r (concentrate) Trigger You attempt a Strike with the four-tiger-blade Effect Until the start of your next turn, you gain void resistance 10. Activate—Ghost Chasing Tiger 2 (concentrate, divine, incapacitation, manipulate) Frequency once per day Effect Attempt a Strike against a creature you believe to be possessed. This attack deals no damage to the creature, but if the target is possessed, the possessing creature must attempt a @Check[will|dc:29|showDC:all|traits:concentrate,divine,incapacitation,manipulate] save. Critical Success The possessing creature is unaffected, and you remain unaware of if the target is actually possessed or not. Success The possessing creature is unaffected, but you sense that creature's control over the target and confirm that the target is possessed. Failure You confirm that the target is possessed. The possessing creature can't control the target for 1 minute. Critical Failure You confirm the target is possessed an instant before you automatically counteract the possession, causing the possessing creature to vacate the target's body.",
+    "descriptionHash": "c2c7aafbb5d2559a",
+    "descriptionChars": 1950,
     "modes": [
       {
         "mode": "melee",
@@ -58059,6 +58059,125 @@ export const PF2E_WEAPONS = [
     ]
   },
   {
+    "id": "WwmPP9IU81EKg3CU",
+    "name": "Heat Seeking Harpoon",
+    "img": "icons/weapons/polearms/spear-hooked-brown.webp",
+    "slug": "heat-seeking-harpoon",
+    "level": 5,
+    "base": "harpoon",
+    "group": "dart",
+    "category": "martial",
+    "traits": [
+      "tethered",
+      "thrown"
+    ],
+    "rarity": "common",
+    "edition": "remaster",
+    "publication": "Pathfinder Lost Omens Cheliax, Infernal Inheritance",
+    "path": "packs/pf2e/equipment/heat-seeking-harpoon.json",
+    "description": "<p>This <em>+1 striking @UUID[Compendium.pf2e.equipment-srd.Item.Harpoon]</em> has a vicious iron tip that pulls it unerringly toward its target. As long as the target is warm-blooded, has the fire trait, or otherwise has an unusual heat signature, attacks with the heat-seeking harpoon don't take the normal penalties and restrictions for being used in water or underwater. They also ignore any concealment granted by smoke, darkness, or other visual barriers.</p>",
+    "plainDescription": "This +1 striking Harpoon has a vicious iron tip that pulls it unerringly toward its target. As long as the target is warm-blooded, has the fire trait, or otherwise has an unusual heat signature, attacks with the heat-seeking harpoon don't take the normal penalties and restrictions for being used in water or underwater. They also ignore any concealment granted by smoke, darkness, or other visual barriers.",
+    "descriptionHash": "68c224d6f5aee241",
+    "descriptionChars": 407,
+    "modes": [
+      {
+        "mode": "thrown",
+        "group": "dart",
+        "damage": "piercing",
+        "die": "d8",
+        "persistent": "",
+        "traits": [
+          "tethered",
+          "thrown"
+        ],
+        "range": 30,
+        "family": "dart",
+        "element": "physical",
+        "elements": [],
+        "flavor": [],
+        "payload": null,
+        "hands": 2,
+        "reach": false,
+        "agile": false,
+        "heavy": true,
+        "onHitCue": "",
+        "returning": false,
+        "rationale": "dart throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "assets": {
+          "contact": [],
+          "flight": [
+            "jb2a.dart.01.throw.physical.white",
+            "jb2a.dagger.throw.01.white"
+          ],
+          "accent": [
+            "jb2a.impact.005.white",
+            "jb2a.impact.005.orange"
+          ],
+          "return": []
+        },
+        "selections": [
+          {
+            "edition": "patreon",
+            "slot": "flight",
+            "key": "jb2a.dart.01.throw.physical.white",
+            "geometry": "projectile",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "accent",
+            "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "flight",
+            "key": "jb2a.dagger.throw.01.white",
+            "geometry": "projectile",
+            "approximation": true
+          },
+          {
+            "edition": "free",
+            "slot": "accent",
+            "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          }
+        ],
+        "mediaTiming": {
+          "jb2a.dart.01.throw.physical.white": {
+            "duration": 1933,
+            "baked": true,
+            "contact": 900,
+            "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.dagger.throw.01.white": {
+            "duration": 1933,
+            "baked": true,
+            "contact": 850,
+            "contactMethod": "alpha-weighted-estimate"
+          },
+          "jb2a.impact.005.white": {
+            "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.005.orange": {
+            "duration": 833,
+            "baked": false
+          }
+        },
+        "approximations": [
+          "free flight: jb2a.dagger.throw.01.white"
+        ]
+      }
+    ],
+    "notes": [
+      "Strike visuals only. Activated item powers, critical riders, versatile toggles and temporary ammunition effects can be customized separately.",
+      "Game positions, inventory, ammunition and rules remain controlled by PF2e."
+    ]
+  },
+  {
     "id": "srCxiFF44RcuRMHD",
     "name": "Heavenly Rolling Flames",
     "img": "icons/magic/fire/barrier-wall-flame-ring-yellow.webp",
@@ -70119,10 +70238,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/lumber-lords-axe.json",
-    "description": "<p>This unassuming tool wouldn't look out of place on the belt of an industrious laborer. Grooves worn into the wooden handle over years of use and an irregularly sharpened blade give it the distinct impression of being cherished, and the potent scent of freshly chopped wood always clings to the axe's blade despite any attempt to clean it or remove the odor. A creature that holds or carries this <em>+2 striking cold iron battle axe</em> feels an obligation to tell the truth and receives a –4 status penalty to its attempts to Lie. A lumber lord's axe deals 1d6 additional slashing damage to creatures with the fungus or plant trait, as long as the creatures aren't disguised as non-fungus or non-plant creatures. It's up to GM discretion whether this additional damage applies against a creature disguised as a fungus or plant creature.</p>\n<p><strong>Activate—Transformative Polish</strong> 1 minute (manipulate)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You polish and sharpen the axe, after which its scent grows even more powerful and the axe's blade transforms into your choice of standard-grade adamantine or standard-grade dawnsilver for 1 hour; then after this duration, the woodcutter's axe reverts to cold iron.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Lumber Lord's Axe]</p>",
-    "plainDescription": "This unassuming tool wouldn't look out of place on the belt of an industrious laborer. Grooves worn into the wooden handle over years of use and an irregularly sharpened blade give it the distinct impression of being cherished, and the potent scent of freshly chopped wood always clings to the axe's blade despite any attempt to clean it or remove the odor. A creature that holds or carries this +2 striking cold iron battle axe feels an obligation to tell the truth and receives a –4 status penalty to its attempts to Lie. A lumber lord's axe deals 1d6 additional slashing damage to creatures with the fungus or plant trait, as long as the creatures aren't disguised as non-fungus or non-plant creatures. It's up to GM discretion whether this additional damage applies against a creature disguised as a fungus or plant creature. Activate—Transformative Polish 1 minute (manipulate) Frequency once per day Effect You polish and sharpen the axe, after which its scent grows even more powerful and the axe's blade transforms into your choice of standard-grade adamantine or standard-grade dawnsilver for 1 hour; then after this duration, the woodcutter's axe reverts to cold iron.",
-    "descriptionHash": "d7261e890b99ef12",
-    "descriptionChars": 1178,
+    "description": "<p>This unassuming tool wouldn't look out of place on the belt of an industrious laborer. Grooves worn into the wooden handle over years of use and an irregularly sharpened blade give it the distinct impression of being cherished, and the potent scent of freshly chopped wood always clings to the axe's blade despite any attempt to clean it or remove the odor. A creature that holds or carries this <em>+2 striking cold iron battle axe</em> feels an obligation to tell the truth and receives a –4 status penalty to its attempts to [[/act lie]]. A lumber lord's axe deals 1d6 additional slashing damage to creatures with the fungus or plant trait, as long as the creatures aren't disguised as non-fungus or non-plant creatures. It's up to GM discretion whether this additional damage applies against a creature disguised as a fungus or plant creature.</p><hr /><p><strong>Activate—Transformative Polish</strong> 1 minute (manipulate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You polish and sharpen the axe, after which its scent grows even more powerful and the axe's blade transforms into your choice of standard-grade adamantine or standard-grade dawnsilver for 1 hour; then after this duration, the woodcutter's axe reverts to cold iron.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Transformative Polish]</p>",
+    "plainDescription": "This unassuming tool wouldn't look out of place on the belt of an industrious laborer. Grooves worn into the wooden handle over years of use and an irregularly sharpened blade give it the distinct impression of being cherished, and the potent scent of freshly chopped wood always clings to the axe's blade despite any attempt to clean it or remove the odor. A creature that holds or carries this +2 striking cold iron battle axe feels an obligation to tell the truth and receives a –4 status penalty to its attempts to [[/act lie]]. A lumber lord's axe deals 1d6 additional slashing damage to creatures with the fungus or plant trait, as long as the creatures aren't disguised as non-fungus or non-plant creatures. It's up to GM discretion whether this additional damage applies against a creature disguised as a fungus or plant creature. Activate—Transformative Polish 1 minute (manipulate) Frequency once per day Effect You polish and sharpen the axe, after which its scent grows even more powerful and the axe's blade transforms into your choice of standard-grade adamantine or standard-grade dawnsilver for 1 hour; then after this duration, the woodcutter's axe reverts to cold iron.",
+    "descriptionHash": "4b5e5c72a49ee49c",
+    "descriptionChars": 1187,
     "modes": [
       {
         "mode": "melee",
@@ -71302,10 +71421,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Adventure Path: Hellbreakers",
     "path": "packs/pf2e/equipment/magnetic-bola.json",
-    "description": "<p>This heavy metallic <em>+1 bola</em> is a favorite tool of rebels and rabble-rousers against armored opponents. Due to its weight, it has a range increment of 15 feet. When you successfully Strike a creature made of metal or wearing metal armor with this weapon, the bola attaches to the metal and the targeted creature takes a –10-foot circumstance penalty to its Speed until it spends an Interact action to remove the bola.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Magnetic Bola (Speed Penalty)]</p>\n<p><strong>Activate—Overcharge</strong> <span class=\"action-glyph\">1</span> (electricity, manipulate, metal)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You overcharge the magnetic properties of the bola. You deal an extra @Damage[1d6[electricity]] damage with your next Strike with this weapon. On a hit, the target must also succeed at a @Check[reflex|dc:18] save or become @UUID[Compendium.pf2e.conditionitems.Item.Clumsy]{Clumsy 1} round (or @UUID[Compendium.pf2e.conditionitems.Item.Clumsy]{Clumsy 2} on a critical failure), in addition to the normal effects. If the target is wearing metal armor, they take a –2 circumstance penalty to their save.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Magnetic Bola (Damage)]</p><hr /><p><strong>Craft Requirements</strong> The initial raw materials must include a conductive metal.</p>",
-    "plainDescription": "This heavy metallic +1 bola is a favorite tool of rebels and rabble-rousers against armored opponents. Due to its weight, it has a range increment of 15 feet. When you successfully Strike a creature made of metal or wearing metal armor with this weapon, the bola attaches to the metal and the targeted creature takes a –10-foot circumstance penalty to its Speed until it spends an Interact action to remove the bola. Activate—Overcharge 1 (electricity, manipulate, metal) Frequency once per day Effect You overcharge the magnetic properties of the bola. You deal an extra @Damage[1d6[electricity]] damage with your next Strike with this weapon. On a hit, the target must also succeed at a @Check[reflex|dc:18] save or become Clumsy 1 round (or Clumsy 2 on a critical failure), in addition to the normal effects. If the target is wearing metal armor, they take a –2 circumstance penalty to their save. Craft Requirements The initial raw materials must include a conductive metal.",
-    "descriptionHash": "41ae51534a6bcb6b",
-    "descriptionChars": 978,
+    "description": "<p>This heavy metallic <em>+1 bola</em> is a favorite tool of rebels and rabble-rousers against armored opponents. Due to its weight, it has a range increment of 15 feet. When you successfully Strike a creature made of metal or wearing metal armor with this weapon, the bola attaches to the metal and the targeted creature takes a –10-foot circumstance penalty to its Speed until it spends an Interact action to remove the bola.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Magnetic Bola (Speed Penalty)]</p>\n<p><strong>Activate—Overcharge</strong> <span class=\"action-glyph\">1</span> (electricity, manipulate, metal)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You overcharge the magnetic properties of the bola. You deal an extra 1d6 electricity damage with your next Strike with this weapon. On a hit, the target must also succeed at a @Check[reflex|dc:18] save or become @UUID[Compendium.pf2e.conditionitems.Item.Clumsy]{Clumsy 1} round (or @UUID[Compendium.pf2e.conditionitems.Item.Clumsy]{Clumsy 2} on a critical failure), in addition to the normal effects. If the target is wearing metal armor, they take a –2 circumstance penalty to their save.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Magnetic Bola (Damage)]</p><hr /><p><strong>Craft Requirements</strong> The initial raw materials must include a conductive metal.</p>",
+    "plainDescription": "This heavy metallic +1 bola is a favorite tool of rebels and rabble-rousers against armored opponents. Due to its weight, it has a range increment of 15 feet. When you successfully Strike a creature made of metal or wearing metal armor with this weapon, the bola attaches to the metal and the targeted creature takes a –10-foot circumstance penalty to its Speed until it spends an Interact action to remove the bola. Activate—Overcharge 1 (electricity, manipulate, metal) Frequency once per day Effect You overcharge the magnetic properties of the bola. You deal an extra 1d6 electricity damage with your next Strike with this weapon. On a hit, the target must also succeed at a @Check[reflex|dc:18] save or become Clumsy 1 round (or Clumsy 2 on a critical failure), in addition to the normal effects. If the target is wearing metal armor, they take a –2 circumstance penalty to their save. Craft Requirements The initial raw materials must include a conductive metal.",
+    "descriptionHash": "fd34e611add2ec59",
+    "descriptionChars": 968,
     "modes": [
       {
         "mode": "thrown",
@@ -83078,6 +83197,112 @@ export const PF2E_WEAPONS = [
     ]
   },
   {
+    "id": "9a7WqELEyOYloaJu",
+    "name": "Pike of the Monster Slayer",
+    "img": "icons/weapons/polearms/spear-hooked-rounded.webp",
+    "slug": "pike-of-the-monster-slayer",
+    "level": 13,
+    "base": "longspear",
+    "group": "spear",
+    "category": "simple",
+    "traits": [
+      "reach"
+    ],
+    "rarity": "uncommon",
+    "edition": "remaster",
+    "publication": "Pathfinder Lost Omens Cheliax, Infernal Inheritance",
+    "path": "packs/pf2e/equipment/pike-of-the-monster-slayer.json",
+    "description": "<p>This <em>+2 greater striking longspear</em> has the skull of a horned beast mounted to the crossbar. During your daily preparations, you can douse the skull in the blood of a monster; the weapon gains the effects of a bane rune until your next daily preparations, targeting a trait of the creature which supplied the blood.</p><hr /><p><strong>Activate—Blood of the Beast</strong> <span class=\"action-glyph\">r</span> (manipulate)</p>\n<p><strong>Trigger</strong> You reduce a non-humanoid creature or giant to 0 Hit Points</p>\n<p><strong>Effect</strong> You impale the creature's heart, thrusting it through the beast's back and exploding it in a shower of blood. Creatures within a @Template[type:cone|distance:15] originating from the creature take @Damage[10d6[acid]|options:area-damage] damage with a @Check[reflex|dc:30|basic] save. On a critical failure, they're also @UUID[Compendium.pf2e.conditionitems.Item.Blinded] until the end of their next turn as they're coated in blood.</p>",
+    "plainDescription": "This +2 greater striking longspear has the skull of a horned beast mounted to the crossbar. During your daily preparations, you can douse the skull in the blood of a monster; the weapon gains the effects of a bane rune until your next daily preparations, targeting a trait of the creature which supplied the blood. Activate—Blood of the Beast r (manipulate) Trigger You reduce a non-humanoid creature or giant to 0 Hit Points Effect You impale the creature's heart, thrusting it through the beast's back and exploding it in a shower of blood. Creatures within a @Template[type:cone|distance:15] originating from the creature take @Damage[10d6[acid]|options:area-damage] damage with a @Check[reflex|dc:30|basic] save. On a critical failure, they're also Blinded until the end of their next turn as they're coated in blood.",
+    "descriptionHash": "8d3f07ff5d2fda6d",
+    "descriptionChars": 821,
+    "modes": [
+      {
+        "mode": "melee",
+        "group": "spear",
+        "damage": "piercing",
+        "die": "d8",
+        "persistent": "",
+        "traits": [
+          "reach"
+        ],
+        "range": 0,
+        "family": "spear",
+        "element": "physical",
+        "elements": [],
+        "flavor": [],
+        "payload": null,
+        "hands": 2,
+        "reach": true,
+        "agile": false,
+        "heavy": true,
+        "onHitCue": "",
+        "returning": false,
+        "rationale": "Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "assets": {
+          "contact": [
+            "jb2a.spear.melee.01.white"
+          ],
+          "flight": [],
+          "accent": [
+            "jb2a.impact.005.white",
+            "jb2a.impact.005.orange"
+          ],
+          "return": []
+        },
+        "selections": [
+          {
+            "edition": "patreon",
+            "slot": "contact",
+            "key": "jb2a.spear.melee.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "accent",
+            "key": "jb2a.impact.005.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "contact",
+            "key": "jb2a.spear.melee.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "accent",
+            "key": "jb2a.impact.005.orange",
+            "geometry": "radial",
+            "approximation": false
+          }
+        ],
+        "mediaTiming": {
+          "jb2a.spear.melee.01.white": {
+            "duration": 2867,
+            "baked": false
+          },
+          "jb2a.impact.005.white": {
+            "duration": 833,
+            "baked": false
+          },
+          "jb2a.impact.005.orange": {
+            "duration": 833,
+            "baked": false
+          }
+        },
+        "approximations": []
+      }
+    ],
+    "notes": [
+      "Strike visuals only. Activated item powers, critical riders, versatile toggles and temporary ammunition effects can be customized separately.",
+      "Game positions, inventory, ammunition and rules remain controlled by PF2e."
+    ]
+  },
+  {
     "id": "LBSRvTsvrFofbB2c",
     "name": "Piranha Kiss",
     "img": "systems/pf2e/icons/equipment/weapons/piranha-kiss.webp",
@@ -85572,10 +85797,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/purgatory-emissarys-staff.json",
-    "description": "<p>This ash wood staff is topped by a long tassel of bleachedwhite horsehair. Historically carried by the most important of court officials throughout various regions and periods of Tian Xia's history, purgatory emissary's staves are also strongly associated with psychopomps serving punitive sentences. It's thought this connection is a comical nod to the bureaucratic nature of the afterlife.</p>\n<p>Psychopomps and spirits tend to regard you with a level of respect while you carry a purgatory emissary's staff. While you wield this staff, you receive a +2 item bonus to all skill checks to adjust a psychopomp's or spirit's attitude.</p>\n<p>When used as a weapon, a purgatory emissary's staff is a <em>+2 striking ghost touch staff</em>.</p>\n<p><strong>Activate</strong> Cast a Spell</p><hr /><p><strong>Effect</strong> You expend a number of charges from the staff to cast a spell from its list.</p><ul><li><strong>Cantrip</strong> @UUID[Compendium.pf2e.spells-srd.Item.Vitality Lash]</li><li><strong>1st</strong> @UUID[Compendium.pf2e.spells-srd.Item.Command], @UUID[Compendium.pf2e.spells-srd.Item.Sanctuary]</li><li><strong>2nd</strong> @UUID[Compendium.pf2e.spells-srd.Item.Clear Mind], @UUID[Compendium.pf2e.spells-srd.Item.See the Unseen]</li><li><strong>3rd</strong> @UUID[Compendium.pf2e.spells-srd.Item.Holy Light], @UUID[Compendium.pf2e.spells-srd.Item.Ring of Truth]</li><li><strong>4th</strong> @UUID[Compendium.pf2e.spells-srd.Item.Dispel Magic], @UUID[Compendium.pf2e.spells-srd.Item.Talking Corpse]</li><li><strong>5th</strong> @UUID[Compendium.pf2e.spells-srd.Item.Banishment], @UUID[Compendium.pf2e.spells-srd.Item.Truespeech]</li></ul>",
-    "plainDescription": "This ash wood staff is topped by a long tassel of bleachedwhite horsehair. Historically carried by the most important of court officials throughout various regions and periods of Tian Xia's history, purgatory emissary's staves are also strongly associated with psychopomps serving punitive sentences. It's thought this connection is a comical nod to the bureaucratic nature of the afterlife. Psychopomps and spirits tend to regard you with a level of respect while you carry a purgatory emissary's staff. While you wield this staff, you receive a +2 item bonus to all skill checks to adjust a psychopomp's or spirit's attitude. When used as a weapon, a purgatory emissary's staff is a +2 striking ghost touch staff . Activate Cast a Spell Effect You expend a number of charges from the staff to cast a spell from its list. Cantrip 1st Command, Sanctuary 2nd , 3rd , 4th , 5th Banishment, Truespeech",
-    "descriptionHash": "5ec69deaac1f74f8",
-    "descriptionChars": 898,
+    "description": "<p>This ash wood staff is topped by a long tassel of bleached-white horsehair. Historically carried by the most important of court officials throughout various regions and periods of Tian Xia's history, <em>purgatory emissary's staves</em> are also strongly associated with psychopomps serving punitive sentences. It's thought this connection is a comical nod to the bureaucratic nature of the afterlife.</p>\n<p>Psychopomps and spirits tend to regard you with a level of respect while you carry a <em>purgatory emissary's staff</em>. While you wield this staff, you receive a +2 item bonus to all skill checks to adjust a psychopomp's or spirit's attitude.</p>\n<p>When used as a weapon, a purgatory emissary's staff is a <em>+2 striking ghost touch staff</em>.</p><hr /><p><strong>Activate</strong> Cast a Spell</p>\n<p><strong>Effect</strong> You expend a number of charges from the staff to cast a spell from its list.</p><ul><li><p><strong>Cantrip</strong> @UUID[Compendium.pf2e.spells-srd.Item.Vitality Lash]</p></li><li><p><strong>1st</strong> @UUID[Compendium.pf2e.spells-srd.Item.Command], @UUID[Compendium.pf2e.spells-srd.Item.Sanctuary]</p></li><li><p><strong>2nd</strong> @UUID[Compendium.pf2e.spells-srd.Item.Clear Mind], @UUID[Compendium.pf2e.spells-srd.Item.See the Unseen]</p></li><li><p><strong>3rd</strong> @UUID[Compendium.pf2e.spells-srd.Item.Holy Light], @UUID[Compendium.pf2e.spells-srd.Item.Ring of Truth]</p></li><li><p><strong>4th</strong> @UUID[Compendium.pf2e.spells-srd.Item.Dispel Magic], @UUID[Compendium.pf2e.spells-srd.Item.Talking Corpse]</p></li><li><p><strong>5th</strong> @UUID[Compendium.pf2e.spells-srd.Item.Banishment], @UUID[Compendium.pf2e.spells-srd.Item.Truespeech]</p></li></ul>",
+    "plainDescription": "This ash wood staff is topped by a long tassel of bleached-white horsehair. Historically carried by the most important of court officials throughout various regions and periods of Tian Xia's history, purgatory emissary's staves are also strongly associated with psychopomps serving punitive sentences. It's thought this connection is a comical nod to the bureaucratic nature of the afterlife. Psychopomps and spirits tend to regard you with a level of respect while you carry a purgatory emissary's staff . While you wield this staff, you receive a +2 item bonus to all skill checks to adjust a psychopomp's or spirit's attitude. When used as a weapon, a purgatory emissary's staff is a +2 striking ghost touch staff . Activate Cast a Spell Effect You expend a number of charges from the staff to cast a spell from its list. Cantrip 1st Command, Sanctuary 2nd , 3rd , 4th , 5th Banishment, Truespeech",
+    "descriptionHash": "96ce6cc68ccf537f",
+    "descriptionChars": 900,
     "modes": [
       {
         "mode": "melee",
@@ -93843,10 +94068,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/senseis-parasol.json",
-    "description": "<p>A master once said to his pupil that, in the hands of a skilled practitioner, even a parasol can become a deadly weapon. Returning the next day, the pupil excitedly turned over a parasol forged out of metal slats, explaining that it lowered the amount of skill one would need to exert deadly force. The master sighed, seeing that his pupil had failed to see the point, but accepted the gift nonetheless. Ingenuity was, after all, a virtue.</p>\n<p>Since then, other smiths have imitated the pupil's design and crafted additional sensei's parasols, and they're highly sought after by those who appreciate multipurpose tools. This weapon functions as a +2 striking bo staff.</p>\n<p><strong>Activate—Your Attacks Are but Raindrops</strong> <span class=\"action-glyph\">1</span> (manipulate)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You cause the metal slats of the parasol to open up, transforming it into a moderate sturdy shield (Hardness 13, HP 104 [BT 51]). You can sustain this activation for up to 10 minutes, after which the sensei's parasol reverts back to bo staff form. If it's broken as a shield, it reverts to its undamaged bo staff form. If it's destroyed as a shield, it reverts to bo staff form and becomes broken.</p>\n<p><strong>Activate—Defensive Redirection</strong> <span class=\"action-glyph\">r</span> (concentrate)</p>\n<p><strong>Requirements</strong> The sensei's parasol is in bo staff form and isn't broken</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Trigger</strong> A creature misses you with a melee Strike</p><hr /><p><strong>Effect</strong> You redirect the missed Strike to target a creature or object within the triggering creature's reach. The triggering creature rolls a new Strike against the new target to determine the results of the redirected attack.</p>",
-    "plainDescription": "A master once said to his pupil that, in the hands of a skilled practitioner, even a parasol can become a deadly weapon. Returning the next day, the pupil excitedly turned over a parasol forged out of metal slats, explaining that it lowered the amount of skill one would need to exert deadly force. The master sighed, seeing that his pupil had failed to see the point, but accepted the gift nonetheless. Ingenuity was, after all, a virtue. Since then, other smiths have imitated the pupil's design and crafted additional sensei's parasols, and they're highly sought after by those who appreciate multipurpose tools. This weapon functions as a +2 striking bo staff. Activate—Your Attacks Are but Raindrops 1 (manipulate) Frequency once per day Effect You cause the metal slats of the parasol to open up, transforming it into a moderate sturdy shield (Hardness 13, HP 104 [BT 51]). You can sustain this activation for up to 10 minutes, after which the sensei's parasol reverts back to bo staff form. If it's broken as a shield, it reverts to its undamaged bo staff form. If it's destroyed as a shield, it reverts to bo staff form and becomes broken. Activate—Defensive Redirection r (concentrate) Requirements The sensei's parasol is in bo staff form and isn't broken Frequency once per day Trigger A creature misses you with a melee Strike Effect You redirect the missed Strike to target a creature or object within the triggering creature's reach. The triggering creature rolls a new Strike against the new target to determine the results of the redirected attack.",
-    "descriptionHash": "64ffc11b4dbd497c",
-    "descriptionChars": 1564,
+    "description": "<p>A master once said to his pupil that, in the hands of a skilled practitioner, even a parasol can become a deadly weapon. Returning the next day, the pupil excitedly turned over a parasol forged out of metal slats, explaining that it lowered the amount of skill one would need to exert deadly force. The master sighed, seeing that his pupil had failed to see the point, but accepted the gift nonetheless. Ingenuity was, after all, a virtue.</p>\n<p>Since then, other smiths have imitated the pupil's design and crafted additional <em>sensei's parasols</em>, and they're highly sought after by those who appreciate multipurpose tools. This weapon functions as a <em>+2 striking bo staff</em>.</p><hr /><p><strong>Activate—Your Attacks Are but Raindrops</strong> <span class=\"action-glyph\">1</span> (manipulate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You cause the metal slats of the parasol to open up, transforming it into a @UUID[Compendium.pf2e.equipment-srd.Item.Sturdy Shield (Moderate)]{moderate sturdy shield} (Hardness 13, HP 104 [BT 52]). You can sustain this activation for up to 10 minutes, after which the <em>sensei's parasol</em> reverts back to bo staff form. If it's @UUID[Compendium.pf2e.conditionitems.Item.Broken] as a shield, it reverts to its undamaged bo staff form. If it's destroyed as a shield, it reverts to bo staff form and becomes broken.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Your Attacks Are but Raindrops]</p><hr /><p><strong>Activate—Defensive Redirection</strong> <span class=\"action-glyph\">r</span> (concentrate)</p>\n<p><strong>Requirements</strong> The <em>sensei's parasol</em> is in bo staff form and isn't broken</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Trigger</strong> A creature misses you with a melee Strike</p>\n<p><strong>Effect</strong> You redirect the missed Strike to target a creature or object within the triggering creature's reach. The triggering creature rolls a new Strike against the new target to determine the results of the redirected attack.</p>",
+    "plainDescription": "A master once said to his pupil that, in the hands of a skilled practitioner, even a parasol can become a deadly weapon. Returning the next day, the pupil excitedly turned over a parasol forged out of metal slats, explaining that it lowered the amount of skill one would need to exert deadly force. The master sighed, seeing that his pupil had failed to see the point, but accepted the gift nonetheless. Ingenuity was, after all, a virtue. Since then, other smiths have imitated the pupil's design and crafted additional sensei's parasols , and they're highly sought after by those who appreciate multipurpose tools. This weapon functions as a +2 striking bo staff . Activate—Your Attacks Are but Raindrops 1 (manipulate) Frequency once per day Effect You cause the metal slats of the parasol to open up, transforming it into a moderate sturdy shield (Hardness 13, HP 104 [BT 52]). You can sustain this activation for up to 10 minutes, after which the sensei's parasol reverts back to bo staff form. If it's Broken as a shield, it reverts to its undamaged bo staff form. If it's destroyed as a shield, it reverts to bo staff form and becomes broken. Activate—Defensive Redirection r (concentrate) Requirements The sensei's parasol is in bo staff form and isn't broken Frequency once per day Trigger A creature misses you with a melee Strike Effect You redirect the missed Strike to target a creature or object within the triggering creature's reach. The triggering creature rolls a new Strike against the new target to determine the results of the redirected attack.",
+    "descriptionHash": "fadd265c58e58efb",
+    "descriptionChars": 1566,
     "modes": [
       {
         "mode": "melee",
@@ -93867,13 +94092,13 @@ export const PF2E_WEAPONS = [
         "elements": [],
         "flavor": [],
         "payload": null,
-        "hands": 2,
+        "hands": 1,
         "reach": true,
         "agile": false,
-        "heavy": true,
+        "heavy": false,
         "onHitCue": "",
         "returning": false,
-        "rationale": "Two-handed bludgeoning contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "rationale": "One-handed bludgeoning contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
         "assets": {
           "contact": [
             "jb2a.quarterstaff.melee.01.white"
@@ -98029,10 +98254,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/silversoul-bomb.json",
-    "description": "<p><strong>Activate</strong> <span class=\"action-glyph\">1</span> Strike</p><hr /><p>This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area.</p>\n<p>You gain a +1 item bonus to attack rolls, and the bomb deals 2d4 mental damage, 1d6 persistent mental damage to nindorus, and 2 mental splash damage. A creature that takes splash damage from the bomb and fails a @Check[fortitude|dc:17] save is @UUID[Compendium.pf2e.conditionitems.Item.Dazzled] for 1 round as glowing silver particles cling to its face.</p>\n<p>Nindorus are particularly harmed by silversoul bombs and take 1d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.</p>",
-    "plainDescription": "Activate 1 Strike This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area. You gain a +1 item bonus to attack rolls, and the bomb deals 2d4 mental damage, 1d6 persistent mental damage to nindorus, and 2 mental splash damage. A creature that takes splash damage from the bomb and fails a @Check[fortitude|dc:17] save is Dazzled for 1 round as glowing silver particles cling to its face. Nindorus are particularly harmed by silversoul bombs and take 1d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.",
-    "descriptionHash": "d4b359e2aef6ebcc",
-    "descriptionChars": 1154,
+    "description": "<p><strong>Activate</strong> <span class=\"action-glyph\">1</span> Strike</p><hr /><p>This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area.</p>\n<p>A silversoul bomb grants +1 item bonus to attack rolls, and the bomb deals 2d4 mental damage and 2 mental splash damage. A creature that takes splash damage from the bomb and fails a @Check[fortitude|dc:17|showDC:all|options:area-effect,inflicts:dazzled] save is @UUID[Compendium.pf2e.conditionitems.Item.Dazzled] for 1 round as glowing silver particles cling to its face.</p>\n<p>Nindorus are particularly harmed by silversoul bombs and take 1d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.</p>",
+    "plainDescription": "Activate 1 Strike This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area. A silversoul bomb grants +1 item bonus to attack rolls, and the bomb deals 2d4 mental damage and 2 mental splash damage. A creature that takes splash damage from the bomb and fails a @Check[fortitude|dc:17|showDC:all|options:area-effect,inflicts:dazzled] save is Dazzled for 1 round as glowing silver particles cling to its face. Nindorus are particularly harmed by silversoul bombs and take 1d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.",
+    "descriptionHash": "ffb6f8964a63b49a",
+    "descriptionChars": 1160,
     "modes": [
       {
         "mode": "thrown",
@@ -98162,10 +98387,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/silversoul-bomb-greater.json",
-    "description": "<p><strong>Activate</strong> <span class=\"action-glyph\">1</span> Strike</p><hr /><p>This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area.</p>\n<p>You gain a +2 item bonus to attack rolls, and the bomb deals 3d4 mental damage, 2d6 persistent mental damage to nindorus, and 3 mental splash damage. A creature that takes splash damage from the bomb and fails a @Check[fortitude|dc:28] save is @UUID[Compendium.pf2e.conditionitems.Item.Blinded] for 1 round and then @UUID[Compendium.pf2e.conditionitems.Item.Dazzled] for 1 round thereafter.</p>\n<p>Nindorus are particularly harmed by silversoul bombs and take 2d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.</p>",
-    "plainDescription": "Activate 1 Strike This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area. You gain a +2 item bonus to attack rolls, and the bomb deals 3d4 mental damage, 2d6 persistent mental damage to nindorus, and 3 mental splash damage. A creature that takes splash damage from the bomb and fails a @Check[fortitude|dc:28] save is Blinded for 1 round and then Dazzled for 1 round thereafter. Nindorus are particularly harmed by silversoul bombs and take 2d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.",
-    "descriptionHash": "d4a23b76d8361ce3",
-    "descriptionChars": 1135,
+    "description": "<p><strong>Activate</strong> <span class=\"action-glyph\">1</span> Strike</p><hr /><p>This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area.</p>\n<p>A silversoul bomb grants +2 item bonus to attack rolls, and the bomb deals 3d4 mental damage and 3 mental splash damage. A creature that takes splash damage from the bomb and fails a @Check[fortitude|dc:28|showDC:all|options:area-effect,inflicts:dazzled,inflicts:blinded] save is @UUID[Compendium.pf2e.conditionitems.Item.Blinded] for 1 round and then @UUID[Compendium.pf2e.conditionitems.Item.Dazzled] for 1 round thereafter as glowing silver particles cling to its face.</p>\n<p>Nindorus are particularly harmed by silversoul bombs and take 2d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.</p>",
+    "plainDescription": "Activate 1 Strike This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area. A silversoul bomb grants +2 item bonus to attack rolls, and the bomb deals 3d4 mental damage and 3 mental splash damage. A creature that takes splash damage from the bomb and fails a @Check[fortitude|dc:28|showDC:all|options:area-effect,inflicts:dazzled,inflicts:blinded] save is Blinded for 1 round and then Dazzled for 1 round thereafter as glowing silver particles cling to its face. Nindorus are particularly harmed by silversoul bombs and take 2d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.",
+    "descriptionHash": "a27990ac90392e61",
+    "descriptionChars": 1217,
     "modes": [
       {
         "mode": "thrown",
@@ -98295,10 +98520,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/silversoul-bomb-major.json",
-    "description": "<p><strong>Activate</strong> <span class=\"action-glyph\">1</span> Strike</p><hr /><p>This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area.</p>\n<p>You gain a +3 item bonus to attack rolls, and the bomb deals 4d4 mental damage, 3d6 persistent mental damage to nindorus, and 4 mental splash damage. A creature that takes splash damage from the bomb is @UUID[Compendium.pf2e.conditionitems.Item.Dazzled] for 1 round unless it fails a @Check[fortitude|dc:37] save, in which case it's permanently @UUID[Compendium.pf2e.conditionitems.Item.Blinded].</p>\n<p>Nindorus are particularly harmed by silversoul bombs and take 3d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.</p>",
-    "plainDescription": "Activate 1 Strike This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area. You gain a +3 item bonus to attack rolls, and the bomb deals 4d4 mental damage, 3d6 persistent mental damage to nindorus, and 4 mental splash damage. A creature that takes splash damage from the bomb is Dazzled for 1 round unless it fails a @Check[fortitude|dc:37] save, in which case it's permanently Blinded. Nindorus are particularly harmed by silversoul bombs and take 3d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.",
-    "descriptionHash": "5467265858c394d8",
-    "descriptionChars": 1141,
+    "description": "<p><strong>Activate</strong> <span class=\"action-glyph\">1</span> Strike</p><hr /><p>This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area.</p>\n<p>A silversoul bomb grants +3 item bonus to attack rolls, and the bomb deals 4d4 mental damage and 4 mental splash damage. A creature that takes splash damage from the bomb is @UUID[Compendium.pf2e.conditionitems.Item.Dazzled] for 1 round unless it fails a @Check[fortitude|dc:37|showDC:all|options:area-effect,inflicts:blinded] save, in which case it's permanently @UUID[Compendium.pf2e.conditionitems.Item.Blinded] as glowing silver particles cling to its face.</p>\n<p>Nindorus are particularly harmed by silversoul bombs and take 3d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.</p>",
+    "plainDescription": "Activate 1 Strike This rare alchemical bomb gathers and concentrates the emotions that linger in a burial ground where generations of beloved ancestors have been interred, infusing that powerful emotional energy into the alchemically prepared powdered silver stored within the bomb. This energy glows with a soft, silver radiance and, if stored in a clear container, allows a silversoul bomb to be used as a torch to illuminate an area. A silversoul bomb grants +3 item bonus to attack rolls, and the bomb deals 4d4 mental damage and 4 mental splash damage. A creature that takes splash damage from the bomb is Dazzled for 1 round unless it fails a @Check[fortitude|dc:37|showDC:all|options:area-effect,inflicts:blinded] save, in which case it's permanently Blinded as glowing silver particles cling to its face. Nindorus are particularly harmed by silversoul bombs and take 3d6 persistent mental damage. Against nindorus, the bomb's item bonus also applies to its save DC to resist being dazzled or blinded. Creatures that have weakness to silver (including most nindorus) have an equal amount of weakness to the mental damage caused by a silversoul bomb, due to the silver infused into the energy within.",
+    "descriptionHash": "45cf815e2bf747d9",
+    "descriptionChars": 1206,
     "modes": [
       {
         "mode": "thrown",
@@ -101776,6 +102001,120 @@ export const PF2E_WEAPONS = [
           },
           "jb2a.greatsword.melee.standard.white": {
             "duration": 2400,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.yellowwhite": {
+            "duration": 2333,
+            "baked": false
+          },
+          "jb2a.divine_smite.target.blueyellow": {
+            "duration": 2333,
+            "baked": false
+          }
+        },
+        "approximations": []
+      }
+    ],
+    "notes": [
+      "Strike visuals only. Activated item powers, critical riders, versatile toggles and temporary ammunition effects can be customized separately.",
+      "Game positions, inventory, ammunition and rules remain controlled by PF2e."
+    ]
+  },
+  {
+    "id": "wIAmDPFsRIjKQl1A",
+    "name": "Soulpiercer",
+    "img": "systems/pf2e/icons/equipment/weapons/rapier.webp",
+    "slug": "soulpiercer",
+    "level": 12,
+    "base": "rapier",
+    "group": "sword",
+    "category": "martial",
+    "traits": [
+      "deadly-d8",
+      "disarm",
+      "finesse",
+      "invested"
+    ],
+    "rarity": "common",
+    "edition": "remaster",
+    "publication": "Pathfinder Lost Omens Cheliax, Infernal Inheritance",
+    "path": "packs/pf2e/equipment/soulpiercer.json",
+    "description": "<p>The long, thin blade of this <em>+2 astral striking low-grade silver rapier</em> is fashioned from liquid quicksilver, magically frozen and tapered to a deadly point.</p><hr /><p><strong>Activate—Extend</strong> <span class=\"action-glyph\">1</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per 10 minutes</p>\n<p><strong>Effect</strong> You swing the soulpiercer in a wide arc, extending its quicksilver blade. Your Strikes with the soulpiercer have a reach of 15 feet until the end of your next turn.</p><hr /><p><strong>Activate—Grant Mercy</strong> <span class=\"action-glyph\">2</span> (concentrate, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You cast a 5th-rank @UUID[Compendium.pf2e.spells-srd.Item.Phantom Pain] (DC 28).</p>",
+    "plainDescription": "The long, thin blade of this +2 astral striking low-grade silver rapier is fashioned from liquid quicksilver, magically frozen and tapered to a deadly point. Activate—Extend 1 (concentrate) Frequency once per 10 minutes Effect You swing the soulpiercer in a wide arc, extending its quicksilver blade. Your Strikes with the soulpiercer have a reach of 15 feet until the end of your next turn. Activate—Grant Mercy 2 (concentrate, manipulate) Frequency once per day Effect You cast a 5th-rank (DC 28).",
+    "descriptionHash": "6ea24e65627bb1db",
+    "descriptionChars": 499,
+    "modes": [
+      {
+        "mode": "melee",
+        "group": "sword",
+        "damage": "piercing",
+        "die": "d6",
+        "persistent": "",
+        "traits": [
+          "deadly-d8",
+          "disarm",
+          "finesse",
+          "invested"
+        ],
+        "range": 0,
+        "family": "rapier",
+        "element": "spirit",
+        "elements": [
+          "spirit"
+        ],
+        "flavor": [],
+        "payload": null,
+        "hands": 1,
+        "reach": false,
+        "agile": false,
+        "heavy": false,
+        "onHitCue": "",
+        "returning": false,
+        "rationale": "One-handed piercing contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+        "assets": {
+          "contact": [
+            "jb2a.rapier.melee.01.white"
+          ],
+          "flight": [],
+          "accent": [
+            "jb2a.divine_smite.target.yellowwhite",
+            "jb2a.divine_smite.target.blueyellow"
+          ],
+          "return": []
+        },
+        "selections": [
+          {
+            "edition": "patreon",
+            "slot": "contact",
+            "key": "jb2a.rapier.melee.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "patreon",
+            "slot": "accent",
+            "key": "jb2a.divine_smite.target.yellowwhite",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "contact",
+            "key": "jb2a.rapier.melee.01.white",
+            "geometry": "radial",
+            "approximation": false
+          },
+          {
+            "edition": "free",
+            "slot": "accent",
+            "key": "jb2a.divine_smite.target.blueyellow",
+            "geometry": "radial",
+            "approximation": false
+          }
+        ],
+        "mediaTiming": {
+          "jb2a.rapier.melee.01.white": {
+            "duration": 2867,
             "baked": false
           },
           "jb2a.divine_smite.target.yellowwhite": {
@@ -105402,10 +105741,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/spirit-fan.json",
-    "description": "<p>This elegant black, gold-tipped <em>+1 striking fighting fan</em> is adorned with images of three golden leaves and a red rope tassel. If a creature is reduced to 0 Hit Points by a <em>spirit fan</em>, the golden leaves on the fan light up, providing illumination equal to that of a torch for 1 minute.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Spirit Fan]</p>\n<p><strong>Activate—Release Life Energy</strong> <span class=\"action-glyph\">2</span> (concentrate, manipulate, vitality)</p>\n<p><strong>Requirements</strong> The <em>spirit fan</em>'s leaves are illuminated</p>\n<p><strong>Frequency</strong> once per hour</p><hr /><p><strong>Effect</strong> You sweep the <em>spirit fan</em> in the direction of a single target you can see within 30 feet, releasing the life energy in the form of a streak of golden light. The <em>spirit fan</em> goes dark. If the target is a living creature, the energy restores 3d8+8 Hit Points. If the target is undead, it takes @Damage[(2d8+8)[vitality]] damage (@Check[fortitude|dc:23|basic] save).</p>",
-    "plainDescription": "This elegant black, gold-tipped +1 striking fighting fan is adorned with images of three golden leaves and a red rope tassel. If a creature is reduced to 0 Hit Points by a spirit fan , the golden leaves on the fan light up, providing illumination equal to that of a torch for 1 minute. Activate—Release Life Energy 2 (concentrate, manipulate, vitality) Requirements The spirit fan 's leaves are illuminated Frequency once per hour Effect You sweep the spirit fan in the direction of a single target you can see within 30 feet, releasing the life energy in the form of a streak of golden light. The spirit fan goes dark. If the target is a living creature, the energy restores 3d8+8 Hit Points. If the target is undead, it takes @Damage[(2d8+8)[vitality]] damage (@Check[fortitude|dc:23|basic] save).",
-    "descriptionHash": "4279f958bf6d1589",
-    "descriptionChars": 799,
+    "description": "<p>This elegant black, gold-tipped <em>+1 striking fighting fan</em> is adorned with images of three golden leaves and a red rope tassel. If a creature is reduced to 0 Hit Points by a <em>spirit fan</em>, the golden leaves on the fan light up, providing illumination equal to that of a torch for 1 minute.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Spirit Fan]</p><hr /><p><strong>Activate—Release Life Energy</strong> <span class=\"action-glyph\">2</span> (concentrate, manipulate, vitality)</p>\n<p><strong>Requirements</strong> The <em>spirit fan</em>'s leaves are illuminated</p>\n<p><strong>Frequency</strong> once per hour</p>\n<p><strong>Effect</strong> You sweep the <em>spirit fan</em> in the direction of a single target you can see within 30 feet, releasing the life energy in the form of a streak of golden light. The <em>spirit fan</em> goes dark. If the target is a living creature, the energy restores @Damage[(3d8+8)[healing,vitality]|shortLabel] Hit Points. If the target is undead, it takes @Damage[(2d8+8)[vitality]|traits:concentrate,manipulate,vitality] damage (@Check[fortitude|dc:23|basic|showDC:all|traits:concentrate,manipulate,vitality] save).</p>",
+    "plainDescription": "This elegant black, gold-tipped +1 striking fighting fan is adorned with images of three golden leaves and a red rope tassel. If a creature is reduced to 0 Hit Points by a spirit fan , the golden leaves on the fan light up, providing illumination equal to that of a torch for 1 minute. Activate—Release Life Energy 2 (concentrate, manipulate, vitality) Requirements The spirit fan 's leaves are illuminated Frequency once per hour Effect You sweep the spirit fan in the direction of a single target you can see within 30 feet, releasing the life energy in the form of a streak of golden light. The spirit fan goes dark. If the target is a living creature, the energy restores @Damage[(3d8+8)[healing,vitality]|shortLabel] Hit Points. If the target is undead, it takes @Damage[(2d8+8)[vitality]|traits:concentrate,manipulate,vitality] damage (@Check[fortitude|dc:23|basic|showDC:all|traits:concentrate,manipulate,vitality] save).",
+    "descriptionHash": "d721399802bee4a8",
+    "descriptionChars": 928,
     "modes": [
       {
         "mode": "melee",
@@ -108210,10 +108549,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Treasure Vault (Remastered)",
     "path": "packs/pf2e/equipment/staff-of-air-major.json",
-    "description": "<p>Carved from white ash wood, a <em>staff of air</em> crackles with electrical sparks, and a breeze always follows the wielder. While wielding a <em>staff of air</em>, you feel lighter on your feet, and you can Step into difficult terrain once per round.</p><hr /><p><strong>Activate</strong> Cast a Spell</p><hr /><p><strong>Effect</strong> You expend a number of charges from the staff to cast a spell from its list.</p><ul><li><strong>Cantrip</strong> @UUID[Compendium.pf2e.spells-srd.Item.Gale Blast]</li><li><strong>1st</strong> @UUID[Compendium.pf2e.spells-srd.Item.Air Bubble], @UUID[Compendium.pf2e.spells-srd.Item.Gust of Wind]</li><li><strong>2nd</strong> @UUID[Compendium.pf2e.spells-srd.Item.Ash Cloud], @UUID[Compendium.pf2e.spells-srd.Item.Mist]</li><li><strong>3rd</strong> @UUID[Compendium.pf2e.spells-srd.Item.Blazing Dive], @UUID[Compendium.pf2e.spells-srd.Item.Lightning Bolt], @UUID[Compendium.pf2e.spells-srd.Item.Wall of Wind]</li><li><strong>4th</strong> @UUID[Compendium.pf2e.spells-srd.Item.Ash Cloud], @UUID[Compendium.pf2e.spells-srd.Item.Air Walk]</li><li><strong>5th</strong> @UUID[Compendium.pf2e.spells-srd.Item.Blazing Dive], @UUID[Compendium.pf2e.spells-srd.Item.Lightning Storm]</li></ul><hr /><p><strong>Craft Requirements</strong> Supply one casting of all listed ranks of all listed spells.</p>",
-    "plainDescription": "Carved from white ash wood, a staff of air crackles with electrical sparks, and a breeze always follows the wielder. While wielding a staff of air , you feel lighter on your feet, and you can Step into difficult terrain once per round. Activate Cast a Spell Effect You expend a number of charges from the staff to cast a spell from its list. Cantrip 1st , 2nd , Mist 3rd , , 4th , 5th , Craft Requirements Supply one casting of all listed ranks of all listed spells.",
-    "descriptionHash": "eafcb2cf5e7bcf63",
-    "descriptionChars": 466,
+    "description": "<p>Carved from white ash wood, a <em>staff of air</em> crackles with electrical sparks, and a breeze always follows the wielder. While wielding a <em>staff of air</em>, you feel lighter on your feet, and you can Step into difficult terrain once per round.</p><hr /><p><strong>Activate</strong> Cast a Spell</p><hr /><p><strong>Effect</strong> You expend a number of charges from the staff to cast a spell from its list.</p><ul><li><strong>Cantrip</strong> @UUID[Compendium.pf2e.spells-srd.Item.Gale Blast]</li><li><strong>1st</strong> @UUID[Compendium.pf2e.spells-srd.Item.Air Bubble], @UUID[Compendium.pf2e.spells-srd.Item.Gust of Wind]</li><li><strong>2nd</strong> @UUID[Compendium.pf2e.spells-srd.Item.Ash Cloud], @UUID[Compendium.pf2e.spells-srd.Item.Mist]</li><li><strong>3rd</strong> @UUID[Compendium.pf2e.spells-srd.Item.Blazing Dive], @UUID[Compendium.pf2e.spells-srd.Item.Lightning Bolt], @UUID[Compendium.pf2e.spells-srd.Item.Wall of Wind]</li><li><strong>4th</strong> @UUID[Compendium.pf2e.spells-srd.Item.Ash Cloud], @UUID[Compendium.pf2e.spells-srd.Item.Fly]</li><li><strong>5th</strong> @UUID[Compendium.pf2e.spells-srd.Item.Blazing Dive], @UUID[Compendium.pf2e.spells-srd.Item.Lightning Storm]</li></ul><hr /><p><strong>Craft Requirements</strong> Supply one casting of all listed ranks of all listed spells.</p>",
+    "plainDescription": "Carved from white ash wood, a staff of air crackles with electrical sparks, and a breeze always follows the wielder. While wielding a staff of air , you feel lighter on your feet, and you can Step into difficult terrain once per round. Activate Cast a Spell Effect You expend a number of charges from the staff to cast a spell from its list. Cantrip 1st , 2nd , Mist 3rd , , 4th , Fly 5th , Craft Requirements Supply one casting of all listed ranks of all listed spells.",
+    "descriptionHash": "e49f2145584c9710",
+    "descriptionChars": 470,
     "modes": [
       {
         "mode": "melee",
@@ -126793,9 +127132,9 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/thundering-fury-dadao.json",
-    "description": "<p>This massive, curved blade roars when it crashes down on opponents, seemingly intent on subduing them with sheer force. It's said materials for the first thundering fury dadaos came from the hide of Yorak, the Horned Thunder, a legendary kaiju that roams the Shanguang desert. The lack of embellishments on this <em>+2 striking thundering greatsword</em> belies a weapon of deadly efficacy.</p>\n<p><strong>Activation—Thunder Dance</strong> <span class=\"action-glyph\">1</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You infuse the thundering fury dadao with the speed of lightning and the force of thunder. The weapon gains the agile and forceful traits for one round. You can Sustain this activation for up to 1 minute.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Thundering Fury Dadao]</p>",
+    "description": "<p>This massive, curved blade roars when it crashes down on opponents, seemingly intent on subduing them with sheer force. It's said materials for the first <em>thundering fury dadaos</em> came from the hide of Yorak, the Horned Thunder, a legendary kaiju that roams the Shanguang desert. The lack of embellishments on this <em>+2 striking thundering greatsword</em> belies a weapon of deadly efficacy.</p><hr /><p><strong>Activation—Thunder Dance</strong> <span class=\"action-glyph\">1</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You infuse the <em>thundering fury dadao</em> with the speed of lightning and the force of thunder. The weapon gains the agile and forceful traits for one round. You can Sustain this activation for up to 1 minute.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Thunder Dance]</p>",
     "plainDescription": "This massive, curved blade roars when it crashes down on opponents, seemingly intent on subduing them with sheer force. It's said materials for the first thundering fury dadaos came from the hide of Yorak, the Horned Thunder, a legendary kaiju that roams the Shanguang desert. The lack of embellishments on this +2 striking thundering greatsword belies a weapon of deadly efficacy. Activation—Thunder Dance 1 (concentrate) Frequency once per day Effect You infuse the thundering fury dadao with the speed of lightning and the force of thunder. The weapon gains the agile and forceful traits for one round. You can Sustain this activation for up to 1 minute.",
-    "descriptionHash": "241f134de2b5d726",
+    "descriptionHash": "d609659297b42ea9",
     "descriptionChars": 657,
     "modes": [
       {
@@ -127635,10 +127974,10 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Guns & Gears",
     "path": "packs/pf2e/equipment/tigers-claw.json",
-    "description": "<p>This <em>+2 striking fearsome dueling pistol</em> is made from fine tigerwood, with the head of a tiger as the muzzle. Beneath the tiger head is a claw shaped bayonet. One of a set of four guns crafted as a gift to a Zenj family for delivery of rare healing and disease- abating herbs during an outbreak of a deadly disease in the Grand Duchy of Alkenstar, these firearms are now passed down to those who have done brave acts in service to the Zenj people. The flintlock sparks thrown by this weapon take the shape of pouncing tigers and the firearm's report sounds like a tiger's growl. Clever wielders use the firearm's report to panic their prey into mistakes and then pounce for the kill.</p>\n<p>This firearm's bullets deal slashing damage instead of piercing and add an additional @Damage[1d6[bleed]] on a critical hit. This persistent bleed damage causes tiger-claw-shaped wounds to appear on the target.</p><hr /><p><strong>Activate—Tiger Shot</strong> <span class=\"action-glyph\">2</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You capitalize on the fears your firearm engenders, terrifying your foes. Make a ranged Strike with this firearm against a target. If you successfully deal damage to your target, the target is also affected by a 4th-rank @UUID[Compendium.pf2e.spells-srd.Item.Vision of Death] with a spell DC of 28(@Check[will|dc:28]). While vision of death typically takes the shape of the target's worst fear, this effect always appears to the target in the form of a majestic and ferocious tiger.</p>",
-    "plainDescription": "This +2 striking fearsome dueling pistol is made from fine tigerwood, with the head of a tiger as the muzzle. Beneath the tiger head is a claw shaped bayonet. One of a set of four guns crafted as a gift to a Zenj family for delivery of rare healing and disease- abating herbs during an outbreak of a deadly disease in the Grand Duchy of Alkenstar, these firearms are now passed down to those who have done brave acts in service to the Zenj people. The flintlock sparks thrown by this weapon take the shape of pouncing tigers and the firearm's report sounds like a tiger's growl. Clever wielders use the firearm's report to panic their prey into mistakes and then pounce for the kill. This firearm's bullets deal slashing damage instead of piercing and add an additional @Damage[1d6[bleed]] on a critical hit. This persistent bleed damage causes tiger-claw-shaped wounds to appear on the target. Activate—Tiger Shot 2 (concentrate) Frequency once per day Effect You capitalize on the fears your firearm engenders, terrifying your foes. Make a ranged Strike with this firearm against a target. If you successfully deal damage to your target, the target is also affected by a 4th-rank with a spell DC of 28(@Check[will|dc:28]). While vision of death typically takes the shape of the target's worst fear, this effect always appears to the target in the form of a majestic and ferocious tiger.",
-    "descriptionHash": "31ccfb285e0fc92b",
-    "descriptionChars": 1388,
+    "description": "<p>This <em>+2 striking fearsome dueling pistol</em> is made from fine tigerwood, with the head of a tiger as the muzzle. Beneath the tiger head is a claw shaped bayonet. One of a set of four guns crafted as a gift to a Zenj family for delivery of rare healing and disease- abating herbs during an outbreak of a deadly disease in the Grand Duchy of Alkenstar, these firearms are now passed down to those who have done brave acts in service to the Zenj people. The flintlock sparks thrown by this weapon take the shape of pouncing tigers and the firearm's report sounds like a tiger's growl. Clever wielders use the firearm's report to panic their prey into mistakes and then pounce for the kill.</p>\n<p>This firearm's bullets deal slashing damage instead of piercing and add an additional @Damage[1d6[bleed]] on a critical hit. This persistent bleed damage causes tiger-claw-shaped wounds to appear on the target.</p><hr /><p><strong>Activate—Tiger Shot</strong> <span class=\"action-glyph\">2</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You capitalize on the fears your firearm engenders, terrifying your foes. Make a ranged Strike with this firearm against a target. If you successfully deal damage to your target, the target is also affected by a 4th-rank @UUID[Compendium.pf2e.spells-srd.Item.Vision of Death] with a spell DC of 28 (@Check[will|dc:28]). While vision of death typically takes the shape of the target's worst fear, this effect always appears to the target in the form of a majestic and ferocious tiger.</p>",
+    "plainDescription": "This +2 striking fearsome dueling pistol is made from fine tigerwood, with the head of a tiger as the muzzle. Beneath the tiger head is a claw shaped bayonet. One of a set of four guns crafted as a gift to a Zenj family for delivery of rare healing and disease- abating herbs during an outbreak of a deadly disease in the Grand Duchy of Alkenstar, these firearms are now passed down to those who have done brave acts in service to the Zenj people. The flintlock sparks thrown by this weapon take the shape of pouncing tigers and the firearm's report sounds like a tiger's growl. Clever wielders use the firearm's report to panic their prey into mistakes and then pounce for the kill. This firearm's bullets deal slashing damage instead of piercing and add an additional @Damage[1d6[bleed]] on a critical hit. This persistent bleed damage causes tiger-claw-shaped wounds to appear on the target. Activate—Tiger Shot 2 (concentrate) Frequency once per day Effect You capitalize on the fears your firearm engenders, terrifying your foes. Make a ranged Strike with this firearm against a target. If you successfully deal damage to your target, the target is also affected by a 4th-rank with a spell DC of 28 (@Check[will|dc:28]). While vision of death typically takes the shape of the target's worst fear, this effect always appears to the target in the form of a majestic and ferocious tiger.",
+    "descriptionHash": "f7572c645bc30d00",
+    "descriptionChars": 1389,
     "modes": [
       {
         "mode": "ranged",
@@ -130296,9 +130635,9 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/ugly-cutes-gift.json",
-    "description": "<p>This spiky, stony fragment shed from Ugly Cute's carapace fits comfortably over the hand. Though a little bulkier than the typical gauntlet, it still functions as a <em>+1 spiked gauntlet</em>.</p>\n<p><strong>Activate—Ugly Cute's Favor</strong> <span class=\"action-glyph\">2</span> (concentrate, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p><hr /><p><strong>Effect</strong> You draw upon Ugly Cute's latent spiritual energy to infuse the gauntlet with forceful power. For 1 minute, Ugly Cute's gift gains the advantages of a @UUID[Compendium.pf2e.equipment-srd.Item.Ghost Touch] property rune and deals an additional 2 spirit damage on a successful Strike.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Ugly Cute's Gift]</p>",
+    "description": "<p>This spiky, stony fragment shed from Ugly Cute's carapace fits comfortably over the hand. Though a little bulkier than the typical gauntlet, it still functions as a <em>+1 spiked gauntlet</em>.</p><hr /><p><strong>Activate—Ugly Cute's Favor</strong> <span class=\"action-glyph\">2</span> (concentrate, manipulate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Effect</strong> You draw upon Ugly Cute's latent spiritual energy to infuse the gauntlet with forceful power. For 1 minute, <em>Ugly Cute's gift</em> gains the advantages of a @UUID[Compendium.pf2e.equipment-srd.Item.Ghost Touch] property rune and deals an additional 2 spirit damage on a successful Strike.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Ugly Cute's Favor]</p>",
     "plainDescription": "This spiky, stony fragment shed from Ugly Cute's carapace fits comfortably over the hand. Though a little bulkier than the typical gauntlet, it still functions as a +1 spiked gauntlet . Activate—Ugly Cute's Favor 2 (concentrate, manipulate) Frequency once per day Effect You draw upon Ugly Cute's latent spiritual energy to infuse the gauntlet with forceful power. For 1 minute, Ugly Cute's gift gains the advantages of a property rune and deals an additional 2 spirit damage on a successful Strike.",
-    "descriptionHash": "8db1187cf1a680d3",
+    "descriptionHash": "f63e1c55dc1f5748",
     "descriptionChars": 499,
     "modes": [
       {
@@ -131327,9 +131666,9 @@ export const PF2E_WEAPONS = [
     "edition": "remaster",
     "publication": "Pathfinder Season of Ghosts Hardcover Compilation",
     "path": "packs/pf2e/equipment/vashus-ninth-life.json",
-    "description": "<p>This <em>+1 striking ghost touch katana</em> is made from a whisker stolen from the king of cats over 300 years ago by a catfolk rogue named Vashu Vigaru. He sought the magic of the whisker to preternaturally extend his life, and some believe he still lives, having successfully divested himself of the sword to escape the king's wrath in the end.</p>\n<p><strong>Activate—Whisker's Sense</strong> <span class=\"action-glyph\">f</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per hour</p>\n<p><strong>Trigger</strong> Your turn ends</p><hr /><p><strong>Effect</strong> You extend your senses through the blade, allowing you to react to nearby movement. <em>Vashu's Ninth Life</em> gains the parry trait and raises itself into parrying position, granting you a +1 circumstance bonus to AC until the start of your next turn.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Vashu's Ninth Life]</p>\n<p><strong>Activate—Full of Life</strong> <span class=\"action-glyph\">r</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Trigger</strong> You slay a living creature with <em>Vashu's Ninth Life</em></p><hr /><p><strong>Effect</strong> A portion of the slain creature's life force travels through the blade and into your soul, bolstering your own life. You gain the benefits of the Diehard feat for 1 minute. This causes you to die from the dying condition at dying 5 rather than dying 4.</p>",
+    "description": "<p>This <em>+1 striking ghost touch katana</em> is made from a whisker stolen from the king of cats over 300 years ago by a catfolk rogue named Vashu Vigaru. He sought the magic of the whisker to preternaturally extend his life, and some believe he still lives, having successfully divested himself of the sword to escape the king's wrath in the end.</p><hr /><p><strong>Activate—Whisker's Sense</strong> <span class=\"action-glyph\">f</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per hour</p>\n<p><strong>Trigger</strong> Your turn ends</p>\n<p><strong>Effect</strong> You extend your senses through the blade, allowing you to react to nearby movement. <em>Vashu's Ninth Life</em> gains the parry trait and raises itself into parrying position, granting you a +1 circumstance bonus to AC until the start of your next turn.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Whisker's Sense]</p><hr /><p><strong>Activate—Full of Life</strong> <span class=\"action-glyph\">r</span> (concentrate)</p>\n<p><strong>Frequency</strong> once per day</p>\n<p><strong>Trigger</strong> You slay a living creature with <em>Vashu's Ninth Life</em></p>\n<p><strong>Effect</strong> A portion of the slain creature's life force travels through the blade and into your soul, bolstering your own life. You gain the benefits of the @UUID[Compendium.pf2e.feats-srd.Item.Diehard] feat for 1 minute. This causes you to die from the dying condition at dying 5 rather than dying 4.</p>\n<p>@UUID[Compendium.pf2e.equipment-effects.Item.Effect: Full of Life]</p>",
     "plainDescription": "This +1 striking ghost touch katana is made from a whisker stolen from the king of cats over 300 years ago by a catfolk rogue named Vashu Vigaru. He sought the magic of the whisker to preternaturally extend his life, and some believe he still lives, having successfully divested himself of the sword to escape the king's wrath in the end. Activate—Whisker's Sense f (concentrate) Frequency once per hour Trigger Your turn ends Effect You extend your senses through the blade, allowing you to react to nearby movement. Vashu's Ninth Life gains the parry trait and raises itself into parrying position, granting you a +1 circumstance bonus to AC until the start of your next turn. Activate—Full of Life r (concentrate) Frequency once per day Trigger You slay a living creature with Vashu's Ninth Life Effect A portion of the slain creature's life force travels through the blade and into your soul, bolstering your own life. You gain the benefits of the Diehard feat for 1 minute. This causes you to die from the dying condition at dying 5 rather than dying 4.",
-    "descriptionHash": "cadc62e75cefd511",
+    "descriptionHash": "55a1a55591f77730",
     "descriptionChars": 1058,
     "modes": [
       {

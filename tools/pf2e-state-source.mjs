@@ -2,7 +2,7 @@ import {mkdir,writeFile,access} from 'node:fs/promises';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {resolve} from 'node:path';
-export const STATE_SOURCE_SHA='563fd52708673ddd4f66c76921efbf6a938fffed';
+export const STATE_SOURCE_SHA='581c2bf2ca9734f4dd83f034fbcc93f8e4fd96eb';
 export const STATE_SOURCE_PACKS=['conditions','spell-effects','equipment-effects','feat-effects','bestiary-effects','other-effects','campaign-effects','boons-and-curses'];
 export const AURA_SOURCE_PACKS=[...STATE_SOURCE_PACKS,'equipment','feats','spells'];
 export async function ensureStateSources(){

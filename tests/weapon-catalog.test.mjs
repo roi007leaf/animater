@@ -8,10 +8,10 @@ import {planRecipe} from '../scripts/model.mjs';
 const weapon=slug=>PF2E_WEAPONS.find(w=>w.slug===slug);
 const event=(w,mode)=>({type:'attack',weaponMode:mode,item:{type:'weapon',name:w.name,system:{slug:w.slug},_stats:{compendiumSource:`Compendium.pf2e.equipment-srd.Item.${w.id}`}}});
 test('weapon inventory includes complete pinned pack, legacy, bombs and unarmed rune equipment',()=>{
- assert.equal(PF2E_WEAPON_SOURCE.equipmentDocuments,5870);assert.equal(PF2E_WEAPON_SOURCE.weaponDocuments,1018);assert.equal(PF2E_WEAPONS.length,1018);assert.equal(PF2E_WEAPON_SOURCE.usageCount,1127);
- assert.equal(new Set(PF2E_WEAPONS.map(w=>w.id)).size,1018);assert.equal(PF2E_WEAPON_SOURCE.excluded.length,0);
+ assert.equal(PF2E_WEAPON_SOURCE.equipmentDocuments,5914);assert.equal(PF2E_WEAPON_SOURCE.weaponDocuments,1021);assert.equal(PF2E_WEAPONS.length,1021);assert.equal(PF2E_WEAPON_SOURCE.usageCount,1130);
+ assert.equal(new Set(PF2E_WEAPONS.map(w=>w.id)).size,1021);assert.equal(PF2E_WEAPON_SOURCE.excluded.length,0);
  assert.ok(PF2E_WEAPONS.some(w=>w.edition==='legacy'));assert.ok(weapon('alchemists-fire-lesser'));
- assert.equal(PF2E_WEAPON_SOURCE.descriptionAudit,1018);
+ assert.equal(PF2E_WEAPON_SOURCE.descriptionAudit,1021);
 });
 test('native weapon modes distinguish melee throws, thrown-only and combination forms',()=>{
  assert.deepEqual(weapon('dagger').modes.map(m=>m.mode),['melee','thrown']);

@@ -20602,6 +20602,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 489,
     "descriptionHash": "a003d8bd390e90af5653252838a0eba4fdfc3bb272b61818835d5941f54fb53c"
   },
+  "jm4phmw7NbnX4PXk": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 416,
+    "descriptionHash": "071d510d968bec2c1482451a97a1f60e8d045726165951abd41a8dd84cf7ccd2"
+  },
   "0SjxN3nCZ2tseH5j": {
     "profile": "",
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
@@ -20913,6 +20919,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
     "descriptionChars": 803,
     "descriptionHash": "7719a2a14bb7365a160dbbd72c8f32d1b2702785c4192cd13bbfacbce42baebd"
+  },
+  "uihMSLvIe7jdyrz4": {
+    "profile": "dispel",
+    "reason": "Description and reviewed design counteract magic.",
+    "descriptionChars": 629,
+    "descriptionHash": "246371988dea3067bf8483f3094c0e2a59687fd98f84c3efe51b2682b9ae3240"
   },
   "bRftzbFvSF1pilIo": {
     "profile": "",
@@ -21241,8 +21253,8 @@ export const FEAT_SOUND_DESIGNS = {
   "wYerMk6F1RZb0Fwt": {
     "profile": "",
     "reason": "Mundane wound treatment: no magical healing tone or heartbeat is inferred.",
-    "descriptionChars": 487,
-    "descriptionHash": "e638b42eb28da13ab331eca95fd8e8c533646d5838647873d7b3cc702fc20138"
+    "descriptionChars": 496,
+    "descriptionHash": "b22201f7d6faed877b71389645b407ebe076697bde37d2d30a96965c29490d0d"
   },
   "nBlzWZnmYuFHrMyV": {
     "profile": "spirit",
@@ -21297,6 +21309,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
     "descriptionChars": 450,
     "descriptionHash": "23813263330738d6916270c8b7cfcbc2942540beeed8064a2c137384e3beb0be"
+  },
+  "AkekiMXAW0IYxESY": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 624,
+    "descriptionHash": "72c08aae8d0152fd0ee1e5ca8b44ed9de0672a6c0d5e9958e2eae702a559bff3"
   },
   "XXHCdsptuHSwioYL": {
     "profile": "",
@@ -21886,6 +21904,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 224,
     "descriptionHash": "61b91a7f85bd4cd9b675223891a951fb0aa1ed0df4444737d54aa1b617b915de"
   },
+  "3qBGxQSIC9ccJnKy": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 353,
+    "descriptionHash": "95cf3b7a6f0d9e9620657d7b10069ea4dfae19e53d9321815632d66076d43454"
+  },
   "iLFGrBeG2yas8cxm": {
     "profile": "",
     "reason": "No reliable audible action in the complete description; silent by design.",
@@ -21921,6 +21945,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Description explicitly restores hit points or life through a magical effect.",
     "descriptionChars": 290,
     "descriptionHash": "8be0341d3fce6aca47f88301f57814621ede9663e60f1120c45ec7a470f6b20e"
+  },
+  "3JzIfiiFmxeFsdPB": {
+    "profile": "fire",
+    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "descriptionChars": 312,
+    "descriptionHash": "5070a8b25d3474693272841b272d8ab173a1c086f05b25ad41f50a9bff7619a3"
   },
   "bPMYOiiqhrb098s6": {
     "profile": "",
@@ -22246,6 +22276,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 372,
     "descriptionHash": "5fdcffc5b6ec66021c4b699584149b5d414e87e20582a19e52da6d3185df0828"
   },
+  "WuNGNNe9bGTn6jgH": {
+    "profile": "",
+    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "descriptionChars": 224,
+    "descriptionHash": "56f35c834d12579b6988e76bdc68651e843bd3171dec69da2591194e00fc6950"
+  },
   "R2rDg7sYfinBDKxs": {
     "profile": "",
     "reason": "No reliable audible action in the complete description; silent by design.",
@@ -22522,6 +22558,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 987,
     "descriptionHash": "fa1171df10d9bb44791d92200accdee45bc90b1cf2d2f69441bf4e2ed412c286"
   },
+  "UVfNMSVC2ZKTDlgf": {
+    "profile": "spirit",
+    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "descriptionChars": 666,
+    "descriptionHash": "b0dd2c6b52e0d5fd25c7253ec6845d542b21eceeb93b414a43e9bac7187a8811"
+  },
   "BmngPSf3ZrzcmXcW": {
     "profile": "electric",
     "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
@@ -22744,6 +22786,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 287,
     "descriptionHash": "36fd77e049ace8369a38165905031409592bbcac52dbbefd8fc1fe1eb0256da2"
   },
+  "Q3KUeYsuXUkGELTS": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 201,
+    "descriptionHash": "2c172cad35e890acc2487cd7403dbcb42e6a5e5a9943a6d11adedbcf95ce841f"
+  },
   "DwnnmTNOvpLbp7jJ": {
     "profile": "",
     "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
@@ -22833,6 +22881,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "No reliable audible action in the complete description; silent by design.",
     "descriptionChars": 422,
     "descriptionHash": "b63f58e29ee83835715fa8ead800f7c35c2e0eae6fa30a5b8c075772e371f6b1"
+  },
+  "yHiH50dPLyvemeL5": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 322,
+    "descriptionHash": "44ffbc673b2206e39703d00268da1265bad61ea06d170c122c789eab4c1f77bb"
   },
   "8YSwzLNlmBLoEyUj": {
     "profile": "feat-unarmed-electric",
@@ -22927,8 +22981,8 @@ export const FEAT_SOUND_DESIGNS = {
   "r0twuF5nxXN5lkLk": {
     "profile": "",
     "reason": "No reliable audible action in the complete description; silent by design.",
-    "descriptionChars": 495,
-    "descriptionHash": "d3b065d8a3ef7cd584b66b9ee9f5cd6235b2a053ee93725f7785e8d7939787b2"
+    "descriptionChars": 523,
+    "descriptionHash": "ac41bcf3cad028d3d23b89f9ea5164cd32a7ad7b4e9e7fd766f970ae338efeae"
   },
   "O8mfeWtUogB74J9E": {
     "profile": "sword",
@@ -23121,6 +23175,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
     "descriptionChars": 953,
     "descriptionHash": "7430e19591b72d8eb6f80922b09276043ab7fe4c9e2e7599bf906a94fb395605"
+  },
+  "C9WODZ3hDZLfyYf9": {
+    "profile": "",
+    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "descriptionChars": 537,
+    "descriptionHash": "8f8fa084ec4b782ffeea747fca1dd8e139536851a535618c60825bd10d2611e5"
   },
   "E3kfs8Erq3iGSE78": {
     "profile": "",
@@ -23607,6 +23667,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
     "descriptionChars": 521,
     "descriptionHash": "62c8dcd23123350c78ea8c72c46657c159e67202567901b87ae7a1b28eac0d78"
+  },
+  "vgtU5Man6Ipb2V0w": {
+    "profile": "",
+    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "descriptionChars": 311,
+    "descriptionHash": "d4ddea235ea7ce48b627afaefed6708c1c2d6d37d6fb9385d79f58d6b93646c6"
   },
   "qav9ec9cR4lFcz3C": {
     "profile": "sword",
@@ -25030,12 +25096,6 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 366,
     "descriptionHash": "f87c74d54889c416ec3114faf35b212dfa9fbab0361912abbb897c15cd10193c"
   },
-  "NIwocFnVpyzjeNUC": {
-    "profile": "battleCry",
-    "reason": "The source screams out in rage and defiance as it transforms.",
-    "descriptionChars": 1297,
-    "descriptionHash": "533b6c0eaaad4341d9b9a15e65601474acfdc9cb9132adf1d8540c2ac006df2b"
-  },
   "K9hM3AdWGbU3VE8L": {
     "profile": "firearm",
     "reason": "Explicit firearm discharge, synchronized to release.",
@@ -25053,6 +25113,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
     "descriptionChars": 462,
     "descriptionHash": "f8894e26328b58ca42f9b4c2e937df337f03a07d82cb8eaf12475374932106ad"
+  },
+  "FFn6obt0uPkGsLvA": {
+    "profile": "force",
+    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "descriptionChars": 320,
+    "descriptionHash": "a7417e503ede9712897e66474399989ccc3fda7140436b712e5bc63cd6fc8d96"
   },
   "PAsFP9jcVcHkBoRd": {
     "profile": "sword",
@@ -25142,7 +25208,7 @@ export const FEAT_SOUND_DESIGNS = {
     "profile": "",
     "reason": "No reliable audible action in the complete description; silent by design.",
     "descriptionChars": 238,
-    "descriptionHash": "c841ad47bbff7c875c5f2f53454224f09493907f0a28112d39affcf5daa56921"
+    "descriptionHash": "a41015bedca3d792295d8c38a883b9a2c9e06317db05fa171df46c6b78f558a1"
   },
   "oOicdaf3WvT1i5ft": {
     "profile": "sonic",
@@ -25462,6 +25528,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 240,
     "descriptionHash": "a2e65d96e7f8f929b641999294443c0b0359cde8b5fa709c79442f59190ed143"
   },
+  "9oU92ttNdXEKFOGh": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 410,
+    "descriptionHash": "7c8c6c496ab9f9632cf0178915c17e118b407fc5ca9ca24f781a0473c8244113"
+  },
   "LhpE0NsfNwYP6MOz": {
     "profile": "",
     "reason": "No reliable audible action in the complete description; silent by design.",
@@ -25534,6 +25606,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 359,
     "descriptionHash": "15363c0269b7a3f699771c1f533a5dc878c81dd9b854f4c563f198d5e3debd1d"
   },
+  "VXNeR6rmIhPih84h": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 428,
+    "descriptionHash": "683c691453a1b0aacbfcc376c30159e5b402f6110721de8381134d6f7181af53"
+  },
   "5gnBhockV7O32jTR": {
     "profile": "sword",
     "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
@@ -25563,6 +25641,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Native element trait: the activity manifests its element audibly; one finite elemental cue.",
     "descriptionChars": 476,
     "descriptionHash": "a49b48909e0613e59b283f5017a4422273a215bf29309cb9077ec14bdf10a72b"
+  },
+  "asELpoofuVihcqJ1": {
+    "profile": "ranged",
+    "reason": "Reviewed ranged attack; exact weapon boundaries preserve blowgun/crossbow identity. Player-choice alternatives use a neutral release cue.",
+    "descriptionChars": 319,
+    "descriptionHash": "d06900d5e86dc42fa0a7af4318fa6e4c795e00973ae49967233ccf49d6b703f2"
   },
   "AP3k96JtJHsDk0G4": {
     "profile": "",
@@ -26092,6 +26176,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 341,
     "descriptionHash": "c50e7b6773126b416a76f587abb09c949543a6e4cea35840d47eda660616cc21"
   },
+  "Yjet0FGAHPx7gjod": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 400,
+    "descriptionHash": "a269f2af662f71d847bb978fa3596e9f3ff19767da034d16fc9cc09095ec16fa"
+  },
   "cZa6br5C3Iyzqqi9": {
     "profile": "shield",
     "reason": "Physical shield is raised or intercepts a blow, following its reviewed action.",
@@ -26548,6 +26638,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 510,
     "descriptionHash": "0edd8b634a98ecf304c3637aa640b691630f02397bb4b161e4d414928e12ac5c"
   },
+  "DavIoulC8GmZ1SNR": {
+    "profile": "",
+    "reason": "Reviewed elemental manifestation; optional finite elemental cue.",
+    "descriptionChars": 343,
+    "descriptionHash": "cb5dc1558131ab3bd29903c21a5e09a275827b633dca486a2526670cefe7297c"
+  },
   "VC8qdcCxtzCmG98M": {
     "profile": "",
     "reason": "No reliable audible action in the complete description; silent by design.",
@@ -26679,6 +26775,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
     "descriptionChars": 503,
     "descriptionHash": "a0f2be04ce2f41cec36551424ca82bf2b234edf0c4b27e6ed63bfc2015c328eb"
+  },
+  "nqhqZErE8diYFabI": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 369,
+    "descriptionHash": "9f127f240204a055ead48a950fbcf463c6a71150d4883e5500ddaabdfe8023cc"
   },
   "dbqpcMp7RwYzT4Ec": {
     "profile": "sword",
@@ -27549,6 +27651,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "No reliable audible action in the complete description; silent by design.",
     "descriptionChars": 268,
     "descriptionHash": "5e3944c0af6f43163c2c3202b8db702894aaa115610c28b20475176a85996792"
+  },
+  "DfsVIWqZWzSiXShK": {
+    "profile": "sword",
+    "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
+    "descriptionChars": 371,
+    "descriptionHash": "418bc1a25a031a14a81cabf9a7519e7df92fe866417994dc6fd6da96761744a0"
   },
   "Jk6gZzXEABiX5A0S": {
     "profile": "firearm",
@@ -28570,6 +28678,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 351,
     "descriptionHash": "5f3f5add2cb5e0d9a0e95d45324148ab5ff10be190a866bde8adcccaef088f52"
   },
+  "HY00EuyGBBbUb7ZT": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 325,
+    "descriptionHash": "521b03fa473c979ea7aa3eb85d47d523bcd7cb7d70b124975e895f472dd7c5b0"
+  },
   "zgljg4gVI6i1Fpb5": {
     "profile": "ranged",
     "reason": "Firearm or crossbow permitted; neutral release avoids assuming the chosen weapon. Customize for its discharge.",
@@ -29320,6 +29434,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 114,
     "descriptionHash": "20ea7fac7e24d549badefe06c8bc39be4ca775626dbaf8325f1f0444b576da30"
   },
+  "dPOH2iZ6ZT1jwpz9": {
+    "profile": "",
+    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "descriptionChars": 170,
+    "descriptionHash": "c445f331e41e25b6cfcf709a86f0528ed6bc07248b45d157992a83f57854f5e5"
+  },
   "G9l2g7sDpPVbZJza": {
     "profile": "",
     "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
@@ -29757,6 +29877,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
     "descriptionChars": 802,
     "descriptionHash": "1775152748e64163b6bfe28116ddab9231321e5c5f3ecf91baff2882971d9b8f"
+  },
+  "ks47UekSCM8gek6M": {
+    "profile": "",
+    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "descriptionChars": 284,
+    "descriptionHash": "677990f6624f35d08886e767a9fccc5fd9611b4ef3d92b4fa40c5cce53b0b8c6"
   },
   "IkqhUNVXUmi8ePEJ": {
     "profile": "",
@@ -30202,6 +30328,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 882,
     "descriptionHash": "8e7203ffb62490e847d30b0e15259a63c60a287c1c0cd9f41b7b69ed69f2e1a5"
   },
+  "oUCQymKo4eWxgteP": {
+    "profile": "",
+    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "descriptionChars": 344,
+    "descriptionHash": "9728d458add6b75513026115b61f45c0bdeea7c28d231339306f88999cea280d"
+  },
   "NMRBes7gGfGldOrn": {
     "profile": "unarmed",
     "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
@@ -30483,6 +30615,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "No reliable audible action in the complete description; silent by design.",
     "descriptionChars": 256,
     "descriptionHash": "4c543fb026d3a130ae1fa394d3e818cb11591be0d077eef15cd7529dc6a714bf"
+  },
+  "jnXNqqRT5Qhw5Zau": {
+    "profile": "healing",
+    "reason": "Description explicitly restores hit points or life through a magical effect.",
+    "descriptionChars": 275,
+    "descriptionHash": "362f6c05367b9d3eab8d73758f15fc711b2f0cc05e520c9781989f3420f48493"
   },
   "cISZPoI675He4aNh": {
     "profile": "sword",
@@ -30793,8 +30931,8 @@ export const FEAT_SOUND_DESIGNS = {
   "NjPZbQjJJIygS1ru": {
     "profile": "",
     "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
-    "descriptionChars": 160,
-    "descriptionHash": "cc4c46889185a3e3f1b8b48a6b267da2309e4a729db20c336cb69992e47fdd16"
+    "descriptionChars": 159,
+    "descriptionHash": "483fcdcd3ecdb301705b7fb197a4f33fe747a10358ca3ed752273167d88898e2"
   },
   "eGgSGU1LOaRNRYR7": {
     "profile": "",
@@ -31143,6 +31281,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
     "descriptionChars": 904,
     "descriptionHash": "e895de8b2096f6b3224d660d5623965dea8855f3a78e996bf78bf3a84865208e"
+  },
+  "BoDfpvHIRHXheOyM": {
+    "profile": "",
+    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "descriptionChars": 461,
+    "descriptionHash": "3f670070bdb7937492a77f92fe590e4777231f2421fcdeaac5706fac225d8b5c"
   },
   "oxYTPsA90H0Sx6XO": {
     "profile": "",
@@ -32080,6 +32224,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 794,
     "descriptionHash": "42550577220ccdae0f21355b9dff5edea484f8b89e40f45dfba5b275ebac52b7"
   },
+  "mOWtfL7lhW9XpdBN": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 726,
+    "descriptionHash": "9cfbc71e17754ecfdb9c3037685c6e6c21238af1773a7c3c1b928e392fc69297"
+  },
   "fJwsZM6WXwP8EStV": {
     "profile": "",
     "reason": "No reliable audible action in the complete description; silent by design.",
@@ -32095,8 +32245,8 @@ export const FEAT_SOUND_DESIGNS = {
   "wjhhlh82MABhfxCO": {
     "profile": "",
     "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
-    "descriptionChars": 435,
-    "descriptionHash": "b56fb5141225d110dff3cd155b78f3965fcfddb95c36405a913c9908e151db17"
+    "descriptionChars": 426,
+    "descriptionHash": "afd13293e0043923bdd3c418f99c04447fa5c9941e3793df3608f7b319881bfe"
   },
   "gHkRvvdjNv6nfh9Y": {
     "profile": "sword",
@@ -32151,6 +32301,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "No reliable audible action in the complete description; silent by design.",
     "descriptionChars": 417,
     "descriptionHash": "a24840c898cf48f229a7ebda42775fbca7cc46a207be150c51fff6e818c378ac"
+  },
+  "QAkxGCvXJTw41XMj": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 391,
+    "descriptionHash": "53122c9dd456f5e742d6f8a9e9b114b3eee8f5e84bc3f364bb3b738c576ede3a"
   },
   "ZdL8pPPV0QCkBML1": {
     "profile": "sword",
@@ -32217,6 +32373,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
     "descriptionChars": 482,
     "descriptionHash": "0a6b67efae21f0bfc92bcf76d8ec6291b925de5dcd790b97c4124c2cd911a54f"
+  },
+  "KlfXgSaTCdnUeW8C": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 181,
+    "descriptionHash": "0c63a11c6372c8a9b36ce37800ed6210eca6475eb0bda396f82675f3ceb8abdd"
   },
   "EoKgJXfNfHwsy2sk": {
     "profile": "",
@@ -33085,8 +33247,8 @@ export const FEAT_SOUND_DESIGNS = {
   "rfnEcjxIFqwlJwJT": {
     "profile": "",
     "reason": "Removes or reduces a condition without restoring hit points; no healing chime is inferred.",
-    "descriptionChars": 957,
-    "descriptionHash": "a10756b72d3f1d8fc39717ce384f76ed3b0e3215908f5d6eeb85d72a51bbfbdb"
+    "descriptionChars": 963,
+    "descriptionHash": "7c7af921040f2db4329b83808e271ef48f00e33a6dd9ab83ba9a32ae06ea7773"
   },
   "KqpXb13Scv7uzole": {
     "profile": "vines",
@@ -33352,6 +33514,12 @@ export const FEAT_SOUND_DESIGNS = {
     "descriptionChars": 235,
     "descriptionHash": "95338732a26889a520790885aa69ae7409cb20fd90a617324d2cd3c7039a3851"
   },
+  "fXPCNvieekzcGJbH": {
+    "profile": "",
+    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "descriptionChars": 455,
+    "descriptionHash": "fdd36b6239d855c093d84277517b43ce47b5ee7969ceedbd497256d34d03fcf4"
+  },
   "atyeSqWEXRxnrt7i": {
     "profile": "sword",
     "reason": "Full description and reviewed contact sequence indicate physical attacks. Each authored contact receives its own cue; generic melee follows the blade artwork and can be customized for the wielded weapon.",
@@ -33411,6 +33579,12 @@ export const FEAT_SOUND_DESIGNS = {
     "reason": "No reliable audible action in the complete description; silent by design.",
     "descriptionChars": 522,
     "descriptionHash": "0e5d08b0832367419accd882371e30dbb158404b6c5377c8a813921d971b23e4"
+  },
+  "UseAF1tBCb9O2eO7": {
+    "profile": "",
+    "reason": "Quiet, player-chosen or uncertain activity; no public sound is inferred. Choose a sound in Customize.",
+    "descriptionChars": 1069,
+    "descriptionHash": "a9abf906d3ceef443ffb362cf0b7d42ed1e5415d03b14c55d6e2d63a89b10415"
   },
   "ZyQYP7i26DWhMNux": {
     "profile": "",
@@ -34183,8 +34357,14 @@ export const FEAT_SOUND_DESIGNS = {
   "8znlUoKgr8mmLPe1": {
     "profile": "",
     "reason": "No reliable audible action in the complete description; silent by design.",
-    "descriptionChars": 96,
-    "descriptionHash": "bbe32ddd266509e87e45358e88786ae7ebe7cf7013312cea09af5ea520bb6876"
+    "descriptionChars": 89,
+    "descriptionHash": "8bdc8019ce5ca1d4e921fda401571cf4a7b5af85e1bd2fe41d28ba0f7fad0dd2"
+  },
+  "hFGVBKL32H05Gsg6": {
+    "profile": "",
+    "reason": "No reliable audible action in the complete description; silent by design.",
+    "descriptionChars": 248,
+    "descriptionHash": "a14e6f9741907eca5bb6756c36d5a81e8af11f0c57e5730f9a40368bbe681f54"
   },
   "kBnsLuh3eBLjwGpN": {
     "profile": "",
@@ -34569,8 +34749,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "QyzNxesxaSdPo3Pd:melee": {
     "profile": "whip",
     "reason": "melee whip cue follows native usage and physical construction. One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 882,
-    "descriptionHash": "9a33bb965a12da7a"
+    "descriptionChars": 867,
+    "descriptionHash": "ec4547bf0a8d67cb"
   },
   "TIq0xuvRpIdPglsA:melee": {
     "profile": "whip",
@@ -35361,8 +35541,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "h7RtjyqHouB3pGgr:melee": {
     "profile": "whip",
     "reason": "melee whip cue follows native usage and physical construction. One-handed slashing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 1169,
-    "descriptionHash": "06f2579335bf5669"
+    "descriptionChars": 1203,
+    "descriptionHash": "5fcc5453996deb4c"
   },
   "ymyPCjfyXCNyDcnn:melee": {
     "profile": "spear",
@@ -36153,8 +36333,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "ergvi4pLRMndtiQj:ranged": {
     "profile": "shortbow",
     "reason": "Native bow construction selects its matching draw/release; unspecified bows keep a neutral bow cue.",
-    "descriptionChars": 789,
-    "descriptionHash": "cf19698b8c1bbdde"
+    "descriptionChars": 916,
+    "descriptionHash": "a12634d570a69e49"
   },
   "tEI1WOo4ZRJ5cI0K:melee": {
     "profile": "staff",
@@ -36465,14 +36645,14 @@ export const WEAPON_SOUND_DESIGNS = {
   "ZwJXdOdnE8TcSHK1:melee": {
     "profile": "dagger",
     "reason": "melee dagger cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 875,
-    "descriptionHash": "d08ef589a82cb00c"
+    "descriptionChars": 891,
+    "descriptionHash": "fd7f1608476a8a10"
   },
   "ZwJXdOdnE8TcSHK1:thrown": {
     "profile": "thrownDagger",
     "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 875,
-    "descriptionHash": "d08ef589a82cb00c"
+    "descriptionChars": 891,
+    "descriptionHash": "fd7f1608476a8a10"
   },
   "ICreMLiKizKZkype:melee": {
     "profile": "ironStaff",
@@ -36657,8 +36837,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "05L6c6B8XuU8imfM:melee": {
     "profile": "sword",
     "reason": "melee sword cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. light flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 1886,
-    "descriptionHash": "6f5f82cabd76b8ee"
+    "descriptionChars": 1950,
+    "descriptionHash": "c2c7aafbb5d2559a"
   },
   "3oexArva2aEm69WV:melee": {
     "profile": "sword",
@@ -37247,6 +37427,12 @@ export const WEAPON_SOUND_DESIGNS = {
     "reason": "thrown dagger cue follows native usage and physical construction. dagger throw across 10 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1235,
     "descriptionHash": "16de1ef902da39eb"
+  },
+  "WwmPP9IU81EKg3CU:thrown": {
+    "profile": "thrown",
+    "reason": "thrown thrownDagger cue follows native usage and physical construction. dart throw across 30 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "descriptionChars": 407,
+    "descriptionHash": "68c224d6f5aee241"
   },
   "srCxiFF44RcuRMHD:melee": {
     "profile": "enchanted-dagger-fire",
@@ -37851,8 +38037,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "QNRa5r2I00YtEoIV:melee": {
     "profile": "axe",
     "reason": "melee axe cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 1178,
-    "descriptionHash": "d7261e890b99ef12"
+    "descriptionChars": 1187,
+    "descriptionHash": "4b5e5c72a49ee49c"
   },
   "fcRTJBvy1RqXr3ow:melee": {
     "profile": "staff",
@@ -37911,8 +38097,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "6dizJBq0Dqevbf3L:thrown": {
     "profile": "thrown",
     "reason": "thrown bola cue follows native usage and physical construction. bola throw across 15 ft increments. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 978,
-    "descriptionHash": "41ae51534a6bcb6b"
+    "descriptionChars": 968,
+    "descriptionHash": "fd34e611add2ec59"
   },
   "iWcw1sFLAzByVLBP:melee": {
     "profile": "dagger",
@@ -38484,6 +38670,12 @@ export const WEAPON_SOUND_DESIGNS = {
     "descriptionChars": 1845,
     "descriptionHash": "32dc8c2877369a0a"
   },
+  "9a7WqELEyOYloaJu:melee": {
+    "profile": "spear",
+    "reason": "melee spear cue follows native usage and physical construction. Two-handed piercing contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "descriptionChars": 821,
+    "descriptionHash": "8d3f07ff5d2fda6d"
+  },
   "LBSRvTsvrFofbB2c:melee": {
     "profile": "dagger",
     "reason": "melee dagger cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
@@ -38613,8 +38805,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "rntI1KvlK0pplLFj:melee": {
     "profile": "staff",
     "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 898,
-    "descriptionHash": "5ec69deaac1f74f8"
+    "descriptionChars": 900,
+    "descriptionHash": "96ce6cc68ccf537f"
   },
   "3IPMjCJbkFdXjNaQ:melee": {
     "profile": "staff",
@@ -39026,9 +39218,9 @@ export const WEAPON_SOUND_DESIGNS = {
   },
   "4Di2VTnJaU4JFQGa:melee": {
     "profile": "ironStaff",
-    "reason": "melee ironStaff cue follows native usage and physical construction. Two-handed bludgeoning contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 1564,
-    "descriptionHash": "64ffc11b4dbd497c"
+    "reason": "melee ironStaff cue follows native usage and physical construction. One-handed bludgeoning contact, extended reach. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "descriptionChars": 1566,
+    "descriptionHash": "fadd265c58e58efb"
   },
   "emGyagWNmjvtjiGK:melee": {
     "profile": "sword",
@@ -39237,20 +39429,20 @@ export const WEAPON_SOUND_DESIGNS = {
   "oE3fHS3CUs15bZ4r:thrown": {
     "profile": "bomb-mental",
     "reason": "Native mental bomb contents have their own landing cue, rather than a generic pot break or restoration tone. bomb throw across 20 ft increments. mental native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. silverLight contents at impact. Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 1154,
-    "descriptionHash": "d4b359e2aef6ebcc"
+    "descriptionChars": 1160,
+    "descriptionHash": "ffb6f8964a63b49a"
   },
   "mfc9IT94CPnKKBG8:thrown": {
     "profile": "bomb-mental",
     "reason": "Native mental bomb contents have their own landing cue, rather than a generic pot break or restoration tone. bomb throw across 20 ft increments. mental native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. silverLight contents at impact. Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 1135,
-    "descriptionHash": "d4a23b76d8361ce3"
+    "descriptionChars": 1217,
+    "descriptionHash": "a27990ac90392e61"
   },
   "R7I0KwKM3PNZn0zJ:thrown": {
     "profile": "bomb-mental",
     "reason": "Native mental bomb contents have their own landing cue, rather than a generic pot break or restoration tone. bomb throw across 20 ft increments. mental native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. silverLight contents at impact. Target-centered contents cue; lingering artwork is brief and does not track a condition or splash footprint. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 1141,
-    "descriptionHash": "5467265858c394d8"
+    "descriptionChars": 1206,
+    "descriptionHash": "45cf815e2bf747d9"
   },
   "ctmmhe5ZOYx57gTt:melee": {
     "profile": "enchanted-sword-sonic",
@@ -39419,6 +39611,12 @@ export const WEAPON_SOUND_DESIGNS = {
     "reason": "melee greatsword cue follows native usage and physical construction. Two-handed slashing contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 2295,
     "descriptionHash": "6af4f67642110890"
+  },
+  "wIAmDPFsRIjKQl1A:melee": {
+    "profile": "rapier",
+    "reason": "melee rapier cue follows native usage and physical construction. One-handed piercing contact. spirit native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
+    "descriptionChars": 499,
+    "descriptionHash": "6ea24e65627bb1db"
   },
   "8S81RvynBS09rIOF:melee": {
     "profile": "enchanted-sword-brilliant",
@@ -39603,8 +39801,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "SNF8g7u8JYzqvsU1:melee": {
     "profile": "dagger",
     "reason": "melee dagger cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 799,
-    "descriptionHash": "4279f958bf6d1589"
+    "descriptionChars": 928,
+    "descriptionHash": "d721399802bee4a8"
   },
   "0z3x5UzMlZLcDOUv:melee": {
     "profile": "flail",
@@ -39735,8 +39933,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "2wUR0XVYONWrBVa8:melee": {
     "profile": "staff",
     "reason": "melee staff cue follows native usage and physical construction. One-handed bludgeoning contact. Physical weapon footage and restrained contact finish. electricity flourish reflects the item's own traits or construction, not Strike damage. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
-    "descriptionChars": 466,
-    "descriptionHash": "eafcb2cf5e7bcf63"
+    "descriptionChars": 470,
+    "descriptionHash": "e49f2145584c9710"
   },
   "0mCj6HZcwFzVxVyM:melee": {
     "profile": "staff",
@@ -40624,7 +40822,7 @@ export const WEAPON_SOUND_DESIGNS = {
     "profile": "enchanted-greatsword-sonic",
     "reason": "melee greatsword cue follows native usage and physical construction. Two-handed slashing contact. sonic native damage, permanent runes or always-on own-weapon damage rules supply the contact accents. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 657,
-    "descriptionHash": "241f134de2b5d726"
+    "descriptionHash": "d609659297b42ea9"
   },
   "3NQj5gtHIYFYlAch:melee": {
     "profile": "club",
@@ -40665,8 +40863,8 @@ export const WEAPON_SOUND_DESIGNS = {
   "EtIXWXnfYdV5AGzy:ranged": {
     "profile": "pistol",
     "reason": "Native firearm construction selects arquebus, musket or pistol discharge when explicit; other firearms use a neutral black-powder cue.",
-    "descriptionChars": 1388,
-    "descriptionHash": "31ccfb285e0fc92b"
+    "descriptionChars": 1389,
+    "descriptionHash": "f7572c645bc30d00"
   },
   "8MD6Fwjjgb9cMXQb:melee": {
     "profile": "enchanted-sword-acid",
@@ -40792,7 +40990,7 @@ export const WEAPON_SOUND_DESIGNS = {
     "profile": "unarmed",
     "reason": "melee unarmed cue follows native usage and physical construction. One-handed piercing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 499,
-    "descriptionHash": "8db1187cf1a680d3"
+    "descriptionHash": "f63e1c55dc1f5748"
   },
   "AXz1edC2ZhqNLaeZ:melee": {
     "profile": "axe",
@@ -40846,7 +41044,7 @@ export const WEAPON_SOUND_DESIGNS = {
     "profile": "katana",
     "reason": "melee katana cue follows native usage and physical construction. One-handed slashing contact. Physical weapon footage and restrained contact finish. Native weapon data and full description inform the design; activated powers, target-dependent riders and critical-only effects are not inferred from a Strike.",
     "descriptionChars": 1058,
-    "descriptionHash": "cadc62e75cefd511"
+    "descriptionHash": "55a1a55591f77730"
   },
   "xeCh83loMuW7Aeqj:melee": {
     "profile": "whip",

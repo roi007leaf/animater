@@ -116,6 +116,10 @@ const plans={
  'Shields of the Spirit':plan('Pale shield reflections and inward spiritual threads represent protection by ephemeral spirit shields; retaliatory damage is separate.',shimmer('outward','Spirit-shield reflections'),flow('inward',2,'silver','Spiritual protection')),
  'Silence':plan('A quiet refractive perimeter and a faint stationary formula circle symbolically mark the sound-suppressing field. No sound or musical notes.',shimmer('inward','Silent boundary'),glyph('illusion','silver','Silence perimeter')),
  'Tempest Cloak':plan('Whirling white wind and a second set of gust streaks depict the literal twisting wind cloak, not a generic blue bubble shield.',whirl('silver','Twisting wind cloak'),wind(2,'Protective gusts')),
+ 'Horn of Rust':plan('Jagged rusty metal shards orbit the horn-blower in the 5-foot emanation, shedding rust flakes. The +1 AC bonus is native; the separate start-of-turn slashing damage and tetanus exposure are not looped as hits.',orbit('metal','amber','orbit','Rusty shard orbit'),layer('Falling rust flakes','particles.swirl','ruby',{opacity:.75})),
+ // A held, carved turnip lantern: a warm radiant glow filling the 20-foot bright radius with flickering glints.
+ // Not the Aura003 tendril pattern (reads as a dark sunburst) and not fire: nothing burns.
+ 'Turnip Lantern':plan('A carved turnip lantern sheds flickering warm light across its 20-foot bright-light aura: a soft golden radiance fills the radius and candle-like glints flicker through it. The +1 status bonus against unholy creatures stays a native modifier; no fear, flames or attack is shown.',layer('Lantern light reach','template_circle.aura.02.loop.large','gold'),stars(5,'amber','Flickering lantern glints')),
  'Divine Presence':plan('Outward spirit energy and a divine circle represent the godlike spiritual presence. Within-field movement remains a separate native action.',flow('outward',4,'silver','Spiritual presence'),glyph('conjuration','violet','Divine presence glyphs')),
 };
 const aliases={

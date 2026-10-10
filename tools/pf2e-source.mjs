@@ -14,7 +14,7 @@ export async function fetchJSON(url) {
   if (!response.ok) throw Error(`${response.status}: ${url}`);
   return response.json();
 }
-export async function spellSources(ref = "pf2e-8.5.1") {
+export async function spellSources(ref = "pf2e-8.6.0") {
   const tree = await fetchJSON(
     `https://api.github.com/repos/${repository}/git/trees/${ref}?recursive=1`,
   );

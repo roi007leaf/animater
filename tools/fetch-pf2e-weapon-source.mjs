@@ -4,7 +4,7 @@ import {promisify} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {WEAPON_SOURCE_SHA} from './pf2e-weapon-source.mjs';
 const cache=fileURLToPath(new URL('../.cache/',import.meta.url));
-const archive=fileURLToPath(new URL('../.cache/pf2e-source.tar.gz',import.meta.url));
+const archive=fileURLToPath(new URL(`../.cache/pf2e-${WEAPON_SOURCE_SHA}.tar.gz`,import.meta.url));
 await mkdir(cache,{recursive:true});
 try {await access(archive);} catch {
  const response=await fetch(`https://codeload.github.com/foundryvtt/pf2e/tar.gz/${WEAPON_SOURCE_SHA}`);

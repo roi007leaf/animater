@@ -349,7 +349,7 @@ test("native persistent catalogs respond to remote condition changes and time ex
   f.actor.items=[condition,effect];f.source.document.uuid="Scene.s.Token.t";
   await f.fire("createItem",condition,{},"another-user");await f.api.refreshPersistent();await settle();
   assert.equal(f.calls.filter(c=>c[0]==="play").length,2);assert.ok(f.calls.filter(c=>c[0]==="play").every(c=>c[1].local));
-  assert.equal(f.settings.get("automatic"),false);assert.equal(f.api.conditions().conditions.length,43);assert.equal(f.api.effects().effects.length,2929);
+  assert.equal(f.settings.get("automatic"),false);assert.equal(f.api.conditions().conditions.length,43);assert.equal(f.api.effects().effects.length,2962);
   const count=f.calls.filter(c=>c[0]==="play").length;await f.fire("updateItem",condition,{}, {},"another-user");await f.api.refreshPersistent();assert.equal(f.calls.filter(c=>c[0]==="play").length,count);
   const originIndex=f.calls.findIndex(c=>c[0]==="origin"&&c[1]===condition.uuid),name=f.calls[originIndex-1][1];f.actor.items=[effect];await f.fire("deleteItem",condition,{},"another-user");await f.api.refreshPersistent();
   assert.equal(f.hooks.get("preCreateSequencerEffect")[0]({name}),false);

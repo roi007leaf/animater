@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- **PF2e 8.6.0 content is animated.** The PF2e catalogs are now built from the PF2e 8.6.0 release (they were built from 8.5.1).
+  - **New spells:** 19 spells get animations, among them Turnip Lantern, Brimstone Rain, Searing Rain, Silver Spear, Spray of Salt, Piercing Jet, Gloom Mantle and The Night is Mine.
+  - **New feats:** 31 feats from the infernal pactbreaker, bugbear, fetchling and strix lines get animations.
+  - **New auras:** *Aura: Turnip Lantern* fills its 20-foot bright light with a warm golden glow and flickering glints, and allies who get *Spell Effect: Turnip Lantern* share that look. *Effect: Horn of Rust* is a ring of rusty metal shards orbiting the bearer, with falling rust flakes.
+  - **Updated content:** new 8.6.0 effects, weapons and equipment are in the catalogs too. Final Form and the legacy Divine Vessel, both removed in 8.6.0, are gone.
 - **Shield is centred.** The force dome of Shield (and the glass, bone, fire, ice and earthen ward spells that share its design) sat a quarter square off to the side; it now surrounds the caster.
 - **One-time animations can't get stuck.** A cast circle or other one-time animation still on screen 5 seconds after it should have ended is now ended on every screen (a player saw spell casting circles left over tokens during a combat).
 - **Dazzled shows how the token sees others (PF2e, SF2e).** Select a Dazzled token and every other token shows the Concealed look on your screen. The Dazzled token keeps its own motion but no longer wears an overlay. Works with PF2e Visioner too.

@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 
-export const FEAT_REVIEW_GENERATORS = ['early', 'description', 'support', 'late'].map(name => ({
+export const FEAT_REVIEW_GENERATORS = ['early', 'description', 'support', 'late', 'update'].map(name => ({
   script: `tools/feat-${name}-review.mjs`,
   output: `data/feat-${name}-review.mjs`,
   args: name === 'description' ? ['--build'] : [],
