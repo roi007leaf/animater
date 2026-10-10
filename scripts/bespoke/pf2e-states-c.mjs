@@ -52,7 +52,7 @@ export default {
     P('Filtered air', ['markers.bubble.loop.blue'], { scale: 1.1, opacity: 0.7, ...tint('#dff3ff') }),
   ]),
   [key('oNAqqcxPjzPCJJmW')]: design('Trade Death for Life grants fast healing: a restorative heart with a dusky edge, not a skull.', () => [
-    P('Borrowed life', ['markers.heart.dark_red.02', 'markers.heart.pink.02'],{ scale: 0.7, opacity: 0.95, offsetY: -0.82, offsetUnits: 'token', ...tint('#8be6c4') }),
+    P('Borrowed life', ['markers.heart.dark_red.02', 'markers.heart.pink.02'],{ scale: 1.25, opacity: 0.95, below: true, ...tint('#8be6c4') }),
     P('Vital glow', ['markers.light_orb.loop.green', 'markers.light_orb.loop.blue'], { scale: 1.1, opacity: 0.3, ...tint('#9fe0b8') }),
   ]),
   [key('LiQDQYAYYE6Qg4yI')]: design('Divine Keystone (Critical Failure) empowers undead in the area with fast healing and holy resistance: a dark necromantic sign and fumes, not a stone ring.', () => [
@@ -78,7 +78,7 @@ export default {
   ]),
   [key('r4XX7yzeEOPK7l2a')]: design('Seal Fate gives a weakness to the chosen damage type: a doom rune and hindrance ring, not a boon.', () => [
     ...hindrance('#b67ad8')(),
-    P('Sealed fate', ['markers.runes03.dark_black.01', 'markers.runes03.dark_orange.01'], { scale: 0.7, opacity: 0.9, offsetY: -0.82, offsetUnits: 'token', ...tint('#a37bd6') }),
+    P('Sealed fate', ['markers.runes03.dark_black.01', 'markers.runes03.dark_orange.01'], { scale: 1.25, opacity: 0.9, below: true, ...tint('#a37bd6') }),
   ]),
 
   // ---------------- movement ----------------

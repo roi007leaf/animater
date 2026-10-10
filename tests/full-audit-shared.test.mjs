@@ -67,10 +67,10 @@ test('persistent rings, shields and chains are readable; markers and damage have
  assert.equal(offsetInGridSquares(bleed,{w:300,h:300},100).y,bleed.offsetY*3);
  assert.equal(offsetInGridSquares({...bleed,offsetUnits:'grid'},{w:300,h:300},100).y,bleed.offsetY);
 });
-test('Free fallback markers use marker placement rather than copying Patreon orbit size',()=>{
+test('Free fallback markers use marker placement (a ring under the token) rather than copying Patreon orbit size',()=>{
  const damage=PF2E_CONDITIONS.find(e=>e.slug==='persistent-damage');
  const entry={...damage,damageVariants:{cold:{assets:['jb2a.aura_themed.01.orbit.loop.cold.blue','jb2a.markers.snowflake.blue'],scale:1.85,opacity:.84,below:false}}};
  const patreon=stateRecipe(entry,{damageType:'cold',catalog:[{key:entry.damageVariants.cold.assets[0]}]}).stages[0];
  const free=stateRecipe(entry,{damageType:'cold',catalog:[{key:entry.damageVariants.cold.assets[1]}]}).stages[0];
- assert.equal(patreon.scale,1.5);assert.ok(free.scale<1);assert.ok(free.offsetY<0);assert.equal(free.offsetUnits,'token');
+ assert.equal(patreon.scale,1.5);assert.ok(free.scale<patreon.scale);assert.equal(free.offsetY,0);assert.equal(free.below,true);
 });

@@ -2,7 +2,13 @@
 
 ## Unreleased
 
-- **Dazzled and Blinded show how the token sees others (PF2e, SF2e).** Select a Dazzled token and every other token shows the Concealed look on your screen; select a Blinded one and they show the Hidden look. The Dazzled or Blinded token itself no longer wears an overlay. Works with PF2e Visioner too.
+- **Dazzled shows how the token sees others (PF2e, SF2e).** Select a Dazzled token and every other token shows the Concealed look on your screen. The Dazzled token keeps its own motion but no longer wears an overlay. Works with PF2e Visioner too.
+- **Markers no longer float over heads.** Effects drawn with a JB2A marker (hearts, shields, runes, drops and so on, about 840 effects) are now a ring of icons around the token's base, under its art, instead of hovering above the head into the next square.
+- **Auras show their size and keep looping.**
+  - Every aura now has a layer that fills its whole radius, and the build checks this.
+  - Layers that played once and vanished (sparkles, the second energy field, radar pings) are replaced with continuous loops.
+  - The tall flame clip that rose above the token is now a fire ring.
+  - Elysian Dew is an outward ring of growth with green motes; Form a Flock, Protector's Sphere, Blazing Banner, Mantle of the Unwavering Heart and Stink Sap get a reach layer too.
 - **No more smoke over tokens.**
   - **Auras:** aura effects no longer use smoke, fume or fog footage, which buried the tokens inside them. Their hazes are coloured drifting motes; Fuming Cloak, Creeping Ashes, Ghosts in the Storm and Miasma get rings, ash motes and storm currents instead.
   - **Hidden, Undetected and Unnoticed** show only their rim, not a fog veil over the token.

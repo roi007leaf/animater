@@ -1,6 +1,17 @@
 // Measured frame/visible alpha dimensions [width, height, visibleWidth, visibleHeight].
 // Rebuild: rtk proxy node tools/audit-media-footprints.mjs --all-systems --fetch-missing-free --write
 export const MEDIA_FOOTPRINTS = {
+  "RadarLoop_002_001_GreenPurple_15ft_800x800.webm": [800,800,687.5,700],
+  "RadarLoop_002_001_BlueTeal_15ft_800x800.webm": [800,800,681.25,693.75],
+  "RadarLoop_Pulse_002_GreenPurple_15ft_800x800.webm": [800,800,575,575],
+  "RadarLoop_BG_001_GreenPurple_15ft_800x800.webm": [800,800,687.5,700],
+  "RadarLoop_001_001_GreenPurple_15ft_800x800.webm": [800,800,687.5,700],
+  "Aura003_Outward_Loop_002_PinkYellow_1400x1400.webm": [1400,1400,1082.8125,1115.625],
+  "Aura003_Outward_Loop_004_GreenPurple_1400x1400.webm": [1400,1400,1093.75,1104.6875],
+  "RadarLoop_Pulse_002_BlueTeal_15ft_800x800.webm": [800,800,600,600],
+  "RadarLoop_BG_001_BlueTeal_15ft_800x800.webm": [800,800,681.25,693.75],
+  "RadarLoop_001_001_BlueTeal_15ft_800x800.webm": [800,800,681.25,693.75],
+  "Aura003_Inward_Loop_001_PurpleRed_1400x1400.webm": [1400,1400,1170.3125,1192.1875],
   "EnergyStrandsOverlay_01_Regular_PinkYellow_600x600.webm": [600,600,510.9375,464.0625],
   "EnergyStrandsOverlay_01_Regular_Grey_600x600.webm": [600,600,501.5625,459.375],
   "Vortex_01_Dark_Black_600x600.webm": [600,600,487.5,482.8125],

@@ -3,7 +3,8 @@
 export function statePresentation(design) {
  const asset=design.assets?.[0]??'';
  if(/\.markers\.(?:chain)|\.web\./.test(asset))return {presentationRole:'binding',scale:1.5,opacity:.92,below:false,offsetX:0,offsetY:0};
- if(/\.markers\./.test(asset))return {presentationRole:'marker',scale:.72,opacity:.96,below:false,offsetX:0,offsetY:-.82,offsetUnits:'token'};
+ // A marker's ring of icons circles the token's base, under its art; it never hovers over the head into the next square.
+ if(/\.markers\./.test(asset))return {presentationRole:'marker',scale:1.25,opacity:.96,below:true,offsetX:0,offsetY:0};
  // The hex barrier footage fills its frame; it should hug the bearer, not dome over neighbours.
  if(/\.shield\.0\d\./.test(asset))return {presentationRole:'shield',scale:1.15,opacity:.8,below:false,offsetX:0,offsetY:0};
  if(/\.shield_themed\./.test(asset))return {presentationRole:'shield',scale:1.35,opacity:.86,below:false,offsetX:0,offsetY:0};

@@ -69,14 +69,16 @@ export function grantedByOtherAura(item,token){const origin=item?.flags?.pf2e?.a
 // A condition that comes with another adds nothing to show. PF2e's Unconscious brings
 // Blinded, whose darkness cloud would cover the sleeping token and its sleep symbol.
 const IMPLIED={blinded:['unconscious']};
-// Conditions about how a creature perceives others are shown through the others, not on itself:
-// select a Dazzled token and everyone else looks Concealed to you; Blinded, they look Hidden.
-export const PERCEPTION={blinded:'hidden',dazzled:'concealed'};
+// Conditions about how a creature perceives others are shown through the others: select a Dazzled
+// token and everyone else looks Concealed to you. The Dazzled token keeps only its own motion.
+export const PERCEPTION={dazzled:'concealed'};
+const stateKey=i=>String(slug(i)??'').toLowerCase();
+export const motionOnly=i=>i.type==='condition'&&!i.animaterPerceived&&!!PERCEPTION[stateKey(i)];
 export function shownStates(states){
- const key=i=>String(slug(i)??'').toLowerCase(),on=new Set(states.filter(i=>i.type==='condition').map(key));
- return states.filter(i=>!(i.type==='condition'&&(IMPLIED[key(i)]?.some(s=>on.has(s))||(PERCEPTION[key(i)]&&!i.animaterPerceived))));
+ const on=new Set(states.filter(i=>i.type==='condition').map(stateKey));
+ return states.filter(i=>!(i.type==='condition'&&IMPLIED[stateKey(i)]?.some(s=>on.has(s))));
 }
-// How the selected observer sees this token: a stand-in Concealed or Hidden condition (this client only).
+// How the selected observer sees this token: a stand-in Concealed condition (this client only).
 export function perceivedStates(observerSlugs,token,observer){
  if(!observer||observer===token)return [];
  const slugs=new Set([...observerSlugs].map(s=>String(s).toLowerCase()));
@@ -129,7 +131,7 @@ export class PersistentStates{
      const state=(h.normalizeState??normalizeStateCatalogState)(h.state(h.stateKind?.(item)??item.type)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType,grantedByOtherAura(item,token)]);
-     if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false});shown++;}
+     if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':'')+(motionOnly(item)?'body':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false,bodyOnly:motionOnly(item)});shown++;}
     }
    }
   }
@@ -163,7 +165,7 @@ export class PersistentStates{
   // An ally's copy keeps the aura's most telling layer (its glyph, motes, flame), not the generic ring every
   // aura shares, so different auras stay recognisable on the allies inside them.
   const lasting=plan.filter(s=>s.kind==='aura'&&s.persist),generic=s=>/template_circle\.|token_border\./.test(String(s.asset));
-  const shown=granted?[lasting.find(s=>!generic(s))??lasting[0]].filter(Boolean):lasting;
+  const shown=r.bodyOnly?[]:granted?[lasting.find(s=>!generic(s))??lasting[0]].filter(Boolean):lasting;
   for(const s of shown){
    if(layers++>=maxLayers)continue;
    const media=mediaForReference(catalog,s.asset);
@@ -178,14 +180,14 @@ export class PersistentStates{
    if(s.below)e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
   }
   if(r.cancelled||this.closed)return;
-  const filters=plan.filter(s=>s.kind==='tokenfx'&&s.persist);
+  const filters=r.bodyOnly?[]:plan.filter(s=>s.kind==='tokenfx'&&s.persist);
   if(filters.length)await Promise.all(filters.map(async stage=>{
    try { await h.retainFx?.({...stage,destination:r.token},{session:r.name}); }
    catch(error){h.trace?.('Skipped',`Token Magic FX: ${error.message}`);}
   }));
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}
   h.trace?.('Persistent',`${r.recipe.name} follows ${r.token.name??'token'} while its condition or effect lasts.`);
-  await sequence.play({local:true});
+  if(shown.length)await sequence.play({local:true});
   // Removal/scene changes can race asynchronous texture loading.
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}
   // The creature itself reacts (trembles, sways, turns to stone…) while the state lasts.

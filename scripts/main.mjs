@@ -1163,7 +1163,7 @@ Hooks.once("ready", () => {
       retainFx:(stage,{session})=>allowsTokenFx(localQuality())?optionalFx.retain(stage,{session,userId:`state:${clientId}`}):undefined,
       budget:()=>stateBudget(localQuality()),
       stopFx:session=>optionalFx.stop({session}),
-      // The selected Dazzled or Blinded token sees everyone else as Concealed or Hidden.
+      // The selected Dazzled token sees everyone else as Concealed.
       perceivedStates:(token)=>{
         if(!["pf2e","sf2e"].includes(game.system.id))return [];
         const controlled=canvas.tokens?.controlled??[],observer=controlled.length===1?controlled[0]:null;

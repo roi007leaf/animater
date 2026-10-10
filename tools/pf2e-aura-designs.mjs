@@ -16,24 +16,25 @@ const stars=(points=4,color='gold',label='Light glints')=>layer(label,`twinkling
 const smoke=(color='grey',label='Suspended haze')=>layer(label,'particles.swirl',color,{below:false,opacity:.7});
 const bubbles=(style=1,color='blue',label='Enclosing bubbles')=>layer(label,`bubble.00${style}.001.loop`,color);
 const leaves=(style=1,label='Living leaves')=>layer(label,`swirling_leaves.loop.0${style}`,'green');
-const energy=(style=1,color='blue',label='Energy veil')=>layer(label,style===1?'energy_field.01':'energy_field.02.below',color);
+// Only continuous footage: energy_field.02 and radar pings play once and vanish, flames.04 rises off-centre above the token.
+const energy=(style=1,color='blue',label='Energy veil')=>layer(label,'energy_field.01',color);
 const wind=(style=1,label='Wind streaks')=>layer(label,`wind_lines.01.0${style}.white`,'silver');
 const whirl=(color='blue',label='Whirling current')=>layer(label,'template_circle.whirl.loop',color);
 const vortex=(color='violet',label='Inward vortex')=>layer(label,'template_circle.vortex.loop',color);
-const fire=(label='Flame field')=>layer(label,'flames.04.loop','amber');
+const fire=(label='Flame field')=>layer(label,'fire_ring.500px','amber');
 const embers=(label='Floating embers')=>layer(label,'particles.swirl','amber');
-const radar=(shape='round',label='Awareness sweep')=>layer(label,`template_circle.radar.loop.ping.001.300px.${shape}`,'teal');
+const radar=(shape='round',label='Awareness sweep')=>layer(label,{round:'template_circle.radar.loop.800px.001',square:'template_circle.radar.loop.002.800px',triangle:'template_circle.radar.loop.001.800px'}[shape],'teal');
 const plan=(rationale,...layers)=>({rationale,layers});
 
 const plans={
  'Angelic Halo':plan('A golden halo field and soft glints mark enhanced healing from later Heal spells; no recurring healing impacts.',flow('outward',1,'gold','Halo radiance'),stars(4,'gold','Angelic glints')),
  "Demon's Knot":plan('Subtle inward ruby threads symbolize the necklace’s thirty-foot temptation and Will penalty. No flames or repeated damage.',flow('inward',2,'ruby','Ruby temptation'),glyph('enchantment','ruby','Temptation sigil')),
- 'Elysian Dew':plan('Growing leaves and colorful motes represent intensified natural colors and vitality. Native bonuses remain separate from healing.',leaves(1,'Dew-fed growth'),layer('Colorful vitality motes','swirling_sparkles.01','green')),
- 'Form a Flock':plan('A circling flock and wind represent the dragonets surrounding the bearer. JB2A butterflies are a symbolic flying-creature substitute.',layer('Symbolic dragonet flock','butterflies.loop.01','amber',{below:false}),wind(1,'Flock currents')),
+ 'Elysian Dew':plan('An outward ring of living growth and green motes represent intensified natural colors and vitality across the aura. Native bonuses remain separate from healing.',orbit('nature','green','outward','Dew-fed growth'),layer('Colorful vitality motes','particles.swirl','green',{opacity:.8})),
+ 'Form a Flock':plan('A circling flock and wind represent the dragonets surrounding the bearer. JB2A butterflies are a symbolic flying-creature substitute.',layer('Symbolic dragonet flock','butterflies.loop.01','amber',{below:false}),whirl('amber','Flock currents')),
  'Fuming Cloak':plan('Black fumes and grey plumes depict the literal smoke cloak; native concealment and sickened application remain PF2e-controlled.',smoke('black','Black gun smoke'),flow('outward',2,'black','Smoke-dark cloak')),
  'Manifest Will':plan('Neutral refraction and formulas mark the magical field when its tradition is unknown. Native tradition selects a matching field when available.',shimmer('outward','Unspecified magical presence'),glyph('transmutation','silver','Manifest formulas')),
  'Protective Wards':plan('A ring of protective glyphs and a refractive perimeter represent the expanding ward. Radius follows the native prepared aura.',glyph('abjuration','blue','Protective glyph ring'),shimmer('outward','Expanding ward boundary')),
- "Protector's Sphere":plan('An enclosing shield shell and energy lining represent the protective sphere, distinct from a ground ring of ward glyphs.',layer('Protective sphere shell','shield.01.loop','blue'),energy(2,'blue','Sphere lining')),
+ "Protector's Sphere":plan('An enclosing shield shell and energy lining represent the protective sphere, distinct from a ground ring of ward glyphs.',layer('Protective sphere shell','shield.01.loop','blue'),shimmer('outward','Sphere boundary')),
  'Righteous Call':plan('Radiating divine energy and evocation glyphs symbolize holy empowerment of later allied Strikes; no ongoing attack impacts.',flow('outward',3,'gold','Righteous radiance'),glyph('evocation','gold','Holy strike empowerment')),
  'Searing Blade (Greater)':plan('Flame and rotating ember streams surround the weapon’s fiery emanation, without repeatedly dealing damage.',fire('Searing emanation'),embers('Blade embers')),
  'Shining Symbol':plan('Bright gold glints and revelation glyphs represent the luminous amulet’s spirit-revealing field.',stars(5,'gold','Symbol radiance'),glyph('divination','gold','Revealing field')),
@@ -48,7 +49,7 @@ const plans={
  'Aura of Life':plan('Inward vitality-colored protection and abjuration glyphs represent defense against void energy, not repeated healing.',flow('inward',2,'green','Vitality protection'),glyph('abjuration','green','Anti-void ward')),
  'Aura of Righteousness':plan('Golden containment runes and an inward boundary symbolize protection against unholy influence and teleportation.',layer('Righteous containment runes','magic_signs.rune.abjuration.loop','gold'),shimmer('inward','Teleportation ward boundary')),
  'Banner of the Restful':plan('A mellow peach field and quiet watch glyph represent comfort during watch; no sleep effect is implied.',flow('outward',1,'pink','Restful banner field'),glyph('divination','amber','Watchful comfort')),
- 'Blazing Banner':plan('A red-orange energy weave and sparks echo the banner’s flame-like fabric and later critical-hit empowerment.',energy(2,'ruby','Blazing fabric weave'),embers('Banner sparks')),
+ 'Blazing Banner':plan('A red-orange energy weave and sparks echo the banner’s flame-like fabric and later critical-hit empowerment.',flow('inward',1,'ruby','Blazing fabric weave'),embers('Banner sparks')),
  'Celestial Yaoguai Might':plan('Celestial light and divine formulas represent the celestial-only aura branch of Yaoguai Might. Other branches do not inherit this field.',stars(6,'gold','Celestial brilliance'),glyph('conjuration','gold','Celestial might field')),
  "Commander's Banner":plan('A brass outward signal and steady resolve circle symbolically mark leadership and protection against fear.',flow('outward',2,'amber','Command signal'),glyph('enchantment','silver','Steady resolve')),
  'Creeping Ashes':plan('Low grey ash and an inward ground current represent the ash cloud and difficult terrain. No flames until the separate collapse ability.',layer('Drifting ash motes','particles.swirl','grey',{opacity:.75}),flow('inward',4,'grey','Ash-covered ground')),
@@ -89,7 +90,7 @@ const plans={
  'Shield the Faithful':plan('Divine glyphs and a pale spirit veil symbolize protection of the faithful. Retaliatory spirit damage is not an ongoing hit.',glyph('conjuration','gold','Faithful divine ward'),energy(2,'silver','Faithful spirit veil')),
  'Soul Well':plan('An inward vortex and pale soul glints represent spirits struggling to escape the well. The aura delays death rather than repeatedly causing it.',vortex('silver','Soul-well vortex'),stars(7,'silver','Trapped soul glints')),
  'Standard of the Primeval Howl':plan('Wild growth and outward readiness symbolize the raw wooden beast banner. No continuous howl is added.',orbit('wood','green','outward','Primeval banner growth'),flow('outward',5,'amber','Wild readiness')),
- 'Stink Sap':plan('Brown-green low fumes and outward odor motes symbolically show stinking sap, without claiming poison damage.',smoke('amber','Sap odor fumes'),layer('Outward odor motes','particles.outward.greenyellow.02.01','green')),
+ 'Stink Sap':plan('Brown-green low fumes and outward odor motes symbolically show stinking sap, without claiming poison damage.',flow('outward',4,'green','Sap odor spread'),layer('Outward odor motes','particles.outward.greenyellow.02.01','green')),
  'Strategist Stance':plan('Square tactical pings and divination formulas symbolically mark planning and reflex support, distinct from the overwatch radar.',radar('square','Tactical awareness grid'),glyph('divination','blue','Strategy formulas')),
  'Survive the Wilds':plan('Living leaves and inward refraction symbolize protection from an attuned environment, without guessing its particular damage type.',leaves(2,'Attuned wilds'),shimmer('inward','Environmental shelter')),
  'The Hollow Star':plan('Amber crystal glints and an occult illusion circle represent the glowing star and visions. No summoning or apocalypse is depicted.',stars(9,'amber','Hollow-star glow'),glyph('illusion','amber','Occult visions')),
@@ -105,7 +106,7 @@ const plans={
  'Element Embodied (Water)':plan('A watery vortex and enclosing bubbles depict the water form’s Vortex. Native predicates determine when its aquatic field exists.',vortex('blue','Water Vortex'),bubbles(2,'teal','Vortex bubbles')),
  'Element Embodied (Wood)':plan('Outward wood growth and green leaves depict Lush Growth and difficult terrain; enhanced healing does not become repeated healing hits.',orbit('wood','green','outward','Lush Growth'),leaves(1,'Growing foliage')),
  'Incendiary Aura':plan('Refractive heat and drifting sparks represent combustible potential. Creatures do not appear burning before the separate fire-damage trigger.',shimmer('inward','Combustible heat field'),embers('Incendiary sparks')),
- 'Mantle of the Unwavering Heart':plan('A floral pink haze and living leaves represent only the active Overwhelming Perfume aura choice; other mantle options do not emit this field.',smoke('pink','Floral perfume haze'),leaves(2,'Perfume foliage')),
+ 'Mantle of the Unwavering Heart':plan('A floral pink haze and living leaves represent only the active Overwhelming Perfume aura choice; other mantle options do not emit this field.',flow('outward',2,'pink','Floral perfume haze'),leaves(2,'Perfume foliage')),
  'Monstrosity Form':plan('A fiery shroud and solar glints represent only the native phoenix aura branch. Worm and serpent forms do not inherit this field.',fire('Phoenix shroud'),stars(6,'gold','Phoenix radiance')),
  'Nature Incarnate':plan('A broad natural inward field and living leaves represent the green man’s Green Caress aura, not the kaiju form.',orbit('nature','green','inward','Green Caress'),leaves(1,'Incarnate growth')),
  'Palm-Held Sun':plan('Sunlit brilliance and a gold outward field represent bright and dim sunlight around the held sun; no continuous fire blast.',stars(6,'gold','Held-sun brilliance'),flow('outward',5,'gold','Sunlight reach')),
@@ -131,14 +132,18 @@ const thermalPlans={
  cold:plan('Cold inward currents and refractive chill depict the native cold choice of Thermal Nimbus.',orbit('cold','blue','inward','Cold thermal currents'),shimmer('inward','Thermal chill')),
 };
 export const auraAbilityName=name=>{const n=name.replace(/^(?:Aura|Effect|Spell Effect|Stance):\s*/,'');return aliases[n]??n;};
+// Ground fields that fill the aura's radius; a design of only motes, stars or leaves would not show how far it reaches.
+const REACH=/^(template_circle\.|magic_signs\.circle\.|aura_themed\.|fire_ring\.|energy_field\.|bless\.)/;
+export const showsReach=spec=>spec.layers.some(l=>l.roots.some(r=>REACH.test(r)));
 export function buildAuraDesign(entry,db){
  const ability=auraAbilityName(entry.name),spec=plans[ability];
  if(!spec)throw Error(`Native aura lacks a reviewed field composition: ${entry.name}`);
+ for(const s of [spec,...Object.values(ability==='Manifest Will'?traditionPlans:ability==='Thermal Nimbus'?thermalPlans:{})])if(!showsReach(s))throw Error(`Aura design shows no reach: ${ability}`);
  const compile=(spec,id)=>({id,rationale:spec.rationale,layers:spec.layers.map((layer,i)=>{
   const {roots,palette,...options}=layer,[color,tint]=palette,chosen={};
   for(const [edition,rows] of Object.entries(db)){
    let candidates=[];
-   for(const root of roots){candidates=rows.filter(r=>(r.key===`jb2a.${root}`||r.key.startsWith(`jb2a.${root}.`))&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst/.test(r.key));if(candidates.length)break;}
+   for(const root of roots){candidates=rows.filter(r=>(r.key===`jb2a.${root}`||r.key.startsWith(`jb2a.${root}.`))&&assetGeometry(r)==='radial'&&!/intro|outro|complete|outburst|pulse/.test(r.key));if(candidates.length)break;}
    if(!candidates.length)throw Error(`No continuous radial ${roots.join('/')} field in ${edition}`);
    const colored=candidates.filter(r=>r.key.split('.').includes(color));
    chosen[edition]=(colored.length?colored:candidates).sort((a,b)=>colorAffinity(b.key,color)-colorAffinity(a.key,color)||a.key.localeCompare(b.key))[0];

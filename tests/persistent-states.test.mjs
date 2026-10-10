@@ -171,20 +171,26 @@ test('custom edits replace exact layers, disabled recipes stop them, and deletio
  assert.equal(f.manager.accepts('other-module-animation'),true);await f.manager.destroy();
 });
 
-test('Blinded and Dazzled show through the others, not on the token itself',()=>{
+test('Unconscious hides the Blinded it brings; Blinded and Dazzled alone still count',()=>{
  const c=(slug)=>({type:'condition',slug,name:slug});
  assert.deepEqual(shownStates([c('unconscious'),c('blinded'),c('off-guard')]).map(i=>i.slug),['unconscious','off-guard']);
- assert.deepEqual(shownStates([c('blinded'),c('dazzled')]).map(i=>i.slug),[]);
+ assert.deepEqual(shownStates([c('blinded'),c('dazzled')]).map(i=>i.slug),['blinded','dazzled']);
  assert.deepEqual(shownStates([{type:'effect',slug:'blinded'},c('unconscious')]).length,2,'only conditions are folded');
 });
-test('the selected Dazzled or Blinded token sees everyone else as Concealed or Hidden',()=>{
+test('the selected Dazzled token sees everyone else as Concealed; Blinded changes nothing on others',()=>{
  const me={id:'me'},other={id:'o'};
  assert.deepEqual(perceivedStates(['dazzled'],other,me).map(i=>i.slug),['concealed']);
- assert.deepEqual(perceivedStates(['dazzled','blinded'],other,me).map(i=>i.slug),['hidden'],'Blinded wins');
+ assert.deepEqual(perceivedStates(['blinded'],other,me),[]);
  assert.deepEqual(perceivedStates(['dazzled'],me,me),[],'not on the observer itself');
  assert.deepEqual(perceivedStates(['off-guard'],other,me),[]);
  assert.deepEqual(perceivedStates(['dazzled'],other,null),[]);
- const [seen]=perceivedStates(['blinded'],other,me);assert.deepEqual(shownStates([seen]),[seen],'the stand-in itself still shows');
+ const [seen]=perceivedStates(['dazzled'],other,me);assert.deepEqual(shownStates([seen]),[seen],'the stand-in itself still shows');
+});
+test('Dazzled keeps its token motion but draws nothing on the token',async()=>{
+ const entry=PF2E_CONDITIONS.find(e=>e.slug==='dazzled'),f=fixture([native(entry)]),bodies=[];f.manager.host.body={add:(...a)=>bodies.push(a),remove:()=>{}};
+ await f.manager.reconcile();await flush();
+ assert.equal(f.calls.filter(c=>c[0]==='file').length,0);assert.equal(bodies.length,1);
+ await f.manager.destroy();
 });
 test('a perceived Concealed plays tied to the token only, never to its missing stand-in document',async()=>{
  const f=fixture([]);f.manager.host.perceivedStates=token=>perceivedStates(['dazzled'],token,{id:'observer'});
