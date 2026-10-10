@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **One-time animations can't get stuck.** A cast circle or other one-time animation still on screen 5 seconds after it should have ended is now ended on every screen (a player saw spell casting circles left over tokens during a combat).
 - **Dazzled shows how the token sees others (PF2e, SF2e).** Select a Dazzled token and every other token shows the Concealed look on your screen. The Dazzled token keeps its own motion but no longer wears an overlay. Works with PF2e Visioner too.
 - **Markers no longer float over heads.** Effects drawn with a JB2A marker (hearts, shields, runes, drops and so on, about 840 effects, Shield among them) are now a ring of icons under the token, wide enough that the icons orbit just outside its art, instead of hovering above the head into the next square.
 - **Allies inside an aura see its effect clearly.** An ally's copy is no longer squeezed to token size unless it is the aura's own ring, so effects like Angelic Halo's marker are no longer hidden behind the token art. When an aura's telling layer is only glints or motes, the ally also gets the aura's ring in its colour.

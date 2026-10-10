@@ -13,6 +13,8 @@ const SOUND_PRELOAD_TIMEOUT = 2000;
 // "Stay until the effect ends": if no effect from the item shows up on the token
 // within this time (never applied), the layer ends instead of lingering.
 export const EFFECT_GRACE_MS = 60000;
+// A one-time animation still on screen this long after its planned end is stuck; it is ended.
+export const STALL_GRACE_MS = 5000;
 // "Spell Effect: Shield", "Effect: Shield" and "Shield" name the same effect.
 export const sameEffectName = (name) => String(name ?? "").replace(/^\s*(?:spell\s+)?effect\s*:\s*/i, "").trim().toLowerCase();
 // The placed document a lasting area is tied to. Foundry 14 keeps a MeasuredTemplate
@@ -37,6 +39,7 @@ export class AnimaterRuntime {
     this.catalog = [];
     this.sessions = new Set();
     this.pending = new Map();
+    this.watchdogs = new Set();
     this.preparations = new Map();
     this.epoch = 0;
     this.previewAreas = new Set();
@@ -386,6 +389,14 @@ export class AnimaterRuntime {
           : []),
       ]);
       if (results.some((result) => !result)) return null;
+      // A one-time animation never outstays its plan: if a client's Sequencer stalls (a cast circle
+      // left on the tokens after a session), the caster's client ends it everywhere shortly after.
+      if (!preview && !plan.some((s) => s.persist)) {
+        const end = Math.max(0, ...plan.map((s) => (s.delay ?? 0) + (s.duration ?? 0)));
+        const timer = setTimeout(() => { this.watchdogs.delete(timer); void this.host.endEffects({ name: session }); }, end + STALL_GRACE_MS);
+        timer.unref?.();
+        this.watchdogs.add(timer);
+      }
       // "Stay until the effect ends" layers (Shield's ward) end when the item's effect
       // leaves the token; never applied within the grace time, they end anyway.
       const bearer = context.actor ?? context.source?.actor ?? context.source?.document?.actor;

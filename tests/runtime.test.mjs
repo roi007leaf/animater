@@ -842,6 +842,22 @@ test("a recipe's linked flash screen plays first at the table, never in a previe
   assert.ok(!order.includes("flash:sig-move"), "previews skip the flash screen");
   assert.ok(calls.length > 0);
 });
+test("a one-time animation stuck on a client is ended everywhere shortly after its planned end; lasting ones are left alone", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const { runtime, calls } = fixture();
+  const r = starterRecipes()[0];
+  r.stages = [{ ...r.stages[0], kind: "cast", persist: false, delay: 0, duration: 800 }];
+  const session = await runtime.play(r, { source: {}, targets: [] });
+  t.mock.timers.tick(800 + 4999);
+  assert.ok(!calls.some((c) => c[0] === "stop"), "not before its grace");
+  t.mock.timers.tick(1);
+  assert.deepEqual(calls.find((c) => c[0] === "stop")?.[1], { name: session });
+  calls.length = 0;
+  r.stages = [{ ...r.stages[0], kind: "aura", persist: true }];
+  await runtime.play(r, { source: {}, targets: [] });
+  t.mock.timers.tick(60000);
+  assert.ok(!calls.some((c) => c[0] === "stop" && c[1]?.name !== undefined && !String(c[1].name).endsWith("*")), "lasting layers are not cut");
+});
 test("a lasting layer loops its whole clip: no stage duration cuts its loop short", async () => {
   const { runtime, calls } = fixture();
   const r = starterRecipes()[0];
