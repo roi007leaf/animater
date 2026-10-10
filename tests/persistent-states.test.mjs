@@ -186,6 +186,12 @@ test('the selected Dazzled or Blinded token sees everyone else as Concealed or H
  assert.deepEqual(perceivedStates(['dazzled'],other,null),[]);
  const [seen]=perceivedStates(['blinded'],other,me);assert.deepEqual(shownStates([seen]),[seen],'the stand-in itself still shows');
 });
+test('a perceived Concealed plays tied to the token only, never to its missing stand-in document',async()=>{
+ const f=fixture([]);f.manager.host.perceivedStates=token=>perceivedStates(['dazzled'],token,{id:'observer'});
+ await f.manager.reconcile();
+ const ties=f.calls.filter(c=>c[0]==='tieToDocuments');assert.ok(ties.length);assert.ok(ties.every(c=>c[1].length===1&&c[1][0]==='Scene.s.Token.t'));
+ await f.manager.destroy();
+});
 test('a condition whose value changes (Frightened 2 to 1 at turn end) keeps showing until its replacement plays',async()=>{
  const item=native(fear);item.system.value.value=2;const f=fixture([item]);
  await f.manager.reconcile();await flush();
