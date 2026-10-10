@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- **Dazzled and Blinded show how the token sees others (PF2e, SF2e).** Select a Dazzled token and every other token shows the Concealed look on your screen; select a Blinded one and they show the Hidden look. The Dazzled or Blinded token itself no longer wears an overlay. With PF2e Visioner active, Animater leaves this to Visioner.
+- **Dazzled and Blinded show how the token sees others (PF2e, SF2e).** Select a Dazzled token and every other token shows the Concealed look on your screen; select a Blinded one and they show the Hidden look. The Dazzled or Blinded token itself no longer wears an overlay. Works with PF2e Visioner too.
 - **No more smoke over tokens.**
   - **Auras:** aura effects no longer use smoke, fume or fog footage, which buried the tokens inside them. Their hazes are coloured drifting motes; Fuming Cloak, Creeping Ashes, Ghosts in the Storm and Miasma get rings, ash motes and storm currents instead.
   - **Hidden, Undetected and Unnoticed** show only their rim, not a fog veil over the token.

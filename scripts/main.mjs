@@ -1163,9 +1163,9 @@ Hooks.once("ready", () => {
       retainFx:(stage,{session})=>allowsTokenFx(localQuality())?optionalFx.retain(stage,{session,userId:`state:${clientId}`}):undefined,
       budget:()=>stateBudget(localQuality()),
       stopFx:session=>optionalFx.stop({session}),
-      // The selected Dazzled or Blinded token sees everyone else as Concealed or Hidden (PF2e Visioner shows this itself).
+      // The selected Dazzled or Blinded token sees everyone else as Concealed or Hidden.
       perceivedStates:(token)=>{
-        if(["pf2e","sf2e"].includes(game.system.id)===false||game.modules.get("pf2e-visioner")?.active)return [];
+        if(!["pf2e","sf2e"].includes(game.system.id))return [];
         const controlled=canvas.tokens?.controlled??[],observer=controlled.length===1?controlled[0]:null;
         const slugs=observer?.actor?.itemTypes?.condition?.map((c)=>c.slug)??[];
         return perceivedStates(slugs,token,observer);
