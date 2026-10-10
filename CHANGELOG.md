@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Allies inside an aura get a quiet look.** In PF2e, an aura such as Protective Wards, Marshal's Aura or a banner gives an effect to every ally inside it. Animater drew that effect with the full aura ring on each ally, so a group filled the map with overlapping circles. Now the aura's owner keeps the ring, and allies who only receive it show its first layer, token-sized and half as bright.
+- **Aquatic Combat is a few bubbles (PF2e).** Every creature fighting in water carries *Effect: Aquatic Combat*, and it showed as a large red curse sigil under each of them. It now shows a few small rising bubbles on the token, as SF2e already did.
 - **Taking over Automated Animations covers conditions and effects.** With *Take over Automated Animations* on, both modules still animated the same condition or effect (Frightened, Grabbed, Bless…), because the takeover only checked Animater's recipes and conditions are its lasting animations. Now Automated Animations also stands down for every condition or effect Animater shows itself: its catalog is on, or you made your own version. Conditions Animater doesn't animate, such as a paused catalog or excluded entries, still play in Automated Animations.
 
 ## 0.3.6 (2026-10-09)

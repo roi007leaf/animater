@@ -118,6 +118,11 @@ export default {
 
   // ---------------- swimming ----------------
   ...many(['equipment-effects-rkirKFneWDdCjU7a', 'equipment-effects-4tepFOJLhZSelPoa', 'feat-effects-LCU3Lv6ojuTl4DSY', 'feat-effects-OhLcaJeQy4Nf5Mwo', 'feat-effects-HKPmrxkZwHRND5Um'], design('A granted swim Speed is shown as rising water bubbles around the swimmer.', swimBubbles)),
+  // Aquatic Combat: everyone fighting in water carries it, so it stays light: a few rising
+  // bubbles on the token (it was a generic penalty's red curse sigil under every creature).
+  'pf2e:other-effects-TPbr1kErAAJKBi3V': design('Aquatic Combat: fighting in water, shown as a few rising bubbles on the token instead of a curse sigil.', () => [
+    P('Rising bubbles', ['bubble.001.001.loop.blue', 'bubble.002.001.loop.blue'], { scale: 0.85, opacity: 0.55 }),
+  ]),
 
   // ---------------- darkvision and sight ----------------
   ...many(['equipment-effects-fbSFwwp60AuDDKpK', 'equipment-effects-7vCenP9j6FuHRv5C', 'equipment-effects-7UL8belWmo7U5YGM', 'equipment-effects-bcxVvIbuZWOvsKcA', 'feat-effects-EcVitI0Wqu3uNfaK', 'equipment-effects-vX8SE5SXnspdzMYZ', 'feat-effects-5IGz4iheaiUWm5KR', 'equipment-effects-Vd2wb7EO58q41HWm', 'equipment-effects-KSvkfMqMQ8mlGLiz', 'equipment-effects-d7BDxmsnM1BUoEeT', 'equipment-effects-WXrqEuLT4uP48Bvo'], design('Darkvision is shown as eyes glowing in the dark rather than as a generic light orb.', glowingEyes)),

@@ -205,3 +205,23 @@ test('covers: a condition Animater shows itself is reported, so Automated Animat
  assert.equal(f.manager.covers(native(fear)),false,'catalog paused: AA may play it');
  assert.equal(f.manager.covers(null),false);
 });
+test('an effect handed out by another creature\'s aura is drawn token-sized on the ally, not as the aura ring',async()=>{
+ const {grantedByOtherAura}=await import('../scripts/persistent-states.mjs');
+ const token={actor:{uuid:'Actor.ally'}};
+ assert.equal(grantedByOtherAura({flags:{pf2e:{aura:{origin:'Actor.caster',slug:'protective-ward'}}}},token),true);
+ assert.equal(grantedByOtherAura({flags:{pf2e:{aura:{origin:'Actor.ally'}}}},token),false,'the aura owner keeps the ring');
+ assert.equal(grantedByOtherAura({flags:{pf2e:{}}},token),false,'cast directly on the creature');
+});
+test('an ally inside someone else\'s aura gets a quiet copy: one layer, dimmer; the owner keeps every layer',async()=>{
+ const wards=PF2E_EFFECTS.find(e=>e.name==='Spell Effect: Protective Wards');
+ const owner=fixture([native(wards)]);
+ await owner.manager.reconcile();await flush();
+ const ownerFiles=owner.calls.filter(c=>c[0]==='file').length,ownerOpacity=owner.calls.find(c=>c[0]==='opacity')[1];
+ const allyItem={...native(wards),flags:{pf2e:{aura:{origin:'Actor.caster',slug:'protective-ward'}}}};
+ const ally=fixture([allyItem]);ally.actor.uuid='Actor.ally';
+ await ally.manager.reconcile();await flush();
+ assert.ok(ownerFiles>=1);
+ assert.equal(ally.calls.filter(c=>c[0]==='file').length,1,'the ally shows one quiet layer');
+ assert.ok(ally.calls.find(c=>c[0]==='opacity')[1]<=ownerOpacity/2+1e-9);
+ await owner.manager.destroy();await ally.manager.destroy();
+});

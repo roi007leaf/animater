@@ -62,6 +62,10 @@ export function nativeAuraStates(actor,{findStateEntry:lookup=findStateEntry,aur
  return states;
 }
 const slug=item=>item.slug??item.system?.slug??item.name;
+// An effect another creature's aura hands to this one (an ally inside Protective Wards or a
+// banner) is drawn token-sized: the aura's ring belongs to its owner, not to every ally in it.
+// PF2e marks those copies with flags.pf2e.aura.origin, the aura owner's actor.
+export function grantedByOtherAura(item,token){const origin=item?.flags?.pf2e?.aura?.origin;return Boolean(origin)&&origin!==token?.actor?.uuid;}
 // A condition that comes with another adds nothing to show. PF2e's Unconscious brings
 // Blinded, whose darkness cloud would cover the sleeping token and its sleep symbol.
 const IMPLIED={blinded:['unconscious']};
@@ -113,7 +117,7 @@ export class PersistentStates{
      if(!(h.activeState??activeState)(item)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
      const state=(h.normalizeState??normalizeStateCatalogState)(h.state(h.stateKind?.(item)??item.type)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;
-     const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType]);
+     const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType,grantedByOtherAura(item,token)]);
      if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false});shown++;}
     }
    }
@@ -141,7 +145,9 @@ export class PersistentStates{
   const h=this.host,catalog=h.catalog(),grid=h.gridSize();
   const plan=planRecipe(r.recipe,catalog,{source:r.token,targets:[],gridSize:grid});
   const sequence=h.sequence();
-  const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=budget.layers;
+  // Inside someone else's aura: a quiet copy (its first layer, token-sized, dimmer). The ring is the owner's.
+  const granted=grantedByOtherAura(r.item,r.token);
+  const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=granted?Math.min(1,budget.layers):budget.layers;
   let layers=0;
   for(const s of plan){
    if(s.kind!=='aura'||!s.persist)continue;
@@ -149,7 +155,7 @@ export class PersistentStates{
    const media=mediaForReference(catalog,s.asset);
    const e=sequence.effect().file(s.asset).name(r.name).origin(r.item.uuid??r.recipe.itemUuid)
     .attachTo(r.token,{offset:offsetInGridSquares(s,r.token,grid),gridUnits:true,bindRotation:s.bindRotation,bindAlpha:true,bindVisibility:true,bindElevation:true})
-    .size(artworkSize(effectFootprint(s,r.token,grid,h.gridDistance?.()??5)*s.scale*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity))
+    .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted?Math.min(s.scale,.9):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.5:1)))
     .persist().temporary().delay(s.delay).fadeIn(s.fadeIn).fadeOut(s.fadeOut);
    const documents=[r.token.document?.uuid,(h.storedDocument??storedStateDocument)(r.item)].filter(Boolean);
    if(documents.length)e.tieToDocuments(documents);
