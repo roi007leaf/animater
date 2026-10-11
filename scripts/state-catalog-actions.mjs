@@ -1,9 +1,10 @@
 import {normalizeStateCatalogState,useStateEntry,stateRecipe,catalogStateEntry} from './state-catalog.mjs';
 export async function handleStateCatalogAction(w,action,b){
- if(!['select-state','state-auto','state-pause','state-exclude','state-page','state-reset','use-state','copy-state','enable-state-custom','state-motion'].includes(action))return false;
+ if(!['select-state','state-auto','state-pause','state-exclude','state-page','state-reset','use-state','copy-state','enable-state-custom','state-motion','state-fade'].includes(action))return false;
  const kind=action==='enable-state-custom'?catalogStateEntry(w.recipe()?.stateEntry)?.kind:w.page==='conditions'?'condition':'effect';
  const id=action==='enable-state-custom'?w.recipe()?.stateEntry:action==='state-exclude'&&b.dataset.id?b.dataset.id:w.selectedState[kind],state=normalizeStateCatalogState(w.host.stateCatalogState?.(kind));
- if(action==='state-motion'){await w.host.setStateCatalogState(kind,{motion:!state.motion});w.message=state.motion?'Token motion off: conditions and effects show their effects only.':'Token motion on: creatures react to their conditions.';w.render();return true;}
+ if(action==='state-fade'){await w.host.setStateCatalogState(kind,{fade:!state.fade});w.message=state.fade?'Effects stay on the token while they last.':'Effects play once when applied, then fade away.';w.render();return true;}
+  if(action==='state-motion'){await w.host.setStateCatalogState(kind,{motion:!state.motion});w.message=state.motion?'Token motion off: conditions and effects show their effects only.':'Token motion on: creatures react to their conditions.';w.render();return true;}
  if(action==='select-state'){if(w.selectedState[kind]===b.dataset.id)return true;w.selectedState[kind]=b.dataset.id;w.stageIndex=0;}
  else if(action==='state-page')w.statePages[kind]=Math.max(0,Number(b.dataset.index));
  else if(action==='state-reset'){w.stateFilters[kind]={search:'',group:'all',theme:'all',quality:'all'};w.statePages[kind]=0;}

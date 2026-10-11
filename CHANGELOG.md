@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Effects can play once and fade away.** The Effects tab of every system's catalog (PF2e, SF2e, D&D 5e) has a new *Lasting animation* switch. *Stay while active* (the default) keeps an effect's animation on the token until the effect ends, as before. *Play once, then fade* shows it when the effect is applied, for a few seconds, then fades it out; reloading or changing scenes never replays it for an effect that was already there. Conditions always stay while active.
+
 ## 0.3.7 (2026-10-10)
 
 - **Asset variants are chips, like colors.** In the media library, the long "Style / version" dropdown is replaced by a row of chips for each part of the asset that varies: Style, Version, School, Playback (intro, loop, outro, complete), Shade. Each row offers only what exists under the choices above it, and picking a chip keeps the rest of your pick where it can (switching school keeps a loop a loop).

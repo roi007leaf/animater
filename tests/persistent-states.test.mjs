@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {PersistentStates,perceivedStates,activeState,stateVisible,storedStateDocument,nativeAuraStates,shownStates} from '../scripts/persistent-states.mjs';
+import {PersistentStates,FADE_MS,justApplied,perceivedStates,activeState,stateVisible,storedStateDocument,nativeAuraStates,shownStates} from '../scripts/persistent-states.mjs';
 import {PF2E_CONDITIONS,PF2E_EFFECTS,stateRecipe,useStateEntry} from '../scripts/state-catalog.mjs';
 const fear=PF2E_CONDITIONS.find(e=>e.slug==='frightened'),damage=PF2E_CONDITIONS.find(e=>e.slug==='persistent-damage'),bless=PF2E_EFFECTS.find(e=>e.name==='Spell Effect: Bless');
 const native=(e,id='i')=>({id,uuid:`Actor.a.Item.${id}`,type:e.kind,name:e.name,slug:e.kind==='condition'?e.slug:undefined,sourceId:e.uuid,system:{active:true,value:{isValued:e.kind==='condition',value:1}},active:true});
@@ -171,6 +171,29 @@ test('custom edits replace exact layers, disabled recipes stop them, and deletio
  assert.equal(f.manager.accepts('other-module-animation'),true);await f.manager.destroy();
 });
 
+test('Play once, then fade: a freshly applied effect plays for a moment and fades; one already on the token stays quiet',async()=>{
+ const entry=PF2E_EFFECTS.find(e=>stateRecipe(e).stages.some(s=>s.kind==='aura'&&s.persist&&!s.auraRadius));
+ const fresh=fixture([{...native(entry),_stats:{createdTime:Date.now()}}]);fresh.states.effect.fade=true;
+ await fresh.manager.reconcile();await flush();
+ assert.ok(fresh.calls.some(c=>c[0]==='file'));assert.ok(!fresh.calls.some(c=>c[0]==='persist'),'not lasting');
+ assert.ok(fresh.calls.some(c=>c[0]==='duration'&&c[1]===FADE_MS));
+ const calls=fresh.calls.length;await fresh.manager.reconcile();await flush();
+ assert.equal(fresh.calls.filter((c,i)=>i>=calls&&c[0]==='play').length,0,'it does not replay while the effect lasts');
+ await fresh.manager.destroy();
+ const old=fixture([{...native(entry),_stats:{createdTime:Date.now()-60000}}]);old.states.effect.fade=true;
+ await old.manager.reconcile();await flush();
+ assert.equal(old.calls.filter(c=>c[0]==='file').length,0,'a reload does not replay an effect that was already there');
+ await old.manager.destroy();
+ const lasting=fixture([{...native(entry),_stats:{createdTime:Date.now()-60000}}]);
+ await lasting.manager.reconcile();await flush();
+ assert.ok(lasting.calls.some(c=>c[0]==='persist'),'the default stays while active');
+ await lasting.manager.destroy();
+});
+test('justApplied: only effects created moments ago count as just applied; unknown creation counts as new',()=>{
+ assert.equal(justApplied({_stats:{createdTime:1000}},5000),true);
+ assert.equal(justApplied({_stats:{createdTime:1000}},60000),false);
+ assert.equal(justApplied({}),true);
+});
 test('Unconscious hides the Blinded it brings; Blinded and Dazzled alone still count',()=>{
  const c=(slug)=>({type:'condition',slug,name:slug});
  assert.deepEqual(shownStates([c('unconscious'),c('blinded'),c('off-guard')]).map(i=>i.slug),['unconscious','off-guard']);

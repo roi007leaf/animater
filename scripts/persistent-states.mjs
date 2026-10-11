@@ -74,6 +74,14 @@ const IMPLIED={blinded:['unconscious']};
 export const PERCEPTION={dazzled:'concealed'};
 const stateKey=i=>String(slug(i)??'').toLowerCase();
 export const motionOnly=i=>i.type==='condition'&&!i.animaterPerceived&&!!PERCEPTION[stateKey(i)];
+// "Play once, then fade" effects: shown for this long when applied, never replayed for an effect that was
+// already on the token (a reload or scene change), since it only counts as applied within APPLIED_WINDOW.
+export const FADE_MS=3000;
+const APPLIED_WINDOW=15000;
+export function justApplied(item,now=Date.now()){
+ const created=(item?._stats??item?.animaterAura?.item?._stats)?.createdTime;
+ return !Number.isFinite(created)||now-created<=APPLIED_WINDOW;
+}
 export function shownStates(states){
  const on=new Set(states.filter(i=>i.type==='condition').map(stateKey));
  return states.filter(i=>!(i.type==='condition'&&IMPLIED[stateKey(i)]?.some(s=>on.has(s))));
@@ -128,10 +136,11 @@ export class PersistentStates{
     for(const item of states){
      if(shown>=budget.states)break;
      if(!(h.activeState??activeState)(item)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
-     const state=(h.normalizeState??normalizeStateCatalogState)(h.state(h.stateKind?.(item)??item.type)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
+     const kind=h.stateKind?.(item)??item.type,state=(h.normalizeState??normalizeStateCatalogState)(h.state(kind)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType,grantedByOtherAura(item,token)]);
-     if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':'')+(motionOnly(item)?'body':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false,bodyOnly:motionOnly(item)});shown++;}
+     const fade=kind==='effect'&&state.fade===true;
+     if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':'')+(motionOnly(item)?'body':'')+(fade?'fade':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false,bodyOnly:motionOnly(item),fade,quiet:fade&&!justApplied(item)});shown++;}
     }
    }
   }
@@ -167,6 +176,8 @@ export class PersistentStates{
   const sparse=s=>/twinkling_stars\.|particles\.|wind_lines\.|swirling_leaves\.|butterflies\./.test(String(s.asset));
   const telling=lasting.find(s=>!generic(s)&&!sparse(s))??lasting.find(s=>!generic(s))??lasting[0];
   const allyCopy=!telling?[]:sparse(telling)?[lasting.find(generic),telling].filter(Boolean):[telling];
+  // A faded-away effect that was already on the token stays quiet: nothing replays on reload.
+  if(r.quiet)return;
   const shown=r.bodyOnly?[]:granted?allyCopy:lasting;
   const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=granted?Math.min(shown.length,budget.layers):budget.layers;
   let layers=0;
@@ -176,7 +187,8 @@ export class PersistentStates{
    const e=sequence.effect().file(s.asset).name(r.name).origin(r.item.uuid??r.recipe.itemUuid)
     .attachTo(r.token,{offset:offsetInGridSquares(s,r.token,grid),gridUnits:true,bindRotation:s.bindRotation,bindAlpha:true,bindVisibility:true,bindElevation:true})
     .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted&&s.auraRadius?Math.min(s.scale,1):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.8:1)))
-    .persist().temporary().delay(s.delay).fadeIn(s.fadeIn).fadeOut(s.fadeOut);
+    .temporary().delay(s.delay).fadeIn(s.fadeIn);
+   if(r.fade)e.duration(FADE_MS).fadeOut(Math.max(s.fadeOut??0,800));else e.persist().fadeOut(s.fadeOut);
    // A perceived Concealed/Hidden is a stand-in with no document of its own: tie it to the token only.
    const documents=[r.token.document?.uuid,r.item.animaterPerceived?null:(h.storedDocument??storedStateDocument)(r.item)].filter(Boolean);
    if(documents.length)e.tieToDocuments(documents);
@@ -184,7 +196,7 @@ export class PersistentStates{
    if(s.below)e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
   }
   if(r.cancelled||this.closed)return;
-  const filters=r.bodyOnly?[]:plan.filter(s=>s.kind==='tokenfx'&&s.persist);
+  const filters=r.bodyOnly||r.fade?[]:plan.filter(s=>s.kind==='tokenfx'&&s.persist);
   if(filters.length)await Promise.all(filters.map(async stage=>{
    try { await h.retainFx?.({...stage,destination:r.token},{session:r.name}); }
    catch(error){h.trace?.('Skipped',`Token Magic FX: ${error.message}`);}
@@ -195,7 +207,11 @@ export class PersistentStates{
   // Removal/scene changes can race asynchronous texture loading.
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}
   // The creature itself reacts (trembles, sways, turns to stone…) while the state lasts.
-  if(r.motion!==false)h.body?.add(r.name,r.token,bodyTreatment(r.item.name??r.recipe.name),{strength:level.scale});
+  if(r.motion!==false){
+   h.body?.add(r.name,r.token,bodyTreatment(r.item.name??r.recipe.name),{strength:level.scale});
+   // Played once: the creature reacts only while the animation shows.
+   if(r.fade)setTimeout(()=>{if(this.active.get(r.key)===r)h.body?.remove?.(r.name);},FADE_MS)?.unref?.();
+  }
  }
  async clear(){++this.revision;clearTimeout(this.timer);this.timer=null;const records=[...this.active.values()];this.active.clear();for(const r of records)r.cancelled=true;await Promise.all(records.map(r=>this.end(r)));}
  async destroy(){this.closed=true;await this.clear();}
