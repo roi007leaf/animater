@@ -1202,7 +1202,7 @@ export class Workspace {
     const attrs=field=>`data-field="${field}" data-index="${index}"`;
     if(stage.kind==='tokenfx') {
       const presets=catalog.presets.filter(p=>p.library===(stage.fxLibrary ?? 'tmfx-main'));
-      return `<label>Preset library<select ${attrs('fxLibrary')}>${options({'tmfx-main':'Token presets','tmfx-region':'Region presets'},stage.fxLibrary ?? 'tmfx-main')}</select></label><label>Token Magic preset<select ${attrs('fxPreset')} ${catalog.tokenReady?'':'disabled'}>${options({'':'Choose preset',...Object.fromEntries(presets.map(p=>[p.name,p.name]))},stage.fxPreset ?? '')}</select></label><button data-action="browse-tokenfx">Browse token filters</button><label class="an-check"><input type="checkbox" ${attrs('fxTint')} ${stage.fxTint?'checked':''}>Override preset color</label><label>Filter color<input type="color" ${attrs('fxTint')} value="${esc(stage.fxTint||'#ffffff')}" ${stage.fxTint?'':'disabled'}></label><p class="an-hint">${catalog.tokenReady?stage.persist?'Filter stays while the condition or effect is on the token.':'Temporary token filter. Removed when this stage ends.':'Enable Token Magic FX 0.8.4 or newer.'}</p>`;
+      return `<label>Preset library<select ${attrs('fxLibrary')}>${options({'tmfx-main':'Token presets','tmfx-region':'Region presets'},stage.fxLibrary ?? 'tmfx-main')}</select></label><label>Token Magic preset<select ${attrs('fxPreset')} ${catalog.tokenReady?'':'disabled'}>${options({'':'Choose preset',...Object.fromEntries(presets.map(p=>[p.name,p.name]))},stage.fxPreset ?? '')}</select></label><button data-action="browse-tokenfx">Browse token filters</button><label class="an-check"><input type="checkbox" ${attrs('fxTint')} ${stage.fxTint?'checked':''}>Override preset color</label><label>Filter color<input type="color" ${attrs('fxTint')} value="${esc(stage.fxTint||'#ffffff')}" ${stage.fxTint?'':'disabled'}></label><label>Strength<input type="number" ${attrs('fxStrength')} min="0.1" max="1" step="0.05" value="${esc(stage.fxStrength??1)}"></label><p class="an-hint">Fades glows, auras, bevels, fog and image overlays. Outlines and distortions (blur, ripples, twist) stay at full strength.</p><p class="an-hint">${catalog.tokenReady?stage.persist?'Filter stays while the condition or effect is on the token.':'Temporary token filter. Removed when this stage ends.':'Enable Token Magic FX 0.8.4 or newer.'}</p>`;
     }
     const category=stage.fxCategory ?? 'particle';
     const effects=catalog.effects.filter(e=>e.category===category);
@@ -1665,6 +1665,7 @@ export class Workspace {
               "opacity",
               "distance",
               "intensity",
+              "fxStrength",
             ].includes(key)
           ? Number(t.value)
           : key === "assets"

@@ -22,7 +22,8 @@ export function normalizeFxStage(stage) {
   return {...metadata,...(stage.kind === 'tokenfx'
     ? {fxPreset:typeof stage.fxPreset === 'string' ? stage.fxPreset.slice(0,100).trim() : '',
        fxLibrary:stage.fxLibrary === 'tmfx-region' ? 'tmfx-region' : 'tmfx-main',
-       fxTint:/^#[\da-f]{6}$/i.test(stage.fxTint??'')?stage.fxTint:''}
+       fxTint:/^#[\da-f]{6}$/i.test(stage.fxTint??'')?stage.fxTint:'',
+       fxStrength:Number.isFinite(Number(stage.fxStrength))?Math.min(1,Math.max(.1,Number(stage.fxStrength))):1}
     : {fxCategory:stage.fxCategory === 'filter' ? 'filter' : 'particle',
        fxType:safeKey(stage.fxType ?? '') ? stage.fxType : '', fxOptions:normalizeFxOptions(stage.fxOptions)})};
 }
@@ -58,6 +59,17 @@ export function installedFxCatalog({modules, tokenMagic, fxmaster, config, local
 // Token Magic keeps presets in world settings, so a preset can outlive the
 // module that ships its sprite images (Baileywiki '[BW]' overlays). Only offer
 // presets whose image modules are active.
+// Token Magic presets have no shared opacity: each filter has its own visibility settings (alpha,
+// lightAlpha, glow outerStrength, aura intensity, fog density…). Strength scales every one a filter has,
+// animated ones too; filters without any (outlines, distortions, colour shifts) are unchanged.
+const ALPHA_KEY=/^(?:alpha|[a-z]+Alpha|alphaImg|alphaChr|strength|[a-z]+Strength|intensity|[a-z]+Intensity|density|bloomScale)$/;
+export function scaleFilterStrength(param, strength = 1) {
+  if (!(Number(strength) < 1)) return param;
+  for (const [key, value] of Object.entries(param)) if (ALPHA_KEY.test(key) && typeof value === 'number') param[key] = value * strength;
+  for (const [key, anim] of Object.entries(param.animated ?? {})) if (ALPHA_KEY.test(key) && anim && typeof anim === 'object')
+    for (const end of ['val1', 'val2']) if (typeof anim[end] === 'number') anim[end] *= strength;
+  return param;
+}
 export function presetAssetsAvailable(preset, modules) {
   return (preset.params ?? []).every(p => {
     const id = /^modules\/([^/]+)\//.exec(String(p?.imagePath ?? ''))?.[1];
@@ -123,6 +135,7 @@ export class OptionalFxPlayer {
         param.color=Number.parseInt(stage.fxTint.slice(1),16);
         if(param.animated)delete param.animated.color;
       }
+      scaleFilterStrength(param,stage.fxStrength);
     }
     const remove=()=>api.togglePreset(token,own,{action:'remove',transient:true});
     try { await api.togglePreset(token,own,{action:'add',transient:true}); }

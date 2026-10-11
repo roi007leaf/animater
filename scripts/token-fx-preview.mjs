@@ -1,4 +1,5 @@
 import {stageFrame} from './stage-options.mjs';
+import {scaleFilterStrength} from './optional-fx.mjs';
 import {TokenFxPreviewClock} from './token-fx-preview-clock.mjs';
 
 const imageFilters=new Set(['sprite','spriteMask','polymorph']);
@@ -22,6 +23,7 @@ export function previewFilters(preset, stage, {PIXI, Anime, tokenMagic, sprite, 
       if(/^#[\da-f]{6}$/i.test(stage.fxTint??'')&&typeof params.color==='number') {
         params.color=Number.parseInt(stage.fxTint.slice(1),16);if(params.animated)delete params.animated.color;
       }
+      scaleFilterStrength(params,stage.fxStrength);
       const filter=new Filter(params);filters.push(filter);
       filter.targetPlaceable={worldTransform:new PIXI.Matrix(),x:0,y:0};
       filter.placeableImg=sprite;

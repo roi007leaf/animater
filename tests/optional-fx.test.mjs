@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {installedFxCatalog,OptionalFxPlayer,fxAvailability,effectOptions,normalizeFxOptions,startTokenFxPreview} from '../scripts/optional-fx.mjs';
+import {installedFxCatalog,OptionalFxPlayer,fxAvailability,effectOptions,normalizeFxOptions,startTokenFxPreview,scaleFilterStrength,normalizeFxStage} from '../scripts/optional-fx.mjs';
 import {validateRecipe,planRecipe} from '../scripts/model.mjs';
 import {AnimaterRuntime} from '../scripts/runtime.mjs';
 import {Workspace} from '../scripts/workspace.mjs';
@@ -198,4 +198,16 @@ test('optional catalog token accents never block base playback when the sync cha
  await runtime.play(recipe(stages),{source:{},targets:[]});
  assert.ok(calls.includes('file'));assert.ok(!calls.includes('fx'));assert.ok(runtime.log.some(e=>e.status==='Skipped'&&e.detail.includes('synchronization')));
  await assert.rejects(runtime.play(recipe(stages.map(s=>({...s,catalogFx:false}))),{source:{},targets:[]}),/token-motion channel/);
+});
+test('Strength fades a Token Magic filter by scaling every transparency setting it has, animated ones too',()=>{
+ const bevel={filterType:'bevel',lightAlpha:.8,shadowAlpha:.6,thickness:3,alphaDiscard:false,animated:{lightAlpha:{val1:.4,val2:1},thickness:{val1:1,val2:5}}};
+ scaleFilterStrength(bevel,.5);
+ assert.equal(bevel.lightAlpha,.4);assert.equal(bevel.shadowAlpha,.3);assert.equal(bevel.thickness,3,'non-alpha settings untouched');
+ assert.equal(bevel.alphaDiscard,false);assert.deepEqual(bevel.animated.lightAlpha,{val1:.2,val2:.5});assert.deepEqual(bevel.animated.thickness,{val1:1,val2:5});
+ const glow={filterType:'glow',outerStrength:7,innerStrength:0,quality:.5};scaleFilterStrength(glow,.5);assert.equal(glow.outerStrength,3.5,'glow fades through its strength');assert.equal(glow.quality,.5);
+ const aura={filterType:'xglow',auraIntensity:2,alphaTolerance:.5};scaleFilterStrength(aura,.5);assert.equal(aura.auraIntensity,1);assert.equal(aura.alphaTolerance,.5,'tolerances are not fades');
+ const full={filterType:'glow',outerStrength:7};scaleFilterStrength(full,1);assert.equal(full.outerStrength,7,'full strength changes nothing');
+ assert.equal(normalizeFxStage({kind:'tokenfx',fxPreset:'bevel'}).fxStrength,1);
+ assert.equal(normalizeFxStage({kind:'tokenfx',fxPreset:'bevel',fxStrength:0}).fxStrength,.1);
+ assert.equal(normalizeFxStage({kind:'tokenfx',fxPreset:'bevel',fxStrength:'.4'}).fxStrength,.4);
 });

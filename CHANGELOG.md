@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Strength for Token Magic FX stages.** Token Magic presets have no shared opacity, so a filter stage now has a *Strength* setting (0.1 to 1). It scales every visibility setting the preset's filters have (alpha, glow strength, aura intensity, fog density, bevel light and shade, image overlays), animated values too, in the studio preview and at the table. Outlines and distortions (blur, ripples, twist) have no such setting and stay at full strength.
+
 ## 0.3.9 (2026-10-11)
 
 - **No empty "Asset & visibility" section.** Token Magic FX, scene FX, motion and sound stages have no asset keys, opacity or below-token setting, so the studio no longer shows that section for them (it opened to nothing).
