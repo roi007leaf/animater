@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- **Effects can play once and fade away.** The Effects tab of every system's catalog (PF2e, SF2e, D&D 5e) has a new *Lasting animation* switch. *Stay while active* (the default) keeps an effect's animation on the token until the effect ends, as before. *Play once, then fade* shows it when the effect is applied, for a few seconds, then fades it out; reloading or changing scenes never replays it for an effect that was already there. Conditions always stay while active.
+- **Conditions and effects can play once and fade away.** The Conditions and Effects tabs of every system's catalog (PF2e, SF2e, D&D 5e) each have a new *Lasting animation* switch. *Stay while active* (the default) keeps the animation on the token until the condition or effect ends, as before. *Play once, then fade* shows it when it is applied, for a few seconds, then fades it out; reloading or changing scenes never replays it for one that was already there.
+- **No more skulls on Bless.** The radiating rings under many auras come in five motifs (hearts, screaming spirits, digital blocks, flame-like tendrils and clean ripples), and auras were picking them by number. Bless, Benediction, Angelic Halo, Righteous Call and the marshal and banner auras showed screaming skulls or hearts. Every aura now picks its ring by meaning: clean ripples for holy, protective and leadership auras, tendrils for wrath, flame and raw power, spirits only for despair, grief, dread and possession, and hearts only for Mantle of the Unwavering Heart.
 
 ## 0.3.7 (2026-10-10)
 

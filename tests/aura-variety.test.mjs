@@ -76,3 +76,7 @@ test('aura provider references use actual native compendium pack IDs',()=>{
  for(const e of PF2E_EFFECTS.filter(e=>e.auraSources))for(const s of e.auraSources)assert.doesNotMatch(s.uuid,/^Compendium\.pf2e\.(equipment|feats|spells)\.Item\./);
  assert.match(entry("Aura: Demon's Knot").auraSources[0].uuid,/^Compendium\.pf2e\.equipment-srd\.Item\./);
 });
+test('holy and leadership auras never use the screaming-spirit or heart ring motifs (Aura003 styles 002 and 001)',()=>{
+ for(const name of ['Spell Effect: Bless','Spell Effect: Benediction','Aura: Angelic Halo','Aura: Righteous Call',"Effect: Marshal's Aura","Effect: Commander's Banner",'Effect: Inspiring Marshal Stance'])
+  for(const edition of ['free','patreon'])assert.doesNotMatch(keys(name,edition).join(' '),/aura\.03\.(?:in|out)ward\.00[12]\./,`${name} ${edition}`);
+});

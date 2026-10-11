@@ -139,7 +139,7 @@ export class PersistentStates{
      const kind=h.stateKind?.(item)??item.type,state=(h.normalizeState??normalizeStateCatalogState)(h.state(kind)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType,grantedByOtherAura(item,token)]);
-     const fade=kind==='effect'&&state.fade===true;
+     const fade=state.fade===true;
      if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':'')+(motionOnly(item)?'body':'')+(fade?'fade':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false,bodyOnly:motionOnly(item),fade,quiet:fade&&!justApplied(item)});shown++;}
     }
    }

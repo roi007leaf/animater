@@ -1,6 +1,22 @@
 // Measured frame/visible alpha dimensions [width, height, visibleWidth, visibleHeight].
 // Rebuild: rtk proxy node tools/audit-media-footprints.mjs --all-systems --fetch-missing-free --write
 export const MEDIA_FOOTPRINTS = {
+  "Aura003Part02_Inward_Loop_004_Blue_1000x1000.webm": [1000,1000,875,867.1875],
+  "Aura003Part01_Inward_Loop_005_Blue_1400x1400.webm": [1400,1400,1126.5625,1115.625],
+  "Aura003Part01_Inward_Loop_004_Blue_1400x1400.webm": [1400,1400,1170.3125,1159.375],
+  "Aura003Part01_Outward_Loop_005_Blue_1400x1400.webm": [1400,1400,1159.375,1104.6875],
+  "Aura003Part01_Inward_Loop_005_White_1400x1400.webm": [1400,1400,1126.5625,1115.625],
+  "Aura003Part02_Inward_Loop_004_GreenPurple_1000x1000.webm": [1000,1000,828.125,812.5],
+  "Aura003Part01_Outward_Loop_005_OrangeYellow_1400x1400.webm": [1400,1400,1148.4375,1104.6875],
+  "Aura003Part01_Inward_Loop_005_GreenYellow_1400x1400.webm": [1400,1400,1137.5,1137.5],
+  "Aura003_Outward_Loop_002_PurpleRed_1400x1400.webm": [1400,1400,929.6875,984.375],
+  "Aura003_Inward_Loop_002_OrangeYellow_1400x1400.webm": [1400,1400,1115.625,1126.5625],
+  "Aura003Part01_Inward_Loop_004_PurpleRed_1400x1400.webm": [1400,1400,1170.3125,1148.4375],
+  "Aura003Part01_Outward_Loop_005_PinkYellow_1400x1400.webm": [1400,1400,1082.8125,1060.9375],
+  "Aura003_Inward_Loop_005_GreenPurple_1400x1400.webm": [1400,1400,1126.5625,1115.625],
+  "Aura003_Inward_Loop_002_BluePurple_1400x1400.webm": [1400,1400,1104.6875,1104.6875],
+  "Aura003_Inward_Loop_005_GreenYellow_1400x1400.webm": [1400,1400,1137.5,1137.5],
+  "Aura003_Inward_Loop_004_PurpleRed_1400x1400.webm": [1400,1400,1170.3125,1148.4375],
   "3Chevrons_01_Regular_Yellow_200x200.webm": [
     200,
     200,
