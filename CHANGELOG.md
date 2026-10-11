@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.9 (2026-10-11)
+
 - **No empty "Asset & visibility" section.** Token Magic FX, scene FX, motion and sound stages have no asset keys, opacity or below-token setting, so the studio no longer shows that section for them (it opened to nothing).
 
 ## 0.3.8 (2026-10-11)
