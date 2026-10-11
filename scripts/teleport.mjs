@@ -1,3 +1,5 @@
+import { resolveAsset } from './model.mjs';
+
 // Teleport spells: the one who cast clicks a spot within range, and the caster (or the
 // first target) vanishes and reappears there. The only Animater feature that moves a token
 // for real, so it is off unless a recipe turns it on (known teleport spells do by default).
@@ -13,6 +15,18 @@ export const TELEPORT_DEFAULTS = {
   "far-step": { who: "source", range: 60 },
 };
 export const TELEPORT_WHO = { none: "Off", source: "The caster", target: "The first target" };
+export const TELEPORT_STYLES = {
+  blue: { label: 'Blue mist (default)', out: 'jb2a.misty_step.01.blue', in: 'jb2a.misty_step.02.blue' },
+  purple: { label: 'Purple mist', out: 'jb2a.misty_step.01.purple', in: 'jb2a.misty_step.02.purple' },
+  green: { label: 'Green mist', out: 'jb2a.misty_step.01.green', in: 'jb2a.misty_step.02.green' },
+  yellow: { label: 'Golden flash', out: 'jb2a.teleport.01.yellow', in: 'jb2a.teleport.01.yellow' },
+  none: { label: 'No extra effects', out: 'none', in: 'none' },
+};
+export function teleportStyle(recipe) {
+  return Object.entries(TELEPORT_STYLES).find(([, style]) =>
+    style.out === (recipe.teleportOut || TELEPORT_STYLES.blue.out) &&
+    style.in === (recipe.teleportIn || TELEPORT_STYLES.blue.in))?.[0] ?? 'custom';
+}
 const slug = (v) => String(v ?? "").toLowerCase().trim().replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
 // What a recipe teleports, or null. A recipe's own choice wins ("none" turns a known spell's off).
@@ -22,6 +36,28 @@ export function teleportPlan(recipe) {
   const who = TELEPORT_WHO[recipe.teleport] && recipe.teleport !== "none" ? recipe.teleport : known?.who;
   if (!who) return null;
   return { who, range: Number(recipe.teleportRange) > 0 ? Number(recipe.teleportRange) : known?.range ?? 0, adjacent: recipe.teleportAdjacent ?? known?.adjacent ?? false };
+}
+
+// Extra departure/arrival cues belong to this recipe, rather than fixed blue puffs.
+export function teleportVisuals(recipe, catalog) {
+  const asset = (value, fallback) => value === 'none' ? null : resolveAsset({ kind: 'cast', assets: [value || fallback] }, catalog);
+  return {
+    out: asset(recipe.teleportOut, 'jb2a.misty_step.01.blue'),
+    in: asset(recipe.teleportIn, 'jb2a.misty_step.02.blue'),
+    scale: recipe.teleportScale ?? 1.8,
+    tint: recipe.teleportTint ?? '',
+  };
+}
+
+// The host retains ownership/socket rules; visuals bracket the same real token move.
+export async function playTeleport({ mover, x, y, visuals }, host) {
+  const size = mover.w * visuals.scale, from = { ...mover.center };
+  const to = { x: x + mover.w / 2, y: y + mover.h / 2 };
+  await host.wait(450);
+  if (visuals.out) host.effect(visuals.out, from, size, visuals.tint);
+  await host.wait(700);
+  await host.move(mover, x, y);
+  if (visuals.in) host.effect(visuals.in, to, size, visuals.tint);
 }
 
 // An item's range in feet, or null when it names none. PF2e: "30 feet", "touch"; D&D: { value, units }.

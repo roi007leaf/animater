@@ -24,6 +24,7 @@ export const EVENTS = {
   template: "Area placed",
   effect: "Effect added",
 };
+export const STRIKE_SCOPES = { melee: 'All melee strikes', ranged: 'All ranged strikes' };
 export const KINDS = {
   cast: "Caster",
   travel: "Source → target",
@@ -87,6 +88,13 @@ export function validateRecipe(input) {
     input.stages.length > MAX_STAGES
   )
     throw Error(`Recipes need 1–${MAX_STAGES} stages.`);
+  const strikeScope = Object.hasOwn(STRIKE_SCOPES, input.matchScope ?? '') && ['attack', 'damage'].includes(input.trigger) ? input.matchScope : null;
+  for (const field of ['teleportOut', 'teleportIn']) {
+    if (input[field] && input[field] !== 'none' && !visualReference(input[field]))
+      throw Error('Teleport effect needs a database key or relative visual media file.');
+  }
+  if (input.teleportTint && !/^#[\da-f]{6}$/i.test(input.teleportTint))
+    throw Error('Teleport tint must be a hex color such as #aa88ff, or blank.');
   const recipe = {
     id,
     name: text(input.name),
@@ -96,21 +104,26 @@ export function validateRecipe(input) {
     enabled: input.enabled !== false,
     trigger: input.trigger,
     match: text(input.match, 1000),
-    itemUuid: text(input.itemUuid, 300),
+    itemUuid: strikeScope ? '' : text(input.itemUuid, 300),
+    ...(strikeScope ? { matchScope: strikeScope } : {}),
     // A flash screen shown to everyone right before this animation plays.
     ...(/^[A-Za-z0-9-]{1,40}$/.test(input.flash ?? "") ? { flash: input.flash } : {}),
     // Teleport: the caster or first target moves to a spot the one who cast clicks (see teleport.mjs).
     ...(["none", "source", "target"].includes(input.teleport) ? { teleport: input.teleport } : {}),
     ...(Number(input.teleportRange) > 0 ? { teleportRange: Math.min(5280, Math.round(Number(input.teleportRange))) } : {}),
     ...(typeof input.teleportAdjacent === "boolean" ? { teleportAdjacent: input.teleportAdjacent } : {}),
+    ...(input.teleportOut ? { teleportOut: input.teleportOut } : {}),
+    ...(input.teleportIn ? { teleportIn: input.teleportIn } : {}),
+    ...(/^#[\da-f]{6}$/i.test(input.teleportTint ?? '') ? { teleportTint: input.teleportTint } : {}),
+    ...(Number(input.teleportScale) > 0 ? { teleportScale: number(input.teleportScale, .1, 5, 1.8) } : {}),
     ...(['pf2e','sf2e','dnd5e'].includes(input.systemId)?{systemId:input.systemId}:/^Compendium\.(pf2e|sf2e|dnd5e)\./.test(input.itemUuid??'')?{systemId:input.itemUuid.split('.')[1]}:{}),
-    ...(text(input.catalogEntry,100)?{catalogEntry:text(input.catalogEntry,100)}:{}),
-    ...(text(input.activityId,100)?{activityId:text(input.activityId,100)}:{}),
+    ...(!strikeScope&&text(input.catalogEntry,100)?{catalogEntry:text(input.catalogEntry,100)}:{}),
+    ...(!strikeScope&&text(input.activityId,100)?{activityId:text(input.activityId,100)}:{}),
     ...(normalizePlaybackRoles(input.playbackRoles)?{playbackRoles:normalizePlaybackRoles(input.playbackRoles)}:{}),
     ...(input.lifecycle === "document" && input.trigger === "effect"
       ? { lifecycle: "document", stateEntry: text(input.stateEntry, 100),
           ...(/^[a-z-]{1,30}$/.test(input.stateDamageType ?? "") ? {stateDamageType:input.stateDamageType} : {}) } : {}),
-    ...(["melee", "ranged", "thrown"].includes(input.weaponMode)
+    ...(strikeScope ? { weaponMode: strikeScope } : ["melee", "ranged", "thrown"].includes(input.weaponMode)
       ? { weaponMode: input.weaponMode } : {}),
     // Play-time element choice (scripts/element-choice.mjs).
     ...(input.elementChoice === true ? { elementChoice: true } : {}),
@@ -302,7 +315,9 @@ export function matchRecipe(recipes, event) {
           (!r.activityId || r.activityId === event.activityId) &&
           (!r.weaponMode || r.weaponMode === event.weaponMode) &&
           r.trigger === event.type &&
-          (r.itemUuid
+          (Object.hasOwn(STRIKE_SCOPES, r.matchScope ?? '')
+            ? event.weaponMode === r.matchScope && ['weapon', 'melee'].includes(event.item?.type)
+            : r.itemUuid
             ? uuids.includes(r.itemUuid)
             : r.match
                 .split(",")
@@ -310,10 +325,16 @@ export function matchRecipe(recipes, event) {
       )
       .sort(
         (a, b) =>
+          Number(Object.hasOwn(STRIKE_SCOPES, a.matchScope ?? '')) - Number(Object.hasOwn(STRIKE_SCOPES, b.matchScope ?? '')) ||
           Number(Boolean(b.itemUuid)) - Number(Boolean(a.itemUuid)) ||
           a.id.localeCompare(b.id),
       )[0] ?? null
   );
+}
+// A deliberate strike-wide override also preserves more specific saved exceptions.
+export function matchStrikeOverride(recipes, event) {
+  return matchRecipe(recipes.filter(r => Object.hasOwn(STRIKE_SCOPES, r.matchScope ?? '')), event)
+    ? matchRecipe(recipes, event) : null;
 }
 export function resolveAsset(stage, catalog) {
   return installedAssets(stage, catalog, 1)[0] ?? null;

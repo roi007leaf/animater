@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## 0.3.12 (2026-10-11)
+
+- **Recipe search stays visible.** The recipe library's search bar remains at the top while scrolling through cards, so a search can be started without scrolling back up.
+
+- **Custom teleport effects.** Recipe settings now offer teleport looks, separate departure and arrival artwork, size and optional tint. The extra puffs can be disabled while keeping the token move. Existing recipes retain blue mist.
+
+- **One animation for all melee or all ranged strikes.** Attack and damage recipes can bind to every melee strike or every ranged strike without listing names, including NPC attacks and melee unarmed strikes. Both override built-in weapon animations while preserving specific saved exceptions and separate thrown and spell attacks.
+
 ## 0.3.11 (2026-10-11)
 
 - **Lasting effects no longer bury the token.** An audit of every lasting condition and effect in PF2e, SF2e and D&D 5e measured how much of the token's face each layer drawn over it covers: 275 covered half or more (nets and vines up to 90%, fumes, fog, sleep clouds and darkness, sparkles, lightning orbs, flames, and D&D's shield dome on 135 immunity and resistance effects). Footage that fills its frame (web, vines, smoke, fog, sparkles, flames, orbs, shield domes, marker rings) is now drawn under the token when it is token-sized: a net binds round the feet, smoke is ground haze, a dome is a halo round the edges. Small, deliberate placements such as Blinded's blindfold stay on top. After the change, 5 layers cover half the face, down from 275.

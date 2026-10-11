@@ -68,6 +68,63 @@ function workspace() {
   return { w, click, renders: () => renders };
 }
 
+test('strike scopes clear per-item constraints; switching trigger or dropping an item restores specific binding', async () => {
+  const f = workspace();
+  const r = { id: 'melee', name: 'Melee', trigger: 'attack', match: 'sword', itemUuid: 'Item.old', activityId: 'old-activity', catalogEntry: 'old-entry', stages: [{ kind: 'motion', motion: 'lunge' }] };
+  f.w.edit = () => r;
+  f.w.stopEditorPreview = () => {};
+  const field = (key, value) => f.w.updateField({ dataset: { field: key }, type: 'select-one', value });
+  field('matchScope', 'melee');
+  assert.equal(r.itemUuid, '');
+  assert.equal(r.weaponMode, 'melee');
+  assert.equal(r.activityId, undefined);
+  assert.equal(r.catalogEntry, undefined);
+  f.w.host = { catalog: () => [], recipes: () => [] };
+  const html = f.w.recipeSettingsHTML(r);
+  assert.match(html, /All melee strikes/);
+  assert.doesNotMatch(html, /data-field="match"/);
+  assert.doesNotMatch(html, /data-field="weaponMode"/);
+  field('matchScope', 'ranged');
+  assert.equal(r.matchScope, 'ranged');
+  assert.equal(r.weaponMode, 'ranged');
+  assert.match(f.w.recipeSettingsHTML(r), /value="ranged" selected/);
+  assert.match(f.w.recipeSettingsHTML(r), /every ranged weapon or NPC ranged strike/);
+  field('trigger', 'use');
+  assert.equal(r.matchScope, undefined);
+  assert.equal(r.weaponMode, undefined);
+  field('trigger', 'attack'); field('matchScope', 'ranged'); field('matchScope', '');
+  assert.equal(r.matchScope, undefined);
+  assert.equal(r.weaponMode, undefined);
+  field('trigger', 'attack'); field('matchScope', 'melee');
+  f.w.host.resolveItem = async () => ({ uuid: 'Item.new', name: 'Spear' });
+  await f.w.onDrop({ target: { closest: selector => selector === '.an-binding' ? {} : null }, preventDefault() {}, dataTransfer: { getData: () => JSON.stringify({ type: 'Item', uuid: 'Item.new' }) } });
+  assert.equal(r.matchScope, undefined);
+  assert.equal(r.itemUuid, 'Item.new');
+  assert.equal(r.match, 'Spear');
+});
+
+test('teleport settings show installed looks and persist selected departure and arrival art', () => {
+  const f = workspace(), r = { match: 'Misty Step', stages: [] };
+  f.w.host = { catalog: () => ['jb2a.misty_step.01.purple', 'jb2a.misty_step.02.purple'].map(key => ({ key })) };
+  f.w.edit = () => r;
+  f.w.stopEditorPreview = () => {};
+  let html = f.w.teleportHTML(r);
+  assert.match(html, /Teleport look/);
+  assert.match(html, /value="purple"[^>]*>Purple mist/);
+  assert.match(html, /value="green"[^>]*disabled/);
+  f.w.updateField({ dataset: { field: 'teleportStyle' }, type: 'select-one', value: 'purple' });
+  assert.equal(r.teleportOut, 'jb2a.misty_step.01.purple');
+  assert.equal(r.teleportIn, 'jb2a.misty_step.02.purple');
+  assert.equal(r.teleportStyle, undefined, 'style selector is derived, not persisted');
+  html = f.w.teleportHTML(r);
+  assert.match(html, /value="purple" selected/);
+  f.w.updateField({ dataset: { field: 'teleportStyle' }, type: 'select-one', value: 'none' });
+  assert.equal(r.teleportOut, 'none');
+  assert.equal(r.teleportIn, 'none');
+  r.teleport = 'none';
+  assert.doesNotMatch(f.w.teleportHTML(r), /Teleport look/);
+});
+
 test('unconfigured spell opens a local blank draft and never saves generic placeholder art',async()=>{
  await withUnconfiguredSpell('500 Toads',async spell=>{
  const f=workspace();

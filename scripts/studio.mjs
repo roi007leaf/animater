@@ -3,7 +3,7 @@
 // bottom. Stages are grouped into role tracks; inside a track, stages that do
 // not overlap share a lane. Saved recipe data is unchanged: tracks, lanes,
 // playhead and zoom are presentation only.
-import { KINDS, EVENTS, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
+import { KINDS, EVENTS, STRIKE_SCOPES, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
 import { timelineLayout, packLanes, linkStartModes } from "./choreography.mjs";
 import { sampleRecipe, timedStages, previewVariants, variantMembers } from "./composition.mjs";
 import { previewRecipeSounds } from "./spell-sounds.mjs";
@@ -109,7 +109,7 @@ export function studioHTML(w, r) {
 }
 function triggerChipHTML(w, r) {
   const bound = r.itemUuid ? w.host.itemSummary?.(r.itemUuid)?.name : "";
-  const what = bound || r.match?.split(",")[0]?.trim() || "";
+  const what = STRIKE_SCOPES[r.matchScope] || bound || r.match?.split(",")[0]?.trim() || "";
   const lasting = w.lastingLabel?.(r);
   const when = r.enabled === false ? "Disabled" : lasting ? `${lasting} · while on token` : EVENTS[r.trigger] ?? r.trigger;
   return `<button class="an-st-trigger${r.enabled === false ? " is-off" : ""}${w.studioSettings ? " is-open" : ""}" data-action="studio-settings" aria-expanded="${!!w.studioSettings}" data-tooltip="Recipe settings: trigger, item binding, description, category">⚙ <span>${esc(when)}</span>${what ? `<small>${esc(what)}</small>` : ""}</button>`;

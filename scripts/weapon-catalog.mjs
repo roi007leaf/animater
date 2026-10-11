@@ -1,6 +1,6 @@
 import {PF2E_WEAPONS,PF2E_WEAPON_SOURCE} from '../data/pf2e-weapons.mjs';
 import {weaponRecipe} from './weapon-choreography.mjs';
-import {normalize,matchRecipe} from './model.mjs';
+import {normalize,matchRecipe,matchStrikeOverride} from './model.mjs';
 export {PF2E_WEAPONS,PF2E_WEAPON_SOURCE,weaponRecipe};
 const byId=new Map(PF2E_WEAPONS.map(w=>[w.id,w])),byName=new Map(),byBase=new Map();
 for(const w of [...PF2E_WEAPONS].sort((a,b)=>Number(a.edition==='legacy')-Number(b.edition==='legacy')||a.level-b.level)){
@@ -35,6 +35,7 @@ export function resolveAutomaticWeaponRecipe(event,state,custom=[],{customEnable
  const active=weapon&&event.type==='attack'&&catalogWeaponEnabled(weapon.id,state)&&weapon.modes.some(m=>m.mode===mode);
  const bound={...event,weaponMode:mode,...(weapon?.strikeBinding==='unarmed'?{itemUuid:`Compendium.pf2e.equipment-srd.Item.${weapon.id}`}:{})};
  const configured=customEnabled||active&&state.customized?.includes(key)?custom:[];
+ const override=matchStrikeOverride(configured,bound);if(override)return override;
  if(active&&(state.selected?.includes(weapon.id)||state.preferCatalog)&&!state.customized?.includes(key))return weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume});
  const saved=matchRecipe(configured,bound);if(saved)return saved;
  if(!active||configured.some(r=>!r.enabled&&matchRecipe([{...r,enabled:true}],bound)))return null;

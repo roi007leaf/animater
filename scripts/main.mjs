@@ -40,7 +40,7 @@ import {
 import { PF2E_ACTION_CATALOG, PF2E_FEATURE_CATALOG, isFeatureItem, riderRecipes } from "./ability-catalog.mjs";
 // PF2e ability catalogs beside feats: setting key → catalog.
 import { findCatalogSpell as findSpellEntry } from "./spell-catalog.mjs";
-import { teleportPlan, itemRangeFeet, pickTeleportSpot } from "./teleport.mjs";
+import { teleportPlan, teleportVisuals, playTeleport, itemRangeFeet, pickTeleportSpot } from "./teleport.mjs";
 import { findCatalogFeat as findFeatEntry } from "./feat-catalog.mjs";
 import { findCatalogWeapon as findWeaponEntry } from "./weapon-catalog.mjs";
 import { findStateEntry as findConditionEntry } from "./state-catalog.mjs";
@@ -405,18 +405,24 @@ async function pickTeleport(recipe, context) {
   const feet = plan.adjacent ? 5 : plan.range || itemRangeFeet(context.item) || Infinity;
   ui.notifications.info(`Teleport ${mover.name}: click a spot${Number.isFinite(feet) ? ` within ${feet} feet` : ""} (Esc to cancel).`);
   const spot = await pickTeleportSpot({ caster, mover, feet, notify: (text) => ui.notifications.warn(text) });
-  return spot ? { mover, caster, ...spot } : null;
+  return spot ? { mover, caster, ...spot, visuals: teleportVisuals(recipe, runtime.getCatalog()) } : null;
 }
 async function moveToken(doc, x, y) { await doc.update({ x, y }, { animate: false, animater: { teleport: true } }); }
-async function teleport({ mover, caster, x, y }) {
-  const doc = mover.document, size = mover.w * 1.8, from = { ...mover.center }, to = { x: x + mover.w / 2, y: y + mover.h / 2 };
-  await new Promise((r) => setTimeout(r, 450));
-  new Sequence({ moduleName: ID }).effect().file("jb2a.misty_step.01.blue").atLocation(from).size(size).play();
-  await new Promise((r) => setTimeout(r, 700));
-  // A creature this player does not own (an ally fetched to them) is moved by the active GM.
-  if (doc.isOwner) await moveToken(doc, x, y);
-  else game.socket.emit(`module.${ID}`, { type: "teleport", sender: clientId, userId: game.user.id, uuid: doc.uuid, casterUuid: caster?.document?.uuid, x, y });
-  new Sequence({ moduleName: ID }).effect().file("jb2a.misty_step.02.blue").atLocation(to).size(size).play();
+async function teleport(spot) {
+  return playTeleport(spot, {
+    wait: ms => new Promise(resolve => setTimeout(resolve, ms)),
+    effect: (asset, point, size, tint) => {
+      const effect = new Sequence({ moduleName: ID }).effect().file(asset).atLocation(point).size(size);
+      if (tint) effect.tint(tint);
+      void effect.play().catch(error => console.warn('Animater teleport effect:', error.message));
+    },
+    move: async (mover, x, y) => {
+      const doc = mover.document;
+      // A creature this player does not own (an ally fetched to them) is moved by the active GM.
+      if (doc.isOwner) await moveToken(doc, x, y);
+      else game.socket.emit(`module.${ID}`, { type: "teleport", sender: clientId, userId: game.user.id, uuid: doc.uuid, casterUuid: spot.caster?.document?.uuid, x, y });
+    },
+  });
 }
 // The active GM moves a teleported token for the player who cast the spell: only when that
 // player owns the caster, and only a token on the caster's scene.

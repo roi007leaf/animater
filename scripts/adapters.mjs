@@ -38,9 +38,11 @@ export function twoeEvent(message, userId, systemId='pf2e') {
   const live = rows => (Array.isArray(rows) ? rows : []).filter(r => r?.slug && r.enabled !== false && r.ignored !== true);
   const damageSlugs = type === "damage" ? [...live(flags?.dice).map(d => `dice:${d.slug}`), ...live(flags?.modifiers).map(m => `modifier:${m.slug}`)] : [];
   const altUsage = context?.altUsage ?? flags?.strike?.altUsage ?? item?.altUsageType;
-  const weaponMode = (item?.type ?? flags?.origin?.type) === "weapon" ? altUsage === "thrown"
+  const weaponMode = ['weapon', 'melee'].includes(item?.type ?? flags?.origin?.type) ? altUsage === "thrown"
     ? "thrown" : altUsage === "melee" ? "melee"
-      : options.includes("item:thrown") || options.includes("item:thrown-melee") || item?.isThrown === true || (item?.system?.traits?.value?.includes("thrown") || ['bomb','grenade'].includes(item?.system?.group)) && item?.system?.range ? "thrown"
+      : options.includes("item:thrown") || options.includes("item:thrown-melee") ? "thrown"
+        : options.includes('item:melee') ? 'melee'
+          : item?.isThrown === true || (item?.system?.traits?.value?.includes("thrown") || ['bomb','grenade'].includes(item?.system?.group)) && item?.system?.range ? "thrown"
         : item?.isRanged === true || options.includes("item:ranged") || item?.system?.range
           ? "ranged" : "melee" : undefined;
   return {

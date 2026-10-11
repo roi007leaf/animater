@@ -359,6 +359,14 @@
   align-items: center;
   margin-bottom: 18px;
 }
+/* Keep recipe search within reach while its cards scroll underneath. */
+.animater .an-library > .an-search {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--an-bg);
+  box-shadow: 0 -24px 0 var(--an-bg), 0 8px 0 var(--an-bg);
+}
 .animater .an-search input {
   padding-left: 35px;
   background: #191e2a;

@@ -1,5 +1,5 @@
 import {DND5E_ENTRIES,DND5E_SOURCE} from '../data/dnd5e-catalog.mjs';
-import {clone,normalize,validateRecipe,matchRecipe} from './model.mjs';
+import {clone,normalize,validateRecipe,matchRecipe,matchStrikeOverride} from './model.mjs';
 import {addSpellSounds} from './spell-sounds.mjs';
 import {addAbilitySounds} from './ability-sounds.mjs';
 import {applyCatalogMotion,dndMotionReview,withoutCatalogMotion} from './catalog-motion.mjs';
@@ -97,6 +97,7 @@ export function resolveDndAutomaticRecipe(event,stateFor,saved=[],{customEnabled
  const entry=findDndEntry(event),state=normalizeDndCatalogState(entry&&stateFor(entry.kind));
  const selected=entry&&dndEntryEnabled(entry.id,state),prefer=selected&&(state.selected.includes(entry.id)||state.preferCatalog&&!state.customized.includes(entry.id));
  const custom=customEnabled||selected&&state.customized.includes(entry.id)?saved:[];
+ const override=matchStrikeOverride(custom,event);if(override)return override;
  if(!prefer){const match=matchRecipe(custom,event);if(match)return match;}
  if(!selected||['condition','effect'].includes(entry.kind))return null;
  if(!prefer&&custom.some(r=>!r.enabled&&matchRecipe([{...r,enabled:true}],event)))return null;

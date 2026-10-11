@@ -1,6 +1,6 @@
 import {SF2E_ENTRIES,SF2E_SOURCE} from '../data/sf2e-catalog.mjs';
 import {withoutBespoke} from './bespoke.mjs';
-import {clone,normalize,validateRecipe,matchRecipe} from './model.mjs';
+import {clone,normalize,validateRecipe,matchRecipe,matchStrikeOverride} from './model.mjs';
 import {spellRecipe} from './spell-choreography.mjs';
 import {stateRecipe} from './state-catalog.mjs';
 import {addSpellSounds} from './spell-sounds.mjs';
@@ -59,6 +59,7 @@ export function resolveSfAutomaticRecipe(event,stateFor,saved=[],{customEnabled=
  const entry=findSfEntry(event),state=normalizeSfCatalogState(entry&&stateFor(entry.kind));
  const selected=entry&&sfEntryEnabled(entry.id,state),prefer=selected&&(state.selected.includes(entry.id)||state.preferCatalog&&!state.customized.includes(entry.id));
  const custom=customEnabled||selected&&state.customized.includes(entry.id)?saved:[];
+ const override=matchStrikeOverride(custom,event);if(override)return override;
  if(!prefer){const recipe=matchRecipe(custom,event);if(recipe)return recipe;}
  if(!selected||entry.state)return null;
  if(!prefer&&custom.some(r=>!r.enabled&&matchRecipe([{...r,enabled:true}],event)))return null;
