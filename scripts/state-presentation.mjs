@@ -12,7 +12,9 @@ export function statePresentation(design) {
  // Curse rings read as a hindrance border under the token, sized like token borders.
  if(/\.token_border\.|\.condition\.curse\./.test(asset))return {presentationRole:'border',scale:1.5,opacity:.95,below:true,offsetX:0,offsetY:0};
  if(/\.fumes\.|\.smoke\./.test(asset))return {presentationRole:'haze',scale:1.5,opacity:.68,below:false,offsetX:0,offsetY:0};
- if(/\.hunters_mark\./.test(asset))return {presentationRole:'mark',scale:1.4,opacity:.92,below:false,offsetX:0,offsetY:0};
+ // Hunter's Mark art is a bold opaque icon (eye, paw, glyph) made to flash on a target. Held for a whole
+ // effect it is a small badge in the token's top corner, inside its own square, never a sheet over the face.
+ if(/\.hunters_mark\./.test(asset))return {presentationRole:'mark',scale:.38,opacity:.9,below:false,offsetX:.3,offsetY:-.3,offsetUnits:'token'};
  if(/\.flames\./.test(asset))return {presentationRole:'flame',scale:1.5,opacity:.82,below:false,offsetX:0,offsetY:0};
  if(/\.aura_themed\.|\.swirling_leaves\./.test(asset))return {presentationRole:'orbit',scale:1.5,opacity:.84,below:false,offsetX:0,offsetY:0};
  // A looping strike is a quiet style cue, not a repeated attack.

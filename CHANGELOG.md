@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Marks no longer cover the token.** Lasting effects drawn with JB2A's Hunter's Mark art (bold opaque icons: an eye, a paw, a glyph) held it at 1.4 times the token over the art for as long as the effect lasted, hiding the creature. SF2e's *Get 'Em!* stamped a large glyph over every ally. About 280 such effects (PF2e, SF2e, D&D 5e), the Hostile attitude and D&D's psychic, quarry and defenses marks now show the mark as a small badge in the token's top corner, inside its own square. One-time cast and hit flashes keep their full-size mark.
+
 ## 0.3.10 (2026-10-11)
 
 - **Strength for Token Magic FX stages.** Token Magic presets have no shared opacity, so a filter stage now has a *Strength* setting (0.1 to 1). It scales every visibility setting the preset's filters have (alpha, glow strength, aura intensity, fog density, bevel light and shade, image overlays), animated values too, in the studio preview and at the table. Outlines and distortions (blur, ripples, twist) have no such setting and stay at full strength.

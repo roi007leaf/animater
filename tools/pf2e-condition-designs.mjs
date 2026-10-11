@@ -89,7 +89,7 @@ export const CONDITION_PLANS={
  helpful:plan('attitude','symbolic',glyph('heart','pink',{scale:.65}),glyph('heart','pink',{scale:.55,mirrorX:true})),
  hidden:plan('invisible','symbolic',rim(6,'grey',{opacity:.85})),
  // Aggression: a targeting sigil over the dark red attitude rim.
- hostile:plan('attitude','symbolic',rim(7,'red',{scale:1.4}),art('hunters_mark.loop','red',{scale:.6,opacity:.8})),
+ hostile:plan('attitude','symbolic',rim(7,'red',{scale:1.4}),art('hunters_mark.loop','red',{scale:.38,opacity:.85,offsetX:.3,offsetY:-.3})),
  // Held in place: the binding motif of Grabbed/Restrained, shackled flat at the feet.
  immobilized:plan('chains','symbolic',art(['markers.chain.square.loop.02','markers.chain.standard.loop.02'],'grey',{scale:1.45,offsetY:.25,tracks:flatten(.55)})),
  indifferent:plan('attitude','symbolic',rim(1,'grey')),
