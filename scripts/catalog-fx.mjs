@@ -22,8 +22,10 @@ const bodyProfiles = {
   fire:{preset:'fire',tint:'#ff9b45'},  // '[BW] …' presets are registered by the optional Baileywiki modules, not Token
   // Magic FX itself; without them the core frost aura plays instead.
   cold:{preset:'[BW] Overlay Cold Ice',fallback:'pure-ice-aura',tint:'#9cdeff'},
-  electricity:{preset:'electric',tint:'#88cfff'},acid:{preset:'fumes',tint:'#a2dc48'},
-  poison:{preset:'smoke',tint:'#78bc57'},force:{preset:'glow',tint:'#ba9cff'},
+  // Acid and poison glow on the body's outline. The fumes and smoke presets lay a fog over the whole token
+  // art in overlay blending and have no transparency setting, so even Strength 0.1 left the face buried.
+  electricity:{preset:'electric',tint:'#88cfff'},acid:{preset:'glow',tint:'#a2dc48'},
+  poison:{preset:'glow',tint:'#78bc57'},force:{preset:'glow',tint:'#ba9cff'},
   // Force-field presets (hexa/earth/water-field) draw a large dome with a dark
   // rim and radiating lines over the token; wards glow on the body instead.
   healing:{preset:'glow',tint:'#80dda4'},ward:{preset:'glow',tint:'#a7bcff'},

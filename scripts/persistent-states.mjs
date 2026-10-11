@@ -179,6 +179,9 @@ export class PersistentStates{
   const allyCopy=!telling?[]:sparse(telling)?[lasting.find(generic),telling].filter(Boolean):[telling];
   // A faded-away effect that was already on the token stays quiet: nothing replays on reload.
   if(r.quiet)return;
+  // The token can be deleted (a defeated creature removed) or the scene left while this draw was queued;
+  // tying to it then fails in Sequencer with an error per layer. The next reconcile ends the record.
+  if(h.tokenAlive&&!h.tokenAlive(r.token))return;
   const shown=r.bodyOnly?[]:granted?allyCopy:lasting;
   const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=granted?Math.min(shown.length,budget.layers):budget.layers;
   let layers=0;
@@ -191,7 +194,7 @@ export class PersistentStates{
     .temporary().delay(s.delay).fadeIn(s.fadeIn);
    if(r.fade)e.duration(FADE_MS).fadeOut(Math.max(s.fadeOut??0,800));else e.persist().fadeOut(s.fadeOut);
    // A perceived Concealed/Hidden is a stand-in with no document of its own: tie it to the token only.
-   const documents=[r.token.document?.uuid,r.item.animaterPerceived?null:(h.storedDocument??storedStateDocument)(r.item)].filter(Boolean);
+   const documents=[r.token.document?.uuid,r.item.animaterPerceived?null:(h.storedDocument??storedStateDocument)(r.item)].filter(uuid=>uuid&&(h.documentExists?.(uuid)??true));
    if(documents.length)e.tieToDocuments(documents);
    applyEffectOptions(e,{...s,oneShot:false,playbackRate:(s.playbackRate??1)*level.rate});
    if(s.below||coversToken(s,s.asset))e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
@@ -204,6 +207,7 @@ export class PersistentStates{
   }));
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}
   h.trace?.('Persistent',`${r.recipe.name} follows ${r.token.name??'token'} while its condition or effect lasts.`);
+  if(h.tokenAlive&&!h.tokenAlive(r.token)){await this.end(r);return;}
   if(shown.length)await sequence.play({local:true});
   // Removal/scene changes can race asynchronous texture loading.
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}

@@ -1176,6 +1176,9 @@ Hooks.once("ready", () => {
         const slugs=observer?.actor?.itemTypes?.condition?.map((c)=>c.slug)??[];
         return perceivedStates(slugs,token,observer);
       },
+      // A token deleted or left behind with its scene is not drawn on, and only existing documents are tied.
+      tokenAlive:(token)=>!token?.destroyed&&(typeof fromUuidSync!=="function"||!token?.document?.uuid||!!fromUuidSync(token.document.uuid,{strict:false})),
+      documentExists:(uuid)=>typeof fromUuidSync!=="function"||!!fromUuidSync(uuid,{strict:false}),
       body:{add:(...a)=>conditionBody?.add(...a),remove:(...a)=>conditionBody?.remove(...a)},
       trace: (status, detail) => runtime.trace(status, detail),
     });

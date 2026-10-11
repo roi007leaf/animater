@@ -189,6 +189,16 @@ test('Play once, then fade: a freshly applied effect plays for a moment and fade
  assert.ok(lasting.calls.some(c=>c[0]==='persist'),'the default stays while active');
  await lasting.manager.destroy();
 });
+test('a token deleted while its animation is queued is not drawn on; missing documents are never tied (no Sequencer errors)',async()=>{
+ const gone=fixture();gone.manager.host.tokenAlive=()=>false;
+ await gone.manager.reconcile();await flush();
+ assert.equal(gone.calls.filter(c=>c[0]==='file'||c[0]==='tieToDocuments'||c[0]==='play').length,0);
+ await gone.manager.destroy();
+ const partial=fixture();partial.manager.host.documentExists=uuid=>!uuid.includes('Item');
+ await partial.manager.reconcile();await flush();
+ assert.ok(partial.calls.filter(c=>c[0]==='tieToDocuments').every(c=>c[1].every(u=>!u.includes('Item'))));
+ await partial.manager.destroy();
+});
 test("a net's web is drawn under the token, never over the creature's face",async()=>{
  const net=PF2E_EFFECTS.find(e=>e.name==='Effect: Hurl Net');
  const f=fixture([native(net)]);await f.manager.reconcile();await flush();

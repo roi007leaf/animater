@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Acid and poison no longer flood the token.** The catalog's acid and poison body filters used Token Magic's fumes and smoke presets, which lay a coloured fog over the whole token art and have no transparency setting, so even Strength 0.1 left the face buried. They now glow green on the body's outline instead. The Strength hint says which filters have nothing to fade (outlines, smoke and fumes overlays, distortions).
+- **No more "could not find document" errors.** When a token was deleted (a defeated creature removed) or the scene changed while a lasting animation was being drawn, Sequencer showed a red error for each layer. Animater now skips a token that is gone and only ties animations to documents that still exist.
+
 ## 0.3.12 (2026-10-11)
 
 - **Recipe search stays visible.** The recipe library's search bar remains at the top while scrolling through cards, so a search can be started without scrolling back up.
