@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.3.13 (2026-10-11)
+
+- **Preview and browse teleport effects.** Departure and arrival artwork now use animated preview cards and the same Assets browser as stages. Pick each cue independently, preview variants or browse your own files, then return to Recipe settings. Each cue also has buttons to restore blue mist or disable its extra effect.
+
 - **Acid and poison no longer flood the token.** The catalog's acid and poison body filters used Token Magic's fumes and smoke presets, which lay a coloured fog over the whole token art and have no transparency setting, so even Strength 0.1 left the face buried. They now glow green on the body's outline instead. The Strength hint says which filters have nothing to fade (outlines, smoke and fumes overlays, distortions).
 - **No more "could not find document" errors.** When a token was deleted (a defeated creature removed) or the scene changed while a lasting animation was being drawn, Sequencer showed a red error for each layer. Animater now skips a token that is gone and only ties animations to documents that still exist.
 

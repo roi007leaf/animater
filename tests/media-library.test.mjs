@@ -102,6 +102,62 @@ function libraryFixture() {
   return {library,w,original,get draft(){return draft;},get saves(){return saves;},get renders(){return renders;}};
 }
 
+test('teleport picker applies departure and arrival art independently, preserves stages and returns to settings', async () => {
+  const f = libraryFixture(), originalStages = structuredClone(f.draft.stages);
+  f.w.studioSettings = true;
+  const effect = f.library.items.find(item=>item.key==='jb2a.ray_of_frost.blue');
+  for (const field of ['teleportOut', 'teleportIn']) {
+    f.library.open('animation', field);
+    f.library.choose(effect.id);
+    const html = f.library.html(f.draft);
+    assert.match(html, new RegExp(`Use ${field === 'teleportOut' ? 'departure' : 'arrival'} effect`));
+    assert.doesNotMatch(html, /data-action="media-add"|data-value="audio"|data-value="tokenfx"/);
+    if (field === 'teleportIn') f.library.file = effect.files[1];
+    await f.library.action('media-apply', {dataset:{}});
+    assert.equal(f.draft[field], field==='teleportOut' ? effect.key : effect.files[1]);
+    assert.equal(f.w.page, 'recipes');
+    assert.equal(f.w.studioSettings, true);
+    assert.equal(f.library.target, null);
+    assert.deepEqual(f.draft.stages, originalStages);
+  }
+  assert.equal(f.draft.teleportOut, effect.key);
+  assert.equal(validateRecipe(f.draft).teleportIn, effect.files[1]);
+  f.library.open('animation','teleportIn');
+  assert.equal(f.library.file, effect.files[1], 'exact saved file variation reopens');
+  await f.library.action('media-back', {dataset:{}});
+  assert.equal(f.library.target, null);
+  f.library.open('animation');
+  f.library.choose(effect.id);
+  await f.library.action('media-apply', {dataset:{}});
+  assert.deepEqual(f.draft.stages[0].assets, [effect.key], 'normal stage browser still works');
+  assert.equal(f.draft.teleportIn, effect.files[1]);
+});
+
+test('teleport picker rejects audio and stale recipes; custom images and incomplete drafts remain selectable', async () => {
+  const f = libraryFixture(), originalStages = structuredClone(f.draft.stages);
+  f.draft.teleportOut = 'worlds/demo/custom.png';
+  f.library.open('animation', 'teleportOut');
+  assert.equal(f.library.filters.type, 'image');
+  assert.equal(f.library.selected.file, 'worlds/demo/custom.png');
+  await f.library.load(true);
+  assert.equal(f.library.selected.file, 'worlds/demo/custom.png', 'legacy custom paths survive discovery refresh');
+  const before = structuredClone(f.draft);
+  f.library.choose(f.library.items.find(item=>item.type==='audio').id);
+  await f.library.action('media-apply', {dataset:{}});
+  await f.library.action('media-add', {dataset:{}});
+  assert.deepEqual(f.draft, before);
+  f.library.choose(f.library.items.find(item=>item.key==='other.ward.gold').id);
+  f.draft.id = 'another-recipe';
+  await assert.rejects(f.library.action('media-apply', {dataset:{}}), /Recipe changed/);
+  assert.deepEqual(f.draft.stages, originalStages);
+  f.library.open('animation', 'teleportIn');
+  f.draft.stages[0].assets = [];
+  f.library.choose(f.library.items.find(item=>item.key==='other.ward.gold').id);
+  await f.library.action('media-apply', {dataset:{}});
+  assert.equal(f.draft.teleportIn, 'other.ward.gold');
+  assert.deepEqual(f.draft.stages[0].assets, [], 'teleport choice does not require a complete stage');
+});
+
 test('successful library refresh clears prior indexing warning and exposes audio in deeply nested folders',async()=>{
   const f=libraryFixture(),modules=new Map([['soundfxlibrary',{active:true}]]);
   let result=await installedMediaLibrary({modules,browse:async()=>{throw Error('Permission denied');}});

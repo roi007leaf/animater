@@ -1,8 +1,9 @@
 import { linkStartModes } from './choreography.mjs';
-import {libraryItem, mergeMedia, appendMedia, mediaGroups, safeMediaFile, title, mediaType, matchingMediaVariant, mediaVariantChoices, mediaVariantFacets, tokenFxAssets, mediaFolderSources} from './media-library-model.mjs';
+import {libraryItem, mergeMedia, appendMedia, mediaGroups, safeMediaFile, visualReference, title, mediaType, matchingMediaVariant, mediaVariantChoices, mediaVariantFacets, tokenFxAssets, mediaFolderSources} from './media-library-model.mjs';
 import {validateRecipe, MAX_STAGES} from './model.mjs';
 import {patchDOM, reconcileChildren} from './dom-patch.mjs';
 import {RecipePreview} from './recipe-preview.mjs';
+import {TELEPORT_STYLES} from './teleport.mjs';
 const esc = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const svg = name => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">${{
   animation:'<path d="m13 3-9 11h7l-1 7 10-12h-7z"/>',
@@ -179,15 +180,36 @@ export class MediaLibrary {
     this.selectedId = id;
     if (this.selected) this.remember(this.selected);
   }
-  open(type) {
+  open(type, teleportField = null) {
+    const recipe = this.w.recipe();
+    this.target = ['teleportOut', 'teleportIn'].includes(teleportField) && recipe
+      ? {recipeId:recipe.id,field:teleportField,settingsScroll:this.w.root.querySelector('.an-st-settings')?.scrollTop ?? 0} : null;
     if (type) this.filter('type',type);
     this.filters.collection='all'; this.filters.category='all'; this.filters.color='all'; this.filters.source='all'; this.filters.search=''; this.page=0;
-    const stage = this.w.recipe()?.stages[this.w.stageIndex];
-    const current = this.items.find(item=>type==='tokenfx'?item.type==='tokenfx'&&item.fxPreset===stage?.fxPreset&&item.fxLibrary===stage?.fxLibrary:type==='audio'?item.file===stage?.soundFile:item.type!=='tokenfx'&&item.key===stage?.assets?.[0]);
+    const stage = recipe?.stages[this.w.stageIndex];
+    const reference = this.target ? recipe[teleportField] || TELEPORT_STYLES.blue[teleportField === 'teleportOut' ? 'out' : 'in'] : stage?.assets?.[0];
+    let current = this.items.find(item=>type==='tokenfx'?item.type==='tokenfx'&&item.fxPreset===stage?.fxPreset&&item.fxLibrary===stage?.fxLibrary:type==='audio'?item.file===stage?.soundFile:!['audio','tokenfx'].includes(item.type)&&(item.key===reference||item.file===reference||item.files.includes(reference)));
+    if (this.target && !current && safeMediaFile(reference)) {
+      current = libraryItem({file:reference,source:'Custom files'});
+      this.prefs.custom = mergeMedia([current], this.prefs.custom).slice(0,500);
+      this.items = appendMedia(this.items, [current]);
+    }
+    if (this.target && current?.type === 'image') this.filter('type','image');
     if(type==='tokenfx'&&stage?.kind==='tokenfx')this.tokenFx={subject:stage.subject??'source',duration:stage.duration,tint:stage.fxTint??''};
     if (current) this.choose(current.id);
+    if (this.target && current && reference !== current.key && current.files.includes(reference)) this.file = reference;
     this.w.page='assets'; this.w.render();
     this.w.root.querySelector('[data-search="assets"]')?.focus();
+  }
+  backToRecipe() {
+    const target = this.target;
+    this.target = null;
+    this.w.page = 'recipes'; this.w.render();
+    if (target) {
+      const settings = this.w.root.querySelector('.an-st-settings');
+      if (settings) settings.scrollTop = target.settingsScroll;
+      this.w.root.querySelector(`[data-action="browse-teleport"][data-field="${target.field}"]`)?.focus({preventScroll:true});
+    }
   }
   filter(key,value) {
     void this.stopTokenPreview();
@@ -239,6 +261,12 @@ export class MediaLibrary {
   async action(action,button) {
     if (!action.startsWith('media-')) return false;
     const value=button.dataset.value;
+    if (action === 'media-back') {
+      await this.stopTokenPreview();
+      this.backToRecipe();
+      return true;
+    }
+    if (this.target && action === 'media-type' && !['animation','image'].includes(value)) return true;
     if(action==='media-fx-canvas'){void this.auditionTokenFx('canvas');return true;}
     if (action==='media-type') {if(this.filters.type===value)return true;this.filter('type',value);}
     if (action==='media-collection') {if(this.filters.collection===value)return true;this.filter('collection',value);}
@@ -346,6 +374,18 @@ export class MediaLibrary {
     if(action==='media-apply'||action==='media-add') {
       const item=this.selected;
       if(!item||!this.w.recipe())return true;
+      if (this.target) {
+        if (this.target.recipeId !== this.w.recipe().id) throw Error('Recipe changed. Reopen the teleport asset picker.');
+        if (action !== 'media-apply' || !['animation', 'image'].includes(item.type)) return true;
+        const reference = this.file ?? item.key ?? item.file;
+        // Validate before editing so a bad custom reference never dirties the recipe.
+        if (!visualReference(reference)) throw Error('Choose a database key or relative visual media file.');
+        this.w.stopEditorPreview?.();
+        this.w.edit()[this.target.field] = reference;
+        await this.stopTokenPreview(); this.remember(item);
+        this.backToRecipe();
+        return true;
+      }
       const r=this.w.edit();
       let stage=r.stages[this.w.stageIndex];
       if(action==='media-add') {
@@ -466,11 +506,11 @@ export class MediaLibrary {
     const facets=this.index().facets,facet=facets.get(this.filters.type);
     const sources=[...(facet?.sources??[])].sort(),categories=[...(facet?.categories??[])].sort(),palette=[...(facet?.colors??[])].sort();
     return `<section class="an-media-library" aria-label="Media library">
-      <div class="an-media-toolbar"><div class="an-media-types" role="group" aria-label="Media type">${[['animation','Animations'],['audio','Sounds'],['image','Images'],['tokenfx','Token FX'],['all','All media']].map(([id,label])=>`<button data-action="media-type" data-value="${id}" aria-pressed="${this.filters.type===id}" class="${this.filters.type===id?'is-selected':''}">${svg(id)}${label}<small>${(facets.get(id)?.count??0).toLocaleString()}</small></button>`).join('')}</div><div class="an-media-tools">${this.sourceControls()}${this.filters.type==='tokenfx'?'':`<button data-action="media-import" ${this.w.host.pickMedia?'':'disabled'}>+ Browse files</button>`}<button data-action="media-refresh" ${this.loading?'disabled':''}>${this.loading?'Loading…':'Refresh'}</button></div></div>
+      <div class="an-media-toolbar"><div class="an-media-types" role="group" aria-label="Media type">${[['animation','Animations'],['audio','Sounds'],['image','Images'],['tokenfx','Token FX'],['all','All media']].filter(([id])=>!this.target||['animation','image'].includes(id)).map(([id,label])=>`<button data-action="media-type" data-value="${id}" aria-pressed="${this.filters.type===id}" class="${this.filters.type===id?'is-selected':''}">${svg(id)}${label}<small>${(facets.get(id)?.count??0).toLocaleString()}</small></button>`).join('')}</div><div class="an-media-tools">${this.sourceControls()}${this.filters.type==='tokenfx'?'':`<button data-action="media-import" ${this.w.host.pickMedia?'':'disabled'}>+ Browse files</button>`}<button data-action="media-refresh" ${this.loading?'disabled':''}>${this.loading?'Loading…':'Refresh'}</button></div></div>
       <div class="an-media-search-row"><div class="an-search">${svg('search')}<input data-search="assets" aria-label="Search media" placeholder="Search effects, weapons, creatures, colors, sounds…" value="${esc(this.filters.search)}"></div><div class="an-media-collections" role="group" aria-label="Library collection">${[['all','Library'],['favorites','Favorites'],['recent','Recent']].map(([id,label])=>`<button data-action="media-collection" data-value="${id}" aria-pressed="${this.filters.collection===id}" class="${this.filters.collection===id?'is-selected':''}">${label}</button>`).join('')}</div></div>
       <div class="an-media-filters">${select('source','Source',[['all','All sources'],...sources.map(v=>[v,v])],this.filters.source)}${select('category','Category',[['all','All categories'],...categories.map(v=>[v,v])],this.filters.category)}${['audio','tokenfx'].includes(this.filters.type)?'':select('color','Color',[['all','All colors'],...palette.map(v=>[v,title(v)])],this.filters.color)}${this.filters.type==='tokenfx'?'':select('loop','Playback',[['all','Any playback'],['loop','Loops'],['one','Other clips']],this.filters.loop)}${select('sort','Sort',[['az','Name A–Z'],['za','Name Z–A']],this.filters.sort)}<button data-action="media-clear" class="an-media-reset">Reset</button></div>
       ${this.error?`<div class="an-media-notice" role="status">${esc(this.error)}</div>`:''}
-      <div class="an-media-context">${recipe?`<span><b>${esc(recipe.name)}</b> · Stage ${this.w.stageIndex+1}: ${esc(this.w.stageLabel(recipe.stages[this.w.stageIndex]))}</span><button data-action="page" data-page="recipes">Back to recipe</button>`:'<span>Select a recipe to insert media.</span>'}</div>
+      <div class="an-media-context">${recipe?`<span><b>${esc(recipe.name)}</b> · ${this.target ? `Teleport ${this.target.field === 'teleportOut' ? 'departure' : 'arrival'} effect` : `Stage ${this.w.stageIndex+1}: ${esc(this.w.stageLabel(recipe.stages[this.w.stageIndex]))}`}</span><button data-action="media-back">Back to recipe</button>`:'<span>Select a recipe to insert media.</span>'}</div>
       <div class="an-media-work"><div class="an-media-results"><div class="an-media-result-bar"><span><b>${groups.length.toLocaleString()}</b> ${this.filters.grouped?'families':'results'} <small>· ${count.toLocaleString()} variants</small></span><div><button data-action="media-group" aria-pressed="${this.filters.grouped}">${this.filters.grouped?'Group variants':'Show variants'}</button><button data-action="media-view" data-value="grid" aria-label="Grid view" aria-pressed="${this.view==='grid'}">▦</button><button data-action="media-view" data-value="list" aria-label="List view" aria-pressed="${this.view==='list'}">☰</button></div></div>
       <div class="an-asset-list an-media-cards is-${this.view}">${visible.map(g=>this.card(g,selected)).join('')||`<div class="an-media-empty">${svg(this.filters.type)}<h2>${this.filters.collection==='favorites'?'No favorites yet':this.filters.collection==='recent'?'No recent picks':'No matching media'}</h2><p>${this.filters.type==='tokenfx'?(this.w.host.fxCatalog?.().tokenReady?'Change filters to see installed presets.':'Enable Token Magic FX 0.8.4 or newer, then refresh.'):this.filters.type==='audio'?'Activate a sound pack or browse your own audio files.':'Change filters or browse your own files.'}</p><button data-action="media-clear">Reset filters</button></div>`}</div>
       <div class="an-media-pagination"><span>${groups.length?`${this.page*this.pageSize+1}–${Math.min((this.page+1)*this.pageSize,groups.length)} of ${groups.length.toLocaleString()}`:'0 results'}</span><div><button data-action="media-page" data-value="-1" ${this.page===0?'disabled':''} aria-label="Previous media page">←</button><span>${this.page+1} / ${Math.max(1,Math.ceil(groups.length/this.pageSize))}</span><button data-action="media-page" data-value="1" ${(this.page+1)*this.pageSize>=groups.length?'disabled':''} aria-label="Next media page">→</button></div></div></div>
@@ -488,7 +528,7 @@ export class MediaLibrary {
     if(item.type==='tokenfx')return this.tokenFxDetail(item,group,recipe);
     const url=this.w.host.mediaURL?.(this.file??item.file)??this.file??item.file;
     const stage=recipe?.stages[this.w.stageIndex];
-    const compatible=stage&&(item.type==='audio'?stage.kind==='sound':!['sound','motion','sprite','tokenfx','scenefx'].includes(stage.kind));
+    const compatible=this.target ? recipe?.id===this.target.recipeId && ['animation','image'].includes(item.type) : stage&&(item.type==='audio'?stage.kind==='sound':!['sound','motion','sprite','tokenfx','scenefx'].includes(stage.kind));
     const variants=this.familyVariants(item,group);
     const choices=mediaVariantChoices(variants,item);
     const remainingVariants=item.type==='audio'?variants:choices.variants;
@@ -502,7 +542,7 @@ export class MediaLibrary {
       ${item.files.length>1?`<label class="an-media-variant-label">File variation<select data-media-file aria-label="File variation"><option value="" ${this.file?'':'selected'}>Database default · sample preview</option>${item.files.map(file=>`<option value="${esc(file)}" ${this.file===file?'selected':''}>${esc(file.split('/').at(-1))}</option>`).join('')}</select></label>`:''}
       <div class="an-media-tags"><span>${esc(item.category)}</span><span>${item.type==='audio'?'Audio':title(item.color==='none'?item.type:item.color)}</span><span>${esc((this.file??item.file).split('.').at(-1).toUpperCase())}</span>${item.width&&item.height?`<span>${item.width} × ${item.height}</span>`:''}</div>
       <details class="an-media-reference"><summary>Media reference</summary><code>${esc(item.key??item.file)}</code><small>${esc(this.file??item.file)}</small></details></div>
-      <div class="an-media-insert"><button class="an-primary" data-action="media-apply" ${compatible?'':'disabled'}>${item.type==='audio'?'Use sound':'Use asset'} · stage ${this.w.stageIndex+1}</button><button data-action="media-add" ${recipe&&recipe.stages.length<MAX_STAGES?'':'disabled'}>+ Add ${item.type==='audio'?'sound':'effect'} stage</button><small>${!recipe?'Select a recipe first.':compatible?'Updates draft. Save recipe when ready.':`Current stage is ${esc(stage?.kind)}. Add a ${item.type==='audio'?'sound':'effect'} stage to use this media.`}</small></div>`;
+      <div class="an-media-insert"><button class="an-primary" data-action="media-apply" ${compatible?'':'disabled'}>${this.target ? `Use ${this.target.field === 'teleportOut' ? 'departure' : 'arrival'} effect` : `${item.type==='audio'?'Use sound':'Use asset'} · stage ${this.w.stageIndex+1}`}</button>${this.target ? '' : `<button data-action="media-add" ${recipe&&recipe.stages.length<MAX_STAGES?'':'disabled'}>+ Add ${item.type==='audio'?'sound':'effect'} stage</button>`}<small>${!recipe?'Select a recipe first.':compatible?'Updates draft. Save recipe when ready.':this.target?'Choose an animation or image for the teleport effect.':`Current stage is ${esc(stage?.kind)}. Add a ${item.type==='audio'?'sound':'effect'} stage to use this media.`}</small></div>`;
   }
   tokenFxDetail(item,group,recipe) {
     const variants=this.familyVariants(item,group),stage=recipe?.stages[this.w.stageIndex];

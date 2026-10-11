@@ -1137,6 +1137,14 @@ export class Workspace {
     return kind === "condition" ? "Condition" : kind === "effect" ? "Effect" : "Condition / effect";
   }
   // Teleport: who moves to the spot the one who cast clicks, how far, or next to the caster.
+  teleportAssetHTML(r, field, label) {
+    const catalog = this.host.catalog?.() ?? [];
+    const fallback = field === 'teleportOut' ? TELEPORT_STYLES.blue.out : TELEPORT_STYLES.blue.in;
+    const reference = r[field] || fallback;
+    const key = reference === 'none' ? null : resolveAsset({ kind: 'cast', assets: [reference] }, catalog);
+    const file = key ? mediaForReference(catalog, key)?.file : null;
+    return `<div class="an-teleport-asset"><label>${label}<button class="an-asset-picker" data-action="browse-teleport" data-field="${field}" aria-label="Choose ${label.toLowerCase()}">${this.assetThumbHTML(file)}<span class="an-asset-picker-text">${esc(reference === 'none' ? 'No effect' : key ?? reference)}<span>${reference !== 'none' && !file ? 'Preview unavailable · ' : ''}Browse ↗</span></span></button></label><div class="an-teleport-asset-actions"><button class="an-quiet" data-action="teleport-asset-default" data-field="${field}" ${r[field] ? '' : 'disabled'}>Default blue mist</button><button class="an-quiet" data-action="teleport-asset-none" data-field="${field}" ${reference === 'none' ? 'disabled' : ''}>No effect</button></div></div>`;
+  }
   teleportHTML(r) {
     const plan = teleportPlan(r), mode = r.teleport ?? plan?.who ?? "none";
     const known = r.teleport === undefined && plan ? " (on for this spell)" : "";
@@ -1146,8 +1154,7 @@ export class Workspace {
       const available = key === 'blue' || key === 'none' || visual.out && visual.in;
       return `<option value="${key}" ${style === key ? 'selected' : ''} ${available ? '' : 'disabled'}>${value.label}${available ? '' : ' (not installed)'}</option>`;
     }).join('');
-    const art = catalog.filter(a => a.type !== 'audio' && /misty_step|teleport|portals/.test(a.key)).map(a => `<option value="${esc(a.key)}"></option>`).join('');
-    const look = `<label>Teleport look<select data-field="teleportStyle">${styleOptions}${style === 'custom' ? '<option value="custom" selected disabled>Custom effects (edit below)</option>' : ''}</select></label><div class="an-field-row"><label>Departure effect<input data-field="teleportOut" list="an-teleport-art" placeholder="Default blue mist" value="${esc(r.teleportOut ?? '')}"></label><label>Arrival effect<input data-field="teleportIn" list="an-teleport-art" placeholder="Default blue mist" value="${esc(r.teleportIn ?? '')}"></label></div><datalist id="an-teleport-art"><option value="none">No extra effect</option>${art}</datalist><p class="an-hint">Choose installed art, or paste a database key or relative media path from Assets. Blank uses blue mist; “none” skips that effect. These cues play at the departure and arrival spots, in addition to the recipe's stages.</p><div class="an-field-row"><label>Effect size (× token width)<input type="number" min="0.1" max="5" step="0.1" data-field="teleportScale" value="${r.teleportScale ?? 1.8}"></label><label>Effect tint (optional)<input data-field="teleportTint" placeholder="#aa88ff" value="${esc(r.teleportTint ?? '')}" pattern="#[0-9a-fA-F]{6}"></label></div>`;
+    const look = `<label>Teleport look<select data-field="teleportStyle">${styleOptions}${style === 'custom' ? '<option value="custom" selected disabled>Custom effects (choose below)</option>' : ''}</select></label>${this.teleportAssetHTML(r, 'teleportOut', 'Departure effect')}${this.teleportAssetHTML(r, 'teleportIn', 'Arrival effect')}<p class="an-hint">Browse to preview and choose each effect from Assets, or use your own media file. These cues play at the departure and arrival spots, in addition to the recipe's stages.</p><div class="an-field-row"><label>Effect size (× token width)<input type="number" min="0.1" max="5" step="0.1" data-field="teleportScale" value="${r.teleportScale ?? 1.8}"></label><label>Effect tint (optional)<input data-field="teleportTint" placeholder="#aa88ff" value="${esc(r.teleportTint ?? '')}" pattern="#[0-9a-fA-F]{6}"></label></div>`;
     return `<label>Teleport${known}<select data-field="teleport">${Object.entries(TELEPORT_WHO).map(([k, v]) => `<option value="${k}" ${k === mode ? "selected" : ""}>${k === "none" ? v : `${v}, to a spot you click`}</option>`).join("")}</select></label>${mode === "none" ? "" : `<div class="an-field-row"><label>Range in feet (0 = the spell's range)<input type="number" min="0" max="5280" step="5" data-field="teleportRange" value="${r.teleportRange ?? 0}"></label><label class="an-check"><input type="checkbox" data-field="teleportAdjacent" ${plan?.adjacent ? "checked" : ""}> Next to the caster</label></div>${look}`}<p class="an-hint">When it plays, the one who cast clicks where to go (a ring shows the range, Esc cancels). The token vanishes and reappears there: the only Animater setting that really moves a token.</p>`;
   }
   // A flash screen that plays for everyone right before this animation.
@@ -2132,12 +2139,14 @@ export class Workspace {
       if (action === "page") {
         if(!catalogPageAllowed(b.dataset.page,this.host.environment()))return;
         if (this.page === b.dataset.page) {
+          if (this.page === 'assets' && this.mediaLibrary?.target) { this.mediaLibrary.target = null; this.render(); }
           if (this.page === "recipes" && this.studio) { this.studio = false; this.render(); }
           // The Flash screens menu item returns from the editor to the library.
           if (this.page === "flash" && this.flashEditor?.editing) { this.flashEditor.editing = false; this.flashEditor.playing = false; this.render(); }
           return;
         }
         this.page = b.dataset.page;
+        if (this.mediaLibrary) this.mediaLibrary.target = null;
         this.message = "";
         this.render();
         return;
@@ -2236,9 +2245,19 @@ export class Workspace {
         this.render();
         return;
       }
-      if (action === "browse") {
+      if (action === 'teleport-asset-default' || action === 'teleport-asset-none') {
+        if (!['teleportOut', 'teleportIn'].includes(b.dataset.field)) return;
+        this.stopEditorPreview();
+        const r = this.edit();
+        if (action === 'teleport-asset-none') r[b.dataset.field] = 'none';
+        else delete r[b.dataset.field];
+        this.render();
+        return;
+      }
+      if (action === "browse" || action === 'browse-teleport') {
+        if (action === 'browse-teleport' && !['teleportOut', 'teleportIn'].includes(b.dataset.field)) return;
         this.mediaLibrary ??= new MediaLibrary(this);
-        this.mediaLibrary.open('animation');
+        this.mediaLibrary.open('animation', action === 'browse-teleport' ? b.dataset.field : null);
         return;
       }
       if (action === "inspect-asset") {

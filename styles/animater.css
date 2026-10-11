@@ -2278,6 +2278,10 @@
 /* Visual asset picker with a small looping preview. */
 .animater .an-asset-picker { display: flex; align-items: center; gap: 10px; }
 .animater .an-asset-picker-text { display: block; min-width: 0; flex: 1; }
+.animater .an-teleport-asset { margin-bottom: 14px; }
+.animater .an-teleport-asset > label { margin-bottom: 6px; }
+.animater .an-teleport-asset-actions { display: flex; gap: 8px; }
+.animater .an-teleport-asset-actions button { flex: 1; width: auto; }
 .animater .an-asset-thumb-mini {
   flex: none;
   width: 52px;

@@ -125,6 +125,35 @@ test('teleport settings show installed looks and persist selected departure and 
   assert.doesNotMatch(f.w.teleportHTML(r), /Teleport look/);
 });
 
+test('teleport asset cards preview default, custom and missing art; none/default controls edit each cue separately', async () => {
+  const f = workspace();
+  const r = {id:'teleport', match:'Misty Step', stages:[{kind:'motion', motion:'lunge'}], teleportIn:'worlds/demo/arrival.png'};
+  const originalStages = structuredClone(r.stages);
+  f.w.edit = () => r;
+  f.w.recipe = () => r;
+  f.w.stopEditorPreview = () => {};
+  f.w.host = {catalog:()=>[{key:'jb2a.misty_step.01.blue',file:'modules/jb2a/departure.webm'}]};
+  let html = f.w.teleportHTML(r);
+  assert.match(html, /data-action="browse-teleport" data-field="teleportOut"/);
+  assert.match(html, /<video[^>]+src="modules\/jb2a\/departure.webm"[^>]+data-asset-thumb/);
+  assert.match(html, /<img[^>]+src="worlds\/demo\/arrival.png"/);
+  assert.doesNotMatch(html, /datalist|list="an-teleport-art"|<input data-field="teleport(?:Out|In)"/);
+  await f.click({action:'teleport-asset-none',field:'teleportOut'});
+  assert.equal(r.teleportOut, 'none');
+  assert.equal(r.teleportIn, 'worlds/demo/arrival.png');
+  assert.match(f.w.teleportAssetHTML(r,'teleportOut','Departure effect'), /No effect/);
+  await f.click({action:'teleport-asset-default',field:'teleportOut'});
+  assert.equal(r.teleportOut, undefined);
+  assert.match(f.w.teleportAssetHTML(r,'teleportOut','Departure effect'), /departure.webm/);
+  r.teleportOut = 'missing.asset.key';
+  assert.match(f.w.teleportAssetHTML(r,'teleportOut','Departure effect'), /Preview unavailable/);
+  assert.deepEqual(r.stages, originalStages);
+  let opened;
+  f.w.mediaLibrary = {action:async()=>false,open:(...args)=>{opened=args;}};
+  await f.click({action:'browse-teleport',field:'teleportIn'});
+  assert.deepEqual(opened, ['animation','teleportIn']);
+});
+
 test('unconfigured spell opens a local blank draft and never saves generic placeholder art',async()=>{
  await withUnconfiguredSpell('500 Toads',async spell=>{
  const f=workspace();
