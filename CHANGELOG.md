@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.11 (2026-10-11)
+
 - **Lasting effects no longer bury the token.** An audit of every lasting condition and effect in PF2e, SF2e and D&D 5e measured how much of the token's face each layer drawn over it covers: 275 covered half or more (nets and vines up to 90%, fumes, fog, sleep clouds and darkness, sparkles, lightning orbs, flames, and D&D's shield dome on 135 immunity and resistance effects). Footage that fills its frame (web, vines, smoke, fog, sparkles, flames, orbs, shield domes, marker rings) is now drawn under the token when it is token-sized: a net binds round the feet, smoke is ground haze, a dome is a halo round the edges. Small, deliberate placements such as Blinded's blindfold stay on top. After the change, 5 layers cover half the face, down from 275.
 
 - **Marks no longer cover the token.** Lasting effects drawn with JB2A's Hunter's Mark art (bold opaque icons: an eye, a paw, a glyph) held it at 1.4 times the token over the art for as long as the effect lasted, hiding the creature. SF2e's *Get 'Em!* stamped a large glyph over every ally. About 280 such effects (PF2e, SF2e, D&D 5e), the Hostile attitude and D&D's psychic, quarry and defenses marks now show the mark as a small badge in the token's top corner, inside its own square. One-time cast and hit flashes keep their full-size mark.
