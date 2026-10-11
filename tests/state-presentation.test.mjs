@@ -14,3 +14,12 @@ test("no PF2e or SF2e lasting state draws Hunter's Mark larger than a badge (SF2
  for(const e of states){const r=e.state?{stages:e.variants?.[0]?.recipe?.stages??[]}:stateRecipe(e);
   for(const s of r.stages??[])if((s.assets??[]).some(a=>/hunters_mark\.loop/.test(a)))assert.ok(s.scale<=.4,`${e.name}: ${s.scale}`);}
 });
+import {coversToken} from '../scripts/state-presentation.mjs';
+test('lasting web, smoke, fog, sparkle, flame, orb, dome and marker layers at token size draw under the token',()=>{
+ for(const a of ['jb2a.web.01','jb2a.fumes.04.loop.green','jb2a.sleep.cloud.01.blue','jb2a.twinkling_stars.points06.orange','jb2a.flames.01.orange','jb2a.lightning_orb.01.loop.bluepurple','jb2a.shield.01.loop.blue','jb2a.vine.loop.nature.group.01.green','jb2a.markers.light_orb.loop.yellow'])
+  assert.equal(coversToken({scale:1.4,below:false},a),true,a);
+ assert.equal(coversToken({scale:1.5,below:false},'jb2a.markers.chain.standard.loop.02.grey'),false,'chain rings stay on top');
+ assert.equal(coversToken({scale:.62,offsetY:-.24},'jb2a.fog_cloud.01.white'),false,"Blinded's small blindfold over the eyes is deliberate");
+ assert.equal(coversToken({scale:1.4},'jb2a.magic_signs.circle.02.abjuration.loop.blue'),false,'open glyph rings stay on top');
+ assert.equal(coversToken({scale:1.4,below:true},'jb2a.web.01'),false,'already under');
+});

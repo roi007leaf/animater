@@ -1,3 +1,12 @@
+// Footage that fills the frame with web, vines, smoke, fog, sparkles, flames, orbs or a shield dome. A lasting
+// layer of it drawn over the token buries the creature (an audit measured 40–90% of the face covered), so at
+// token size it is drawn under the token: a web binds round the feet, smoke is ground haze, a dome a halo.
+// Small or offset layers are deliberate placements (Blinded's blindfold over the eyes) and stay on top.
+const COVERING=/\.(?:web|vine|entangle|ice_spikes|fog_cloud|ambient_fog|fumes|smoke|sleep\.cloud|darkness|whirlwind|sleet_storm|lightning_ball|lightning_orb|flames|falling_rocks|twinkling_stars|dancing_light|moonbeam|shield\.0\d|template_circle\.(?:whirl|aura)|markers\.(?!chain\.))/;
+export function coversToken(stage, asset = stage?.asset ?? stage?.assets?.[0] ?? '') {
+ if(!stage||stage.below||stage.maskToken||(stage.scale??1)<.9||stage.offsetX||stage.offsetY)return false;
+ return COVERING.test(`.${String(asset).replace(/^jb2a\./,'')}`);
+}
 // Built-in defaults describe visible artwork, not its transparent video frame.
 // Saved custom recipes keep their authored scale, opacity and placement.
 export function statePresentation(design) {

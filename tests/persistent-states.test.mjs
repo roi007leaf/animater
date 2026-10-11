@@ -189,6 +189,13 @@ test('Play once, then fade: a freshly applied effect plays for a moment and fade
  assert.ok(lasting.calls.some(c=>c[0]==='persist'),'the default stays while active');
  await lasting.manager.destroy();
 });
+test("a net's web is drawn under the token, never over the creature's face",async()=>{
+ const net=PF2E_EFFECTS.find(e=>e.name==='Effect: Hurl Net');
+ const f=fixture([native(net)]);await f.manager.reconcile();await flush();
+ assert.match(String(f.calls.find(c=>c[0]==='file')?.[1]),/web/);
+ assert.ok(f.calls.some(c=>c[0]==='belowTokens'));
+ await f.manager.destroy();
+});
 test('justApplied: only effects created moments ago count as just applied; unknown creation counts as new',()=>{
  assert.equal(justApplied({_stats:{createdTime:1000}},5000),true);
  assert.equal(justApplied({_stats:{createdTime:1000}},60000),false);

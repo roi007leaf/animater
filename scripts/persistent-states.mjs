@@ -4,6 +4,7 @@ import {artworkSize, offsetInGridSquares,tokenFootprint,effectFootprint} from '.
 import {applyEffectOptions} from './stage-options.mjs';
 import {mediaForReference} from './media-library-model.mjs';
 import {bodyTreatment} from './condition-body.mjs';
+import {coversToken} from './state-presentation.mjs';
 
 export function activeState(item){
  if(item?.animaterAura){const source=item.animaterAura.source;return source?.type==='effect'?activeState(source):Boolean(source);}
@@ -193,7 +194,7 @@ export class PersistentStates{
    const documents=[r.token.document?.uuid,r.item.animaterPerceived?null:(h.storedDocument??storedStateDocument)(r.item)].filter(Boolean);
    if(documents.length)e.tieToDocuments(documents);
    applyEffectOptions(e,{...s,oneShot:false,playbackRate:(s.playbackRate??1)*level.rate});
-   if(s.below)e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
+   if(s.below||coversToken(s,s.asset))e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
   }
   if(r.cancelled||this.closed)return;
   const filters=r.bodyOnly||r.fade?[]:plan.filter(s=>s.kind==='tokenfx'&&s.persist);
