@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **No empty "Asset & visibility" section.** Token Magic FX, scene FX, motion and sound stages have no asset keys, opacity or below-token setting, so the studio no longer shows that section for them (it opened to nothing).
+
 ## 0.3.8 (2026-10-11)
 
 - **Conditions and effects can play once and fade away.** The Conditions and Effects tabs of every system's catalog (PF2e, SF2e, D&D 5e) each have a new *Lasting animation* switch. *Stay while active* (the default) keeps the animation on the token until the condition or effect ends, as before. *Play once, then fade* shows it when it is applied, for a few seconds, then fades it out; reloading or changing scenes never replays it for one that was already there.
