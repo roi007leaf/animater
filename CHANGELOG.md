@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.14 (2026-10-12)
+
 - **Your own recipes keep their "Below tokens" setting.** 0.3.11 started drawing token-sized webs, smoke, sparkles and shield domes under the token so built-in designs stop burying it, but the rule also overrode recipes you made yourself: a custom Shield effect with *Below tokens* unticked still appeared under the token. The rule now applies only to Animater's built-in designs; a saved recipe is drawn exactly as you set it.
 
 ## 0.3.13 (2026-10-11)
