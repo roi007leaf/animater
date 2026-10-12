@@ -185,6 +185,8 @@ export class PersistentStates{
   const shown=r.bodyOnly?[]:granted?allyCopy:lasting;
   const budget=h.budget?.()??{layers:Infinity},level=levelIntensity(conditionLevel(r.item)),maxLayers=granted?Math.min(shown.length,budget.layers):budget.layers;
   let layers=0;
+  // The under-the-token rule fixes built-in designs; a recipe someone saved keeps its own Below tokens choice.
+  const authored=(h.recipes?.()??[]).some(saved=>saved.id===r.recipe.id);
   for(const s of shown){
    if(layers++>=maxLayers)continue;
    const media=mediaForReference(catalog,s.asset);
@@ -197,7 +199,7 @@ export class PersistentStates{
    const documents=[r.token.document?.uuid,r.item.animaterPerceived?null:(h.storedDocument??storedStateDocument)(r.item)].filter(uuid=>uuid&&(h.documentExists?.(uuid)??true));
    if(documents.length)e.tieToDocuments(documents);
    applyEffectOptions(e,{...s,oneShot:false,playbackRate:(s.playbackRate??1)*level.rate});
-   if(s.below||coversToken(s,s.asset))e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
+   if(s.below||(!authored&&coversToken(s,s.asset)))e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
   }
   if(r.cancelled||this.closed)return;
   const filters=r.bodyOnly||r.fade?[]:plan.filter(s=>s.kind==='tokenfx'&&s.persist);

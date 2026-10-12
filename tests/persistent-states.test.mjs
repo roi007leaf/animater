@@ -199,6 +199,15 @@ test('a token deleted while its animation is queued is not drawn on; missing doc
  assert.ok(partial.calls.filter(c=>c[0]==='tieToDocuments').every(c=>c[1].every(u=>!u.includes('Item'))));
  await partial.manager.destroy();
 });
+test("a saved recipe keeps its own Below tokens choice: a shield dome left on top stays on top",async()=>{
+ const effect=PF2E_EFFECTS.find(e=>stateRecipe(e).stages.some(s=>s.kind==='aura'&&s.persist&&!s.auraRadius));
+ const custom={...stateRecipe(effect),name:'My Shield',stages:stateRecipe(effect).stages.map(s=>({...s,assets:['jb2a.shield.01.loop.blue'],below:false,scale:1.2}))};
+ const f=fixture([native(effect)]);f.states.effect={...useStateEntry({},effect.id),customized:[effect.id]};f.setSaved([custom]);
+ await f.manager.reconcile();await flush();
+ assert.match(String(f.calls.find(c=>c[0]==='file')?.[1]),/shield/);
+ assert.ok(!f.calls.some(c=>c[0]==='belowTokens'),'not forced under the token');
+ await f.manager.destroy();
+});
 test("a net's web is drawn under the token, never over the creature's face",async()=>{
  const net=PF2E_EFFECTS.find(e=>e.name==='Effect: Hurl Net');
  const f=fixture([native(net)]);await f.manager.reconcile();await flush();

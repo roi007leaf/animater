@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Your own recipes keep their "Below tokens" setting.** 0.3.11 started drawing token-sized webs, smoke, sparkles and shield domes under the token so built-in designs stop burying it, but the rule also overrode recipes you made yourself: a custom Shield effect with *Below tokens* unticked still appeared under the token. The rule now applies only to Animater's built-in designs; a saved recipe is drawn exactly as you set it.
+
 ## 0.3.13 (2026-10-11)
 
 - **Preview and browse teleport effects.** Departure and arrival artwork now use animated preview cards and the same Assets browser as stages. Pick each cue independently, preview variants or browse your own files, then return to Recipe settings. Each cue also has buttons to restore blue mist or disable its extra effect.
