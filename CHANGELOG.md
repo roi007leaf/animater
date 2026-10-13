@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.16 (2026-10-13)
+
 - **Square token art shows its animations.** Some lasting animations are drawn under the token on purpose (attitude and curse rims, marker rings, and since 0.3.11 webs, smoke and sparkles), which works for round or dynamic-ring tokens. Square token art without a dynamic ring is opaque to its corners and hid them, leaving only a sliver at the edges. Animater now checks whether a token's art is opaque to its corners: if so, those layers are drawn on top, hollow rings as they are and filling footage (webs, smoke, sparkles) at half strength so the face stays visible. Dynamic-ring and transparent tokens are unchanged, and recipes you saved keep their own *Below tokens* choice.
 
 ## 0.3.15 (2026-10-13)
