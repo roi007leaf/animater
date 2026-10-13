@@ -1177,6 +1177,7 @@ Hooks.once("ready", () => {
         const slugs=observer?.actor?.itemTypes?.condition?.map((c)=>c.slug)??[];
         return perceivedStates(slugs,token,observer);
       },
+      opaqueArt:(token)=>squareTokenArt(token),
       // A token deleted or left behind with its scene is not drawn on, and only existing documents are tied.
       tokenAlive:(token)=>!token?.destroyed&&(typeof fromUuidSync!=="function"||!token?.document?.uuid||!!fromUuidSync(token.document.uuid,{strict:false})),
       documentExists:(uuid)=>typeof fromUuidSync!=="function"||!!fromUuidSync(uuid,{strict:false}),
@@ -1432,6 +1433,30 @@ Hooks.on("sequencer.ready", () => {
     app?.workspace?.render();
   });
 });
+// Square token art (no dynamic ring) that is opaque to its corners hides anything drawn under the token.
+// Read once per image at 16x16; unreadable or not-yet-loaded art counts as round and is checked again later.
+const artOpacity = new Map();
+function squareTokenArt(token) {
+  const doc = token?.document;
+  if (!doc || doc.ring?.enabled) return false;
+  const src = doc.texture?.src;
+  if (!src) return false;
+  if (artOpacity.has(src)) return artOpacity.get(src);
+  const source = token.mesh?.texture?.baseTexture?.resource?.source ?? token.texture?.baseTexture?.resource?.source;
+  const width = source?.naturalWidth || source?.videoWidth || source?.width;
+  if (!width) return false;
+  let opaque = false;
+  try {
+    const canvasEl = document.createElement("canvas");
+    canvasEl.width = canvasEl.height = 16;
+    const ctx = canvasEl.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(source, 0, 0, 16, 16);
+    const data = ctx.getImageData(0, 0, 16, 16).data, alpha = (x, y) => data[(y * 16 + x) * 4 + 3];
+    opaque = [alpha(1, 1), alpha(14, 1), alpha(1, 14), alpha(14, 14)].every((v) => v > 200);
+  } catch { opaque = false; }
+  artOpacity.set(src, opaque);
+  return opaque;
+}
 Hooks.on("getSceneControlButtons", (controls) => {
   if (controls.tokens?.tools)
     controls.tokens.tools.animater = {

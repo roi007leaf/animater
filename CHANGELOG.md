@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Square token art shows its animations.** Some lasting animations are drawn under the token on purpose (attitude and curse rims, marker rings, and since 0.3.11 webs, smoke and sparkles), which works for round or dynamic-ring tokens. Square token art without a dynamic ring is opaque to its corners and hid them, leaving only a sliver at the edges. Animater now checks whether a token's art is opaque to its corners: if so, those layers are drawn on top, hollow rings as they are and filling footage (webs, smoke, sparkles) at half strength so the face stays visible. Dynamic-ring and transparent tokens are unchanged, and recipes you saved keep their own *Below tokens* choice.
+
 ## 0.3.15 (2026-10-13)
 
 - **Animater works for players who join over plain http.** Browsers only provide `crypto.randomUUID()` on secure pages (HTTPS or localhost). A player joining a world at an address like `http://192.168.1.20:30000` or a Tailscale IP got an error while Animater loaded, so the module never started for them: no settings in Configure Settings, no wand button in the token controls, no animations on their screen. Animater now creates its IDs in a way that works on any page.

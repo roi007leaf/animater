@@ -4,7 +4,7 @@ import {artworkSize, offsetInGridSquares,tokenFootprint,effectFootprint} from '.
 import {applyEffectOptions} from './stage-options.mjs';
 import {mediaForReference} from './media-library-model.mjs';
 import {bodyTreatment} from './condition-body.mjs';
-import {coversToken} from './state-presentation.mjs';
+import {coversToken,hollowFootage} from './state-presentation.mjs';
 
 export function activeState(item){
  if(item?.animaterAura){const source=item.animaterAura.source;return source?.type==='effect'?activeState(source):Boolean(source);}
@@ -187,19 +187,24 @@ export class PersistentStates{
   let layers=0;
   // The under-the-token rule fixes built-in designs; a recipe someone saved keeps its own Below tokens choice.
   const authored=(h.recipes?.()??[]).some(saved=>saved.id===r.recipe.id);
+  // Square token art without a dynamic ring is opaque to its corners: anything under it is hidden. Token-sized
+  // layers that would go under it are drawn on top instead, hollow rings as they are, filling footage at half.
+  const squareArt=!authored&&(h.opaqueArt?.(r.token)??false);
   for(const s of shown){
    if(layers++>=maxLayers)continue;
    const media=mediaForReference(catalog,s.asset);
+   const under=s.below||(!authored&&coversToken(s,s.asset)),lifted=under&&squareArt&&(granted||!s.auraRadius)&&!s.maskToken;
+   const overArt=lifted&&!hollowFootage(s.asset)?.5:1;
    const e=sequence.effect().file(s.asset).name(r.name).origin(r.item.uuid??r.recipe.itemUuid)
     .attachTo(r.token,{offset:offsetInGridSquares(s,r.token,grid),gridUnits:true,bindRotation:s.bindRotation,bindAlpha:true,bindVisibility:true,bindElevation:true})
-    .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted&&s.auraRadius?Math.min(s.scale,1):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.8:1)))
+    .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted&&s.auraRadius?Math.min(s.scale,1):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.8:1)*overArt))
     .temporary().delay(s.delay).fadeIn(s.fadeIn);
    if(r.fade)e.duration(FADE_MS).fadeOut(Math.max(s.fadeOut??0,800));else e.persist().fadeOut(s.fadeOut);
    // A perceived Concealed/Hidden is a stand-in with no document of its own: tie it to the token only.
    const documents=[r.token.document?.uuid,r.item.animaterPerceived?null:(h.storedDocument??storedStateDocument)(r.item)].filter(uuid=>uuid&&(h.documentExists?.(uuid)??true));
    if(documents.length)e.tieToDocuments(documents);
    applyEffectOptions(e,{...s,oneShot:false,playbackRate:(s.playbackRate??1)*level.rate});
-   if(s.below||(!authored&&coversToken(s,s.asset)))e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
+   if(under&&!lifted)e.belowTokens();else if(s.above)e.elevation(1);if(s.maskToken)e.mask(r.token);
   }
   if(r.cancelled||this.closed)return;
   const filters=r.bodyOnly||r.fade?[]:plan.filter(s=>s.kind==='tokenfx'&&s.persist);

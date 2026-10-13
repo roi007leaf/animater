@@ -208,6 +208,18 @@ test("a saved recipe keeps its own Below tokens choice: a shield dome left on to
  assert.ok(!f.calls.some(c=>c[0]==='belowTokens'),'not forced under the token');
  await f.manager.destroy();
 });
+test('square opaque token art (no dynamic ring): layers that would hide under it go on top, filling footage at half',async()=>{
+ const net=PF2E_EFFECTS.find(e=>e.name==='Effect: Hurl Net');
+ const marker=PF2E_EFFECTS.find(e=>stateRecipe(e).stages.some(s=>s.kind==='aura'&&s.persist&&s.below&&!s.auraRadius&&/markers\.(?!chain)/.test(s.assets[0])));
+ const round=fixture([native(net)]);await round.manager.reconcile();await flush();
+ const roundOpacity=round.calls.find(c=>c[0]==='opacity')[1];assert.ok(round.calls.some(c=>c[0]==='belowTokens'),'round art: under');await round.manager.destroy();
+ const sq=fixture([native(net)]);sq.manager.host.opaqueArt=()=>true;await sq.manager.reconcile();await flush();
+ assert.ok(!sq.calls.some(c=>c[0]==='belowTokens'),'square art: on top');assert.ok(Math.abs(sq.calls.find(c=>c[0]==='opacity')[1]-roundOpacity/2)<1e-9,'web at half');await sq.manager.destroy();
+ const ring=fixture([native(marker)]);ring.manager.host.opaqueArt=()=>true;await ring.manager.reconcile();await flush();
+ assert.ok(!ring.calls.some(c=>c[0]==='belowTokens'),'marker ring on top');await ring.manager.destroy();
+ const own=fixture([native(net)]);own.states.effect={...useStateEntry({},net.id),customized:[net.id]};own.setSaved([{...stateRecipe(net),stages:stateRecipe(net).stages.map(s=>({...s,below:true}))}]);own.manager.host.opaqueArt=()=>true;
+ await own.manager.reconcile();await flush();assert.ok(own.calls.some(c=>c[0]==='belowTokens'),"a saved recipe's Below tokens is kept");await own.manager.destroy();
+});
 test("a net's web is drawn under the token, never over the creature's face",async()=>{
  const net=PF2E_EFFECTS.find(e=>e.name==='Effect: Hurl Net');
  const f=fixture([native(net)]);await f.manager.reconcile();await flush();
