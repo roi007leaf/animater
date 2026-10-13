@@ -23,3 +23,9 @@ test('lasting web, smoke, fog, sparkle, flame, orb, dome and marker layers at to
  assert.equal(coversToken({scale:1.4},'jb2a.magic_signs.circle.02.abjuration.loop.blue'),false,'open glyph rings stay on top');
  assert.equal(coversToken({scale:1.4,below:true},'jb2a.web.01'),false,'already under');
 });
+import {hollowFootage} from '../scripts/state-presentation.mjs';
+test('hollow footage: rings and markers are hollow, webs, smoke and sparkles fill the frame',()=>{
+ for(const a of ['jb2a.markers.music.greenorange','jb2a.markers.light_orb.loop.yellow','jb2a.token_border.circle.static.orange.006','jb2a.condition.curse.01.012.purple','jb2a.magic_signs.circle.02.abjuration.loop.blue','jb2a.template_circle.aura.03.outward.005.loop.combined.blue','jb2a.fire_ring.500px.red'])
+  assert.equal(hollowFootage(a),true,a);
+ for(const a of ['jb2a.web.01','jb2a.fumes.04.loop.green','jb2a.twinkling_stars.points06.orange','jb2a.shield.01.loop.blue'])assert.equal(hollowFootage(a),false,a);
+});

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- **Rings frame every token, on top.** Hollow rings (marker rings such as Courageous Anthem's notes, attitude and curse rims, glyph and fire rings) were drawn under the token. A ring sits just outside the token's edge, so round art whose frame reaches the edge (Tokenizer portraits) hid almost all of it, not only square art. Hollow rings are now drawn on top of every token: they frame the creature without covering its face. Webs, smoke and sparkles still go under round and dynamic-ring tokens, and on top of square art at half strength. Also fixes 0.3.16 dimming those rings on square art, where they were wrongly treated as filling footage.
+
 ## 0.3.16 (2026-10-13)
 
 - **Square token art shows its animations.** Some lasting animations are drawn under the token on purpose (attitude and curse rims, marker rings, and since 0.3.11 webs, smoke and sparkles), which works for round or dynamic-ring tokens. Square token art without a dynamic ring is opaque to its corners and hid them, leaving only a sliver at the edges. Animater now checks whether a token's art is opaque to its corners: if so, those layers are drawn on top, hollow rings as they are and filling footage (webs, smoke, sparkles) at half strength so the face stays visible. Dynamic-ring and transparent tokens are unchanged, and recipes you saved keep their own *Below tokens* choice.

@@ -187,14 +187,17 @@ export class PersistentStates{
   let layers=0;
   // The under-the-token rule fixes built-in designs; a recipe someone saved keeps its own Below tokens choice.
   const authored=(h.recipes?.()??[]).some(saved=>saved.id===r.recipe.id);
-  // Square token art without a dynamic ring is opaque to its corners: anything under it is hidden. Token-sized
-  // layers that would go under it are drawn on top instead, hollow rings as they are, filling footage at half.
+  // Square token art without a dynamic ring is opaque to its corners: anything under it is hidden.
   const squareArt=!authored&&(h.opaqueArt?.(r.token)??false);
   for(const s of shown){
    if(layers++>=maxLayers)continue;
    const media=mediaForReference(catalog,s.asset);
-   const under=s.below||(!authored&&coversToken(s,s.asset)),lifted=under&&squareArt&&(granted||!s.auraRadius)&&!s.maskToken;
-   const overArt=lifted&&!hollowFootage(s.asset)?.5:1;
+   // Hollow rings (markers, rims, curse and glyph circles) go on top of any token: they frame the creature, while
+   // under it a ring just outside the edge is hidden by art that reaches the edge. Filling footage (webs, smoke,
+   // sparkles) stays under round art and goes on top of square art at half strength.
+   const hollow=hollowFootage(s.asset),under=s.below||(!authored&&coversToken(s,s.asset));
+   const lifted=!authored&&under&&(granted||!s.auraRadius)&&!s.maskToken&&(hollow||squareArt);
+   const overArt=lifted&&!hollow?.5:1;
    const e=sequence.effect().file(s.asset).name(r.name).origin(r.item.uuid??r.recipe.itemUuid)
     .attachTo(r.token,{offset:offsetInGridSquares(s,r.token,grid),gridUnits:true,bindRotation:s.bindRotation,bindAlpha:true,bindVisibility:true,bindElevation:true})
     .size(artworkSize(effectFootprint(granted?{...s,auraRadius:0}:s,r.token,grid,h.gridDistance?.()??5)*(granted&&s.auraRadius?Math.min(s.scale,1):s.scale)*level.scale,media)).opacity(Math.min(1,s.opacity*r.opacity*level.opacity*(granted?.8:1)*overArt))
