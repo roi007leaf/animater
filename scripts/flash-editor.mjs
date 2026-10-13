@@ -1,3 +1,4 @@
+import { uuid } from "./uuid.mjs";
 // The Flash screens page: a library of combat title cards and an editor with a
 // live 16:9 stage (drag layers to place them), a scrub bar, a layer timeline and
 // an inspector for the selected layer.
@@ -8,7 +9,7 @@ import { runFlashTour, FLASH_TOURS } from "./flash-tour.mjs";
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const options = (choices, value) => Object.entries(choices).map(([k, v]) => `<option value="${esc(k)}" ${k === value ? "selected" : ""}>${esc(v)}</option>`).join("");
 const clone = (v) => JSON.parse(JSON.stringify(v));
-const newId = () => crypto.randomUUID().slice(0, 12);
+const newId = () => uuid().slice(0, 12);
 const seconds = (ms) => `${(ms / 1000).toFixed(1)}s`;
 // A small sign for each kind of layer (timeline rows and the add menu).
 export const KIND_ICONS = { text: "T", image: "▣", portraits: "☺", band: "▬", lines: "✺", burst: "☀", slash: "⟋", particles: "❄", sound: "♪", flash: "⚡", shake: "≋", punch: "⊕" };

@@ -1,3 +1,4 @@
+import { uuid } from "./uuid.mjs";
 // Recipe Studio: the full-window recipe editor. A monitor with transport on the
 // left, the stage inspector on the right and a multi-track timeline across the
 // bottom. Stages are grouped into role tracks; inside a track, stages that do
@@ -375,7 +376,7 @@ function duplicateStage(w, i) {
   const r = w.edit();
   if (!r || r.stages.length >= MAX_STAGES) return;
   const snapshot = clone(r.stages), source = r.stages[i];
-  const copy = { ...clone(source), stageId: crypto.randomUUID(), label: source.label ? `${source.label} copy` : "" };
+  const copy = { ...clone(source), stageId: uuid(), label: source.label ? `${source.label} copy` : "" };
   if (r.lifecycle === "document") copy.afterStage = "";
   else Object.assign(copy, { startMode: "after", startRef: source.stageId, startOffset: 0 });
   r.stages.splice(i + 1, 0, copy);
@@ -402,7 +403,7 @@ function addStage(w, trackId) {
   if (!r || !track || r.stages.length >= MAX_STAGES) return;
   const snapshot = clone(r.stages), linked = r.lifecycle === "document", last = r.stages.at(-1);
   const at = linked ? 0 : Math.round(w.studioTime ?? 0);
-  const base = { ...clone(last), stageId: crypto.randomUUID(), label: "", afterStage: "", delay: at, tracks: [] };
+  const base = { ...clone(last), stageId: uuid(), label: "", afterStage: "", delay: at, tracks: [] };
   delete base.startMode; delete base.startRef;
   let stage;
   if (track.kind === "motion") stage = { ...base, kind: "motion", motion: "lunge", subject: "source", assets: [], duration: 800, distance: 0.35, intensity: 1, scale: 1, opacity: 1, below: false, persist: false };

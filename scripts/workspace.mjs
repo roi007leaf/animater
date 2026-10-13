@@ -1,3 +1,4 @@
+import { uuid } from "./uuid.mjs";
 import { OPTIONAL_FX_KINDS, fxAvailability } from './optional-fx.mjs';
 import {
   EVENTS,
@@ -795,7 +796,7 @@ export class Workspace {
       return `<div class="an-preview-empty" data-recipe-scene data-preview-tokens="${esc(JSON.stringify(tokens))}" data-preview-grid-distance="${Number(tokens.gridDistance) || 5}" aria-label="Unconfigured recipe preview">◇<small>Choose an asset or token motion to begin</small></div>`;
     const chain = chainPreview(recipe, tokens);
     if (chain) return this.chainPreviewHTML(chain, tokens);
-    const filterPrefix = `an-tint-${crypto.randomUUID()}`;
+    const filterPrefix = `an-tint-${uuid()}`;
     const tokenHTML = (subject, fallback, icon) => {
       const token = tokens[subject];
       return this.previewActorHTML({ subject, token, name: fallback, icon });
@@ -2228,9 +2229,9 @@ export class Workspace {
         const r = this.edit(), i = Math.min(this.stageIndex, r.stages.length - 1), s = r.stages[i];
         if (action === "variant-add") {
           if (r.stages.length >= MAX_STAGES) throw Error(`Recipes support up to ${MAX_STAGES} stages.`);
-          s.variantGroup ??= crypto.randomUUID().slice(0, 8);
+          s.variantGroup ??= uuid().slice(0, 8);
           const n = variantMembers(r.stages, s.variantGroup).length + 1;
-          const copy = { ...clone(s), stageId: crypto.randomUUID(), label: `${(s.label || KINDS[s.kind]).replace(/ · variant \d+$/, "")} · variant ${n}` };
+          const copy = { ...clone(s), stageId: uuid(), label: `${(s.label || KINDS[s.kind]).replace(/ · variant \d+$/, "")} · variant ${n}` };
           const last = r.stages.lastIndexOf(variantMembers(r.stages, s.variantGroup).at(-1));
           r.stages.splice(last + 1, 0, copy);
           this.stageIndex = last + 1;
@@ -2295,7 +2296,7 @@ export class Workspace {
       if (action === "create-orb") {
         const base = orbRecipe(
           this.builder,
-          crypto.randomUUID(),
+          uuid(),
           this.host.catalog(),
         );
         base.name = this.builder.name?.trim() || base.name;
@@ -2321,7 +2322,7 @@ export class Workspace {
         // Normalize neutral stage defaults, then leave asset selection to author.
         // Incomplete drafts stay local; Save uses strict recipe validation.
         const base = validateRecipe({
-          id: crypto.randomUUID(),
+          id: uuid(),
           name: lasting ? "Untitled lasting animation" : "Untitled recipe",
           description: "",
           trigger: lasting ? "effect" : "manual",
@@ -2360,7 +2361,7 @@ export class Workspace {
       }
       if (action === "duplicate") {
         const base = clone(this.recipe());
-        base.id = crypto.randomUUID();
+        base.id = uuid();
         base.name = `${base.name} copy`;
         // A lasting copy stays lasting, just no longer tied to a catalog entry.
         if (base.lifecycle === "document") base.stateEntry = "";
@@ -2406,7 +2407,7 @@ export class Workspace {
         const r = this.edit();
         if (r.stages.length < MAX_STAGES) {
           r.stages.push({
-            stageId: crypto.randomUUID(),
+            stageId: uuid(),
             kind: "motion",
             startMode: "with",
             startRef: r.stages.at(-1)?.stageId,
@@ -2431,7 +2432,7 @@ export class Workspace {
         if (r.stages.length < MAX_STAGES) {
           r.stages.push({
             ...clone(r.stages.at(-1)),
-            stageId: crypto.randomUUID(),
+            stageId: uuid(),
             label: "",
             afterStage: "",
             ...(r.lifecycle === "document" ? {} : { startMode: "after", startRef: r.stages.at(-1).stageId, startOffset: 0 }),

@@ -1,3 +1,4 @@
+import { uuid } from "./uuid.mjs";
 import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mjs";
 import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, hitRecipe, deathRecipe } from "./damage-moments.mjs";
@@ -74,7 +75,7 @@ let motions;
 let optionalFx;
 let persistentStates;
 let flash;
-const clientId = crypto.randomUUID();
+const clientId = uuid();
 const fxCatalog = () => installedFxCatalog({
   modules:game.modules, tokenMagic:globalThis.TokenMagic, fxmaster:globalThis.FXMASTER?.api,
   config:globalThis.CONFIG?.fxmaster, localize:key=>game.i18n.localize(key), isGM:game.user.isGM,
@@ -1060,7 +1061,7 @@ Hooks.once("ready", () => {
     previewBody: (recipe, token) => {
       const kind = bodyTreatment(recipe.name);
       if (!kind || !token) return;
-      const name = `preview-${crypto.randomUUID()}`;
+      const name = `preview-${uuid()}`;
       conditionBody?.add(name, token, kind);
       setTimeout(() => conditionBody?.remove(name), Math.max(3000, ...recipe.stages.map((s) => (s.delay ?? 0) + (s.duration ?? 0))));
     },

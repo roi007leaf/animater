@@ -1,3 +1,4 @@
+import { uuid } from "./uuid.mjs";
 // Optional providers own their rendering. Never replace user filters/weather.
 export const OPTIONAL_FX_KINDS = new Set(['tokenfx', 'scenefx']);
 const transientVersion = version => {
@@ -84,7 +85,7 @@ export function tokenPresetMetadata(preset, library = preset.library) {
 }
 // A library audition is local and owns a separate session; never use the socket
 // or stop the recipe/document effects already playing on these tokens.
-export function startTokenFxPreview(player, stage, {tokens, userId, session = crypto.randomUUID()} = {}) {
+export function startTokenFxPreview(player, stage, {tokens, userId, session = uuid()} = {}) {
   const destinations=[...new Set((tokens??[]).filter(Boolean))];
   if(!destinations.length)throw Error(stage.subject==='targets'?'Target a token first.':'Select a token first.');
   const duration=Math.min(30000,Math.max(500,Number(stage.duration)||3000));
@@ -129,7 +130,7 @@ export class OptionalFxPlayer {
     if(!preset?.params?.length||!sprite)return ()=>{};
     const own=structuredClone(preset),ids=new Map();
     for(const param of own.params) {
-      if(!ids.has(param.filterId))ids.set(param.filterId,`animater-${crypto.randomUUID()}`);
+      if(!ids.has(param.filterId))ids.set(param.filterId,`animater-${uuid()}`);
       param.filterId=ids.get(param.filterId);
       if(/^#[\da-f]{6}$/i.test(stage.fxTint??'')&&typeof param.color==='number') {
         param.color=Number.parseInt(stage.fxTint.slice(1),16);
@@ -187,7 +188,7 @@ export class OptionalFxPlayer {
         const scene=this.host.scene();
         const effect=catalog.effects.find(e=>e.category===stage.fxCategory && e.type===stage.fxType);
         const expires=Date.now()+stage.duration+15000;
-        const id=`apiMacro_animater_${expires}_${crypto.randomUUID().replaceAll('-','')}_${stage.fxCategory==='particle'?'p':'f'}`;
+        const id=`apiMacro_animater_${expires}_${uuid().replaceAll('-','')}_${stage.fxCategory==='particle'?'p':'f'}`;
         const ids={particles:stage.fxCategory==='particle'?[id]:[],filters:stage.fxCategory==='filter'?[id]:[]};
         // Install cleanup before awaiting Scene updates, including partial failure.
         remove=()=>api.stop({...ids,scene,skipFading:true});

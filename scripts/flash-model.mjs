@@ -1,3 +1,4 @@
+import { uuid } from "./uuid.mjs";
 // Flash screens: full-screen title cards played to everyone when combat starts
 // or ends ("Roll for Initiative!", "Victory"). The GM builds them from text,
 // image and band layers, each with a position, timing, entrance and exit.
@@ -53,7 +54,7 @@ const safeMedia = (v) => {
   if (/^[a-z0-9_]+(\.[A-Za-z0-9_-]+)+$/i.test(s) && !/\.(webm|mp4|png|jpe?g|webp|gif|svg)$/i.test(s)) return s;
   return !/^[a-z]+:/i.test(s) && !s.includes("..") && /\.(webm|mp4|png|jpe?g|webp|gif|svg)$/i.test(s) ? s : "";
 };
-const id = (v) => (/^[A-Za-z0-9-]{1,40}$/.test(v ?? "") ? v : (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2)).slice(0, 12));
+const id = (v) => (/^[A-Za-z0-9-]{1,40}$/.test(v ?? "") ? v : (uuid() ?? Math.random().toString(36).slice(2)).slice(0, 12));
 
 export function validateLayer(l = {}, duration = 4000) {
   const kind = pick(l.kind, FLASH_KINDS, "text");

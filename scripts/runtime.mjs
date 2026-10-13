@@ -1,3 +1,4 @@
+import { uuid } from "./uuid.mjs";
 import { ID, matchRecipe, planRecipe, validateRecipe } from "./model.mjs";
 import { applyEventElement } from "./element-choice.mjs";
 import { OPTIONAL_FX_KINDS } from './optional-fx.mjs';
@@ -190,7 +191,7 @@ export class AnimaterRuntime {
       if (this.epoch !== before) return null;
       if (spot) void this.host.teleport?.(spot)?.catch?.((error) => this.trace("Blocked", `Teleport: ${error.message}`));
     }
-    const session = `${ID}-${this.host.userId()}-${crypto.randomUUID()}`;
+    const session = `${ID}-${this.host.userId()}-${uuid()}`;
     const epoch = this.epoch;
     let failed = false;
     // A stage planned once per target keeps the tier of its first copy.

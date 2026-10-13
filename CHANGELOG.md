@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.3.15 (2026-10-13)
+
+- **Animater works for players who join over plain http.** Browsers only provide `crypto.randomUUID()` on secure pages (HTTPS or localhost). A player joining a world at an address like `http://192.168.1.20:30000` or a Tailscale IP got an error while Animater loaded, so the module never started for them: no settings in Configure Settings, no wand button in the token controls, no animations on their screen. Animater now creates its IDs in a way that works on any page.
+
 ## 0.3.14 (2026-10-12)
 
 - **Your own recipes keep their "Below tokens" setting.** 0.3.11 started drawing token-sized webs, smoke, sparkles and shield domes under the token so built-in designs stop burying it, but the rule also overrode recipes you made yourself: a custom Shield effect with *Below tokens* unticked still appeared under the token. The rule now applies only to Animater's built-in designs; a saved recipe is drawn exactly as you set it.

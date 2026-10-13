@@ -1,3 +1,4 @@
+import { uuid } from "./uuid.mjs";
 import { linkStartModes } from './choreography.mjs';
 import {libraryItem, mergeMedia, appendMedia, mediaGroups, safeMediaFile, visualReference, title, mediaType, matchingMediaVariant, mediaVariantChoices, mediaVariantFacets, tokenFxAssets, mediaFolderSources} from './media-library-model.mjs';
 import {validateRecipe, MAX_STAGES} from './model.mjs';
@@ -396,7 +397,7 @@ export class MediaLibrary {
           : item.type==='audio'
           ? {kind:'sound',soundFile:this.file??item.file,duration:1500,volume:this.preview.volume}
           : {kind:'cast',assets:[this.file??item.key??item.file],duration:1500,scale:1}]}).stages[0];
-        next.stageId=crypto.randomUUID();next.label=item.label;
+        next.stageId=uuid();next.label=item.label;
         if(!linked&&r.stages.length){next.startMode=item.type==='audio'||item.type==='tokenfx'?'with':'after';next.startRef=r.stages.at(-1).stageId;next.startOffset=0;}
         r.stages.push(next);linkStartModes(r.stages);this.w.stageIndex=r.stages.length-1;stage=next;
       }
