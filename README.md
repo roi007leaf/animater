@@ -37,8 +37,8 @@ Install and activate **either** JB2A edition; Patreon users do not need JB2A Fre
   - Afflictions read as debuffs at a glance.
   - Valued conditions such as Frightened 1–4 grow stronger with their value.
   - Persistent damage shows its damage type.
-- **Token motion.** Cosmetic lunges, recoils, leaps, charges and stagger poses that return the token to its place. The real token position never changes.
-- **Finishers.** Off by default (Module Settings → Finishers). The Finishers page holds your finishing moves: design one in the studio or copy a preset (Launch, Cleave, Burn to ash, Shatter and more). Assign a finisher to spells, feats, actions and weapons from either side: the finisher's Applies-to list, or the Finisher dropdown on a catalog entry. It plays on a killing blow or on every successful use. The real token is moved and the ending plays: it vanishes, stays as a Defeated body, or stays put. Unhide a token to undo a finisher. Player-side moves are written by the active GM.
+- **Token motion.** Cosmetic lunges, recoils, leaps, charges and stagger poses that return the token to its place. The real token position never changes, except finishers, which move the token where it lands.
+- **Finishers.** Off by default (Module Settings → Finishers). The Finishers page holds your finishing moves: design one in the studio or copy a preset (Launch, Cleave, Burn to ash, Shatter and more). Assign a finisher to spells, feats, actions and weapons from either side: the finisher's Applies-to list, or the Finisher dropdown on a catalog entry. It plays on a killing blow or on every successful use. The real token is moved and the ending plays: it vanishes, stays as a Defeated body, or stays put. Unhide the token (and remove Defeated) to undo; it stays on the square where it landed. Player-side moves are written by the active GM.
 - **Sound.** Optional, synchronized to the visuals, and only from packs you have installed.
 
 Every catalog entry can be previewed in the workspace, enabled or excluded individually, and customized into an editable recipe: stages, timing, assets, motion, sound and filters.

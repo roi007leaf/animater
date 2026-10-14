@@ -1,8 +1,8 @@
 import { resolveAsset } from './model.mjs';
 
 // Teleport spells: the one who cast clicks a spot within range, and the caster (or the
-// first target) vanishes and reappears there. The only Animater feature that moves a token
-// for real, so it is off unless a recipe turns it on (known teleport spells do by default).
+// first target) vanishes and reappears there. With finishers, the only Animater features that
+// move a token for real, so it is off unless a recipe turns it on (known teleport spells do by default).
 
 // Known teleport spells (by slug). range: feet when the item itself says "self"; adjacent:
 // the spot must be next to the caster (Friendfetch brings an ally to you).

@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Finishers (Module Settings → Finishers, then the new Finishers page): design finishing moves in the studio or copy one of 14 presets (Launch, Cleave, Burn to ash, Shatter…), and assign them to spells, feats, actions and weapons — on their Applies-to list or with the Finisher dropdown on catalog entries. A finisher plays on the real token on a killing blow or on every successful use (Shove can always fling): the token is thrown, lands on the square where its travel ends (stopping at walls), and then vanishes, stays as a Defeated body, or stays. Player-side moves are written by the active GM.
+- Finishers (Module Settings → Finishers, then the new Finishers page): design finishing moves in the studio or copy one of 14 presets (Launch, Cleave, Burn to ash, Shatter…), and assign them to spells, feats, actions and weapons — on their Applies-to list or with the Finisher dropdown on catalog entries. A finisher plays on the real token on a killing blow or on every successful use (Shove can always fling): the token is thrown, lands on the square where its travel ends (stopping at walls), and then vanishes, stays as a Defeated body, or stays. Player-side moves are written by the active GM. Unhide the token (and remove Defeated) to undo; it stays on the square where it landed. Token motion still never changes the real token position, except finishers, which move the token where it lands.
 
 ## 0.3.17 (2026-10-13)
 

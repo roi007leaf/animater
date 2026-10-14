@@ -20,3 +20,11 @@ test("path editor exposes selected heading and clear map-direction labels", () =
   assert.match(html, /value="away" selected/);
   for (const label of ["Toward selected token", "Away from selected token", "Upward on map", "Downward on map", "Leftward on map", "Rightward on map"]) assert.ok(html.includes(label));
 });
+
+test("the End (hold) choice shows only while editing a finisher", () => {
+  const r = recipe("away"), s = r.stages[0];
+  assert.doesNotMatch(Workspace.prototype.motionControlsHTML(s, 0, r), /data-field="motionEnd"/);
+  assert.doesNotMatch(Workspace.prototype.motionControlsHTML(s, 0), /data-field="motionEnd"/);
+  assert.match(Workspace.prototype.motionControlsHTML(s, 0, { ...r, finisher: { on: "kill" } }), /data-field="motionEnd"/);
+  assert.match(Workspace.prototype.motionControlsHTML(s, 0, { ...r, finisher: { on: "kill" } }), /moves the token there/, "a finisher's hint says the token really moves");
+});
