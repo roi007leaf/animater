@@ -39,7 +39,10 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
   const { recipe: composed, moves } = composeFinisher(recipe, { offset });
   const commit = async (data) => host.commit(mover, { ...data, finisher: recipe.id });
   host.trace("Finisher", `${recipe.name}: ${mover.name ?? "token"}`);
-  const plan = await host.play(composed, { source: attacker ?? mover, targets: [mover] });
+  // The stages' source/targets roles follow who travels: a source-mover finisher plays from
+  // the user and aims its target-subject effects at the target, not at the user.
+  const context = f.mover === "source" ? { source: mover, targets: target ? [target] : [] } : { source: attacker ?? mover, targets: [mover] };
+  const plan = await host.play(composed, context);
   if (!plan) return false;
   try {
     const landed = moves ? travelEnd(plan) : 0;

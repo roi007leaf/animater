@@ -100,3 +100,9 @@ test("a refused move is traced and skips the ending", async () => {
   assert.deepEqual(host.log.at(-1), ["Blocked", "Finisher Fling: refused"]);
   assert.ok(!host.log.some(([kind]) => kind === "fade"));
 });
+
+test("a source-mover finisher plays from the user and aims its effects at the target", async () => {
+  const host = fakeHost();
+  await playFinisher({ recipe: recipe({ mover: "source", knockback: 0, ending: "stay" }), mover: token("Hero"), target: token("Orc"), attacker: token("Hero"), dead: false }, host);
+  assert.deepEqual(host.log[1], ["play", null, "Hero", "Orc"]);
+});
