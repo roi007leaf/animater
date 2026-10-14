@@ -76,7 +76,8 @@ export function damageFromMessage(message, systemId) {
     if (t) tokenIds.add(t); if (a) actorIds.add(a);
   }
   const crit = pf?.outcome === "criticalSuccess" || rolls.some((r) => r?.isCritical === true || r?.options?.isCritical === true);
-  return { type: normalizeDamageType(best.type), tokenIds, actorIds, sourceTokenId: message?.speaker?.token ?? null, attackKind: attackKindOf(message, systemId), crit };
+  return { type: normalizeDamageType(best.type), tokenIds, actorIds, sourceTokenId: message?.speaker?.token ?? null, attackKind: attackKindOf(message, systemId), crit,
+    itemUuid: message?.flags?.[systemId]?.origin?.uuid ?? dnd?.item?.uuid ?? null, itemName: message?.item?.name ?? null };
 }
 
 // D&D 5e: the damage parts it is about to apply to this actor (dnd5e.calculateDamage).

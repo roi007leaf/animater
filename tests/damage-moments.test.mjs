@@ -95,3 +95,14 @@ test("the attacker is recalled from the newest roll that knows one, even when ap
   assert.equal(recallAttribution(log, { actorId: "orc" }, now).sourceTokenId, "wiz");
   assert.equal(recallAttribution(log.slice(1), { actorId: "orc" }, now), null);
 });
+
+test("a damage roll remembers which item dealt it", () => {
+  class DamageRoll { constructor(instances) { this.instances = instances; } }
+  const pf = damageFromMessage({ item: { name: "Greataxe" }, speaker: { token: "atk" }, rolls: [new DamageRoll([{ type: "slashing", total: 9 }])],
+    flags: { pf2e: { origin: { type: "weapon", uuid: "Actor.a.Item.axe" }, context: { type: "damage-roll", options: ["item:melee"] } } } }, "pf2e");
+  assert.equal(pf.itemUuid, "Actor.a.Item.axe");
+  assert.equal(pf.itemName, "Greataxe");
+  const dnd = damageFromMessage({ rolls: [{ options: { type: "fire" }, total: 7 }], flags: { dnd5e: { roll: { type: "damage" }, item: { type: "spell", uuid: "Actor.w.Item.fb" } } } }, "dnd5e");
+  assert.equal(dnd.itemUuid, "Actor.w.Item.fb");
+  assert.equal(dnd.itemName, null);
+});
