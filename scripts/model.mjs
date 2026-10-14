@@ -60,7 +60,6 @@ export const MOTIONS = {
   slam: "Rise and slam down",
   drift: "Drift gently down",
   collapse: "Collapse when dropped",
-  vanish: "Hidden while a copy plays",
 };
 export const clone = (value) => structuredClone(value);
 export const normalize = (value) =>

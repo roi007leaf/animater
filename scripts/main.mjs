@@ -2,8 +2,7 @@ import { uuid } from "./uuid.mjs";
 import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mjs";
 import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
-import { pickFinisher, finisherRecipe } from "./finishers.mjs";
-import { awayFrom, landingSpot, displace, displaceAllowed } from "./displacement.mjs";
+import { displaceAllowed } from "./displacement.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
 import { applyEventElement } from "./element-choice.mjs";
@@ -295,7 +294,7 @@ function findRecipe(id) {
 // Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
 // (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
 const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
-const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens", FINISHERS_SETTING = "finishers", FINISHER_KNOCKBACK = "finisherKnockback";
+const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens", FINISHERS_SETTING = "finishers";
 const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
@@ -929,13 +928,8 @@ Hooks.once("init", () => {
   });
   game.settings.register(ID, FINISHERS_SETTING, {
     name: "Finishers",
-    hint: "NPCs killed by an attack are finished off in style: flung, cleaved, shattered. The token moves and is hidden afterwards; unhide it to bring it back.",
+    hint: "Finishers you assign to spells, feats, actions and weapons play on the real token: on a killing blow, or on every successful use. Off: none play.",
     scope: "world", config: true, type: Boolean, default: false,
-  });
-  game.settings.register(ID, FINISHER_KNOCKBACK, {
-    name: "Finisher knockback",
-    hint: "Finishers throw the body away from whoever struck the blow, stopping at walls. Off: the body is finished where it stood.",
-    scope: "world", config: true, type: Boolean, default: true,
   });
   game.settings.registerMenu(ID, "workspace", {
     name: "Animater workspace",
@@ -1293,7 +1287,7 @@ Hooks.once("ready", () => {
   Hooks.on("createChatMessage", (message) => remember(damageFromMessage(message, game.system.id)));
   // Stages whose artwork is not installed (Free vs Patreon) are left out rather than blocking the rest.
   // Token Magic layers play only where Token Magic FX is available.
-  const installedStages = (recipe) => ({ ...recipe, stages: recipe.stages.filter((s) => ["motion", "sound", "sprite"].includes(s.kind) || (s.kind === "tokenfx" ? fxCatalog().tokenReady : resolveAsset(s, runtime.getCatalog()))) });
+  const installedStages = (recipe) => ({ ...recipe, stages: recipe.stages.filter((s) => ["motion", "sound"].includes(s.kind) || (s.kind === "tokenfx" ? fxCatalog().tokenReady : resolveAsset(s, runtime.getCatalog()))) });
   // A creature dropping to 0 HP collapses once (D&D 5e, PF2e and SF2e keep HP in the
   // same place), finished in the damage's look; its Unconscious or Dying body treatment
   // takes over afterwards. Energy damage short of that flashes on the token.
@@ -1301,33 +1295,6 @@ Hooks.once("ready", () => {
   Hooks.on("preUpdateActor", (actor, changes, options) => {
     if (foundry.utils.hasProperty(changes, "system.attributes.hp.value")) options.animaterHpBefore = hpOf(actor);
   });
-  // Finishers: an NPC killed by an attack is played out by copies of its artwork, then the
-  // real token is moved to where they landed and hidden (displacement.mjs).
-  const finishes = (actor, token) => game.settings.get(ID, FINISHERS_SETTING) && actor.type === "npc" && !token.document.hidden;
-  const displaceHost = {
-    play: (recipe, token) => new Promise((resolve) => {
-      runtime.play(recipe, { source: token, targets: [] }, { onStart: () => resolve(true) })
-        .then(() => resolve(false), (error) => { runtime.trace("Blocked", error.message); resolve(false); });
-    }),
-    wait: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
-    commit: commitDisplace,
-    trace: (status, detail) => runtime.trace(status, detail),
-  };
-  async function finish(token, actor) {
-    const ids = { actorId: actor.id, tokenId: token.id };
-    const damage = recallDamage(damageLog, ids), by = damage?.sourceTokenId ? damage : recallAttribution(damageLog, ids);
-    const pick = pickFinisher({ attackKind: by?.attackKind, damageType: damage?.type, crit: by?.crit === true });
-    const attacker = by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) : null;
-    const from = { x: token.document.x, y: token.document.y }, grid = canvas.grid.size;
-    const to = game.settings.get(ID, FINISHER_KNOCKBACK) ? landingSpot({
-      from, direction: awayFrom(attacker?.center, token.center), squares: pick.squares, grid, size: { w: token.w, h: token.h },
-      collides: (a, b) => CONFIG.Canvas.polygonBackends.move.testCollision(a, b, { type: "move", mode: "any" }),
-      bounds: canvas.dimensions.sceneRect,
-      snap: (p) => token.getSnappedPosition?.(p) ?? p,
-    }) : from;
-    const recipe = installedStages(finisherRecipe(pick.id, { dx: (to.x - from.x) / grid, dy: (to.y - from.y) / grid, crit: by?.crit === true, damageType: damage?.type }));
-    await displace({ token, to, hide: true, finisher: pick.id, flight: pick.flight, recipe }, displaceHost);
-  }
   Hooks.on("updateActor", (actor, changes, options, userId) => {
     const before = options.animaterHpBefore, after = hpOf(actor);
     if (userId !== game.user.id || !acceptsEvents() || !(before > 0) || !(after < before)) return;
@@ -1335,7 +1302,6 @@ Hooks.once("ready", () => {
     if (!dropped && !game.settings.get(ID, DAMAGE_REACTIONS)) return;
     for (const token of actor.getActiveTokens?.() ?? []) {
       if (token.document?.parent?.id !== canvas.scene?.id) continue;
-      if (dropped && finishes(actor, token)) { void finish(token, actor).catch((error) => runtime.trace("Blocked", error.message)); continue; }
       const type = recallDamage(damageLog, { actorId: actor.id, tokenId: token.id })?.type;
       const recipe = dropped ? (game.settings.get(ID, DRAMATIC_DEATHS) ? deathRecipe(type, COLLAPSE) : COLLAPSE) : hitRecipe(type);
       const playable = recipe && installedStages(recipe);

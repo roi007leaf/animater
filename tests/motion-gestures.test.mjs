@@ -48,10 +48,3 @@ test('canvas player applies squash and opacity and restores the token afterwards
   assert.equal(mesh.alpha, 1); assert.equal(mesh.scale.y, 1); assert.equal(mesh.position.y, 20);
 });
 
-test('vanish holds the real token invisible for the whole motion and settles visible', () => {
-  const s = { kind: 'motion', motion: 'vanish', duration: 2000, intensity: 1 };
-  assert.ok(MOTIONS.vanish);
-  assert.ok(GENERATED_MOTION_DURATION.vanish > 0);
-  for (const p of [0.01, 0.5, 0.99]) assert.equal(motionPose(s, p, { x: 1, y: 0 }, 100).alpha, 0, `alpha at ${p}`);
-  for (const p of [0, 1]) assert.deepEqual(motionPose(s, p, { x: 1, y: 0 }, 100), { x: 0, y: 0, rotation: 0, scale: 1 });
-});

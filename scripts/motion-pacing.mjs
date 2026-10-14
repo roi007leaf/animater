@@ -20,7 +20,6 @@ export const GENERATED_MOTION_DURATION = Object.freeze({
   cower: 1100,
   slam: 1200,
   drift: 1800,
-  vanish: 1800,
 });
 
 export function paceGeneratedMotion(stage) {
