@@ -104,3 +104,34 @@ test('the player keeps a held mesh at its end pose after the motion resolves', a
   assert.equal(mesh.position.x, 300, 'held at the landing square');
   assert.ok(player.active.has(token), 'still holding until the document moves or the hold times out');
 });
+
+test('a held travel rebases onto the moved document and keeps the later collapse playing', async () => {
+  let now = 0, queued = null;
+  const player = new TokenMotionPlayer({ frame: (cb) => (queued = cb), cancel: () => {}, now: () => now, grid: () => 100 });
+  const mesh = { position: { x: 100, y: 100, set(x, y) { this.x = x; this.y = y; } }, rotation: 0, scale: { x: 1, y: 1, set(x, y) { this.x = x; this.y = y; } }, alpha: 1 };
+  const token = { mesh, visible: true, document: { x: 50, y: 50, rotation: 0, width: 1, height: 1, texture: {} } };
+  void player.play(token, hold('rush', { motionOffset: { x: 2, y: 0 }, duration: 100 }), { x: 1, y: 0 }, 'me');
+  const fall = player.play(token, { kind: 'motion', motion: 'collapse', duration: 1000, distance: 0.25, intensity: 0.8, motionRange: 'distance' }, { x: 1, y: 0 }, 'me');
+  now = 150; queued(now);
+  assert.equal(mesh.position.x, 300, 'the rush landed two squares over');
+  token.document.x += 200;
+  now = 300; queued(now);
+  assert.ok(player.active.has(token), 'the run survives the document write');
+  assert.notEqual(mesh.rotation, 0, 'the collapse still tips the token');
+  assert.equal(mesh.position.x, 300, 'new base (100 + 200) plus the collapse x (0)');
+  now = 1200; queued(now);
+  assert.equal(await fall, true);
+  assert.ok(!player.active.has(token));
+});
+
+test('a moved document without a held track still ends the run in place', () => {
+  let now = 0, queued = null;
+  const player = new TokenMotionPlayer({ frame: (cb) => (queued = cb), cancel: () => {}, now: () => now, grid: () => 100 });
+  const mesh = { position: { x: 100, y: 100, set(x, y) { this.x = x; this.y = y; } }, rotation: 0, scale: { x: 1, y: 1, set(x, y) { this.x = x; this.y = y; } }, alpha: 1 };
+  const token = { mesh, visible: true, document: { x: 50, y: 50, rotation: 0, width: 1, height: 1, texture: {} } };
+  void player.play(token, { kind: 'motion', motion: 'collapse', duration: 1000, distance: 0.25, intensity: 0.8 }, { x: 1, y: 0 }, 'me');
+  now = 100; queued(now);
+  token.document.x += 200;
+  now = 200; queued(now);
+  assert.ok(!player.active.has(token));
+});

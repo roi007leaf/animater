@@ -290,10 +290,22 @@ export class TokenMotionPlayer {
       this.active.set(token, run);
       const tick = (time) => {
         if (this.active.get(token) !== run) return;
-        const moved =
+        let moved =
           token.document?.x !== location.x || token.document?.y !== location.y;
         const rotated = token.document?.rotation !== location.rotation;
         const resized = geometryChanged(token, location.geometry);
+        // A finisher wrote the square its held travel landed on: the document now carries
+        // that offset, so rebase onto it and let the other tracks (a collapse) play on.
+        const isHeld = (track) => time - track.start >= track.stage.duration &&
+          Boolean(heldPose(track.stage, time - track.start - track.stage.duration, track.direction, this.grid()));
+        if (moved && !rotated && !resized && run.tracks.some(isHeld)) {
+          original.x += token.document.x - location.x;
+          original.y += token.document.y - location.y;
+          location.x = token.document.x;
+          location.y = token.document.y;
+          run.tracks = run.tracks.filter((track) => !isHeld(track));
+          moved = false;
+        }
         if (
           mesh.destroyed ||
           token.mesh !== mesh ||
