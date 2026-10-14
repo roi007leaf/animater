@@ -2,7 +2,9 @@ import { uuid } from "./uuid.mjs";
 import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mjs";
 import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
-import { displaceAllowed } from "./displacement.mjs";
+import { displaceAllowed, landingSpot } from "./displacement.mjs";
+import { matchFinishers, killFinisher, passesSuccess, finisherMoment, checkFinisherEvent, mayDisplace } from "./finisher-model.mjs";
+import { playFinisher } from "./finisher-play.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
 import { applyEventElement } from "./element-choice.mjs";
@@ -294,7 +296,7 @@ function findRecipe(id) {
 // Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
 // (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
 const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
-const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens", FINISHERS_SETTING = "finishers";
+const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens", FINISHERS_SETTING = "finishers", DEFAULT_FINISHER = "defaultFinisher";
 const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
@@ -311,12 +313,15 @@ async function playSaveReaction(outcome, tokenId, messageId, sceneId) {
   await afterDice({ type: "save", messageId });
   await runtime.play(recipe, { source: token, targets: [] }).catch((error) => runtime.trace("Blocked", error.message));
 }
+// Set once Foundry is ready (finisher wiring); dispatch hands every enriched event to it.
+let playUseFinishers = async () => {};
 async function dispatch(event) {
   if (!event || !(acceptsEvents() || hasOwnApproved())) return;
   if (yieldsToAA(event)) return runtime.trace("Skipped", `${event.item?.name ?? "Unknown item"}: customized in Automated Animations.`);
   try {
     await afterDice(event);
-    await runtime.dispatch(await enrich(event));
+    const enriched = await enrich(event);
+    await Promise.all([runtime.dispatch(enriched), playUseFinishers(enriched)]);
   } catch (error) {
     runtime.trace("Blocked", error.message);
   }
@@ -436,22 +441,30 @@ async function receiveTeleport(data) {
   if (caster?.documentName !== "Token" || caster.parent !== doc.parent || !caster.testUserPermission(user, "OWNER")) return;
   await moveToken(doc, data.x, data.y);
 }
-// Finishers (and later forced movement) end in one write: the token where its copy landed,
-// hidden when it died there. A player's request goes to the active GM.
-async function applyDisplace(doc, { x, y, hidden, fromX, fromY, finisher }) {
-  await doc.update({ x, y, hidden: hidden === true, [`flags.${ID}.displaced`]: { fromX, fromY, finisher: String(finisher ?? "") } }, { animate: false, animater: { displace: true } });
+// A finisher ends in at most three writes: the move where its travel landed, then hidden
+// or Defeated. A player's request goes to the active GM.
+async function applyDisplace(doc, { x, y, hidden, defeated, fromX, fromY, finisher }) {
+  const update = {};
+  if (Number.isFinite(x) && Number.isFinite(y)) Object.assign(update, { x, y, [`flags.${ID}.displaced`]: { fromX, fromY, finisher: String(finisher ?? "") } });
+  if (hidden === true) update.hidden = true;
+  if (Object.keys(update).length) await doc.update(update, { animate: false, animater: { displace: true } });
+  if (defeated === true) await doc.actor?.toggleStatusEffect?.(CONFIG.specialStatusEffects?.DEFEATED ?? "dead", { active: true, overlay: true });
 }
-async function commitDisplace(token, data) {
+async function commitDisplace(token, data, attacker = null) {
   if (game.user.isGM) return applyDisplace(token.document, data);
-  // Nobody would write it: throw so displace() traces it and the token stays visible in place.
+  // Nobody would write it: throw so the finisher traces it and the token eases back.
   if (!game.users.activeGM) throw new Error("no GM is connected to finish it");
-  game.socket.emit(`module.${ID}`, { type: "displace-commit", sender: clientId, userId: game.user.id, uuid: token.document.uuid, ...data });
+  game.socket.emit(`module.${ID}`, { type: "displace-commit", sender: clientId, userId: game.user.id, uuid: token.document.uuid, attackerUuid: attacker?.document?.uuid, ...data });
 }
 async function receiveDisplace(data) {
   if (data?.type !== "displace-commit" || !game.users.activeGM?.isSelf) return;
   const user = game.users.get(data.userId), doc = await fromUuid(String(data.uuid ?? ""));
   if (!user || doc?.documentName !== "Token") return;
-  if (!displaceAllowed({ isOwner: doc.testUserPermission(user, "OWNER"), alreadyHidden: doc.hidden, hp: Number(doc.actor?.system?.attributes?.hp?.value), hidden: data.hidden === true, x: data.x, y: data.y })) return;
+  const attacker = data.attackerUuid ? await fromUuid(String(data.attackerUuid)) : null;
+  const ownsAttacker = attacker?.documentName === "Token" && attacker.parent === doc.parent && attacker.testUserPermission(user, "OWNER");
+  const request = { isOwner: mayDisplace({ ownsToken: doc.testUserPermission(user, "OWNER"), ownsAttacker }), alreadyHidden: doc.hidden, hp: Number(doc.actor?.system?.attributes?.hp?.value),
+    hidden: data.hidden === true, defeated: data.defeated === true, ...(data.x !== undefined || data.y !== undefined ? { x: data.x, y: data.y } : {}) };
+  if (!displaceAllowed(request)) return;
   await applyDisplace(doc, data);
 }
 // Every built-in catalog of this system: turn them all on at once (exclusions and your own
@@ -665,6 +678,11 @@ function workspaceHost() {
     } : {}),
     // Players edit their own recipes (on their user); the GM's stay world-wide.
     // While the GM reviews a player, the Studio shows and saves that player's recipes.
+    defaultFinisher: () => game.settings.get(ID, DEFAULT_FINISHER) ?? "",
+    setDefaultFinisher: async (id) => {
+      if (!game.user.isGM) throw Error("Only a GM can choose the default finisher.");
+      await game.settings.set(ID, DEFAULT_FINISHER, String(id ?? ""));
+    },
     recipes: () => { const user = reviewedUser(); return user ? clone(user.getFlag(ID, "playerRecipes")?.recipes ?? []) : game.user.isGM ? recipes() : ownPlayerRecipes(); },
     get playerMode() { return !game.user.isGM || Boolean(reviewedUser()); },
     approvalState: (recipe) => { const user = game.user.isGM ? reviewedUser() : game.user; return user ? approvalState(recipe, playerDecisions()[user.id]) : null; },
@@ -931,6 +949,7 @@ Hooks.once("init", () => {
     hint: "Finishers you assign to spells, feats, actions and weapons play on the real token: on a killing blow, or on every successful use. Off: none play.",
     scope: "world", config: true, type: Boolean, default: false,
   });
+  game.settings.register(ID, DEFAULT_FINISHER, { scope: "world", config: false, type: String, default: "" });
   game.settings.registerMenu(ID, "workspace", {
     name: "Animater workspace",
     label: "Open Animater",
@@ -1295,6 +1314,48 @@ Hooks.once("ready", () => {
   Hooks.on("preUpdateActor", (actor, changes, options) => {
     if (foundry.utils.hasProperty(changes, "system.attributes.hp.value")) options.animaterHpBefore = hpOf(actor);
   });
+  // Finishers play on the real token (finisher-play.mjs): travel lands, the token is moved
+  // there, then it vanishes, stays as a body, or stays.
+  const finisherHost = (attacker) => ({
+    gridSize: () => canvas.grid.size,
+    landing: (mover, direction, squares) => landingSpot({
+      from: { x: mover.document.x, y: mover.document.y }, direction, squares, grid: canvas.grid.size, size: { w: mover.w, h: mover.h },
+      collides: (a, b) => CONFIG.Canvas.polygonBackends.move.testCollision(a, b, { type: "move", mode: "any" }),
+      bounds: canvas.dimensions.sceneRect, snap: (p) => mover.getSnappedPosition?.(p) ?? p,
+    }),
+    play: (recipe, context) => new Promise((resolve) => {
+      runtime.play(installedStages(recipe), context, { onStart: (started) => resolve(started.playbackPlan) })
+        .then(() => resolve(null), (error) => { runtime.trace("Blocked", error.message); resolve(null); });
+    }),
+    wait: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+    fade: (token) => runtime.play({ id: "animater-finisher-fade", name: "Finisher fade", trigger: "manual", stages: [{ kind: "motion", motion: "fade", subject: "source", duration: 900, motionEnd: "hold", assets: [] }] }, { source: token, targets: [] }),
+    commit: (token, data) => commitDisplace(token, data, attacker),
+    trace: (status, detail) => runtime.trace(status, detail),
+  });
+  const runFinisher = (recipe, { mover, attacker, target }) => {
+    const dead = Number(mover.actor?.system?.attributes?.hp?.value) <= 0;
+    return playFinisher({ recipe, mover, attacker, target, dead }, finisherHost(attacker)).catch((error) => runtime.trace("Blocked", error.message));
+  };
+  // Every successful use of an assigned item (the roll that has a degree of success, else the use).
+  const finisherSeen = new Set();
+  playUseFinishers = async (event) => {
+    if (!event || !game.settings.get(ID, FINISHERS_SETTING) || !finisherMoment(event)) return;
+    if (event.id) { if (finisherSeen.has(event.id)) return; finisherSeen.add(event.id); if (finisherSeen.size > 500) finisherSeen.delete(finisherSeen.values().next().value); }
+    const item = { itemName: event.item?.name ?? event.itemName, itemSlug: event.item?.slug ?? event.item?.system?.slug, itemUuid: event.itemUuid ?? event.item?.uuid };
+    for (const recipe of matchFinishers(recipes(), item, "use")) {
+      if (!passesSuccess(recipe.finisher, event.outcome)) continue;
+      const movers = recipe.finisher.mover === "source" ? [event.source] : event.targets ?? [];
+      for (const mover of movers.filter(Boolean)) void runFinisher(recipe, { mover, attacker: event.source, target: event.targets?.[0] ?? null });
+    }
+  };
+  // The killing blow on an NPC: the killing item's kill finisher, else the default finisher.
+  const killFinisherFor = (actor, token) => {
+    if (!game.settings.get(ID, FINISHERS_SETTING) || actor.type !== "npc" || token.document.hidden) return null;
+    const ids = { actorId: actor.id, tokenId: token.id };
+    const by = recallAttribution(damageLog, ids) ?? recallDamage(damageLog, ids);
+    const recipe = killFinisher(recipes(), { itemUuid: by?.itemUuid, itemName: by?.itemName }, game.settings.get(ID, DEFAULT_FINISHER));
+    return recipe && { recipe, attacker: by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null };
+  };
   Hooks.on("updateActor", (actor, changes, options, userId) => {
     const before = options.animaterHpBefore, after = hpOf(actor);
     if (userId !== game.user.id || !acceptsEvents() || !(before > 0) || !(after < before)) return;
@@ -1302,6 +1363,8 @@ Hooks.once("ready", () => {
     if (!dropped && !game.settings.get(ID, DAMAGE_REACTIONS)) return;
     for (const token of actor.getActiveTokens?.() ?? []) {
       if (token.document?.parent?.id !== canvas.scene?.id) continue;
+      const kill = dropped ? killFinisherFor(actor, token) : null;
+      if (kill) { void runFinisher(kill.recipe, { mover: token, attacker: kill.attacker, target: token }); continue; }
       const type = recallDamage(damageLog, { actorId: actor.id, tokenId: token.id })?.type;
       const recipe = dropped ? (game.settings.get(ID, DRAMATIC_DEATHS) ? deathRecipe(type, COLLAPSE) : COLLAPSE) : hitRecipe(type);
       const playable = recipe && installedStages(recipe);
@@ -1311,6 +1374,9 @@ Hooks.once("ready", () => {
   });
   if (["pf2e","sf2e"].includes(game.system.id)) {
     Hooks.on("createChatMessage", (message) => {
+      // Actions such as Shove roll a skill check that normal dispatch skips; finishers ride it.
+      const check = checkFinisherEvent(message, game.system.id, game.user.id);
+      if (check) void enrich(check).then((e) => playUseFinishers(e)).catch((error) => runtime.trace("Blocked", error.message));
       // A saving throw against a spell or effect: the saving creature reacts by degree.
       const save = (message.author?.id ?? message.user?.id) === game.user.id ? twoeSaveOutcome(message, game.system.id) : null;
       if (save) return void playSaveReaction(save, message.speaker?.token, message.id, message.speaker?.scene);

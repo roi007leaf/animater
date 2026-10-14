@@ -55,3 +55,7 @@ export function linkFinisher(recipes, entryName, finisherId) {
 
 export const linkedFinisher = (recipes, entryName) =>
   live(recipes).find((r) => names(r).some((n) => normalize(n) === normalize(entryName))) ?? null;
+
+// The active GM writes a finisher's move for a player who controls the moved token or the
+// token that struck it (a fighter flinging an enemy they do not own).
+export const mayDisplace = ({ ownsToken, ownsAttacker }) => Boolean(ownsToken || ownsAttacker);

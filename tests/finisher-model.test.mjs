@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -72,4 +72,10 @@ test("the catalog dropdown moves an entry to exactly one finisher, case-insensit
   const none = linkFinisher(moved, "GREATAXE", "");
   assert.equal(linkedFinisher(none, "Greataxe"), null);
   assert.equal(none[0], moved[0], "unchanged recipes keep their identity");
+});
+
+test("a player may move a token they own, or one their own token struck", () => {
+  assert.equal(mayDisplace({ ownsToken: true, ownsAttacker: false }), true);
+  assert.equal(mayDisplace({ ownsToken: false, ownsAttacker: true }), true);
+  assert.equal(mayDisplace({ ownsToken: false, ownsAttacker: false }), false);
 });

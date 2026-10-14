@@ -1376,3 +1376,26 @@ test("D&D 5e bootstrap: native V2 activity hooks, no chat duplication, circular 
   assert.equal(f.calls.filter((c) => c[0] === "play").length, 2);
   assert.match(f.api.activity()[0].detail, /circular/);
 });
+
+test("PF2e: a use finisher plays on a successful attack with its item, not on a miss", async () => {
+  const f = await boot("pf2e");
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [{ id: "fling", name: "Fling", trigger: "manual", match: "Ignition", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] }] });
+  const message = (id, outcome) => ({ id, author: { id: "u" }, item: f.item, actor: f.actor, isRoll: true, flags: { pf2e: { context: { type: "attack-roll", outcome, target: { token: "Scene.s.Token.target" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
+  await f.fire("createChatMessage", message("miss", "failure"));
+  await settle();
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0);
+  await f.fire("createChatMessage", message("hit", "success"));
+  await settle();
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 1);
+});
+
+test("finishers off: an assigned use finisher does not play", async () => {
+  const f = await boot("pf2e");
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [{ id: "fling", name: "Fling", trigger: "manual", match: "Ignition", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] }] });
+  await f.fire("createChatMessage", { id: "hit", author: { id: "u" }, item: f.item, actor: f.actor, isRoll: true, flags: { pf2e: { context: { type: "attack-roll", outcome: "success", target: { token: "Scene.s.Token.target" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
+  await settle();
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0);
+});
