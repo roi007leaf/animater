@@ -25,6 +25,9 @@ export function composeFinisher(recipe, { offset = null } = {}) {
 const ends = (stages) => Math.max(0, ...stages.map((s) => (s.delay ?? 0) + (s.duration ?? 0)));
 export const travelEnd = (plan) => ends(plan.filter((s) => s.kind === "motion" && s.motionOffset));
 export const planEnd = (plan) => ends(plan);
+// A vanish fades when the mover's last motion ends: waiting for trailing effects would let
+// a non-held motion (a sink) spring back to full opacity first.
+export const motionEnd = (plan) => plan.some((s) => s.kind === "motion") ? ends(plan.filter((s) => s.kind === "motion")) : planEnd(plan);
 
 export function finisherDirection(finisher, { mover, attacker, target }) {
   return finisher.mover === "source" ? awayFrom(mover?.center, target?.center) : awayFrom(attacker?.center, mover?.center);
@@ -34,7 +37,10 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
   const f = recipe.finisher, grid = host.gridSize();
   const from = { x: mover.document.x, y: mover.document.y };
   const direction = f.knockback > 0 ? finisherDirection(f, { mover, attacker, target }) : null;
-  const to = direction ? host.landing(mover, direction, f.knockback) : null;
+  let to = null;
+  // A landing that cannot be worked out plays the finisher in place rather than not at all.
+  try { to = direction ? host.landing(mover, direction, f.knockback) : null; }
+  catch (error) { host.trace("Blocked", `Finisher ${recipe.name} landing: ${error.message}`); }
   const offset = to && (to.x !== from.x || to.y !== from.y) ? { x: (to.x - from.x) / grid, y: (to.y - from.y) / grid } : null;
   const { recipe: composed, moves } = composeFinisher(recipe, { offset });
   const commit = async (data) => host.commit(mover, { ...data, finisher: recipe.id });
@@ -43,7 +49,9 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
   // the user and aims its target-subject effects at the target, not at the user.
   const context = f.mover === "source" ? { source: mover, targets: target ? [target] : [] } : { source: attacker ?? mover, targets: [mover] };
   const plan = await host.play(composed, context);
-  if (!plan) return false;
+  // null: nothing played and nothing was written, so the caller may play its own fallback.
+  // false: it played but a write failed.
+  if (!plan) return null;
   try {
     const landed = moves ? travelEnd(plan) : 0;
     if (moves) {
@@ -53,7 +61,7 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
     // A survivor (a use finisher's target) only ever stays.
     const ending = dead ? f.ending : "stay";
     if (ending === "stay") return true;
-    await host.wait(Math.max(0, planEnd(plan) - landed));
+    await host.wait(Math.max(0, motionEnd(plan) - landed));
     if (ending === "vanish") { await host.fade(mover); await commit({ hidden: true }); }
     else await commit({ defeated: true });
     return true;

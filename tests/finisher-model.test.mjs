@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -31,7 +31,27 @@ test("a kill picks the killing item's first kill finisher, else the default, els
   assert.equal(killFinisher(list, { itemName: "Dagger" }, "def").id, "def");
   assert.equal(killFinisher(list, { itemName: "Dagger" }, ""), null);
   assert.equal(killFinisher(list, {}, "missing"), null);
+  assert.equal(killFinisher(list, { itemName: "Greataxe" }, "def", { crit: true }).id, "a");
   assert.equal(killFinisher([{ id: "plain", name: "P", match: "Dagger", stages: [] }], { itemName: "Dagger" }, "plain"), null, "a non-finisher is never a default");
+});
+
+test("a critical-only kill finisher plays only on a crit; the default obeys the same rule", () => {
+  const list = [fin("crit", "Greataxe", { success: "critical" }), fin("def", "", { success: "critical" }), fin("plain", "")];
+  assert.equal(killFinisher(list, { itemName: "Greataxe" }, "def", { crit: true }).id, "crit");
+  assert.equal(killFinisher(list, { itemName: "Greataxe" }, "def", { crit: false }), null, "no crit: neither the item's nor the default plays");
+  assert.equal(killFinisher(list, { itemName: "Greataxe" }, "def"), null, "unknown crit is not a crit");
+  assert.equal(killFinisher(list, { itemName: "Greataxe" }, "plain").id, "plain", "falls through to a default that needs no crit");
+  assert.equal(killFinisher([fin("both", "Greataxe", { success: "critical" }), fin("any", "Greataxe")], { itemName: "Greataxe" }, "").id, "any");
+});
+
+test("a use finisher on a roll needs a known outcome; a plain use needs none", () => {
+  const plain = normalizeFinisher({ on: "use" });
+  assert.equal(usePasses(plain, { type: "attack", outcome: null }), false, "D&D with several targets or hidden AC");
+  assert.equal(usePasses(plain, { type: "check" }), false);
+  assert.equal(usePasses(plain, { type: "attack", outcome: "success" }), true);
+  assert.equal(usePasses(plain, { type: "attack", outcome: "failure" }), false);
+  assert.equal(usePasses(plain, { type: "use", item: { type: "spell" } }), true);
+  assert.equal(usePasses(plain, { type: "damage" }), false);
 });
 
 test("success rule: success or critical by default, critical only when chosen, no roll always passes", () => {
@@ -57,9 +77,14 @@ test("a use finisher rides the roll when there is one, else the use", () => {
 test("a PF2e Shove check becomes a finisher event with its outcome and target", () => {
   const message = (author, options) => ({ id: "m1", author: { id: author }, speaker: { token: "t", scene: "s" }, flags: { pf2e: { context: { type: "skill-check", outcome: "criticalSuccess", options, target: { token: "Scene.s.Token.x" } } } } });
   const e = checkFinisherEvent(message("u", ["action:shove", "self:x"]), "pf2e", "u");
-  assert.deepEqual(e, { type: "check", systemId: "pf2e", id: "finisher-check:m1", itemName: "shove", tokenId: "t", sceneId: "s", targetUuid: "Scene.s.Token.x", outcome: "criticalSuccess" });
+  assert.deepEqual(e, { type: "check", systemId: "pf2e", id: "finisher-check:m1", messageId: "m1", itemName: "shove", tokenId: "t", sceneId: "s", targetUuid: "Scene.s.Token.x", outcome: "criticalSuccess" });
   assert.equal(checkFinisherEvent(message("other", ["action:shove"]), "pf2e", "u"), null, "only the roller's client");
   assert.equal(checkFinisherEvent(message("u", ["self:x"]), "pf2e", "u"), null, "a check that names no action");
+  assert.equal(checkFinisherEvent({ ...message("u", ["action:shove"]), blind: true }, "pf2e", "u"), null, "blind");
+  assert.equal(checkFinisherEvent({ ...message("u", ["action:shove"]), whisper: ["gm"] }, "pf2e", "u"), null, "whispered");
+  assert.notEqual(checkFinisherEvent({ ...message("u", ["action:shove"]), whisper: [] }, "pf2e", "u"), null, "an empty whisper list is public");
+  const reroll = message("u", ["action:shove"]); reroll.flags.pf2e.context.isReroll = true;
+  assert.equal(checkFinisherEvent(reroll, "pf2e", "u"), null, "reroll");
 });
 
 test("the catalog dropdown moves an entry to exactly one finisher, case-insensitively", () => {

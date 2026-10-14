@@ -12,13 +12,23 @@ export function matchFinishers(recipes, { itemName, itemSlug, itemUuid } = {}, o
 }
 
 // The killing item's own kill finisher wins; otherwise the GM's default, if it is a finisher.
-export function killFinisher(recipes, item = {}, defaultId = "") {
-  return matchFinishers(recipes, item, "kill")[0] ?? live(recipes).find((r) => r.id === defaultId) ?? null;
+// "Needs: Critical only" holds for both: without a crit they are passed over.
+export function killFinisher(recipes, item = {}, defaultId = "", { crit = false } = {}) {
+  const fits = (r) => passesSuccess(r.finisher, crit ? "criticalSuccess" : "success");
+  return matchFinishers(recipes, item, "kill").find(fits) ?? live(recipes).find((r) => r.id === defaultId && fits(r)) ?? null;
 }
 
 export function passesSuccess(finisher, outcome) {
   if (outcome === undefined || outcome === null) return true;
   return finisher.success === "critical" ? outcome === "criticalSuccess" : ["success", "criticalSuccess"].includes(outcome);
+}
+
+// A roll whose outcome is unknown (D&D with several targets or a hidden AC) may be a miss:
+// skip it. Only a use without any roll passes without an outcome.
+export function usePasses(finisher, event) {
+  const moment = finisherMoment(event);
+  if (!moment || (moment === "roll" && (event.outcome === undefined || event.outcome === null))) return false;
+  return passesSuccess(finisher, event.outcome);
 }
 
 // A use finisher rides the roll that has a degree of success when the item has one,
@@ -36,9 +46,11 @@ export function finisherMoment(event) {
 export function checkFinisherEvent(message, systemId, userId) {
   const context = message?.flags?.[systemId]?.context;
   if ((message?.author?.id ?? message?.user?.id) !== userId || context?.type !== "skill-check") return null;
+  // Hidden or repeated rolls stay quiet, as normal dispatch does (twoeEvent).
+  if (message.blind || message.whisper?.length || context.isReroll) return null;
   const action = (context.options ?? []).map(String).find((o) => o.startsWith("action:"))?.slice(7);
   if (!action) return null;
-  return { type: "check", systemId, id: `finisher-check:${message.id}`, itemName: action, tokenId: message.speaker?.token, sceneId: message.speaker?.scene, targetUuid: context.target?.token, outcome: context.outcome };
+  return { type: "check", systemId, id: `finisher-check:${message.id}`, messageId: message.id, itemName: action, tokenId: message.speaker?.token, sceneId: message.speaker?.scene, targetUuid: context.target?.token, outcome: context.outcome };
 }
 
 // The catalog dropdown: the entry belongs to at most one finisher.

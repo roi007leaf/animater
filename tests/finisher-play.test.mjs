@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { composeFinisher, travelEnd, planEnd, finisherDirection, playFinisher } from "../scripts/finisher-play.mjs";
+import { composeFinisher, travelEnd, planEnd, motionEnd, finisherDirection, playFinisher } from "../scripts/finisher-play.mjs";
 import { normalizeFinisher } from "../scripts/model.mjs";
 
 const travel = { stageId: "fly", kind: "motion", motion: "leap", subject: "targets", motionEnd: "hold", duration: 1000, assets: [] };
@@ -35,6 +35,12 @@ test("travel end is when the last landing travel finishes; plan end is when ever
   assert.equal(travelEnd([]), 0);
 });
 
+test("the ending starts when the mover's last motion ends, else when the plan ends", () => {
+  const plan = [{ kind: "motion", delay: 300, duration: 1400 }, { kind: "impact", delay: 1500, duration: 1500 }, { kind: "sound", delay: 0, duration: 4000 }];
+  assert.equal(motionEnd(plan), 1700, "a vanish fades before a motion-less tail lets it reappear");
+  assert.equal(motionEnd([{ kind: "impact", delay: 0, duration: 1500 }]), 1500);
+});
+
 test("targets are flung away from the attacker; the user travels toward the target", () => {
   const at = (x, y) => ({ center: { x, y } });
   assert.deepEqual(finisherDirection(normalizeFinisher({}), { mover: at(100, 0), attacker: at(0, 0) }), { x: 1, y: 0 });
@@ -43,11 +49,11 @@ test("targets are flung away from the attacker; the user travels toward the targ
 });
 
 const token = (name = "Orc") => ({ name, center: { x: 150, y: 150 }, document: { x: 100, y: 100 } });
-const fakeHost = ({ plan = [{ kind: "motion", motionOffset: { x: 2, y: 0 }, delay: 0, duration: 1000 }, { kind: "impact", delay: 0, duration: 1500 }], fail = false } = {}) => {
+const fakeHost = ({ plan = [{ kind: "motion", motionOffset: { x: 2, y: 0 }, delay: 0, duration: 1000 }, { kind: "impact", delay: 0, duration: 1500 }], fail = false, landingThrows = false } = {}) => {
   const log = [];
   return { log,
     gridSize: () => 100,
-    landing: (_m, _d, squares) => ({ x: 100 + squares * 100, y: 100 }),
+    landing: (_m, _d, squares) => { if (landingThrows) throw Error("no walls"); return { x: 100 + squares * 100, y: 100 }; },
     play: async (r, context) => { log.push(["play", r.stages[0].motionOffset ?? null, context.source.name, context.targets[0].name]); return plan; },
     wait: async (ms) => log.push(["wait", ms]),
     fade: async (t) => log.push(["fade", t.name]),
@@ -63,7 +69,7 @@ test("a kill flings the body, moves the token where it landed, then vanishes it"
     ["play", { x: 2, y: 0 }, "Hero", "Orc"],
     ["wait", 1000],
     ["commit", { x: 300, y: 100, fromX: 100, fromY: 100, finisher: "f" }],
-    ["wait", 500],
+    ["wait", 0],
     ["fade", "Orc"],
     ["commit", { hidden: true, finisher: "f" }],
   ]);
@@ -88,10 +94,19 @@ test("without an attacker nothing moves the document, and the ending waits for t
   assert.deepEqual(host.log.slice(1), [["play", null, "Orc", "Orc"], ["wait", 1500], ["commit", { defeated: true, finisher: "f" }]]);
 });
 
-test("a finisher that never starts writes nothing", async () => {
+test("a finisher that never starts writes nothing and says so (null), so the caller can fall back", async () => {
   const host = fakeHost({ plan: null });
-  assert.equal(await playFinisher({ recipe: recipe(), mover: token(), attacker: null, dead: true }, host), false);
+  assert.equal(await playFinisher({ recipe: recipe(), mover: token(), attacker: null, dead: true }, host), null);
   assert.ok(!host.log.some(([kind]) => kind === "commit"));
+});
+
+test("a landing that throws is traced and the finisher plays without knockback", async () => {
+  const host = fakeHost({ landingThrows: true, plan: [{ kind: "impact", delay: 0, duration: 1500 }] });
+  assert.equal(await playFinisher({ recipe: recipe({ ending: "body" }), mover: token(), attacker: { ...token("Hero"), center: { x: 50, y: 150 } }, dead: true }, host), true);
+  assert.deepEqual(host.log.find(([kind]) => kind === "Blocked"), ["Blocked", "Finisher Fling landing: no walls"]);
+  assert.ok(host.log.some(([kind, offset]) => kind === "play" && offset === null), "travel comes back");
+  assert.ok(!host.log.some(([kind, data]) => kind === "commit" && data.x !== undefined));
+  assert.deepEqual(host.log.at(-1), ["commit", { defeated: true, finisher: "f" }]);
 });
 
 test("a refused move is traced and skips the ending", async () => {
