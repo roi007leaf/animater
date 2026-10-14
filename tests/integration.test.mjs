@@ -1399,3 +1399,76 @@ test("finishers off: an assigned use finisher does not play", async () => {
   await settle();
   assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0);
 });
+
+// A killing blow on an NPC: a damage roll from "Ignition" aimed at the target token, then the
+// actor's HP drops to 0 through preUpdateActor/updateActor as Foundry fires them.
+async function killTarget(f, { finishers = [], defaultFinisher = "" } = {}) {
+  foundry.utils.hasProperty ??= (object, path) => path.split(".").reduce((o, k) => (o && k in o ? o[k] : undefined), object) !== undefined;
+  const npc = { id: "npc", type: "npc", system: { attributes: { hp: { value: 5 } } }, getActiveTokens: () => [f.target] };
+  Object.assign(f.target, { name: "Orc", actor: npc, w: 100, h: 100 });
+  Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("defaultFinisher", defaultFinisher);
+  f.settings.set("recipes", { schema: 1, recipes: finishers });
+  await f.fire("createChatMessage", { id: "dmg", author: { id: "u" }, item: f.item, actor: f.actor, isRoll: true, rolls: [{ instances: [{ type: "fire", total: 9 }] }],
+    flags: { pf2e: { context: { type: "damage-roll", target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
+  const changes = { system: { attributes: { hp: { value: 0 } } } }, options = {};
+  await f.fire("preUpdateActor", npc, changes, options);
+  npc.system.attributes.hp.value = 0;
+  await f.fire("updateActor", npc, changes, options, "u");
+  await settle();
+  return f.api.activity().filter((e) => e.status === "Finisher");
+}
+const killFin = (id, name, match) => ({ id, name, trigger: "manual", match, finisher: { on: "kill", knockback: 0, ending: "body" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 100, assets: [] }] });
+
+test("kill path: the killing item's kill finisher plays on the NPC", async () => {
+  const f = await boot("pf2e");
+  const entries = await killTarget(f, { finishers: [killFin("burn", "Burn up", "Ignition")] });
+  assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
+  assert.match(entries[0].detail, /Burn up: Orc/);
+  await f.api.stop();
+});
+
+test("kill path: with no assigned finisher the default finisher plays", async () => {
+  const f = await boot("pf2e");
+  const entries = await killTarget(f, { finishers: [killFin("other", "Other", "Dagger"), killFin("def", "Default drop", "")], defaultFinisher: "def" });
+  assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
+  assert.match(entries[0].detail, /Default drop/);
+  await f.api.stop();
+});
+
+test("kill path: neither an assigned nor a default finisher keeps the old collapse", async () => {
+  const f = await boot("pf2e");
+  const entries = await killTarget(f, { finishers: [killFin("other", "Other", "Dagger")] });
+  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  await f.api.stop();
+});
+
+test("displace-commit: the GM writes for the sender who owns the attacker, never for a forged or unrelated user", async () => {
+  const f = await boot("pf2e");
+  const updates = [], scene = { id: "s" };
+  const orc = { uuid: "Scene.s.Token.orc", documentName: "Token", parent: scene, x: 100, y: 100, width: 1, height: 1, hidden: false,
+    actor: { system: { attributes: { hp: { value: 5 } } } }, testUserPermission: () => false, update: async (data) => updates.push(data) };
+  const hero = { uuid: "Scene.s.Token.hero", documentName: "Token", parent: scene, testUserPermission: (user) => user.id === "p1" };
+  globalThis.fromUuid = async (uuid) => ({ [orc.uuid]: orc, [hero.uuid]: hero })[uuid] ?? null;
+  game.users.set("p1", { id: "p1", isGM: false });
+  game.users.set("p2", { id: "p2", isGM: false });
+  game.users.activeGM = { isSelf: true };
+  canvas.dimensions = { sceneRect: { x: 0, y: 0, width: 3000, height: 3000 } };
+  const receive = f.sockets.get("module.animater");
+  const request = { type: "displace-commit", sender: "remote", uuid: orc.uuid, attackerUuid: hero.uuid, x: 300, y: 100, fromX: 100, fromY: 100, finisher: "fling" };
+  receive({ ...request, userId: "p1" }, "p2");
+  receive({ ...request, userId: "u" }, "p2");
+  receive({ ...request, userId: "p1" });
+  receive({ ...request, x: 1500 }, "p1");
+  await settle();
+  assert.equal(updates.length, 0, "unrelated sender (even claiming the GM), no sender, and an out-of-reach move are ignored");
+  receive({ ...request, fromX: "evil", finisher: "x".repeat(200) }, "p1");
+  await settle();
+  assert.equal(updates.length, 1);
+  assert.equal(updates[0].x, 300);
+  assert.deepEqual(updates[0]["flags.animater.displaced"], { finisher: "x".repeat(80) }, "the flag keeps only finite origins and a short name");
+});

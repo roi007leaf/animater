@@ -1,6 +1,6 @@
 // Displacement: where a token ends up when an animation moves it for real (finishers now,
-// forced movement later), and the one document write that puts it there. Pure: Foundry
-// supplies walls, scene bounds, grid snapping and the write through injected functions.
+// forced movement later), and whether the GM may write a player's requested move. Pure:
+// Foundry supplies walls, scene bounds and grid snapping; main.mjs does the write.
 
 // Straight out from the attacker, through the target.
 export function awayFrom(attacker, target) {
@@ -44,4 +44,16 @@ export function displaceAllowed({ isOwner, alreadyHidden, hp, hidden, defeated, 
   if (!isOwner || alreadyHidden) return false;
   if ((x !== undefined || y !== undefined) && !(Number.isFinite(x) && Number.isFinite(y))) return false;
   return !(hidden || defeated) || hp <= 0;
+}
+
+// A requested move the GM writes stays within the longest knockback (6 squares) plus the
+// token's own size, and keeps the token's footprint on the scene (`footprint` in px,
+// defaults to size squares).
+export function withinKnockback({ from, to, grid, size = 1, bounds = null, footprint = null }) {
+  if (![from?.x, from?.y, to?.x, to?.y, grid].every(Number.isFinite)) return false;
+  const reach = (6 + Math.max(1, Number(size) || 1)) * grid;
+  // Squares count like landingSteps: a diagonal step is one square, so measure the longer axis.
+  if (Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y)) > reach) return false;
+  const box = footprint ?? { w: (Number(size) || 1) * grid, h: (Number(size) || 1) * grid };
+  return inside(to, box, bounds);
 }

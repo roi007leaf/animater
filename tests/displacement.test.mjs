@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { awayFrom, landingSteps, landingSpot, displaceAllowed } from "../scripts/displacement.mjs";
+import { awayFrom, landingSteps, landingSpot, displaceAllowed, withinKnockback } from "../scripts/displacement.mjs";
 
 const G = 100, size = { w: 100, h: 100 }, from = { x: 500, y: 500 };
 
@@ -60,4 +60,18 @@ test("the GM writes Defeated or hidden only for a creature at 0 HP, and a reques
   assert.equal(displaceAllowed({ ...ok, defeated: true, hp: 3 }), false);
   assert.equal(displaceAllowed({ ...ok, hp: 3, x: 100, y: 200 }), true, "a use finisher moves a survivor");
   assert.equal(displaceAllowed({ ...ok, x: 100 }), false, "a move needs both coordinates");
+});
+
+test("the GM writes only a move within knockback reach that stays on the scene", () => {
+  const bounds = { x: 0, y: 0, width: 2000, height: 2000 };
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: 800, y: 500 }, grid: 100, size: 1, bounds }), true);
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: 1200, y: 500 }, grid: 100, size: 1, bounds }), true, "6 squares plus the token's size");
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: 1300, y: 500 }, grid: 100, size: 1, bounds }), false, "8 squares away");
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: 1000, y: 1000 }, grid: 100, size: 1, bounds }), true, "diagonal 5 squares");
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: 1100, y: 1100 }, grid: 100, size: 1, bounds }), true, "a full 6-square diagonal knockback");
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: 1300, y: 1300 }, grid: 100, size: 1, bounds }), false, "8 squares diagonally");
+  assert.equal(withinKnockback({ from: { x: 100, y: 100 }, to: { x: -100, y: 100 }, grid: 100, size: 1, bounds }), false, "off the scene");
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: 1300, y: 500 }, grid: 100, size: 3, bounds }), true, "a large creature reaches further");
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: NaN, y: 500 }, grid: 100, size: 1, bounds }), false);
+  assert.equal(withinKnockback({ from: { x: 500, y: 500 }, to: { x: 600, y: 500 }, grid: 100, size: 1, bounds: null }), true, "no bounds known");
 });
