@@ -107,6 +107,10 @@ export function motionPose(
       pose.alpha = 1 - 0.75 * envelope * (0.5 - 0.5 * Math.cos(p * Math.PI * 2 * cycles));
       break;
     }
+    case "vanish":
+      // A finisher's copies take the token's place; the real one steps out of sight.
+      pose.alpha = 0;
+      break;
     case "throw": {
       // Draw back for the first third, then snap forward past the start.
       const reach = p < 0.35 ? -0.45 * Math.sin((Math.PI * p) / 0.35) : Math.sin((Math.PI * (p - 0.35)) / 0.65);
