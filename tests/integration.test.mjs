@@ -1327,7 +1327,8 @@ test("PF2e placed cone Region triggers directional footage with portable native 
 test("D&D 5e bootstrap: native V2 activity hooks, no chat duplication, circular area geometry", async () => {
   const f = await boot("dnd5e");
   assert.ok(f.hooks.has("dnd5e.rollAttackV2"));
-  assert.ok(!f.hooks.has("createChatMessage"));
+  // createChatMessage is hooked only to log the attacker for finishers; it plays nothing (no chat duplication).
+  assert.ok(f.hooks.has("createChatMessage"));
   assert.ok(f.hooks.has("createActiveEffect"));
   const ember = f.api.recipes()[0];
   ember.stages.forEach((s) => (s.delay = 0));

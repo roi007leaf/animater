@@ -38,6 +38,7 @@ Install and activate **either** JB2A edition; Patreon users do not need JB2A Fre
   - Valued conditions such as Frightened 1–4 grow stronger with their value.
   - Persistent damage shows its damage type.
 - **Token motion.** Cosmetic lunges, recoils, leaps, charges and stagger poses that return the token to its place. The real token position never changes.
+- **Finishers.** Off by default (Module Settings → Finishers). An NPC killed by an attack is finished off in style: launched, cleaved, burned to ash, shattered and more, chosen from how the blow was struck and its damage. The body is thrown away from the attacker, and the token is moved there and hidden; unhide it to bring it back. Player characters are not affected.
 - **Sound.** Optional, synchronized to the visuals, and only from packs you have installed.
 
 Every catalog entry can be previewed in the workspace, enabled or excluded individually, and customized into an editable recipe: stages, timing, assets, motion, sound and filters.

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Finishers (opt-in, Module Settings → Finishers): an NPC killed by an attack is finished off in style — launched, cleaved, skewered, burned to ash, shattered, jolted, blasted away, unmade, melted, ascended, shaken apart or its soul departing, picked from how the blow was struck and its damage. The body is thrown away from the attacker (stopping at walls) and the token is moved there and hidden; unhide it to bring it back. Players' kills are written by the active GM.
+
 ## 0.3.17 (2026-10-13)
 
 - **Rings frame every token, on top.** Hollow rings (marker rings such as Courageous Anthem's notes, attitude and curse rims, glyph and fire rings) were drawn under the token. A ring sits just outside the token's edge, so round art whose frame reaches the edge (Tokenizer portraits) hid almost all of it, not only square art. Hollow rings are now drawn on top of every token: they frame the creature without covering its face. Webs, smoke and sparkles still go under round and dynamic-ring tokens, and on top of square art at half strength. Also fixes 0.3.16 dimming those rings on square art, where they were wrongly treated as filling footage.
