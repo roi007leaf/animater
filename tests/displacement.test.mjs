@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { awayFrom, landingSteps, landingSpot, displace, displaceAllowed } from "../scripts/displacement.mjs";
+import { awayFrom, landingSteps, landingSpot, displaceAllowed } from "../scripts/displacement.mjs";
 
 const G = 100, size = { w: 100, h: 100 }, from = { x: 500, y: 500 };
 
@@ -43,35 +43,6 @@ test("a custom snap (hex or gridless) is honored", () => {
   assert.deepEqual(landingSteps(from, { x: 1, y: 0 }, 1, G, snap), [{ x: 601, y: 500 }]);
 });
 
-const token = { document: { x: 500, y: 500 } };
-const fakeHost = ({ started = true, fail = false } = {}) => {
-  const log = [];
-  return { log,
-    play: async () => { log.push("play"); return started; },
-    wait: async (ms) => { log.push(`wait ${ms}`); },
-    commit: async (_t, data) => { log.push(data); if (fail) throw Error("no permission"); },
-    trace: (status, detail) => log.push(`${status}: ${detail}`) };
-};
-const job = { token, to: { x: 700, y: 500 }, hide: true, finisher: "launch", flight: 1800, recipe: {} };
-
-test("a finisher plays, waits out the flight, then moves and hides the token in one write", async () => {
-  const host = fakeHost();
-  assert.equal(await displace(job, host), true);
-  assert.deepEqual(host.log, ["play", "wait 1800", { x: 700, y: 500, hidden: true, fromX: 500, fromY: 500, finisher: "launch" }]);
-});
-
-test("if the animation never starts, the token is hidden where it stood, never left invisible", async () => {
-  const host = fakeHost({ started: false });
-  assert.equal(await displace(job, host), true);
-  assert.deepEqual(host.log, ["play", { x: 500, y: 500, hidden: true, fromX: 500, fromY: 500, finisher: "launch" }]);
-});
-
-test("a refused write is traced, not thrown", async () => {
-  const host = fakeHost({ fail: true });
-  assert.equal(await displace(job, host), false);
-  assert.match(host.log.at(-1), /Blocked: Finisher launch: no permission/);
-});
-
 test("the active GM only finishes a creature its sender owns, still visible, at 0 HP", () => {
   const ok = { isOwner: true, alreadyHidden: false, hp: 0, hidden: true, x: 1, y: 2 };
   assert.equal(displaceAllowed(ok), true);
@@ -81,4 +52,12 @@ test("the active GM only finishes a creature its sender owns, still visible, at 
   assert.equal(displaceAllowed({ ...ok, hp: NaN }), false);
   assert.equal(displaceAllowed({ ...ok, x: NaN }), false);
   assert.equal(displaceAllowed({ ...ok, hidden: false, hp: 5 }), true, "a plain move (forced movement) needs no 0 HP");
+});
+
+test("the GM writes Defeated or hidden only for a creature at 0 HP, and a request without a move is allowed", () => {
+  const ok = { isOwner: true, alreadyHidden: false, hp: 0 };
+  assert.equal(displaceAllowed({ ...ok, defeated: true }), true);
+  assert.equal(displaceAllowed({ ...ok, defeated: true, hp: 3 }), false);
+  assert.equal(displaceAllowed({ ...ok, hp: 3, x: 100, y: 200 }), true, "a use finisher moves a survivor");
+  assert.equal(displaceAllowed({ ...ok, x: 100 }), false, "a move needs both coordinates");
 });

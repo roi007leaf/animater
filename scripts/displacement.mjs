@@ -38,26 +38,10 @@ export function landingSpot({ from, direction, squares, grid, size, collides = (
   return spot;
 }
 
-// Whether the active GM writes a move a player asked for: only a token that player owns,
-// still visible, and (to hide it) already down.
-export function displaceAllowed({ isOwner, alreadyHidden, hp, hidden, x, y }) {
-  if (!isOwner || alreadyHidden || !Number.isFinite(x) || !Number.isFinite(y)) return false;
-  return !hidden || hp <= 0;
-}
-
-// Play the animation, let its copies finish, then put the real token where they landed.
-// An animation that never started leaves the token where it stood: hidden, never stranded
-// invisible without being hidden.
-export async function displace({ token, to, hide, finisher, flight, recipe }, host) {
-  const from = { x: token.document.x, y: token.document.y };
-  const started = await host.play(recipe, token);
-  if (started) await host.wait(flight);
-  const spot = started ? to : from;
-  try {
-    await host.commit(token, { x: spot.x, y: spot.y, hidden: hide, fromX: from.x, fromY: from.y, finisher });
-    return true;
-  } catch (error) {
-    host.trace("Blocked", `Finisher ${finisher}: ${error.message}`);
-    return false;
-  }
+// Whether the active GM writes what a player asked for: only for a token that player
+// controls (or whose attacker they control), still visible; hiding or Defeated only once down.
+export function displaceAllowed({ isOwner, alreadyHidden, hp, hidden, defeated, x, y }) {
+  if (!isOwner || alreadyHidden) return false;
+  if ((x !== undefined || y !== undefined) && !(Number.isFinite(x) && Number.isFinite(y))) return false;
+  return !(hidden || defeated) || hp <= 0;
 }
