@@ -444,6 +444,8 @@ async function applyDisplace(doc, { x, y, hidden, fromX, fromY, finisher }) {
 }
 async function commitDisplace(token, data) {
   if (game.user.isGM) return applyDisplace(token.document, data);
+  // Nobody would write it: throw so displace() traces it and the token stays visible in place.
+  if (!game.users.activeGM) throw new Error("no GM is connected to finish it");
   game.socket.emit(`module.${ID}`, { type: "displace-commit", sender: clientId, userId: game.user.id, uuid: token.document.uuid, ...data });
 }
 async function receiveDisplace(data) {
