@@ -7,7 +7,7 @@ import { normalizePreviewArea } from "./canvas-preview-area.mjs";
 import { repeatStride } from "./stage-options.mjs";
 import { completeMediaStage } from "./media-lifetime.mjs";
 import { normalizePlaybackRoles } from "./playback-roles.mjs";
-import { isPathMotion, PATH_MOTIONS } from "./motion-path.mjs";
+import { isPathMotion, PATH_MOTIONS, HOLDING_MOTIONS } from "./motion-path.mjs";
 import {
   compositionOptions,
   timedStages,
@@ -60,6 +60,7 @@ export const MOTIONS = {
   slam: "Rise and slam down",
   drift: "Drift gently down",
   collapse: "Collapse when dropped",
+  fade: "Fade out",
 };
 export const clone = (value) => structuredClone(value);
 export const normalize = (value) =>
@@ -235,6 +236,10 @@ export function validateRecipe(input) {
                   PATH_MOTIONS.has(s.motion) ? 20 : 2,
                   PATH_MOTIONS.has(s.motion) ? 8 : 0.35,
                 ),
+                // Finishers: a held travel stays where it lands; an exact offset (squares) lands on a square.
+                ...(HOLDING_MOTIONS.has(s.motion) && s.motionEnd === "hold" ? { motionEnd: "hold" } : {}),
+                ...(["rush", "leap", "roll"].includes(s.motion) && s.motionOffset && Number.isFinite(Number(s.motionOffset.x)) && Number.isFinite(Number(s.motionOffset.y))
+                  ? { motionOffset: { x: number(s.motionOffset.x, -20, 20, 0), y: number(s.motionOffset.y, -20, 20, 0) } } : {}),
                 ...(PATH_MOTIONS.has(s.motion)
                   ? {
                       motionRange:

@@ -1317,6 +1317,7 @@ export class Workspace {
     return `${select("motion", "Motion", MOTIONS, "lunge")}${select("subject", "Animate", { source: "Caster token", targets: "Target tokens" }, "source")}
       ${path && s.motion !== "dodge" ? select("motionRange", "Path", { target: toward ? s.subject === "targets" ? "Approach caster" : "Approach selected target" : "Use token separation for distance", distance: "Fixed-distance gesture" }, "target") : ""}
       ${path ? select("motionHeading", "Path heading", { toward: "Toward selected token", away: "Away from selected token", up: "Upward on map", down: "Downward on map", left: "Leftward on map", right: "Rightward on map" }, "toward") : ""}
+      ${(path && s.motion !== "dodge") || s.motion === "fade" ? select("motionEnd", "End", { return: "Return to start", hold: "Hold at the end (finishers move the token there)" }, "return") : ""}
       ${target && s.subject !== "targets" ? select("targetSelection", "Approach which target", { first: "First selected target", second: "Second selected target", last: "Last selected target" }, "first") : ""}
       ${s.subject === "targets" ? select("targetSelection", "Animate which targets", { all: "All selected targets", first: "First selected target", second: "Second selected target", last: "Last selected target" }, "all") : ""}
       ${target && toward ? select("motionEndpoint", "Finish beside", { near: "Near side of target", past: "Far side — pass through" }, "near") : ""}

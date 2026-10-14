@@ -1,6 +1,6 @@
 import { MOTIONS } from "./model.mjs";
 import { shakeCycles, settledProgress } from "./motion-pacing.mjs";
-import { PATH_MOTIONS, motionPhases, pathDistance } from "./motion-path.mjs";
+import { PATH_MOTIONS, HOLDING_MOTIONS, motionPhases, pathDistance } from "./motion-path.mjs";
 // Pure pose function shared by canvas playback and the editor's motion preview.
 export function motionPose(
   stage,
@@ -13,10 +13,14 @@ export function motionPose(
   const amount = stage.intensity ?? 1;
   const distance = (stage.distance ?? 0.35) * grid * amount;
   const pose = { x: 0, y: 0, rotation: 0, scale: 1 };
-  if (p === 0 || p === 1) return pose;
+  const holds = stage.motionEnd === "hold" && HOLDING_MOTIONS.has(stage.motion);
+  if (p === 0 || (p === 1 && !holds)) return pose;
   if (PATH_MOTIONS.has(stage.motion)) {
-    const heading = stage.motionHeading;
-    direction = heading === "away" ? { ...direction, x: -direction.x, y: -direction.y }
+    const heading = stage.motionHeading, offset = stage.motionOffset;
+    const offsetLength = offset ? Math.hypot(offset.x, offset.y) : 0;
+    // An exact landing square overrides heading and range.
+    direction = offsetLength ? { ...direction, x: offset.x / offsetLength, y: offset.y / offsetLength }
+      : heading === "away" ? { ...direction, x: -direction.x, y: -direction.y }
       : heading === "up" ? { ...direction, x: 0, y: -1 }
       : heading === "down" ? { ...direction, x: 0, y: 1 }
       : heading === "left" ? { ...direction, x: -1, y: 0 }
@@ -24,8 +28,8 @@ export function motionPose(
       : direction;
     const { arrival, release } = motionPhases(stage);
     const out = settledProgress(Math.min(1, p / arrival));
-    const back = settledProgress(Math.max(0, (p - release) / (1 - release)));
-    const travel = pathDistance(stage, direction, grid) * out * (1 - back);
+    const back = holds ? 0 : settledProgress(Math.max(0, (p - release) / (1 - release)));
+    const travel = (offsetLength ? offsetLength * grid : pathDistance(stage, direction, grid)) * out * (1 - back);
     const side = stage.motionSide ?? 1;
     if (stage.motion === "dodge") {
       pose.x = -direction.y * travel * side;
@@ -107,6 +111,9 @@ export function motionPose(
       pose.alpha = 1 - 0.75 * envelope * (0.5 - 0.5 * Math.cos(p * Math.PI * 2 * cycles));
       break;
     }
+    case "fade":
+      pose.alpha = 1 - settledProgress(p);
+      break;
     case "throw": {
       // Draw back for the first third, then snap forward past the start.
       const reach = p < 0.35 ? -0.45 * Math.sin((Math.PI * p) / 0.35) : Math.sin((Math.PI * (p - 0.35)) / 0.65);
@@ -158,6 +165,16 @@ export function motionPose(
       break;
   }
   return pose;
+}
+
+// A held motion keeps its end pose until the token's document moves there; if that never
+// happens (no GM to write it), it eases back to rest instead of freezing.
+export const HOLD_LIMIT_MS = 3000, HOLD_RELEASE_MS = 400;
+export function heldPose(stage, heldMs, direction, grid = 100) {
+  if (stage.motionEnd !== "hold" || !HOLDING_MOTIONS.has(stage.motion) || heldMs >= HOLD_LIMIT_MS + HOLD_RELEASE_MS) return null;
+  const end = motionPose(stage, 1, direction, grid);
+  const k = heldMs <= HOLD_LIMIT_MS ? 1 : 1 - settledProgress((heldMs - HOLD_LIMIT_MS) / HOLD_RELEASE_MS);
+  return { ...end, x: end.x * k, y: end.y * k, rotation: end.rotation * k, scale: 1 + (end.scale - 1) * k, ...(end.alpha !== undefined ? { alpha: 1 - (1 - end.alpha) * k } : {}) };
 }
 export function motionDirection(token, source, target, motion, grid = 100) {
   const other =
@@ -298,13 +315,17 @@ export class TokenMotionPlayer {
         }
         const poses = [];
         run.tracks = run.tracks.filter(track => {
-          const progress = Math.min(1, (time - track.start) / track.stage.duration);
-          if (progress >= 1) {
-            track.resolve(true);
-            return false;
+          const elapsed = time - track.start;
+          const progress = Math.min(1, elapsed / track.stage.duration);
+          if (progress < 1) {
+            poses.push(motionPose(track.stage, progress, track.direction, this.grid()));
+            return true;
           }
-          poses.push(motionPose(track.stage, progress, track.direction, this.grid()));
-          return true;
+          // Callers continue once the motion lands; a held pose stays drawn there.
+          track.resolve(true);
+          const held = heldPose(track.stage, elapsed - track.stage.duration, track.direction, this.grid());
+          if (held) poses.push(held);
+          return Boolean(held);
         });
         const pose = combineMotionPoses(poses);
         mesh.position.set(original.x + pose.x, original.y + pose.y);

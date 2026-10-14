@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { MOTIONS } from '../scripts/model.mjs';
-import { motionPose, combineMotionPoses, poseTransform, TokenMotionPlayer } from '../scripts/motion.mjs';
+import { MOTIONS, validateRecipe } from '../scripts/model.mjs';
+import { motionPose, combineMotionPoses, poseTransform, TokenMotionPlayer, heldPose, HOLD_LIMIT_MS, HOLD_RELEASE_MS } from '../scripts/motion.mjs';
 import { GENERATED_MOTION_DURATION } from '../scripts/motion-pacing.mjs';
 
 const NEW = ['press', 'sink', 'flicker', 'throw', 'brace', 'stagger', 'cower', 'slam', 'drift'];
@@ -48,3 +48,59 @@ test('canvas player applies squash and opacity and restores the token afterwards
   assert.equal(mesh.alpha, 1); assert.equal(mesh.scale.y, 1); assert.equal(mesh.position.y, 20);
 });
 
+
+const hold = (motion, extra = {}) => ({ kind: 'motion', motion, duration: 1000, distance: 3, intensity: 1, motionRange: 'distance', motionHeading: 'away', motionEnd: 'hold', ...extra });
+
+test('a held path motion ends at its offset instead of coming back', () => {
+  for (const motion of ['rush', 'leap', 'roll']) {
+    const end = motionPose(hold(motion, { motionOffset: { x: 2, y: -1 } }), 1, { x: 1, y: 0 }, 100);
+    assert.ok(Math.abs(end.x - 200) < 1e-6, `${motion} x`);
+    assert.ok(Math.abs(end.y + 100) < 1e-6, `${motion} y`);
+  }
+  const returning = motionPose({ ...hold('rush'), motionEnd: undefined }, 1, { x: 1, y: 0 }, 100);
+  assert.deepEqual(returning, { x: 0, y: 0, rotation: 0, scale: 1 }, 'without hold it still settles at rest');
+});
+
+test('a held motion without an offset ends at its authored distance and heading', () => {
+  const end = motionPose(hold('rush'), 1, { x: 1, y: 0 }, 100);
+  assert.ok(Math.abs(end.x + 300) < 1e-6, 'away from the other token, 3 squares');
+});
+
+test('fade dims the token and, when held, stays invisible at the end', () => {
+  assert.equal(MOTIONS.fade, 'Fade out');
+  assert.ok(GENERATED_MOTION_DURATION.fade > 0);
+  const fade = { kind: 'motion', motion: 'fade', duration: 900, intensity: 1 };
+  assert.ok(motionPose(fade, 0.5).alpha > 0 && motionPose(fade, 0.5).alpha < 1);
+  assert.deepEqual(motionPose(fade, 1), { x: 0, y: 0, rotation: 0, scale: 1 });
+  assert.equal(motionPose({ ...fade, motionEnd: 'hold' }, 1).alpha, 0);
+});
+
+test('a held pose stays put, then eases back to rest if nothing moves the token', () => {
+  const stage = hold('rush', { motionOffset: { x: 2, y: 0 } });
+  assert.ok(Math.abs(heldPose(stage, 0, { x: 1, y: 0 }, 100).x - 200) < 1e-6);
+  assert.ok(Math.abs(heldPose(stage, HOLD_LIMIT_MS, { x: 1, y: 0 }, 100).x - 200) < 1e-6);
+  const easing = heldPose(stage, HOLD_LIMIT_MS + HOLD_RELEASE_MS / 2, { x: 1, y: 0 }, 100).x;
+  assert.ok(easing > 0 && easing < 200);
+  assert.equal(heldPose(stage, HOLD_LIMIT_MS + HOLD_RELEASE_MS, { x: 1, y: 0 }, 100), null);
+  assert.equal(heldPose({ ...stage, motionEnd: undefined }, 0, { x: 1, y: 0 }, 100), null);
+});
+
+test('validation keeps hold and offset only where they mean something', () => {
+  const v = (stage) => validateRecipe({ id: 'h', name: 'H', trigger: 'manual', stages: [{ assets: [], ...stage }] }).stages[0];
+  assert.equal(v(hold('leap')).motionEnd, 'hold');
+  assert.deepEqual(v(hold('leap', { motionOffset: { x: 30, y: -1.5 } })).motionOffset, { x: 20, y: -1.5 });
+  assert.equal(v({ kind: 'motion', motion: 'shake', motionEnd: 'hold' }).motionEnd, undefined);
+  assert.equal(v({ kind: 'motion', motion: 'fade', motionEnd: 'hold', motionOffset: { x: 1, y: 1 } }).motionOffset, undefined);
+});
+
+test('the player keeps a held mesh at its end pose after the motion resolves', async () => {
+  let now = 0, queued = null;
+  const player = new TokenMotionPlayer({ frame: (cb) => (queued = cb), cancel: () => {}, now: () => now, grid: () => 100 });
+  const mesh = { position: { x: 100, y: 100, set(x, y) { this.x = x; this.y = y; } }, rotation: 0, scale: { x: 1, y: 1, set(x, y) { this.x = x; this.y = y; } }, alpha: 1 };
+  const token = { mesh, visible: true, document: { x: 50, y: 50, rotation: 0, width: 1, height: 1, texture: {} } };
+  const done = player.play(token, hold('rush', { motionOffset: { x: 2, y: 0 }, duration: 100 }), { x: 1, y: 0 }, 'me');
+  now = 150; queued(now);
+  assert.equal(await done, true, 'callers continue once the travel lands');
+  assert.equal(mesh.position.x, 300, 'held at the landing square');
+  assert.ok(player.active.has(token), 'still holding until the document moves or the hold times out');
+});
