@@ -1,0 +1,57 @@
+// Which finishers an item plays, and the link between a catalog entry and a finisher.
+// Applies-to reuses recipe matching: comma-separated names in `match`, or one exact itemUuid.
+import { normalize } from "./model.mjs";
+
+const names = (r) => String(r.match ?? "").split(",").map((n) => n.trim()).filter(Boolean);
+const live = (recipes) => recipes.filter((r) => r?.finisher && r.enabled !== false);
+
+export function matchFinishers(recipes, { itemName, itemSlug, itemUuid } = {}, on) {
+  const wanted = new Set([itemName, itemSlug].filter(Boolean).map(normalize));
+  return live(recipes).filter((r) => r.finisher.on === on &&
+    ((r.itemUuid && itemUuid && r.itemUuid === itemUuid) || names(r).some((n) => wanted.has(normalize(n)))));
+}
+
+// The killing item's own kill finisher wins; otherwise the GM's default, if it is a finisher.
+export function killFinisher(recipes, item = {}, defaultId = "") {
+  return matchFinishers(recipes, item, "kill")[0] ?? live(recipes).find((r) => r.id === defaultId) ?? null;
+}
+
+export function passesSuccess(finisher, outcome) {
+  if (outcome === undefined || outcome === null) return true;
+  return finisher.success === "critical" ? outcome === "criticalSuccess" : ["success", "criticalSuccess"].includes(outcome);
+}
+
+// A use finisher rides the roll that has a degree of success when the item has one,
+// else the use itself (a buff, a save spell). Damage rolls never carry it.
+export function finisherMoment(event) {
+  if (["attack", "check"].includes(event?.type)) return "roll";
+  if (event?.type !== "use") return null;
+  const traits = event.item?.system?.traits?.value ?? [];
+  const rolls = ["weapon", "melee"].includes(event.item?.type) || traits.includes("attack") || event.activity?.type === "attack";
+  return rolls ? null : "use";
+}
+
+// PF2e/SF2e actions such as Shove roll a skill check that names the action (action:shove);
+// normal dispatch ignores skill checks, so finishers read them here.
+export function checkFinisherEvent(message, systemId, userId) {
+  const context = message?.flags?.[systemId]?.context;
+  if ((message?.author?.id ?? message?.user?.id) !== userId || context?.type !== "skill-check") return null;
+  const action = (context.options ?? []).map(String).find((o) => o.startsWith("action:"))?.slice(7);
+  if (!action) return null;
+  return { type: "check", systemId, id: `finisher-check:${message.id}`, itemName: action, tokenId: message.speaker?.token, sceneId: message.speaker?.scene, targetUuid: context.target?.token, outcome: context.outcome };
+}
+
+// The catalog dropdown: the entry belongs to at most one finisher.
+export function linkFinisher(recipes, entryName, finisherId) {
+  const key = normalize(entryName);
+  return recipes.map((r) => {
+    if (!r?.finisher) return r;
+    const kept = names(r).filter((n) => normalize(n) !== key);
+    if (r.id === finisherId) kept.push(String(entryName).trim());
+    const match = kept.join(", ");
+    return match === String(r.match ?? "") ? r : { ...r, match };
+  });
+}
+
+export const linkedFinisher = (recipes, entryName) =>
+  live(recipes).find((r) => names(r).some((n) => normalize(n) === normalize(entryName))) ?? null;

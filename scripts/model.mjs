@@ -25,6 +25,22 @@ export const EVENTS = {
   effect: "Effect added",
 };
 export const STRIKE_SCOPES = { melee: 'All melee strikes', ranged: 'All ranged strikes' };
+// Finishers: recipes that play on the real token for assigned items (scripts/finisher-model.mjs).
+export const FINISHER_ON = { kill: "Killing blow", use: "Every successful use" };
+export const FINISHER_MOVERS = { targets: "The target", source: "The one using it" };
+export const FINISHER_ENDINGS = { vanish: "Vanish (fade, then hidden)", body: "Body (stays, Defeated)", stay: "Stay" };
+export const FINISHER_SUCCESS = { success: "Success or critical", critical: "Critical only" };
+export function normalizeFinisher(input = {}) {
+  const pick = (table, value, fallback) => (Object.hasOwn(table, value) ? value : fallback);
+  const knockback = Number(input.knockback);
+  return {
+    on: pick(FINISHER_ON, input.on, "kill"),
+    mover: pick(FINISHER_MOVERS, input.mover, "targets"),
+    knockback: Number.isFinite(knockback) ? Math.min(6, Math.max(0, Math.round(knockback))) : 0,
+    ending: pick(FINISHER_ENDINGS, input.ending, "body"),
+    success: pick(FINISHER_SUCCESS, input.success, "success"),
+  };
+}
 export const KINDS = {
   cast: "Caster",
   travel: "Source → target",
@@ -132,6 +148,8 @@ export function validateRecipe(input) {
     ...(normalizePreviewArea(input.previewArea)
       ? { previewArea: normalizePreviewArea(input.previewArea) }
       : {}),
+    // A finisher never plays through normal dispatch: only its finisher triggers fire it.
+    ...(input.finisher && typeof input.finisher === "object" ? { finisher: normalizeFinisher(input.finisher), trigger: "manual", category: "Finisher" } : {}),
     stages: input.stages
       .map((s, index) => {
         if (!s || !Object.hasOwn(KINDS, s.kind))
