@@ -90,7 +90,7 @@ export class Workspace {
   // searched to a name (its first match is shown). Returns false for an unknown page.
   reveal({ recipeId, page, name = "", id } = {}) {
     const fresh = (filters) => ({ ...Object.fromEntries(Object.keys(filters ?? {}).map((k) => [k, "all"])), search: name });
-    if (recipeId) { this.page = "recipes"; this.selected = recipeId; this.studio = true; this.studioTime = 0; this.stageIndex = 0; this.search = ""; this.category = "All"; return true; }
+    if (recipeId) { this.page = this.host?.recipes?.().find((r) => r.id === recipeId)?.finisher ? "finishers" : "recipes"; this.selected = recipeId; this.studio = true; this.studioTime = 0; this.stageIndex = 0; this.search = ""; this.category = "All"; return true; }
     const pages = ["spells", "feats", "actions", "features", "weapons", "items", "conditions", "effects"];
     if (!pages.includes(page)) return false;
     this.page = page; this.studio = false; this.message = "";
@@ -2403,7 +2403,7 @@ export class Workspace {
         base.category = "Custom";
         await this.host.save([...this.host.recipes(), validateRecipe(base)]);
         this.selected = base.id;
-        this.page = "recipes";
+        this.page = base.finisher ? "finishers" : "recipes";
         this.studio = true;
         this.studioTime = 0;
         this.category = "All";
