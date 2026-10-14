@@ -10,7 +10,11 @@ import {
   resolveAsset,
   MOTIONS,
   MAX_STAGES,
+  normalizeFinisher,
 } from "./model.mjs";
+import { finishersPageHTML, finisherSettingsHTML } from "./finisher-ui.mjs";
+import { presetFinisher } from "./finisher-presets.mjs";
+import { linkFinisher } from "./finisher-model.mjs";
 import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
 import { catalogSoundOptions, previewRecipeSounds } from "./spell-sounds.mjs";
@@ -465,7 +469,7 @@ export class Workspace {
     const message = !env.ready ? env.problem : env.jb2a === false ? JB2A_MISSING : "";
     return message ? `<div class="an-warning" role="alert">${esc(message)} <button data-action="page" data-page="setup">Open setup →</button></div>` : "";
   }
-  isStudio() { return this.page === "recipes" && !!this.studio && !!this.recipe(); }
+  isStudio() { return ["recipes", "finishers"].includes(this.page) && !!this.studio && !!this.recipe(); }
   render() {
     if(this.page!=='assets'||this.mediaLibrary?.fxScene)void this.mediaLibrary?.stopTokenPreview();
     if(!catalogPageAllowed(this.page,this.host.environment()))this.page='recipes';
@@ -522,6 +526,7 @@ export class Workspace {
         <div class="an-nav-caption">WORKSPACE</div>
         ${(this.host.playerMode ? [["recipes", "✦", this.host.reviewing?.() ? `${esc(this.host.reviewing().userName)}'s animations` : "My animations"],["assets", "▦", "Assets"]] : [
           ["recipes", "✦", "Recipes"],
+          ["finishers", "✸", "Finishers"],
           ...catalogNavigation(env),
           ["assets", "▦", "Assets"],
           ...(this.host.flashScreens ? [["flash", "⚡", "Flash screens"]] : []),
@@ -530,17 +535,17 @@ export class Workspace {
         ])
           .map(
             ([page, icon, name]) =>
-              `<button class="an-nav-item ${this.page === page ? "is-active" : ""}" data-action="page" data-page="${page}"><span>${icon}</span>${name}${page === "recipes" ? `<small>${this.listedRecipes().length}</small>` : ""}</button>`,
+              `<button class="an-nav-item ${this.page === page ? "is-active" : ""}" data-action="page" data-page="${page}"><span>${icon}</span>${name}${page === "recipes" ? `<small>${this.listedRecipes().filter((r) => !r.finisher).length}</small>` : ""}</button>`,
           )
           .join("")}
         <div class="an-nav-bottom"><div class="an-pack"><span class="an-dot ${env.ready && env.jb2aRegistered !== false ? "is-ready" : ""}" ${env.jb2aRegistered === false ? `data-tooltip="${esc(env.pack)} is active, but Sequencer has no JB2A animations. See Setup."` : ""}></span><div>${esc(env.pack)}<small>${this.host.catalog().length.toLocaleString()} asset variants</small></div></div><button data-action="stop" class="an-stop">■ Stop my effects</button><small class="an-version">v0.2 · ${esc(env.system)}${env.demo ? " · PREVIEW" : ""}</small></div>
       </aside>
-      <main class="an-main">${this.isStudio() || (this.page === "flash" && (this.flashEditor?.editing || !this.host.flashScreens)) ? "" : `<header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : this.page === "flash" ? "TITLE CARDS FOR EVERY FIGHT" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : this.page === "flash" ? this.flashEditor?.showGallery ? "" : `<button data-action="flash-export" class="an-quiet" ${this.host.flashScreens().length ? "" : "disabled"}>↗ Export</button><button data-action="flash-import" class="an-quiet">↙ Import</button><button data-action="flash-new" class="an-primary">+ New flash screen</button>` : ""}</div></header>`}
+      <main class="an-main">${this.isStudio() || (this.page === "flash" && (this.flashEditor?.editing || !this.host.flashScreens)) ? "" : `<header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : this.page === "finishers" ? "FINISHING BLOWS, YOUR WAY" : this.page === "flash" ? "TITLE CARDS FOR EVERY FIGHT" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "finishers" ? `<button data-action="new-finisher" class="an-primary">+ New finisher</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : this.page === "flash" ? this.flashEditor?.showGallery ? "" : `<button data-action="flash-export" class="an-quiet" ${this.host.flashScreens().length ? "" : "disabled"}>↗ Export</button><button data-action="flash-import" class="an-quiet">↙ Import</button><button data-action="flash-new" class="an-primary">+ New flash screen</button>` : ""}</div></header>`}
         <div role="status" aria-live="polite" class="an-toast ${this.message ? "is-visible" : ""}">${esc(this.message)}</div>
         ${this.reviewBannerHTML()}
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
         ${this.envBannerHTML(env)}
-        ${this.page === "flash" && this.host.flashScreens ? (this.flashEditor ??= new FlashEditor(this)).html() : this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
+        ${this.page === "flash" && this.host.flashScreens ? (this.flashEditor ??= new FlashEditor(this)).html() : this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "finishers" ? finishersPageHTML(this, recipe) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
       </main>${this.pendingImport !== null ? this.importHTML() : ""}${this.newChooser ? this.newChooserHTML() : ""}</div>`,
     );
     this.root.querySelectorAll("details[data-options-group]").forEach((e) => {
@@ -767,7 +772,7 @@ export class Workspace {
     return `↳ ${resolved.delay}ms`;
   }
   syncPreviewTokens({ clear = false } = {}) {
-    if (this.busy || !["recipes", "builder", "spells", "feats", "actions", "features", "weapons", "items", "conditions", "effects"].includes(this.page))
+    if (this.busy || !["recipes", "finishers", "builder", "spells", "feats", "actions", "features", "weapons", "items", "conditions", "effects"].includes(this.page))
       return;
     const scene = this.root.querySelector("[data-recipe-scene]");
     if (!scene) return;
@@ -1103,7 +1108,7 @@ export class Workspace {
     this.motionFrame = requestAnimationFrame(tick);
   }
   recipesHTML(recipe) {
-    const all = this.listedRecipes();
+    const all = this.listedRecipes().filter((r) => !r.finisher);
     const categories = ["All", ...new Set(all.map((r) => r.category))];
     const filtered = all.filter(
       (r) =>
@@ -1157,6 +1162,14 @@ export class Workspace {
     }).join('');
     const look = `<label>Teleport look<select data-field="teleportStyle">${styleOptions}${style === 'custom' ? '<option value="custom" selected disabled>Custom effects (choose below)</option>' : ''}</select></label>${this.teleportAssetHTML(r, 'teleportOut', 'Departure effect')}${this.teleportAssetHTML(r, 'teleportIn', 'Arrival effect')}<p class="an-hint">Browse to preview and choose each effect from Assets, or use your own media file. These cues play at the departure and arrival spots, in addition to the recipe's stages.</p><div class="an-field-row"><label>Effect size (× token width)<input type="number" min="0.1" max="5" step="0.1" data-field="teleportScale" value="${r.teleportScale ?? 1.8}"></label><label>Effect tint (optional)<input data-field="teleportTint" placeholder="#aa88ff" value="${esc(r.teleportTint ?? '')}" pattern="#[0-9a-fA-F]{6}"></label></div>`;
     return `<label>Teleport${known}<select data-field="teleport">${Object.entries(TELEPORT_WHO).map(([k, v]) => `<option value="${k}" ${k === mode ? "selected" : ""}>${k === "none" ? v : `${v}, to a spot you click`}</option>`).join("")}</select></label>${mode === "none" ? "" : `<div class="an-field-row"><label>Range in feet (0 = the spell's range)<input type="number" min="0" max="5280" step="5" data-field="teleportRange" value="${r.teleportRange ?? 0}"></label><label class="an-check"><input type="checkbox" data-field="teleportAdjacent" ${plan?.adjacent ? "checked" : ""}> Next to the caster</label></div>${look}`}<p class="an-hint">When it plays, the one who cast clicks where to go (a ring shows the range, Esc cancels). The token vanishes and reappears there: the only Animater setting that really moves a token.</p>`;
+  }
+  // The catalog Finisher dropdown edits the finisher's applies-to list (one finisher per entry).
+  async linkFinisherTo(entryName, finisherId) {
+    try {
+      await this.host.save(linkFinisher(this.host.recipes(), entryName, finisherId));
+      this.message = finisherId ? `${entryName} now plays this finisher.` : `${entryName} no longer plays a finisher.`;
+    } catch (error) { this.message = error.message; }
+    this.render();
   }
   // A flash screen that plays for everyone right before this animation.
   flashLinkHTML(r) {
@@ -1256,6 +1269,7 @@ export class Workspace {
   }
   motionSyncNoticeHTML() { return motionSyncNoticeHTML(this.host.environment()); }
   recipeSettingsHTML(r) {
+    if (r.finisher) return finisherSettingsHTML(r);
     const linked = r.lifecycle === "document";
     const scope = Object.hasOwn(STRIKE_SCOPES, r.matchScope ?? '') ? r.matchScope : null;
     const binding = !linked && ['attack', 'damage'].includes(r.trigger) ? `<label>Applies to<select data-field="matchScope">${options({ '': 'Item names / slugs', ...STRIKE_SCOPES }, r.matchScope ?? '')}</select></label>` : '';
@@ -1586,6 +1600,8 @@ export class Workspace {
   onChange(e) {
     if(this.mediaLibrary?.change(e.target))return;
     if(this.flashEditor?.change(e.target))return;
+    if (e.target.hasAttribute("data-finisher-link")) { void this.linkFinisherTo(e.target.dataset.finisherLink, e.target.value); return; }
+    if (e.target.hasAttribute("data-finisher-default")) { void this.host.setDefaultFinisher(e.target.value).then(() => this.render(), (error) => { this.message = error.message; this.render(); }); return; }
     if(e.target.hasAttribute('data-dnd-variant')||e.target.dataset.dndFilter||e.target.dataset.dndOption){void this.dndCatalog?.change(e.target).catch(error=>{this.message=error.message;this.render();});return;}
     if (e.target.hasAttribute("data-state-damage")) { this.stateDamageType = e.target.value; this.render(); return; }
     if (e.target.hasAttribute("data-state-aura-variant")) { this.stateAuraVariant = e.target.value; this.render(); return; }
@@ -1654,6 +1670,10 @@ export class Workspace {
     const key = t.dataset.field,
       previous = s[key];
     const before = { ...s };
+    if (key.startsWith("finisher.")) {
+      r.finisher = normalizeFinisher({ ...r.finisher, [key.slice(9)]: t.type === "number" ? Number(t.value) : t.value });
+      return;
+    }
     if (key === 'teleportStyle') {
       const style = TELEPORT_STYLES[t.value];
       if (style) { s.teleportOut = style.out; s.teleportIn = style.in; }
@@ -2142,7 +2162,7 @@ export class Workspace {
         if(!catalogPageAllowed(b.dataset.page,this.host.environment()))return;
         if (this.page === b.dataset.page) {
           if (this.page === 'assets' && this.mediaLibrary?.target) { this.mediaLibrary.target = null; this.render(); }
-          if (this.page === "recipes" && this.studio) { this.studio = false; this.render(); }
+          if (["recipes", "finishers"].includes(this.page) && this.studio) { this.studio = false; this.render(); }
           // The Flash screens menu item returns from the editor to the library.
           if (this.page === "flash" && this.flashEditor?.editing) { this.flashEditor.editing = false; this.flashEditor.playing = false; this.render(); }
           return;
@@ -2357,6 +2377,17 @@ export class Workspace {
         this.message = lasting
           ? "Type the condition or effect it is for, then choose an asset. Save when ready."
           : "Choose an asset or token motion, then add stages. Save when ready.";
+        this.render();
+        return;
+      }
+      if (action === "new-finisher") {
+        const id = uuid(), preset = b.dataset.preset;
+        const base = preset ? presetFinisher(preset, id) : validateRecipe({ id, name: "Untitled finisher", trigger: "manual", color: "#c0392b", finisher: {},
+          stages: [{ stageId: "fly", kind: "motion", motion: "leap", subject: "targets", motionRange: "distance", motionHeading: "away", motionEnd: "hold", distance: 2, duration: 1100, assets: [] }] });
+        this.drafts.set(base.id, base);
+        this.dirty.add(base.id);
+        Object.assign(this, { selected: base.id, page: "finishers", studio: true, studioTime: 0, stageIndex: 0, previewMode: "recipe" });
+        this.message = "Set what it applies to, then Save. Copied presets are yours to change.";
         this.render();
         return;
       }

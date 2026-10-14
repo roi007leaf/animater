@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Finishers (opt-in, Module Settings → Finishers): an NPC killed by an attack is finished off in style — launched, cleaved, skewered, burned to ash, shattered, jolted, blasted away, unmade, melted, ascended, shaken apart or its soul departing, picked from how the blow was struck and its damage. The body is thrown away from the attacker (stopping at walls) and the token is moved there and hidden; unhide it to bring it back. Players' kills are written by the active GM.
+- Finishers (Module Settings → Finishers, then the new Finishers page): design finishing moves in the studio or copy one of 14 presets (Launch, Cleave, Burn to ash, Shatter…), and assign them to spells, feats, actions and weapons — on their Applies-to list or with the Finisher dropdown on catalog entries. A finisher plays on the real token on a killing blow or on every successful use (Shove can always fling): the token is thrown, lands on the square where its travel ends (stopping at walls), and then vanishes, stays as a Defeated body, or stays. Player-side moves are written by the active GM.
 
 ## 0.3.17 (2026-10-13)
 

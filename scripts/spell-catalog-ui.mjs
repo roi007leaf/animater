@@ -1,4 +1,5 @@
 import { catalogNameHTML, cardToggleHTML, cardSlotClass } from "./catalog-details.mjs";
+import { finisherLinkHTML } from "./finisher-ui.mjs";
 import {
   catalogSpell,
   filterSpells,
@@ -116,6 +117,7 @@ function spellDetailHTML(w, spell, state, env) {
   return `<div class="an-eyebrow">BUILT-IN ANIMATION · ${qualities[spell.quality].toUpperCase()}</div><div class="an-spell-detail-title"><img src="${esc(w.host.imageURL?.(spell.img) ?? spell.img)}" alt=""><div><h2>${catalogNameHTML(spell, "spell", env)}</h2><small>${spell.kind === "cantrip" ? "Cantrip" : `Rank ${spell.rank}`} · ${esc(spell.edition)} · ${esc(spell.rarity)}</small></div></div><div class="an-spell-badges">${[...spell.traditions, spell.kind].map((value) => `<span>${esc(value)}</span>`).join("")}</div>
     <div class="an-preview an-full-preview" style="--effect:${recipe.color}">${w.recipePreviewHTML(recipe)}</div><div class="an-preview-transport"><button class="an-primary" data-action="recipe-preview" ${w.busy ? "disabled" : ""}>▶ Preview recipe</button><span data-preview-time>0.0 / ${(duration / 1000).toFixed(1)}s</span></div><progress data-recipe-progress aria-label="Recipe playback progress" max="${duration}" value="0"></progress><small class="an-preview-status" data-preview-status role="status">Ready · full animation, sample spacing</small>
     <div class="an-catalog-use-status ${usingCatalog ? "is-using" : ""}" role="status"><b>${status}</b><small>${!automatic ? "Play on demand with your selected caster and targets." : usingCatalog ? `${esc(EVENTS[recipe.trigger])} · catalog defaults · no saved recipe slot` : "Use animation enables this spell directly from the catalog."}</small></div><div class="an-play-actions an-catalog-choice"><button data-action="${automatic ? "use-spell" : "play"}" class="an-primary" ${w.busy || (automatic ? !canUse || usingCatalog : env.demo || !env.ready) ? "disabled" : ""}>${automatic ? (usingCatalog ? "Using catalog ✓" : "Use animation") : "Play animation"}</button><button data-action="copy-spell" class="an-quiet" ${w.busy ? "disabled" : ""}>${saved ? "Edit customization" : "Customize"}</button></div><button class="an-catalog-canvas-preview" data-action="preview" ${env.demo || !env.ready || w.busy ? "disabled" : ""}>▷ Local canvas preview</button>
+    ${finisherLinkHTML(w, spell.name)}
     ${spellSoundsHTML(w, spell, recipe, state)}
     <div class="an-catalog-steps">${sampleRecipe(recipe)
       .stages.map(
