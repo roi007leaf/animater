@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { normalizeDamageType, damageFromMessage, damageFromParts, recallDamage, hitRecipe, deathRecipe, DAMAGE_MEMORY_MS } from "../scripts/damage-moments.mjs";
+import { normalizeDamageType, damageFromMessage, damageFromParts, recallDamage, attackKindOf, recallAttribution, hitRecipe, deathRecipe, DAMAGE_MEMORY_MS } from "../scripts/damage-moments.mjs";
 import { validateRecipe } from "../scripts/model.mjs";
 
 test("every system's damage names share one look", () => {
@@ -58,4 +58,40 @@ test("energy damage flashes on the token; physical damage does not; knockouts fi
   assert.equal(death.stages[1].fxPreset, "pure-ice-aura", "a Token Magic frost filter on the token");
   assert.deepEqual(hit.stages.map((s) => s.kind), ["cast", "tokenfx"]);
   assert.match(death.name, /freezes and shatters/);
+});
+
+test("a PF2e killing blow names its attacker, how it struck, and a critical", () => {
+  class DamageRoll { constructor(instances) { this.instances = instances; } }
+  const message = (context, origin = { type: "weapon" }) => ({ speaker: { token: "atk" }, rolls: [new DamageRoll([{ type: "slashing", total: 9 }])],
+    flags: { pf2e: { origin, context: { type: "damage-roll", domains: ["damage", "strike-damage"], options: [], ...context } } } });
+  let d = damageFromMessage(message({ options: ["item:melee"] }), "pf2e");
+  assert.equal(d.sourceTokenId, "atk");
+  assert.equal(d.attackKind, "melee");
+  assert.equal(d.crit, false);
+  d = damageFromMessage(message({ options: ["item:ranged"], outcome: "criticalSuccess" }), "pf2e");
+  assert.equal(d.attackKind, "ranged");
+  assert.equal(d.crit, true);
+  assert.equal(damageFromMessage(message({ domains: ["melee-damage"] }), "pf2e").attackKind, "melee");
+  assert.equal(damageFromMessage(message({ domains: ["melee-damage"] }, { type: "spell" }), "pf2e").attackKind, "spell", "a melee spell is still a spell");
+  assert.equal(damageFromMessage(message({}, { type: "melee" }), "pf2e").attackKind, "melee", "an NPC attack with no range options");
+  assert.equal(damageFromMessage(message({}, null), "pf2e").attackKind, "other");
+});
+
+test("a D&D damage roll names its attacker, a spell, and a critical", () => {
+  const roll = (isCritical) => ({ options: { type: "fire" }, total: 7, isCritical });
+  const d = damageFromMessage({ speaker: { token: "wiz" }, rolls: [roll(true)], flags: { dnd5e: { roll: { type: "damage" }, item: { type: "spell" }, targets: [{ uuid: "Actor.orc" }] } } }, "dnd5e");
+  assert.equal(d.sourceTokenId, "wiz");
+  assert.equal(d.attackKind, "spell");
+  assert.equal(d.crit, true);
+  assert.equal(attackKindOf({ flags: { dnd5e: { item: { type: "weapon" } } } }, "dnd5e"), "melee");
+});
+
+test("the attacker is recalled from the newest roll that knows one, even when applied damage does not", () => {
+  const now = 100000;
+  const log = [
+    { type: "fire", tokenIds: new Set(), actorIds: new Set(["orc"]), sourceTokenId: "wiz", attackKind: "spell", crit: false, at: now - 3000 },
+    { type: "fire", tokenIds: new Set(), actorIds: new Set(["orc"]), at: now - 1000 },
+  ];
+  assert.equal(recallAttribution(log, { actorId: "orc" }, now).sourceTokenId, "wiz");
+  assert.equal(recallAttribution(log.slice(1), { actorId: "orc" }, now), null);
 });

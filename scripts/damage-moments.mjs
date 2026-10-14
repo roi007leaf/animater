@@ -43,6 +43,19 @@ const filterStage = (stageId, type, extra) => {
   return f ? [{ stageId, kind: "tokenfx", assets: [], catalogFx: true, fxProfile: "damage", fxPreset: f.preset, fxLibrary: "tmfx-main", fxTint: f.tint, ...extra }] : [];
 };
 
+// How the blow was struck. PF2e/SF2e strikes carry item:melee / item:ranged roll options
+// (melee damage also the melee-damage domain); D&D only says weapon or spell here, so its
+// weapons count as melee.
+export function attackKindOf(message, systemId) {
+  const flags = message?.flags?.[systemId], dnd = message?.flags?.dnd5e;
+  const itemType = flags?.origin?.type ?? dnd?.item?.type;
+  if (itemType === "spell") return "spell";
+  const marks = new Set([...(flags?.context?.domains ?? []), ...(flags?.context?.options ?? [])].map(String));
+  if (marks.has("item:ranged")) return "ranged";
+  if (marks.has("item:melee") || marks.has("melee-damage") || ["weapon", "melee"].includes(itemType)) return "melee";
+  return "other";
+}
+
 // The main damage type of a damage roll message, and who it was aimed at.
 export function damageFromMessage(message, systemId) {
   const rolls = Array.from(message?.rolls ?? []);
@@ -62,7 +75,8 @@ export function damageFromMessage(message, systemId) {
     const t = idOf(target?.uuid, "Token"), a = idOf(target?.uuid, "Actor");
     if (t) tokenIds.add(t); if (a) actorIds.add(a);
   }
-  return { type: normalizeDamageType(best.type), tokenIds, actorIds };
+  const crit = pf?.outcome === "criticalSuccess" || rolls.some((r) => r?.isCritical === true || r?.options?.isCritical === true);
+  return { type: normalizeDamageType(best.type), tokenIds, actorIds, sourceTokenId: message?.speaker?.token ?? null, attackKind: attackKindOf(message, systemId), crit };
 }
 
 // D&D 5e: the damage parts it is about to apply to this actor (dnd5e.calculateDamage).
@@ -78,6 +92,8 @@ export function recallDamage(log, { actorId, tokenId }, now = Date.now()) {
   return fresh.find((d) => d.tokenIds.has(tokenId) || d.actorIds.has(actorId))
     ?? fresh.find((d) => !d.tokenIds.size && !d.actorIds.size) ?? null;
 }
+// Who struck the blow: D&D's applied damage does not say, so ask the newest roll that does.
+export const recallAttribution = (log, ids, now = Date.now()) => recallDamage(log.filter((d) => d.sourceTokenId), ids, now);
 
 // Cast stages play on the source token: here, the creature that took the damage.
 const stage = (stageId, assets, extra) => ({ stageId, kind: "cast", assets, ...extra });
