@@ -64,3 +64,8 @@ export function scrubPoint(s, startMs, timeMs) {
   const p = samplePath(keyframesOf(s), Math.min(1, Math.max(0, (timeMs - startMs) / Math.max(1, s.duration))));
   return { x: n2(p.x), y: n2(p.y) };
 }
+
+// Delete removes a keyframe only when one is focused on the selected path stage and the key is not aimed at another stage's bar.
+export function keyframeDeleteApplies({ keyframeFocus, isPath, onBar, barIndex, stageIndex }) {
+  return !!keyframeFocus && !!isPath && (!onBar || barIndex === stageIndex);
+}

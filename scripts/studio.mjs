@@ -8,7 +8,7 @@ import { finisherChipText } from "./finisher-model.mjs";
 import { KINDS, EVENTS, STRIKE_SCOPES, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
 import { timelineLayout, packLanes, linkStartModes } from "./choreography.mjs";
 import { sampleRecipe, timedStages, previewVariants, variantMembers } from "./composition.mjs";
-import { canvasToSquares, keyframesOf, scrubPoint } from "./keyframe-ui.mjs";
+import { canvasToSquares, keyframesOf, scrubPoint, keyframeDeleteApplies } from "./keyframe-ui.mjs";
 import { moveKeyframePoint, deleteKeyframe, normalizeKeyframes } from "./keyframe-path.mjs";
 import { previewRecipeSounds } from "./spell-sounds.mjs";
 import { RecipePreview } from "./recipe-preview.mjs";
@@ -334,8 +334,8 @@ export function studioPointer(w, e) {
     const move = (ev) => { last = canvasToSquares(ev, svg.getBoundingClientRect(), { x: vx, y: vy, w: vw, h: vh }); last.whole = ev.shiftKey; dot.setAttribute("cx", last.x); dot.setAttribute("cy", last.y); };
     const up = () => {
       dot.removeEventListener("pointermove", move); dot.removeEventListener("pointerup", up); dot.removeEventListener("pointercancel", up);
-      const s = w.edit()?.stages[stageIndex];
-      if (s && last) { s.keyframes = moveKeyframePoint(normalizeKeyframes(s.keyframes), index, last.x, last.y, last.whole); w.message = "Keyframe moved. Save to apply."; }
+      const s = last ? w.edit()?.stages[stageIndex] : null;
+      if (s) { s.keyframes = moveKeyframePoint(normalizeKeyframes(s.keyframes), index, last.x, last.y, last.whole); w.message = "Keyframe moved. Save to apply."; }
       w.render();
     };
     dot.setPointerCapture?.(e.pointerId);
@@ -388,10 +388,11 @@ export function studioKey(w, e) {
   if (w.busy) return false;
   const i = onBar ? Number(e.target.closest("[data-tl-bar]").dataset.tlBar) : w.stageIndex;
   const selectedStage = w.recipe()?.stages[w.stageIndex];
-  if ((key === "Delete" || key === "Backspace") && w.keyframeFocus && selectedStage?.motion === "path") {
+  if ((key === "Delete" || key === "Backspace") && keyframeDeleteApplies({ keyframeFocus: w.keyframeFocus, isPath: selectedStage?.motion === "path", onBar, barIndex: i, stageIndex: w.stageIndex })) {
     // With a keyframe in focus, Delete removes that keyframe (never the first or last), not the stage.
-    const kfs = normalizeKeyframes(selectedStage.keyframes), i = Math.max(0, Math.min(kfs.length - 1, w.keyframeIndex ?? 0));
-    if (i > 0 && i < kfs.length - 1) { w.edit().stages[w.stageIndex].keyframes = deleteKeyframe(kfs, i); w.keyframeIndex = i - 1; w.message = "Keyframe deleted. Save to apply."; w.render(); }
+    const kfs = normalizeKeyframes(selectedStage.keyframes);
+    const ki = Math.max(0, Math.min(kfs.length - 1, w.keyframeIndex ?? 0));
+    if (ki > 0 && ki < kfs.length - 1) { w.edit().stages[w.stageIndex].keyframes = deleteKeyframe(kfs, ki); w.keyframeIndex = ki - 1; w.message = "Keyframe deleted. Save to apply."; w.render(); }
     return stop();
   }
   if ((key === "Delete" || key === "Backspace") && (onBar || e.target.matches(".an-studio"))) { stop(); removeStage(w, i); return true; }

@@ -304,9 +304,9 @@ export class Workspace {
       const pathBar = e.target.closest?.("[data-tl-bar]");
       const pathStage = pathBar && this.isStudio() ? this.recipe()?.stages[Number(pathBar.dataset.tlBar)] : null;
       if (pathStage?.motion === "path" && !e.target.closest("[data-kf-diamond]")) {
-        const rect = pathBar.getBoundingClientRect(), s = this.edit().stages[Number(pathBar.dataset.tlBar)];
-        const kfs = normalizeKeyframes(s.keyframes), at = (e.clientX - rect.left) / Math.max(1, rect.width), next = insertKeyframe(kfs, at);
-        if (next !== kfs) { s.keyframes = next; this.stageIndex = Number(pathBar.dataset.tlBar); this.keyframeIndex = next.findIndex((k) => Math.abs(k.at - Math.min(0.99, Math.max(0.01, at))) < 0.006); this.message = "Keyframe added. Save to apply."; this.render(); }
+        const rect = pathBar.getBoundingClientRect(), barIndex = Number(pathBar.dataset.tlBar);
+        const kfs = normalizeKeyframes(pathStage.keyframes), at = (e.clientX - rect.left) / Math.max(1, rect.width), next = insertKeyframe(kfs, at);
+        if (next !== kfs) { this.edit().stages[barIndex].keyframes = next; this.stageIndex = Number(pathBar.dataset.tlBar); this.keyframeIndex = next.findIndex((k) => Math.abs(k.at - Math.min(0.99, Math.max(0.01, at))) < 0.006); this.message = "Keyframe added. Save to apply."; this.render(); }
         return;
       }
       const h = e.target.closest?.("[data-splitter]"); if (h) this.setInspectorWidth(380, h.closest(".an-work, .an-studio"));
@@ -701,11 +701,11 @@ export class Workspace {
     const kfs = keyframesOf(this.recipe()?.stages[stageIndex]);
     if (index === 0 || index === kfs.length - 1 || !bar) { this.render(); return; }
     const rect = bar.getBoundingClientRect();
-    let at = kfs[index].at;
-    const move = (ev) => { at = Math.min(1, Math.max(0, (ev.clientX - rect.left) / Math.max(1, rect.width))); diamond.style.left = `${(at * 100).toFixed(2)}%`; };
+    let at = kfs[index].at, moved = false;
+    const move = (ev) => { moved = true; at = Math.min(1, Math.max(0, (ev.clientX - rect.left) / Math.max(1, rect.width))); diamond.style.left = `${(at * 100).toFixed(2)}%`; };
     const up = () => {
       diamond.removeEventListener("pointermove", move); diamond.removeEventListener("pointerup", up); diamond.removeEventListener("pointercancel", up);
-      const s = this.edit()?.stages[stageIndex];
+      const s = moved ? this.edit()?.stages[stageIndex] : null;
       if (s) { s.keyframes = moveKeyframeTime(normalizeKeyframes(s.keyframes), index, at); this.message = "Keyframe retimed. Save to apply."; }
       this.render();
     };
@@ -759,7 +759,7 @@ export class Workspace {
       bar.removeEventListener("pointerup", up);
       bar.removeEventListener("pointercancel", up);
       guide.hidden = true;
-      if (this.stageIndex !== i) this.keyframeIndex = 0;
+      if (this.stageIndex !== i) { this.keyframeIndex = 0; this.keyframeFocus = false; }
       this.stageIndex = i;
       if (result && ev.type === "pointerup") this.applyTimelineEdit(i, result);
       else this.render();
@@ -782,7 +782,7 @@ export class Workspace {
     this.render();
   }
   nudgeTimeline(bar, e) {
-    if ((e.key === "Enter" || e.key === " ") && !this.busy) { e.preventDefault(); this.stageIndex = Number(bar.dataset.tlBar); this.keyframeIndex = 0; this.render(); this.root.querySelector(`[data-tl-bar="${this.stageIndex}"]`)?.focus(); return true; }
+    if ((e.key === "Enter" || e.key === " ") && !this.busy) { e.preventDefault(); this.stageIndex = Number(bar.dataset.tlBar); this.keyframeIndex = 0; this.keyframeFocus = false; this.render(); this.root.querySelector(`[data-tl-bar="${this.stageIndex}"]`)?.focus(); return true; }
     if (!["ArrowLeft", "ArrowRight"].includes(e.key) || this.busy) return false;
     e.preventDefault();
     const i = Number(bar.dataset.tlBar), row = timelineLayout(this.recipe()).rows[i];
@@ -2283,12 +2283,12 @@ export class Workspace {
       }
       if (action === "stage") {
         if (this.stageIndex === Number(b.dataset.index)) return;
-        this.stageIndex = Number(b.dataset.index); this.keyframeIndex = 0;
+        this.stageIndex = Number(b.dataset.index); this.keyframeIndex = 0; this.keyframeFocus = false;
         this.updateInspector();
         return;
       }
       if (action === "variant-pick") {
-        this.stageIndex = Number(b.dataset.variantPick); this.keyframeIndex = 0;
+        this.stageIndex = Number(b.dataset.variantPick); this.keyframeIndex = 0; this.keyframeFocus = false;
         this.render();
         return;
       }
@@ -2434,14 +2434,16 @@ export class Workspace {
           this.keyframeIndex = Number(b.dataset.kf); this.keyframeFocus = true; this.render();
           return;
         }
-        const r = this.edit(), s = r?.stages[this.stageIndex];
-        if (!s || s.motion !== "path") return;
-        const kfs = normalizeKeyframes(s.keyframes), i = this.selectedKeyframe(s);
-        let changed = true;
+        const cur = this.recipe()?.stages[this.stageIndex];
+        if (!cur || cur.motion !== "path") return;
+        const kfs0 = normalizeKeyframes(cur.keyframes), i = this.selectedKeyframe(cur);
+        let changed = true, s = null, kfs = kfs0;
         if (action === "kf-add") {
-          const next = insertKeyframe(kfs, (kfs[i].at + kfs[Math.min(kfs.length - 1, i + 1)].at) / 2);
-          if (next === kfs) changed = false; else { s.keyframes = next; this.keyframeIndex = i + 1; }
-        }
+          const next = insertKeyframe(kfs0, (kfs0[i].at + kfs0[Math.min(kfs0.length - 1, i + 1)].at) / 2);
+          if (next === kfs0) changed = false;
+          else { s = this.edit().stages[this.stageIndex]; s.keyframes = next; this.keyframeIndex = i + 1; }
+        } else s = this.edit().stages[this.stageIndex];
+        if (!s) return;
         if (action === "kf-delete") { s.keyframes = deleteKeyframe(kfs, i); this.keyframeIndex = Math.max(0, i - 1); }
         if (action === "kf-flip") s.keyframes = flipKeyframes(kfs);
         if (action === "kf-reset") { s.keyframes = resetKeyframes(); this.keyframeIndex = 1; }

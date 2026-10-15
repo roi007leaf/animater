@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { keyframeDiamondsHTML, pathCanvasHTML, keyframeInspectorHTML, canvasToSquares, canvasView, scrubPoint } from "../scripts/keyframe-ui.mjs";
+import { keyframeDiamondsHTML, pathCanvasHTML, keyframeInspectorHTML, canvasToSquares, canvasView, scrubPoint, keyframeDeleteApplies } from "../scripts/keyframe-ui.mjs";
 import { normalizeKeyframes } from "../scripts/keyframe-path.mjs";
 
 const stage = { kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", duration: 1000, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.4, x: 1, y: 0.5 }, { at: 1, x: 2.6, y: 0 }]) };
@@ -50,4 +50,13 @@ test("the scrub token follows the path in time with the playhead", () => {
   const mid = scrubPoint(stage, 500, 900);
   assert.ok(Math.abs(mid.x - 1) < 1e-6 && Math.abs(mid.y - 0.5) < 1e-6, "400 ms into the stage: keyframe 2");
   assert.deepEqual(scrubPoint(stage, 500, 9999), { x: 2.6, y: 0 }, "after: at the end");
+});
+
+test("Delete removes a keyframe only for the focused path stage", () => {
+  const base = { keyframeFocus: true, isPath: true, onBar: false, barIndex: 0, stageIndex: 0 };
+  assert.equal(keyframeDeleteApplies(base), true);
+  assert.equal(keyframeDeleteApplies({ ...base, onBar: true, barIndex: 0 }), true);
+  assert.equal(keyframeDeleteApplies({ ...base, onBar: true, barIndex: 1 }), false, "another stage's bar deletes that stage");
+  assert.equal(keyframeDeleteApplies({ ...base, keyframeFocus: false }), false);
+  assert.equal(keyframeDeleteApplies({ ...base, isPath: false }), false);
 });
