@@ -19,7 +19,7 @@ import {sfEntries,sfRecipe,useSfEntry} from '../scripts/sf2e-catalog.mjs';
 import {Workspace} from '../scripts/workspace.mjs';
 import {previewFilters} from '../scripts/token-fx-preview.mjs';
 import {MediaLibrary} from '../scripts/media-library.mjs';
-import { rollMessage, dualityRoll, adversaryRoll, damageRoll, target as dhTarget, useHook } from "./fixtures/daggerheart-messages.mjs";
+import { rollMessage, dualityRoll, adversaryRoll, damageRoll, useHook } from "./fixtures/daggerheart-messages.mjs";
 globalThis.requestAnimationFrame = (fn) =>
   setTimeout(() => fn(performance.now()), 5);
 globalThis.cancelAnimationFrame = clearTimeout;
@@ -96,7 +96,7 @@ async function boot(system, extraKeys = [], { version } = {}) {
     system: {
       id: system,
       title: system,
-      version: version ?? ({ sf2e: "1.5.1", pf2e: "8.5.1", daggerheart: "2.10.11" }[system] ?? "6.0.5"),
+      version: version ?? ({ sf2e: "1.5.1", pf2e: "8.5.1", daggerheart: "2.10.12" }[system] ?? "6.0.5"),
     },
     user: { id: "u", isGM: true, targets: new Set([target]) },
     modules: new Map([
@@ -2267,6 +2267,33 @@ test("Daggerheart: damage written onto the card plays once, however often the ca
   await f.fire("updateChatMessage", message, { system: { damage: {} } }, {}, "u");
   await f.fire("updateChatMessage", message, { system: { damage: {} } }, {}, "u");
   await f.fire("updateChatMessage", message, { flavor: "edited" }, {}, "u");
+  await settle();
+  assert.equal(played(f, "DH damage"), 1, JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+// Anyone who owns the speaker's actor may roll damage onto a player's card (the GM, a co-owner):
+// the client that writes it plays it, once, whoever authored the card.
+test("Daggerheart: damage the GM rolls onto another player's card plays once, on the GM's client", async () => {
+  const f = await bootDaggerheart();
+  f.settings.set("recipes", { schema: 1, recipes: [dhSaved("damage", "Longsword")] });
+  const message = rollMessage({ id: "theirs", item: f.item, actor: f.actor, author: "other", damage: damageRoll() });
+  await f.fire("updateChatMessage", message, { system: { damage: {} } }, {}, "u");
+  await f.fire("updateChatMessage", message, { system: { damage: {} } }, {}, "u");
+  await f.fire("updateChatMessage", message, { system: { damage: {} } }, {}, "other");
+  await settle();
+  assert.equal(played(f, "DH damage"), 1, JSON.stringify(f.api.activity()));
+  await f.fire("updateChatMessage", rollMessage({ id: "hidden", item: f.item, actor: f.actor, author: "other", whisper: ["gm"], damage: damageRoll() }), { system: { damage: {} } }, {}, "u");
+  await settle();
+  assert.equal(played(f, "DH damage"), 1, "a whispered card still plays nothing");
+  await f.api.stop();
+});
+
+test("Daggerheart: damage present when its message is created plays once, on the author's client", async () => {
+  const f = await bootDaggerheart();
+  f.settings.set("recipes", { schema: 1, recipes: [dhSaved("damage", "Longsword")] });
+  await f.fire("createChatMessage", rollMessage({ id: "mine", item: f.item, actor: f.actor, damage: damageRoll() }));
+  await f.fire("createChatMessage", rollMessage({ id: "theirs", item: f.item, actor: f.actor, author: "other", damage: damageRoll() }));
   await settle();
   assert.equal(played(f, "DH damage"), 1, JSON.stringify(f.api.activity()));
   await f.api.stop();

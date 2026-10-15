@@ -1712,11 +1712,13 @@ Hooks.once("ready", () => {
       void dispatch(resolved(() => daggerheartDamageEvent(message, game.user.id, { sceneId: sceneId() }), "Daggerheart damage"));
     });
     // Damage rolled from an attack or spellcast card is written onto that card: every client remembers
-    // it (kills know their attacker, item and type); the roller's client plays it.
+    // it (kills know their attacker, item and type). Anyone who owns the speaker's actor may roll it
+    // (the GM, a co-owner): the client that wrote it plays it, whoever authored the card.
     Hooks.on("updateChatMessage", (message, changes, _options, userId) => {
       if (!foundry.utils.hasProperty(changes ?? {}, "system.damage")) return;
       remember(damageFromMessage(message, "daggerheart"));
-      if (userId === game.user.id) void dispatch(resolved(() => daggerheartDamageEvent(message, game.user.id, { sceneId: sceneId() }), "Daggerheart damage"));
+      const author = message?.author?.id ?? message?.user?.id;
+      if (userId === game.user.id) void dispatch(resolved(() => daggerheartDamageEvent(message, author, { sceneId: sceneId() }), "Daggerheart damage"));
     });
   }
   for (const hook of ["createMeasuredTemplate", "createRegion"])
