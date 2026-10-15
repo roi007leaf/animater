@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- The sidebar footer shows Animater's real version instead of a fixed "v0.2".
+
 ## 1.0.0 (2026-10-15)
 
 **Finishers**: finishing moves that play on the real token, then fling, cut, shatter or dissolve it.
@@ -23,6 +27,7 @@
 - The sidebar is grouped into Create, Library and Tools, left-aligned, with counts.
 - `api.play`, which Trigger Engine also uses, and the studio's test play now play finisher recipes composed: aimed, cut at walls, landing pinned. They still write nothing to the token.
 - The Flash screens Show me tour now uses a shared tour engine. It behaves the same, and Esc no longer closes the window mid-tour.
+- **Flash screens, Opening on add:** a switch (Flash screens editor, and the tracker's flash bar defaults) plays a combat's opening flash as soon as combatants are added, instead of waiting for Begin Combat. Turning it on picks a default opening if none is set, and a combat only counts as opened once a screen actually plays.
 
 ## 0.3.17 (2026-10-13)
 

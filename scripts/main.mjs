@@ -224,6 +224,7 @@ function environment() {
     // Active is not enough: its animations must also be registered in Sequencer's database.
     jb2aRegistered: databaseReady,
     motionReady: game.modules.get(ID)?.socket === true,
+    version: game.modules.get(ID)?.version,
     motionServerVersion: game.modules.get(ID)?.version,
     systemId: game.system.id,
     pack,
