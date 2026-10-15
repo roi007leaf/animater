@@ -8,6 +8,7 @@ import {
 } from "./stage-options.mjs";
 import { sampleRecipe } from "./composition.mjs";
 import { chainPreview } from "./chain-preview.mjs";
+import { prepareFragments, fragmentPieces, fragmentFlight, fragmentPose } from "./fragments.mjs";
 import { clearPreviewMediaFailure, markPreviewMediaFailure } from "./preview-media-status.mjs";
 import {
   beamGeometry,
@@ -16,6 +17,20 @@ import {
   auraPreviewGrid,
   offsetInGridSquares,
 } from "./media-preview.mjs";
+
+// Token fragments in the preview: each piece is a copy of the token image clipped to the piece's
+// polygon (unit square -0.5..0.5 as percent of the image) and turned about its centroid.
+const percent = (v) => Math.round((v + 0.5) * 100000) / 1000 || 0;
+export function fragmentPreviewParts(stage, cutAngle, turn = 0) {
+  const s = prepareFragments(stage);
+  return fragmentPieces(s, cutAngle, turn).map((piece, i) => ({
+    clip: `polygon(${piece.polygon.map((p) => `${percent(p.x)}% ${percent(p.y)}%`).join(", ")})`,
+    origin: `${percent(piece.centroid.x)}% ${percent(piece.centroid.y)}%`,
+    piece,
+    flight: fragmentFlight(s, piece, i, cutAngle, turn),
+  }));
+}
+const isFragments = (s) => s?.kind === "motion" && s.motion === "fragments";
 
 // Editor composition uses installed media and the same motion pose function.
 // Canvas preview remains the authoritative Sequencer rendering on real tokens.
@@ -41,6 +56,7 @@ export class RecipePreview {
     this.ended = new Set();
     this.abort = new AbortController();
     this.tokens = [...scene.querySelectorAll("[data-preview-token]")];
+    this.fragments = new Map();
     this.grid=this.chain?.grid??55;
     const aura=recipe.lifecycle==='document'&&recipe.stages.some(s=>s.auraRadius);
     if(aura){
@@ -428,35 +444,93 @@ export class RecipePreview {
     // Same recipe gestures compose on one baseline, matching canvas playback.
     for (const token of this.tokens) {
       const subject = token.dataset.previewToken;
-      const pose = this.subjectPose(
-        subject,
-        frame,
-        Number(token.dataset.targetIndex ?? 0),
-      );
+      const targetIndex = Number(token.dataset.targetIndex ?? 0);
+      // With artwork, fragments hide the image and draw pieces; without it the token just fades.
+      const art = token.querySelector?.("img");
+      if (art) this.drawFragments(token, art, subject, targetIndex, frame);
+      const pose = this.subjectPose(subject, frame, targetIndex, { fragments: !art });
       token.style.transform = poseTransform(pose);
       token.style.opacity = pose.alpha ?? "";
     }
     this.onFrame(frame);
   }
-  subjectPose(subject, frame, targetIndex = 0) {
+  // The fragments stage on this token now: playing (with progress), or ended but held.
+  activeFragments(subject, targetIndex, frame) {
+    let held = false;
+    const candidates = this.chain
+      ? this.recipe.playbackPlan.filter((s) => isFragments(s) && !this.muted?.has(s.index) && s.subject === subject && (subject === "source" || s.targetIndex === targetIndex))
+        .map((s) => [s, stageFrame({ ...s, repeats: 1, targetStagger: 0 }, frame.time)])
+      : this.recipe.stages.flatMap((s, index) => isFragments(s) && (s.subject ?? "source") === subject ? [[s, frame.stages[index]]] : []);
+    for (const [stage, state] of candidates) {
+      if (state?.state === "playing") return { stage, progress: state.progress };
+      if (state?.state === "done" && stage.motionEnd === "hold") held = true;
+    }
+    return held ? { held } : null;
+  }
+  // The cut, as the table makes it: the stage's sent angle, a fixed angle, or the swing direction.
+  fragmentCutAngle(stage, subject, targetIndex = 0) {
+    if (Number.isFinite(stage.cutAngle)) return stage.cutAngle;
+    if (stage.cut === "fixed") return ((Number(stage.angle) || 0) * Math.PI) / 180;
+    const direction = this.stageDirection(stage, subject, targetIndex);
+    return Math.atan2(direction.y, direction.x);
+  }
+  drawFragments(token, art, subject, targetIndex, frame) {
+    const active = this.activeFragments(subject, targetIndex, frame);
+    let entry = this.fragments.get(token);
+    if (entry && entry.stage !== active?.stage) { this.clearFragments(token); entry = null; }
+    art.style.visibility = active ? "hidden" : "";
+    token.classList?.toggle("is-fragmented", !!active);
+    if (!active?.stage) return;
+    if (!entry) entry = this.buildFragments(token, art, active.stage, subject, targetIndex);
+    const grid = this.chain ? this.grid ?? 55 : 55;
+    for (const part of entry.parts) {
+      const pose = fragmentPose(entry.prepared, part.piece, part.flight, active.progress);
+      part.box.style.transform = `translate(-50%,-50%) translate(${pose.x * grid}px,${pose.y * grid}px) rotate(${entry.turn}rad)`;
+      part.cut.style.transform = `rotate(${pose.rotation}deg)`;
+      part.box.style.opacity = pose.alpha;
+    }
+  }
+  // Built once per activation; each frame only moves them.
+  buildFragments(token, art, stage, subject, targetIndex) {
+    const doc = token.ownerDocument ?? globalThis.document;
+    const info = this.actorToken(subject, targetIndex);
+    const turn = ((Number(info?.rotation) || 0) * Math.PI) / 180;
+    const sx = Number(info?.textureScaleX) < 0 ? -1 : 1, sy = Number(info?.textureScaleY) < 0 ? -1 : 1;
+    const width = art.style?.width || `${(info?.spriteWidth ?? info?.width ?? 1) * 55}px`;
+    const height = art.style?.height || `${(info?.spriteHeight ?? info?.height ?? 1) * 55}px`;
+    const src = art.getAttribute?.("src") ?? art.src;
+    const prepared = prepareFragments(stage);
+    const holder = doc.createElement("div");
+    holder.className = "an-fragment-pieces";
+    Object.assign(holder.style, { position: "absolute", inset: "0", pointerEvents: "none" });
+    const parts = fragmentPreviewParts(prepared, this.fragmentCutAngle(stage, subject, targetIndex), turn).map((part) => {
+      const box = doc.createElement("div"), cut = doc.createElement("div"), copy = doc.createElement("img");
+      box.dataset.fragmentPiece = "";
+      Object.assign(box.style, { position: "absolute", left: "50%", top: "50%", width, height, transformOrigin: "50% 50%" });
+      Object.assign(cut.style, { position: "absolute", inset: "0", clipPath: part.clip, transformOrigin: part.origin });
+      copy.setAttribute("src", src);
+      copy.setAttribute("alt", "");
+      Object.assign(copy.style, { position: "absolute", left: "0", top: "0", width: "100%", height: "100%", maxWidth: "none", maxHeight: "none", transform: `scale(${sx},${sy})` });
+      cut.appendChild(copy);
+      box.appendChild(cut);
+      holder.appendChild(box);
+      return { ...part, box, cut };
+    });
+    token.appendChild(holder);
+    const entry = { stage, prepared, turn, parts, holder };
+    this.fragments.set(token, entry);
+    return entry;
+  }
+  clearFragments(token) {
+    this.fragments.get(token)?.holder.remove();
+    this.fragments.delete(token);
+  }
+  actorToken(subject, targetIndex) {
+    return this.chain?.actors.find((a) => a.subject === subject && (subject === "source" || a.targetIndex === targetIndex))?.token ?? this.tokenInfo[subject];
+  }
+  // The direction motions use: attacker to target, from the chain layout or the plain two-token row.
+  stageDirection(stage, subject, targetIndex = 0) {
     if (this.chain) {
-      const stages = this.recipe.playbackPlan
-        .filter(
-          (s) =>
-            s.kind === "motion" &&
-            !this.muted?.has(s.index) &&
-            s.subject === subject &&
-            (subject === "source" || s.targetIndex === targetIndex) &&
-            frame.time >= s.delay,
-        );
-      return combineMotionPoses(stages.map(stage => {
-      const state = stageFrame(
-        { ...stage, repeats: 1, targetStagger: 0 },
-        frame.time,
-      );
-      const actor = this.chain.actors.find(
-        (a) => a.id === stage.destination.id,
-      );
       const place = (a) => ({
         ...a,
         center: {
@@ -466,20 +540,12 @@ export class RecipePreview {
         w: (a.token?.width ?? 1) * (this.grid??55),
         h: (a.token?.height ?? 1) * (this.grid??55),
       });
+      const actor = this.chain.actors.find((a) => a.id === stage.destination?.id) ??
+        this.chain.actors.find((a) => a.subject === subject && (subject === "source" || a.targetIndex === targetIndex));
       const target =
         this.chain.actors.find((a) => a.id === stage.motionTarget?.id) ??
         this.chain.actors[targetIndex + 1];
-      const direction = motionDirection(
-        place(actor),
-        place(this.chain.actors[0]),
-        place(target),
-        stage.motion,
-        this.grid??55,
-      );
-      return state.state === "playing"
-        ? motionPose(stage, state.progress, direction, this.grid??55)
-        : { x: 0, y: 0, rotation: 0, scale: 1 };
-      }));
+      return motionDirection(place(actor), place(this.chain.actors[0]), place(target), stage.motion, this.grid??55);
     }
     const place = (subject, x) => ({
       id: subject,
@@ -492,17 +558,35 @@ export class RecipePreview {
     });
     const source = place("source", 0.24),
       target = place("targets", 0.76);
+    return motionDirection(subject === "source" ? source : target, source, target, stage.motion, 55);
+  }
+  subjectPose(subject, frame, targetIndex = 0, { fragments = true } = {}) {
+    if (this.chain) {
+      const stages = this.recipe.playbackPlan
+        .filter(
+          (s) =>
+            s.kind === "motion" &&
+            (fragments || s.motion !== "fragments") &&
+            !this.muted?.has(s.index) &&
+            s.subject === subject &&
+            (subject === "source" || s.targetIndex === targetIndex) &&
+            frame.time >= s.delay,
+        );
+      return combineMotionPoses(stages.map(stage => {
+      const state = stageFrame(
+        { ...stage, repeats: 1, targetStagger: 0 },
+        frame.time,
+      );
+      const direction = this.stageDirection(stage, subject, targetIndex);
+      return state.state === "playing"
+        ? motionPose(stage, state.progress, direction, this.grid??55)
+        : { x: 0, y: 0, rotation: 0, scale: 1 };
+      }));
+    }
     return combineMotionPoses(this.recipe.stages.flatMap((stage, index) => {
       const state = frame.stages[index];
-      if (stage.kind !== "motion" || stage.subject !== subject || state.state !== "playing") return [];
-      const direction = motionDirection(
-      subject === "source" ? source : target,
-      source,
-      target,
-      stage.motion,
-      55,
-    );
-      return [motionPose(stage, state.progress, direction, 55)];
+      if (stage.kind !== "motion" || stage.subject !== subject || state.state !== "playing" || (!fragments && stage.motion === "fragments")) return [];
+      return [motionPose(stage, state.progress, this.stageDirection(stage, subject, targetIndex), 55)];
     }));
   }
   stop() {
@@ -513,6 +597,10 @@ export class RecipePreview {
     [...this.videos, ...this.audio].forEach((v) => v.pause());
     this.tokens.forEach((t) => {
       t.style.transform = "";
+      this.clearFragments(t);
+      const art = t.querySelector?.("img");
+      if (art) art.style.visibility = "";
+      t.classList?.remove("is-fragmented");
     });
     this.scene.querySelectorAll(".an-recipe-layer").forEach((e) => {
       e.hidden = true;
