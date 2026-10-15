@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- New starter flash screen **Crossed Swords** (Combat start): two blades sweep in and clash, sparks fly, and "TO ARMS!" slams in over the scene name. Find it under + New flash screen.
 - **Flash screens gallery:** each Combat start and Combat end card now has a Default switch. Click it to make that screen the default for its event, or click the current default to turn it off. "Set default" shows on hover.
 - **Studio tracks:** a finisher's timeline now leads with Token motion, Target, Sound and Filters & scene. Source and Flight sit behind a "+ More tracks" row at the bottom (they show on their own when they hold stages). Normal recipes keep all six tracks. The "Caster" track, token and subject labels now read "Source" everywhere; saved data is unchanged.
 - The sidebar footer shows Animater's real version instead of a fixed "v0.2".

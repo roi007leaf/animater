@@ -195,6 +195,21 @@ export const STARTER_FLASHES = [
       { kind: "flash", name: "Impact flash", start: 1450, duration: 260, strength: 0.75 },
       { kind: "shake", name: "Impact shake", start: 1450, duration: 450, strength: 2 },
     ] },
+  // Two blades sweep in from the lower corners and clash in the middle; the call slams in under them.
+  { id: "start-crossed-swords", name: "Crossed Swords", event: "start", duration: 3600, backdrop: { color: "#0b0605", opacity: 0.72, bars: true, barSize: 10, vignette: true },
+    layers: [
+      { kind: "burst", name: "Clash light", x: 50, y: 44, color: "#ff9a3c", density: 16, width: 95, start: 700, duration: 2600, enter: "zoom", enterMs: 250, opacity: 0.4, blend: "add", loop: "spin", loopMs: 6000 },
+      { kind: "image", name: "Left blade", src: "icons/svg/sword.svg", width: 34, enter: "none", exit: "fade", exitMs: 400,
+        keys: [{ at: 0, x: 8, y: 92, rotate: -25, opacity: 0 }, { at: 150, x: 14, y: 84, rotate: -25, opacity: 1 }, { at: 700, x: 50, y: 44, rotate: 0 }, { at: 760, x: 49, y: 45, rotate: 3 }, { at: 3600, x: 50, y: 44, rotate: 0 }] },
+      { kind: "image", name: "Right blade", src: "icons/svg/sword.svg", width: 34, enter: "none", exit: "fade", exitMs: 400,
+        keys: [{ at: 0, x: 92, y: 92, rotate: -65, opacity: 0 }, { at: 150, x: 86, y: 84, rotate: -65, opacity: 1 }, { at: 700, x: 50, y: 44, rotate: -90 }, { at: 760, x: 51, y: 45, rotate: -93 }, { at: 3600, x: 50, y: 44, rotate: -90 }] },
+      { kind: "particles", name: "Sparks", ptype: "sparks", count: 60, speed: 1.6, size: 1.2, start: 700, duration: 1400, enter: "none", exit: "fade", exitMs: 500 },
+      { kind: "flash", name: "Clash flash", start: 700, duration: 240, color: "#fff1cc", strength: 0.85 },
+      { kind: "shake", name: "Clash shake", start: 700, duration: 450, strength: 2.2 },
+      { kind: "punch", name: "Camera punch", start: 700, duration: 350, strength: 1.1 },
+      { kind: "text", name: "Title", text: "TO ARMS!", y: 80, size: 10, gradient: true, color: "#ffffff", gradientTo: "#ffc04a", glow: "#ff5a12", glowSize: 3, spacing: 0.12, enter: "slam", enterMs: 360, start: 950, loop: "glow", loopMs: 1000 },
+      { kind: "text", name: "Scene", text: "{scene}", y: 90, size: 3.2, italic: true, bold: false, color: "#e8d9c4", glowSize: 0, start: 1350, enter: "blur", enterMs: 450 },
+    ] },
   { id: "start-ambush", name: "Ambush!", event: "start", duration: 2600, backdrop: { color: "#000000", opacity: 0.7 },
     layers: [
       { kind: "text", name: "Title", text: "AMBUSH!", y: 50, size: 16, color: "#ffe1c2", glow: "#d10000", glowSize: 4, enter: "zoom", enterMs: 300, exit: "zoom", shake: true },

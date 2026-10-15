@@ -302,3 +302,13 @@ test("gallery cards toggle the default for their section without opening the edi
   assert.deepEqual(calls, [["start", "none"], ["start", "b"]]);
   assert.ok(!ed.editing, "the card stays closed");
 });
+
+test("the Crossed Swords starter validates with two sword blades meeting at the clash", async () => {
+  const { STARTER_FLASHES, validateFlash } = await import("../scripts/flash-model.mjs");
+  const s = validateFlash(STARTER_FLASHES.find((x) => x.id === "start-crossed-swords"));
+  const blades = s.layers.filter((l) => l.kind === "image");
+  assert.equal(s.event, "start");
+  assert.deepEqual(blades.map((l) => l.src), ["icons/svg/sword.svg", "icons/svg/sword.svg"]);
+  for (const b of blades) assert.deepEqual([b.keys.find((k) => k.at === 700).x, b.keys.find((k) => k.at === 700).y], [50, 44]);
+  assert.ok(s.layers.some((l) => l.kind === "flash" && l.start === 700));
+});
