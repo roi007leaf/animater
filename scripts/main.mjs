@@ -655,6 +655,7 @@ function workspaceHost() {
       catalogsOn,
       flashDefaults: () => flash?.defaults() ?? {},
       setFlashDefault: (event, id) => flash.setDefault(event, id),
+      setFlashStartOnAdd: (on) => flash.setStartOnAdd(on),
       playFlash: function (screen, options) {
         // Played from the editor: the sample hero and action fill {name}, {action} and the cut-in.
         const { name, action, actor } = this.flashVars?.() ?? {};

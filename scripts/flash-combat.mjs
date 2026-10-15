@@ -90,6 +90,13 @@ export function flashScreens(host) {
     if (everyone) game.socket.emit(`module.${ID}`, { type: "flash", sender: host.clientId, screen, vars: v });
     void show(screen, v).catch((error) => host.trace("Blocked", `Flash screen: ${error.message}`));
   }
+  // Turning "opening on add" on with no default opening picks the first combat start screen, so something plays.
+  function setStartOnAdd(on) {
+    const d = defaults(), all = screens();
+    const has = d.start === "random" || all.some((s) => s.id === d.start);
+    const first = all.find((s) => s.event === "start") ?? all.find((s) => s.event === "any");
+    return game.settings.set(ID, FLASH_DEFAULTS, { ...d, startWhen: on ? "add" : "begin", ...(on && !has && first ? { start: first.id } : {}) });
+  }
   const activeGM = () => game.user.isGM && (game.users.activeGM ? game.users.activeGM.isSelf : true);
   const flagKey = (event) => (event === "start" ? "flashStart" : "flashEnd");
   function forCombat(combat, event) {
@@ -183,7 +190,7 @@ export function flashScreens(host) {
       const event = e.target.dataset.animaterFlash;
       if (event) void (e.target.value ? combat.setFlag(ID, flagKey(event), e.target.value) : combat.unsetFlag(ID, flagKey(event)));
     });
-    bar.querySelector("[data-animater-flash-onadd]")?.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); void game.settings.set(ID, FLASH_DEFAULTS, { ...defaults(), startWhen: d.startWhen === "add" ? "begin" : "add" }); });
+    bar.querySelector("[data-animater-flash-onadd]")?.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); void setStartOnAdd(d.startWhen !== "add"); });
     bar.querySelector("[data-animater-flash-test]").addEventListener("click", () => play(forCombat(combat, "start"), { combat }));
     return bar;
   }
@@ -235,6 +242,7 @@ export function flashScreens(host) {
   return {
     screens, defaults, vars, play, receive, sound, playSound, before,
     save: (list) => game.settings.set(ID, FLASH_SETTING, { schema: 1, screens: validateFlashes(list) }),
+    setStartOnAdd,
     setDefault: (event, id) => game.settings.set(ID, FLASH_DEFAULTS, { ...defaults(), [event]: id }),
     events: FLASH_EVENTS,
   };

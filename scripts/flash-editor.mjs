@@ -718,8 +718,10 @@ export class FlashEditor {
       }
       case "flash-start-when": {
         const on = this.host.flashDefaults().startWhen === "add";
-        await this.host.setFlashDefault("startWhen", on ? "begin" : "add");
-        this.w.message = on ? "The opening now waits for Begin Combat." : "The opening now plays as soon as combatants are added.";
+        const before = this.host.flashDefaults().start;
+        await this.host.setFlashStartOnAdd(!on);
+        const picked = !on && before !== this.host.flashDefaults().start ? this.screens().find((s) => s.id === this.host.flashDefaults().start) : null;
+        this.w.message = on ? "The opening now waits for Begin Combat." : `The opening now plays as soon as combatants are added.${picked ? ` Default opening: ${picked.name}.` : ""}`;
         break;
       }
       case "flash-moment-toggle": {
