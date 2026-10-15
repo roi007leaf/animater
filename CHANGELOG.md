@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.3 (2026-10-15)
 
 - **Finishers:** the mover's impacts and auras that start once its travel has landed (blood linked to the travel's end, or timed after it) now play on the landing square, with the fragments, in test plays and at the table. They used to burst where the token stood, so linked fragments seemed to vanish: they were bursting several squares away, at the real landing.
 - **Damage-type finishers:** new fragment cuts **Perforate**, **Slashes**, **Crush** and **Lightning**; new behaviours **Crushed flat**, **Shudder apart**, **Glitch out** and **Sink and fade**; new tints **Burning**, **Electric**, **Acid** and **Poison**; and 14 presets, one per damage type (Perforated, Carved, Pulverized, Bled out, Cinders, Frostbitten, Thunderstruck, Dissolved, Sound shatter, Blown apart, Consumed, Smitten, Unraveled, Withered). The Default finisher for NPC kills can now be **By damage type**: it plays the preset matching the killing blow's damage type.
