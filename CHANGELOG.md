@@ -1,14 +1,28 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 (2026-10-15)
 
-- Players' finishers: the GM gives finishers to players (Available to), and each player picks one per item (pf2e-combater's item sheet, or `api.finishers`). An item on a player-owned actor plays only its owner's pick, per its Plays on (critical, kill, critical or kill, or use); with no pick or "None" it plays no finisher, not even the default. NPC items keep the GM's Applies-to matching and the default finisher.
-- Finishers move only their targets: the "Moves" choice is gone. A finisher saved with "Moves: the attacker" loads as a target finisher, but its stages still move the caster token, so it no longer flings anything; re-make its travel on the target. Crits count per target, and in PF2e/SF2e a critically failed save against a spell plays the caster's crit finisher on that saver (in place of its save reaction); the spell's own damage that then kills it plays only the ending.
-- `api.play` (and so Trigger Engine automations) and the studio's test play now play a finisher recipe composed, as a finisher plays it: aimed away from the attacker, cut short at walls, landing pinned and ending held, still without writing anything to the token. Before, they played it raw.
+**Finishers**: finishing moves that play on the real token, then fling, cut, shatter or dissolve it.
 
-- Token fragments (new token motion): the real token's artwork splits into halves along the swing, top and bottom, spinning shards or blowing dust — drawn on every client from the token's own image while the real token stays out of sight. New finisher presets: Slice in half, Bisect, Shatter into shards, Disintegrate, Sky launch, Ragdoll tumble, Vortex spiral and Pancake.
-- Keyframed path (new token motion): draw the real token's movement as keyframes — position in squares, rotation, size and opacity, with easing and sharp corners — on timeline diamonds, a grid path canvas you drag points on, and exact numbers in the inspector. Works in every recipe (returns to start) and in finishers, where the path is aimed away from the attacker, its length is the knockback, it shrinks to fit walls, and the token is moved to where it ends. The finisher presets are rebuilt on keyframed paths, and finishers now show their own chip ("Killing blow · lands 3 sq · Body"), "← Finishers" and "Save finisher" in the studio.
-- Finishers (Module Settings → Finishers, then the new Finishers page): design finishing moves in the studio or copy one of 14 presets (Launch, Cleave, Burn to ash, Shatter…), and assign them to spells, feats, actions and weapons — on their Applies-to list or with the Finisher dropdown on catalog entries. A finisher plays on the real token on a killing blow or on every successful use (Shove can always fling): the token is thrown, lands on the square where its travel ends (stopping at walls), and then vanishes, stays as a Defeated body, or stays. Player-side moves are written by the active GM. Unhide the token (and remove Defeated) to undo; it stays on the square where it landed. Token motion still never changes the real token position, except finishers, which move the token where it lands.
+- **Finishers page:** a sidebar page with animated cards, quick Edit and Duplicate, and presets grouped as Flung, In place and Pieces. Pick a default finisher for NPC kills. Turn finishers on under Module Settings → Finishers.
+- **Design them in the studio, or start from a preset:** Launch, Wall slam, Sky launch, Ragdoll tumble, Slice in half, Bisect, Shatter into shards, Disintegrate, Vortex spiral, Pancake, Diced, Claw shred, Soul drain, Frozen shatter, Ember ascent, Pixel delete and more.
+- **Applies to:** attach spells, feats, actions and weapons by dropping them onto the finisher, or with the Finisher dropdown on catalog entries.
+- **Plays on:** a killing blow, every successful use, a critical hit, or a critical hit or killing blow. Crits count per target. In PF2e and SF2e, a critically failed save against a spell counts as the caster's crit.
+- **The real token moves:** it lands where its travel ends, stopping at walls, then vanishes, stays as a Defeated body, or stays. Moves made on a player's side are written by the active GM. To undo, unhide the token and remove Defeated.
+- **Knockback:** shoves the target that many squares before the rest of the finisher plays. **Wall slam** seeks the nearest wall within reach, never back toward the attacker, and crashes into it with squash and dust.
+- **Players' finishers:** the GM gives finishers to players with Available to. Each player picks one per item, in pf2e-combater or through `api.finishers`. A player-owned item plays only its owner's pick, and "None" turns it off. NPC items keep the GM's Applies-to matching.
+- **🎓 Show me:** two guided tours on the Finishers page, "A flying finisher" and "A shattering finisher". They build a practice finisher, which is never saved.
+
+**New token motions** (in every recipe, not just finishers)
+
+- **Keyframed path:** draw the token's movement as keyframes on the timeline and a draggable grid canvas: position, rotation, size, opacity, stretch, path easing, and Make smooth.
+- **Token fragments:** the token's own artwork splits apart. There are 11 cuts: halves, top/bottom, shards, dust, cross cut, claw marks, diced, starburst, rings, pixelate and ribbons. There are 6 behaviours: burst, implode, drawn to the attacker, rise, fall and bounce, and melt down. Four tints are available: frozen, charred, stone and ghostly. Every client draws the same pieces, and the studio preview shows them too.
+
+**Workspace**
+
+- The sidebar is grouped into Create, Library and Tools, left-aligned, with counts.
+- `api.play`, which Trigger Engine also uses, and the studio's test play now play finisher recipes composed: aimed, cut at walls, landing pinned. They still write nothing to the token.
+- The Flash screens Show me tour now uses a shared tour engine. It behaves the same, and Esc no longer closes the window mid-tour.
 
 ## 0.3.17 (2026-10-13)
 
