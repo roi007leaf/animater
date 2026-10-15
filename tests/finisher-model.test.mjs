@@ -1,13 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, createFinishedMemory } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
 test("the finisher block is normalized, kept, and makes the recipe a manual Finisher", () => {
-  assert.deepEqual(normalizeFinisher({}), { on: "kill", mover: "targets", knockback: 0, ending: "body", success: "success", wall: "fit" });
-  assert.deepEqual(normalizeFinisher({ on: "use", mover: "source", knockback: 9, ending: "vanish", success: "critical", wall: "slam" }), { on: "use", mover: "source", knockback: 6, ending: "vanish", success: "critical", wall: "slam" });
+  assert.deepEqual(normalizeFinisher({}), { on: "kill", mover: "targets", knockback: 0, ending: "body", success: "success", wall: "fit", players: [] });
+  assert.deepEqual(normalizeFinisher({ on: "use", mover: "source", knockback: 9, ending: "vanish", success: "critical", wall: "slam" }), { on: "use", mover: "source", knockback: 6, ending: "vanish", success: "critical", wall: "slam", players: [] });
   assert.equal(normalizeFinisher({ wall: "bounce" }).wall, "fit", "an unknown wall mode stops short");
   const r = validateRecipe({ id: "f", name: "F", trigger: "attack", category: "Custom", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", assets: [] }] });
   assert.equal(r.trigger, "manual", "normal dispatch never matches a finisher");
@@ -185,4 +185,53 @@ test("the catalog dropdown stores the entry's uuid on its finisher and moves the
   assert.equal(plain[1], list[1], "no uuid and no change: same recipe");
   const none = linkFinisher(moved, "Greataxe", "");
   assert.equal(finisherItemLink(none[1].finisher, "Greataxe"), null, "unlinking drops the link");
+});
+
+test("players and the new Plays-on values are validated", () => {
+  const f = normalizeFinisher({ players: ["u1", "u1", 7, "", "*"], on: "criticalOrKill" });
+  assert.deepEqual(f.players, ["u1", "*"]);
+  assert.equal(f.on, "criticalOrKill");
+  assert.equal(normalizeFinisher({ on: "critical" }).on, "critical");
+  assert.deepEqual(normalizeFinisher({}).players, []);
+});
+
+const owned = (id, match, finisher = {}) => fin(id, match, { players: ["u1"], ...finisher });
+
+test("a player's choices are finishers given to them whose Applies-to matches the item", () => {
+  const list = [owned("a", "Longsword"), owned("b", "Fireball"), fin("c", "Longsword", { players: ["*"] }), fin("d", "Longsword", { players: ["u2"] }), owned("e", "Longsword", {}), { ...owned("f", "Longsword"), enabled: false }];
+  assert.deepEqual(playerFinisherChoices(list, { userId: "u1", itemName: "Longsword" }).map((r) => r.id), ["a", "c", "e"]);
+  assert.deepEqual(playerFinisherChoices(list, { userId: "u3", itemName: "Longsword" }).map((r) => r.id), ["c"]);
+  assert.equal(finisherAvailableTo(fin("g", "", { players: [] }), "u1"), false);
+});
+
+test("a pick only plays while it is still valid", () => {
+  const list = [owned("a", "Longsword"), fin("b", "Longsword", { players: ["u2"] })];
+  const item = { itemName: "Longsword" };
+  assert.equal(pickedFinisher(list, { choiceId: "a", ownerUserIds: ["u1"], ...item }).id, "a");
+  assert.equal(pickedFinisher(list, { choiceId: "b", ownerUserIds: ["u1"], ...item }), null, "not given to this owner");
+  assert.equal(pickedFinisher(list, { choiceId: "zz", ownerUserIds: ["u1"], ...item }), null, "deleted");
+  assert.equal(pickedFinisher(list, { choiceId: "a", ownerUserIds: ["u1"], itemName: "Dagger" }), null, "item no longer in Applies-to");
+  assert.equal(pickedFinisher(list, { choiceId: null, ownerUserIds: ["u1"], ...item }), null);
+  assert.equal(pickedFinisher(list, { choiceId: "b", ownerUserIds: [], ...item }).id, "b", "a GM-run creature keeps the GM's pick");
+});
+
+test("each Plays-on fires on its own outcomes", () => {
+  const f = (on) => normalizeFinisher({ on });
+  const cases = [
+    ["kill", "success", true, true], ["kill", "criticalSuccess", false, false],
+    ["critical", "criticalSuccess", false, true], ["critical", "success", true, false],
+    ["criticalOrKill", "criticalSuccess", false, true], ["criticalOrKill", "success", true, true], ["criticalOrKill", "success", false, false],
+    ["use", "success", false, true], ["use", "failure", false, false],
+  ];
+  for (const [on, outcome, killed, expected] of cases) assert.equal(finisherFires(f(on), { outcome, killed }), expected, `${on}/${outcome}/${killed}`);
+});
+
+test("a finisher plays once per target per action", () => {
+  let now = 0;
+  const memory = createFinishedMemory(30000, () => now);
+  assert.equal(memory.has("msg1:t1"), false);
+  memory.mark("msg1:t1");
+  assert.equal(memory.has("msg1:t1"), true);
+  now = 30001;
+  assert.equal(memory.has("msg1:t1"), false, "forgotten after 30 s");
 });

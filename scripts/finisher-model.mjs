@@ -110,3 +110,37 @@ export function finisherChipText(recipe) {
   const f = recipe.finisher, path = finisherTravelPath(recipe), squares = path ? pathSquares(path.keyframes) : f.knockback;
   return `${FINISHER_ON[f.on]} · ${squares ? `lands ${squares} sq` : "in place"} · ${ENDING_SHORT[f.ending]}${path && landsTilted(path.keyframes) ? " · ⚠ lands tilted" : ""}`;
 }
+
+// Players' own finishers: the GM gives finishers to players ("players"), a player picks one
+// per item (item flag animater.finisher), and the pick plays when its "Plays on" matches.
+export const finisherAvailableTo = (recipe, userId) => {
+  const players = recipe?.finisher?.players ?? [];
+  return players.includes("*") || (Boolean(userId) && players.includes(userId));
+};
+export const playerFinisherChoices = (recipes, { userId, itemName, itemSlug, itemUuid } = {}) =>
+  recipes.filter((r) => r?.finisher && r.enabled !== false && finisherAvailableTo(r, userId)
+    && matchFinishers([r], { itemName, itemSlug, itemUuid }, r.finisher.on).length > 0);
+export function pickedFinisher(recipes, { choiceId, ownerUserIds = [], itemName, itemSlug, itemUuid } = {}) {
+  if (!choiceId) return null;
+  const r = recipes.find((x) => x?.id === choiceId && x.finisher && x.enabled !== false);
+  // An item with no player owners (a GM-run creature) keeps whatever the GM picked.
+  if (!r || (ownerUserIds.length && !ownerUserIds.some((u) => finisherAvailableTo(r, u)))) return null;
+  return matchFinishers([r], { itemName, itemSlug, itemUuid }, r.finisher.on).length ? r : null;
+}
+export function finisherFires(finisher, { outcome, killed = false } = {}) {
+  const crit = outcome === "criticalSuccess";
+  switch (finisher?.on) {
+    case "kill": return Boolean(killed);
+    case "critical": return crit;
+    case "criticalOrKill": return crit || Boolean(killed);
+    default: return passesSuccess(finisher, outcome);
+  }
+}
+// One action plays a finisher once per target: a crit that then kills only adds the ending.
+export function createFinishedMemory(ttlMs = 30000, now = Date.now) {
+  const seen = new Map();
+  return {
+    mark: (key) => seen.set(key, now()),
+    has: (key) => { const at = seen.get(key); if (at === undefined) return false; if (now() - at > ttlMs) { seen.delete(key); return false; } return true; },
+  };
+}
