@@ -78,6 +78,7 @@ export const MOTIONS = {
   cower: "Cower in fear",
   slam: "Rise and slam down",
   drift: "Drift gently down",
+  squash: "Squash on impact",
   collapse: "Collapse when dropped",
   fade: "Fade out",
   path: "Keyframed path",

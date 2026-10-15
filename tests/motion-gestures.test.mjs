@@ -207,3 +207,63 @@ test('an overshooting ease never turns a path inside out or past fully visible',
     assert.ok(alpha >= 0 && alpha <= 1, `alpha at ${n}%`);
   }
 });
+
+const stretchy = (extra = {}) => v(pathStage({ keyframes: [{ at: 0 }, { at: 0.5, x: 1, stretch: 0.2, ease: 'linear' }, { at: 1, x: 2, ease: 'linear' }], ...extra }));
+test('a stretched path stretches the token along its travel direction', () => {
+  const along = motionPose(stretchy(), 0.5, { x: 1, y: 0 }, 100);
+  assert.ok(along.scaleX > 1 && 1 > along.scaleY, `x ${along.scaleX} y ${along.scaleY}`);
+  assert.equal(along.scale, 1, 'uniform size stays its own channel');
+  const down = motionPose(stretchy(), 0.5, { x: 0, y: 1 }, 100);
+  assert.ok(Math.abs(down.scaleX - along.scaleY) < 1e-9 && Math.abs(down.scaleY - along.scaleX) < 1e-9, 'turned with the direction');
+  assert.equal(motionPose(v(pathStage()), 0.5, { x: 1, y: 0 }, 100).scaleX, undefined, 'an unstretched path never touches scaleX/scaleY');
+});
+
+test('a frame-aimed stretched path uses the frame angle, not the direction', () => {
+  const aimed = motionPose(stretchy({ motionFrame: { cos: 0, sin: 1, k: 1 } }), 0.5, { x: 1, y: 0 }, 100);
+  assert.ok(aimed.scaleY > 1 && 1 > aimed.scaleX, `x ${aimed.scaleX} y ${aimed.scaleY}`);
+});
+
+test('the stretch is measured against the pose rotation', () => {
+  const turned = v(pathStage({ keyframes: [{ at: 0 }, { at: 0.5, x: 1, rotation: 90, stretch: 0.2, ease: 'linear' }, { at: 1, x: 2, rotation: 90, ease: 'linear' }] }));
+  const p = motionPose(turned, 0.5, { x: 1, y: 0 }, 100);
+  assert.ok(p.scaleY > 1 && 1 > p.scaleX, 'a token turned 90 degrees stretches along its own y');
+});
+
+test('a returning stretched path settles its stretch back to rest with the other channels', () => {
+  const s = stretchy({ motionEnd: undefined, keyframes: [{ at: 0 }, { at: 1, x: 2, stretch: 0.3, ease: 'linear' }] });
+  const reached = motionPose(s, 0.85, { x: 1, y: 0 }, 100), settling = motionPose(s, 0.95, { x: 1, y: 0 }, 100);
+  assert.ok(settling.scaleX > 1 && settling.scaleX < reached.scaleX, `${settling.scaleX} between 1 and ${reached.scaleX}`);
+});
+
+test('squash on impact flattens along the direction, springs back and rests at both ends', () => {
+  assert.equal(MOTIONS.squash, 'Squash on impact');
+  assert.equal(GENERATED_MOTION_DURATION.squash, 450);
+  const s = v({ kind: 'motion', motion: 'squash', duration: 450, intensity: 1 });
+  assert.equal(s.motion, 'squash');
+  assert.equal(s.motionEnd, undefined, 'never holds');
+  for (const p of [0, 1]) assert.deepEqual(motionPose(s, p, { x: 1, y: 0 }, 100), { x: 0, y: 0, rotation: 0, scale: 1 });
+  const flat = motionPose(s, 0.225, { x: 1, y: 0 }, 100);
+  assert.ok(flat.scaleX < 1 && flat.scaleY > 1, `flattened along x: ${flat.scaleX} ${flat.scaleY}`);
+  assert.ok(Math.abs(flat.scaleX - 0.65) < 1e-9, 'full squash of 0.35 at its peak');
+  assert.deepEqual([flat.x, flat.y, flat.rotation], [0, 0, 0], 'no position change');
+  const across = motionPose(s, 0.225, { x: 0, y: 1 }, 100);
+  assert.ok(across.scaleY < 1 && across.scaleX > 1, 'flattened along y for a downward hit');
+  const spring = motionPose(s, 0.6, { x: 1, y: 0 }, 100);
+  assert.ok(spring.scaleX > 1, 'springs back past rest');
+  const end = motionPose(s, 0.999, { x: 1, y: 0 }, 100);
+  assert.ok(Math.abs(end.scaleX - 1) < 1e-3, 'settled by the end');
+});
+
+test('squash faces away from the other token like a recoil, with a +x fallback', () => {
+  const token = { id: 't', center: { x: 0, y: 100 } }, other = { center: { x: 0, y: 0 } };
+  const dir = motionDirection(token, other, token, 'squash', 100);
+  assert.ok(Math.abs(dir.x) < 1e-6 && Math.abs(dir.y - 1) < 1e-6);
+  assert.deepEqual(motionDirection(token, token, null, 'squash', 100), { x: 1, y: 0 });
+});
+
+test('a held stretched end eases its stretch back with the rest of the hold', () => {
+  const s = v(pathStage({ keyframes: [{ at: 0 }, { at: 1, stretch: 0.3, ease: 'linear' }] }));
+  const held = heldPose(s, 0, { x: 1, y: 0 }, 100), releasing = heldPose(s, HOLD_LIMIT_MS + HOLD_RELEASE_MS / 2, { x: 1, y: 0 }, 100);
+  assert.ok(held.scaleX > 1.29, 'held stretched');
+  assert.ok(releasing.scaleX > 1 && releasing.scaleX < held.scaleX && releasing.scaleY < 1 && releasing.scaleY > held.scaleY, 'easing back');
+});

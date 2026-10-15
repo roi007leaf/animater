@@ -1,4 +1,4 @@
-import { samplePath, DEFAULT_KEYFRAMES } from "./keyframe-path.mjs";
+import { samplePath, stretchScale, DEFAULT_KEYFRAMES } from "./keyframe-path.mjs";
 import { MOTIONS } from "./model.mjs";
 import { shakeCycles, settledProgress } from "./motion-pacing.mjs";
 import { PATH_MOTIONS, HOLDING_MOTIONS, motionPhases, pathDistance } from "./motion-path.mjs";
@@ -18,6 +18,9 @@ function pathPose(stage, p, direction, grid, holds) {
     scale: Math.max(0.01, 1 + (local.scale - 1) * settle),
   };
   if (keyframes.some((kf) => kf.alpha < 1)) pose.alpha = Math.min(1, Math.max(0, 1 - (1 - local.alpha) * settle));
+  // Squash & stretch along the travel direction (the frame's +x), measured in the mesh's own frame.
+  // The token document's own rotation is not known here: it is assumed 0.
+  if (local.stretch || keyframes.some((kf) => kf.stretch)) Object.assign(pose, stretchScale((local.stretch ?? 0) * settle, Math.atan2(sin, cos) - pose.rotation));
   return pose;
 }
 // Pure pose function shared by canvas playback and the editor's motion preview.
@@ -178,6 +181,13 @@ export function motionPose(
       pose.scaleY = 1 - 0.12 * amount * envelope;
       break;
     }
+    case "squash": {
+      // Flattened against what it hit for the first 45%, then a small springing stretch.
+      const stretch = p <= 0.45 ? -0.35 * amount * Math.sin(Math.PI * Math.min(1, p / 0.45))
+        : 0.12 * amount * Math.sin((Math.PI * (p - 0.45)) / 0.55) * (1 - p);
+      Object.assign(pose, stretchScale(stretch, Math.atan2(direction.y, direction.x)));
+      break;
+    }
     case "drift":
       pose.y = distance * 0.35 * envelope;
       pose.x = Math.sin(p * Math.PI * 3) * distance * 0.25 * envelope;
@@ -194,17 +204,19 @@ export function heldPose(stage, heldMs, direction, grid = 100) {
   if (stage.motionEnd !== "hold" || !HOLDING_MOTIONS.has(stage.motion) || heldMs >= HOLD_LIMIT_MS + HOLD_RELEASE_MS) return null;
   const end = motionPose(stage, 1, direction, grid);
   const k = heldMs <= HOLD_LIMIT_MS ? 1 : 1 - settledProgress((heldMs - HOLD_LIMIT_MS) / HOLD_RELEASE_MS);
-  return { ...end, x: end.x * k, y: end.y * k, rotation: end.rotation * k, scale: 1 + (end.scale - 1) * k, ...(end.alpha !== undefined ? { alpha: 1 - (1 - end.alpha) * k } : {}) };
+  return { ...end, x: end.x * k, y: end.y * k, rotation: end.rotation * k, scale: 1 + (end.scale - 1) * k, ...(end.alpha !== undefined ? { alpha: 1 - (1 - end.alpha) * k } : {}),
+    ...(end.scaleX !== undefined ? { scaleX: 1 + (end.scaleX - 1) * k, scaleY: 1 + ((end.scaleY ?? 1) - 1) * k } : {}) };
 }
 export function motionDirection(token, source, target, motion, grid = 100) {
   const other =
     token === source || (token?.id && token.id === source?.id)
       ? target
       : source;
-  const a = ["recoil", "path"].includes(motion) ? other?.center : token?.center;
-  const b = ["recoil", "path"].includes(motion) ? token?.center : other?.center;
+  const away = ["recoil", "path", "squash"].includes(motion);
+  const a = away ? other?.center : token?.center;
+  const b = away ? token?.center : other?.center;
   // Away from nobody: a fixed +x, not a vector from the map origin that changes with position.
-  if (["recoil", "path"].includes(motion) && (!a || !b)) return { x: 1, y: 0 };
+  if (away && (!a || !b)) return { x: 1, y: 0 };
   const x = (b?.x ?? 1) - (a?.x ?? 0),
     y = (b?.y ?? 0) - (a?.y ?? 0);
   const length = Math.hypot(x, y);

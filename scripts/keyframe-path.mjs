@@ -38,7 +38,7 @@ export function samplePath(keyframes, q) {
   const mirror = (p, about) => ({ x: 2 * about.x - p.x, y: 2 * about.y - p.y });
   const point = a.sharp || b.sharp ? { x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u } : centripetal(k[i - 1] ?? mirror(b, a), a, b, k[i + 2] ?? mirror(a, b), u);
   const mix = (key) => a[key] + (b[key] - a[key]) * u;
-  return { x: point.x, y: point.y, rotation: mix("rotation"), scale: mix("scale"), alpha: mix("alpha"), stretch: mix("stretch") };
+  return { x: point.x, y: point.y, rotation: mix("rotation"), scale: mix("scale"), alpha: mix("alpha"), stretch: (a.stretch ?? 0) + ((b.stretch ?? 0) - (a.stretch ?? 0)) * u };
 }
 
 export const pathEnd = (keyframes) => ({ x: keyframes.at(-1).x, y: keyframes.at(-1).y });
