@@ -1022,6 +1022,9 @@
 }
 /* Fragments: the pieces take the token's place, so its disc goes too. */
 .animater .an-recipe-token.is-fragmented { background: transparent; border-color: transparent; }
+/* A placeholder actor's fragment pieces carry the disc themselves. */
+.animater .an-fragment-disc { box-sizing:border-box; display:grid; place-items:center; border:1px solid #b49bf7; border-radius:50%; background:#35294f; color:#e9ddff; font-size:26px; }
+.animater .is-targets .an-fragment-disc { border-color:#91c7e3; background:#263b4a; color:#d1f1ff; }
 .animater .an-recipe-token img {
   width: 100%;
   height: 100%;

@@ -30,6 +30,8 @@ export function fragmentPreviewParts(stage, cutAngle, turn = 0) {
     flight: fragmentFlight(s, piece, i, cutAngle, turn),
   }));
 }
+// The artwork a fragments stage cuts: the token image, or a placeholder actor's glyph element.
+const previewArt = (token) => token.querySelector?.("img") ?? token.querySelector?.(".an-preview-token-art") ?? null;
 const isFragments = (s) => s?.kind === "motion" && s.motion === "fragments";
 
 // Editor composition uses installed media and the same motion pose function.
@@ -446,7 +448,7 @@ export class RecipePreview {
       const subject = token.dataset.previewToken;
       const targetIndex = Number(token.dataset.targetIndex ?? 0);
       // With artwork, fragments hide the image and draw pieces; without it the token just fades.
-      const art = token.querySelector?.("img");
+      const art = previewArt(token);
       if (art) this.drawFragments(token, art, subject, targetIndex, frame);
       const pose = this.subjectPose(subject, frame, targetIndex, { fragments: !art });
       token.style.transform = poseTransform(pose);
@@ -498,18 +500,25 @@ export class RecipePreview {
     const sx = Number(info?.textureScaleX) < 0 ? -1 : 1, sy = Number(info?.textureScaleY) < 0 ? -1 : 1;
     const width = art.style?.width || `${(info?.spriteWidth ?? info?.width ?? 1) * 55}px`;
     const height = art.style?.height || `${(info?.spriteHeight ?? info?.height ?? 1) * 55}px`;
-    const src = art.getAttribute?.("src") ?? art.src;
+    const isImage = art.tagName === "IMG";
+    const src = isImage ? art.getAttribute?.("src") ?? art.src : null;
     const prepared = prepareFragments(stage);
     const holder = doc.createElement("div");
     holder.className = "an-fragment-pieces";
     Object.assign(holder.style, { position: "absolute", inset: "0", pointerEvents: "none" });
     const parts = fragmentPreviewParts(prepared, this.fragmentCutAngle(stage, subject, targetIndex), turn).map((part) => {
-      const box = doc.createElement("div"), cut = doc.createElement("div"), copy = doc.createElement("img");
+      const box = doc.createElement("div"), cut = doc.createElement("div"), copy = isImage ? doc.createElement("img") : doc.createElement("div");
       box.dataset.fragmentPiece = "";
       Object.assign(box.style, { position: "absolute", left: "50%", top: "50%", width, height, transformOrigin: "50% 50%" });
       Object.assign(cut.style, { position: "absolute", inset: "0", clipPath: part.clip, transformOrigin: part.origin });
-      copy.setAttribute("src", src);
-      copy.setAttribute("alt", "");
+      if (isImage) {
+        copy.setAttribute("src", src);
+        copy.setAttribute("alt", "");
+      } else {
+        // A placeholder has no image: each piece is the disc with a clone of its glyph element.
+        copy.className = "an-fragment-disc";
+        copy.appendChild(art.cloneNode(true));
+      }
       Object.assign(copy.style, { position: "absolute", left: "0", top: "0", width: "100%", height: "100%", maxWidth: "none", maxHeight: "none", transform: `scale(${sx},${sy})` });
       cut.appendChild(copy);
       box.appendChild(cut);
@@ -598,7 +607,7 @@ export class RecipePreview {
     this.tokens.forEach((t) => {
       t.style.transform = "";
       this.clearFragments(t);
-      const art = t.querySelector?.("img");
+      const art = previewArt(t);
       if (art) art.style.visibility = "";
       t.classList?.remove("is-fragmented");
     });

@@ -146,3 +146,58 @@ test("the chain preview cuts each target's own token, posed in its grid", () => 
   assert.equal(pieces(tokens[0].token).length, 0, "the caster stays whole");
   assert.equal(tokens[0].img.style.visibility, "");
 });
+
+// A placeholder actor (no selected token): a glyph span, no <img>.
+function placeholderFixture(stage) {
+  const recipe = { stages: [{ kind: "motion", motion: "fragments", subject: "targets", delay: 0, duration: 1000, seed: 3, ...stage }] };
+  const mk = (tag) => {
+    const e = element(tag);
+    e.cloneNode = () => { const c = mk(tag); c.textContent = e.textContent; c.className = e.className; return c; };
+    return e;
+  };
+  const glyph = mk("span");
+  glyph.className = "an-preview-token-art";
+  glyph.textContent = "◇";
+  const token = mk("div");
+  token.dataset.previewToken = "targets";
+  token.classes = new Set();
+  token.classList = { toggle: (c, on) => (on ? token.classes.add(c) : token.classes.delete(c)), remove: (c) => token.classes.delete(c) };
+  token.ownerDocument = { createElement: mk };
+  token.querySelector = (selector) => (selector === ".an-preview-token-art" ? glyph : null);
+  const scene = {
+    dataset: { previewTokens: JSON.stringify({ targets: {} }) },
+    clientWidth: 400, clientHeight: 300,
+    querySelectorAll: (selector) => (selector === "[data-preview-token]" ? [token] : []),
+  };
+  const player = new RecipePreview(scene, recipe, () => {});
+  return { player, token, glyph, draw: (ms) => player.draw(recipeFrame(player.recipe, ms)) };
+}
+
+test("a placeholder actor (no image) splits into clipped copies of its disc glyph and is hidden whole", () => {
+  const { token, glyph, draw } = placeholderFixture({ pattern: "shards", pieces: 5 });
+  draw(500);
+  assert.equal(pieces(token).length, 5);
+  assert.equal(cuts(token).length, 5, "every piece is clipped");
+  assert.equal(glyph.style.visibility, "hidden");
+  assert.ok(token.classes.has("is-fragmented"));
+  const discs = all(token).filter((e) => e.className === "an-fragment-disc");
+  assert.equal(discs.length, 5);
+  assert.ok(discs.every((d) => d.children[0]?.textContent === "◇" && d.children[0].className === "an-preview-token-art"));
+  const built = pieces(token);
+  draw(600);
+  assert.deepEqual(pieces(token), built, "built once per activation");
+});
+
+test("after a non-held stage a placeholder's pieces are removed and its glyph shows again", () => {
+  const { player, token, glyph, draw } = placeholderFixture({ pattern: "halves", delay: 100 });
+  draw(600);
+  assert.equal(pieces(token).length, 2);
+  draw(1100);
+  assert.equal(pieces(token).length, 0);
+  assert.equal(glyph.style.visibility, "");
+  assert.ok(!token.classes.has("is-fragmented"));
+  draw(500);
+  player.stop();
+  assert.equal(pieces(token).length, 0);
+  assert.equal(glyph.style.visibility, "");
+});
