@@ -249,3 +249,17 @@ test("drip on a turned preview token stretches straight down the screen", () => 
     }
   }
 });
+
+test("preview pieces squash wide and flat for flatten and wear the damage tints' filters", () => {
+  const { token, draw } = fixture({ pattern: "crush", behavior: "flatten" });
+  draw(999);
+  assert.ok(cuts(token).every((c) => / scale\(1\.15,0\.35\) /.test(c.style.transform)), cuts(token)[0].style.transform);
+  const css = { burning: "sepia(.6) saturate(2.2) hue-rotate(-10deg) brightness(1.15)", electric: "saturate(.4) brightness(1.35) hue-rotate(180deg)", acid: "sepia(.5) saturate(2) hue-rotate(40deg)", poison: "sepia(.4) saturate(1.6) hue-rotate(50deg) brightness(.9)" };
+  const alpha = { burning: 1, electric: 0.95, acid: 1, poison: 0.9 };
+  for (const [tint, filter] of Object.entries(css)) {
+    const f = fixture({ pattern: "shards", pieces: 5, tint });
+    f.draw(100);
+    assert.ok(cuts(f.token).every((c) => c.style.filter === filter), tint);
+    assert.ok(pieces(f.token).every((p) => Math.abs(Number(p.style.opacity) - alpha[tint]) < 1e-9), `${tint}: opacity`);
+  }
+});

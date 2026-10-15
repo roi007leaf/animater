@@ -18,7 +18,7 @@ export const FRAGMENT_BEHAVIORS = {
   burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap",
   flatten: "Crushed flat", shudder: "Shudder apart", glitch: "Glitch out", sink: "Sink and fade",
 };
-export const FRAGMENT_TINTS = { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly" };
+export const FRAGMENT_TINTS = { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly", burning: "Burning", electric: "Electric", acid: "Acid", poison: "Poison" };
 // How a tint draws: a PIXI tint on the table (stone adds one shared greyscale filter), a CSS filter
 // in the studio, and an alpha factor for both.
 export const FRAGMENT_TINT_LOOKS = {
@@ -27,6 +27,11 @@ export const FRAGMENT_TINT_LOOKS = {
   charred: { tint: 0x3a2a22, alpha: 1, css: "brightness(.35) sepia(.4)" },
   stone: { tint: 0xb0aca4, alpha: 1, greyscale: 0.55, css: "grayscale(.85) brightness(.9)" },
   ghost: { tint: 0xd8f0ff, alpha: 0.5, css: "brightness(1.3) saturate(.3)" },
+  // The table renderer has no glow layer, so burning is a tint only.
+  burning: { tint: 0xff9a4a, alpha: 1, css: "sepia(.6) saturate(2.2) hue-rotate(-10deg) brightness(1.15)" },
+  electric: { tint: 0xbfe6ff, alpha: 0.95, css: "saturate(.4) brightness(1.35) hue-rotate(180deg)" },
+  acid: { tint: 0xa6e05a, alpha: 1, css: "sepia(.5) saturate(2) hue-rotate(40deg)" },
+  poison: { tint: 0x9ac885, alpha: 0.9, css: "sepia(.4) saturate(1.6) hue-rotate(50deg) brightness(.9)" },
 };
 const clamp = (v, min, max, fallback) => (v !== null && v !== "" && Number.isFinite(Number(v)) ? Math.min(max, Math.max(min, Number(v))) : fallback);
 const TOWARDS_LIMIT = 40;

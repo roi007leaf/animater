@@ -442,3 +442,26 @@ test("a crumble finisher's glyph hints a fall to a heap, static and live", () =>
   }
   assert.match(presetGlyph("turn-to-dust"), /data-behavior="crumble"/);
 });
+
+test("finisherGlyphSVG sketches the damage patterns and hints the damage behaviours, static by default", () => {
+  const cutStage = (extra) => withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", ...extra }]);
+  const marks = { perforate: [/<circle class="an-glyph-mark"/g, 4], slashes: [/<line class="an-glyph-mark"/g, 3], crush: [/<(?:circle|line) class="an-glyph-mark"/g, 9], lightning: [/<path class="an-glyph-mark"/g, 1] };
+  for (const [pattern, [re, count]] of Object.entries(marks)) {
+    const svg = finisherGlyphSVG(cutStage({ pattern }));
+    assert.equal(kindOf(svg), "fragments", pattern);
+    assert.match(svg, new RegExp(`data-pattern="${pattern}"`), pattern);
+    assert.ok((svg.match(/<polygon class="an-glyph-piece"/g) ?? []).length >= 2, pattern);
+    assert.equal((svg.match(re) ?? []).length, count, pattern);
+    assert.doesNotMatch(svg, /NaN|undefined|Infinity|<animate|<set /, pattern);
+  }
+  const hints = { flatten: 1, shudder: 2, glitch: 2, sink: 1 };
+  for (const [behavior, count] of Object.entries(hints)) {
+    const still = finisherGlyphSVG(cutStage({ pattern: "shards", behavior })), live = finisherGlyphSVG(cutStage({ pattern: "shards", behavior }), { live: true });
+    assert.match(still, new RegExp(`data-behavior="${behavior}"`));
+    assert.equal((still.match(/class="an-glyph-hint"/g) ?? []).length, count, behavior);
+    assert.doesNotMatch(still, /NaN|undefined|Infinity|<animate|<set /, behavior);
+    assert.match(live, /<g class="an-glyph-anim">[^]*<animate/, behavior);
+    assert.doesNotMatch(live, /NaN|undefined|Infinity/, behavior);
+  }
+  assert.match(finisherGlyphSVG(cutStage({ pattern: "crush", behavior: "flatten" }), { live: true }), /type="scale" values="1 1;1 1;1\.15 0\.35;1\.15 0\.35"/, "flatten squashes wide and flat");
+});

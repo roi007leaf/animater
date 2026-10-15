@@ -507,9 +507,9 @@ export class RecipePreview {
     for (const part of entry.parts) {
       const pose = fragmentPose(entry.prepared, part.piece, part.flight, active.progress);
       part.box.style.transform = `translate(-50%,-50%) translate(${pose.x * grid}px,${pose.y * grid}px) rotate(${entry.turn}rad)`;
-      // A stretch runs down the screen: undo the box's turn around it, so a turned token still melts downward.
-      part.cut.style.transform = pose.stretchY === 1 ? `rotate(${pose.rotation}deg) scale(${pose.scale},${pose.scale})`
-        : `rotate(${-entry.turn}rad) scale(${pose.scale},${pose.scale * pose.stretchY}) rotate(${entry.turn}rad) rotate(${pose.rotation}deg)`;
+      // A stretch or squash runs along the screen: undo the box's turn around it, so a turned token still melts downward.
+      part.cut.style.transform = pose.stretchY === 1 && pose.stretchX === 1 ? `rotate(${pose.rotation}deg) scale(${pose.scale},${pose.scale})`
+        : `rotate(${-entry.turn}rad) scale(${pose.scale * pose.stretchX},${pose.scale * pose.stretchY}) rotate(${entry.turn}rad) rotate(${pose.rotation}deg)`;
       part.box.style.opacity = pose.alpha * entry.look.alpha;
     }
   }

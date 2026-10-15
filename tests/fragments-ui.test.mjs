@@ -103,3 +103,8 @@ test("the damage patterns' Pieces field names what it counts; lightning has none
   assert.deepEqual(["perforate", "slashes", "crush"].map(label), ["Punctures", "Cuts", "Rings"]);
   assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "lightning", pieces: undefined }, 0), "pieces"), false);
 });
+
+test("the mini preview squashes flatten pieces wide and flat", () => {
+  assert.match(fragmentsPreviewSVG({ ...s, pattern: "crush", behavior: "flatten" }, 1), /scale\(1\.150 0\.350\)/);
+  assert.doesNotMatch(fragmentsPreviewSVG({ ...s, pattern: "lightning" }, 0.6), /scale\(|NaN/);
+});

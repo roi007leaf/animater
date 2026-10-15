@@ -116,7 +116,7 @@ export function createFragmentRenderer({ PIXI, grid }) {
             const pose = fragmentPose(stage, part.piece, part.flight, p), at = place(part.cx, part.cy);
             part.box.position.set(at.x + moved.x + pose.x * g, at.y + moved.y + pose.y * g); part.spin.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha * look.alpha;
             // The box's origin is the piece's centroid, so it scales and stretches about it, mask included, along screen axes.
-            part.box.scale?.set(pose.scale, pose.scale * pose.stretchY);
+            part.box.scale?.set(pose.scale * pose.stretchX, pose.scale * pose.stretchY);
           }
         },
         // Each part on its own: one failure must not leak the rest.

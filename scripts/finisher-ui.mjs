@@ -85,6 +85,25 @@ const PATTERN_MARKS = {
   rings: () => [0.4, 0.75].map((k) => `<circle ${MARK} cx="${GC.x}" cy="${GC.y}" r="${num(GR * k)}"/>`).join(""),
   pixelate: () => [[1.25, -0.6], [1.5, -0.2], [1.3, 0.3], [1.65, 0.55]].map(([x, y]) => `<rect ${MARK} x="${num(GC.x + x * GR - 1.5)}" y="${num(GC.y + y * GR - 1.5)}" width="3" height="3"/>`).join(""),
   ribbons: () => [-0.5, 0, 0.5].map((k) => `<path ${MARK} d="M${num(GC.x + k * GR)} ${GC.y - GR} q 3 5 0 10 t 0 10 t 0 10"/>`).join(""),
+  // Four punctures along the swing.
+  perforate: (cut) => [-0.6, -0.2, 0.2, 0.6].map((k) => { const p = polar(cut, k * GR); return `<circle ${MARK} cx="${num(p.x)}" cy="${num(p.y)}" r="1.8"/>`; }).join(""),
+  // Three parallel cuts along the swing.
+  slashes: (cut) => {
+    const n = { x: -Math.sin(cut), y: Math.cos(cut) }, d = { x: Math.cos(cut) * GR * 0.9, y: Math.sin(cut) * GR * 0.9 };
+    return [-0.3, 0, 0.3].map((o) => { const m = { x: GC.x + n.x * o * 2 * GR, y: GC.y + n.y * o * 2 * GR }; return markLine({ x: m.x - d.x, y: m.y - d.y }, { x: m.x + d.x, y: m.y + d.y }); }).join("");
+  },
+  // A spiderweb round the impact, on the attacker's side: two rings and seven spokes.
+  crush: (cut) => {
+    const c = { x: GC.x - Math.cos(cut) * GR * 0.5, y: GC.y - Math.sin(cut) * GR * 0.5 };
+    const rings = [0.35, 0.7].map((k) => `<circle ${MARK} cx="${num(c.x)}" cy="${num(c.y)}" r="${num(GR * k)}"/>`).join("");
+    return rings + Array.from({ length: 7 }, (_, i) => { const a = (i * 2 * Math.PI) / 7; return markLine(c, { x: c.x + Math.cos(a) * GR * 0.9, y: c.y + Math.sin(a) * GR * 0.9 }); }).join("");
+  },
+  // A zig-zag bolt along the swing.
+  lightning: (cut) => {
+    const u = { x: Math.cos(cut), y: Math.sin(cut) }, v = { x: -u.y, y: u.x };
+    const pts = [0, 0.25, -0.25, 0.25, -0.25, 0].map((o, j) => { const t = -GR + (2 * GR * j) / 5; return { x: GC.x + u.x * t + v.x * o * GR, y: GC.y + u.y * t + v.y * o * GR }; });
+    return `<path ${MARK} d="M${pts.map(pt).join(" L")}"/>`;
+  },
 };
 function hintArrow(from, to) {
   const dx = to.x - from.x, dy = to.y - from.y, l = Math.hypot(dx, dy) || 1, ux = dx / l, uy = dy / l;
@@ -100,6 +119,13 @@ const BEHAVIOR_MARKS = {
   drip: down,
   // A down arrow onto a little heap.
   crumble: () => `${hintArrow({ x: SIDE, y: GC.y - 12 }, { x: SIDE, y: GC.y + 8 })}<path ${HINT} d="M${SIDE - 7} ${GC.y + 15} Q${SIDE} ${GC.y + 9} ${SIDE + 7} ${GC.y + 15}"/>`,
+  // A squash bar under the token.
+  flatten: () => `<path ${HINT} d="M${GC.x - GR - 4} ${GC.y + GR + 4} L${GC.x + GR + 4} ${GC.y + GR + 4} M${GC.x - 6} ${GC.y + GR + 1} L${GC.x + 6} ${GC.y + GR + 1}"/>`,
+  // Vibration lines either side.
+  shudder: () => [-1, 1].map((k) => `<path ${HINT} d="M${GC.x + k * (GR + 6)} ${GC.y - 8} l${2 * k} 4 l${-2 * k} 4 l${2 * k} 4 l${-2 * k} 4"/>`).join(""),
+  // A box snapped out of place beside its outline.
+  glitch: () => `<rect ${HINT} x="${SIDE - 5}" y="${GC.y - 9}" width="8" height="8"/><rect ${HINT} x="${SIDE - 2}" y="${GC.y - 5}" width="8" height="8" stroke-dasharray="2 2"/>`,
+  sink: down,
 };
 const ABSORB_X = 8;
 
@@ -119,7 +145,7 @@ function fragmentsGlyph(stage, color, live) {
       if (n.behavior === "absorb") { dx = ABSORB_X - cx; dy = GC.y - cy; }
       else { dx = Math.max(-30, Math.min(30, end.x * R)); dy = Math.max(-16, Math.min(16, end.y * R)); }
       const pose = fragmentPose(stage, p, flight, 1);
-      if (pose.scale !== 1 || pose.stretchY !== 1) grow = { sx: pose.scale, sy: pose.scale * pose.stretchY, cx, cy };
+      if (pose.scale !== 1 || pose.stretchX !== 1 || pose.stretchY !== 1) grow = { sx: pose.scale * pose.stretchX, sy: pose.scale * pose.stretchY, cx, cy };
     }
     const points = poly.map((q) => `${num(W / 2 + q.x * R)},${num(H / 2 + q.y * R)}`).join(" ");
     return { points, dx, dy, grow };

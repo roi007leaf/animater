@@ -23,7 +23,7 @@ export function fragmentsPreviewSVG(stage, at) {
     const pose = fragmentPose(s, p, fragmentFlight(s, p, i, angle), at), cx = p.centroid.x, cy = p.centroid.y;
     const pts = p.polygon.map((q) => `${(q.x - cx).toFixed(3)},${(q.y - cy).toFixed(3)}`).join(" ");
     // Scaled only when a behaviour shrinks or stretches, so the classic patterns draw as before.
-    const scale = pose.scale !== 1 || pose.stretchY !== 1 ? ` scale(${pose.scale.toFixed(3)} ${(pose.scale * pose.stretchY).toFixed(3)})` : "";
+    const scale = pose.scale !== 1 || pose.stretchX !== 1 || pose.stretchY !== 1 ? ` scale(${(pose.scale * pose.stretchX).toFixed(3)} ${(pose.scale * pose.stretchY).toFixed(3)})` : "";
     return `<polygon data-fragment="${i}" points="${pts}" transform="translate(${(cx + pose.x).toFixed(3)} ${(cy + pose.y).toFixed(3)}) rotate(${pose.rotation.toFixed(1)})${scale}" opacity="${Math.max(0.15, pose.alpha).toFixed(2)}"/>`;
   }).join("");
   return `<svg class="an-fragments-preview" viewBox="-2 -2 4 4" aria-label="Cut pieces preview"><rect x="-0.5" y="-0.5" width="1" height="1" class="an-fragments-outline"/>${shapes}</svg>`;

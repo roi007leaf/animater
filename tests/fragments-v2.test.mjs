@@ -35,7 +35,7 @@ test("the new patterns are registered with their labels and piece ranges", () =>
     { cross: [4, 4, 4], claw: [4, 4, 4], diced: [2, 6, 4], starburst: [6, 16, 10], rings: [2, 4, 3], pixelate: [16, 64, 36], ribbons: [6, 16, 10] });
   assert.deepEqual(FRAGMENT_BEHAVIORS, { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap",
     flatten: "Crushed flat", shudder: "Shudder apart", glitch: "Glitch out", sink: "Sink and fade" });
-  assert.deepEqual(FRAGMENT_TINTS, { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly" });
+  assert.deepEqual(FRAGMENT_TINTS, { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly", burning: "Burning", electric: "Electric", acid: "Acid", poison: "Poison" });
 });
 
 test("piece counts follow the pattern: defaults, clamps, and a count left over from another pattern", () => {
@@ -501,4 +501,31 @@ test("crumble is deterministic per seed and differs between seeds", () => {
   assert.deepEqual(ends(3), ends(3));
   assert.notDeepEqual(ends(3), ends(4));
   assert.equal(normalizeFragments({ behavior: "crumble" }).behavior, "crumble");
+});
+
+test("the damage tints validate, and a hex colour still reads as none", () => {
+  for (const tint of ["burning", "electric", "acid", "poison"]) assert.equal(normalizeFragments({ tint }).tint, tint);
+  assert.equal(prepareFragments({ pattern: "shards", tint: "#ff9a4a" }).tint, "none");
+});
+
+test("the renderer squashes flatten pieces wide and flat along the screen, and wears the damage tints", () => {
+  const flat = table();
+  flat.r.start(flat.token, frag({ pattern: "crush", behavior: "flatten" }), 0).update(1);
+  assert.ok(flat.layer.children.every((b) => Math.abs(b.sx - 1.15) < 1e-9 && Math.abs(b.sy - 0.35) < 1e-9), "1.15 wide, 0.35 high");
+  for (const turn of [Math.PI / 2, 0.7]) {
+    const t = table();
+    t.token.mesh.rotation = turn;
+    t.r.start(t.token, frag({ pattern: "shards", pieces: 6, behavior: "flatten", spin: 90 }), 0).update(1);
+    for (const box of t.layer.children) {
+      const [a, b, c, d] = linear(box, t.PIXI.Sprite), xx = a * a + b * b, xy = a * c + b * d, yy = c * c + d * d;
+      assert.ok(Math.abs(xx - 1.15 * 1.15) < 1e-9 && Math.abs(xy) < 1e-9 && Math.abs(yy - 0.35 * 0.35) < 1e-9, `turn ${turn}: ${[xx, xy, yy]}`);
+    }
+  }
+  const looks = { burning: [0xff9a4a, 1], electric: [0xbfe6ff, 0.95], acid: [0xa6e05a, 1], poison: [0x9ac885, 0.9] };
+  for (const [tint, [colour, alpha]] of Object.entries(looks)) {
+    const t = table();
+    t.r.start(t.token, frag({ pattern: "shards", pieces: 6, tint }), 0).update(0.05);
+    assert.ok(t.sprites().every((s) => s.tint === colour && s.filters === undefined), tint);
+    assert.ok(t.layer.children.every((b) => Math.abs(b.alpha - alpha) < 1e-9), `${tint}: alpha`);
+  }
 });
