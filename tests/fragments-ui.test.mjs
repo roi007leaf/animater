@@ -97,3 +97,9 @@ test("crumble is offered in the Behaviour select, with its hint, and keeps the s
   assert.match(html, /data-field="fade"/);
   assert.doesNotMatch(fragmentsPreviewSVG({ ...s, behavior: "crumble" }, 0.7), /NaN/);
 });
+
+test("the damage patterns' Pieces field names what it counts; lightning has none", () => {
+  const label = (pattern) => /<label>([^<]+)<input type="number" min="\d+" max="\d+" step="1" data-field="pieces"/.exec(fragmentsControlsHTML({ ...s, pattern, pieces: undefined }, 0))?.[1];
+  assert.deepEqual(["perforate", "slashes", "crush"].map(label), ["Punctures", "Cuts", "Rings"]);
+  assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "lightning", pieces: undefined }, 0), "pieces"), false);
+});

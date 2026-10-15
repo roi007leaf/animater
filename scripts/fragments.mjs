@@ -6,11 +6,13 @@ import { samplePath, normalizeKeyframes } from "./keyframe-path.mjs";
 export const FRAGMENT_PATTERNS = {
   halves: "Slice in half", topBottom: "Top / bottom", shards: "Shards", dust: "Dust",
   cross: "Cross cut", claw: "Claw marks", diced: "Diced", starburst: "Starburst", rings: "Rings", pixelate: "Pixelate", ribbons: "Ribbons",
+  perforate: "Perforate", slashes: "Slashes", crush: "Crush", lightning: "Lightning",
 };
 // [lo, hi, default] for the stored `pieces`. Diced counts per side (4 is 4x4); rings counts rings of 8 segments.
 export const FRAGMENT_COUNTS = {
   halves: [2, 2, 2], topBottom: [2, 2, 2], shards: [4, 10, 7], dust: [16, 64, 48],
   cross: [4, 4, 4], claw: [4, 4, 4], diced: [2, 6, 4], starburst: [6, 16, 10], rings: [2, 4, 3], pixelate: [16, 64, 36], ribbons: [6, 16, 10],
+  perforate: [3, 6, 4], slashes: [2, 4, 3], crush: [2, 4, 3], lightning: [2, 2, 2],
 };
 export const FRAGMENT_BEHAVIORS = { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap" };
 export const FRAGMENT_TINTS = { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly" };
@@ -65,6 +67,11 @@ export function fragmentCount(stage) {
     case "cross": case "claw": return 4;
     case "diced": return s.pieces * s.pieces;
     case "rings": return s.pieces * 8;
+    case "slashes": return s.pieces + 1;
+    case "crush": return s.pieces * CRUSH_WEDGES;
+    case "lightning": return BOLT_SEGMENTS * 2;
+    // Each puncture's cell splits into a seeded 2 or 3 wedges: count them.
+    case "perforate": return fragmentPieces(s, 0).length;
     case "dust": case "pixelate": { const cols = Math.ceil(Math.sqrt(s.pieces)); return cols * Math.round(s.pieces / cols); }
     default: return s.pieces;
   }
@@ -126,6 +133,74 @@ function gridPieces(cols, rows, ordered = false) {
   return out;
 }
 
+// A wedge from t0 to t1 (under a half-turn) around c, cut from any convex polygon.
+function wedgeOf(poly, t0, t1, c) {
+  const n0 = { x: -Math.sin(t0), y: Math.cos(t0) }, n1 = { x: Math.sin(t1), y: -Math.cos(t1) };
+  return clip(clip(poly, n0, n0.x * c.x + n0.y * c.y), n1, n1.x * c.x + n1.y * c.y);
+}
+// An angle that is not a number (no attack known) cuts as if along +x.
+const finite = (a) => (Number.isFinite(a) ? a : 0);
+
+// Perforate: punctures along the attack line, -0.3..0.3 with a little jitter, each owning its
+// Voronoi cell (the square clipped by the perpendicular bisectors), split into 2-3 wedges around it.
+// Three punctures always take three wedges each, so there are 8-18 pieces.
+function perforatePieces(s, a, rand) {
+  const d = { x: Math.cos(a), y: Math.sin(a) }, across = { x: -d.y, y: d.x }, k = s.pieces;
+  const gap = k > 1 ? 0.6 / (k - 1) : 0, slide = Math.min(0.08, gap * 0.3);
+  const holes = Array.from({ length: k }, (_, i) => {
+    const t = (k > 1 ? -0.3 + i * gap : 0) + (rand() * 2 - 1) * slide, off = (rand() * 2 - 1) * 0.08;
+    return { x: d.x * t + across.x * off, y: d.y * t + across.y * off };
+  });
+  const out = [];
+  holes.forEach((h, i) => {
+    let cell = SQUARE;
+    holes.forEach((o, j) => { if (j !== i) cell = clip(cell, { x: h.x - o.x, y: h.y - o.y }, (h.x * h.x + h.y * h.y - o.x * o.x - o.y * o.y) / 2); });
+    const m = k === 3 ? 3 : rand() < 0.5 ? 2 : 3, base = rand() * Math.PI * 2, step = (Math.PI * 2) / m;
+    for (let w = 0; w < m; w++) out.push({ ...piece(wedgeOf(cell, base + w * step, base + (w + 1) * step, h)), cell: i, puncture: { x: h.x, y: h.y } });
+  });
+  return out;
+}
+// Slashes: parallel cuts along the swing, all tilted by one seeded angle (up to 8 degrees) so they
+// never cross, offsets spread evenly with a little jitter: pieces + 1 strips.
+const SLASH_TILT = (8 * Math.PI) / 180;
+function slashPieces(s, a, rand) {
+  const n = normal(a + (rand() * 2 - 1) * SLASH_TILT), e = (Math.abs(n.x) + Math.abs(n.y)) / 2, gap = (2 * e) / (s.pieces + 1);
+  const cuts = Array.from({ length: s.pieces }, (_, i) => -e + (i + 1) * gap + (rand() * 2 - 1) * Math.min(0.06, gap * 0.3));
+  const bounds = [-Infinity, ...cuts, Infinity];
+  return bounds.slice(0, -1).map((lo, i) => ({ ...piece(band(SQUARE, n, lo, bounds[i + 1])), strip: i }));
+}
+// Crush: a spiderweb around the impact, 0.25 toward the attacker: 7 wedges, each banded into rings
+// by lines square to its bisector (as rings does). Ring k starts 0.22k/(N-1) out; the square
+// reaches at least 0.25 all round the impact, so no cell is ever empty.
+const CRUSH_WEDGES = 7;
+function crushPieces(s, a, rand) {
+  const c = { x: -Math.cos(a) * 0.25, y: -Math.sin(a) * 0.25 }, base = rand() * Math.PI * 2, step = (Math.PI * 2) / CRUSH_WEDGES, out = [];
+  const radius = (k) => (0.22 * k) / Math.max(1, s.pieces - 1);
+  for (let k = 0; k < s.pieces; k++) for (let j = 0; j < CRUSH_WEDGES; j++) {
+    const t0 = base + j * step, mid = t0 + step / 2, b = { x: Math.cos(mid), y: Math.sin(mid) }, at = b.x * c.x + b.y * c.y;
+    out.push({ ...piece(band(wedge(t0, t0 + step, c), b, k ? at + radius(k) : -Infinity, k < s.pieces - 1 ? at + radius(k + 1) : Infinity)), ring: k });
+  }
+  return out;
+}
+// Lightning: a zig-zag of 5 segments along the attack, kinked up to 0.12 either side. Each segment's
+// slab is cut by its own straight piece of the bolt, so both halves are convex parts; group 1 is the
+// side the bolt's normal points to, and each group moves as one.
+const BOLT_SEGMENTS = 5;
+function lightningPieces(a, rand) {
+  const u = { x: Math.cos(a), y: Math.sin(a) }, v = { x: -u.y, y: u.x }, e = (Math.abs(u.x) + Math.abs(u.y)) / 2;
+  const kinks = Array.from({ length: BOLT_SEGMENTS + 1 }, (_, j) => {
+    const along = -e + (2 * e * j) / BOLT_SEGMENTS, off = j === 0 || j === BOLT_SEGMENTS ? 0 : (rand() * 2 - 1) * 0.12;
+    return { along, x: u.x * along + v.x * off, y: u.y * along + v.y * off };
+  });
+  const out = [];
+  for (let j = 0; j < BOLT_SEGMENTS; j++) {
+    const p = kinks[j], q = kinks[j + 1], slab = band(SQUARE, u, j ? p.along : -Infinity, j < BOLT_SEGMENTS - 1 ? q.along : Infinity);
+    const n = { x: -(q.y - p.y), y: q.x - p.x }, d = n.x * p.x + n.y * p.y;
+    out.push({ ...piece(clip(slab, flip(n), -d)), group: 0, bolt: j }, { ...piece(clip(slab, n, d)), group: 1, bolt: j });
+  }
+  return out;
+}
+
 // The cut angle is on screen; `turn` is the token art's rotation, so pieces are cut in the art's
 // own frame at the screen angle minus the turn (top/bottom stays level on screen).
 const screenCut = (s, cutAngle) => (s.pattern === "topBottom" ? 0 : s.cut === "fixed" ? (s.angle * Math.PI) / 180 : cutAngle);
@@ -172,6 +247,10 @@ export function fragmentPieces(stage, cutAngle, turn = 0) {
     const u = { x: Math.cos(turn), y: -Math.sin(turn) }, e = (Math.abs(u.x) + Math.abs(u.y)) / 2, w = (2 * e) / s.pieces;
     return Array.from({ length: s.pieces }, (_, i) => piece(band(SQUARE, u, i ? -e + i * w : -Infinity, i < s.pieces - 1 ? -e + (i + 1) * w : Infinity)));
   }
+  if (s.pattern === "perforate") return perforatePieces(s, finite(screenCut(s, cutAngle) - turn), rand);
+  if (s.pattern === "slashes") return slashPieces(s, finite(screenCut(s, cutAngle) - turn), rand);
+  if (s.pattern === "crush") return crushPieces(s, finite(screenCut(s, cutAngle) - turn), rand);
+  if (s.pattern === "lightning") return lightningPieces(finite(screenCut(s, cutAngle) - turn), rand);
   // Shards: wedges around a jittered centre; each wedge stays under a half-turn so two
   // half-plane clips cut it exactly.
   const c = { x: (rand() - 0.5) * 0.3, y: (rand() - 0.5) * 0.3 }, base = rand() * Math.PI * 2, step = (Math.PI * 2) / s.pieces;

@@ -11,7 +11,7 @@ const BEHAVIOR_HINTS = {
   crumble: "Pieces fall from the top down and pile up at its feet.",
 };
 // The piece count names what it counts.
-const PIECES_LABEL = { diced: "Per side", rings: "Rings" };
+const PIECES_LABEL = { diced: "Per side", rings: "Rings", perforate: "Punctures", slashes: "Cuts", crush: "Rings" };
 
 export function fragmentsPreviewSVG(stage, at) {
   const s = { duration: 1400, ...stage, ...normalizeFragments(stage) }, angle = s.cut === "fixed" ? (s.angle * Math.PI) / 180 : 0;
