@@ -4,6 +4,7 @@ import {applyBespoke} from './bespoke.mjs';
 import {BESPOKE} from './bespoke/index.mjs';
 import {CATALOG_FX_EVIDENCE} from '../data/catalog-fx-evidence.mjs';
 import {fxSemantics} from './catalog-fx-semantics.mjs';
+import {fitCastClips} from './cast-clip.mjs';
 
 export function catalogFxSettings(game = globalThis.game) {
   const enabled = key => { try { return game?.settings?.get('animater',key) !== false; } catch { return true; } };
@@ -140,6 +141,10 @@ export function withCatalogFx(recipe, entry, options={}) {
   // Reviewed bespoke compositions and play-time element choice come first, so they
   // apply whether or not optional FX providers are installed.
   recipe=applyBespoke(recipe, entry, options);
+  // Every built-in catalog passes here: its cast stages show their whole clip
+  // (lead-in skipped, visible length kept) before FX layers time off them.
+  const fitted=fitCastClips(recipe);
+  if(fitted!==recipe)recipe=validateRecipe(fitted);
   if (options.fx===false||BESPOKE[recipe.bespoke]?.fx===false)return recipe;
   const catalog=options.fxCatalog??liveCatalogFx();
   if (!catalog.tokenReady&&!catalog.sceneReady)return recipe;
