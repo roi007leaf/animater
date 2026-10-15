@@ -29,7 +29,7 @@ function centripetal(p0, p1, p2, p3, u) {
 export function samplePath(keyframes, q) {
   const k = keyframes, t = Math.min(1, Math.max(0, q));
   let i = k.length - 2;
-  for (let j = 0; j < k.length - 1; j++) if (t <= k[j + 1].at) { i = j; break; }
+  for (let j = k.length - 2; j >= 0; j--) if (t >= k[j].at) { i = j; break; }
   const a = k[i], b = k[i + 1], span = b.at - a.at;
   const u = easeValue(span > 0 ? (t - a.at) / span : 1, b.ease);
   // Past either end, a mirrored phantom point keeps the end segments straight-ish; duplicating

@@ -31,6 +31,12 @@ test("between keyframes the curve is smooth, and a sharp corner makes it straigh
   near(s.x, 0.5, "straight x"); near(s.y, 0.5, "straight y");
 });
 
+test("duplicate times: the path still ends on its true last point", () => {
+  const dup = normalizeKeyframes([{ at: 0 }, { at: 1, x: 3 }, { at: 1, x: 5 }]);
+  assert.equal(samplePath(dup, 1).x, 5);
+  assert.equal(samplePath(dup, 1).x, pathEnd(dup).x);
+});
+
 test("each segment's easing shapes the speed into its keyframe", () => {
   const eased = normalizeKeyframes([{ at: 0 }, { at: 1, x: 1, ease: "easeInQuad" }]);
   near(samplePath(eased, 0.5).x, 0.25, "ease-in covers a quarter by half time");
