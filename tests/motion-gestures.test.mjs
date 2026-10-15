@@ -384,3 +384,11 @@ test('a tick at progress 0 does not start the pieces', () => {
   r.now = 100; r.queued(120);
   assert.equal(starts, 1);
 });
+
+test('the player gives the renderer the un-posed transform', () => {
+  let seen;
+  const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
+  void r.player.play(r.token, fragStage(), { x: 1, y: 0 }, 'me');
+  r.now = 20; r.queued(r.now);
+  assert.deepEqual(seen, { x: 0, y: 0, rotation: 0, sx: 1, sy: 1, alpha: 1 });
+});

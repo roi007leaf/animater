@@ -374,7 +374,7 @@ export class TokenMotionPlayer {
           const progress = Math.min(1, elapsed / track.stage.duration);
           if (track.stage.motion === "fragments" && progress > 0 && !track.started && progress < 1) {
             track.started = true;
-            this.guard(track, () => { track.pieces = this.fragments?.start(token, track.stage, track.stage.cut === "fixed" ? (track.stage.angle * Math.PI) / 180 : Math.atan2(track.direction.y, track.direction.x)) ?? null; });
+            this.guard(track, () => { track.pieces = this.fragments?.start(token, track.stage, track.stage.cut === "fixed" ? (track.stage.angle * Math.PI) / 180 : Math.atan2(track.direction.y, track.direction.x), run.original) ?? null; });
           }
           if (track.pieces && progress > 0) { if (progress < 1) this.guard(track, () => track.pieces.update(progress)); else this.release(track); }
           if (progress < 1) {

@@ -105,3 +105,55 @@ test("the renderer builds one piece per fragment on the token, moves them, and c
   dust.destroy();
   assert.equal(createFragmentRenderer({ PIXI: { Container, Sprite, Graphics, Texture, Rectangle }, grid: () => 100 }).start({ ...token, mesh: null }, { pattern: "halves" }, 0), null, "no artwork, no pieces");
 });
+
+function fakePixi({ failOn, strictFrame } = {}) {
+  let n = 0;
+  class Container { constructor() { if (failOn && ++n === failOn) throw new Error("ctor"); this.children = []; this.position = { set: (x, y) => { this.x = x; this.y = y; } }; this.alpha = 1; this.rotation = 0; } addChild(...c) { this.children.push(...c); } destroy() { this.destroyed = true; } }
+  class Sprite { constructor(t) { this.texture = t; this.anchor = { set() {} }; this.position = { set() {} }; } }
+  class Graphics { beginFill() { return this; } drawPolygon() { return this; } endFill() { return this; } }
+  class Texture { constructor(base, frame) { if (strictFrame && (frame.x + frame.width > base.width || frame.y + frame.height > base.height)) throw new Error("frame overflow"); this.baseTexture = base; this.frame = frame; } destroy() { this.destroyed = true; } }
+  class Rectangle { constructor(x, y, w, h) { Object.assign(this, { x, y, width: w, height: h }); } }
+  return { Container, Sprite, Graphics, Texture, Rectangle };
+}
+const rig = (mesh = {}, pixi = fakePixi()) => {
+  const layer = { children: [], addChild(c) { this.children.push(c); } };
+  const texture = { baseTexture: { width: 333, height: 333 }, frame: { x: 0, y: 0, width: 333, height: 333 } };
+  return { layer, token: { center: { x: 500, y: 300 }, w: 100, h: 100, mesh: { texture, rotation: 0, scale: { x: 1, y: 1 }, parent: layer, ...mesh } }, r: createFragmentRenderer({ PIXI: pixi, grid: () => 100 }) };
+};
+const halves = { motion: "fragments", pattern: "halves", seed: 1, duration: 1000 };
+
+test("dust crop frames stay inside the texture", () => {
+  const pixi = fakePixi({ strictFrame: true }), crops = [];
+  const T = pixi.Texture; pixi.Texture = class extends T { constructor(...a) { super(...a); crops.push(this.frame); } };
+  const { r, token } = rig({}, pixi);
+  assert.ok(r.start(token, { ...halves, pattern: "dust", pieces: 20 }, 0));
+  assert.equal(crops.length, 20);
+  assert.ok(crops.every((f) => f.x >= 0 && f.y >= 0 && f.width >= 1 && f.height >= 1 && f.x + f.width <= 333 && f.y + f.height <= 333));
+});
+
+test("a failure midway destroys the pieces already built", () => {
+  const { r, token, layer } = rig({}, fakePixi({ failOn: 3 }));
+  assert.throws(() => r.start(token, { ...halves, pattern: "dust", pieces: 8 }, 0));
+  assert.ok(layer.children.length > 0 && layer.children.every((c) => c.destroyed));
+});
+
+test("pieces copy the mesh's elevation and sorting", () => {
+  const { r, token, layer } = rig({ elevation: 4, sortLayer: 700, sort: 9, zIndex: 3 });
+  r.start(token, halves, 0);
+  assert.ok(layer.children.every((c) => c.elevation === 4 && c.sortLayer === 700 && c.sort === 9 && c.zIndex === 4));
+});
+
+test("pieces take the displayed art size, and the anchor places their centre", () => {
+  const { r, token, layer } = rig({ width: 150, height: 150, position: { x: 1000, y: 1000 }, anchor: { x: 0, y: 0 } });
+  r.start(token, halves, 0);
+  const [a, b] = layer.children;
+  assert.ok(Math.abs((a.x + b.x) / 2 - 1075) < 1e-6 && Math.abs((a.y + b.y) / 2 - 1075) < 1e-6, "centred at position + half the art");
+  assert.ok(Math.abs(a.x - b.x) + Math.abs(a.y - b.y) > 0);
+});
+
+test("the base transform replaces the live pose for size and place", () => {
+  const { r, token, layer } = rig({ width: 300, height: 300, scale: { x: 2, y: 2 }, position: { x: 5, y: 5 }, anchor: { x: 0.5, y: 0.5 } });
+  r.start(token, halves, 0, { x: 200, y: 200, rotation: 0, sx: 1, sy: 1 });
+  const [a, b] = layer.children;
+  assert.ok(Math.abs((a.x + b.x) / 2 - 200) < 1e-6 && Math.abs((a.y + b.y) / 2 - 200) < 1e-6);
+});
