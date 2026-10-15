@@ -292,7 +292,7 @@ test("slam, blocked after 3 of 6 squares: the path is cut at the wall at full sp
   const crack = byId(stages, "wall-crack"), shake = byId(stages, "wall-shake"), start = starts(stages);
   assert.equal(start["wall-crack"], 100 + fly.duration);
   assert.equal(start["wall-shake"], 100 + fly.duration);
-  assert.deepEqual([crack.offsetX, crack.offsetY], [3.5, 0], "half a square past the landing, toward the wall");
+  assert.deepEqual([crack.offsetX, crack.offsetY], [3.6, 0], "0.6 square past the landing, toward the wall");
   assert.equal(shake.offsetX, undefined, "a motion stage is not offset");
   assert.equal(byId(stages, "landing"), undefined, "no landing: it hit the wall");
 });
@@ -328,11 +328,11 @@ test("slam against a wall right there: a short bump that comes back, the crash s
   assert.ok(!host.log.some((e) => e[0] === "commit"), "nothing moves");
   assert.equal(fly.motionEnd, undefined, "the bump returns");
   assert.equal(fly.motionFrame, undefined);
-  assert.ok(Math.abs(Math.hypot(fly.keyframes.at(-1).x, fly.keyframes.at(-1).y) - 0.4) < 0.01, "bumps 0.4 square");
-  assert.ok(Math.abs(fly.duration - 200) <= 2, `about 1000 * 0.2: ${fly.duration}`);
+  assert.ok(Math.abs(Math.hypot(fly.keyframes.at(-1).x, fly.keyframes.at(-1).y) - 0.3) < 0.01, "bumps 0.3 square");
+  assert.ok(Math.abs(fly.duration - 150) <= 2, `about 1000 * 0.15: ${fly.duration}`);
   const crack = byId(stages, "wall-crack"), start = starts(stages);
   assert.ok(Math.abs(start["wall-crack"] - (100 + 0.85 * fly.duration)) <= 1, "the crash plays at contact: a returning path reaches its end at 85%");
-  assert.deepEqual([crack.offsetX, crack.offsetY], [0.5, 0]);
+  assert.deepEqual([crack.offsetX, crack.offsetY], [0.6, 0], "0.6 square past the origin, toward the wall");
   assert.ok(byId(stages, "wall-shake"));
   assert.equal(byId(stages, "landing"), undefined);
 });
@@ -346,7 +346,7 @@ test("a recipe without a slam never plays wall stages", () => {
 test("a killed mover's slam bump still comes back, and a short cut still lands", async () => {
   const bump = slamHost(0);
   await playFinisher({ recipe: slamRecipe([kf(0), kf(1, 2, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, bump);
-  assert.equal(byId(played(bump), "fly").motionEnd, undefined, "no hold at 0.4 square");
+  assert.equal(byId(played(bump), "fly").motionEnd, undefined, "no hold at 0.3 square");
   const short = slamHost(1);
   await playFinisher({ recipe: slamRecipe([kf(0), kf(1, 6, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, short);
   assert.ok(byId(played(short), "fly").motionFrame, "the cut travel is framed");

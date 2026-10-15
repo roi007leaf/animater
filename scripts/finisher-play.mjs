@@ -21,7 +21,8 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
   const cut = slam && travel ? { ...travel, keyframes: slam.keyframes, duration: Math.max(100, Math.round((travel.duration ?? 0) * slam.t)) } : null;
   // A held cut hits the wall as it ends; the bump (no landing) returns, reaching the wall at 85%.
   const early = cut && !offset ? Math.round(cut.duration * 0.15) : 0;
-  const wall = { x: (offset?.x ?? 0) + (slam?.aim.x ?? 0) * 0.5, y: (offset?.y ?? 0) + (slam?.aim.y ?? 0) * 0.5 };
+  // The crash sits 0.6 square past the landing (or the origin), on the wall side.
+  const wall = { x: (offset?.x ?? 0) + (slam?.aim.x ?? 0) * 0.6, y: (offset?.y ?? 0) + (slam?.aim.y ?? 0) * 0.6 };
   // Linked to the travel's end, so the crash follows it wherever the travel itself is timed from.
   const atWall = (s) => {
     const { startMode, startRef, ...rest } = s, delay = Math.max(0, (cut.delay ?? 0) + cut.duration - early);
@@ -119,7 +120,7 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
         const landed = to && Math.round(Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y)) / grid);
         if (to && f.wall === "slam" && landed < squares) {
           // Rotation keeps lengths, so the world offset's length is the reach in the path's frame.
-          const cut = cutPath(path.keyframes, landed > 0 ? Math.hypot(to.x - from.x, to.y - from.y) / grid : 0.4);
+          const cut = cutPath(path.keyframes, landed > 0 ? Math.hypot(to.x - from.x, to.y - from.y) / grid : 0.3);
           slam = { ...cut, aim };
           const cutEnd = pathEnd(cut.keyframes);
           if (landed > 0) frame = { aim, length: Math.hypot(cutEnd.x, cutEnd.y) };
