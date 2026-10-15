@@ -1,3 +1,4 @@
+import { normalizeKeyframes } from "./keyframe-path.mjs";
 import { normalizeOptions, validateSoundFile } from "./stage-options.mjs";
 import { fallbackColorParity } from "./color-parity.mjs";
 import { OPTIONAL_FX_KINDS, normalizeFxStage } from './optional-fx.mjs';
@@ -77,6 +78,7 @@ export const MOTIONS = {
   drift: "Drift gently down",
   collapse: "Collapse when dropped",
   fade: "Fade out",
+  path: "Keyframed path",
 };
 export const clone = (value) => structuredClone(value);
 export const normalize = (value) =>
@@ -258,6 +260,10 @@ export function validateRecipe(input) {
                 ...(HOLDING_MOTIONS.has(s.motion) && s.motionEnd === "hold" ? { motionEnd: "hold" } : {}),
                 ...(["rush", "leap", "roll"].includes(s.motion) && s.motionOffset && Number.isFinite(Number(s.motionOffset.x)) && Number.isFinite(Number(s.motionOffset.y))
                   ? { motionOffset: { x: number(s.motionOffset.x, -20, 20, 0), y: number(s.motionOffset.y, -20, 20, 0) } } : {}),
+                // Keyframed path: the real token's authored movement; finishers add an aim frame.
+                ...(s.motion === "path" ? { keyframes: normalizeKeyframes(s.keyframes) } : {}),
+                ...(s.motion === "path" && s.motionFrame && ["cos", "sin", "k"].every((key) => Number.isFinite(Number(s.motionFrame[key])))
+                  ? { motionFrame: { cos: number(s.motionFrame.cos, -1, 1, 1), sin: number(s.motionFrame.sin, -1, 1, 0), k: number(s.motionFrame.k, 0, 1, 1) } } : {}),
                 ...(PATH_MOTIONS.has(s.motion)
                   ? {
                       motionRange:

@@ -1,6 +1,24 @@
+import { samplePath, DEFAULT_KEYFRAMES } from "./keyframe-path.mjs";
 import { MOTIONS } from "./model.mjs";
 import { shakeCycles, settledProgress } from "./motion-pacing.mjs";
 import { PATH_MOTIONS, HOLDING_MOTIONS, motionPhases, pathDistance } from "./motion-path.mjs";
+// A keyframed path fills the whole motion when it holds; otherwise its last 15% eases back to
+// rest like every other gesture. A finisher's frame aims and shrinks it on every client alike.
+const PATH_RETURN = 0.15;
+function pathPose(stage, p, direction, grid, holds) {
+  const keyframes = stage.keyframes ?? DEFAULT_KEYFRAMES;
+  const settle = holds || p <= 1 - PATH_RETURN ? 1 : 1 - settledProgress((p - (1 - PATH_RETURN)) / PATH_RETURN);
+  const local = samplePath(keyframes, holds ? p : Math.min(1, p / (1 - PATH_RETURN)));
+  const frame = stage.motionFrame, cos = frame ? frame.cos : direction.x, sin = frame ? frame.sin : direction.y, k = frame ? frame.k : 1;
+  const pose = {
+    x: (local.x * cos - local.y * sin) * k * grid * settle,
+    y: (local.x * sin + local.y * cos) * k * grid * settle,
+    rotation: ((local.rotation * Math.PI) / 180) * settle,
+    scale: 1 + (local.scale - 1) * settle,
+  };
+  if (keyframes.some((kf) => kf.alpha < 1)) pose.alpha = 1 - (1 - local.alpha) * settle;
+  return pose;
+}
 // Pure pose function shared by canvas playback and the editor's motion preview.
 export function motionPose(
   stage,
@@ -15,6 +33,7 @@ export function motionPose(
   const pose = { x: 0, y: 0, rotation: 0, scale: 1 };
   const holds = stage.motionEnd === "hold" && HOLDING_MOTIONS.has(stage.motion);
   if (p === 0 || (p === 1 && !holds)) return pose;
+  if (stage.motion === "path") return pathPose(stage, p, direction, grid, holds);
   if (PATH_MOTIONS.has(stage.motion)) {
     const heading = stage.motionHeading, offset = stage.motionOffset;
     const offsetLength = offset ? Math.hypot(offset.x, offset.y) : 0;
@@ -181,8 +200,8 @@ export function motionDirection(token, source, target, motion, grid = 100) {
     token === source || (token?.id && token.id === source?.id)
       ? target
       : source;
-  const a = motion === "recoil" ? other?.center : token?.center;
-  const b = motion === "recoil" ? token?.center : other?.center;
+  const a = ["recoil", "path"].includes(motion) ? other?.center : token?.center;
+  const b = ["recoil", "path"].includes(motion) ? token?.center : other?.center;
   const x = (b?.x ?? 1) - (a?.x ?? 0),
     y = (b?.y ?? 0) - (a?.y ?? 0);
   const length = Math.hypot(x, y);

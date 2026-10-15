@@ -1,6 +1,6 @@
 export const PATH_MOTIONS = new Set(["rush", "leap", "roll", "dodge"]);
 // Motions that may end where they finish instead of returning (finishers move the token there).
-export const HOLDING_MOTIONS = new Set(["rush", "leap", "roll", "fade"]);
+export const HOLDING_MOTIONS = new Set(["rush", "leap", "roll", "fade", "path"]);
 export const isPathMotion = (stage) =>
   stage?.kind === "motion" && PATH_MOTIONS.has(stage.motion);
 

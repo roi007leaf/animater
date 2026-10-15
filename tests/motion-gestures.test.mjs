@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { MOTIONS, validateRecipe } from '../scripts/model.mjs';
-import { motionPose, combineMotionPoses, poseTransform, TokenMotionPlayer, heldPose, HOLD_LIMIT_MS, HOLD_RELEASE_MS } from '../scripts/motion.mjs';
+import { motionPose, motionDirection, combineMotionPoses, poseTransform, TokenMotionPlayer, heldPose, HOLD_LIMIT_MS, HOLD_RELEASE_MS } from '../scripts/motion.mjs';
 import { GENERATED_MOTION_DURATION } from '../scripts/motion-pacing.mjs';
 
 const NEW = ['press', 'sink', 'flicker', 'throw', 'brace', 'stagger', 'cower', 'slam', 'drift'];
@@ -134,4 +134,56 @@ test('a moved document without a held track still ends the run in place', () => 
   token.document.x += 200;
   now = 200; queued(now);
   assert.ok(!player.active.has(token));
+});
+
+const pathStage = (extra = {}) => ({ kind: 'motion', motion: 'path', subject: 'targets', duration: 1000, motionEnd: 'hold', intensity: 1,
+  keyframes: [{ at: 0 }, { at: 0.5, x: 1, y: 1, rotation: 90, ease: 'linear' }, { at: 1, x: 2, y: 0, scale: 0.5, ease: 'linear' }], ...extra });
+const v = (stage) => validateRecipe({ id: 'p', name: 'P', trigger: 'manual', stages: [{ assets: [], ...stage }] }).stages[0];
+
+test('a keyframed path moves the real token through its points, away from the other token', () => {
+  assert.equal(MOTIONS.path, 'Keyframed path');
+  assert.ok(GENERATED_MOTION_DURATION.path > 0);
+  const s = v(pathStage());
+  const mid = motionPose(s, 0.5, { x: 1, y: 0 }, 100);
+  assert.ok(Math.abs(mid.x - 100) < 1e-6 && Math.abs(mid.y - 100) < 1e-6);
+  assert.ok(Math.abs(mid.rotation - Math.PI / 2) < 1e-6);
+  const end = motionPose(s, 1, { x: 1, y: 0 }, 100);
+  assert.ok(Math.abs(end.x - 200) < 1e-6 && Math.abs(end.scale - 0.5) < 1e-6, 'held at the last keyframe');
+  const turned = motionPose(s, 1, { x: 0, y: 1 }, 100);
+  assert.ok(Math.abs(turned.y - 200) < 1e-6 && Math.abs(turned.x) < 1e-6, 'the frame turns with the direction');
+});
+
+test('a finisher frame aims and shrinks the path, ignoring the motion direction', () => {
+  const end = motionPose(v(pathStage({ motionFrame: { cos: 0, sin: -1, k: 0.5 } })), 1, { x: 1, y: 0 }, 100);
+  assert.ok(Math.abs(end.x) < 1e-6 && Math.abs(end.y + 100) < 1e-6);
+});
+
+test('without hold, a path plays in the first 85% and settles back to rest', () => {
+  const s = v(pathStage({ motionEnd: undefined }));
+  const last = motionPose(s, 0.85, { x: 1, y: 0 }, 100);
+  assert.ok(Math.abs(last.x - 200) < 1e-6, 'reaches the last keyframe at 85%');
+  assert.deepEqual(motionPose(s, 1, { x: 1, y: 0 }, 100), { x: 0, y: 0, rotation: 0, scale: 1 });
+  const settling = motionPose(s, 0.95, { x: 1, y: 0 }, 100).x;
+  assert.ok(settling > 0 && settling < 200);
+});
+
+test('opacity is only touched when a keyframe fades', () => {
+  assert.equal(motionPose(v(pathStage()), 0.5, { x: 1, y: 0 }, 100).alpha, undefined);
+  const faded = v(pathStage({ keyframes: [{ at: 0 }, { at: 1, alpha: 0 }] }));
+  assert.equal(motionPose(faded, 1, { x: 1, y: 0 }, 100).alpha, 0);
+});
+
+test('validation repairs path keyframes and keeps the finisher frame only on paths', () => {
+  assert.equal(v({ kind: 'motion', motion: 'path' }).keyframes.length, 2, 'an old or empty path gets the default shove');
+  assert.equal(v({ kind: 'motion', motion: 'path', keyframes: 'garbage' }).keyframes.at(-1).x, 1);
+  assert.deepEqual(v(pathStage({ motionFrame: { cos: 2, sin: -1, k: 4 } })).motionFrame, { cos: 1, sin: -1, k: 1 });
+  assert.equal(v({ kind: 'motion', motion: 'rush', motionFrame: { cos: 1, sin: 0, k: 1 }, keyframes: [] }).motionFrame, undefined);
+  assert.equal(v({ kind: 'motion', motion: 'rush', keyframes: [] }).keyframes, undefined);
+  assert.equal(v(pathStage()).motionEnd, 'hold', 'a path may hold where it lands');
+});
+
+test('a path faces away from the other token, like a recoil', () => {
+  const token = { center: { x: 100, y: 0 } }, other = { center: { x: 0, y: 0 } };
+  const dir = motionDirection(token, other, token, 'path', 100);
+  assert.ok(Math.abs(dir.x - 1) < 1e-6 && Math.abs(dir.y) < 1e-6);
 });
