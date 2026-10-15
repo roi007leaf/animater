@@ -208,7 +208,7 @@ test("preview pieces scale and stretch with the pose and wear the tint's filter"
   assert.ok(cuts(token).every((c) => c.style.filter === "saturate(.6) hue-rotate(170deg) brightness(1.1)"));
   assert.ok(pieces(token).every((p) => Math.abs(Number(p.style.opacity) - 0.9) < 1e-9), "frozen pieces at 0.9 opacity");
   draw(999);
-  assert.ok(cuts(token).every((c) => /^rotate\(-?[\d.e-]+deg\) scale\(1,2\.\d+\)$/.test(c.style.transform)), cuts(token)[0].style.transform);
+  assert.ok(cuts(token).every((c) => /^rotate\(-?[\d.e-]+rad\) scale\(1,2\.\d+\) rotate\(-?[\d.e-]+rad\) rotate\(-?[\d.e-]+deg\)$/.test(c.style.transform)), cuts(token)[0].style.transform);
   const plain = fixture({ pattern: "halves" });
   plain.draw(500);
   assert.ok(cuts(plain.token).every((c) => / scale\(1,1\)$/.test(c.style.transform) && !c.style.filter), "classic pieces: no scale change, no filter");
@@ -223,4 +223,29 @@ test("the preview aims absorb at the attacker's preview token, as the table send
   assert.deepEqual(player.fragmentTowards({ ...stage, towards: { x: 1, y: 2 } }, "targets", 0), { x: 1, y: 2 }, "a sent towards wins");
   draw(500);
   assert.ok(Math.abs(player.fragments.get(token).prepared.towards.x + 208 / 55) < 1e-9);
+});
+
+// The CSS linear part of a transform list: translations drop out, rotations and scales compose left to right.
+const cssLinear = (...lists) => {
+  const mul = (a, b) => [a[0] * b[0] + a[1] * b[2], a[0] * b[1] + a[1] * b[3], a[2] * b[0] + a[3] * b[2], a[2] * b[1] + a[3] * b[3]];
+  let m = [1, 0, 0, 1];
+  for (const [, fn, args] of lists.join(" ").matchAll(/(rotate|scale)\(([^)]*)\)/g)) {
+    if (fn === "scale") { const [x, y = x] = args.split(",").map(Number); m = mul(m, [x, 0, 0, y]); continue; }
+    const r = args.endsWith("deg") ? (parseFloat(args) * Math.PI) / 180 : parseFloat(args);
+    m = mul(m, [Math.cos(r), -Math.sin(r), Math.sin(r), Math.cos(r)]);
+  }
+  return m;
+};
+test("drip on a turned preview token stretches straight down the screen", () => {
+  for (const rotation of [90, 40]) {
+    const { token, draw } = fixture({ pattern: "shards", pieces: 5, behavior: "drip", spin: 90 }, { info: { rotation } });
+    draw(999);
+    const boxes = pieces(token);
+    assert.equal(boxes.length, 5);
+    for (const box of boxes) {
+      const cut = box.children[0], [a, b, c, d] = cssLinear(box.style.transform, cut.style.transform);
+      const xx = a * a + b * b, xy = a * c + b * d, yy = c * c + d * d, k = Math.sqrt(yy);
+      assert.ok(Math.abs(xx - 1) < 1e-9 && Math.abs(xy) < 1e-9 && k >= 2, `rotation ${rotation}: ${[xx, xy, yy]}`);
+    }
+  }
 });

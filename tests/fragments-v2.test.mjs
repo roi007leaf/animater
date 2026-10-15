@@ -329,7 +329,8 @@ const table = ({ size = 100 } = {}) => {
   const { PIXI, made } = fakePixi(), layer = { children: [], addChild(c) { this.children.push(c); } };
   const texture = { baseTexture: { width: 200, height: 200 }, frame: { x: 0, y: 0, width: 200, height: 200 } };
   const token = { center: { x: 500, y: 300 }, w: size, h: size, mesh: { texture, rotation: 0, scale: { x: 1, y: 1 }, parent: layer } };
-  const sprites = () => layer.children.map((box) => box.children.find((c) => c instanceof PIXI.Sprite));
+  const find = (box) => box.children.find((c) => c instanceof PIXI.Sprite) ?? box.children.map(find).find(Boolean);
+  const sprites = () => layer.children.map(find);
   return { r: createFragmentRenderer({ PIXI, grid: () => 100 }), token, layer, made, sprites, PIXI };
 };
 const frag = (extra) => ({ motion: "fragments", seed: 3, duration: 1000, ...extra });
@@ -344,6 +345,31 @@ test("the renderer scales and stretches each piece box by its pose", () => {
   const plain = table();
   plain.r.start(plain.token, frag({ pattern: "halves" }), 0).update(0.5);
   assert.ok(plain.layer.children.every((b) => b.sx === 1 && b.sy === 1), "the classic patterns stay full size");
+});
+
+// Each container maps local points by R(rotation)·S(scale), as PIXI does; the chain runs from the layer child to the sprite.
+const linear = (box, Sprite) => {
+  const mul = (a, b) => [a[0] * b[0] + a[1] * b[2], a[0] * b[1] + a[1] * b[3], a[2] * b[0] + a[3] * b[2], a[2] * b[1] + a[3] * b[3]];
+  let m = [1, 0, 0, 1], node = box;
+  while (node && !(node instanceof Sprite)) {
+    const c = Math.cos(node.rotation ?? 0), s = Math.sin(node.rotation ?? 0);
+    m = mul(m, mul([c, -s, s, c], [node.sx ?? 1, 0, 0, node.sy ?? 1]));
+    node = node.children.find((k) => k instanceof Sprite) ?? node.children.find((k) => k.children && k.rotation !== undefined);
+  }
+  return m;
+};
+test("drip on a turned token stretches straight down the screen, and the mask moves with the piece", () => {
+  for (const turn of [Math.PI / 2, 0.7]) {
+    const t = table();
+    t.token.mesh.rotation = turn;
+    t.r.start(t.token, frag({ pattern: "shards", pieces: 6, behavior: "drip", spin: 90 }), 0).update(1);
+    for (const box of t.layer.children) {
+      // M·Mᵀ is diag(1, stretch²) only when the stretch is along screen y, whatever the rotation.
+      const [a, b, c, d] = linear(box, t.PIXI.Sprite), xx = a * a + b * b, xy = a * c + b * d, yy = c * c + d * d;
+      assert.ok(Math.abs(xx - 1) < 1e-9 && Math.abs(xy) < 1e-9 && Math.abs(yy - 2.2 * 2.2) < 1e-9, `turn ${turn}: ${[xx, xy, yy]}`);
+    }
+    for (const sprite of t.sprites()) if (sprite.mask) assert.ok(t.layer.children.some(function holds(n) { return n.children?.includes(sprite) ? n.children.includes(sprite.mask) : n.children?.some(holds); }), "mask beside its sprite");
+  }
 });
 
 test("tints set the sprite colour and alpha; stone shares one greyscale filter", () => {

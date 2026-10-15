@@ -64,8 +64,11 @@ export function createFragmentRenderer({ PIXI, grid }) {
       let parts;
       try {
         parts = fragmentPieces(stage, cutAngle, turn).map((piece, i) => {
+          // The box stays upright and carries the scale and stretch (drip melts down the screen); spin carries the turn.
           const box = new PIXI.Container(), cx = piece.centroid.x * w, cy = piece.centroid.y * h;
           boxes.push(box);
+          const spin = new PIXI.Container();
+          box.addChild(spin);
           let crop = null, sprite;
           if (piece.rect && texture.baseTexture && texture.frame) {
             const f = texture.frame, rx = flipX < 0 ? -piece.rect.x - piece.rect.w : piece.rect.x, ry = flipY < 0 ? -piece.rect.y - piece.rect.h : piece.rect.y;
@@ -80,20 +83,20 @@ export function createFragmentRenderer({ PIXI, grid }) {
           } else {
             sprite = new PIXI.Sprite(texture); sprite.anchor.set(0.5); sprite.width = w * flipX; sprite.height = h * flipY; sprite.position.set(-cx, -cy);
             const mask = new PIXI.Graphics().beginFill(0xffffff).drawPolygon(piece.polygon.flatMap((p) => [p.x * w - cx, p.y * h - cy])).endFill();
-            box.addChild(mask); sprite.mask = mask;
+            spin.addChild(mask); sprite.mask = mask;
           }
           if (look.tint !== undefined) sprite.tint = look.tint;
           if (look.greyscale) {
             const filter = stoneFilter(look.greyscale);
             if (filter) { if (!holdsStone) { holdsStone = true; holders++; } sprite.filters = [filter]; }
           }
-          box.addChild(sprite);
-          const start = place(cx, cy); box.position.set(start.x, start.y); box.rotation = turn;
+          spin.addChild(sprite);
+          const start = place(cx, cy); box.position.set(start.x, start.y); spin.rotation = turn;
           // Foundry sorts by elevation, sortLayer, sort, then zIndex: match the token so pieces sit with it.
           for (const [key, value] of Object.entries(sorting)) if (value !== undefined) box[key] = value;
           if (mesh.zIndex !== undefined) box.zIndex = mesh.zIndex + 1;
           layer.addChild(box);
-          return { box, crop, piece, flight: fragmentFlight(stage, piece, i, cutAngle, turn, size), cx, cy };
+          return { box, spin, crop, piece, flight: fragmentFlight(stage, piece, i, cutAngle, turn, size), cx, cy };
         });
       } catch (error) {
         for (const box of boxes) { try { box.destroy({ children: true }); } catch { /* keep cleaning */ } }
@@ -111,8 +114,8 @@ export function createFragmentRenderer({ PIXI, grid }) {
           for (const part of parts) {
             // The flight is already in screen terms: only the piece's own offset turns with the art.
             const pose = fragmentPose(stage, part.piece, part.flight, p), at = place(part.cx, part.cy);
-            part.box.position.set(at.x + moved.x + pose.x * g, at.y + moved.y + pose.y * g); part.box.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha * look.alpha;
-            // The box's origin is the piece's centroid, so it scales and stretches about it, mask included.
+            part.box.position.set(at.x + moved.x + pose.x * g, at.y + moved.y + pose.y * g); part.spin.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha * look.alpha;
+            // The box's origin is the piece's centroid, so it scales and stretches about it, mask included, along screen axes.
             part.box.scale?.set(pose.scale, pose.scale * pose.stretchY);
           }
         },
