@@ -122,6 +122,8 @@ function weaponModeOf(item, action) {
   const range = item ? item?.system?.attack?.range : action?.range;
   return range ? { weaponMode: MELEE_RANGES.has(range) ? "melee" : "ranged" } : {};
 }
+// The action's own id (its key in the item's system.actions): a card's per-action design is found by it.
+const actionIdOf = (action) => action?.id || action?._id || null;
 const cardFields = (item) => (item?.type === "domainCard" ? { domain: domainOf(item), cardLevel: Number(item?.system?.level) || undefined } : {});
 const named = (item, name) => (item ? {} : { itemName: name, activityName: name });
 
@@ -150,7 +152,7 @@ export function daggerheartRollEvent(message, userId, { sceneId = null } = {}) {
     targetUuids: tokenUuids(outcomes.map((o) => o.id), scene),
     ...(outcomes.length ? { targetOutcomes: Object.fromEntries(outcomes.map((o) => [o.id, o.outcome])) } : {}),
     outcome: outcomes.length ? bestOutcome(outcomes) : rollIsCritical(roll) ? "criticalSuccess" : null,
-    rollType, duality: message?.type === "dualityRoll" ? dualityOf(roll) : null,
+    rollType, duality: message?.type === "dualityRoll" ? dualityOf(roll) : null, actionId: message?.system?.source?.action || actionIdOf(action),
     ...weaponModeOf(item, action), ...cardFields(item),
   };
 }
@@ -168,7 +170,7 @@ export function daggerheartUseEvent(action, config, { sceneId = null, tokenId = 
     type: "use", systemId: "daggerheart", ...(config?.message?.id ? { id: `use:${config.message.id}` } : {}),
     item, itemUuid: item?.uuid, ...named(item, name), actor, sceneId,
     tokenId: tokenId ?? config?.message?.speaker?.token ?? config?.speaker?.token,
-    targetUuids: tokenUuids(ids, sceneId), outcome: null, rollType: action?.roll?.type ?? null, duality: null,
+    targetUuids: tokenUuids(ids, sceneId), outcome: null, rollType: action?.roll?.type ?? null, duality: null, actionId: actionIdOf(action),
     ...weaponModeOf(item, action), ...cardFields(item),
   };
 }

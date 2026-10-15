@@ -41,7 +41,7 @@ export function cardRow(doc) {
   return {
     id: text(doc?._id), name: text(doc?.name), img: text(doc?.img), domain: text(s.domain).toLowerCase(),
     level: Number(s.level) || 0, cardType: text(s.type) || "ability", recallCost: Number(s.recallCost) || 0,
-    actions: Object.values(s.actions ?? {}).map((a) => ({ type: text(a?.type), roll: a?.roll?.type ?? null, target: a?.target?.type ?? null })),
+    actions: Object.entries(s.actions ?? {}).map(([key, a]) => ({ id: text(a?._id) || key, type: text(a?.type), roll: a?.roll?.type ?? null, target: a?.target?.type ?? null })),
   };
 }
 
@@ -59,8 +59,8 @@ export function cardText(doc) {
   return {
     id: text(doc?._id), name: text(doc?.name), domain: text(s.domain).toLowerCase(), level: Number(s.level) || 0, cardType: text(s.type) || "ability",
     description: plainText(s.description),
-    actions: Object.values(s.actions ?? {}).map((a) => ({
-      name: text(a?.name), type: text(a?.type), roll: a?.roll?.type ?? null, target: a?.target?.type ?? null, amount: a?.target?.amount ?? null, range: text(a?.range) || null,
+    actions: Object.entries(s.actions ?? {}).map(([key, a]) => ({
+      id: text(a?._id) || key, name: text(a?.name), type: text(a?.type), roll: a?.roll?.type ?? null, target: a?.target?.type ?? null, amount: a?.target?.amount ?? null, range: text(a?.range) || null,
       parts: [...(a?.damage?.main ? [a.damage.main] : []), ...Object.values(a?.damage?.resources ?? {}), ...(a?.healing?.parts ?? [])]
         .map((p) => ({ applyTo: text(p?.applyTo), types: list(p?.type).map(String), formula: partFormula(p?.value) })),
       effects: list(a?.effects).map((ref) => effects.get(ref?._id)).filter(Boolean).map((e) => ({ name: text(e.name), statuses: list(e.statuses).map(String) })),

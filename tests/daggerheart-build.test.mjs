@@ -27,7 +27,7 @@ const conditions = () => ({
 test("rows keep only the fields the library needs", () => {
   assert.deepEqual(weaponRow(longsword), { id: "Iv8BZM1R24QMT72M", name: "Longsword", img: "icons/weapons/swords/sword-guard.webp", tier: 1, range: "melee", trait: "agility", damageTypes: ["physical"], burden: "twoHanded" });
   assert.deepEqual(cardRow(touched), { id: "5PvMQKCjrgSxzstn", name: "Arcana-Touched", img: "systems/daggerheart/assets/icons/domains/domain-card/arcana.png", domain: "arcana", level: 7, cardType: "ability", recallCost: 2,
-    actions: [{ type: "effect", roll: null, target: "any" }] });
+    actions: [{ id: "hBh4Lt0Bdd9CtJY7", type: "effect", roll: null, target: "any" }] });
   assert.deepEqual(cardRow({ _id: "x", name: "Bare", system: {} }).actions, []);
 });
 
@@ -45,10 +45,10 @@ test("card text: plain description and the actions' rolls, targets, ranges, dama
   assert.deepEqual(cardText(cinder), { id: "5PvMQKCjrgSxzst2", name: "Cinder Grasp", domain: "arcana", level: 2, cardType: "spell",
     description: "Make a Spellcast Roll against a target within Melee range. It's On Fire.",
     actions: [
-      { name: "Cast", type: "attack", roll: "spellcast", target: "any", amount: 2, range: "melee",
+      { id: "a1", name: "Cast", type: "attack", roll: "spellcast", target: "any", amount: 2, range: "melee",
         parts: [{ applyTo: "hitPoints", types: ["magical"], formula: "1d20+3" }],
         effects: [{ name: "On Fire", statuses: ["burning"] }], areas: [{ shape: "emanation", size: "close", type: "placed" }] },
-      { name: "Hope", type: "healing", roll: null, target: "self", amount: null, range: "self", parts: [{ applyTo: "hope", types: [], formula: "3" }], effects: [], areas: [] },
+      { id: "a2", name: "Hope", type: "healing", roll: null, target: "self", amount: null, range: "self", parts: [{ applyTo: "hope", types: [], formula: "3" }], effects: [], areas: [] },
     ] });
 });
 
@@ -64,6 +64,8 @@ test("the committed card text covers every card", async () => {
   assert.deepEqual(Object.keys(DAGGERHEART_CARD_TEXT).sort(), DAGGERHEART_CARDS.map((c) => c.id).sort());
   for (const t of Object.values(DAGGERHEART_CARD_TEXT)) { assert.ok(t.description.length > 20, t.name); assert.doesNotMatch(t.description, /<|&nbsp;/, t.name); }
   assert.match(DAGGERHEART_CARD_TEXT[DAGGERHEART_CARDS.find((c) => c.name === "Blink Out").id].description, /teleport/);
+  for (const c of DAGGERHEART_CARDS) assert.deepEqual(c.actions.map((a) => a.id), DAGGERHEART_CARD_TEXT[c.id].actions.map((a) => a.id), `${c.name}: action ids`);
+  for (const t of Object.values(DAGGERHEART_CARD_TEXT)) for (const a of t.actions) assert.match(a.id, /^[A-Za-z0-9]{16}$/, `${t.name}: ${a.name} has its action id`);
 });
 
 test("condition ids are read from the system bundle, CRLF or LF", () => {

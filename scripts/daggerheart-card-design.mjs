@@ -31,22 +31,25 @@ const LAYER_OPTIONS = new Set(["assets", "on", "at", "duration", "scale", "opaci
   "travelOrigin", "targetSelection", "targetStagger", "offsetY", "offsetUnits", "fadeIn", "fadeOut", "playbackRate", "role"]);
 const COPY_OPTIONS = new Set(["count", "spread", "opacity", "at", "duration"]);
 const MOTION_OPTIONS = new Set(["motion", "subject", "at", "duration", "intensity", "distance"]);
-const RECORD_FIELDS = new Set(["shape", "motif", "notes", "tint", "scale", "cast", "travel", "impact", "aura", "extra", "copies", "motion", "use", "sameAs"]);
+const RECORD_FIELDS = new Set(["shape", "motif", "notes", "tint", "scale", "cast", "travel", "impact", "aura", "extra", "copies", "motion", "use", "sameAs", "actions"]);
+const NESTED_ONLY_TOP = ["use", "sameAs", "actions"];
+const ACTION_ID = /^[A-Za-z0-9]{16}$/;
 const HEX = /^#[0-9a-f]{6}$/i;
 const KEY = /^(jb2a\.)?[a-z0-9_]+(\.[A-Za-z0-9_-]+)*$/;
 
 const asLayer = (value) => (Array.isArray(value) ? { assets: value } : value);
 const asList = (value) => (value == null ? [] : Array.isArray(value) ? value : [value]);
 
-// Problems with one record (empty when valid). `use` is a nested record without `use` or `sameAs`.
-export function validateCardDesign(record, { nested = false } = {}) {
+// Problems with one record (empty when valid). `use` and each of `actions` (per-action designs keyed by
+// the action's id) are nested records without `use`, `sameAs` or `actions`; a per-action one quotes the card.
+export function validateCardDesign(record, { nested = false, quoted = !nested } = {}) {
   const problems = [];
   if (!record || typeof record !== "object" || Array.isArray(record)) return ["record must be an object"];
-  for (const field of Object.keys(record)) if (!RECORD_FIELDS.has(field) || (nested && ["use", "sameAs"].includes(field))) problems.push(`unknown field ${field}`);
+  for (const field of Object.keys(record)) if (!RECORD_FIELDS.has(field) || (nested && NESTED_ONLY_TOP.includes(field))) problems.push(`unknown field ${field}`);
   if (!Object.hasOwn(DESIGN_SHAPES, record.shape)) problems.push(`shape ${JSON.stringify(record.shape)}`);
   if (typeof record.motif !== "string" || !record.motif.trim()) problems.push("motif missing");
-  if (!nested && (typeof record.notes !== "string" || !/["“][^"”]{3,}["”]/.test(record.notes))) problems.push("notes must quote the card's key phrase");
-  if (nested && record.notes !== undefined && typeof record.notes !== "string") problems.push("notes must be text");
+  if (quoted && (typeof record.notes !== "string" || !/["“][^"”]{3,}["”]/.test(record.notes))) problems.push("notes must quote the card's key phrase");
+  if (!quoted && record.notes !== undefined && typeof record.notes !== "string") problems.push("notes must be text");
   if (record.tint !== undefined && !HEX.test(record.tint)) problems.push(`tint ${record.tint}`);
   if (record.scale !== undefined && !(record.scale >= 0.3 && record.scale <= 2)) problems.push(`scale ${record.scale}`);
   if (record.sameAs !== undefined && !/^[A-Za-z0-9]{16}$/.test(record.sameAs)) problems.push(`sameAs ${record.sameAs}`);
@@ -81,6 +84,13 @@ export function validateCardDesign(record, { nested = false } = {}) {
   }
   if (!DESIGN_ROLES.some((r) => record[r]) && !asList(record.extra).length) problems.push("no visual layer");
   if (record.use !== undefined) problems.push(...validateCardDesign(record.use, { nested: true }).map((p) => `use: ${p}`));
+  if (record.actions !== undefined && !nested) {
+    if (!record.actions || typeof record.actions !== "object" || Array.isArray(record.actions)) problems.push("actions must map action ids to designs");
+    else for (const [id, design] of Object.entries(record.actions)) {
+      if (!ACTION_ID.test(id)) problems.push(`actions: key ${JSON.stringify(id)} is not an action id`);
+      problems.push(...validateCardDesign(design, { nested: true, quoted: true }).map((p) => `actions.${id}: ${p}`));
+    }
+  }
   return problems;
 }
 

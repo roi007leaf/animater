@@ -3,7 +3,9 @@
 // Palette: blue runes and magic circles (#5b8def). Each layer lists Patreon keys first and ends with a key
 // JB2A Free has; a Free fallback in another hue is recoloured to the first choice's hue at play time.
 // The "Book of" grimoires hold several spells: the attack variant shows the rolled spell(s), the `use`
-// variant the spell cast without a roll; notes name which spell each shows.
+// variant the spell cast without a roll; notes name which spell each shows. `actions` gives a spell its
+// own design, keyed by the action's id (data/daggerheart-card-text.mjs), so each spell plays itself; a
+// spell without one plays the card's attack or use design, which is already that spell alone.
 const BLUE = "#5b8def";
 
 export default {
@@ -22,6 +24,33 @@ export default {
       impact: { assets: ["markers.shield_rampart.complete.03.blue", "markers.shield_rampart.complete.01.orange"], scale: 0.8, at: 500, duration: 1600 },
       motion: { motion: "brace", subject: "targets", at: 700 },
     },
+    actions: {
+      // Power Push
+      jX4wg2HR2xkdtbIU: {
+        shape: "bolt", motif: "a blue glyph, a lunge and a force blow that hurls the target away",
+        notes: 'Power Push: on a success the target is "knocked back to Far range", so a force burst slams it and it is thrown back.',
+        cast: { assets: ["cast_shape.circle.01.blue"], scale: 0.6, duration: 800 },
+        impact: { assets: ["impact.011.blue"], scale: 0.9 },
+        motion: [{ motion: "lunge", subject: "source", at: 300, duration: 700 }, { motion: "recoil", subject: "targets", at: 750, intensity: 1 }],
+      },
+      // Ice Spike
+      XU1joyIDFZrQiToF: {
+        shape: "summon", motif: "frost gathers in the caster's hand and a large ice spike erupts from the ground",
+        notes: 'Ice Spike: you "summon a large ice spike within Far range", so frost gathers at the caster and a spike of ice bursts up from the ground.',
+        cast: { assets: ["cast_generic.ice.01.blue", "cast_generic.02.blue"], scale: 0.6 },
+        impact: { assets: ["ice_spikes.radial.burst.blue", "ice_spikes.radial.burst.white"], below: true, scale: 0.8, at: 600, duration: 1800 },
+        motion: { motion: "brace", subject: "source", at: 500 },
+      },
+      // Ice Spike (Attack)
+      enit3ZkPp0nY5lN1: {
+        shape: "bolt", motif: "a shard of ice flies from the spike and shatters on the target",
+        notes: 'Ice Spike used "as a weapon": the spike is driven into the target, so a shard of ice streaks to it, shatters and the target staggers.',
+        cast: { assets: ["cast_generic.ice.01.blue", "cast_generic.02.blue"], scale: 0.5 },
+        travel: { assets: ["spell_projectile.ice_shard.blue"] },
+        impact: { assets: ["impact_themed.ice_shard.blue"], scale: 0.8 },
+        motion: { motion: "stagger", subject: "targets" },
+      },
+    },
   },
   // Book of Illiat (1): Slumber puts a target Asleep; Arcane Barrage fires d6 projectiles per Hope; Telepathy links minds.
   df4iRqQzRntrF6Qw: {
@@ -39,6 +68,17 @@ export default {
       impact: { assets: ["impact.012.blue"], scale: 0.6, repeats: 3, repeatInterval: 200 },
       motion: { motion: "stagger", subject: "targets", at: 1200 },
     },
+    actions: {
+      // Telepathy
+      Ya1vttriJRLbuyhk: {
+        shape: "buff", motif: "a thin thread of thought links the caster's mind to the target's; a soft light glows over both",
+        notes: 'Telepathy: you "open a line of mental communication with one target you can see", so a fine blue strand links the two and a gentle light rises over each head.',
+        cast: false,
+        travel: { assets: ["energy_strands.range.standard.blue", "energy_strands.range.standard.purple"], at: 0, duration: 1600 },
+        aura: { assets: ["markers.light_orb.loop.blue"], scale: 0.35, offsetY: -0.7, offsetUnits: "token", at: 700, duration: 1800 },
+        extra: [{ role: "aura", on: "self", assets: ["markers.light_orb.loop.blue"], scale: 0.35, offsetY: -0.7, offsetUnits: "token", at: 300, duration: 2200, label: "Caster's mind" }],
+      },
+    },
   },
   // Book of Tyfar (1): Wild Flame burns up to three melee adversaries; Magic Hand conjures a hand; Mysterious Mist makes fog.
   "1VXzwRbvbBj5bd5V": {
@@ -53,6 +93,14 @@ export default {
       notes: "Magic Hand: you conjure a magical hand the size and strength of your own.",
       cast: { assets: ["magic_signs.rune.conjuration.complete.blue", "magic_signs.rune.conjuration"], scale: 0.45, offsetY: -0.6, offsetUnits: "token" },
       impact: { assets: ["arcane_hand.blue"], scale: 0.6, at: 600, duration: 1800 },
+    },
+    actions: {
+      // Mysterious Mist
+      WQ9XzpbtXl4SmVet: {
+        shape: "aura", motif: "a thick bank of fog rolls out and hangs around the caster",
+        notes: 'Colour exception, white fog: Mysterious Mist casts "a temporary thick fog that gathers in a stationary area", so a dense cloud of fog rolls in and lingers.',
+        impact: { assets: ["fog_cloud.01.white"], tint: false, scale: 1.4, at: 500, duration: 3200, opacity: 0.85 },
+      },
     },
   },
   // Book of Sitil (2): Illusion creates a visual illusion; Adjust Appearance disguises; Parallela adds a second target.
@@ -71,6 +119,25 @@ export default {
       extra: [{ role: "impact", on: "targets", assets: ["energy_strands.overlay.blue"], scale: 0.7, at: 400, label: "Parallela on an ally" }],
       motion: { motion: "flicker", subject: "source", at: 300, duration: 900 },
     },
+    actions: {
+      // Adjust Appearance
+      cc1ahwawL16OEu2r: {
+        shape: "utility", motif: "a smoke ring puffs and the caster shimmers into a new look",
+        notes: 'Adjust Appearance: you "magically shift your appearance and clothing to avoid recognition", so a puff of smoke rings the caster and they flicker into a new look.',
+        cast: false,
+        impact: { assets: ["smoke.puff.ring.01.white"], tint: BLUE, scale: 0.7, at: 0 },
+        aura: { assets: ["shimmer.01.blue"], opacity: 0.6, at: 300, duration: 1800 },
+        motion: { motion: "flicker", subject: "source", at: 300, duration: 900 },
+      },
+      // Parallela
+      wBQkw3P4Esj6kOx2: {
+        shape: "buff", motif: "a strand of power reaches the ally and splits around them, readying a second strike",
+        notes: 'Parallela: the ally "can hit an additional target", so a blue strand reaches them, energy wraps their body and they pulse, ready to strike twice.',
+        travel: { assets: ["energy_strands.range.standard.blue", "energy_strands.range.standard.purple"], duration: 900 },
+        impact: { assets: ["energy_strands.overlay.blue"], scale: 0.7 },
+        motion: { motion: "pulse", subject: "targets" },
+      },
+    },
   },
   // Book of Vagras (2): Runic Lock seals an object; Arcane Door opens a portal; Reveal uncovers the magically hidden.
   aknDDYtN7EObv94t: {
@@ -79,6 +146,31 @@ export default {
     cast: { assets: ["markers.runes.blue", "markers.runes.orange"], scale: 0.5, offsetY: -0.5, offsetUnits: "token" },
     impact: { assets: ["detect_magic.circle.blue"], below: true, scale: 1.1, duration: 1800 },
     extra: [{ role: "impact", on: "targets", assets: ["markers.chain.spectral_standard.complete.02.blue"], scale: 0.6, at: 900, label: "Runic Lock" }],
+    actions: {
+      // Runic Lock
+      kfJZdT3F4SH1h1dc: {
+        shape: "utility", motif: "runes flare in the caster's hand, an abjuration seal glows and spectral chains lock the object",
+        notes: 'Runic Lock: you "lock the object so it can only be opened by creatures of your choice", so runes flare, an abjuration seal glows and spectral chains wrap whatever is targeted.',
+        cast: { assets: ["markers.runes.blue", "markers.runes.orange"], scale: 0.5, offsetY: -0.5, offsetUnits: "token" },
+        impact: { assets: ["magic_signs.rune.abjuration.complete.blue", "magic_signs.rune.abjuration"], scale: 0.45, at: 500 },
+        extra: [{ role: "impact", on: "targets", assets: ["markers.chain.spectral_standard.complete.02.blue"], scale: 0.6, at: 700, label: "Locked" }],
+      },
+      // Arcane Door
+      Da3zkKkOljZfu5Xb: {
+        shape: "summon", motif: "a conjuration rune, then a blue portal opens beside the caster and its twin at the far end",
+        notes: 'Arcane Door: you "create a portal from where you are to a point within Far range you can see", so a blue ring portal opens by the caster and another where it leads.',
+        cast: { assets: ["magic_signs.rune.conjuration.complete.blue", "magic_signs.rune.conjuration"], scale: 0.45, offsetY: -0.6, offsetUnits: "token" },
+        impact: { assets: ["portals.vertical.ring.blue", "portals.vertical.ring"], scale: 0.8, at: 500, duration: 2200 },
+        extra: [{ role: "impact", on: "targets", assets: ["portals.vertical.ring.blue", "portals.vertical.ring"], scale: 0.8, at: 800, duration: 2000, label: "Far end" }],
+      },
+      // Reveal
+      VOOND5icbz1WxUUD: {
+        shape: "utility", motif: "runes glow and a revealing ring ripples out across the floor",
+        notes: 'Reveal: "anything magically hidden within Close range" is revealed, so runes glow over the caster and a detect-magic ring ripples out.',
+        cast: { assets: ["markers.runes.blue", "markers.runes.orange"], scale: 0.5, offsetY: -0.5, offsetUnits: "token" },
+        impact: { assets: ["detect_magic.circle.blue"], below: true, scale: 1.1, duration: 1800 },
+      },
+    },
   },
   // Book of Korvax (3): Levitation lifts a target; Rune Circle blasts adversaries in Melee range; Recant erases a minute of memory.
   cWRFHJdxEZ0M1dAg: {
@@ -94,6 +186,16 @@ export default {
       impact: { assets: ["magic_signs.circle.02.evocation.complete.blue", "magic_signs.circle.02.evocation"], below: true, scale: 1.3, at: 0, duration: 2000 },
       extra: [{ role: "impact", on: "targets", assets: ["explosion.04.blue"], scale: 0.6, at: 700 }],
       motion: [{ motion: "pulse", subject: "source", at: 200 }, { motion: "recoil", subject: "targets", at: 800, intensity: 0.5 }],
+    },
+    actions: {
+      // Recant
+      m4y7KXhjVNT30wUT: {
+        shape: "debuff", motif: "an enchantment rune, and the target's last minute swims away in a daze",
+        notes: 'Recant: on a failure "they forget the last minute of your conversation", so an enchantment rune glows over the caster and dizzy stars circle the target\'s head as it shakes off the lost memory.',
+        cast: { assets: ["magic_signs.rune.enchantment.complete.blue", "magic_signs.rune.enchantment"], scale: 0.45, offsetY: -0.6, offsetUnits: "token" },
+        aura: { assets: ["dizzy_stars.200px.blueorange"], scale: 0.6, offsetY: -0.5, offsetUnits: "token", duration: 2000 },
+        motion: { motion: "shake", subject: "targets", intensity: 0.3 },
+      },
     },
   },
   // Book of Norai (3): Mystic Tether restrains a target; Fireball explodes on a target and everyone Very Close.
@@ -112,6 +214,27 @@ export default {
       impact: { assets: ["fireball.explosion.orange"], scale: 1.1 },
       motion: { motion: "recoil", subject: "targets", intensity: 0.6 },
     },
+    actions: {
+      // Fireball - Cast
+      GI2VkIcGDOjFRxpT: {
+        shape: "bolt", motif: "fire gathers, a fireball streaks to the target and explodes, scorching the ground",
+        notes: 'Colour exception, orange fire: you "hurl a sphere of fire toward them that explodes on impact", so fire gathers at the caster, a fireball streaks out, bursts on the target and scorches the ground.',
+        cast: { assets: ["cast_generic.fire.01.orange"], scale: 0.6 },
+        travel: ["fireball.beam.orange"],
+        impact: { assets: ["fireball.explosion.orange"], scale: 1.1 },
+        extra: [{ role: "impact", on: "targets", assets: ["impact.ground_crack.orange.02", "impact.ground_crack.01.orange"], below: true, scale: 0.9, at: 1300, label: "Scorched ground" }],
+        motion: { motion: "recoil", subject: "targets", intensity: 0.7 },
+      },
+      // Fireball - Explosion
+      HJ749c2a8WTjkSHY: {
+        shape: "burst", motif: "a great explosion of fire engulfs the target and everyone around it",
+        notes: 'Colour exception, orange fire: "the target and all creatures within Very Close range of them" are caught, so a wide fireball explosion engulfs them and flames lick at each.',
+        cast: false,
+        impact: { assets: ["fireball.explosion.orange"], on: "targets", scale: 1.5, at: 0, duration: 1400 },
+        extra: [{ role: "impact", on: "targets", assets: ["flames.02.orange"], scale: 0.5, at: 600, duration: 1400, label: "Burning" }],
+        motion: { motion: "shake", subject: "targets", at: 300, intensity: 0.8 },
+      },
+    },
   },
   // Book of Exota (4): Create Construct animates objects whose attacks deal physical damage; Repudiate stops a magical effect.
   oVs2MSC6Uf5GbgEG: {
@@ -128,6 +251,17 @@ export default {
       impact: { assets: ["falling_rocks.top.1x1.grey"], tint: false, scale: 0.7, at: 400 },
       extra: [{ role: "impact", on: "self", assets: ["arcane_hand.rock", "arcane_hand.blue"], scale: 0.6, at: 1100, duration: 1600, label: "Construct rises" }],
     },
+    actions: {
+      // Repudiate
+      "6eioK8CoAPfObBP2": {
+        shape: "ward", motif: "an abjuration seal flares and the magic around the caster shatters",
+        notes: 'Repudiate: you "interrupt a magical effect taking place" and "the effect stops", so an abjuration seal flares over the caster and the spell breaks apart in blue shards.',
+        cast: false,
+        impact: { assets: ["magic_signs.rune.abjuration.complete.blue", "magic_signs.rune.abjuration"], scale: 0.5, offsetY: -0.6, offsetUnits: "token", at: 0 },
+        extra: [{ role: "impact", on: "self", assets: ["shatter.blue"], scale: 0.8, at: 500, label: "Spell broken" }],
+        motion: { motion: "brace", subject: "source", at: 400 },
+      },
+    },
   },
   // Book of Grynn (4): Wall of Flame between two points; Arcane Deflection negates an attack's damage; Time Lock freezes an object.
   R0LNheiZycZlZzV3: {
@@ -143,6 +277,15 @@ export default {
       impact: { assets: ["wall_of_force.sphere.blue", "wall_of_force.sphere.grey"], scale: 0.6, at: 0, duration: 1300 },
       extra: [{ role: "impact", on: "targets", assets: ["shield.01.complete.01.blue"], scale: 0.7, at: 300, label: "Ally protected" }],
       motion: { motion: "brace", subject: "source", at: 200 },
+    },
+    actions: {
+      // Time Lock
+      "0vUkyQiGHTFS3Api": {
+        shape: "utility", motif: "a divination rune turns over the caster and the target is sealed in a still bubble of time",
+        notes: 'Time Lock: the object "stops in time and space exactly where it is", so a divination rune turns over the caster and whatever is targeted is held in a frozen blue bubble.',
+        cast: { assets: ["magic_signs.rune.divination.complete.blue", "magic_signs.rune.divination"], scale: 0.45, offsetY: -0.6, offsetUnits: "token" },
+        aura: { assets: ["markers.bubble.complete.blue"], on: "targets", scale: 0.7, at: 600, duration: 2400 },
+      },
     },
   },
   // Manifest Wall (5): a magical wall up to 50 feet high between two points, shunting creatures aside.
@@ -188,6 +331,25 @@ export default {
     aura: { assets: ["shimmer.01.blue"], opacity: 0.5, at: 900, duration: 1800 },
     extra: [{ role: "aura", on: "targets", assets: ["shimmer.01.blue"], opacity: 0.5, at: 900, duration: 1800, label: "Companions phase" }],
     motion: { motion: "drift", subject: "source", at: 1000, duration: 1200 },
+    actions: {
+      // Pass Through
+      "4cKqwH2jWsYylzI7": {
+        shape: "utility", motif: "the caster and those touching them turn ghostly and drift through",
+        notes: 'Pass Through: "you and all creatures touching you can pass through a wall or door", so the caster shimmers and drifts as if through stone, and touching companions shimmer too.',
+        cast: false,
+        aura: { assets: ["shimmer.01.blue"], opacity: 0.6, at: 0, duration: 1800 },
+        extra: [{ role: "aura", on: "targets", assets: ["shimmer.01.blue"], opacity: 0.5, at: 200, duration: 1800, label: "Companions phase" }],
+        motion: [{ motion: "drift", subject: "source", at: 400, duration: 1200 }, { motion: "fade", subject: "source", at: 900, duration: 700 }],
+      },
+      // Plane Gate
+      RTUxVXUyRM6mNwUX: {
+        shape: "summon", motif: "a conjuration rune, then a great swirling gateway to another plane opens",
+        notes: 'Plane Gate: you "open a gateway to a location in another dimension or plane of existence", so a conjuration rune glows and a large blue vortex gate swirls open.',
+        cast: { assets: ["magic_signs.rune.conjuration.complete.blue", "magic_signs.rune.conjuration"], scale: 0.45, offsetY: -0.6, offsetUnits: "token" },
+        impact: { assets: ["portals.vertical.vortex.blue", "portals.vertical.ring"], scale: 1.2, at: 600, duration: 2600 },
+        motion: { motion: "pulse", subject: "source", at: 500 },
+      },
+    },
   },
   // Codex-Touched (7): with 4+ Codex cards, mark Stress to add Proficiency to a Spellcast Roll; swap a card from the vault.
   "7Pu83ABdMukTxu3e": {
@@ -230,6 +392,25 @@ export default {
     impact: { assets: ["smoke.puff.centered.grey"], tint: BLUE, scale: 0.8, at: 600 },
     extra: [{ role: "aura", on: "targets", assets: ["markers.shield_cracked.purple"], tint: BLUE, scale: 0.6, at: 900, duration: 2000, label: "Eternal Enervation" }],
     motion: { motion: "squash", subject: "source", at: 650, duration: 1000 },
+    actions: {
+      // Transform
+      etnR1OKzpLWrx2os: {
+        shape: "utility", motif: "a transmutation circle, a puff of smoke, and the caster squashes down into an object",
+        notes: 'Transform: you "transform into an inanimate object", so a transmutation circle turns, smoke puffs and the caster squashes down.',
+        cast: { assets: ["magic_signs.circle.02.transmutation.complete.dark_blue", "magic_signs.circle.02.transmutation"], below: true, scale: 0.9, duration: 1800 },
+        impact: { assets: ["smoke.puff.centered.grey"], tint: BLUE, scale: 0.8, at: 600 },
+        motion: { motion: "squash", subject: "source", at: 650, duration: 1000 },
+      },
+      // Eternal Enervation
+      h7i4ZuDYuYLnjze6: {
+        shape: "debuff", motif: "a draining strand reaches the target and a cracked shield brands it for good",
+        notes: 'Eternal Enervation: the target becomes "permanently Vulnerable", so a blue strand drains it, a cracked shield brands it and it sags.',
+        travel: { assets: ["energy_strands.range.standard.blue", "energy_strands.range.standard.purple"], duration: 900 },
+        impact: { assets: ["markers.shield_cracked.purple"], tint: BLUE, scale: 0.6 },
+        aura: { assets: ["energy_strands.overlay.blue"], opacity: 0.5, scale: 0.7, duration: 2000 },
+        motion: { motion: "sink", subject: "targets", intensity: 0.4 },
+      },
+    },
   },
   // Disintegration Wave (9): adversaries within Far range of Difficulty 18 or lower are killed outright.
   kja5qvh4rdeDBB96: {

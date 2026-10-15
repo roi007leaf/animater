@@ -178,7 +178,8 @@ const recipeFor = (entry, variantId, trigger, stages, extra = {}) => validateRec
   systemId: "daggerheart", itemUuid: entry.uuid ?? "", catalogEntry: entry.id, stages, ...extra,
 });
 // A designed card plays its record (its `use` record on the use variant when it has both); others
-// keep the palette rules.
+// keep the palette rules. A record's per-action designs (`actions`, keyed by the action's id) become
+// recipes on the variant their action plays on, picked by the event's actionId (dhRecipe).
 function cardEntry(card) {
   const palette = domainPalette(card.domain), domain = title(card.domain) || "Unknown", record = CARD_DESIGNS[card.id] ?? null;
   const entry = { id: `daggerheart-card-${card.id}`, systemId: "daggerheart", kind: "card", uuid: `Compendium.daggerheart.${DAGGERHEART_SOURCE.packs?.card ?? "domains"}.Item.${card.id}`,
@@ -190,7 +191,10 @@ function cardEntry(card) {
     const id = `${entry.id}-${trigger}`;
     const part = record && (trigger === "use" && variants.length > 1 && record.use ? record.use : record);
     const stages = part ? designStages(part, { palette, level: card.level, levelScale }) : cardStages(design, palette, card.level);
-    return { id, label: `${trigger === "attack" ? "spellcast roll" : "use"} · ${part ? part.shape : design}`, design: part ? part.shape : design, recipe: recipeFor(entry, id, trigger, stages) };
+    const own = (card.actions ?? []).filter((a) => a?.id && record?.actions?.[a.id] && (DH_ROLL_TYPES.has(a.roll) ? "attack" : "use") === trigger);
+    const actions = own.length ? Object.fromEntries(own.map((a) => [a.id, recipeFor(entry, id, trigger, designStages(record.actions[a.id], { palette, level: card.level, levelScale }))])) : null;
+    return { id, label: `${trigger === "attack" ? "spellcast roll" : "use"} · ${part ? part.shape : design}`, design: part ? part.shape : design, recipe: recipeFor(entry, id, trigger, stages),
+      ...(actions ? { actions } : {}) };
   });
   return entry;
 }
@@ -239,11 +243,13 @@ export function useDhEntry(state, id) {
   return normalizeDhCatalogState({ ...state, enabled: true, independent: true, scope: state.enabled ? state.scope : "selected", selected: state.enabled ? [...state.selected, id] : [id],
     excluded: state.excluded.filter((v) => v !== id), customized: state.customized.filter((v) => v !== id) });
 }
-// v1 designs carry no sound cues; `motion: false` drops any motion stage a variant has.
-export function dhRecipe(entry, variantId, { motion = true } = {}) {
+// v1 designs carry no sound cues; `motion: false` drops any motion stage a variant has. `actionId`
+// (the action that fired) picks that action's own design; without one, or for an action with none,
+// the variant's card design plays (the library's Use and preview).
+export function dhRecipe(entry, variantId, { motion = true, actionId = null } = {}) {
   if (!entry) throw Error("Choose a Daggerheart catalog entry first.");
   const variant = entry.variants.find((v) => v.id === variantId) ?? entry.variants[0];
-  const recipe = clone(variant.recipe);
+  const recipe = clone((actionId && variant.actions?.[actionId]) || variant.recipe);
   if (!motion && recipe.stages.some((s) => s.kind !== "motion")) recipe.stages = recipe.stages.filter((s) => s.kind !== "motion");
   return validateRecipe(recipe);
 }
@@ -279,7 +285,7 @@ export function resolveDaggerheartAutomaticRecipe(event, stateFor, saved = [], {
   if (!selected || entry.state?.lasting || entry.state?.defeated) return null;
   if (!prefer && custom.some((r) => !r.enabled && matchRecipe([{ ...r, enabled: true }], event))) return null;
   const variant = dhVariantForEvent(entry, event);
-  return variant ? dhRecipe(entry, variant.id, { motion: state.motion }) : null;
+  return variant ? dhRecipe(entry, variant.id, { motion: state.motion, actionId: event?.actionId ?? null }) : null;
 }
 
 export function filterDhEntries(kind, { search = "", level = "all", theme = "all" } = {}) {

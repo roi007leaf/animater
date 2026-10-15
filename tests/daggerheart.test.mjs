@@ -33,6 +33,17 @@ test("a hit with Hope: success on the target, duality hope, melee weapon", () =>
   assert.equal(e.rollType, "attack");
   assert.equal(e.duality, "hope");
   assert.equal(e.weaponMode, "melee");
+  assert.equal(e.actionId, "act", "the action that rolled, from system.source.action");
+});
+
+test("events name the action that fired: a roll by its source or its action, a use by the action's id", () => {
+  const msg = rollMessage({ item: card("Book of Norai", "codex", { level: 3, cardType: "grimoire" }), action: { _id: "GI2VkIcGDOjFRxpT", name: "Fireball - Cast", roll: { type: "spellcast" } } });
+  delete msg.system.source.action;
+  assert.equal(daggerheartRollEvent(msg, "u").actionId, "GI2VkIcGDOjFRxpT");
+  const [action, config] = useHook({ item: card("Book of Illiat", "codex", { cardType: "grimoire" }), action: { id: "tele1", name: "Telepathy", roll: { type: null } } });
+  assert.equal(daggerheartUseEvent(action, config, { sceneId: "s" }).actionId, "tele1");
+  const [bare, bareConfig] = useHook();
+  assert.equal(daggerheartUseEvent(bare, bareConfig, { sceneId: "s" }).actionId, null);
 });
 
 test("a hit with Fear, a critical with matching dice, and a miss", () => {
