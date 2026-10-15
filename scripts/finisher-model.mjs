@@ -54,16 +54,34 @@ export function checkFinisherEvent(message, systemId, userId) {
   return { type: "check", systemId, id: `finisher-check:${message.id}`, messageId: message.id, itemName: action, tokenId: message.speaker?.token, sceneId: message.speaker?.scene, targetUuid: context.target?.token, outcome: context.outcome };
 }
 
-// The catalog dropdown: the entry belongs to at most one finisher.
-export function linkFinisher(recipes, entryName, finisherId) {
+// The catalog dropdown: the entry belongs to at most one finisher. A given uuid is remembered
+// on that finisher for its Applies-to card; the finishers that lose the name forget its link.
+export function linkFinisher(recipes, entryName, finisherId, uuid) {
   const key = normalize(entryName);
   return recipes.map((r) => {
     if (!r?.finisher) return r;
     const kept = names(r).filter((n) => normalize(n) !== key);
-    if (r.id === finisherId) kept.push(String(entryName).trim());
+    const target = r.id === finisherId;
+    if (target) kept.push(String(entryName).trim());
     const match = kept.join(", ");
-    return match === String(r.match ?? "") ? r : { ...r, match };
+    const finisher = target && uuid ? linkFinisherItem(r.finisher, entryName, uuid) : target ? r.finisher : unlinkFinisherItem(r.finisher, entryName);
+    if (match === String(r.match ?? "") && finisher === r.finisher) return r;
+    return { ...r, match, finisher };
   });
+}
+
+// The item a name in Applies to was dropped from (display and opening only).
+export const finisherItemLink = (finisher, name) => finisher?.links?.[normalize(name)] ?? null;
+export function linkFinisherItem(finisher, name, uuid) {
+  const key = normalize(name);
+  if (!key || !uuid || finisher?.links?.[key] === uuid) return finisher;
+  return { ...finisher, links: { ...finisher?.links, [key]: String(uuid) } };
+}
+export function unlinkFinisherItem(finisher, name) {
+  const key = normalize(name);
+  if (!finisher?.links || !Object.hasOwn(finisher.links, key)) return finisher;
+  const { [key]: _gone, ...links } = finisher.links;
+  return { ...finisher, links };
 }
 
 // The Applies-to chips: the names in `match`, and adding or removing one case-insensitively, kept as "A, B".

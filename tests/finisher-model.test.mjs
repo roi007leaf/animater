@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -145,4 +145,44 @@ test("removeFinisherName drops a name whatever its case and keeps the rest", () 
   assert.equal(removeFinisherName("Shove,Greataxe", "Missing"), "Shove, Greataxe");
   assert.equal(removeFinisherName("", "Shove"), "");
   assert.equal(removeFinisherName(undefined, ""), "");
+});
+
+test("normalizeFinisher keeps valid item links by normalized name and drops junk", () => {
+  assert.equal(normalizeFinisher({}).links, undefined, "no links: the defaults are unchanged");
+  assert.equal(normalizeFinisher({ links: "Item.a" }).links, undefined);
+  assert.equal(normalizeFinisher({ links: [] }).links, undefined, "an array is not a link map");
+  assert.deepEqual(normalizeFinisher({ links: { greataxe: "Item.axe", " ": "Item.x", shove: 5, fire: "", ok: null, "Big_Axe": "Item.big" } }).links, { greataxe: "Item.axe", "big axe": "Item.big" });
+  assert.equal(normalizeFinisher({ links: { a: "x".repeat(400) } }).links.a.length, 300, "uuids are capped");
+  const many = Object.fromEntries(Array.from({ length: 60 }, (_, i) => [`n${i}`, `Item.${i}`]));
+  assert.equal(Object.keys(normalizeFinisher({ links: many }).links).length, 50, "at most 50 links");
+  const kept = { on: "use", links: { shove: "Item.s" } };
+  assert.deepEqual(normalizeFinisher(normalizeFinisher(kept)), normalizeFinisher(kept), "idempotent");
+});
+
+test("finisher item links are set, read and removed by name without mutating", () => {
+  const f = normalizeFinisher({});
+  const linked = linkFinisherItem(f, " Greataxe ", "Item.axe");
+  assert.notEqual(linked, f);
+  assert.equal(f.links, undefined, "the input is untouched");
+  assert.deepEqual(linked.links, { greataxe: "Item.axe" });
+  assert.equal(finisherItemLink(linked, "GREATAXE"), "Item.axe");
+  assert.equal(finisherItemLink(linked, "Shove"), null);
+  assert.equal(finisherItemLink(f, "Greataxe"), null);
+  assert.equal(finisherItemLink(undefined, "Greataxe"), null);
+  const both = linkFinisherItem(linked, "Shove", "Item.s");
+  const unlinked = unlinkFinisherItem(both, "greataxe");
+  assert.deepEqual(unlinked.links, { shove: "Item.s" });
+  assert.deepEqual(both.links, { greataxe: "Item.axe", shove: "Item.s" }, "unlinking copies");
+  assert.equal(unlinkFinisherItem(f, "Greataxe"), f, "nothing to remove: the same object");
+});
+
+test("the catalog dropdown stores the entry's uuid on its finisher and moves the link with the name", () => {
+  const list = [fin("a", "Shove, greataxe", { links: { greataxe: "Item.old" } }), fin("b", "Fireball")];
+  const moved = linkFinisher(list, "Greataxe", "b", "Compendium.pf2e.equipment-srd.Item.axe");
+  assert.equal(finisherItemLink(moved[1].finisher, "greataxe"), "Compendium.pf2e.equipment-srd.Item.axe");
+  assert.equal(finisherItemLink(moved[0].finisher, "greataxe"), null, "the old finisher forgets the link");
+  const plain = linkFinisher(list, "Fireball", "b");
+  assert.equal(plain[1], list[1], "no uuid and no change: same recipe");
+  const none = linkFinisher(moved, "Greataxe", "");
+  assert.equal(finisherItemLink(none[1].finisher, "Greataxe"), null, "unlinking drops the link");
 });

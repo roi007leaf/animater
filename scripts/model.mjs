@@ -43,7 +43,19 @@ export function normalizeFinisher(input = {}) {
     ending: pick(FINISHER_ENDINGS, input.ending, "body"),
     success: pick(FINISHER_SUCCESS, input.success, "success"),
     wall: pick(FINISHER_WALLS, input.wall, "fit"),
+    ...finisherLinks(input.links),
   };
+}
+// Applies-to item links, for showing and opening an item: normalized name → uuid. Matching stays by name.
+function finisherLinks(input) {
+  if (!input || typeof input !== "object" || Array.isArray(input)) return {};
+  const links = {};
+  for (const [name, uuid] of Object.entries(input)) {
+    const key = normalize(name);
+    if (!key || typeof uuid !== "string" || !uuid.trim() || Object.keys(links).length >= 50) continue;
+    links[key] = uuid.trim().slice(0, 300);
+  }
+  return Object.keys(links).length ? { links } : {};
 }
 export const KINDS = {
   cast: "Caster",
