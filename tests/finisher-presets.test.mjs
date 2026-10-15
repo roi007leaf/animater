@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { FINISHER_PRESETS, presetFinisher } from "../scripts/finisher-presets.mjs";
 import { installedAssets } from "../scripts/model.mjs";
+import { finisherTravelPath } from "../scripts/finisher-model.mjs";
 import { assetDatabases } from "../tools/asset-databases.mjs";
 
 const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall"];
@@ -19,11 +20,24 @@ test("every preset is a valid kill finisher the GM can save as their own", () =>
   }
 });
 
-test("flinging presets hold their travel so the token stays where it lands", () => {
+test("flinging presets travel on a held keyframed path that lands upright", () => {
   for (const id of ["launch", "skewer", "struck-down", "jolt", "blast"]) {
-    const r = presetFinisher(id, id);
-    assert.ok(r.finisher.knockback > 0, id);
-    assert.ok(r.stages.some((s) => s.kind === "motion" && s.motionEnd === "hold" && ["leap", "rush", "roll"].includes(s.motion)), id);
+    const r = presetFinisher(id, id), path = finisherTravelPath(r);
+    assert.ok(path, `${id} has a held travel path`);
+    const end = path.keyframes.at(-1);
+    assert.ok(Math.round(Math.max(Math.abs(end.x), Math.abs(end.y))) > 0, `${id} travels`);
+    assert.equal(((end.rotation % 360) + 360) % 360, 0, `${id} lands upright`);
+    assert.deepEqual([end.scale, end.alpha], [1, 1], `${id} lands at full size, visible`);
+  }
+});
+
+test("vanishing presets shrink or fade in place and stay gone until hidden", () => {
+  for (const id of ["ash", "shatter", "unmade", "melt", "ascend", "shaken-apart"]) {
+    const r = presetFinisher(id, id), path = finisherTravelPath(r);
+    assert.equal(r.finisher.ending, "vanish", id);
+    assert.ok(path, `${id} has a held path`);
+    assert.equal(Math.round(Math.max(Math.abs(path.keyframes.at(-1).x), Math.abs(path.keyframes.at(-1).y))), 0, `${id} stays in place`);
+    assert.equal(path.keyframes.at(-1).alpha, 0, `${id} ends invisible`);
   }
 });
 
