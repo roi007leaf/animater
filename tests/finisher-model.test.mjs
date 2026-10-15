@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, createFinishedMemory, critFinishers } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, createFinishedMemory, critFinishers, finishedKey, finishedMessage } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -249,4 +249,31 @@ test("a finisher plays once per target per action", () => {
   assert.equal(memory.has("msg1:t1"), true);
   now = 30001;
   assert.equal(memory.has("msg1:t1"), false, "forgotten after 30 s");
+});
+
+test("a finished mark can be retracted or consumed once", () => {
+  const memory = createFinishedMemory(30000, () => 0);
+  memory.mark("k");
+  memory.forget("k");
+  assert.equal(memory.has("k"), false, "a retracted mark is gone");
+  memory.mark("k");
+  assert.equal(memory.consume("k"), true);
+  assert.equal(memory.has("k"), false, "used once, then gone");
+  assert.equal(memory.consume("k"), false);
+});
+
+test("the finished key names the attacker, the target, the item and the finisher", () => {
+  assert.equal(finishedKey({ attackerId: "a", targetId: "t", itemUuid: "Actor.x.Item.i", recipeId: "r" }), "a:t:Actor.x.Item.i:r");
+  assert.equal(finishedKey({ attackerId: "a", targetId: "t", recipeId: "r" }), "a:t::r", "no item: an empty uuid");
+});
+
+test("a finished broadcast is read only when well formed", () => {
+  assert.deepEqual(finishedMessage({ type: "finisher-played", key: "a:t::r" }), { key: "a:t::r", played: true });
+  assert.deepEqual(finishedMessage({ type: "finisher-played", key: "a:t::r", played: false }), { key: "a:t::r", played: false });
+  assert.equal(finishedMessage({ type: "displace-commit", key: "a" }), null);
+  assert.equal(finishedMessage({ type: "finisher-played", key: 5 }), null);
+  assert.equal(finishedMessage({ type: "finisher-played", key: "" }), null);
+  assert.equal(finishedMessage({ type: "finisher-played", key: "x".repeat(401) }), null);
+  assert.equal(finishedMessage({ type: "finisher-played", key: "k", played: "no" }), null);
+  assert.equal(finishedMessage(null), null);
 });

@@ -148,5 +148,19 @@ export function createFinishedMemory(ttlMs = 30000, now = Date.now) {
   return {
     mark: (key) => seen.set(key, now()),
     has: (key) => { const at = seen.get(key); if (at === undefined) return false; if (now() - at > ttlMs) { seen.delete(key); return false; } return true; },
+    // A crit whose play never started takes its mark back.
+    forget: (key) => { seen.delete(key); },
+    // The kill uses the crit's mark once.
+    consume(key) { const held = this.has(key); seen.delete(key); return held; },
   };
+}
+// The crit's attack roll and the killing damage roll are separate messages (often on separate
+// clients), so one action is the attacker, the target, the item and the finisher played.
+export const finishedKey = ({ attackerId, targetId, itemUuid, recipeId }) => `${attackerId ?? ""}:${targetId ?? ""}:${itemUuid ?? ""}:${recipeId ?? ""}`;
+// Every client keeps the memory: a crit broadcasts its mark (played) or takes it back (played: false).
+export const FINISHED_MESSAGE = "finisher-played";
+export function finishedMessage(data) {
+  if (data?.type !== FINISHED_MESSAGE || typeof data.key !== "string" || !data.key || data.key.length > 400) return null;
+  if (data.played !== undefined && typeof data.played !== "boolean") return null;
+  return { key: data.key, played: data.played !== false };
 }

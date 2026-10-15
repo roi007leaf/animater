@@ -1402,7 +1402,7 @@ test("finishers off: an assigned use finisher does not play", async () => {
 
 // A killing blow on an NPC: a damage roll from "Ignition" aimed at the target token, then the
 // actor's HP drops to 0 through preUpdateActor/updateActor as Foundry fires them.
-async function killTarget(f, { finishers = [], defaultFinisher = "" } = {}) {
+async function killTarget(f, { finishers = [], defaultFinisher = "", crit = false } = {}) {
   foundry.utils.hasProperty ??= (object, path) => path.split(".").reduce((o, k) => (o && k in o ? o[k] : undefined), object) !== undefined;
   const npc = { id: "npc", type: "npc", system: { attributes: { hp: { value: 5 } } }, getActiveTokens: () => [f.target] };
   Object.assign(f.target, { name: "Orc", actor: npc, w: 100, h: 100 });
@@ -1412,7 +1412,7 @@ async function killTarget(f, { finishers = [], defaultFinisher = "" } = {}) {
   f.settings.set("defaultFinisher", defaultFinisher);
   f.settings.set("recipes", { schema: 1, recipes: finishers });
   await f.fire("createChatMessage", { id: "dmg", author: { id: "u" }, item: f.item, actor: f.actor, isRoll: true, rolls: [{ instances: [{ type: "fire", total: 9 }] }],
-    flags: { pf2e: { context: { type: "damage-roll", target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
+    flags: { pf2e: { context: { type: "damage-roll", ...(crit ? { outcome: "criticalSuccess" } : {}), target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
   const changes = { system: { attributes: { hp: { value: 0 } } } }, options = {};
   await f.fire("preUpdateActor", npc, changes, options);
   npc.system.attributes.hp.value = 0;
@@ -1474,7 +1474,13 @@ test("displace-commit: the GM writes for the sender who owns the attacker, never
 });
 
 // Players' picks: user u1 (not a GM) owns the actor; the item's animater.finisher flag names the pick.
-function playerOwns(f, { choice = "pick" } = {}) {
+// Stubbed globals are put back when the test ends.
+function stubGlobal(t, name, value) {
+  const had = Object.hasOwn(globalThis, name), before = globalThis[name];
+  globalThis[name] = value;
+  t.after(() => { if (had) globalThis[name] = before; else delete globalThis[name]; });
+}
+function playerOwns(t, f, { choice = "pick" } = {}) {
   game.users.set("u1", { id: "u1", isGM: false });
   f.actor.testUserPermission = (user, level) => user?.id === "u1" && level === "OWNER";
   const flags = choice ? { finisher: choice } : {};
@@ -1484,7 +1490,7 @@ function playerOwns(f, { choice = "pick" } = {}) {
     setFlag: async (scope, key, value) => { flags[key] = value; },
     unsetFlag: async (scope, key) => { delete flags[key]; },
   });
-  globalThis.fromUuidSync = (uuid) => (uuid === f.item.uuid ? f.item : null);
+  stubGlobal(t, "fromUuidSync", (uuid) => (uuid === f.item.uuid ? f.item : null));
   return flags;
 }
 const pickFin = (on, players = ["u1"], extra = {}) => ({ id: "pick", name: "Pick", trigger: "manual", match: "Ignition", finisher: { on, players, knockback: 0, ending: "body", ...extra }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 100, assets: [] }] });
@@ -1499,9 +1505,9 @@ function watchTarget(f) {
   return writes;
 }
 
-test("player pick: a crit plays the player's critical finisher on the surviving target, writing nothing", async () => {
+test("player pick: a crit plays the player's critical finisher on the surviving target, writing nothing", async (t) => {
   const f = await boot("pf2e");
-  playerOwns(f);
+  playerOwns(t, f);
   const writes = watchTarget(f);
   f.settings.set("finishers", true);
   f.settings.set("automatic", true);
@@ -1515,9 +1521,9 @@ test("player pick: a crit plays the player's critical finisher on the surviving 
   await f.api.stop();
 });
 
-test("player pick: a plain hit does not play a critical pick", async () => {
+test("player pick: a plain hit does not play a critical pick", async (t) => {
   const f = await boot("pf2e");
-  playerOwns(f);
+  playerOwns(t, f);
   watchTarget(f);
   f.settings.set("finishers", true);
   f.settings.set("automatic", true);
@@ -1527,9 +1533,9 @@ test("player pick: a plain hit does not play a critical pick", async () => {
   assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0);
 });
 
-test("GM crit finisher: with no player pick, a crit plays the item's critical finisher", async () => {
+test("GM crit finisher: with no player pick, a crit plays the item's critical finisher", async (t) => {
   const f = await boot("pf2e");
-  playerOwns(f, { choice: null });
+  playerOwns(t, f, { choice: null });
   watchTarget(f);
   f.settings.set("finishers", true);
   f.settings.set("automatic", true);
@@ -1542,27 +1548,27 @@ test("GM crit finisher: with no player pick, a crit plays the item's critical fi
   await f.api.stop();
 });
 
-test("player pick: a kill pick beats the GM's name-matched kill finisher", async () => {
+test("player pick: a kill pick beats the GM's name-matched kill finisher", async (t) => {
   const f = await boot("pf2e");
-  playerOwns(f);
+  playerOwns(t, f);
   const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill")] });
   assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
   assert.match(entries[0].detail, /Pick: Orc/);
   await f.api.stop();
 });
 
-test("player pick: a pick no longer given to the owner falls through to the GM's finisher", async () => {
+test("player pick: a pick no longer given to the owner falls through to the GM's finisher", async (t) => {
   const f = await boot("pf2e");
-  playerOwns(f);
+  playerOwns(t, f);
   const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill", ["u2"])] });
   assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
   assert.match(entries[0].detail, /GM drop: Orc/);
   await f.api.stop();
 });
 
-test("player pick: a crit that then kills plays the travel once and only adds the ending", async () => {
+test("player pick: a crit that then kills with critical damage plays the travel once and only adds the ending", async (t) => {
   const f = await boot("pf2e");
-  playerOwns(f);
+  playerOwns(t, f);
   const writes = watchTarget(f);
   f.target.actor.getActiveTokens = () => [f.target];
   f.settings.set("finishers", true);
@@ -1571,18 +1577,19 @@ test("player pick: a crit that then kills plays the travel once and only adds th
   await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
   await new Promise((resolve) => setTimeout(resolve, 250));
   assert.deepEqual(writes, []);
-  const entries = await killTarget(f, { finishers: [pickFin("criticalOrKill")] });
+  const entries = await killTarget(f, { finishers: [pickFin("criticalOrKill")], crit: true });
   assert.equal(entries.filter((e) => /^Pick: Orc$/.test(e.detail)).length, 1, JSON.stringify(f.api.activity()));
+  assert.equal(entries.filter((e) => /^Pick: Orc \(ending\)$/.test(e.detail)).length, 1);
   await new Promise((resolve) => setTimeout(resolve, 100));
   assert.equal(writes.filter((w) => w[0] === "status").length, 1, "the body ending marks it Defeated");
   await f.api.stop();
 });
 
-test("api.finishers: a player's choices, and setting or clearing an item's pick", async () => {
+test("api.finishers: a player's choices, and setting or clearing an item's pick", async (t) => {
   const f = await boot("pf2e");
-  const flags = playerOwns(f);
+  const flags = playerOwns(t, f);
   const changed = [];
-  Hooks.callAll = (name, ...args) => changed.push([name, ...args]);
+  stubGlobal(t, "Hooks", { ...globalThis.Hooks, callAll: (name, ...args) => changed.push([name, ...args]) });
   f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical"), { ...pickFin("kill", ["u2"]), id: "theirs", name: "Theirs" }] });
   assert.deepEqual(f.api.finishers.choices(f.item, { id: "u1" }), [{ id: "pick", name: "Pick", description: "", on: "critical" }]);
   assert.equal(f.api.finishers.getChoice(f.item), "pick");
@@ -1591,4 +1598,106 @@ test("api.finishers: a player's choices, and setting or clearing an item's pick"
   await f.api.finishers.setChoice(f.item, null);
   assert.equal(f.api.finishers.getChoice(f.item), null);
   assert.deepEqual(changed, [["animater.finisherChoiceChanged", f.item, null]]);
+});
+
+const finishedEmits = (f) => f.calls.filter((c) => c[0] === "socket" && c[2]?.type === "finisher-played").map((c) => c[2]);
+const pickRuns = (f) => f.api.activity().filter((e) => e.status === "Finisher" && /^Pick: Orc/.test(e.detail)).map((e) => e.detail);
+// Client A strikes the crit; client B applies the killing damage.
+async function critOnClientA(t) {
+  const a = await boot("pf2e");
+  playerOwns(t, a);
+  watchTarget(a);
+  a.settings.set("finishers", true);
+  a.settings.set("automatic", true);
+  a.settings.set("recipes", { schema: 1, recipes: [pickFin("criticalOrKill")] });
+  await a.fire("createChatMessage", strikeMessage(a, "crit", "criticalSuccess"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  await a.api.stop();
+  return finishedEmits(a);
+}
+async function killOnClientB(t, emits, { crit }) {
+  const b = await boot("pf2e");
+  playerOwns(t, b);
+  watchTarget(b);
+  b.target.actor.getActiveTokens = () => [b.target];
+  const receive = b.sockets.get("module.animater");
+  for (const data of emits) receive(data, "u1");
+  await killTarget(b, { finishers: [pickFin("criticalOrKill")], crit });
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  await b.api.stop();
+  return b;
+}
+
+test("two clients: the crit's mark reaches the killing client, whose critical blow plays only the ending", async (t) => {
+  const emits = await critOnClientA(t);
+  assert.deepEqual(emits.map((e) => [e.key, e.played]), [["t:target:Actor.a.Item.i:pick", true]], "the attacker's client broadcasts the mark");
+  const b = await killOnClientB(t, emits, { crit: true });
+  assert.deepEqual(pickRuns(b), ["Pick: Orc (ending)"], JSON.stringify(b.api.activity()));
+});
+
+test("two clients: a non-critical killing blow inside the window plays the full travel", async (t) => {
+  const emits = await critOnClientA(t);
+  const b = await killOnClientB(t, emits, { crit: false });
+  assert.deepEqual(pickRuns(b), ["Pick: Orc"], JSON.stringify(b.api.activity()));
+});
+
+test("finished marks: a malformed broadcast is ignored, and a mark is used once", async (t) => {
+  const key = "t:target:Actor.a.Item.i:pick";
+  const b = await killOnClientB(t, [{ type: "finisher-played", sender: "x", key: 42 }, { type: "finisher-played", sender: "x", key: "x".repeat(500) }], { crit: true });
+  assert.deepEqual(pickRuns(b), ["Pick: Orc"], "no valid mark: full travel");
+  const c = await killOnClientB(t, [{ type: "finisher-played", sender: "x", key, played: true }], { crit: true });
+  assert.deepEqual(pickRuns(c), ["Pick: Orc (ending)"]);
+  // The same client's next critical kill with that item: the mark is spent.
+  c.target.actor.system.attributes.hp.value = 5;
+  const again = await killTarget(c, { finishers: [pickFin("criticalOrKill")], crit: true });
+  assert.deepEqual(again.filter((e) => /^Pick: Orc/.test(e.detail)).map((e) => e.detail).sort(), ["Pick: Orc", "Pick: Orc (ending)"]);
+  await c.api.stop();
+});
+
+test("finished marks: a crit whose play never starts takes its mark back", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f);
+  watchTarget(f);
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  // No stage can play (its artwork is not installed), so nothing starts.
+  f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("critical"), stages: [{ kind: "cast", assets: [] }] }] });
+  await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.deepEqual(finishedEmits(f).map((e) => e.played), [true, false], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("crit finisher and GM use finisher on the same target: only the crit finisher moves it", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f);
+  watchTarget(f);
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical"), { ...pickFin("use", []), id: "gmuse", name: "GM use" }] });
+  await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const entries = f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail);
+  assert.deepEqual(entries, ["Pick: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("player pick: a kill pick that needs a critical does not play on a plain kill", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f);
+  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill", ["u1"], { success: "critical" })] });
+  assert.deepEqual(entries.map((e) => e.detail), ["GM drop: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("api.finishers: even a GM cannot pick a finisher that does not apply to the item", async (t) => {
+  const f = await boot("pf2e");
+  const flags = playerOwns(t, f);
+  stubGlobal(t, "Hooks", { ...globalThis.Hooks, callAll: () => {} });
+  f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical"), { ...pickFin("kill", []), id: "dagger", name: "Dagger only", match: "Dagger" }, { ...pickFin("kill", []), id: "gmonly", name: "GM only" }] });
+  assert.equal(game.user.isGM, true);
+  await assert.rejects(f.api.finishers.setChoice(f.item, "dagger"), /isn't available/);
+  assert.equal(flags.finisher, "pick");
+  await f.api.finishers.setChoice(f.item, "gmonly");
+  assert.equal(flags.finisher, "gmonly", "a GM may still pick one not given to the owners");
 });

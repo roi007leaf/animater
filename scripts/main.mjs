@@ -3,7 +3,7 @@ import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mj
 import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { displaceAllowed, landingSpot, withinKnockback } from "./displacement.mjs";
-import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, finisherFires, createFinishedMemory } from "./finisher-model.mjs";
+import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, finisherFires, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE, passesSuccess } from "./finisher-model.mjs";
 import { playFinisher } from "./finisher-play.mjs";
 import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
@@ -149,17 +149,34 @@ const pickFor = (item) => (item ? pickedFinisher(recipes(), { choiceId: item.get
 const finisherChoices = (item, user = game.user) => playerFinisherChoices(recipes(), { userId: user?.id, ...itemKeys(item) })
   .map((r) => ({ id: r.id, name: r.name, description: r.description ?? "", on: r.finisher.on }));
 // Other modules (pf2e-combater's item sheet) read and set an item's pick through api.finishers.
+// setChoice fires "animater.finisherChoiceChanged" (item, id) only on the client that changed it;
+// other clients see the item flag change through updateItem.
 const finishersApi = {
   choices: finisherChoices,
   getChoice: (item) => item?.getFlag?.(ID, "finisher") ?? null,
   async setChoice(item, id) {
     const user = game.user;
     if (!item || !(user?.isGM || item.isOwner)) throw new Error("Only the item's owner or a GM can choose its finisher.");
-    if (id !== null && !finisherChoices(item, user).some((c) => c.id === id) && !(user.isGM && recipes().some((r) => r?.id === id && r.finisher)))
+    // A GM may pick a finisher not given to the owners, but never one that does not apply to the item.
+    const fits = (r) => r?.id === id && r.finisher && r.enabled !== false && matchFinishers([r], itemKeys(item), r.finisher.on).length > 0;
+    if (id !== null && !finisherChoices(item, user).some((c) => c.id === id) && !(user.isGM && recipes().some(fits)))
       throw new Error("That finisher isn't available for this item.");
     if (id === null) await item.unsetFlag(ID, "finisher"); else await item.setFlag(ID, "finisher", id);
     Hooks.callAll("animater.finisherChoiceChanged", item, id);
   },
+};
+// One action plays a finisher once per target: a crit that then kills only adds the ending.
+// The crit plays on the attacker's client and the kill on the client that applied the damage,
+// so every client keeps the memory and a crit broadcasts its mark (or takes it back).
+const finished = createFinishedMemory();
+const announceFinished = (key, played) => {
+  if (played) finished.mark(key); else finished.forget(key);
+  game.socket?.emit?.(`module.${ID}`, { type: FINISHED_MESSAGE, sender: clientId, key, played });
+};
+const receiveFinished = (data) => {
+  const message = finishedMessage(data);
+  if (!message) return;
+  if (message.played) finished.mark(message.key); else finished.forget(message.key);
 };
 const ownPlayerRecipes = () => clone(game.user?.getFlag?.(ID, "playerRecipes")?.recipes ?? []);
 // The player whose animations the GM has open in the Studio, if any.
@@ -1081,7 +1098,7 @@ Hooks.once("ready", () => {
     trace:(status,detail)=>runtime?.trace(status,detail)});
   // Foundry's server relays a module event with the sender's user id as the second argument.
   game.socket?.on(`module.${ID}`, (data, senderId) => {
-    if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); flash?.receive(data); void receiveTeleport(data, senderId).catch((e) => console.warn("Animater teleport:", e.message)); void receiveDisplace(data, senderId).catch((e) => console.warn("Animater finisher:", e.message)); }
+    if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); flash?.receive(data); receiveFinished(data); void receiveTeleport(data, senderId).catch((e) => console.warn("Animater teleport:", e.message)); void receiveDisplace(data, senderId).catch((e) => console.warn("Animater finisher:", e.message)); }
   });
   Hooks.on("canvasTearDown", () => {
     void persistentStates?.clear();
@@ -1371,19 +1388,23 @@ Hooks.once("ready", () => {
     const dead = Number(mover.actor?.system?.attributes?.hp?.value) <= 0;
     return playFinisher({ recipe, mover, attacker, target, dead }, finisherHost(attacker)).catch((error) => { runtime.trace("Blocked", error.message); return null; });
   };
-  // One action plays a finisher once per target: a crit that then kills only adds the ending.
-  // The crit's attack roll and the killing damage roll are separate messages, so the key is the
-  // attacker, the target and the finisher played.
-  const finished = createFinishedMemory();
-  const finishedKey = (attackerId, targetId, recipe) => `${attackerId ?? ""}:${targetId ?? ""}:${recipe.id}`;
   // A critical hit: the owner's pick when it plays on crits, else the GM's critical finishers.
+  // Marks each target (on every client) and answers the targets and movers it started on.
   const playCritFinisher = (event, item) => {
+    const started = { targets: new Set(), movers: new Set() };
     const pick = pickFor(event.item);
     const recipe = pick ? (pick.finisher.on !== "use" && finisherFires(pick.finisher, { outcome: event.outcome, killed: false }) ? pick : null) : critFinishers(recipes(), item)[0];
-    if (!recipe) return;
-    for (const target of (event.targets ?? []).filter(Boolean)) finished.mark(finishedKey(event.source?.id, target.id, recipe));
-    const movers = recipe.finisher.mover === "source" ? [event.source] : event.targets ?? [];
-    for (const mover of movers.filter(Boolean)) void runFinisher(recipe, { mover, attacker: event.source, target: recipe.finisher.mover === "source" ? event.targets?.[0] ?? null : mover });
+    if (!recipe) return started;
+    const targets = (event.targets ?? []).filter(Boolean);
+    const keyOf = (target) => finishedKey({ attackerId: event.source?.id, targetId: target.id, itemUuid: item.itemUuid ?? "", recipeId: recipe.id });
+    for (const target of targets) { started.targets.add(target.id); announceFinished(keyOf(target), true); }
+    // A play that never started (blocked) takes its marks back, so the kill plays it in full.
+    const retract = (played, struck) => { if (played === null) for (const target of struck) announceFinished(keyOf(target), false); };
+    if (recipe.finisher.mover === "source") {
+      if (event.source) { started.movers.add(event.source); void runFinisher(recipe, { mover: event.source, attacker: event.source, target: targets[0] ?? null }).then((played) => retract(played, targets)); }
+      else retract(null, targets);
+    } else for (const mover of targets) { started.movers.add(mover); void runFinisher(recipe, { mover, attacker: event.source, target: mover }).then((played) => retract(played, [mover])); }
+    return started;
   };
   // Every successful use of an assigned item (the roll that has a degree of success, else the use).
   const finisherSeen = new Set();
@@ -1391,11 +1412,16 @@ Hooks.once("ready", () => {
     if (!event || !game.settings.get(ID, FINISHERS_SETTING) || !finisherMoment(event)) return;
     if (event.id) { if (finisherSeen.has(event.id)) return; finisherSeen.add(event.id); if (finisherSeen.size > 500) finisherSeen.delete(finisherSeen.values().next().value); }
     const item = { itemName: event.item?.name ?? event.itemName, itemSlug: event.item?.slug ?? event.item?.system?.slug, itemUuid: event.itemUuid ?? event.item?.uuid };
-    if (event.outcome === "criticalSuccess") playCritFinisher(event, item);
+    const crit = event.outcome === "criticalSuccess" ? playCritFinisher(event, item) : { targets: new Set(), movers: new Set() };
     for (const recipe of matchFinishers(recipes(), item, "use")) {
       if (!usePasses(recipe.finisher, event)) continue;
       const movers = recipe.finisher.mover === "source" ? [event.source] : event.targets ?? [];
-      for (const mover of movers.filter(Boolean)) void runFinisher(recipe, { mover, attacker: event.source, target: event.targets?.[0] ?? null });
+      for (const mover of movers.filter(Boolean)) {
+        // A crit finisher already moves this target (or this mover) in this action: one finisher per token.
+        const struck = recipe.finisher.mover === "source" ? event.targets?.[0] : mover;
+        if (crit.movers.has(mover) || (struck && crit.targets.has(struck.id))) continue;
+        void runFinisher(recipe, { mover, attacker: event.source, target: event.targets?.[0] ?? null });
+      }
     }
   };
   // The killing blow on an NPC: the killing item's kill finisher, else the default finisher.
@@ -1405,11 +1431,14 @@ Hooks.once("ready", () => {
     const by = recallAttribution(damageLog, ids) ?? recallDamage(damageLog, ids);
     const attacker = by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null;
     // The owner's pick for the killing item wins over the GM's finishers when it plays on this kill.
-    const pick = pickFor(killingItem(by, attacker));
-    const recipe = pick && pick.finisher.on !== "use" && finisherFires(pick.finisher, { outcome: by?.crit ? "criticalSuccess" : "success", killed: true }) ? pick
+    const pick = pickFor(killingItem(by, attacker)), outcome = by?.crit ? "criticalSuccess" : "success";
+    // "Needs: Critical only" holds for a pick as it does for the GM's kill finishers.
+    const recipe = pick && pick.finisher.on !== "use" && finisherFires(pick.finisher, { outcome, killed: true }) && passesSuccess(pick.finisher, outcome) ? pick
       : killFinisher(recipes(), { itemUuid: by?.itemUuid, itemName: by?.itemName }, game.settings.get(ID, DEFAULT_FINISHER), { crit: by?.crit === true });
     // The crit already played this finisher's travel on this token: only its ending is left.
-    const endingOnly = Boolean(recipe) && finished.has(finishedKey(by?.sourceTokenId, token.id, recipe));
+    // Only a critical killing blow is that crit's own damage; the mark is used once.
+    const endingOnly = Boolean(recipe) && by?.crit === true
+      && finished.consume(finishedKey({ attackerId: by?.sourceTokenId, targetId: token.id, itemUuid: by?.itemUuid ?? "", recipeId: recipe.id }));
     return recipe && { recipe, attacker, endingOnly };
   };
   // The item that struck the killing blow, from the damage roll's origin.
