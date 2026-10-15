@@ -1844,6 +1844,75 @@ test("save: a crit-failed save that the spell's (non-critical) damage then kills
   await f.api.stop();
 });
 
+// A save reaction is logged once its motion (up to 1.1 s) has played out.
+const saveReactions = (f) => f.api.activity().filter((e) => /^Saving throw/.test(e.recipe ?? ""));
+const reactionWindow = () => new Promise((resolve) => setTimeout(resolve, 1500));
+test("save: a crit finisher on the saver skips its save reaction (one animation per token)", async () => {
+  const f = await boot("pf2e");
+  saveSetup(f, [gmCrit()]);
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await reactionWindow();
+  assert.deepEqual(f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail), ["GM crit: Orc"], JSON.stringify(f.api.activity()));
+  assert.deepEqual(saveReactions(f), [], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("save: a crit-failed save with no crit finisher still plays its save reaction", async () => {
+  const f = await boot("pf2e");
+  saveSetup(f, [killFin("burn", "Burn up", "Ignition")]);
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await reactionWindow();
+  assert.equal(saveReactions(f).length, 1, JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("save: a player's crit-or-kill pick that needs a critical ends the crit-failed saver on the spell's plain damage", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f);
+  const pick = pickFin("criticalOrKill", ["u1"], { success: "critical" });
+  saveSetup(f, [pick]);
+  f.target.actor.getActiveTokens = () => [f.target];
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const entries = await killTarget(f, { finishers: [pick] });
+  assert.deepEqual(entries.map((e) => e.detail).sort(), ["Pick: Orc", "Pick: Orc (ending)"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("save: an NPC's crit finisher that needs a critical ends the saver on plain damage, and the default does not replay a travel", async () => {
+  const f = await boot("pf2e");
+  const crit = { ...gmCrit(), finisher: { ...gmCrit().finisher, success: "critical" } };
+  saveSetup(f, [crit]);
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const entries = await killTarget(f, { finishers: [crit, killFin("def", "Default drop", "")], defaultFinisher: "def" });
+  assert.deepEqual(entries.map((e) => e.detail).sort(), ["GM crit: Orc", "GM crit: Orc (ending)"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("save: a GM critical-only finisher's travel is not replayed by the default finisher on the kill", async () => {
+  const f = await boot("pf2e");
+  const crit = { ...gmCrit(), finisher: { ...gmCrit().finisher, on: "critical" } };
+  saveSetup(f, [crit]);
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const entries = await killTarget(f, { finishers: [crit, killFin("def", "Default drop", "")], defaultFinisher: "def" });
+  assert.deepEqual(entries.map((e) => e.detail).sort(), ["Default drop: Orc (ending)", "GM crit: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("save: a player caster's spell that cannot be found plays no GM crit finisher", async (t) => {
+  const f = await boot("pf2e");
+  game.users.set("u1", { id: "u1", isGM: false });
+  f.actor.testUserPermission = (user, level) => user?.id === "u1" && level === "OWNER";
+  stubGlobal(t, "fromUuid", async (uuid) => (uuid === "Scene.s.Token.target" ? { object: f.target } : null));
+  saveSetup(f, [{ ...gmCrit(), itemUuid: f.item.uuid }]);
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
 test("kill path: an unknown killing item from a player's token plays no finisher, not even the default", async (t) => {
   const f = await boot("pf2e");
   game.users.set("u1", { id: "u1", isGM: false });

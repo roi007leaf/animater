@@ -265,6 +265,8 @@ function environment() {
 }
 function sourceFor(event) {
   if (event.source) return event.source.object ?? event.source;
+  // A save against the saver's own effect: no attacker, not even the item actor's token.
+  if (event.noSource) return null;
   if (event.sceneId && event.sceneId !== canvas.scene?.id) return null;
   if (event.tokenId) return canvas.tokens?.get(event.tokenId) ?? null;
   const actorId = event.actor?.id ?? event.item?.actor?.id;
@@ -1410,7 +1412,9 @@ Hooks.once("ready", () => {
   // the ids of the targets it started on.
   const playCritFinisher = (event, item, struck) => {
     const started = new Set();
-    const recipe = playerItem(event.item) ? pickPlays(pickFor(event.item), "crit", { outcome: "criticalSuccess" }) : critFinishers(recipes(), item)[0];
+    // A save against a player caster's spell that cannot be found is still that player's: no GM finisher.
+    const players = event.item ? playerItem(event.item) : event.type === "save" && ownerUsers(event.source?.actor).length > 0;
+    const recipe = players ? pickPlays(pickFor(event.item), "crit", { outcome: "criticalSuccess" }) : critFinishers(recipes(), item)[0];
     if (!recipe) return started;
     const keyOf = (target) => finishedKey({ attackerId: event.source?.id, targetId: target.id, itemUuid: item.itemUuid ?? "", recipeId: recipe.id, save: event.type === "save" });
     for (const mover of struck) {
@@ -1423,6 +1427,7 @@ Hooks.once("ready", () => {
   };
   // Every successful use of an assigned item (the roll that has a degree of success, else the use),
   // and every target it critically struck (a critical roll, or a critically failed save against it).
+  // Answers the ids of the targets a crit finisher started on.
   const finisherSeen = new Set();
   playUseFinishers = async (event) => {
     const struck = critTargets(event), moment = finisherMoment(event);
@@ -1430,7 +1435,7 @@ Hooks.once("ready", () => {
     if (event.id) { if (finisherSeen.has(event.id)) return; finisherSeen.add(event.id); if (finisherSeen.size > 500) finisherSeen.delete(finisherSeen.values().next().value); }
     const item = { itemName: event.item?.name ?? event.itemName, itemSlug: event.item?.slug ?? event.item?.system?.slug, itemUuid: event.itemUuid ?? event.item?.uuid };
     const crit = struck.length ? playCritFinisher(event, item, struck) : new Set();
-    if (!moment) return;
+    if (!moment) return crit;
     // A player's item: only its owner's use pick. An NPC's item: the GM's use finishers.
     const uses = playerItem(event.item) ? [pickPlays(pickFor(event.item), "use", { event })].filter(Boolean)
       : matchFinishers(recipes(), item, "use").filter((recipe) => usePasses(recipe.finisher, event));
@@ -1438,6 +1443,7 @@ Hooks.once("ready", () => {
       // A crit finisher already moves this target in this action: one finisher per token.
       if (!crit.has(mover.id)) void runFinisher(recipe, { mover, attacker: event.source });
     }
+    return crit;
   };
   // The killing blow on an NPC: the killing item's kill finisher, else the default finisher.
   const killFinisherFor = (actor, token) => {
@@ -1446,19 +1452,26 @@ Hooks.once("ready", () => {
     const by = recallAttribution(damageLog, ids) ?? recallDamage(damageLog, ids);
     const attacker = by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null;
     // A player's killing item plays only its owner's pick ("None" or no pick: no finisher, not even
-    // the default); "Needs: Critical only" holds for it. An item that cannot be found, struck by a
+    // the default); "Needs: Only on a critical" holds for it. An item that cannot be found, struck by a
     // player's token, is still a player's kill: no finisher. An NPC's item, or no known item and no
     // known attacker, keeps the GM's kill finishers and the default finisher.
-    const struck = killingItem(by, attacker), outcome = by?.crit ? "criticalSuccess" : "success";
+    const struck = killingItem(by, attacker);
     const players = struck ? playerItem(struck) : ownerUsers(attacker?.actor).length > 0;
-    const recipe = players ? pickPlays(pickFor(struck), "kill", { outcome })
-      : killFinisher(recipes(), { itemUuid: by?.itemUuid, itemName: by?.itemName }, game.settings.get(ID, DEFAULT_FINISHER), { crit: by?.crit === true });
-    // The crit already played this finisher's travel on this token: only its ending is left.
-    // A critical killing blow is that crit's own damage; a critically failed save is ended by the
-    // spell's own (non-critical) damage. The mark is used once.
-    const key = recipe && { attackerId: by?.sourceTokenId, targetId: token.id, itemUuid: by?.itemUuid ?? "", recipeId: recipe.id };
-    const endingOnly = Boolean(recipe) && finished.consume(finishedKey({ ...key, save: by?.crit !== true }));
-    return recipe && { recipe, attacker, endingOnly };
+    const pick = players ? pickFor(struck) : null, item = { itemUuid: by?.itemUuid, itemName: by?.itemName };
+    // A critically failed save against this item left its crit finisher's mark on this token: the
+    // spell's own (non-critical) damage is that crit's killing blow, so the kill counts as critical.
+    const base = { attackerId: by?.sourceTokenId, targetId: token.id, itemUuid: by?.itemUuid ?? "" };
+    const critIds = (players ? [pick] : critFinishers(recipes(), item)).filter(Boolean).map((r) => r.id);
+    const saveKey = critIds.map((recipeId) => finishedKey({ ...base, recipeId, save: true })).find((key) => finished.has(key));
+    const crit = by?.crit === true || Boolean(saveKey);
+    const recipe = players ? pickPlays(pick, "kill", { outcome: crit ? "criticalSuccess" : "success" })
+      : killFinisher(recipes(), item, game.settings.get(ID, DEFAULT_FINISHER), { crit });
+    if (!recipe) return null;
+    // The crit already played a finisher's travel on this token: only an ending is left. A critical
+    // killing blow is that crit's own damage (the same finisher's mark); after a save crit, whichever
+    // finisher the kill chose (the default included) only ends it, never travels again. Marks are used once.
+    const endingOnly = saveKey ? finished.consume(saveKey) : by?.crit === true && finished.consume(finishedKey({ ...base, recipeId: recipe.id }));
+    return { recipe, attacker, endingOnly };
   };
   // The item that struck the killing blow, from the damage roll's origin.
   const killingItem = (by, attacker) => {
@@ -1516,10 +1529,15 @@ Hooks.once("ready", () => {
       if (check && !yieldsToAA(check)) void afterDice(check).then(() => enrich(check)).then((e) => e && !yieldsToAA(e) && playUseFinishers(e)).catch((error) => runtime.trace("Blocked", error.message));
       // A save against a spell or effect: a critical failure is a crit finisher on the saver.
       const saved = acceptsEvents() ? saveFinisherEvent(message, game.system.id, game.user.id) : null;
-      if (saved) void afterDice(saved).then(() => enrich(saved)).then((e) => e && !yieldsToAA(e) && playUseFinishers(e)).catch((error) => runtime.trace("Blocked", error.message));
-      // A saving throw against a spell or effect: the saving creature reacts by degree.
+      const critStarted = saved ? afterDice(saved).then(() => enrich(saved)).then((e) => (e && !yieldsToAA(e) ? playUseFinishers(e) : null))
+        .catch((error) => { runtime.trace("Blocked", error.message); return null; }) : null;
+      // A saving throw against a spell or effect: the saving creature reacts by degree, unless a crit
+      // finisher started on it from this save (one animation per token per action: the finisher wins).
       const save = (message.author?.id ?? message.user?.id) === game.user.id ? twoeSaveOutcome(message, game.system.id) : null;
-      if (save) return void playSaveReaction(save, message.speaker?.token, message.id, message.speaker?.scene);
+      if (save) {
+        const saver = message.speaker?.token;
+        return void Promise.resolve(critStarted).then((started) => { if (!started?.has?.(saver)) return playSaveReaction(save, saver, message.id, message.speaker?.scene); });
+      }
       void dispatch((game.system.id==="sf2e"?sf2eEvent:pf2eEvent)(message, game.user.id));
     });
     // A sustained spell's effect on its caster ends (expired, dismissed, not

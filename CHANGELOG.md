@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Players' finishers: the GM gives finishers to players (Available to), and each player picks one per item (pf2e-combater's item sheet, or `api.finishers`). An item on a player-owned actor plays only its owner's pick, per its Plays on (critical, kill, critical or kill, or use); with no pick or "None" it plays no finisher, not even the default. NPC items keep the GM's Applies-to matching and the default finisher.
+- Finishers move only their targets: the "Moves" choice is gone. A finisher saved with "Moves: the attacker" loads as a target finisher, but its stages still move the caster token, so it no longer flings anything; re-make its travel on the target. Crits count per target, and in PF2e/SF2e a critically failed save against a spell plays the caster's crit finisher on that saver (in place of its save reaction); the spell's own damage that then kills it plays only the ending.
 - `api.play` (and so Trigger Engine automations) and the studio's test play now play a finisher recipe composed, as a finisher plays it: aimed away from the attacker, cut short at walls, landing pinned and ending held, still without writing anything to the token. Before, they played it raw.
 
 - Token fragments (new token motion): the real token's artwork splits into halves along the swing, top and bottom, spinning shards or blowing dust — drawn on every client from the token's own image while the real token stays out of sight. New finisher presets: Slice in half, Bisect, Shatter into shards, Disintegrate, Sky launch, Ragdoll tumble, Vortex spiral and Pancake.

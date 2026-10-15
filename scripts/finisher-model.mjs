@@ -16,7 +16,7 @@ export function matchFinishers(recipes, { itemName, itemSlug, itemUuid } = {}, o
 const matchAny = (recipes, item, ons) => live(recipes).filter((r) => ons.includes(r.finisher.on) && matchFinishers([r], item, r.finisher.on).length);
 
 // The killing item's own kill (or crit-or-kill) finisher wins; otherwise the GM's default, if it
-// is a finisher. "Needs: Critical only" holds for both: without a crit they are passed over.
+// is a finisher. "Needs: Only on a critical" holds for both: without a crit they are passed over.
 export function killFinisher(recipes, item = {}, defaultId = "", { crit = false } = {}) {
   const fits = (r) => passesSuccess(r.finisher, crit ? "criticalSuccess" : "success");
   return matchAny(recipes, item, ["kill", "criticalOrKill"]).find(fits) ?? live(recipes).find((r) => r.id === defaultId && fits(r)) ?? null;
@@ -63,15 +63,17 @@ export function checkFinisherEvent(message, systemId, userId) {
 // PF2e/SF2e: a creature's saving throw against a spell or effect. The saver (the speaker, also
 // context.target) is the one struck; the caster is context.origin.token, a token uuid. The spell is
 // flags.<system>.origin.uuid, which carries the caster's finisher pick. Without a resolvable caster
-// token there is no tokenId (the item's actor may stand in); a save against itself has no attacker.
+// token there is no tokenId (the item's actor may stand in); a save against itself has no attacker
+// (noSource). Only a critically failed save can start a finisher, so the others are not events.
 export function saveFinisherEvent(message, systemId, userId) {
   const flags = message?.flags?.[systemId], context = flags?.context, speaker = message?.speaker ?? {};
-  if ((message?.author?.id ?? message?.user?.id) !== userId || context?.type !== "saving-throw") return null;
+  if ((message?.author?.id ?? message?.user?.id) !== userId || context?.type !== "saving-throw" || context.outcome !== "criticalFailure") return null;
   if (message.blind || message.whisper?.length || context.isReroll || !flags.origin?.uuid) return null;
   const saver = context.target?.token ?? (speaker.scene && speaker.token ? `Scene.${speaker.scene}.Token.${speaker.token}` : null);
   if (!saver) return null;
-  const caster = context.origin?.token && context.origin.token !== saver ? /Token.([^.]+)$/.exec(context.origin.token)?.[1] : undefined;
-  return { type: "save", systemId, id: `finisher-save:${message.id}`, messageId: message.id, itemUuid: flags.origin.uuid, tokenId: caster, sceneId: speaker.scene, targetUuid: saver, outcome: context.outcome };
+  const self = context.origin?.token === saver;
+  const caster = context.origin?.token && !self ? /Token.([^.]+)$/.exec(context.origin.token)?.[1] : undefined;
+  return { type: "save", systemId, id: `finisher-save:${message.id}`, messageId: message.id, itemUuid: flags.origin.uuid, tokenId: caster, sceneId: speaker.scene, targetUuid: saver, outcome: context.outcome, ...(self ? { noSource: true } : {}) };
 }
 
 // The targets a use critically struck, which its crit finisher plays on: every target of a

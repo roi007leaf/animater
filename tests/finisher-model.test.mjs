@@ -122,9 +122,12 @@ test("a saving throw against a spell is a finisher event: the saver is the targe
   assert.equal(lost.tokenId, undefined, "a caster without a token: no attacker token (the item's actor may stand in)");
   const self = saveFinisherEvent(saveMessage("criticalFailure", { origin: { actor: "Actor.orc", token: "Scene.s.Token.orc" } }), "pf2e", "u");
   assert.equal(self.tokenId, undefined, "the saver is never its own attacker");
+  assert.equal(self.noSource, true, "a save against itself has no attacker at all (not the item actor's token)");
+  assert.equal(lost.noSource, undefined, "a caster without a token may still be stood in for");
   const speakerOnly = saveMessage("criticalFailure"); delete speakerOnly.flags.pf2e.context.target;
   assert.equal(saveFinisherEvent(speakerOnly, "pf2e", "u").targetUuid, "Scene.s.Token.orc", "the speaker's token is the saver");
-  assert.equal(saveFinisherEvent({ ...saveMessage("failure"), flags: { sf2e: saveMessage("failure").flags.pf2e } }, "sf2e", "u").systemId, "sf2e");
+  assert.equal(saveFinisherEvent({ ...saveMessage("criticalFailure"), flags: { sf2e: saveMessage("criticalFailure").flags.pf2e } }, "sf2e", "u").systemId, "sf2e");
+  for (const outcome of ["criticalSuccess", "success", "failure", undefined]) assert.equal(saveFinisherEvent(saveMessage(outcome), "pf2e", "u"), null, `a ${outcome} save can start no finisher`);
 });
 
 test("critTargets: a critical attack or check strikes all its targets; a save, only a critically failed saver", () => {
