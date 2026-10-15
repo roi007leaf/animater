@@ -153,3 +153,158 @@ test("changing Plays on re-renders the settings, so Needs shows or hides", () =>
   assert.equal(renders, 1);
   assert.doesNotMatch(finisherSettingsHTML(r), /data-field="finisher\.success"/);
 });
+
+// ---- Finishers page polish ----
+import { finisherGlyphSVG, FINISHER_PRESET_GROUPS } from "../scripts/finisher-ui.mjs";
+import { FINISHER_PRESETS, presetFinisher } from "../scripts/finisher-presets.mjs";
+
+const pathStage = (keyframes, extra = {}) => ({ stageId: "fly", kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes, ...extra });
+const kf = (at, x = 0, y = 0, extra = {}) => ({ at, x, y, rotation: 0, scale: 1, alpha: 1, stretch: 0, ease: "linear", sharp: false, ...extra });
+const withStages = (r, stages) => ({ ...r, stages });
+const kindOf = (svg) => /^<svg[^>]*data-kind="([^"]+)"/.exec(svg)?.[1];
+
+test("finisherGlyphSVG draws a travel path with a moving dot, fading when the path ends invisible", () => {
+  const r = withStages(fin("a", "X"), [pathStage([kf(0), kf(0.5, 1.5, 0.5), kf(1, 3, 0, { alpha: 0 })])]);
+  const svg = finisherGlyphSVG(r, { size: 40 });
+  assert.match(svg, /^<svg [^>]*viewBox="0 0 100 50"/);
+  assert.equal(kindOf(svg), "travel");
+  assert.match(svg, /width="80" height="40"/);
+  const trail = svg.match(/<path class="an-glyph-trail" d="M[^"]+"/);
+  assert.ok(trail, "a glowing trail");
+  assert.equal((trail[0].match(/L/g) ?? []).length, 23, "24 samples");
+  assert.match(svg, /<animateMotion [^>]*path="M/);
+  assert.match(svg, /attributeName="opacity" values="1;1;0/, "fades out at the end");
+  assert.doesNotMatch(finisherGlyphSVG(withStages(fin("b", "X"), [pathStage([kf(0), kf(1, 3, 0)])])), /attributeName="opacity"/, "a visible end does not fade");
+  assert.doesNotMatch(svg, /an-glyph-wall/);
+  assert.doesNotMatch(svg, /NaN|undefined/);
+});
+
+test("finisherGlyphSVG adds a wall bar when the finisher slams into walls", () => {
+  const r = withStages(fin("a", "X", { wall: "slam" }), [pathStage([kf(0), kf(1, 6, 0)])]);
+  const svg = finisherGlyphSVG(r);
+  assert.equal(kindOf(svg), "travel");
+  assert.match(svg, /<line class="an-glyph-wall" /);
+  assert.doesNotMatch(svg, /NaN/);
+});
+
+test("finisherGlyphSVG splits the token for every fragment pattern", () => {
+  for (const pattern of ["halves", "topBottom", "shards", "dust"]) {
+    const r = withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", pattern, pieces: pattern === "dust" ? 16 : pattern === "shards" ? 5 : 2 }]);
+    const svg = finisherGlyphSVG(r);
+    assert.equal(kindOf(svg), "fragments", pattern);
+    assert.match(svg, new RegExp(`data-pattern="${pattern}"`), pattern);
+    const pieces = svg.match(/<polygon class="an-glyph-piece"/g) ?? [];
+    assert.ok(pieces.length >= (pattern === "dust" ? 8 : 2), `${pattern}: ${pieces.length} pieces`);
+    assert.match(svg, /<animateTransform [^>]*type="translate"/, pattern);
+    assert.doesNotMatch(svg, /NaN|undefined/, pattern);
+  }
+});
+
+test("finisherGlyphSVG pulses an in-place path by its scale, rotation and alpha", () => {
+  const r = withStages(fin("a", "X"), [pathStage([kf(0), kf(0.5, 0, 0, { rotation: 360, scale: 0.6 }), kf(1, 0, 0, { rotation: 720, scale: 0.05, alpha: 0 })])]);
+  const svg = finisherGlyphSVG(r);
+  assert.equal(kindOf(svg), "inplace");
+  assert.match(svg, /type="scale" values="1;[^"]*0\.05"/);
+  assert.match(svg, /type="rotate" values="0;[^"]*720"/);
+  assert.match(svg, /attributeName="opacity" values="1;[^"]*;0"/);
+  assert.doesNotMatch(svg, /NaN|undefined/);
+});
+
+test("finisherGlyphSVG draws an arrow away from the attacker for knockback-only finishers", () => {
+  const r = withStages(fin("a", "X", { knockback: 2 }), [{ stageId: "fall", kind: "motion", motion: "collapse", subject: "targets" }]);
+  const svg = finisherGlyphSVG(r);
+  assert.equal(kindOf(svg), "knockback");
+  assert.match(svg, /class="an-glyph-attacker"/);
+  assert.match(svg, /class="an-glyph-arrow"/);
+  assert.doesNotMatch(svg, /NaN|undefined/);
+});
+
+test("finisherGlyphSVG is deterministic, static under reduced motion, and tinted with a validated colour", () => {
+  for (const id of Object.keys(FINISHER_PRESETS)) {
+    const a = finisherGlyphSVG(presetFinisher(id, "p")), b = finisherGlyphSVG(presetFinisher(id, "p"));
+    assert.equal(a, b, id);
+    assert.doesNotMatch(a, /NaN|undefined|Infinity/, id);
+    assert.match(a, /<g class="an-glyph-anim">[^]*<g class="an-glyph-still">/, `${id}: a static twin for reduced motion`);
+  }
+  assert.match(finisherGlyphSVG({ ...fin("a", "X"), color: "#12abef" }), /style="--glyph:#12abef"/);
+  const bad = finisherGlyphSVG({ ...fin("a", "X"), color: `red"><script>alert(1)</script>` });
+  assert.doesNotMatch(bad, /<script>|red"/);
+  assert.match(bad, /style="--glyph:#9e8aff"/, "an invalid colour falls back");
+});
+
+const pageOf = (recipes, { players = [], itemSummary, def = "" } = {}) => finishersPageHTML({ studio: false, listedRecipes: () => recipes, host: { recipes: () => recipes, defaultFinisher: () => def, players: () => players, itemSummary } });
+
+test("finisher cards show the Plays on badge, an Off badge when disabled, and a glyph", () => {
+  const html = pageOf([fin("a", "X", { on: "critical" }), { ...fin("b", "Y"), enabled: false }]);
+  assert.match(html, /<span class="an-fcard-badge">Critical hit<\/span>/);
+  assert.equal(html.match(/an-fcard-badge is-off">Off</g).length, 1);
+  assert.match(html, /<div class="an-art an-fcard-art"><svg /);
+  assert.doesNotMatch(html, /✸/);
+});
+
+test("finisher cards show labelled Ending, Knockback or Travels, and Players pills", () => {
+  const travel = withStages(fin("t", "X", { ending: "stay" }), [pathStage([kf(0), kf(1, 3, 0)])]);
+  const players = [{ id: "u1", name: "Oded", color: "#ff0000" }, { id: "u2", name: "Guy", color: "#00ff00" }];
+  const html = pageOf([fin("a", "X", { ending: "vanish", knockback: 2, players: ["u1", "u2"] }), fin("b", "Y", { ending: "body" }), travel], { players });
+  assert.match(html, /<span class="an-pill">Ending: Vanish<\/span>/);
+  assert.match(html, /<span class="an-pill">Ending: Body<\/span>/);
+  assert.match(html, /<span class="an-pill">Ending: Stay<\/span>/);
+  assert.match(html, /<span class="an-pill">Knockback: 2 sq<\/span>/);
+  assert.match(html, /<span class="an-pill">Knockback: none<\/span>/);
+  assert.match(html, /<span class="an-pill">Travels 3 sq<\/span>/);
+  assert.match(html, /<span class="an-pill an-pill-players">Players: <i class="an-player-dot" style="background:#ff0000"><\/i>Oded, <i class="an-player-dot" style="background:#00ff00"><\/i>Guy<\/span>/);
+  assert.match(pageOf([fin("a", "X", { players: ["*"] })], { players }), /<span class="an-pill an-pill-players">All players<\/span>/);
+  assert.match(pageOf([fin("a", "X")], { players }), /<span class="an-pill an-pill-players">GM only<\/span>/);
+});
+
+test("finisher cards show at most three Applies-to chips, then +N, with linked icons", () => {
+  const r = fin("a", "Greataxe, Shove, Trip, Grapple, Disarm", { links: { greataxe: "Item.axe" } });
+  const html = pageOf([r], { itemSummary: (uuid) => (uuid === "Item.axe" ? { name: "Greataxe", img: "axe.webp" } : null) });
+  assert.equal(html.match(/class="an-fcard-chip"/g).length, 3);
+  assert.match(html, /<span class="an-fcard-chip"><img src="axe\.webp" alt="">Greataxe<\/span>/);
+  assert.match(html, /<span class="an-fcard-chip"><img src="icons\/svg\/item-bag\.svg" alt="">Shove<\/span>/);
+  assert.match(html, /<span class="an-fcard-chip is-more">\+2<\/span>/);
+  assert.doesNotMatch(html, /Grapple/);
+  assert.doesNotMatch(pageOf([fin("a", "A, B")]), /is-more/);
+  assert.match(pageOf([fin("a", "")]), /Not assigned yet/);
+});
+
+test("finisher cards keep the open action and add Edit and Duplicate quick actions", () => {
+  const html = pageOf([fin("a", "X")]);
+  assert.match(html, /<button type="button" data-action="select" data-id="a" class="an-fcard-open"/);
+  assert.match(html, /<button type="button" data-action="select" data-id="a" class="an-fcard-quick">Edit<\/button>/);
+  assert.match(html, /<button type="button" data-action="recipe-menu-duplicate" data-id="a" class="an-fcard-quick">Duplicate<\/button>/);
+  assert.doesNotMatch(html, /<button[^>]*>(?:(?!<\/button>)[^])*<button/, "no button inside a button");
+  assert.match(html, /<div class="an-grid an-fcard-grid">/);
+});
+
+test("presets are grouped Flung, In place and Pieces, covering every preset key exactly once", () => {
+  assert.deepEqual(Object.keys(FINISHER_PRESET_GROUPS), ["Flung", "In place", "Pieces"]);
+  const keys = Object.values(FINISHER_PRESET_GROUPS).flat();
+  assert.deepEqual([...keys].sort(), Object.keys(FINISHER_PRESETS).sort());
+  assert.equal(new Set(keys).size, keys.length);
+  const html = pageOf([]);
+  for (const [group, ids] of Object.entries(FINISHER_PRESET_GROUPS)) {
+    assert.match(html, new RegExp(`<h3 class="an-preset-heading">${group}</h3>`));
+    for (const id of ids) assert.equal(html.match(new RegExp(`data-preset="${id}"`, "g")).length, 1, id);
+  }
+  assert.match(html, /<button type="button" data-action="new-finisher" data-preset="launch" data-tooltip="Sent flying, crashes down in a cloud of dust\." class="an-preset-tile"><svg [^]*?<span>Launch<\/span><\/button>/);
+  assert.match(html, /<button type="button" data-action="new-finisher" class="an-preset-tile is-blank">\+ Blank finisher<\/button>/);
+});
+
+test("the Finishers page has a sub-header, a compact default row with its hint, and a friendly empty state", () => {
+  const html = pageOf([fin("a", "X")], { def: "a" });
+  assert.match(html, /<div class="an-finishers-sub"><span>1 finisher<\/span><small>/);
+  assert.match(html, /<label class="an-finisher-default"><span>Default finisher for other kills<\/span><select data-finisher-default>/);
+  assert.match(html, /<p class="an-hint">Plays for NPC kills when no finisher matches the item\.<\/p>/);
+  assert.match(pageOf([]), /<div class="an-empty an-finishers-empty">No finishers yet\. Pick a preset below or start blank\.<\/div>/);
+  assert.doesNotMatch(html, /an-finishers-empty/);
+});
+
+test("the Finishers page escapes names, colours, players and items", () => {
+  const r = { ...fin("a\"x", `<b>Shove</b>`, { players: ["u1"], links: { "<b>shove</b>": "Item.x" } }), name: "<img src=x onerror=1>", color: `#fff"><script>` };
+  const html = pageOf([r], { players: [{ id: "u1", name: "<i>Ana</i>", color: `red"><script>` }], itemSummary: () => ({ name: "x", img: `"><script>` }) });
+  assert.doesNotMatch(html, /<script>|<img src=x|<i>Ana|<b>Shove/);
+  assert.match(html, /&lt;img src=x onerror=1&gt;/);
+  assert.match(html, /data-id="a&quot;x"/);
+});
