@@ -27,6 +27,12 @@ export function canvasToSquares({ clientX, clientY }, rect, view) {
   const offX = (rect.width - view.w * scale) / 2, offY = (rect.height - view.h * scale) / 2;
   return { x: n2(view.x + (clientX - rect.left - offX) / scale), y: n2(view.y + (clientY - rect.top - offY) / scale) };
 }
+// Squares → pointer on the same canvas: where the tour's hand must go to reach a grid point.
+export function squaresToCanvas({ x, y }, rect, view) {
+  const scale = Math.min(rect.width / view.w, rect.height / view.h);
+  const offX = (rect.width - view.w * scale) / 2, offY = (rect.height - view.h * scale) / 2;
+  return { x: rect.left + offX + (x - view.x) * scale, y: rect.top + offY + (y - view.y) * scale };
+}
 
 export function pathCanvasHTML(s, { selected = -1, finisher = null } = {}) {
   const kfs = keyframesOf(s), v = canvasView(kfs), curve = Array.from({ length: 61 }, (_, n) => samplePath(kfs, n / 60));

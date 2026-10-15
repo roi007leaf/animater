@@ -1374,7 +1374,7 @@ export class Workspace {
     return `${select("motion", "Motion", MOTIONS, "lunge")}${select("subject", "Animate", { source: "Caster token", targets: "Target tokens" }, "source")}
       ${path && s.motion !== "dodge" ? select("motionRange", "Path", { target: toward ? s.subject === "targets" ? "Approach caster" : "Approach selected target" : "Use token separation for distance", distance: "Fixed-distance gesture" }, "target") : ""}
       ${path ? select("motionHeading", "Path heading", { toward: "Toward selected token", away: "Away from selected token", up: "Upward on map", down: "Downward on map", left: "Leftward on map", right: "Rightward on map" }, "toward") : ""}
-      ${finisher && ((path && s.motion !== "dodge") || s.motion === "fade" || s.motion === "fragments") ? select("motionEnd", "End", { return: "Return to start", hold: "Hold at the end (finishers move the token there)" }, "return") : ""}
+      ${finisher && ((path && s.motion !== "dodge") || ["path", "fade", "fragments"].includes(s.motion)) ? select("motionEnd", "End", { return: "Return to start", hold: "Hold at the end (finishers move the token there)" }, "return") : ""}
       ${target && s.subject !== "targets" ? select("targetSelection", "Approach which target", { first: "First selected target", second: "Second selected target", last: "Last selected target" }, "first") : ""}
       ${s.subject === "targets" ? select("targetSelection", "Animate which targets", { all: "All selected targets", first: "First selected target", second: "Second selected target", last: "Last selected target" }, "all") : ""}
       ${target && toward ? select("motionEndpoint", "Finish beside", { near: "Near side of target", past: "Far side — pass through" }, "near") : ""}
@@ -1844,6 +1844,8 @@ export class Workspace {
       }
       s.motionRange = s.motion === "dodge" ? "distance" : s.motionRange ?? "target";
     }
+    // A keyframed path always carries its keyframes, so a held finisher path can show its length at once.
+    if (key === "motion" && s.motion === "path" && !Array.isArray(s.keyframes)) s.keyframes = normalizeKeyframes(s.keyframes);
     if (key === "motionArrival") s.motionHold = Math.min(s.motionHold ?? 25, 90 - s.motionArrival);
     if (key === "motionRange" && previous !== s.motionRange) {
       s.distance = s.motionRange === "distance" ? Math.min(s.distance ?? 1.4, 1.4) : s.distance <= 2 ? 8 : s.distance ?? 8;
