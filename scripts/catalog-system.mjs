@@ -6,7 +6,7 @@ const DAGGERHEART_PAGES={spells:'domain card',weapons:'weapon',conditions:'condi
 export function catalogNavigation(environment={}) {
   const system=worldCatalogSystem(environment);
   if(!system)return [];
-  if(system==='daggerheart')return [['spells','✧','Daggerheart domain cards'],['weapons','➶','Daggerheart weapons'],['conditions','◎','Daggerheart conditions']];
+  if(system==='daggerheart')return [['spells','✧','Domain cards'],['weapons','➶','Weapons'],['conditions','◎','Conditions']];
   const label=system==='sf2e'?'SF2e':system==='pf2e'?'PF2e':'D&D 5e';
   return [['spells','✧','spells'],['feats','⚔',system==='dnd5e'?'features':'feats'],...(system==='dnd5e'?[]:[['actions','➤','actions'],['features','✦','features']]),['weapons','➶','weapons'],...(system==='dnd5e'?[['items','◇','items']]:[]),['conditions','◎','conditions'],['effects','◌','effects']].map(([page,icon,name])=>[page,icon,`${label} ${name}`]);
 }

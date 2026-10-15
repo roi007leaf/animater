@@ -11,7 +11,7 @@ import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
 import { daggerheartRollEvent, daggerheartUseEvent, daggerheartDamageEvent, dualityAccent, versionBelow as daggerheartVersionBelow, DAGGERHEART_VERIFIED } from "./daggerheart.mjs";
-import { dhStateHost, dhDefeatedStates, DH_DEFEATED_STATUSES } from "./daggerheart-states.mjs";
+import { dhStateHost, dhDefeatedStates, DH_DEFEATED_STATUSES, findDhState } from "./daggerheart-states.mjs";
 import { applyEventElement } from "./element-choice.mjs";
 import { AA_ID, AA_TAKEOVER, aaCustomized, registerAATakeover } from "./integrations/automated-animations.mjs";
 import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
@@ -1761,6 +1761,9 @@ Hooks.once("ready", () => {
     Hooks.on("createActiveEffect", (effect, _options, userId) => {
       if (userId !== game.user.id || effect?.disabled || effect?.isSuppressed) return;
       if (matchRecipe(recipes().filter((r) => r.lifecycle === "document"), { type: "effect", systemId: "daggerheart", item: effect })) return;
+      // Lasting conditions and the defeated set are drawn as layers, not one-shot moments: no Skipped row for them.
+      const statuses = Array.from(effect?.statuses ?? []);
+      if (statuses.some((statusId) => findDhState({ type: "condition", statusId }) || (DH_DEFEATED_STATUSES.includes(statusId) && statusId !== "deathMove"))) return;
       const actor = effect?.parent?.documentName === "Actor" ? effect.parent : effect?.parent?.actor;
       if (actor) void dispatch({ id: `effect:${effect.uuid}`, type: "effect", systemId: "daggerheart", item: effect, actor });
     });

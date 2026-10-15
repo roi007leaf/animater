@@ -14,7 +14,7 @@ import { rollMessage, dualityRoll, adversaryRoll } from "./fixtures/daggerheart-
 test("the Daggerheart LIBRARY group: domain cards, weapons, conditions", () => {
   const env = { systemId: "daggerheart" };
   assert.equal(worldCatalogSystem(env), "daggerheart");
-  assert.deepEqual(catalogNavigation(env), [["spells", "✧", "Daggerheart domain cards"], ["weapons", "➶", "Daggerheart weapons"], ["conditions", "◎", "Daggerheart conditions"]]);
+  assert.deepEqual(catalogNavigation(env), [["spells", "✧", "Domain cards"], ["weapons", "➶", "Weapons"], ["conditions", "◎", "Conditions"]]);
   for (const page of ["feats", "actions", "features", "items", "effects"]) assert.equal(catalogPageAllowed(page, env), false, page);
   assert.equal(catalogPageAllowed("recipes", env), true);
   assert.equal(catalogPageTitle("spells", env), "Daggerheart domain card catalog");

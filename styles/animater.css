@@ -1003,7 +1003,9 @@
   height: 280px;
 }
 .animater .an-chain-scene .an-preview-idle {
+  top: auto;
   bottom: 6px;
+  text-align: center;
   font-size: 9px;
 }
 .animater .an-recipe-actor.is-source {
@@ -1083,12 +1085,14 @@
   background: #251c17a0;
   border-radius: 8px;
 }
+/* Under the composition label, clear of the token names along the bottom. */
 .animater .an-preview-idle {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 14px;
-  text-align: center;
+  left: 12px;
+  right: 12px;
+  top: 32px;
+  text-align: left;
+  pointer-events: none;
   font-size: 10px;
   color: var(--an-muted);
 }
