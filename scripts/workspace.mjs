@@ -17,6 +17,7 @@ import { presetFinisher } from "./finisher-presets.mjs";
 import { linkFinisher } from "./finisher-model.mjs";
 import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
+import { fragmentsControlsHTML, fragmentsPreviewSVG } from "./fragments-ui.mjs";
 import { keyframesOf, keyframeDiamondsHTML, pathCanvasHTML, keyframeInspectorHTML } from "./keyframe-ui.mjs";
 import { normalizeKeyframes, insertKeyframe, moveKeyframeTime, deleteKeyframe, flipKeyframes, resetKeyframes } from "./keyframe-path.mjs";
 import { catalogSoundOptions, previewRecipeSounds } from "./spell-sounds.mjs";
@@ -1371,14 +1372,14 @@ export class Workspace {
     return `${select("motion", "Motion", MOTIONS, "lunge")}${select("subject", "Animate", { source: "Caster token", targets: "Target tokens" }, "source")}
       ${path && s.motion !== "dodge" ? select("motionRange", "Path", { target: toward ? s.subject === "targets" ? "Approach caster" : "Approach selected target" : "Use token separation for distance", distance: "Fixed-distance gesture" }, "target") : ""}
       ${path ? select("motionHeading", "Path heading", { toward: "Toward selected token", away: "Away from selected token", up: "Upward on map", down: "Downward on map", left: "Leftward on map", right: "Rightward on map" }, "toward") : ""}
-      ${finisher && ((path && s.motion !== "dodge") || s.motion === "fade") ? select("motionEnd", "End", { return: "Return to start", hold: "Hold at the end (finishers move the token there)" }, "return") : ""}
+      ${finisher && ((path && s.motion !== "dodge") || s.motion === "fade" || s.motion === "fragments") ? select("motionEnd", "End", { return: "Return to start", hold: "Hold at the end (finishers move the token there)" }, "return") : ""}
       ${target && s.subject !== "targets" ? select("targetSelection", "Approach which target", { first: "First selected target", second: "Second selected target", last: "Last selected target" }, "first") : ""}
       ${s.subject === "targets" ? select("targetSelection", "Animate which targets", { all: "All selected targets", first: "First selected target", second: "Second selected target", last: "Last selected target" }, "all") : ""}
       ${target && toward ? select("motionEndpoint", "Finish beside", { near: "Near side of target", past: "Far side — pass through" }, "near") : ""}
       <div class="an-field-row">${field("distance", target ? "Maximum path (squares)" : "Distance (grid squares)", path ? 8 : .35, .05, path ? 20 : 2, .05)}${field("intensity", "Flourish intensity", 1, .1, 3, .1)}</div>
       ${path ? `<details class="an-advanced an-options" data-options-group="motion-path"><summary>Path &amp; pacing</summary><div class="an-options-grid">${field("motionArrival", "Reach destination (% of duration)", 45, 15, 70)}${field("motionHold", "Hold at destination (%)", 25, 5, 90 - (s.motionArrival ?? 45))}${target ? field("perSquare", "Extra duration / square (ms)", 0, 0, 2000, 50) + field("stopGap", "Gap beside target (squares)", .1, 0, 2, .05) : ""}${s.motion === "leap" ? field("jumpHeight", "Arc height (squares)", .8, 0, 3, .05) + field("arrivalLift", "Height at Strike (squares)", 0, 0, 2, .05) : ""}</div>${["roll", "dodge"].includes(s.motion) ? select("motionSide", s.motion === "dodge" ? "Dodge direction" : "Roll direction", { 1: "Right / clockwise", "-1": "Left / counterclockwise" }, 1) : ""}<p class="an-hint">Approach → hold → return. Link a Strike or cue to “Destination reached” to keep contact synchronized. Total includes distance pacing; remaining time restores the pose.</p></details>` : ""}
       <p class="an-hint">${finisher ? "Moves token artwork, then restores its pose; a held travel lands, and the finisher moves the token there." : "Moves token artwork, then restores its pose. Game position and rotation stay unchanged."}</p>
-      ${s.motion === "path" ? keyframeInspectorHTML(s, index, this.selectedKeyframe(s)) : ""}`;
+      ${s.motion === "path" ? keyframeInspectorHTML(s, index, this.selectedKeyframe(s)) : ""}${s.motion === "fragments" ? fragmentsControlsHTML(s, index, this.fragmentsPreviewAt ?? 0.6) : ""}`;
   }
   compositionHTML(recipe, stage, index) {
     const refs = Object.fromEntries(
@@ -1605,6 +1606,12 @@ export class Workspace {
     if(this.mediaLibrary?.input(t))return;
     if(this.dndCatalog?.input(t))return;
     if(this.flashEditor?.input(t))return;
+    if (t.hasAttribute?.("data-fragments-scrub")) {
+      this.fragmentsPreviewAt = Number(t.value);
+      const s = this.edit()?.stages[Number(t.dataset.index)], svg = t.closest(".an-fragments")?.querySelector(".an-fragments-preview");
+      if (s && svg) svg.outerHTML = fragmentsPreviewSVG(s, this.fragmentsPreviewAt);
+      return;
+    }
     if (t.dataset.builder) {
       this.stopEditorPreview();
       this.builder[t.dataset.builder] =
