@@ -5,6 +5,7 @@ import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hi
 import { displaceAllowed, landingSpot, withinKnockback } from "./displacement.mjs";
 import { matchFinishers, killFinisher, usePasses, finisherMoment, checkFinisherEvent, mayDisplace } from "./finisher-model.mjs";
 import { playFinisher } from "./finisher-play.mjs";
+import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
 import { applyEventElement } from "./element-choice.mjs";
@@ -1051,7 +1052,7 @@ Hooks.once("ready", () => {
   syncQuality();
   const env = environment();
   if (game.user.isGM && env.ready && !env.jb2a) ui.notifications.warn(`Animater: ${JB2A_MISSING}`, { permanent: true });
-  motions = new TokenMotionPlayer({ grid: () => canvas.grid?.size ?? 100 });
+  motions = new TokenMotionPlayer({ grid: () => canvas.grid?.size ?? 100, fragments: { start: (...args) => createFragmentRenderer({ PIXI: globalThis.PIXI, grid: () => canvas.grid?.size ?? 100 }).start(...args) } });
   // Lasting conditions move the creature itself; one-off motions take priority.
   conditionBody = new ConditionBody({ busy: (token) => motions.active.has(token), enabled: () => allowsMotion(localQuality()) });
   optionalFx = new OptionalFxPlayer({catalog:fxCatalog,tokenMagic:()=>globalThis.TokenMagic,

@@ -80,3 +80,28 @@ test("dust peels away edge first along the wind", () => {
   assert.equal(end.alpha, 0);
   assert.ok(end.x > 0, "drifts with the wind (+x here)");
 });
+
+import { createFragmentRenderer } from "../scripts/fragment-render.mjs";
+
+test("the renderer builds one piece per fragment on the token, moves them, and cleans up", () => {
+  const made = [];
+  class Container { constructor() { this.children = []; this.position = { set: (x, y) => { this.x = x; this.y = y; } }; this.scale = { set: (x, y) => { this.sx = x; this.sy = y; } }; this.alpha = 1; this.rotation = 0; made.push(this); } addChild(...c) { this.children.push(...c); } destroy() { this.destroyed = true; } }
+  class Sprite { constructor(t) { this.texture = t; this.anchor = { set() {} }; this.position = { set() {} }; } }
+  class Graphics { beginFill() { return this; } drawPolygon(p) { this.points = p; return this; } endFill() { return this; } }
+  class Texture { constructor(base, frame) { this.baseTexture = base; this.frame = frame; } destroy() { this.destroyed = true; } }
+  class Rectangle { constructor(x, y, w, h) { Object.assign(this, { x, y, width: w, height: h }); } }
+  const layer = { children: [], addChild(c) { this.children.push(c); } };
+  const texture = { baseTexture: {}, frame: { x: 0, y: 0, width: 200, height: 200 } };
+  const token = { center: { x: 500, y: 300 }, w: 100, h: 100, mesh: { texture, rotation: 0, scale: { x: 1, y: 1 }, parent: layer } };
+  const r = createFragmentRenderer({ PIXI: { Container, Sprite, Graphics, Texture, Rectangle }, grid: () => 100 });
+  const handle = r.start(token, { motion: "fragments", pattern: "halves", seed: 3, duration: 1000 }, 0);
+  assert.equal(layer.children.length, 2);
+  handle.update(1);
+  assert.ok(layer.children.every((c) => c.alpha === 0));
+  handle.destroy();
+  assert.ok(layer.children.every((c) => c.destroyed));
+  const dust = r.start(token, { motion: "fragments", pattern: "dust", pieces: 16, seed: 3, duration: 1000 }, 0);
+  assert.equal(layer.children.length, 2 + 16);
+  dust.destroy();
+  assert.equal(createFragmentRenderer({ PIXI: { Container, Sprite, Graphics, Texture, Rectangle }, grid: () => 100 }).start({ ...token, mesh: null }, { pattern: "halves" }, 0), null, "no artwork, no pieces");
+});
