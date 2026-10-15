@@ -1533,9 +1533,8 @@ test("player pick: a plain hit does not play a critical pick", async (t) => {
   assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0);
 });
 
-test("GM crit finisher: with no player pick, a crit plays the item's critical finisher", async (t) => {
+test("GM crit finisher: an NPC's item (no player owners) plays its name-matched critical finisher", async () => {
   const f = await boot("pf2e");
-  playerOwns(t, f, { choice: null });
   watchTarget(f);
   f.settings.set("finishers", true);
   f.settings.set("automatic", true);
@@ -1557,12 +1556,74 @@ test("player pick: a kill pick beats the GM's name-matched kill finisher", async
   await f.api.stop();
 });
 
-test("player pick: a pick no longer given to the owner falls through to the GM's finisher", async (t) => {
+test("player pick: a pick whose player was removed from Available to plays nothing, and the old collapse stands in", async (t) => {
   const f = await boot("pf2e");
   playerOwns(t, f);
-  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill", ["u2"])] });
-  assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
-  assert.match(entries[0].detail, /GM drop: Orc/);
+  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill", ["u2"])], defaultFinisher: "gm" });
+  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  await f.api.stop();
+});
+
+for (const [label, choice] of [["no pick", null], ["\"None\"", ""]]) {
+  test(`player item with ${label}: a finisher matching it by name does not play, nor the default; the old collapse stands in`, async (t) => {
+    const f = await boot("pf2e");
+    playerOwns(t, f, { choice });
+    const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill")], defaultFinisher: "gm" });
+    assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+    await f.api.stop();
+  });
+}
+
+test("player item with no pick: a crit plays no GM critical finisher", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f, { choice: null });
+  watchTarget(f);
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("criticalOrKill", []), id: "gmcrit", name: "GM crit" }] });
+  await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
+  await settle();
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, JSON.stringify(f.api.activity()));
+});
+
+test("player pick: a crit with a kill pick plays no GM critical finisher", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f);
+  watchTarget(f);
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [pickFin("kill"), { ...pickFin("critical", []), id: "gmcrit", name: "GM crit" }] });
+  await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
+  await settle();
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, JSON.stringify(f.api.activity()));
+});
+
+test("player pick: a use pick plays on a successful use, and the GM's name-matched use finisher does not", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f);
+  watchTarget(f);
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("use", []), id: "gmuse", name: "GM use" }, pickFin("use")] });
+  await f.fire("createChatMessage", strikeMessage(f, "miss", "failure"));
+  await settle();
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, "a miss plays nothing");
+  await f.fire("createChatMessage", strikeMessage(f, "hit", "success"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.deepEqual(f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail), ["Pick: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("NPC item: a kill keeps GM name matching, and a stray pick flag is ignored", async (t) => {
+  const f = await boot("pf2e");
+  Object.assign(f.item, { getFlag: (scope, key) => (scope === "animater" && key === "finisher" ? "pick" : undefined) });
+  stubGlobal(t, "fromUuidSync", (uuid) => (uuid === f.item.uuid ? f.item : null));
+  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill", ["*"])] });
+  assert.deepEqual(entries.map((e) => e.detail), ["GM drop: Orc"], JSON.stringify(f.api.activity()));
   await f.api.stop();
 });
 
@@ -1686,7 +1747,7 @@ test("player pick: a kill pick that needs a critical does not play on a plain ki
   const f = await boot("pf2e");
   playerOwns(t, f);
   const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill", ["u1"], { success: "critical" })] });
-  assert.deepEqual(entries.map((e) => e.detail), ["GM drop: Orc"], JSON.stringify(f.api.activity()));
+  assert.deepEqual(entries.map((e) => e.detail), [], JSON.stringify(f.api.activity()));
   await f.api.stop();
 });
 
@@ -1694,10 +1755,21 @@ test("api.finishers: even a GM cannot pick a finisher that does not apply to the
   const f = await boot("pf2e");
   const flags = playerOwns(t, f);
   stubGlobal(t, "Hooks", { ...globalThis.Hooks, callAll: () => {} });
-  f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical"), { ...pickFin("kill", []), id: "dagger", name: "Dagger only", match: "Dagger" }, { ...pickFin("kill", []), id: "gmonly", name: "GM only" }] });
+  f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical"), { ...pickFin("kill", []), id: "dagger", name: "Dagger only", match: "Dagger" }, { ...pickFin("kill", []), id: "gmonly", name: "GM only" }, { ...pickFin("kill", ["u1"]), id: "theirs", name: "Theirs" }] });
   assert.equal(game.user.isGM, true);
   await assert.rejects(f.api.finishers.setChoice(f.item, "dagger"), /isn't available/);
   assert.equal(flags.finisher, "pick");
-  await f.api.finishers.setChoice(f.item, "gmonly");
-  assert.equal(flags.finisher, "gmonly", "a GM may still pick one not given to the owners");
+  await f.api.finishers.setChoice(f.item, "theirs");
+  assert.equal(flags.finisher, "theirs", "a GM may pick any finisher given to an owner");
+});
+
+test("api.finishers: a GM cannot pick, on a player-owned item, a finisher no owner has", async (t) => {
+  const f = await boot("pf2e");
+  const flags = playerOwns(t, f);
+  stubGlobal(t, "Hooks", { ...globalThis.Hooks, callAll: () => {} });
+  f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical"), { ...pickFin("kill", []), id: "gmonly", name: "GM only" }, { ...pickFin("kill", ["u", "u2"]), id: "others", name: "Others" }] });
+  assert.equal(game.user.isGM, true);
+  await assert.rejects(f.api.finishers.setChoice(f.item, "gmonly"), (error) => error instanceof Error && /isn't available/.test(error.message));
+  await assert.rejects(f.api.finishers.setChoice(f.item, "others"), /isn't available/);
+  assert.equal(flags.finisher, "pick");
 });

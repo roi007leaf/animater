@@ -133,6 +133,15 @@ export function pickedFinisher(recipes, { choiceId, ownerUserIds = [], itemName,
   if (!r || (ownerUserIds.length && !ownerUserIds.some((u) => finisherAvailableTo(r, u)))) return null;
   return matchFinishers([r], { itemName, itemSlug, itemUuid }, r.finisher.on).length ? r : null;
 }
+// A player-owned item plays only its owner's pick, when the pick's "Plays on" fits the moment:
+// a crit (critical, criticalOrKill), a kill (kill, criticalOrKill, honouring "Needs") or a use.
+export function pickPlays(pick, moment, { outcome, event } = {}) {
+  const on = pick?.finisher?.on;
+  if (moment === "crit") return ["critical", "criticalOrKill"].includes(on) && outcome === "criticalSuccess" ? pick : null;
+  if (moment === "kill") return ["kill", "criticalOrKill"].includes(on) && passesSuccess(pick.finisher, outcome) ? pick : null;
+  if (moment === "use") return on === "use" && usePasses(pick.finisher, event) ? pick : null;
+  return null;
+}
 export function finisherFires(finisher, { outcome, killed = false } = {}) {
   const crit = outcome === "criticalSuccess";
   switch (finisher?.on) {

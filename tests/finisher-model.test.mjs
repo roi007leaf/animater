@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, createFinishedMemory, critFinishers, finishedKey, finishedMessage } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, pickPlays, createFinishedMemory, critFinishers, finishedKey, finishedMessage } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -239,6 +239,18 @@ test("each Plays-on fires on its own outcomes", () => {
     ["use", "success", false, true], ["use", "failure", false, false],
   ];
   for (const [on, outcome, killed, expected] of cases) assert.equal(finisherFires(f(on), { outcome, killed }), expected, `${on}/${outcome}/${killed}`);
+});
+
+test("a player's pick plays only at the moments its Plays on names", () => {
+  const p = (on, extra = {}) => ({ id: on, finisher: { on, ...extra } });
+  const use = { type: "attack", outcome: "success" };
+  const cases = [
+    [p("critical"), "crit", "criticalSuccess", true], [p("critical"), "crit", "success", false], [p("critical"), "kill", "criticalSuccess", false],
+    [p("criticalOrKill"), "crit", "criticalSuccess", true], [p("criticalOrKill"), "kill", "success", true],
+    [p("kill"), "crit", "criticalSuccess", false], [p("kill"), "kill", "success", true], [p("kill", { success: "critical" }), "kill", "success", false],
+    [p("use"), "use", undefined, true], [p("use"), "kill", "success", false], [p("kill"), "use", undefined, false], [null, "kill", "success", false],
+  ];
+  for (const [pick, moment, outcome, expected] of cases) assert.equal(pickPlays(pick, moment, { outcome, event: use }) === pick && pick !== null, expected, `${pick?.id}/${moment}/${outcome}`);
 });
 
 test("a finisher plays once per target per action", () => {
