@@ -1463,7 +1463,7 @@ test("displace-commit: the GM writes for the sender who owns the attacker, never
   receive({ ...request, userId: "p1" }, "p2");
   receive({ ...request, userId: "u" }, "p2");
   receive({ ...request, userId: "p1" });
-  receive({ ...request, x: 1500 }, "p1");
+  receive({ ...request, x: 2000 }, "p1");   // 19 squares: past the longest landing (17 + size)
   await settle();
   assert.equal(updates.length, 0, "unrelated sender (even claiming the GM), no sender, and an out-of-reach move are ignored");
   receive({ ...request, fromX: "evil", finisher: "x".repeat(200) }, "p1");
