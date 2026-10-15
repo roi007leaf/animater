@@ -200,7 +200,7 @@
   gap: 10px;
   font-size: 20px;
   font-weight: 650;
-  padding-bottom: 35px;
+  padding-bottom: 22px;
 }
 .animater .an-logo {
   display: grid;
@@ -223,8 +223,10 @@
   font-size: 9px;
   letter-spacing: 1.7px;
   color: #7f879c;
-  padding: 0 12px 13px;
+  padding: 0 8px 6px;
+  margin-top: 12px;
 }
+.animater .an-brand + .an-nav-caption { margin-top: 0; }
 .animater .an-nav-item {
   display: flex;
   align-items: center;
@@ -232,20 +234,26 @@
   background: transparent;
   border: 0;
   text-align: left;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   width: 100%;
-  padding: 8px;
+  padding: 4px 8px;
   font-size: 12px;
   flex-shrink: 0;
   height: auto;
-  min-height: 40px;
+  min-height: 32px;
+  justify-content: flex-start;
   line-height: 1.2;
   white-space: nowrap;
 }
 .animater .an-nav-item span {
-  font-size: 20px;
-  width: 20px;
+  font-size: 18px;
+  width: 22px;
+  flex: none;
+  text-align: center;
   color: #929ab1;
+}
+.animater .an-nav-item b {
+  font-weight: inherit;
 }
 .animater .an-nav-item small {
   margin-left: auto;

@@ -775,3 +775,52 @@ test("removing a finisher chip also drops a hidden item binding; an absent name 
   assert.equal(r.match, 'Shove, Greataxe');
   assert.equal(r.itemUuid, '', 'any Applies-to edit drops the legacy binding');
 });
+
+function navWorkspace(host, page = "recipes") {
+  const w = Object.create(Workspace.prototype);
+  w.page = page;
+  w.host = host;
+  w.listedRecipes = () => [{ id: "a" }, { id: "b" }, { id: "f1", finisher: true }];
+  return w;
+}
+const navEnv = { system: "pf2e", systemId: "pf2e", ready: true };
+
+test("the GM nav groups pages under CREATE, LIBRARY and TOOLS captions in order", () => {
+  const w = navWorkspace({ flashScreens: () => [{}, {}, {}], playerMode: false });
+  const html = w.navItemsHTML(navEnv);
+  const captions = [...html.matchAll(/an-nav-caption">([^<]+)</g)].map((m) => m[1]);
+  assert.deepEqual(captions, ["CREATE", "LIBRARY", "TOOLS"]);
+  assert.doesNotMatch(html, /WORKSPACE/);
+  const order = [...html.matchAll(/an-nav-caption">([^<]+)<|data-page="([^"]+)"/g)].map((m) => m[1] || m[2]);
+  assert.deepEqual(order.slice(0, 5), ["CREATE", "recipes", "finishers", "flash", "LIBRARY"]);
+  assert.ok(order.indexOf("assets") > order.indexOf("spells"), "Assets follows the system catalogs");
+  assert.deepEqual(order.slice(order.indexOf("assets") - 0), ["assets", "TOOLS", "activity", "setup"]);
+});
+
+test("Flash screens is listed only when the host has it", () => {
+  const html = navWorkspace({}).navItemsHTML(navEnv);
+  assert.doesNotMatch(html, /data-page="flash"/);
+});
+
+test("nav counts show for recipes, finishers and flash screens, and hide at zero", () => {
+  const html = navWorkspace({ flashScreens: () => [{}, {}, {}] }).navItemsHTML(navEnv);
+  assert.match(html, /data-page="recipes"[^>]*>.*?<small>2<\/small>/);
+  assert.match(html, /data-page="finishers"[^>]*>.*?<small>1<\/small>/);
+  assert.match(html, /data-page="flash"[^>]*>.*?<small>3<\/small>/);
+  const w = navWorkspace({ flashScreens: () => [] });
+  w.listedRecipes = () => [];
+  const none = w.navItemsHTML(navEnv);
+  assert.doesNotMatch(none, /<small>/);
+});
+
+test("the player nav has two left-aligned items and no captions", () => {
+  const html = navWorkspace({ playerMode: true }).navItemsHTML(navEnv);
+  assert.doesNotMatch(html, /an-nav-caption/);
+  assert.deepEqual([...html.matchAll(/data-page="([^"]+)"/g)].map((m) => m[1]), ["recipes", "assets"]);
+  assert.match(html, /My animations/);
+});
+
+test("the active nav page keeps is-active", () => {
+  const html = navWorkspace({}, "finishers").navItemsHTML(navEnv);
+  assert.match(html, /an-nav-item is-active" data-action="page" data-page="finishers"/);
+});

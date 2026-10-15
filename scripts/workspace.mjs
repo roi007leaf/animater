@@ -483,6 +483,27 @@ export class Workspace {
     return message ? `<div class="an-warning" role="alert">${esc(message)} <button data-action="page" data-page="setup">Open setup →</button></div>` : "";
   }
   isStudio() { return ["recipes", "finishers"].includes(this.page) && !!this.studio && !!this.recipe(); }
+  navItemsHTML(env) {
+    const count = (n) => (n > 0 ? `<small>${n}</small>` : "");
+    const flash = this.host.flashScreens;
+    const listed = this.listedRecipes();
+    const counts = {
+      recipes: listed.filter((r) => !r.finisher).length,
+      finishers: listed.filter((r) => r.finisher).length,
+      flash: typeof flash === "function" && Array.isArray(flash.call(this.host)) ? flash.call(this.host).length : 0,
+    };
+    const item = ([page, icon, name]) =>
+      `<button class="an-nav-item ${this.page === page ? "is-active" : ""}" data-action="page" data-page="${page}"><span>${icon}</span><b>${name}</b>${count(counts[page] || 0)}</button>`;
+    if (this.host.playerMode) {
+      return [["recipes", "✦", this.host.reviewing?.() ? `${esc(this.host.reviewing().userName)}'s animations` : "My animations"], ["assets", "▦", "Assets"]].map(item).join("");
+    }
+    const group = (caption, items) => `<div class="an-nav-caption">${caption}</div>${items.map(item).join("")}`;
+    return [
+      group("CREATE", [["recipes", "✦", "Recipes"], ["finishers", "✸", "Finishers"], ...(flash ? [["flash", "⚡", "Flash screens"]] : [])]),
+      group("LIBRARY", [...catalogNavigation(env), ["assets", "▦", "Assets"]]),
+      group("TOOLS", [["activity", "◷", "Activity"], ["setup", "⚙", "Setup"]]),
+    ].join("");
+  }
   render() {
     if(this.page!=='assets'||this.mediaLibrary?.fxScene)void this.mediaLibrary?.stopTokenPreview();
     if(!catalogPageAllowed(this.page,this.host.environment()))this.page='recipes';
@@ -536,21 +557,7 @@ export class Workspace {
       this.root,
       `<div class="an-shell${this.isStudio() || (this.page === "flash" && this.flashEditor?.editing) ? " is-studio" : ""}">
       <aside class="an-nav"><div class="an-brand"><span class="an-logo">A</span><div>Animater<small>MAKE EVERY MOMENT FELT</small></div></div>
-        <div class="an-nav-caption">WORKSPACE</div>
-        ${(this.host.playerMode ? [["recipes", "✦", this.host.reviewing?.() ? `${esc(this.host.reviewing().userName)}'s animations` : "My animations"],["assets", "▦", "Assets"]] : [
-          ["recipes", "✦", "Recipes"],
-          ...catalogNavigation(env),
-          ["assets", "▦", "Assets"],
-          ["finishers", "✸", "Finishers"],
-          ...(this.host.flashScreens ? [["flash", "⚡", "Flash screens"]] : []),
-          ["activity", "◷", "Activity"],
-          ["setup", "⚙", "Setup"],
-        ])
-          .map(
-            ([page, icon, name]) =>
-              `<button class="an-nav-item ${this.page === page ? "is-active" : ""}" data-action="page" data-page="${page}"><span>${icon}</span>${name}${page === "recipes" ? `<small>${this.listedRecipes().filter((r) => !r.finisher).length}</small>` : ""}</button>`,
-          )
-          .join("")}
+        ${this.navItemsHTML(env)}
         <div class="an-nav-bottom"><div class="an-pack"><span class="an-dot ${env.ready && env.jb2aRegistered !== false ? "is-ready" : ""}" ${env.jb2aRegistered === false ? `data-tooltip="${esc(env.pack)} is active, but Sequencer has no JB2A animations. See Setup."` : ""}></span><div>${esc(env.pack)}<small>${this.host.catalog().length.toLocaleString()} asset variants</small></div></div><button data-action="stop" class="an-stop">■ Stop my effects</button><small class="an-version">v0.2 · ${esc(env.system)}${env.demo ? " · PREVIEW" : ""}</small></div>
       </aside>
       <main class="an-main">${this.isStudio() || (this.page === "flash" && (this.flashEditor?.editing || !this.host.flashScreens)) ? "" : `<header class="an-header"><div><div class="an-eyebrow">${this.page === "recipes" ? "YOUR EFFECTS, YOUR STYLE" : this.page === "finishers" ? "FINISHING BLOWS, YOUR WAY" : this.page === "flash" ? "TITLE CARDS FOR EVERY FIGHT" : "ANIMATER WORKSPACE"}</div><h1>${esc(catalogPageTitle(this.page,env))}</h1></div><div class="an-header-actions">${this.page === "recipes" ? `<button data-action="export" class="an-quiet">↗ Export</button><button data-action="import" class="an-quiet">↙ Import</button><button data-action="new" class="an-primary">+ New recipe</button>` : this.page === "finishers" ? `<button data-action="new-finisher" class="an-primary">+ New finisher</button>` : this.page === "builder" ? `<button data-action="cancel-builder">Back to recipes</button>` : this.page === "flash" ? this.flashEditor?.showGallery ? "" : `<button data-action="flash-export" class="an-quiet" ${this.host.flashScreens().length ? "" : "disabled"}>↗ Export</button><button data-action="flash-import" class="an-quiet">↙ Import</button><button data-action="flash-new" class="an-primary">+ New flash screen</button>` : ""}</div></header>`}
