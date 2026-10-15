@@ -6,7 +6,7 @@ import { installedAssets } from "../scripts/model.mjs";
 import { finisherTravelPath } from "../scripts/finisher-model.mjs";
 import { assetDatabases } from "../tools/asset-databases.mjs";
 
-const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall", "slice-in-half", "bisect", "shatter-shards", "disintegrate", "sky-launch", "ragdoll-tumble", "vortex-spiral", "pancake"];
+const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall", "slice-in-half", "bisect", "shatter-shards", "disintegrate", "sky-launch", "ragdoll-tumble", "vortex-spiral", "pancake", "diced", "claw-shred", "soul-drain", "frozen-shatter", "ember-ascent", "pixel-delete"];
 
 test("every preset is a valid kill finisher the GM can save as their own", () => {
   assert.deepEqual(Object.keys(FINISHER_PRESETS), IDS);
@@ -118,4 +118,25 @@ test("Pancake squashes over its whole stage: linear path, overshoot only on the 
   assert.equal(path.keyframes.at(-1).ease, "easeOutBack");
   const mid = motionPose(path, 0.5), late = motionPose(path, 0.99);
   assert.notDeepEqual(mid, late, "the squash is still progressing mid-stage");
+});
+
+import { prepareFragments } from "../scripts/fragments.mjs";
+import { FINISHER_PRESET_GROUPS } from "../scripts/finisher-ui.mjs";
+
+test("the fragments v2 presets: one hit and one held fragments stage each, as designed", () => {
+  const want = {
+    diced: ["diced", "burst", "none", 4], "claw-shred": ["claw", "burst", "none", 4], "soul-drain": ["starburst", "absorb", "ghost", 10],
+    "frozen-shatter": ["shards", "bounce", "frozen", 8], "ember-ascent": ["dust", "rise", "charred", 48], "pixel-delete": ["pixelate", "burst", "none", 49],
+  };
+  for (const [id, [pattern, behavior, tint, pieces]] of Object.entries(want)) {
+    const r = presetFinisher(id, id), cuts = r.stages.filter((s) => s.motion === "fragments");
+    assert.equal(cuts.length, 1, id);
+    const cut = prepareFragments(cuts[0]);
+    assert.deepEqual([cut.pattern, cut.behavior, cut.tint, cut.pieces, cuts[0].motionEnd, cuts[0].subject], [pattern, behavior, tint, pieces, "hold", "targets"], id);
+    assert.deepEqual([r.trigger, r.finisher.ending, r.finisher.knockback], ["manual", "vanish", 0], id);
+    assert.equal(r.stages.filter((s) => s.kind === "impact").length, 1, `${id}: one hit`);
+    assert.equal(FINISHER_PRESET_GROUPS.Pieces.filter((p) => p === id).length, 1, `${id} is in Pieces once`);
+  }
+  const diced = prepareFragments(presetFinisher("diced", "d").stages.find((s) => s.motion === "fragments"));
+  assert.deepEqual([diced.spin, diced.fall], [200, 0.6]);
 });

@@ -163,7 +163,7 @@ export function finisherGlyphSVG(recipe, { size = 80 } = {}) {
 export const FINISHER_PRESET_GROUPS = {
   Flung: ["launch", "wall-slam", "sky-launch", "ragdoll-tumble", "jolt", "blast", "skewer", "struck-down"],
   "In place": ["ash", "melt", "ascend", "unmade", "soul-departs", "fall", "shaken-apart", "pancake", "cleave"],
-  Pieces: ["slice-in-half", "bisect", "shatter-shards", "disintegrate", "shatter", "vortex-spiral"],
+  Pieces: ["slice-in-half", "bisect", "shatter-shards", "disintegrate", "shatter", "vortex-spiral", "diced", "claw-shred", "pixel-delete", "soul-drain", "frozen-shatter", "ember-ascent"],
 };
 const ENDING_PILL = { vanish: "Vanish", body: "Body", stay: "Stay" };
 const PRESET_GLYPHS = new Map();
