@@ -1,4 +1,5 @@
 import { normalizeKeyframes } from "./keyframe-path.mjs";
+import { normalizeFragments } from "./fragments.mjs";
 import { normalizeOptions, validateSoundFile } from "./stage-options.mjs";
 import { fallbackColorParity } from "./color-parity.mjs";
 import { OPTIONAL_FX_KINDS, normalizeFxStage } from './optional-fx.mjs';
@@ -82,6 +83,7 @@ export const MOTIONS = {
   collapse: "Collapse when dropped",
   fade: "Fade out",
   path: "Keyframed path",
+  fragments: "Token fragments",
 };
 export const clone = (value) => structuredClone(value);
 export const normalize = (value) =>
@@ -265,6 +267,7 @@ export function validateRecipe(input) {
                   ? { motionOffset: { x: number(s.motionOffset.x, -20, 20, 0), y: number(s.motionOffset.y, -20, 20, 0) } } : {}),
                 // Keyframed path: the real token's authored movement; finishers add an aim frame.
                 // A framed finisher end is a rotated authored end, so it may reach 12*sqrt(2); clamping at 12 would move it off the landing.
+                ...(s.motion === "fragments" ? normalizeFragments(s) : {}),
                 ...(s.motion === "path" ? { keyframes: normalizeKeyframes(s.keyframes, { limit: s.motionFrame && ["cos", "sin", "k"].every((key) => Number.isFinite(Number(s.motionFrame[key]))) ? 17 : 12 }) } : {}),
                 ...(s.motion === "path" && s.motionFrame && ["cos", "sin", "k"].every((key) => Number.isFinite(Number(s.motionFrame[key])))
                   ? { motionFrame: { cos: number(s.motionFrame.cos, -1, 1, 1), sin: number(s.motionFrame.sin, -1, 1, 0), k: number(s.motionFrame.k, 0, 1, 1) } } : {}),

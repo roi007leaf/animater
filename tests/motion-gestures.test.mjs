@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { MOTIONS, validateRecipe } from '../scripts/model.mjs';
-import { motionPose, motionDirection, combineMotionPoses, poseTransform, TokenMotionPlayer, heldPose, HOLD_LIMIT_MS, HOLD_RELEASE_MS } from '../scripts/motion.mjs';
+import { motionPose, motionDirection, combineMotionPoses, poseTransform, TokenMotionPlayer, heldPose, withFragmentSeed, HOLD_LIMIT_MS, HOLD_RELEASE_MS } from '../scripts/motion.mjs';
 import { GENERATED_MOTION_DURATION } from '../scripts/motion-pacing.mjs';
 
 const NEW = ['press', 'sink', 'flicker', 'throw', 'brace', 'stagger', 'cower', 'slam', 'drift'];
@@ -266,4 +266,52 @@ test('a held stretched end eases its stretch back with the rest of the hold', ()
   const held = heldPose(s, 0, { x: 1, y: 0 }, 100), releasing = heldPose(s, HOLD_LIMIT_MS + HOLD_RELEASE_MS / 2, { x: 1, y: 0 }, 100);
   assert.ok(held.scaleX > 1.29, 'held stretched');
   assert.ok(releasing.scaleX > 1 && releasing.scaleX < held.scaleX && releasing.scaleY < 1 && releasing.scaleY > held.scaleY, 'easing back');
+});
+
+const fragStage = (extra = {}) => v({ kind: 'motion', motion: 'fragments', subject: 'targets', duration: 100, pattern: 'halves', seed: 5, ...extra });
+
+test('fragments are a token motion that keeps the real token invisible', () => {
+  assert.equal(MOTIONS.fragments, 'Token fragments');
+  assert.ok(GENERATED_MOTION_DURATION.fragments > 0);
+  const s = fragStage();
+  assert.equal(s.pattern, 'halves');
+  assert.equal(s.seed, 5);
+  assert.equal(motionPose(s, 0.5, { x: 1, y: 0 }, 100).alpha, 0);
+  assert.deepEqual(motionPose(s, 1, { x: 1, y: 0 }, 100), { x: 0, y: 0, rotation: 0, scale: 1 });
+  assert.equal(motionPose(fragStage({ motionEnd: 'hold' }), 1, { x: 1, y: 0 }, 100).alpha, 0, 'held: stays invisible until hidden');
+  assert.equal(v({ kind: 'motion', motion: 'shake', pattern: 'dust' }).pattern, undefined);
+});
+
+test('the seed is set once before broadcast and never overwritten', () => {
+  const s = { kind: 'motion', motion: 'fragments' };
+  const seeded = withFragmentSeed(s, () => 0.5);
+  assert.ok(Number.isInteger(seeded.seed));
+  assert.equal(withFragmentSeed(seeded, () => 0.9), seeded);
+  const other = { kind: 'motion', motion: 'shake' };
+  assert.equal(withFragmentSeed(other), other);
+});
+
+test('the player drives the fragment renderer and never leaves the token visible or pieces behind', async () => {
+  let now = 0, queued = null;
+  const log = [];
+  const fragments = { start: (_t, stage, angle) => { log.push(['start', stage.pattern, Math.round(angle * 100) / 100]); return { update: (p) => log.push(['update', Math.round(p * 100) / 100]), destroy: () => log.push(['destroy']) }; } };
+  const player = new TokenMotionPlayer({ frame: (cb) => (queued = cb), cancel: () => {}, now: () => now, grid: () => 100, fragments });
+  const mesh = { position: { x: 0, y: 0, set(x, y) { this.x = x; this.y = y; } }, rotation: 0, scale: { x: 1, y: 1, set(x, y) { this.x = x; this.y = y; } }, alpha: 1 };
+  const token = { mesh, visible: true, document: { x: 0, y: 0, rotation: 0, width: 1, height: 1, texture: {} } };
+  const done = player.play(token, fragStage({ motionEnd: 'hold' }), { x: 0, y: 1 }, 'me');
+  now = 50; queued(now);
+  assert.equal(mesh.alpha, 0, 'invisible while the pieces fly');
+  now = 150; queued(now);
+  assert.equal(await done, true);
+  assert.equal(mesh.alpha, 0, 'still invisible while held');
+  assert.deepEqual(log[0], ['start', 'halves', 1.57], 'cut follows the swing direction');
+  assert.ok(log.some((e) => e[0] === 'update'));
+  assert.deepEqual(log.at(-1), ['destroy'], 'pieces are gone when the stage ends');
+
+  const log2 = [];
+  const p2 = new TokenMotionPlayer({ frame: (cb) => (queued = cb), cancel: () => {}, now: () => now, grid: () => 100, fragments: { start: () => ({ update: () => {}, destroy: () => log2.push('destroy') }) } });
+  const t2 = { ...token, mesh: { ...mesh, alpha: 1, position: { ...mesh.position }, scale: { ...mesh.scale } } };
+  now = 0; void p2.play(t2, fragStage(), { x: 1, y: 0 }, 'me'); now = 20; queued(now);
+  p2.stop();
+  assert.deepEqual(log2, ['destroy'], 'Stop destroys pieces');
 });

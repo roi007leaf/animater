@@ -22,7 +22,7 @@ import {
   createCanvasPreviewArea,
   templateArea,
 } from "./canvas-preview-area.mjs";
-import { TokenMotionPlayer, motionDirection } from "./motion.mjs";
+import { TokenMotionPlayer, motionDirection, withFragmentSeed } from "./motion.mjs";
 import { installedFxCatalog, OptionalFxPlayer, fxAvailability, startTokenFxPreview, effectOptions } from './optional-fx.mjs';
 import {catalogFxSettings} from './catalog-fx.mjs';
 import {
@@ -1167,6 +1167,7 @@ Hooks.once("ready", () => {
     // Waiting for every client here can stall the rolling user's animation.
     preloadSounds: files => Sequencer.Preloader.preload(files,false),
     motion: async (stage, context, { preview, session }) => {
+      stage = withFragmentSeed(stage);
       const data = {
         type: "motion",
         sceneId: canvas.scene?.id,

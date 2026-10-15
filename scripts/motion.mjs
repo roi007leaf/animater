@@ -134,6 +134,10 @@ export function motionPose(
       pose.alpha = 1 - 0.75 * envelope * (0.5 - 0.5 * Math.cos(p * Math.PI * 2 * cycles));
       break;
     }
+    case "fragments":
+      // The pieces take the token's place; the real token stays out of sight.
+      pose.alpha = 0;
+      break;
     case "fade":
       pose.alpha = 1 - settledProgress(p);
       break;
@@ -200,6 +204,9 @@ export function motionPose(
 // A held motion keeps its end pose until the token's document moves there; if that never
 // happens (no GM to write it), it eases back to rest instead of freezing.
 export const HOLD_LIMIT_MS = 3000, HOLD_RELEASE_MS = 400;
+// A fragments stage carries one seed so every client cuts the same pieces.
+export const withFragmentSeed = (stage, rand = Math.random) =>
+  stage?.kind === "motion" && stage.motion === "fragments" && !Number.isInteger(stage.seed) ? { ...stage, seed: Math.floor(rand() * 2147483647) } : stage;
 export function heldPose(stage, heldMs, direction, grid = 100) {
   if (stage.motionEnd !== "hold" || !HOLDING_MOTIONS.has(stage.motion) || heldMs >= HOLD_LIMIT_MS + HOLD_RELEASE_MS) return null;
   const end = motionPose(stage, 1, direction, grid);
@@ -212,7 +219,7 @@ export function motionDirection(token, source, target, motion, grid = 100) {
     token === source || (token?.id && token.id === source?.id)
       ? target
       : source;
-  const away = ["recoil", "path", "squash"].includes(motion);
+  const away = ["recoil", "path", "squash", "fragments"].includes(motion);
   const a = away ? other?.center : token?.center;
   const b = away ? token?.center : other?.center;
   // Away from nobody: a fixed +x, not a vector from the map origin that changes with position.
@@ -280,11 +287,13 @@ export class TokenMotionPlayer {
     cancel = (handle) => globalThis.cancelAnimationFrame(handle),
     now = () => performance.now(),
     grid = () => 100,
+    fragments = null,
   } = {}) {
     this.frame = frame;
     this.cancel = cancel;
     this.now = now;
     this.grid = grid;
+    this.fragments = fragments;
     this.active = new Map();
   }
   play(token, stage, direction, owner, { target } = {}) {
@@ -337,7 +346,7 @@ export class TokenMotionPlayer {
           original.y += token.document.y - location.y;
           location.x = token.document.x;
           location.y = token.document.y;
-          run.tracks = run.tracks.filter((track) => !isHeld(track));
+          run.tracks = run.tracks.filter((track) => { if (!isHeld(track)) return true; track.pieces?.destroy(); track.pieces = null; return false; });
           moved = false;
         }
         if (
@@ -363,6 +372,9 @@ export class TokenMotionPlayer {
         run.tracks = run.tracks.filter(track => {
           const elapsed = time - track.start;
           const progress = Math.min(1, elapsed / track.stage.duration);
+          if (track.stage.motion === "fragments" && !track.pieces && progress < 1)
+            track.pieces = this.fragments?.start(token, track.stage, track.stage.cut === "fixed" ? (track.stage.angle * Math.PI) / 180 : Math.atan2(track.direction.y, track.direction.x)) ?? null;
+          if (track.pieces) { if (progress < 1) track.pieces.update(progress); else { track.pieces.destroy(); track.pieces = null; } }
           if (progress < 1) {
             poses.push(motionPose(track.stage, progress, track.direction, this.grid()));
             return true;
@@ -397,6 +409,7 @@ export class TokenMotionPlayer {
       if (restoreScale) run.mesh.scale.set(run.original.sx, run.original.sy);
       if (run.alphaTouched) run.mesh.alpha = run.original.alpha;
     }
+    for (const track of run.tracks) { track.pieces?.destroy(); track.pieces = null; }
     for (const track of run.tracks) track.resolve(true);
   }
   stop(owner, { prefix = false } = {}) {
