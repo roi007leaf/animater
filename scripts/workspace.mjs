@@ -17,6 +17,8 @@ import { presetFinisher } from "./finisher-presets.mjs";
 import { linkFinisher } from "./finisher-model.mjs";
 import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
+import { keyframesOf, keyframeDiamondsHTML, pathCanvasHTML, keyframeInspectorHTML } from "./keyframe-ui.mjs";
+import { normalizeKeyframes, insertKeyframe, moveKeyframeTime, deleteKeyframe, flipKeyframes, resetKeyframes } from "./keyframe-path.mjs";
 import { catalogSoundOptions, previewRecipeSounds } from "./spell-sounds.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { reorderStages, recipeDuration, RecipeClock, linkStartModes, moveRow, snapStart, timelineLayout, packLanes } from "./choreography.mjs";
@@ -679,8 +681,10 @@ export class Workspace {
     // A random-variant group is one stacked clip with numbered tabs on top: click one to edit it, + adds another.
     const members = variantMembers(r.stages, s.variantGroup), deck = members.length > 1;
     const tabs = deck ? `<div class="an-tl-variant-tabs" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%" role="tablist" aria-label="Random variants">${members.map((m, n) => { const at = r.stages.indexOf(m); return `<button role="tab" data-action="variant-pick" data-variant-pick="${at}" class="${m === s ? "is-on" : ""}" aria-selected="${m === s}" data-tooltip="Variant ${n + 1}: ${esc(this.stageLabel(m))}">${n + 1}</button>`; }).join("")}<button data-action="variant-add" data-variant-pick="${i}" data-tooltip="Add a random variant" aria-label="Add a random variant">+</button></div>` : "";
-    return `${tabs}<div class="an-tl-bar kind-${esc(s.kind)}${deck ? " is-deck" : ""}${deck && members.includes(r.stages[index]) || i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" data-tooltip="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${deck ? `🎲 ${esc(name.replace(/ · variant \d+$/, ""))}` : esc(name)}</span><small class="an-tl-bar-when">${esc(when)}</small><span class="an-tl-resize" data-tl-resize="${i}" data-tooltip="Drag to change length"></span></div>`;
+    return `${tabs}<div class="an-tl-bar kind-${esc(s.kind)}${deck ? " is-deck" : ""}${deck && members.includes(r.stages[index]) || i === index ? " is-selected" : ""}" data-tl-bar="${i}" data-stage-drag="${i}" tabindex="0" role="slider" aria-label="${esc(name)}: start time" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${row.start}" aria-valuetext="${esc(when)}, ${length} seconds" data-tooltip="${esc(name)} · ${esc(when)} · ${length}s" style="left:${pct(row.start)}%;width:${pct(row.end - row.start)}%"><span class="an-tl-bar-label">${deck ? `🎲 ${esc(name.replace(/ · variant \d+$/, ""))}` : esc(name)}</span><small class="an-tl-bar-when">${esc(when)}</small>${s.kind === "motion" && s.motion === "path" ? keyframeDiamondsHTML(s, i, i === index ? this.selectedKeyframe(s) : -1) : ""}<span class="an-tl-resize" data-tl-resize="${i}" data-tooltip="Drag to change length"></span></div>`;
   }
+  // The selected keyframe of a path stage, kept inside its keyframe list.
+  selectedKeyframe(s) { return Math.max(0, Math.min(keyframesOf(s).length - 1, this.keyframeIndex ?? 0)); }
   timelineX(total, ms) { return `calc(var(--tl-label) + (100% - var(--tl-label)) * ${Math.max(0, Math.min(1, ms / total))})`; }
   onTimelinePointer(e) {
     if (e.target.closest?.(".an-tl-variant-tabs")) return;
@@ -726,6 +730,7 @@ export class Workspace {
       bar.removeEventListener("pointerup", up);
       bar.removeEventListener("pointercancel", up);
       guide.hidden = true;
+      if (this.stageIndex !== i) this.keyframeIndex = 0;
       this.stageIndex = i;
       if (result && ev.type === "pointerup") this.applyTimelineEdit(i, result);
       else this.render();
@@ -748,7 +753,7 @@ export class Workspace {
     this.render();
   }
   nudgeTimeline(bar, e) {
-    if ((e.key === "Enter" || e.key === " ") && !this.busy) { e.preventDefault(); this.stageIndex = Number(bar.dataset.tlBar); this.render(); this.root.querySelector(`[data-tl-bar="${this.stageIndex}"]`)?.focus(); return true; }
+    if ((e.key === "Enter" || e.key === " ") && !this.busy) { e.preventDefault(); this.stageIndex = Number(bar.dataset.tlBar); this.keyframeIndex = 0; this.render(); this.root.querySelector(`[data-tl-bar="${this.stageIndex}"]`)?.focus(); return true; }
     if (!["ArrowLeft", "ArrowRight"].includes(e.key) || this.busy) return false;
     e.preventDefault();
     const i = Number(bar.dataset.tlBar), row = timelineLayout(this.recipe()).rows[i];
@@ -1260,6 +1265,10 @@ export class Workspace {
     const unconfigured = this.status(r) === "Choose an asset";
     const index = Math.min(this.stageIndex, r.stages.length - 1);
     const s = r.stages[index];
+    if (this.isStudio() && s?.kind === "motion" && s.motion === "path") {
+      // The full preview keeps playing beside the path, so the transport and scrub still work.
+      return `<div class="an-kf-split"><div class="an-preview an-full-preview" style="--effect:${esc(r.color)}">${this.recipePreviewHTML(r)}</div>${pathCanvasHTML(s, { selected: this.selectedKeyframe(s), finisher: r.finisher ?? null })}</div>`;
+    }
     const audioPreview = previewRecipeSounds(r, this.host.soundCatalog?.())
       .stages[index];
     const key = resolveAsset(s, this.host.catalog());
@@ -1339,7 +1348,8 @@ export class Workspace {
       ${target && toward ? select("motionEndpoint", "Finish beside", { near: "Near side of target", past: "Far side — pass through" }, "near") : ""}
       <div class="an-field-row">${field("distance", target ? "Maximum path (squares)" : "Distance (grid squares)", path ? 8 : .35, .05, path ? 20 : 2, .05)}${field("intensity", "Flourish intensity", 1, .1, 3, .1)}</div>
       ${path ? `<details class="an-advanced an-options" data-options-group="motion-path"><summary>Path &amp; pacing</summary><div class="an-options-grid">${field("motionArrival", "Reach destination (% of duration)", 45, 15, 70)}${field("motionHold", "Hold at destination (%)", 25, 5, 90 - (s.motionArrival ?? 45))}${target ? field("perSquare", "Extra duration / square (ms)", 0, 0, 2000, 50) + field("stopGap", "Gap beside target (squares)", .1, 0, 2, .05) : ""}${s.motion === "leap" ? field("jumpHeight", "Arc height (squares)", .8, 0, 3, .05) + field("arrivalLift", "Height at Strike (squares)", 0, 0, 2, .05) : ""}</div>${["roll", "dodge"].includes(s.motion) ? select("motionSide", s.motion === "dodge" ? "Dodge direction" : "Roll direction", { 1: "Right / clockwise", "-1": "Left / counterclockwise" }, 1) : ""}<p class="an-hint">Approach → hold → return. Link a Strike or cue to “Destination reached” to keep contact synchronized. Total includes distance pacing; remaining time restores the pose.</p></details>` : ""}
-      <p class="an-hint">${finisher ? "Moves token artwork, then restores its pose; a held travel lands, and the finisher moves the token there." : "Moves token artwork, then restores its pose. Game position and rotation stay unchanged."}</p>`;
+      <p class="an-hint">${finisher ? "Moves token artwork, then restores its pose; a held travel lands, and the finisher moves the token there." : "Moves token artwork, then restores its pose. Game position and rotation stay unchanged."}</p>
+      ${s.motion === "path" ? keyframeInspectorHTML(s, index, this.selectedKeyframe(s)) : ""}`;
   }
   compositionHTML(recipe, stage, index) {
     const refs = Object.fromEntries(
@@ -1672,6 +1682,12 @@ export class Workspace {
     const key = t.dataset.field,
       previous = s[key];
     const before = { ...s };
+    if (key === "keyframe") {
+      const stage = r.stages[Number(t.dataset.index)], i = Number(t.dataset.kfIndex), field = t.dataset.kfField, kfs = normalizeKeyframes(stage.keyframes);
+      const value = field === "sharp" ? t.checked : field === "ease" ? t.value : Number(t.value);
+      stage.keyframes = field === "at" ? moveKeyframeTime(kfs, i, value / stage.duration) : normalizeKeyframes(kfs.map((k, j) => (j === i ? { ...k, [field]: value } : k)));
+      return;
+    }
     if (key.startsWith("finisher.")) {
       r.finisher = normalizeFinisher({ ...r.finisher, [key.slice(9)]: t.type === "number" ? Number(t.value) : t.value });
       return;
@@ -2238,12 +2254,12 @@ export class Workspace {
       }
       if (action === "stage") {
         if (this.stageIndex === Number(b.dataset.index)) return;
-        this.stageIndex = Number(b.dataset.index);
+        this.stageIndex = Number(b.dataset.index); this.keyframeIndex = 0;
         this.updateInspector();
         return;
       }
       if (action === "variant-pick") {
-        this.stageIndex = Number(b.dataset.variantPick);
+        this.stageIndex = Number(b.dataset.variantPick); this.keyframeIndex = 0;
         this.render();
         return;
       }
@@ -2379,6 +2395,19 @@ export class Workspace {
         this.message = lasting
           ? "Type the condition or effect it is for, then choose an asset. Save when ready."
           : "Choose an asset or token motion, then add stages. Save when ready.";
+        this.render();
+        return;
+      }
+      if (["kf-select", "kf-add", "kf-delete", "kf-flip", "kf-reset"].includes(action)) {
+        const r = this.edit(), s = r?.stages[this.stageIndex];
+        if (!s || s.motion !== "path") return;
+        const kfs = normalizeKeyframes(s.keyframes), i = this.selectedKeyframe(s);
+        if (action === "kf-select") this.keyframeIndex = Number(b.dataset.kf);
+        if (action === "kf-add") { s.keyframes = insertKeyframe(kfs, (kfs[i].at + kfs[Math.min(kfs.length - 1, i + 1)].at) / 2); this.keyframeIndex = i + 1; }
+        if (action === "kf-delete") { s.keyframes = deleteKeyframe(kfs, i); this.keyframeIndex = Math.max(0, i - 1); }
+        if (action === "kf-flip") s.keyframes = flipKeyframes(kfs);
+        if (action === "kf-reset") { s.keyframes = resetKeyframes(); this.keyframeIndex = 1; }
+        if (action !== "kf-select") this.message = "Path updated. Save to apply.";
         this.render();
         return;
       }
