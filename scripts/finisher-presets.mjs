@@ -1,10 +1,14 @@
 // Built-in finishers to copy and make your own. Each moves the real target token; flinging
 // ones travel on a held keyframed path so the token is moved to where it lands (finisher-play.mjs).
 import { validateRecipe } from "./model.mjs";
-import { damageLook } from "./damage-moments.mjs";
+import { damageLook, normalizeDamageType } from "./damage-moments.mjs";
 
 const HIT = ["jb2a.impact.003.white", "jb2a.impact.005.white"];
 const DUST = ["jb2a.smoke.puff.side.grey", "jb2a.smoke.puff.centered.grey"];
+const SLASH = ["jb2a.melee_generic.slashing.one_handed", "jb2a.melee_generic.slash"];
+const PIERCE = ["jb2a.melee_generic.piercing.one_handed", "jb2a.impact.005.white"];
+const BLOOD = ["jb2a.liquid.splash.red", "jb2a.liquid.splash02.red"];
+const CRACK = ["jb2a.impact.ground_crack.01.white", "jb2a.impact.ground_crack.orange"];
 const look = (type) => damageLook(type);
 const fx = (stageId, assets, extra = {}) => ({ stageId, kind: "impact", assets, duration: 1200, ...extra });
 const move = (stageId, motion, extra = {}) => ({ stageId, kind: "motion", motion, subject: "targets", assets: [], ...extra });
@@ -96,9 +100,80 @@ export const FINISHER_PRESETS = {
     [fx("petrify", ["jb2a.impact.boulder.01", "jb2a.impact.005.dark_white"], { duration: 1000 }),
      move("crumble", "fragments", { motionEnd: "hold", delay: 600, duration: 2200, pattern: "dust", pieces: 56, behavior: "crumble", tint: "stone", spread: 0.3, spin: 40, fade: 900 }),
      fx("puff", ["jb2a.smoke.puff.centered.grey"], { delay: 1900, duration: 1200 })]),
+  // One per damage type (FINISHER_BY_DAMAGE_TYPE): the damage's own look round a fragments stage.
+  perforated: preset("Perforated", "Punched through; the pieces burst out the far side.", { knockback: 0, ending: "vanish" },
+    [fx("pierce", PIERCE, { duration: 700 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 200, duration: 1400, pattern: "perforate", pieces: 4, spread: 1.2, spin: 120, fall: 0.2, fade: 600 }),
+     fx("splash", BLOOD, { delay: 350, duration: 1200, offsetX: 0.6, scale: 0.7 })]),
+  carved: preset("Carved", "Hacked into strips that slide apart.", { knockback: 0, ending: "vanish" },
+    [fx("slash", SLASH, { duration: 700 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 250, duration: 1500, pattern: "slashes", pieces: 3, spread: 0.8, spin: 60, fall: 0.4, fade: 600 }),
+     fx("splash", BLOOD, { delay: 400, duration: 1200, scale: 0.7 })]),
+  pulverized: preset("Pulverized", "Smashed into the ground and flattened.", { knockback: 0, ending: "vanish" },
+    [fx("slam", HIT, { duration: 800 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 150, duration: 1600, pattern: "crush", pieces: 3, behavior: "flatten", spread: 0.6, spin: 20, fade: 700 }),
+     fx("crack", CRACK, { delay: 300, duration: 1500, scale: 0.8 })]),
+  "bled-out": preset("Bled out", "Opened up; it sags into a pool and is gone.", { knockback: 0, ending: "vanish" },
+    [fx("bleed", BLOOD, { duration: 1200 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 300, duration: 2000, pattern: "slashes", pieces: 2, behavior: "sink", spread: 0.3, spin: 10, fade: 800 })]),
+  cinders: preset("Cinders", "Burns down to embers that drift up and away.", { knockback: 0, ending: "vanish" },
+    [fx("burn", look("fire").hit, { duration: 1400 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 300, duration: 2000, pattern: "dust", pieces: 48, behavior: "rise", tint: "burning", spread: 1, spin: 60, drift: 0.3, fade: 700 }),
+     fx("smoke", look("fire").after, { delay: 1500, duration: 1500 })]),
+  frostbitten: preset("Frostbitten", "Frozen through; the shards bounce and settle.", { knockback: 0, ending: "vanish" },
+    [fx("freeze", look("cold").hit, { duration: 900 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 250, duration: 1600, pattern: "shards", pieces: 8, behavior: "bounce", tint: "frozen", spread: 0.8, spin: 180, fade: 500 }),
+     fx("shatter", look("cold").after, { delay: 500 })]),
+  thunderstruck: preset("Thunderstruck", "Jolted until it splits along the bolt.", { knockback: 0, ending: "vanish" },
+    [fx("shock", look("electricity").death, { duration: 1600 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 200, duration: 1600, pattern: "lightning", behavior: "shudder", tint: "electric", spread: 0.8, spin: 0, fade: 500 }),
+     fx("smoke", look("electricity").after, { delay: 1300 })]),
+  dissolved: preset("Dissolved", "Eaten away; it runs down in streaks.", { knockback: 0, ending: "vanish" },
+    [fx("splash", look("acid").hit, { duration: 1000 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 300, duration: 1800, pattern: "ribbons", pieces: 10, behavior: "drip", tint: "acid", fall: 0.5, fade: 700 }),
+     fx("fumes", look("acid").after, { delay: 1200, duration: 1600 })]),
+  "shattered-by-sound": preset("Sound shatter", "Shaken by sound until it bursts in rings.", { knockback: 0, ending: "vanish" },
+    [fx("wave", look("sonic").hit, { duration: 1200 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 200, duration: 1600, pattern: "rings", pieces: 3, behavior: "shudder", spread: 0.9, spin: 40, fade: 500 }),
+     fx("cracks", look("sonic").after, { delay: 900, duration: 1500 })]),
+  "blown-apart": preset("Blown apart", "Raw force breaks it into blocks.", { knockback: 0, ending: "vanish" },
+    [fx("blast", look("force").death, { duration: 1200 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 150, duration: 1500, pattern: "pixelate", pieces: 36, spread: 0.8, drift: 0.4, fall: 0.3, fade: 400 }),
+     fx("ring", look("force").after, { delay: 900 })]),
+  consumed: preset("Consumed", "Torn into shadow that streams into the attacker.", { knockback: 0, ending: "vanish" },
+    [fx("void", look("void").death, { duration: 1800 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 300, duration: 1800, pattern: "starburst", pieces: 10, behavior: "absorb", tint: "ghost", spread: 1, spin: 90, fade: 500 })]),
+  smitten: preset("Smitten", "Burned away by light into rising motes.", { knockback: 0, ending: "vanish" },
+    [fx("light", look("vitality").death, { duration: 1800 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 300, duration: 2000, pattern: "dust", pieces: 40, behavior: "rise", tint: "ghost", spread: 1, spin: 30, drift: 0.2, fade: 700 }),
+     fx("stars", look("vitality").after, { delay: 1500 })]),
+  unraveled: preset("Unraveled", "The mind breaks; it glitches out of being.", { knockback: 0, ending: "vanish" },
+    [fx("mind", look("mental").hit, { duration: 1000 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 200, duration: 1400, pattern: "pixelate", pieces: 25, behavior: "glitch", spread: 0.5, fade: 400 })]),
+  withered: preset("Withered", "Poison rots it to dust that sinks away.", { knockback: 0, ending: "vanish" },
+    [fx("toxin", look("poison").death, { duration: 1600 }),
+     move("cut", "fragments", { motionEnd: "hold", delay: 300, duration: 2000, pattern: "dust", pieces: 40, behavior: "sink", tint: "poison", spread: 0.3, spin: 10, fade: 800 })]),
 };
 
 export function presetFinisher(id, newId) {
   const p = FINISHER_PRESETS[id] ?? FINISHER_PRESETS.fall;
   return validateRecipe({ ...p.build(), id: newId });
+}
+
+// The built-in finisher for each damage type, by its normalized name (normalizeDamageType already
+// folds positive into vitality and negative into void).
+export const FINISHER_BY_DAMAGE_TYPE = Object.freeze({
+  piercing: "perforated", slashing: "carved", bludgeoning: "pulverized", bleed: "bled-out",
+  fire: "cinders", cold: "frostbitten", electricity: "thunderstruck", acid: "dissolved",
+  sonic: "shattered-by-sound", force: "blown-apart", void: "consumed", vitality: "smitten", spirit: "smitten",
+  mental: "unraveled", poison: "withered",
+});
+// The "Default finisher for other kills" value that plays the killing blow's damage-type finisher.
+export const BY_DAMAGE_TYPE = "by-damage-type";
+// That damage type's preset as a finisher with a stable id (builtin-<preset>), or null.
+export function damageTypeFinisher(type) {
+  const key = normalizeDamageType(type);
+  if (!Object.hasOwn(FINISHER_BY_DAMAGE_TYPE, key)) return null;
+  const id = FINISHER_BY_DAMAGE_TYPE[key];
+  return Object.hasOwn(FINISHER_PRESETS, id) ? presetFinisher(id, `builtin-${id}`) : null;
 }

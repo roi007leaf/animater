@@ -193,7 +193,8 @@ export function finisherGlyphSVG(recipe, { size = 80, live = false, key = "" } =
 export const FINISHER_PRESET_GROUPS = {
   Flung: ["launch", "wall-slam", "sky-launch", "ragdoll-tumble", "jolt", "blast", "skewer", "struck-down"],
   "In place": ["ash", "melt", "ascend", "unmade", "soul-departs", "fall", "shaken-apart", "pancake", "cleave"],
-  Pieces: ["slice-in-half", "bisect", "shatter-shards", "disintegrate", "shatter", "vortex-spiral", "diced", "claw-shred", "pixel-delete", "soul-drain", "frozen-shatter", "ember-ascent", "turn-to-dust"],
+  Pieces: ["slice-in-half", "bisect", "shatter-shards", "disintegrate", "shatter", "vortex-spiral", "diced", "claw-shred", "pixel-delete", "soul-drain", "frozen-shatter", "ember-ascent", "turn-to-dust",
+    "perforated", "carved", "pulverized", "bled-out", "cinders", "frostbitten", "thunderstruck", "dissolved", "shattered-by-sound", "blown-apart", "consumed", "smitten", "unraveled", "withered"],
 };
 const ENDING_PILL = { vanish: "Vanish", body: "Body", stay: "Stay" };
 // Live twins by key: a card's latest recipe (rebuilt on hover, since it can change), a preset's

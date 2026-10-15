@@ -6,7 +6,8 @@ import { installedAssets } from "../scripts/model.mjs";
 import { finisherTravelPath } from "../scripts/finisher-model.mjs";
 import { assetDatabases } from "../tools/asset-databases.mjs";
 
-const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall", "slice-in-half", "bisect", "shatter-shards", "disintegrate", "sky-launch", "ragdoll-tumble", "vortex-spiral", "pancake", "diced", "claw-shred", "soul-drain", "frozen-shatter", "ember-ascent", "pixel-delete", "turn-to-dust"];
+const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall", "slice-in-half", "bisect", "shatter-shards", "disintegrate", "sky-launch", "ragdoll-tumble", "vortex-spiral", "pancake", "diced", "claw-shred", "soul-drain", "frozen-shatter", "ember-ascent", "pixel-delete", "turn-to-dust",
+  "perforated", "carved", "pulverized", "bled-out", "cinders", "frostbitten", "thunderstruck", "dissolved", "shattered-by-sound", "blown-apart", "consumed", "smitten", "unraveled", "withered"];
 
 test("every preset is a valid kill finisher the GM can save as their own", () => {
   assert.deepEqual(Object.keys(FINISHER_PRESETS), IDS);
@@ -154,4 +155,58 @@ test("Turn to dust: petrified grey, crumbles top-down into a heap of dust, then 
   assert.deepEqual([puff.kind, puff.assets, puff.delay], ["impact", ["jb2a.smoke.puff.centered.grey"], 1900]);
   assert.equal(Object.values(FINISHER_PRESET_GROUPS).flat().filter((id) => id === "turn-to-dust").length, 1);
   assert.ok(FINISHER_PRESET_GROUPS.Pieces.includes("turn-to-dust"), "in Pieces");
+});
+
+import { FINISHER_BY_DAMAGE_TYPE, BY_DAMAGE_TYPE, damageTypeFinisher } from "../scripts/finisher-presets.mjs";
+
+const DAMAGE_PRESETS = {
+  perforated: ["Perforated", "perforate", "burst", "none", 4], carved: ["Carved", "slashes", "burst", "none", 3], pulverized: ["Pulverized", "crush", "flatten", "none", 3],
+  "bled-out": ["Bled out", "slashes", "sink", "none", 2], cinders: ["Cinders", "dust", "rise", "burning", 48], frostbitten: ["Frostbitten", "shards", "bounce", "frozen", 8],
+  thunderstruck: ["Thunderstruck", "lightning", "shudder", "electric", 2], dissolved: ["Dissolved", "ribbons", "drip", "acid", 10], "shattered-by-sound": ["Sound shatter", "rings", "shudder", "none", 3],
+  "blown-apart": ["Blown apart", "pixelate", "burst", "none", 36], consumed: ["Consumed", "starburst", "absorb", "ghost", 10], smitten: ["Smitten", "dust", "rise", "ghost", 40],
+  unraveled: ["Unraveled", "pixelate", "glitch", "none", 25], withered: ["Withered", "dust", "sink", "poison", 40],
+};
+
+test("the damage-type presets: one held fragments stage each, vanishing in place, in Pieces once", () => {
+  for (const [id, [name, pattern, behavior, tint, pieces]] of Object.entries(DAMAGE_PRESETS)) {
+    const r = presetFinisher(id, id), cuts = r.stages.filter((s) => s.motion === "fragments");
+    assert.equal(FINISHER_PRESETS[id].name, name, id);
+    assert.equal(cuts.length, 1, id);
+    const cut = prepareFragments(cuts[0]);
+    assert.deepEqual([cut.pattern, cut.behavior, cut.tint, cut.pieces, cuts[0].motionEnd, cuts[0].subject], [pattern, behavior, tint, pieces, "hold", "targets"], id);
+    assert.deepEqual([r.trigger, r.finisher.on, r.finisher.ending, r.finisher.knockback, r.finisher.success], ["manual", "kill", "vanish", 0, "success"], id);
+    assert.ok(r.stages.some((s) => s.kind === "impact"), `${id}: a hit`);
+    assert.equal(Object.values(FINISHER_PRESET_GROUPS).flat().filter((p) => p === id).length, 1, `${id} is in one group`);
+    assert.ok(FINISHER_PRESET_GROUPS.Pieces.includes(id), `${id} is in Pieces`);
+  }
+  const blood = (id) => presetFinisher(id, id).stages.some((s) => s.assets?.some((a) => a.startsWith("jb2a.liquid.splash")));
+  assert.ok(["perforated", "carved", "bled-out"].every(blood), "the bleeding ones splash blood");
+  assert.equal(presetFinisher("perforated", "p").stages.find((s) => s.stageId === "splash").offsetX, 0.6, "the splash lands on the far side");
+});
+
+test("FINISHER_BY_DAMAGE_TYPE maps every damage type to an existing preset", () => {
+  assert.ok(Object.isFrozen(FINISHER_BY_DAMAGE_TYPE));
+  assert.deepEqual(FINISHER_BY_DAMAGE_TYPE, {
+    piercing: "perforated", slashing: "carved", bludgeoning: "pulverized", bleed: "bled-out", fire: "cinders", cold: "frostbitten", electricity: "thunderstruck", acid: "dissolved",
+    sonic: "shattered-by-sound", force: "blown-apart", void: "consumed", vitality: "smitten", spirit: "smitten", mental: "unraveled", poison: "withered",
+  });
+  for (const id of Object.values(FINISHER_BY_DAMAGE_TYPE)) assert.ok(FINISHER_PRESETS[id], id);
+  assert.deepEqual([...new Set(Object.values(FINISHER_BY_DAMAGE_TYPE))].sort(), Object.keys(DAMAGE_PRESETS).sort(), "every damage preset is reachable");
+  assert.equal(BY_DAMAGE_TYPE, "by-damage-type");
+});
+
+// Review focus: systems spell damage types their own way.
+test("damageTypeFinisher folds names and aliases, and answers null for anything else", () => {
+  const id = (type) => damageTypeFinisher(type)?.id ?? null;
+  assert.equal(id("piercing"), "builtin-perforated");
+  assert.equal(id("Fire"), "builtin-cinders");
+  assert.equal(id(" SLASHING "), "builtin-carved");
+  assert.equal(id("positive"), "builtin-smitten");
+  assert.equal(id("negative"), "builtin-consumed");
+  assert.equal(id("lightning"), "builtin-thunderstruck");
+  assert.equal(id("psychic"), "builtin-unraveled");
+  for (const bad of ["untyped", "", null, undefined, "__proto__", "constructor", "toString"]) assert.equal(id(bad), null, String(bad));
+  const r = damageTypeFinisher("fire");
+  assert.deepEqual([r.name, r.finisher.on, r.finisher.success, r.enabled !== false], ["Cinders", "kill", "success", true]);
+  assert.deepEqual(damageTypeFinisher("fire"), r, "the same recipe every time");
 });
