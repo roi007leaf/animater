@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { MAX_KEYFRAMES, DEFAULT_KEYFRAMES, normalizeKeyframes, samplePath, pathEnd, pathSquares, rotateBy, unrotateBy, snapSquares, insertKeyframe, moveKeyframeTime, moveKeyframePoint, deleteKeyframe, flipKeyframes, resetKeyframes, cutPath, stretchScale, landsTilted, smoothKeyframes } from "../scripts/keyframe-path.mjs";
 import { easeValue } from "../scripts/stage-options.mjs";
+import { presetFinisher } from "../scripts/finisher-presets.mjs";
+import { finisherTravelPath } from "../scripts/finisher-model.mjs";
 
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} vs ${b}`);
 const kfs = normalizeKeyframes([{ at: 0 }, { at: 0.5, x: 1, y: 1, rotation: 90, ease: "linear" }, { at: 1, x: 2, y: 0, scale: 0.5, alpha: 0.2, ease: "linear" }]);
@@ -135,6 +137,50 @@ test("cutPath with a whole-path ease: searches the stage's own time and resample
   for (const kf of keyframes.slice(1, -1)) near(kf.x, 6 * easeValue(kf.at * t, "easeOutCubic"), `x at ${kf.at}`);
   near(cutPath(k, 3).t, 0.5, "linear by default");
   assert.equal(cutPath(k, 7, "easeOutCubic").t, 1, "never reaches the wall: untouched");
+});
+
+test("cutPath of the Wall slam preset with its path ease: the same motion up to the wall, fast at impact, landing exactly", () => {
+  const travel = finisherTravelPath(presetFinisher("wall-slam", "ws")), ease = travel.pathEase;
+  assert.equal(ease, "easeOutCubic");
+  const original = travel.keyframes, d = travel.duration, { keyframes, t } = cutPath(original, 3, ease), cutDuration = d * t;
+  // The cut stage plays its keyframes with a linear whole-path ease over d * t.
+  const cutAt = (ms) => samplePath(keyframes, ms / cutDuration), originalAt = (ms) => samplePath(original, easeValue(ms / d, ease));
+  const times = [0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 0.95].map((f) => f * cutDuration);
+  for (const ms of times) {
+    const a = cutAt(ms), b = originalAt(ms);
+    assert.ok(Math.hypot(a.x - b.x, a.y - b.y) < 0.1, `at ${Math.round(ms)} ms: cut ${a.x.toFixed(3)} vs original ${b.x.toFixed(3)}`);
+  }
+  const step = (at, from, to) => { const a = at(from), b = at(to); return Math.hypot(b.x - a.x, b.y - a.y); };
+  const cutSpeed = step(cutAt, 0.95 * cutDuration, cutDuration), originalSpeed = step(originalAt, 0.95 * cutDuration, cutDuration);
+  assert.ok(cutSpeed >= 0.5 * originalSpeed, `impact speed ${cutSpeed} vs ${originalSpeed}`);
+  const end = keyframes.at(-1), hit = samplePath(original, easeValue(t, ease));
+  assert.ok(Math.abs(Math.hypot(end.x, end.y) - 3) < 1e-3, "ends on the wall");
+  near(end.x, hit.x, "x at impact"); near(end.y, hit.y, "y at impact");
+  assert.deepEqual([end.at, end.rotation % 360, end.scale, end.alpha, end.stretch, end.ease], [1, 0, 1, 1, 0, "linear"], "upright landing");
+  assert.ok(keyframes.length <= MAX_KEYFRAMES);
+});
+
+test("cutPath leaves a path that never reaches the wall untouched", () => {
+  for (const reach of [6, 7]) {
+    const k = line(), cut = cutPath(k, reach);
+    assert.equal(cut.t, 1, `reach ${reach}`);
+    assert.deepEqual(cut.keyframes, k);
+  }
+});
+
+test("cutPath keeps the original motion up to the wall: same positions in time, still fast at impact", () => {
+  // The Wall slam preset's path: it is still moving fast when a wall 3 squares out stops it.
+  const original = normalizeKeyframes([{ at: 0, x: 0, y: 0 }, { at: 0.12, x: 0.5, y: 0, scale: 1.08 }, { at: 1, x: 6, y: 0, ease: "easeOutCubic" }]);
+  const d = 1000, { keyframes, t } = cutPath(original, 3), cutDuration = d * t;
+  const at = (k, q) => { const p = samplePath(k, q); return { x: p.x, y: p.y }; };
+  for (const f of [0.2, 0.4, 0.6, 0.8, 0.95]) {
+    const ms = f * cutDuration, a = at(keyframes, ms / cutDuration), b = at(original, ms / d);
+    assert.ok(Math.hypot(a.x - b.x, a.y - b.y) < 0.15, `at ${Math.round(ms)} ms: cut ${a.x.toFixed(3)} vs original ${b.x.toFixed(3)}`);
+  }
+  const step = (k, from, to) => { const a = at(k, from), b = at(k, to); return Math.hypot(b.x - a.x, b.y - a.y); };
+  const cutSpeed = step(keyframes, 0.95, 1), originalSpeed = step(original, 0.95 * t, t);
+  assert.ok(cutSpeed > 0.5 * originalSpeed, `impact speed ${cutSpeed} vs ${originalSpeed}`);
+  assert.ok(keyframes.length <= MAX_KEYFRAMES);
 });
 
 test("cutPath resamples within the keyframe budget", () => {

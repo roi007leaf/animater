@@ -87,3 +87,26 @@ test("the creative presets use fragments or keyframed paths as designed", () => 
   assert.equal(pancake.stretch, -0.6);
   assert.equal(presetFinisher("pancake", "p").finisher.ending, "body");
 });
+
+// One fluid motion per preset: the stage's pathEase shapes the speed, the keyframes are linear.
+const PATH_EASES = { launch: "easeOutQuad", skewer: "easeOutCubic", "struck-down": "easeOutCubic", ash: "easeInQuad", shatter: "linear", jolt: "easeOutQuad", blast: "easeOutCubic",
+  "wall-slam": "easeOutCubic", unmade: "easeInQuad", melt: "easeInQuad", ascend: "easeInOutQuad", "shaken-apart": "linear", "sky-launch": "easeInQuad", "ragdoll-tumble": "linear", "vortex-spiral": "easeInQuad", pancake: "easeOutBack" };
+test("every preset path is one fluid motion: a whole-path ease over linear keyframes", () => {
+  assert.deepEqual(IDS.filter((id) => finisherTravelPath(presetFinisher(id, id))), Object.keys(PATH_EASES), "every path preset is listed");
+  for (const [id, ease] of Object.entries(PATH_EASES)) {
+    const path = finisherTravelPath(presetFinisher(id, id));
+    assert.equal(path.pathEase, ease, id);
+    if (id === "ragdoll-tumble") continue;
+    // Pancake's squash keeps its overshoot into the floor.
+    const eases = path.keyframes.map((k) => k.ease), expected = eases.map((_, i) => (id === "pancake" && i === eases.length - 1 ? "easeOutBack" : "linear"));
+    assert.deepEqual(eases, expected, id);
+  }
+});
+
+test("Ragdoll tumble slows deliberately at each bounce: easing out into each apex, in to each landing", () => {
+  const k = finisherTravelPath(presetFinisher("ragdoll-tumble", "r")).keyframes;
+  const inner = k.slice(1, -1);
+  assert.deepEqual(inner.map((kf) => [kf.sharp, kf.ease]), inner.map((kf) => (kf.sharp ? [true, "easeInQuad"] : [false, "easeOutQuad"])));
+  assert.equal(inner.filter((kf) => kf.sharp).length, 3, "three landings");
+  assert.equal(inner.filter((kf) => !kf.sharp).length, 3, "three apexes");
+});
