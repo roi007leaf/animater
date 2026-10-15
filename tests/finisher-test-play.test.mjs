@@ -219,3 +219,40 @@ test("a studio test play of a shove draws the slash on the landing square and wr
   assert.ok(motions.some((m) => m.motion === "rush" && m.motionOffset?.x === 2), "the shove is played");
   assert.deepEqual([orc.document.x, orc.document.y], [100, 100], "the token is never moved");
 });
+
+// Local preview runs the whole plan: the runtime waits out the latest stage end and gives every
+// effect its full stage duration, for a plain recipe and for a composed finisher alike.
+test("a local preview waits out the whole plan and plays every effect at full length", async () => {
+  const finisher = presetFinisher("wall-slam", "ws");
+  const plain = { id: "p", name: "Plain", trigger: "manual", stages: [
+    { stageId: "a", kind: "impact", assets: ["jb2a.impact.003.white"], delay: 0, duration: 2600 },
+    { stageId: "b", kind: "impact", assets: ["jb2a.impact.005.white"], afterStage: "a", timingAnchor: "end", startOffset: -1700, delay: 0, duration: 2600 }] };
+  for (const recipe of [plain, finisher]) {
+    const assets = [...new Set(recipe.stages.flatMap((s) => s.assets))];
+    const durations = [], waits = [];
+    let plan = null;
+    const host = {
+      database: { entryExists: () => true, getPathsUnder: () => assets, getAllFileEntries: (k) => [`${k}.webm`] },
+      enabled: () => true, recipes: () => [], ready: () => true, canPlay: () => true, userId: () => "u", gridSize: () => GRID,
+      sequence: () => {
+        const chain = (calls) => new Proxy({}, { get: (_, key) => (...args) => { calls.push([key, ...args]); return chain(calls); } });
+        const effects = [];
+        return { effect: () => { const c = []; effects.push(c); return chain(c); }, sound: () => chain([]),
+          play: async () => { for (const c of effects) durations.push(c.find((x) => x[0] === "duration")?.[1]); } };
+      },
+      endEffects: async () => {}, motion: async () => {},
+    };
+    const runtime = new AnimaterRuntime(host);
+    runtime.refreshCatalog();
+    runtime.wait = async (ms) => { waits.push(ms); return true; };
+    const hero = token("Hero", 0, 100), orc = token("Orc", 100, 100);
+    const play = (r, context) => runtime.play(r, context, { preview: true, onStart: (p) => { plan = p.playbackPlan; } });
+    const done = await (previewFinisher(recipe, { source: hero, targets: [orc] }, testHost(Infinity), play) ?? play(recipe, { source: hero, targets: [orc] }));
+    assert.ok(done, recipe.name);
+    const end = Math.max(...plan.map((s) => s.delay + s.duration));
+    assert.ok(end >= (recipe === plain ? 3500 : 2300), `${recipe.name}: plan runs to ${end}`);
+    assert.ok(waits.includes(end), `${recipe.name}: waits ${end} (${waits})`);
+    const effects = plan.filter((s) => s.kind === "impact").map((s) => s.duration * (s.playbackRate ?? 1));
+    assert.deepEqual([...durations].sort((a, b) => a - b), [...effects].sort((a, b) => a - b), `${recipe.name}: full effect durations`);
+  }
+});
