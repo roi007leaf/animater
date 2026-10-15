@@ -334,8 +334,11 @@ export function studioPointer(w, e) {
     const move = (ev) => { last = canvasToSquares(ev, svg.getBoundingClientRect(), { x: vx, y: vy, w: vw, h: vh }); last.whole = ev.shiftKey; dot.setAttribute("cx", last.x); dot.setAttribute("cy", last.y); };
     const up = () => {
       dot.removeEventListener("pointermove", move); dot.removeEventListener("pointerup", up); dot.removeEventListener("pointercancel", up);
-      const s = last ? w.edit()?.stages[stageIndex] : null;
-      if (s) { s.keyframes = moveKeyframePoint(normalizeKeyframes(s.keyframes), index, last.x, last.y, last.whole); w.message = "Keyframe moved. Save to apply."; }
+      // A click or a drag that snaps back to the same point is not an edit: no draft, no unsaved mark.
+      const kfs = last ? normalizeKeyframes(w.recipe()?.stages[stageIndex]?.keyframes) : null;
+      const next = kfs && moveKeyframePoint(kfs, index, last.x, last.y, last.whole);
+      const s = next && (next[index]?.x !== kfs[index]?.x || next[index]?.y !== kfs[index]?.y) ? w.edit()?.stages[stageIndex] : null;
+      if (s) { s.keyframes = next; w.message = "Keyframe moved. Save to apply."; }
       w.render();
     };
     dot.setPointerCapture?.(e.pointerId);

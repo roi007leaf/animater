@@ -306,7 +306,7 @@ export class Workspace {
       if (pathStage?.motion === "path" && !e.target.closest("[data-kf-diamond]")) {
         const rect = pathBar.getBoundingClientRect(), barIndex = Number(pathBar.dataset.tlBar);
         const kfs = normalizeKeyframes(pathStage.keyframes), at = (e.clientX - rect.left) / Math.max(1, rect.width), next = insertKeyframe(kfs, at);
-        if (next !== kfs) { this.edit().stages[barIndex].keyframes = next; this.stageIndex = Number(pathBar.dataset.tlBar); this.keyframeIndex = next.findIndex((k) => Math.abs(k.at - Math.min(0.99, Math.max(0.01, at))) < 0.006); this.message = "Keyframe added. Save to apply."; this.render(); }
+        if (next !== kfs) { this.edit().stages[barIndex].keyframes = next; this.stageIndex = Number(pathBar.dataset.tlBar); this.keyframeIndex = next.findIndex((k) => Math.abs(k.at - Math.min(0.99, Math.max(0.01, at))) < 0.006); this.keyframeFocus = true; this.message = "Keyframe added. Save to apply."; this.render(); }
         return;
       }
       const h = e.target.closest?.("[data-splitter]"); if (h) this.setInspectorWidth(380, h.closest(".an-work, .an-studio"));

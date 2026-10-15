@@ -1,6 +1,8 @@
 // Keyframed path editing: diamonds on the timeline bar, the grid path canvas and the inspector.
 import { EASES } from "./stage-options.mjs";
-import { samplePath, DEFAULT_KEYFRAMES, snapSquares, landsTilted } from "./keyframe-path.mjs";
+import { samplePath, DEFAULT_KEYFRAMES, landsTilted, pathSquares } from "./keyframe-path.mjs";
+import { landingSteps } from "./displacement.mjs";
+import { motionPose } from "./motion.mjs";
 
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 export const keyframesOf = (s) => (Array.isArray(s?.keyframes) && s.keyframes.length >= 2 ? s.keyframes : DEFAULT_KEYFRAMES);
@@ -32,7 +34,10 @@ export function pathCanvasHTML(s, { selected = -1, finisher = null } = {}) {
   for (let x = Math.ceil(v.x); x <= v.x + v.w; x++) grid.push(`<line x1="${x}" y1="${v.y}" x2="${x}" y2="${v.y + v.h}"/>`);
   for (let y = Math.ceil(v.y); y <= v.y + v.h; y++) grid.push(`<line x1="${v.x}" y1="${y}" x2="${v.x + v.w}" y2="${y}"/>`);
   const ghost = (k, i) => `<g class="an-kf-ghost${i === selected ? " is-on" : ""}" transform="translate(${k.x} ${k.y}) rotate(${k.rotation}) scale(${k.scale})" opacity="${Math.max(0.12, k.alpha)}"><rect x="-0.4" y="-0.4" width="0.8" height="0.8" rx="0.12"/></g>`;
-  const end = kfs.at(-1), landing = finisher && s.motionEnd === "hold" ? `<rect class="an-kf-landing" data-kf-landing x="${snapSquares(end.x, true) - 0.5}" y="${snapSquares(end.y, true) - 0.5}" width="1" height="1"/>` : "";
+  // The landing walks the grid along the end's direction like the real one (longer axis per step).
+  const end = kfs.at(-1), length = Math.hypot(end.x, end.y);
+  const spot = (length ? landingSteps({ x: 0, y: 0 }, { x: end.x / length, y: end.y / length }, pathSquares(kfs), 1).at(-1) : null) ?? { x: 0, y: 0 };
+  const landing = finisher && s.motionEnd === "hold" ? `<rect class="an-kf-landing" data-kf-landing x="${spot.x - 0.5}" y="${spot.y - 0.5}" width="1" height="1"/>` : "";
   const away = finisher ? (finisher.mover === "source" ? "away from the target" : "away from the attacker") : "away from the other token";
   return `<div class="an-kf-canvas" data-kf-canvas data-kf-view="${v.x} ${v.y} ${v.w} ${v.h}" aria-label="Keyframed path: drag the dots to move keyframes">
     <svg viewBox="${v.x} ${v.y} ${v.w} ${v.h}" preserveAspectRatio="xMidYMid meet">
@@ -60,10 +65,12 @@ export function keyframeInspectorHTML(s, stageIndex, selected) {
     <p class="an-hint is-warn" role="note">This path travels: when the token lands it snaps back to upright, full size and visible. End on rotation 0/360/…, size 1, opacity 1 — fade or shrink in place instead.</p>` : ""}</div>`;
 }
 
-// Where the playhead puts the token on the path (squares), for the canvas scrub.
+// Where the playhead puts the token on the path (squares), for the canvas scrub: the preview's
+// own pose math, so a returning path settles back over its last 15% there too.
 export function scrubPoint(s, startMs, timeMs) {
-  const p = samplePath(keyframesOf(s), Math.min(1, Math.max(0, (timeMs - startMs) / Math.max(1, s.duration))));
-  return { x: n2(p.x), y: n2(p.y) };
+  const q = Math.min(1, Math.max(0, (timeMs - startMs) / Math.max(1, s.duration)));
+  const p = motionPose({ ...s, keyframes: keyframesOf(s), motionFrame: undefined }, q, { x: 1, y: 0 }, 1);
+  return { x: n2(p.x) + 0, y: n2(p.y) + 0 };
 }
 
 // Delete removes a keyframe only when one is focused on the selected path stage and the key is not aimed at another stage's bar.

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { keyframeDiamondsHTML, pathCanvasHTML, keyframeInspectorHTML, canvasToSquares, canvasView, scrubPoint, keyframeDeleteApplies } from "../scripts/keyframe-ui.mjs";
-import { normalizeKeyframes } from "../scripts/keyframe-path.mjs";
+import { normalizeKeyframes, samplePath } from "../scripts/keyframe-path.mjs";
 
 const stage = { kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", duration: 1000, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.4, x: 1, y: 0.5 }, { at: 1, x: 2.6, y: 0 }]) };
 
@@ -23,6 +23,12 @@ test("the canvas draws the path, a draggable dot per keyframe, and a finisher's 
   const fin = pathCanvasHTML(stage, { selected: 2, finisher: { mover: "targets", ending: "body" } });
   assert.match(fin, /data-kf-landing/);
   assert.match(fin, /away from the attacker/);
+});
+
+test("the landing square sits where the grid walk lands, not on the rounded end", () => {
+  const s = { ...stage, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: 2.6, y: 1.4 }]) };
+  const html = pathCanvasHTML(s, { finisher: { mover: "targets", ending: "body" } });
+  assert.match(html, /data-kf-landing x="2\.5" y="1\.5"/, "square (3, 2): three longer-axis steps along the end direction");
 });
 
 test("pointer positions convert to squares through the letterboxed view", () => {
@@ -60,6 +66,17 @@ test("the scrub token follows the path in time with the playhead", () => {
   const mid = scrubPoint(stage, 500, 900);
   assert.ok(Math.abs(mid.x - 1) < 1e-6 && Math.abs(mid.y - 0.5) < 1e-6, "400 ms into the stage: keyframe 2");
   assert.deepEqual(scrubPoint(stage, 500, 9999), { x: 2.6, y: 0 }, "after: at the end");
+});
+
+test("on a returning path the scrub settles back to the token like the preview", () => {
+  const back = { ...stage, motionEnd: undefined };
+  const end = scrubPoint(back, 0, 850);
+  assert.ok(Math.abs(end.x - 2.6) < 1e-6 && Math.abs(end.y) < 1e-6, "85%: the whole path is drawn");
+  const settling = scrubPoint(back, 0, 900);
+  assert.ok(settling.x > 0 && settling.x < 2.6, "90%: between the last keyframe and the token");
+  assert.deepEqual(scrubPoint(back, 0, 1000), { x: 0, y: 0 }, "the end: back at the token");
+  const held = scrubPoint(stage, 0, 900), p = samplePath(stage.keyframes, 0.9);
+  assert.ok(Math.abs(held.x - p.x) < 1e-3 && Math.abs(held.y - p.y) < 1e-3, "a held path keeps its own timing");
 });
 
 test("Delete removes a keyframe only for the focused path stage", () => {
