@@ -126,8 +126,11 @@ export function flashScreens(host) {
   const opened = (combat) => combat?.getFlag?.(ID, "flashOpened");
   function open(combat) {
     if (!activeGM() || opened(combat)) return;
+    // Only a screen that actually plays counts as the opening; with none picked, a later add or Begin Combat may still play one.
+    const screen = forCombat(combat, "start");
+    if (!screen) return;
     void combat.setFlag?.(ID, "flashOpened", true);
-    play(forCombat(combat, "start"), { everyone: true, combat });
+    play(screen, { everyone: true, combat });
   }
   Hooks.on("combatStart", (combat) => open(combat));
   // Adding everyone arrives as a burst of combatants: wait for it to settle, then play once.
