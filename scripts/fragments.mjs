@@ -51,10 +51,13 @@ function clip(pts, n, d) {
 }
 const piece = (polygon) => ({ polygon, centroid: centroidOf(polygon) });
 
-export function fragmentPieces(stage, cutAngle) {
+// The cut angle is on screen; `turn` is the token art's rotation, so pieces are cut in the art's
+// own frame at the screen angle minus the turn (top/bottom stays level on screen).
+const screenCut = (s, cutAngle) => (s.pattern === "topBottom" ? 0 : s.cut === "fixed" ? (s.angle * Math.PI) / 180 : cutAngle);
+export function fragmentPieces(stage, cutAngle, turn = 0) {
   const s = { ...stage, ...normalizeFragments(stage) }, rand = seededRandom(s.seed ?? 1);
   if (s.pattern === "halves" || s.pattern === "topBottom") {
-    const a = s.pattern === "topBottom" ? 0 : s.cut === "fixed" ? (s.angle * Math.PI) / 180 : cutAngle;
+    const a = screenCut(s, cutAngle) - turn;
     const n = { x: -Math.sin(a), y: Math.cos(a) };
     return [piece(clip(SQUARE, { x: -n.x, y: -n.y }, 0)), piece(clip(SQUARE, n, 0))];
   }
@@ -77,12 +80,14 @@ export function fragmentPieces(stage, cutAngle) {
   });
 }
 
-// Each piece's own flight, in squares relative to where it started.
-export function fragmentFlight(stage, p, index, cutAngle) {
+// Each piece's own flight, in screen squares relative to where it started: the piece's centroid
+// is turned onto the screen first, so falls go down and wind blows away on screen.
+export function fragmentFlight(stage, p, index, cutAngle, turn = 0) {
   const s = { ...stage, ...normalizeFragments(stage) }, rand = seededRandom(((s.seed ?? 1) + index * 7919) >>> 0);
-  const len = Math.hypot(p.centroid.x, p.centroid.y) || 1, out = { x: p.centroid.x / len, y: p.centroid.y / len };
+  const c = { x: Math.cos(turn) * p.centroid.x - Math.sin(turn) * p.centroid.y, y: Math.sin(turn) * p.centroid.x + Math.cos(turn) * p.centroid.y };
+  const len = Math.hypot(c.x, c.y) || 1, out = { x: c.x / len, y: c.y / len };
   if (s.pattern === "dust") {
-    const wind = { x: Math.cos(cutAngle), y: Math.sin(cutAngle) }, lead = 0.5 - (p.centroid.x * wind.x + p.centroid.y * wind.y);
+    const wind = { x: Math.cos(cutAngle), y: Math.sin(cutAngle) }, lead = 0.5 - (c.x * wind.x + c.y * wind.y);
     const start = Math.min(0.4, Math.max(0, lead * 0.4)), end = Math.min(1, start + 0.6), reach = s.spread * (0.5 + rand() * 0.5);
     const dx = out.x * reach * 0.4 + wind.x * (reach * 0.6 + s.drift), dy = out.y * reach * 0.4 + wind.y * (reach * 0.6 + s.drift) - 0.2;
     return { start, end, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: end, x: dx, y: dy, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutQuad" }, { at: 1, x: dx, y: dy, rotation: s.spin * (rand() * 2 - 1) }]) };
@@ -92,8 +97,8 @@ export function fragmentFlight(stage, p, index, cutAngle) {
     return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: out.x * dist, y: out.y * dist + s.fall * 0.3, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutCubic" }]) };
   }
   // Halves: apart along the cut's normal; top/bottom lets the top half slide off and topple.
-  const a = s.pattern === "topBottom" ? 0 : s.cut === "fixed" ? (s.angle * Math.PI) / 180 : cutAngle;
-  const n = { x: -Math.sin(a), y: Math.cos(a) }, side = Math.sign(p.centroid.x * n.x + p.centroid.y * n.y) || 1;
+  const a = screenCut(s, cutAngle);
+  const n = { x: -Math.sin(a), y: Math.cos(a) }, side = Math.sign(c.x * n.x + c.y * n.y) || 1;
   if (s.pattern === "topBottom" && side > 0) return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.4 }, { at: 1, x: 0, y: s.fall * 0.1, ease: "easeInQuad" }]) };
   const along = s.pattern === "topBottom" ? s.spread * 0.3 : 0;
   const mx = n.x * side * s.spread * 0.5 + Math.cos(a) * along, my = n.y * side * s.spread * 0.5 + Math.sin(a) * along + s.fall * 0.3;

@@ -29,7 +29,7 @@ export function createFragmentRenderer({ PIXI, grid }) {
       const boxes = [], crops = [];
       let parts;
       try {
-        parts = fragmentPieces(stage, cutAngle).map((piece, i) => {
+        parts = fragmentPieces(stage, cutAngle, turn).map((piece, i) => {
           const box = new PIXI.Container(), cx = piece.centroid.x * w, cy = piece.centroid.y * h;
           boxes.push(box);
           let crop = null, sprite;
@@ -54,7 +54,7 @@ export function createFragmentRenderer({ PIXI, grid }) {
           for (const [key, value] of Object.entries(sorting)) if (value !== undefined) box[key] = value;
           if (mesh.zIndex !== undefined) box.zIndex = mesh.zIndex + 1;
           layer.addChild(box);
-          return { box, crop, piece, flight: fragmentFlight(stage, piece, i, cutAngle), cx, cy };
+          return { box, crop, piece, flight: fragmentFlight(stage, piece, i, cutAngle, turn), cx, cy };
         });
       } catch (error) {
         for (const box of boxes) { try { box.destroy({ children: true }); } catch { /* keep cleaning */ } }
@@ -64,8 +64,9 @@ export function createFragmentRenderer({ PIXI, grid }) {
       return {
         update(p) {
           for (const part of parts) {
-            const pose = fragmentPose(stage, part.piece, part.flight, p), at = place(part.cx + pose.x * g, part.cy + pose.y * g);
-            part.box.position.set(at.x, at.y); part.box.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha;
+            // The flight is already in screen terms: only the piece's own offset turns with the art.
+            const pose = fragmentPose(stage, part.piece, part.flight, p), at = place(part.cx, part.cy);
+            part.box.position.set(at.x + pose.x * g, at.y + pose.y * g); part.box.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha;
           }
         },
         destroy() { for (const part of parts) { part.box.destroy({ children: true }); part.crop?.destroy(false); } },

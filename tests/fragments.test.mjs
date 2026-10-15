@@ -157,3 +157,31 @@ test("the base transform replaces the live pose for size and place", () => {
   const [a, b] = layer.children;
   assert.ok(Math.abs((a.x + b.x) / 2 - 200) < 1e-6 && Math.abs((a.y + b.y) / 2 - 200) < 1e-6);
 });
+
+// F1: a rotated token is cut and flown in screen terms.
+const ends = (r, token, layer, stage, angle) => {
+  const h = r.start(token, stage, angle);
+  const from = layer.children.map((c) => ({ x: c.x, y: c.y }));
+  h.update(1);
+  return { from, to: layer.children.map((c) => ({ x: c.x, y: c.y })) };
+};
+test("a token turned a quarter is cut perpendicular to the swing and its halves part on screen y", () => {
+  const { r, token, layer } = rig({ rotation: Math.PI / 2 });
+  const { from, to } = ends(r, token, layer, { ...halves, fall: 0 }, 0);
+  assert.ok(Math.abs(from[0].y - from[1].y) > 10 && Math.abs(from[0].x - from[1].x) < 1e-6, "pieces sit above and below on screen");
+  assert.ok(Math.abs(to[0].y - to[1].y) > Math.abs(from[0].y - from[1].y) + 10, "they part along screen y");
+  assert.ok(Math.abs(to[0].x - to[1].x) < 1e-6);
+});
+test("dust on a turned token blows away from an attacker on the left", () => {
+  const { r, token, layer } = rig({ rotation: Math.PI / 2 });
+  const { from, to } = ends(r, token, layer, { ...halves, pattern: "dust", pieces: 16, drift: 0.8 }, 0);
+  const mean = (a) => a.reduce((s, p) => s + p.x, 0) / a.length;
+  assert.ok(mean(to) > mean(from) + 50, `blows right: ${mean(from)} -> ${mean(to)}`);
+});
+test("top/bottom on a turned token still splits on the screen horizontal", () => {
+  const { r, token, layer } = rig({ rotation: Math.PI / 2 });
+  const { from, to } = ends(r, token, layer, { ...halves, pattern: "topBottom" }, 0);
+  const top = from[0].y < from[1].y ? 0 : 1, bottom = 1 - top;
+  assert.ok(from[bottom].y - from[top].y > 10, "one piece above the other at the start");
+  assert.ok(to[top].y < to[bottom].y, "the top piece ends above the bottom piece");
+});
