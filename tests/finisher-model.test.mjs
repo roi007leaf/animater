@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -103,4 +103,11 @@ test("a player may move a token they own, or one their own token struck", () => 
   assert.equal(mayDisplace({ ownsToken: true, ownsAttacker: false }), true);
   assert.equal(mayDisplace({ ownsToken: false, ownsAttacker: true }), true);
   assert.equal(mayDisplace({ ownsToken: false, ownsAttacker: false }), false);
+});
+
+test("a finisher's travel path is the mover's held keyframed path", () => {
+  const path = { kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [] };
+  assert.equal(finisherTravelPath({ finisher: normalizeFinisher({}), stages: [{ kind: "impact" }, path] }), path);
+  assert.equal(finisherTravelPath({ finisher: normalizeFinisher({ mover: "source" }), stages: [path] }), null, "another mover's path is not the travel");
+  assert.equal(finisherTravelPath({ finisher: normalizeFinisher({}), stages: [{ ...path, motionEnd: undefined }] }), null, "a returning path does not travel");
 });

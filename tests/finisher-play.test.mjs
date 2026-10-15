@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { composeFinisher, travelEnd, planEnd, motionEnd, finisherDirection, playFinisher } from "../scripts/finisher-play.mjs";
+import { composeFinisher, travelEnd, planEnd, motionEnd, finisherDirection, playFinisher, fadedAtEnd, pathAim } from "../scripts/finisher-play.mjs";
 import { normalizeFinisher } from "../scripts/model.mjs";
 
 const travel = { stageId: "fly", kind: "motion", motion: "leap", subject: "targets", motionEnd: "hold", duration: 1000, assets: [] };
@@ -120,4 +120,71 @@ test("a source-mover finisher plays from the user and aims its effects at the ta
   const host = fakeHost();
   await playFinisher({ recipe: recipe({ mover: "source", knockback: 0, ending: "stay" }), mover: token("Hero"), target: token("Orc"), attacker: token("Hero"), dead: false }, host);
   assert.deepEqual(host.log[1], ["play", null, "Hero", "Orc"]);
+});
+
+const pathTravel = (keyframes, extra = {}) => ({ stageId: "fly", kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", duration: 1000, keyframes, ...extra });
+const kf = (at, x = 0, y = 0, extra = {}) => ({ at, x, y, rotation: 0, scale: 1, alpha: 1, ease: "linear", sharp: false, ...extra });
+const pathRecipe = (keyframes, finisher = {}) => ({ id: "p", name: "Path", trigger: "manual", finisher: normalizeFinisher({ knockback: 5, ...finisher }), stages: [pathTravel(keyframes)] });
+const at = (name, x, y) => ({ name, center: { x: x + 50, y: y + 50 }, document: { x, y } });
+// A landing that walks the grid like landingSpot: the longer axis advances one square per step.
+const gridHost = (blockAfter = Infinity) => {
+  const log = [];
+  return { log, gridSize: () => 100,
+    landing: (m, d, squares) => { const steps = Math.min(squares, blockAfter), lead = Math.max(Math.abs(d.x), Math.abs(d.y)); log.push(["landing", Math.round(d.x * 1000) / 1000, Math.round(d.y * 1000) / 1000, squares]);
+      return { x: m.document.x + Math.round((d.x / lead) * steps) * 100, y: m.document.y + Math.round((d.y / lead) * steps) * 100 }; },
+    play: async (r) => { log.push(["play", r.stages[0].motionFrame ?? null, r.stages[0].keyframes?.at(-1) ?? null, r.stages[0].motionEnd ?? null]); return [{ ...r.stages[0], delay: 0 }]; },
+    wait: async (ms) => log.push(["wait", ms]), fade: async () => log.push(["fade"]),
+    commit: async (_t, data) => log.push(["commit", data]), trace: (s, d) => log.push([s, d]) };
+};
+
+test("a path is aimed away from the attacker, lands where it ends, and is not stretched to knockback", async () => {
+  const host = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(0.5, 1, 0.5), kf(1, 2, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 100, 0), dead: false }, host);
+  assert.deepEqual(host.log.find((e) => e[0] === "landing"), ["landing", 0, 1, 2], "aimed down (away from an attacker above), 2 squares, not knockback 5");
+  const [, frame, last] = host.log.find((e) => e[0] === "play");
+  assert.deepEqual(frame, { cos: 0, sin: 1, k: 1 });
+  assert.deepEqual([last.x, last.y], [2, 0]);
+  assert.deepEqual(host.log.find((e) => e[0] === "commit")[1], { x: 100, y: 300, fromX: 100, fromY: 100, finisher: "p" });
+});
+
+test("a wall shrinks the whole path to the last free square and pins its end exactly there", async () => {
+  const host = gridHost(1);
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 2, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  const [, frame, last] = host.log.find((e) => e[0] === "play");
+  assert.equal(frame.k, 0.5);
+  assert.ok(Math.abs(last.x * frame.k - 1) < 1e-9 && Math.abs(last.y) < 1e-9, "final pose equals the one-square landing");
+  assert.deepEqual(host.log.find((e) => e[0] === "commit")[1], { x: 200, y: 100, fromX: 100, fromY: 100, finisher: "p" });
+});
+
+test("a diagonal end off the grid lands on the snapped square with no jump", async () => {
+  const host = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 2.6, 1.2)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  const [, frame, last] = host.log.find((e) => e[0] === "play");
+  const commit = host.log.find((e) => e[0] === "commit")[1];
+  const finalX = (last.x * frame.cos - last.y * frame.sin) * frame.k, finalY = (last.x * frame.sin + last.y * frame.cos) * frame.k;
+  assert.ok(Math.abs(finalX * 100 - (commit.x - 100)) < 1e-6 && Math.abs(finalY * 100 - (commit.y - 100)) < 1e-6, "pose end == document landing");
+});
+
+test("a fully blocked path, or no attacker, does not move the token and the travel comes back", async () => {
+  for (const [host, attacker] of [[gridHost(0), at("Hero", 0, 100)], [gridHost(), null]]) {
+    await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 2, 0)]), mover: at("Orc", 100, 100), attacker, dead: false }, host);
+    assert.ok(!host.log.some((e) => e[0] === "commit"));
+    assert.equal(host.log.find((e) => e[0] === "play")[3], null, "hold stripped");
+  }
+});
+
+test("an in-place path keeps its hold and never moves the document", async () => {
+  const host = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 0.3, 0, { scale: 0.05, alpha: 0 })], { ending: "vanish" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  assert.equal(host.log.find((e) => e[0] === "play")[3], "hold");
+  assert.ok(!host.log.some((e) => e[0] === "landing"));
+  assert.ok(!host.log.some((e) => e[0] === "fade"), "already faded by the path: no separate fade that would pop it back");
+  assert.deepEqual(host.log.at(-1), ["commit", { hidden: true, finisher: "p" }]);
+});
+
+test("pathAim points away from the other token for either mover", () => {
+  assert.deepEqual(pathAim(normalizeFinisher({}), { mover: at("Orc", 100, 0), attacker: at("Hero", 0, 0) }), { x: 1, y: 0 });
+  assert.deepEqual(pathAim(normalizeFinisher({ mover: "source" }), { mover: at("Hero", 0, 0), target: at("Orc", 100, 0) }), { x: -1, y: 0 });
+  assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0, { alpha: 0 })])), true);
+  assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0)])), false);
 });

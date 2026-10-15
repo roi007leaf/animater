@@ -71,3 +71,7 @@ export const linkedFinisher = (recipes, entryName) =>
 // The active GM writes a finisher's move for a player who controls the moved token or the
 // token that struck it (a fighter flinging an enemy they do not own).
 export const mayDisplace = ({ ownsToken, ownsAttacker }) => Boolean(ownsToken || ownsAttacker);
+
+// The mover's held keyframed path: its drawn length is the knockback.
+export const finisherTravelPath = (recipe) => recipe?.stages?.find((s) => s.kind === "motion" && s.motion === "path" && s.motionEnd === "hold"
+  && (s.subject ?? "source") === (recipe.finisher?.mover ?? "targets")) ?? null;
