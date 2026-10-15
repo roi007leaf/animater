@@ -34,7 +34,12 @@ test("a path finisher hides knockback and says the path decides the landing", ()
   r.stages = [{ kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 2, y: 0 }] }];
   const html = finisherSettingsHTML(r);
   assert.doesNotMatch(html, /data-field="finisher\.knockback"/);
-  assert.match(html, /keyframed path ends \(2 sq\)/);
+  assert.match(html, /keyframed path ends \(2 sq\), away from the attacker/);
+  assert.doesNotMatch(html, /aimed away/);
+  assert.doesNotMatch(html, /knockback replaces its distance/, "the legacy hint does not apply to a path");
+  const source = { ...fin("c", "Charge", { mover: "source" }), stages: [{ ...r.stages[0], subject: "source" }] };
+  assert.match(finisherSettingsHTML(source), /away from the target/);
+  assert.match(finisherSettingsHTML(fin("b", "Shove")), /knockback replaces its distance/, "legacy travel keeps its hint");
   assert.match(finisherSettingsHTML(fin("b", "Shove", { knockback: 4 })), /data-field="finisher\.knockback"/, "legacy travel keeps knockback");
 });
 

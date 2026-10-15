@@ -15,7 +15,7 @@ const preset = (name, description, finisher, stages) => ({ name, description, bu
 
 export const FINISHER_PRESETS = {
   launch: preset("Launch", "Sent flying, crashes down in a cloud of dust.", { knockback: 3, ending: "body" },
-    [fx("hit", HIT, { duration: 900 }), path([kf(0), kf(0.35, 1.1, 0, { rotation: 250, scale: 1.3 }), kf(0.75, 2.6, 0, { rotation: 600, scale: 1.1 }), kf(1, 3, 0, { rotation: 720, ease: "easeOutQuad" })], { delay: 150 }), fx("landing", DUST, { delay: 1300 })]),
+    [fx("hit", HIT, { duration: 900 }), path([kf(0), kf(0.35, 1.1, 0, { rotation: 250, scale: 1.3 }), kf(0.75, 2.6, 0, { rotation: 600, scale: 1.1 }), kf(1, 3, 0, { rotation: 720, ease: "easeOutQuad" })], { delay: 150 }), fx("landing", DUST, { delay: 1450 })]),
   cleave: preset("Cleave", "A clean cut drops it where it stands.", { knockback: 0, ending: "body" },
     [fx("slash", ["jb2a.melee_generic.slashing.one_handed", "jb2a.melee_generic.slash"], { duration: 900 }), move("stagger", "stagger", { delay: 200, duration: 900 }), move("fall", "collapse", { delay: 900, duration: 1400 })]),
   skewer: preset("Skewer", "Driven back a step and pinned.", { knockback: 1, ending: "body" },
