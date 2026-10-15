@@ -19,6 +19,7 @@ import {sfEntries,sfRecipe,useSfEntry} from '../scripts/sf2e-catalog.mjs';
 import {Workspace} from '../scripts/workspace.mjs';
 import {previewFilters} from '../scripts/token-fx-preview.mjs';
 import {MediaLibrary} from '../scripts/media-library.mjs';
+import { rollMessage, dualityRoll, adversaryRoll, damageRoll, target as dhTarget, useHook } from "./fixtures/daggerheart-messages.mjs";
 globalThis.requestAnimationFrame = (fn) =>
   setTimeout(() => fn(performance.now()), 5);
 globalThis.cancelAnimationFrame = clearTimeout;
@@ -2202,4 +2203,93 @@ test("PF2e kill path is unchanged: a heal or an NPC already at 0 plays nothing",
     assert.equal(f.target.mesh.rotation, 0, "no collapse");
     await f.api.stop();
   }
+});
+
+// Daggerheart mode: a GM client with automatic playback on; the target token sits on scene "s".
+async function bootDaggerheart(extraKeys = [], options) {
+  const f = await boot("daggerheart", extraKeys, options);
+  f.settings.set("automatic", true);
+  f.target.document.parent = { id: "s" };
+  Object.assign(f.item, { id: "i", type: "weapon", name: "Longsword", system: { attack: { range: "melee", damage: { main: { type: ["physical"] } } } } });
+  return f;
+}
+const dhSaved = (trigger, match, id = `dh-${trigger}`) => ({ id, name: `DH ${trigger}`, enabled: true, trigger, match, stages: [{ kind: "cast", assets: ["jb2a.impact.001.orange"], duration: 600 }] });
+const played = (f, name) => f.api.activity().filter((e) => e.status === "Played" && e.recipe === name).length;
+
+test("Daggerheart: an attack roll plays its item's recipe once; the action's use hook does not repeat it", async () => {
+  const f = await bootDaggerheart();
+  f.settings.set("recipes", { schema: 1, recipes: [dhSaved("attack", "Longsword"), dhSaved("use", "Longsword")] });
+  await f.fire("createChatMessage", rollMessage({ item: f.item, actor: f.actor }));
+  await settle();
+  assert.equal(played(f, "DH attack"), 1, JSON.stringify(f.api.activity()));
+  const [action, config] = useHook({ item: f.item, actor: f.actor, action: { name: "Attack", roll: { type: "attack" } }, config: { hasRoll: true } });
+  await f.fire("daggerheart.postUseAction", action, config);
+  await settle();
+  assert.equal(played(f, "DH attack"), 1);
+  assert.equal(played(f, "DH use"), 0, "the rolled action never plays as a use");
+  await f.api.stop();
+});
+
+test("Daggerheart: an ability used without a roll plays its use recipe", async () => {
+  const f = await bootDaggerheart();
+  Object.assign(f.item, { type: "domainCard", name: "A Soldier's Bond", system: { domain: "blade", level: 2, type: "ability" } });
+  f.settings.set("recipes", { schema: 1, recipes: [dhSaved("use", "A Soldier's Bond")] });
+  await f.fire("daggerheart.postUseAction", ...useHook({ item: f.item, actor: f.actor }));
+  await settle();
+  assert.equal(played(f, "DH use"), 1, JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("Daggerheart: whispered, blind and other users' rolls play nothing here", async () => {
+  const f = await bootDaggerheart();
+  f.settings.set("recipes", { schema: 1, recipes: [dhSaved("attack", "Longsword")] });
+  await f.fire("createChatMessage", rollMessage({ id: "w", item: f.item, actor: f.actor, whisper: ["gm"] }));
+  await f.fire("createChatMessage", rollMessage({ id: "b", item: f.item, actor: f.actor, blind: true }));
+  await f.fire("createChatMessage", rollMessage({ id: "o", item: f.item, actor: f.actor, author: "other" }));
+  await settle();
+  assert.equal(played(f, "DH attack"), 0, JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("Daggerheart: an attack with no target still plays", async () => {
+  const f = await bootDaggerheart();
+  f.settings.set("recipes", { schema: 1, recipes: [dhSaved("attack", "Longsword")] });
+  await f.fire("createChatMessage", rollMessage({ item: f.item, actor: f.actor, targets: [] }));
+  await settle();
+  assert.equal(played(f, "DH attack"), 1, JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("Daggerheart: damage written onto the card plays once, however often the card is updated", async () => {
+  const f = await bootDaggerheart();
+  f.settings.set("recipes", { schema: 1, recipes: [dhSaved("damage", "Longsword")] });
+  const message = rollMessage({ id: "card", item: f.item, actor: f.actor, damage: damageRoll() });
+  await f.fire("updateChatMessage", message, { system: { damage: {} } }, {}, "u");
+  await f.fire("updateChatMessage", message, { system: { damage: {} } }, {}, "u");
+  await f.fire("updateChatMessage", message, { flavor: "edited" }, {}, "u");
+  await settle();
+  assert.equal(played(f, "DH damage"), 1, JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+// An attack roll whose item is gone and whose action has no name. (With the action gone too, the
+// adapter cannot tell an attack from any other roll and returns null: nothing to trace.)
+test("Daggerheart: an attack roll whose item and action name are gone is an Activity Skipped row, not an error", async () => {
+  const f = await bootDaggerheart();
+  f.settings.set("recipes", { schema: 1, recipes: [] });
+  await f.fire("createChatMessage", rollMessage({ item: null, action: { roll: { type: "attack" } }, actor: f.actor }));
+  await settle();
+  assert.ok(f.api.activity().some((e) => e.status === "Skipped" && /could not be found/.test(e.detail)), JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("Daggerheart: api.resolve reads a roll message; an older system version warns once", async (t) => {
+  const warn = t.mock.method(console, "warn", () => {});
+  const f = await bootDaggerheart([], { version: "2.9.0" });
+  assert.equal(warn.mock.calls.filter((c) => /Daggerheart 2\.9\.0/.test(String(c.arguments[0]))).length, 1);
+  f.settings.set("recipes", { schema: 1, recipes: [dhSaved("attack", "Longsword")] });
+  const chat = (options) => ({ ...rollMessage(options), documentName: "ChatMessage" });
+  assert.equal(f.api.resolve(chat({ item: f.item, actor: f.actor }))?.id, "dh-attack");
+  assert.equal(f.api.resolve(chat({ item: f.item, actor: f.actor, roll: adversaryRoll({ type: "trait" }), action: { name: "Act", roll: { type: "trait" } } })), null);
+  await f.api.stop();
 });

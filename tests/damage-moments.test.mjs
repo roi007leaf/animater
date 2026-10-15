@@ -124,3 +124,17 @@ test("a synthetic strike's damage remembers the attacker actor and the strike's 
   const axe = damageFromMessage({ ...msg({ name: "Greataxe", slug: "greataxe" }), flags: { pf2e: { origin: { uuid: "Actor.a.Item.axe" }, context: { type: "damage-roll" } } } }, "pf2e");
   assert.equal(axe.synthetic, false);
 });
+
+import { rollMessage, weapon, card, dualityRoll, damageRoll } from "./fixtures/daggerheart-messages.mjs";
+
+test("Daggerheart damage on an attack card: hit targets, physical by weapon family, magical by domain", () => {
+  const sword = damageFromMessage(rollMessage({ item: weapon("Longsword"), damage: damageRoll() }), "daggerheart");
+  assert.equal(sword.type, "slashing");
+  assert.ok(sword.tokenIds.has("target"));
+  assert.equal(sword.attackKind, "melee");
+  assert.equal(attackKindOf(rollMessage({ item: weapon("Shortbow", "far") }), "daggerheart"), "ranged");
+  const spell = damageFromMessage(rollMessage({ item: card("Blink Out", "arcana"), roll: dualityRoll({ type: "spellcast" }), damage: damageRoll({ types: ["magical"] }) }), "daggerheart");
+  assert.equal(spell.type, "force");
+  assert.equal(spell.attackKind, "spell");
+  assert.equal(damageFromMessage(rollMessage({ item: weapon("Longsword") }), "daggerheart"), null, "no damage rolled yet");
+});

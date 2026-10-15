@@ -10,6 +10,7 @@ import { STRIKE_FLAG, strikeKey, strikeOf, strikePick, picksOnActor } from "./st
 import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
+import { daggerheartRollEvent, daggerheartUseEvent, daggerheartDamageEvent, versionBelow as daggerheartVersionBelow, DAGGERHEART_VERIFIED } from "./daggerheart.mjs";
 import { applyEventElement } from "./element-choice.mjs";
 import { AA_ID, AA_TAKEOVER, aaCustomized, registerAATakeover } from "./integrations/automated-animations.mjs";
 import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
@@ -227,9 +228,9 @@ function environment() {
       ? "JB2A Free"
       : "Sequencer media";
   const system =
-    { pf2e: "Pathfinder 2e", sf2e: "Starfinder 2e", dnd5e: "D&D 5e" }[game.system.id] ??
+    { pf2e: "Pathfinder 2e", sf2e: "Starfinder 2e", dnd5e: "D&D 5e", daggerheart: "Daggerheart" }[game.system.id] ??
     game.system.title;
-  const supported = ["pf2e", "sf2e", "dnd5e"].includes(game.system.id);
+  const supported = ["pf2e", "sf2e", "dnd5e", "daggerheart"].includes(game.system.id);
   const ready = Boolean(seq?.active && globalThis.Sequencer);
   return {
     ready,
@@ -1125,6 +1126,10 @@ const aaTakeover = () => Boolean(game.modules.get(AA_ID)?.active && game.setting
 function eventFrom(input) {
   if (input?.documentName === "ChatMessage") {
     if (["pf2e", "sf2e"].includes(game.system.id)) return twoeEvent(input, input.author?.id ?? game.user.id, game.system.id);
+    if (game.system.id === "daggerheart") {
+      const author = input.author?.id ?? game.user.id, event = daggerheartRollEvent(input, author) ?? daggerheartDamageEvent(input, author);
+      return event?.skipped ? null : event;
+    }
     const roll = input.flags?.dnd5e?.roll?.type;
     return { type: roll === "attack" ? "attack" : roll === "damage" ? "damage" : "use", systemId: game.system.id, id: input.id,
       item: input.getAssociatedItem?.() ?? input.item, actor: input.getAssociatedActor?.() ?? input.actor,
@@ -1215,7 +1220,7 @@ Hooks.once("ready", () => {
     hasItemEffect: (actor, item) => {
       const name = sameEffectName(item?.name), id = item?.id;
       const from = (origin) => Boolean(id && String(origin ?? "").includes(id));
-      const effects = game.system.id === "dnd5e" ? Array.from(actor?.appliedEffects ?? actor?.effects ?? []) : Array.from(actor?.items ?? []).filter((i) => i.type === "effect");
+      const effects = ["dnd5e", "daggerheart"].includes(game.system.id) ? Array.from(actor?.appliedEffects ?? actor?.effects ?? []) : Array.from(actor?.items ?? []).filter((i) => i.type === "effect");
       return effects.some((e) => from(e.origin ?? e.system?.context?.origin?.item) || (name && sameEffectName(e.name) === name));
     },
     // A player's GM-approved recipe animates their own characters first.
@@ -1683,6 +1688,35 @@ Hooks.once("ready", () => {
           item: effect,
           actor,
         });
+    });
+  }
+  if (game.system.id === "daggerheart") {
+    // Shapes verified against Daggerheart 2.10.12; an older system may move the fields the adapter reads.
+    if (daggerheartVersionBelow(game.system.version)) console.warn(`Animater | Daggerheart ${game.system.version} is older than ${DAGGERHEART_VERIFIED}, the version its roll and chat shapes were checked against; some automatic animations may be skipped.`);
+    const sceneId = () => canvas.scene?.id ?? null;
+    // An event the adapter recognised but could not resolve is traced as Skipped, never thrown.
+    const resolved = (read, label) => {
+      try {
+        const event = read();
+        if (event?.skipped) { runtime.trace("Skipped", event.skipped); return null; }
+        return event;
+      } catch (error) { runtime.trace("Skipped", `${label}: ${error.message}`); return null; }
+    };
+    // An action used without an attack or spellcast roll (a buff, a heal, a feature); rolled ones ride their roll message.
+    // An unlinked adversary's actor knows its own token; a linked one is found by its actor (sourceFor).
+    Hooks.on("daggerheart.postUseAction", (action, config) => {
+      void dispatch(resolved(() => daggerheartUseEvent(action, config, { sceneId: sceneId(), tokenId: action?.actor?.token?.id ?? null }), "Daggerheart action"));
+    });
+    Hooks.on("createChatMessage", (message) => {
+      void dispatch(resolved(() => daggerheartRollEvent(message, game.user.id, { sceneId: sceneId() }), "Daggerheart roll"));
+      void dispatch(resolved(() => daggerheartDamageEvent(message, game.user.id, { sceneId: sceneId() }), "Daggerheart damage"));
+    });
+    // Damage rolled from an attack or spellcast card is written onto that card: every client remembers
+    // it (kills know their attacker, item and type); the roller's client plays it.
+    Hooks.on("updateChatMessage", (message, changes, _options, userId) => {
+      if (!foundry.utils.hasProperty(changes ?? {}, "system.damage")) return;
+      remember(damageFromMessage(message, "daggerheart"));
+      if (userId === game.user.id) void dispatch(resolved(() => daggerheartDamageEvent(message, game.user.id, { sceneId: sceneId() }), "Daggerheart damage"));
     });
   }
   for (const hook of ["createMeasuredTemplate", "createRegion"])

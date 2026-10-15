@@ -2,6 +2,7 @@
 // and one that drops to 0 HP goes down in it (burned to ash, shattered in ice...).
 // The damage type comes from the latest damage roll aimed at that creature.
 import { isSyntheticItem, strikeSlugFromOptions, syntheticUuid } from "./strike-finishers.mjs";
+import { daggerheartAttackKind, daggerheartDamage } from "./daggerheart.mjs";
 
 // Every system's names folded onto one set of looks.
 const ALIASES = {
@@ -48,6 +49,8 @@ const filterStage = (stageId, type, extra) => {
 // (melee damage also the melee-damage domain); D&D only says weapon or spell here, so its
 // weapons count as melee.
 export function attackKindOf(message, systemId) {
+  // Daggerheart: a weapon's range (melee / very close are melee), a spellcast roll is a spell.
+  if (systemId === "daggerheart") return daggerheartAttackKind(message);
   const flags = message?.flags?.[systemId], dnd = message?.flags?.dnd5e;
   const itemType = flags?.origin?.type ?? dnd?.item?.type;
   if (itemType === "spell") return "spell";
@@ -59,6 +62,9 @@ export function attackKindOf(message, systemId) {
 
 // The main damage type of a damage roll message, and who it was aimed at.
 export function damageFromMessage(message, systemId) {
+  // Daggerheart writes its damage roll onto the attack card (system.damage); its type is already
+  // mapped to these names (physical by weapon family, magical by domain).
+  if (systemId === "daggerheart") return daggerheartDamage(message);
   const rolls = Array.from(message?.rolls ?? []);
   const pf = message?.flags?.[systemId]?.context, dnd = message?.flags?.dnd5e;
   const isDamage = pf?.type === "damage-roll" || dnd?.roll?.type === "damage" || rolls.some((r) => /DamageRoll/.test(r?.constructor?.name ?? ""));
