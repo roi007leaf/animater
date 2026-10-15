@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -110,4 +110,11 @@ test("a finisher's travel path is the mover's held keyframed path", () => {
   assert.equal(finisherTravelPath({ finisher: normalizeFinisher({}), stages: [{ kind: "impact" }, path] }), path);
   assert.equal(finisherTravelPath({ finisher: normalizeFinisher({ mover: "source" }), stages: [path] }), null, "another mover's path is not the travel");
   assert.equal(finisherTravelPath({ finisher: normalizeFinisher({}), stages: [{ ...path, motionEnd: undefined }] }), null, "a returning path does not travel");
+});
+
+test("the studio chip says how a finisher plays, where it lands, and how it ends", () => {
+  const path = { kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 2.6, y: 0 }] };
+  assert.equal(finisherChipText({ finisher: normalizeFinisher({ ending: "body" }), stages: [path] }), "Killing blow · lands 3 sq · Body");
+  assert.equal(finisherChipText({ finisher: normalizeFinisher({ on: "use", ending: "vanish" }), stages: [{ ...path, keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 0, y: 0 }] }] }), "Every successful use · in place · Vanish");
+  assert.equal(finisherChipText({ finisher: normalizeFinisher({ knockback: 2, ending: "stay" }), stages: [] }), "Killing blow · lands 2 sq · Stay", "legacy travel uses knockback");
 });

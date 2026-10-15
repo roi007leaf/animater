@@ -4,6 +4,7 @@ import { uuid } from "./uuid.mjs";
 // bottom. Stages are grouped into role tracks; inside a track, stages that do
 // not overlap share a lane. Saved recipe data is unchanged: tracks, lanes,
 // playhead and zoom are presentation only.
+import { finisherChipText } from "./finisher-model.mjs";
 import { KINDS, EVENTS, STRIKE_SCOPES, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
 import { timelineLayout, packLanes, linkStartModes } from "./choreography.mjs";
 import { sampleRecipe, timedStages, previewVariants, variantMembers } from "./composition.mjs";
@@ -82,7 +83,7 @@ export function studioHTML(w, r) {
   const index = Math.min(w.stageIndex, r.stages.length - 1), dirty = w.dirty.has(r.id), status = w.status(r), link = w.linkNote?.(r);
   const duration = w.previewDuration(r), studio = studioTracks(r, w.stageIndex), zoom = w.studioZoom ?? 1;
   w.previewMode = "recipe";
-  const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" data-tooltip="Back to all recipes">← Recipes</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}">${triggerChipHTML(w, r)}<span class="an-st-state ${status !== "Ready to play" || link?.warn ? "is-missing" : ""}" ${link ? `data-tooltip="${esc(link.text)}"` : ""}>${link?.warn ? "⚠" : "●"} ${esc(dirty ? "Unsaved changes" : link?.warn ? link.short : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" data-tooltip="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon is-danger" data-action="delete" data-tooltip="Delete recipe" aria-label="Delete recipe"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" data-tooltip="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? "Save recipe" : "Saved ✓"}</button></div></header>`;
+  const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" data-tooltip="Back to all ${r.finisher ? "finishers" : "recipes"}">← ${r.finisher ? "Finishers" : "Recipes"}</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}">${triggerChipHTML(w, r)}<span class="an-st-state ${status !== "Ready to play" || link?.warn ? "is-missing" : ""}" ${link ? `data-tooltip="${esc(link.text)}"` : ""}>${link?.warn ? "⚠" : "●"} ${esc(dirty ? "Unsaved changes" : link?.warn ? link.short : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" data-tooltip="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon is-danger" data-action="delete" data-tooltip="Delete recipe" aria-label="Delete recipe"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" data-tooltip="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? (r.finisher ? "Save finisher" : "Save recipe") : "Saved ✓"}</button></div></header>`;
   const transport = `<div class="an-st-transport" role="group" aria-label="Playback">
       <button class="an-st-tbtn" data-action="studio-home" data-tooltip="Go to start (Home)" aria-label="Go to start">⏮</button><button class="an-st-tbtn an-st-play" data-action="studio-play" data-tooltip="Play / pause (Space)" aria-label="Play" ${unconfigured ? "disabled" : ""}>▶</button><button class="an-st-tbtn" data-action="studio-stop" data-tooltip="Stop and rewind" aria-label="Stop">■</button><button class="an-st-tbtn" data-action="studio-end" data-tooltip="Go to end (End)" aria-label="Go to end">⏭</button><button class="an-st-tbtn ${w.studioLoop ? "is-active" : ""}" data-action="studio-loop" aria-pressed="${!!w.studioLoop}" data-tooltip="Loop playback (L)" aria-label="Loop">⟲</button>
       <span class="an-st-time"><b data-st-time>${seconds(w.studioTime ?? 0)}</b> / ${seconds(duration)}</span>
@@ -112,8 +113,8 @@ function triggerChipHTML(w, r) {
   const bound = r.itemUuid ? w.host.itemSummary?.(r.itemUuid)?.name : "";
   const what = STRIKE_SCOPES[r.matchScope] || bound || r.match?.split(",")[0]?.trim() || "";
   const lasting = w.lastingLabel?.(r);
-  const when = r.enabled === false ? "Disabled" : lasting ? `${lasting} · while on token` : EVENTS[r.trigger] ?? r.trigger;
-  return `<button class="an-st-trigger${r.enabled === false ? " is-off" : ""}${w.studioSettings ? " is-open" : ""}" data-action="studio-settings" aria-expanded="${!!w.studioSettings}" data-tooltip="Recipe settings: trigger, item binding, description, category">⚙ <span>${esc(when)}</span>${what ? `<small>${esc(what)}</small>` : ""}</button>`;
+  const when = r.enabled === false ? "Disabled" : r.finisher ? finisherChipText(r) : lasting ? `${lasting} · while on token` : EVENTS[r.trigger] ?? r.trigger;
+  return `<button class="an-st-trigger${r.enabled === false ? " is-off" : ""}${w.studioSettings ? " is-open" : ""}" data-action="studio-settings" aria-expanded="${!!w.studioSettings}" data-tooltip="${r.finisher ? "Finisher settings: what it applies to, when it plays, how it ends" : "Recipe settings: trigger, item binding, description, category"}">⚙ <span>${esc(when)}</span>${what ? `<small>${esc(what)}</small>` : ""}</button>`;
 }
 
 function timelineHeight(w) {

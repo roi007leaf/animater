@@ -1,6 +1,7 @@
 // The Finishers page, the studio's Finisher panel and the catalog entries' Finisher dropdown.
 import { FINISHER_ON, FINISHER_MOVERS, FINISHER_ENDINGS, FINISHER_SUCCESS } from "./model.mjs";
-import { linkedFinisher } from "./finisher-model.mjs";
+import { linkedFinisher, finisherTravelPath } from "./finisher-model.mjs";
+import { pathSquares } from "./keyframe-path.mjs";
 import { FINISHER_PRESETS } from "./finisher-presets.mjs";
 import { studioHTML } from "./studio.mjs";
 
@@ -26,7 +27,7 @@ export function finisherSettingsHTML(r) {
     <label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>
     <label>Applies to<input data-field="match" placeholder="shove, greataxe, fireball" value="${esc(r.match)}"></label><p class="an-hint">Item names, commas between. The Finisher dropdown on catalog entries edits this list too.</p>
     ${select("on", "Plays on", FINISHER_ON)}${select("success", "Needs", FINISHER_SUCCESS)}${select("mover", "Moves", FINISHER_MOVERS)}
-    <label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label>
+    ${finisherTravelPath(r) ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(finisherTravelPath(r).keyframes)} sq), aimed away from the attacker and stopping at walls.</p>` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label>`}
     ${select("ending", "Ending", FINISHER_ENDINGS)}
     <p class="an-hint">Set a travel motion's End to “Hold at the end”: knockback replaces its distance and the token is moved to where it lands, stopping at walls. A stage named “landing” plays there. Vanish and Body apply only to a creature at 0 HP.</p></div>`;
 }

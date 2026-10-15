@@ -28,3 +28,12 @@ test("the catalog dropdown shows the entry's finisher, or nothing when there are
   assert.match(html, /<option value="a" selected>Fin a<\/option>/);
   assert.equal(finisherLinkHTML(w([]), "Greataxe"), "");
 });
+
+test("a path finisher hides knockback and says the path decides the landing", () => {
+  const r = fin("a", "Shove", { knockback: 4 });
+  r.stages = [{ kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 2, y: 0 }] }];
+  const html = finisherSettingsHTML(r);
+  assert.doesNotMatch(html, /data-field="finisher\.knockback"/);
+  assert.match(html, /keyframed path ends \(2 sq\)/);
+  assert.match(finisherSettingsHTML(fin("b", "Shove", { knockback: 4 })), /data-field="finisher\.knockback"/, "legacy travel keeps knockback");
+});
