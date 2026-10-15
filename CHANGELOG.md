@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Finishers:** fragments stay where the token was when they burst, even when a held travel lands under them and is written; a Wall slam that only reaches the scene edge (no wall) now shrinks to fit and lands instead of crashing into the edge.
+
 ## 1.0.2 (2026-10-15)
 
 - **Activity page:** each Now playing row now shows a small preview of its main animation (it plays when you hover the row), the token it is on, and the effect name under the title.

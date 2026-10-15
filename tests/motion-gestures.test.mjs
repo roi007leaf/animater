@@ -429,7 +429,7 @@ test('the player gives the renderer the un-posed transform', () => {
   assert.deepEqual(seen(), { x: 0, y: 0, rotation: 0, sx: 1, sy: 1, alpha: 1 });
 });
 
-test('the pieces spawn where the token is drawn and follow a rebase of the original', () => {
+test('the pieces spawn where the token is drawn and stay anchored there', () => {
   let seen;
   const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
   const lift = v({ kind: 'motion', motion: 'levitate', subject: 'targets', duration: 100 });
@@ -439,9 +439,8 @@ test('the pieces spawn where the token is drawn and follow a rebase of the origi
   const want = motionPose(lift, 0.5, { x: 1, y: 0 }, 100);
   assert.ok(want.y < 0);
   assert.ok(Math.abs(seen().y - want.y) < 1e-9 && seen().x === 0, 'pose of the other tracks at start time is included');
-  r.player.active.get(r.token).original.x += 100;
-  assert.equal(seen().x, 100, 'follows the live original');
-  assert.ok(Math.abs(seen().y - want.y) < 1e-9);
+  r.now = 80; r.queued(r.now);
+  assert.ok(Math.abs(seen().y - want.y) < 1e-9 && seen().x === 0, 'the other tracks moving on do not drag the pieces');
 });
 
 test('pieces spawned on a held shove stay put when the shove is written to the document', () => {
@@ -455,6 +454,48 @@ test('pieces spawned on a held shove stay put when the shove is written to the d
   r.now = 150; r.queued(r.now);
   assert.equal(r.player.active.get(r.token).original.x, 200, 'rebased');
   assert.ok(Math.abs(seen().x - 200) < 1e-6, 'the shove is not counted twice once it is written');
+});
+
+test('pieces spawned mid-travel stay where the token was when the travel lands and is written', () => {
+  let seen;
+  const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
+  const travel = v({ kind: 'motion', motion: 'path', subject: 'targets', motionEnd: 'hold', duration: 1000, keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 2, y: 0 }] });
+  void r.player.play(r.token, travel, { x: 1, y: 0 }, 'me');
+  r.now = 400; r.queued(r.now);
+  void r.player.play(r.token, fragStage({ duration: 3000 }), { x: 1, y: 0 }, 'me');
+  r.now = 500; r.queued(r.now);
+  const spawned = seen().x;
+  assert.ok(spawned > 0 && spawned < 200, `spawned mid-flight (${spawned})`);
+  r.now = 1000; r.queued(r.now);
+  // The finisher writes the landing at travelEnd: the held travel is rebased onto the document.
+  r.token.document.x += 200;
+  r.now = 1050; r.queued(r.now);
+  assert.equal(r.player.active.get(r.token).original.x, 200, 'rebased');
+  assert.ok(Math.abs(seen().x - spawned) < 1e-6, `pieces stay where they spawned (${seen().x} vs ${spawned})`);
+});
+
+test('pieces spawned on a held travel stay put through a test play with no write, hold release included', () => {
+  let seen;
+  const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
+  void r.player.play(r.token, hold('rush', { motionOffset: { x: 2, y: 0 }, duration: 100 }), { x: 1, y: 0 }, 'me');
+  void r.player.play(r.token, fragStage({ duration: HOLD_LIMIT_MS + HOLD_RELEASE_MS + 500 }), { x: 1, y: 0 }, 'me');
+  r.now = 120; r.queued(r.now);
+  for (const t of [1000, 100 + HOLD_LIMIT_MS + 200, 100 + HOLD_LIMIT_MS + HOLD_RELEASE_MS + 100]) {
+    r.now = t; r.queued(r.now);
+    assert.ok(Math.abs(seen().x - 200) < 1e-6, `at ${t}: ${seen().x}`);
+  }
+});
+
+test('pieces follow the token when it is moved by someone else while a hold keeps the run alive', () => {
+  let seen;
+  const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
+  void r.player.play(r.token, v({ kind: 'motion', motion: 'fade', subject: 'targets', motionEnd: 'hold', duration: 100 }), { x: 1, y: 0 }, 'me');
+  void r.player.play(r.token, fragStage({ duration: 1000 }), { x: 1, y: 0 }, 'me');
+  r.now = 120; r.queued(r.now);
+  assert.equal(seen().x, 0);
+  r.token.document.x += 300;
+  r.now = 150; r.queued(r.now);
+  assert.equal(seen().x, 300, 'a move the held pose does not account for carries the pieces along');
 });
 
 test('the sender stores the cut angle with the seed, and the player prefers it', () => {

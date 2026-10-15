@@ -348,7 +348,7 @@ export class TokenMotionPlayer {
         ? { x: target.document?.x, y: target.document?.y, geometry: tokenGeometry(target) }
         : null;
     return new Promise((resolve) => {
-      const run = existing ?? { owner, mesh, original, location, tracks: [], frame: null };
+      const run = existing ?? { owner, mesh, original, location, tracks: [], frame: null, drift: { x: 0, y: 0 } };
       run.tracks.push({ stage, direction, target, endpoint, resolve, start: this.now() });
       if (existing) return;
       this.active.set(token, run);
@@ -363,12 +363,17 @@ export class TokenMotionPlayer {
         const isHeld = (track) => time - track.start >= track.stage.duration &&
           Boolean(heldPose(track.stage, time - track.start - track.stage.duration, track.direction, this.grid()));
         if (moved && !rotated && !resized && run.tracks.some(isHeld)) {
-          original.x += token.document.x - location.x;
-          original.y += token.document.y - location.y;
+          const dx = token.document.x - location.x, dy = token.document.y - location.y;
+          // A held track stands for the square it reached (even while it eases back late), so pieces
+          // in flight shift only by what those end poses do not cover: someone moved it elsewhere.
+          const held = combineMotionPoses(run.tracks.filter(isHeld).map((track) => motionPose(track.stage, 1, track.direction, this.grid())));
+          run.drift.x += dx - held.x;
+          run.drift.y += dy - held.y;
+          original.x += dx;
+          original.y += dy;
           location.x = token.document.x;
           location.y = token.document.y;
-          // The written square now carries a released track's pose: pieces spawned on it drop it.
-          run.tracks = run.tracks.filter((track) => { if (!isHeld(track)) return true; track.rebased = true; this.release(track); return false; });
+          run.tracks = run.tracks.filter((track) => { if (!isHeld(track)) return true; this.release(track); return false; });
           moved = false;
         }
         if (
@@ -396,15 +401,18 @@ export class TokenMotionPlayer {
           const progress = Math.min(1, elapsed / track.stage.duration);
           if (track.stage.motion === "fragments" && progress > 0 && !track.started && progress < 1) {
             track.started = true;
-            // Spawn where the token is drawn: the live original (rebased when a held travel lands)
-            // plus the other tracks' pose at this moment, less any a rebase has since written.
-            const parts = run.tracks.filter((other) => other !== track).map((other) => {
+            // Spawn where the token is drawn: the original plus the other tracks' pose at this moment.
+            // The pieces stay anchored there: a rebase (the finisher writing the square a held travel
+            // reached) keeps the token where it is drawn, so it moves them only by its drift.
+            const others = combineMotionPoses(run.tracks.filter((other) => other !== track).map((other) => {
               const ms = time - other.start;
-              return { other, pose: ms < other.stage.duration ? motionPose(other.stage, ms / other.stage.duration, other.direction, this.grid())
-                : heldPose(other.stage, ms - other.stage.duration, other.direction, this.grid()) ?? motionPose(other.stage, 1, other.direction, this.grid()) };
-            });
-            const base = () => { const others = combineMotionPoses(parts.filter((p) => !p.other.rebased).map((p) => p.pose)); return { ...run.original, x: run.original.x + others.x, y: run.original.y + others.y, rotation: run.original.rotation + others.rotation,
-              sx: run.original.sx * others.scale * (others.scaleX ?? 1), sy: run.original.sy * others.scale * (others.scaleY ?? 1) }; };
+              return ms < other.stage.duration ? motionPose(other.stage, ms / other.stage.duration, other.direction, this.grid())
+                : heldPose(other.stage, ms - other.stage.duration, other.direction, this.grid()) ?? motionPose(other.stage, 1, other.direction, this.grid());
+            }));
+            const anchor = { ...run.original, x: run.original.x + others.x, y: run.original.y + others.y, rotation: run.original.rotation + others.rotation,
+              sx: run.original.sx * others.scale * (others.scaleX ?? 1), sy: run.original.sy * others.scale * (others.scaleY ?? 1) };
+            const from = { ...run.drift };
+            const base = () => ({ ...anchor, x: anchor.x + run.drift.x - from.x, y: anchor.y + run.drift.y - from.y });
             this.guard(track, () => { track.pieces = this.fragments?.start(token, track.stage, fragmentCut(track), base) ?? null; });
           }
           if (track.pieces && progress > 0) { if (progress < 1) this.guard(track, () => track.pieces.update(progress)); else this.release(track); }

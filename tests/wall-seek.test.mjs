@@ -130,3 +130,24 @@ test("wallDistance walks the landing's steps: the middle of the first blocked st
   assert.equal(wallDistance({ ...base, bounds: { x: 0, y: 0, width: 300, height: 1000 } }), null, "the scene edge is not a wall");
   assert.equal(wallDistance({ ...base, squares: 2, collides: (a, b) => a.x < 375 && b.x > 375 }), null, "beyond reach");
 });
+
+// The scene edge stops the landing but is not a wall: with no Wall in reach the path shrinks to
+// fit the landing (no cut, no crash), as "Stop short smoothly" would.
+test("the scene edge is not a wall: a slam path that stops at the edge shrinks to fit instead of crashing", () => {
+  const edge = { ...wallHost(), landing: (m, d, squares) => { const steps = Math.min(squares, 3); return { x: m.document.x + d.x * steps * 100, y: m.document.y + d.y * steps * 100 }; } };
+  const { composed, to } = plan(edge);
+  assert.deepEqual(to, { x: 400, y: 100 }, "still stops at the edge");
+  assert.ok(!composed.stages.some((s) => s.stageId.startsWith("wall")), "no crash at the edge");
+  assert.ok(byId(composed.stages, "landing"), "lands there instead");
+  const fly = byId(composed.stages, "fly");
+  assert.equal(fly.duration, 1000, "the path is not cut");
+  assert.ok(near(fly.motionFrame.k, 0.5), "it shrinks to the 3 squares it can go");
+  const fit = plan(edge, slamRecipe("fit")).composed;
+  assert.deepEqual(composed.stages, fit.stages, "composed exactly as Stop short smoothly");
+});
+
+test("a real wall short of the edge still slams", () => {
+  const { composed } = plan(wallHost([{ angle: 0, squares: 3 }]));
+  assert.ok(byId(composed.stages, "wall-crack"), "crash at the wall");
+  assert.ok(byId(composed.stages, "fly").duration < 1000, "cut at the wall");
+});

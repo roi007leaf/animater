@@ -177,6 +177,9 @@ export function planFinisher({ recipe, mover, attacker = null, dead = false }, h
       };
       let { end, length, squares } = aimed(aim);
       inPlace = squares === 0;
+      // Whether a real wall stops it: the scene edge stops the landing too, but only a wall is
+      // slammed into. A host that cannot tell (no wallHit) counts any blocked landing as a wall.
+      let walled = typeof host.wallHit !== "function";
       // Gone in flight (ends invisible): aimed, held until hidden, never moved — moving an
       // invisible token would only show it again at the landing.
       // A survivor (not dead) never vanishes, nor does a non-vanish ending (it lands as before),
@@ -187,6 +190,7 @@ export function planFinisher({ recipe, mover, attacker = null, dead = false }, h
         const probe = (d) => { const a = aimed(d); return a.squares > 0 ? host.wallHit(mover, { x: a.end.x / a.length, y: a.end.y / a.length }, a.squares) : null; };
         const sought = seekWall(aim, probe, { reach: length });
         if (sought) ({ end, length, squares } = aimed(aim = sought.aim));
+        walled = Boolean(sought);
       }
       if (vanishes) vanishing = { aim };
       else if (aim && !inPlace) {
@@ -194,7 +198,7 @@ export function planFinisher({ recipe, mover, attacker = null, dead = false }, h
         frame = { aim, length };
         // Slam: a wall cuts the path where it hits, at full speed, instead of shrinking it to fit.
         const landed = to && Math.round(Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y)) / grid);
-        if (to && f.wall === "slam" && landed < squares) {
+        if (to && f.wall === "slam" && walled && landed < squares) {
           // Rotation keeps lengths, so the world offset's length is the reach in the path's frame.
           const cut = cutPath(path.keyframes, landed > 0 ? Math.hypot(to.x - from.x, to.y - from.y) / grid : 0.3, path.pathEase ?? "linear");
           slam = { ...cut, aim };
