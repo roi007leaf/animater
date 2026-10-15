@@ -23,7 +23,7 @@ import {
   createCanvasPreviewArea,
   templateArea,
 } from "./canvas-preview-area.mjs";
-import { TokenMotionPlayer, motionDirection, withFragmentSeed } from "./motion.mjs";
+import { TokenMotionPlayer, motionDirection, withFragmentSeed, withFragmentCut } from "./motion.mjs";
 import { installedFxCatalog, OptionalFxPlayer, fxAvailability, startTokenFxPreview, effectOptions } from './optional-fx.mjs';
 import {catalogFxSettings} from './catalog-fx.mjs';
 import {
@@ -1169,6 +1169,9 @@ Hooks.once("ready", () => {
     preloadSounds: files => Sequencer.Preloader.preload(files,false),
     motion: async (stage, context, { preview, session }) => {
       stage = withFragmentSeed(stage);
+      // The cut follows this client's view of the swing; receivers reuse it, as they do the seed.
+      if (stage.motion === "fragments")
+        stage = withFragmentCut(stage, motionDirection(stage.destination, context.source, stage.motionTarget ?? context.targets?.[0], stage.motion, canvas.grid?.size ?? 100));
       const data = {
         type: "motion",
         sceneId: canvas.scene?.id,

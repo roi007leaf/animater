@@ -207,6 +207,11 @@ export const HOLD_LIMIT_MS = 3000, HOLD_RELEASE_MS = 400;
 // A fragments stage carries one seed so every client cuts the same pieces.
 export const withFragmentSeed = (stage, rand = Math.random) =>
   stage?.kind === "motion" && stage.motion === "fragments" && !Number.isInteger(stage.seed) ? { ...stage, seed: Math.floor(rand() * 2147483647) } : stage;
+// The sender's cut angle travels with the seed, so a client that sees the tokens elsewhere
+// still cuts along the same swing.
+export const withFragmentCut = (stage, direction) =>
+  stage?.kind === "motion" && stage.motion === "fragments" && !Number.isFinite(stage.cutAngle) && Number.isFinite(direction?.x) && Number.isFinite(direction?.y)
+    ? { ...stage, cutAngle: Math.atan2(direction.y, direction.x) } : stage;
 export function heldPose(stage, heldMs, direction, grid = 100) {
   if (stage.motionEnd !== "hold" || !HOLDING_MOTIONS.has(stage.motion) || heldMs >= HOLD_LIMIT_MS + HOLD_RELEASE_MS) return null;
   const end = motionPose(stage, 1, direction, grid);
@@ -252,6 +257,8 @@ export function motionDirection(token, source, target, motion, grid = 100) {
   };
 }
 
+const fragmentCut = ({ stage, direction }) => (Number.isFinite(stage.cutAngle) ? stage.cutAngle
+  : stage.cut === "fixed" ? (stage.angle * Math.PI) / 180 : Math.atan2(direction.y, direction.x));
 // Independently authored gestures can overlap: a wind-up may continue while a
 // lunge starts. Compose their local deltas against one unanimated baseline.
 export function combineMotionPoses(poses) {
@@ -383,7 +390,7 @@ export class TokenMotionPlayer {
             }));
             const base = () => ({ ...run.original, x: run.original.x + others.x, y: run.original.y + others.y, rotation: run.original.rotation + others.rotation,
               sx: run.original.sx * others.scale * (others.scaleX ?? 1), sy: run.original.sy * others.scale * (others.scaleY ?? 1) });
-            this.guard(track, () => { track.pieces = this.fragments?.start(token, track.stage, track.stage.cut === "fixed" ? (track.stage.angle * Math.PI) / 180 : Math.atan2(track.direction.y, track.direction.x), base) ?? null; });
+            this.guard(track, () => { track.pieces = this.fragments?.start(token, track.stage, fragmentCut(track), base) ?? null; });
           }
           if (track.pieces && progress > 0) { if (progress < 1) this.guard(track, () => track.pieces.update(progress)); else this.release(track); }
           if (progress < 1) {

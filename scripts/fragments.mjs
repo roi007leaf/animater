@@ -9,13 +9,23 @@ const clamp = (v, min, max, fallback) => (v !== null && v !== "" && Number.isFin
 
 export function normalizeFragments(s = {}) {
   const pattern = Object.hasOwn(FRAGMENT_PATTERNS, s.pattern) ? s.pattern : "halves", [lo, hi, def] = COUNTS[pattern];
-  const seed = Number(s.seed);
+  const seed = Number(s.seed), cutAngle = s.cutAngle === null || s.cutAngle === "" ? NaN : Number(s.cutAngle);
   return {
     pattern, cut: s.cut === "fixed" ? "fixed" : "attack", angle: clamp(s.angle, 0, 180, 0),
     pieces: Math.round(clamp(s.pieces, lo, hi, def)), spread: clamp(s.spread, 0, 3, 0.6), spin: clamp(s.spin, 0, 720, 30),
     fall: clamp(s.fall, 0, 1, 0.3), drift: clamp(s.drift, 0, 1, 0), fade: clamp(s.fade, 100, 3000, 600),
     ...(Number.isInteger(seed) && seed >= 0 ? { seed } : {}),
+    // The sender's cut angle (radians, on screen), so every client cuts the same way.
+    ...(Number.isFinite(cutAngle) ? { cutAngle: Math.atan2(Math.sin(cutAngle), Math.cos(cutAngle)) } : {}),
   };
+}
+// A stage normalized once (per renderer start); the geometry below takes it as is.
+const PREPARED = new WeakSet();
+export function prepareFragments(stage) {
+  if (stage && PREPARED.has(stage)) return stage;
+  const s = { ...stage, ...normalizeFragments(stage) };
+  PREPARED.add(s);
+  return s;
 }
 
 // mulberry32: tiny, fast and identical on every client.
@@ -55,7 +65,7 @@ const piece = (polygon) => ({ polygon, centroid: centroidOf(polygon) });
 // own frame at the screen angle minus the turn (top/bottom stays level on screen).
 const screenCut = (s, cutAngle) => (s.pattern === "topBottom" ? 0 : s.cut === "fixed" ? (s.angle * Math.PI) / 180 : cutAngle);
 export function fragmentPieces(stage, cutAngle, turn = 0) {
-  const s = { ...stage, ...normalizeFragments(stage) }, rand = seededRandom(s.seed ?? 1);
+  const s = prepareFragments(stage), rand = seededRandom(s.seed ?? 1);
   if (s.pattern === "halves" || s.pattern === "topBottom") {
     const a = screenCut(s, cutAngle) - turn;
     const n = { x: -Math.sin(a), y: Math.cos(a) };
@@ -83,7 +93,7 @@ export function fragmentPieces(stage, cutAngle, turn = 0) {
 // Each piece's own flight, in screen squares relative to where it started: the piece's centroid
 // is turned onto the screen first, so falls go down and wind blows away on screen.
 export function fragmentFlight(stage, p, index, cutAngle, turn = 0) {
-  const s = { ...stage, ...normalizeFragments(stage) }, rand = seededRandom(((s.seed ?? 1) + index * 7919) >>> 0);
+  const s = prepareFragments(stage), rand = seededRandom(((s.seed ?? 1) + index * 7919) >>> 0);
   const c = { x: Math.cos(turn) * p.centroid.x - Math.sin(turn) * p.centroid.y, y: Math.sin(turn) * p.centroid.x + Math.cos(turn) * p.centroid.y };
   const len = Math.hypot(c.x, c.y) || 1, out = { x: c.x / len, y: c.y / len };
   if (s.pattern === "dust") {
@@ -106,7 +116,7 @@ export function fragmentFlight(stage, p, index, cutAngle, turn = 0) {
 }
 
 export function fragmentPose(stage, p, flight, t) {
-  const s = { ...stage, ...normalizeFragments(stage) }, q = Math.min(1, Math.max(0, t)), at = samplePath(flight.keyframes, q);
+  const s = prepareFragments(stage), q = Math.min(1, Math.max(0, t)), at = samplePath(flight.keyframes, q);
   // Pieces fade over the stage's last `fade` ms; a dust speck fades over its own window.
   const fadeFrom = s.pattern === "dust" ? flight.start + (flight.end - flight.start) * 0.3 : Math.max(0, 1 - s.fade / Math.max(1, stage.duration ?? 1400));
   const fadeTo = s.pattern === "dust" ? flight.end : 1;

@@ -217,3 +217,41 @@ test("player and renderer: pieces shift with the document when a held track land
   assert.equal(player.active.get(token).original.x, 150, "rebased");
   layer.children.forEach((c, i) => assert.ok(Math.abs(c.x - before[i].x - 100) < 1e-9 && Math.abs(c.y - before[i].y) < 1e-9));
 });
+
+// F4: robustness and sync.
+import { prepareFragments } from "../scripts/fragments.mjs";
+test("a broadcast cut angle survives validation, wrapped into -pi..pi; junk is dropped", () => {
+  assert.equal(normalizeFragments({ cutAngle: 1.25 }).cutAngle, 1.25);
+  assert.ok(Math.abs(normalizeFragments({ cutAngle: 3 * Math.PI / 2 }).cutAngle + Math.PI / 2) < 1e-9);
+  for (const bad of [undefined, null, "", "x", Infinity, NaN]) assert.equal("cutAngle" in normalizeFragments({ cutAngle: bad }), false, String(bad));
+});
+test("a prepared stage is normalized once and gives the same pieces, flights and poses as a raw one", () => {
+  const raw = { motion: "fragments", pattern: "shards", pieces: 99, seed: 4, duration: 1000, spin: 9999 };
+  const prepared = prepareFragments(raw);
+  assert.equal(prepareFragments(prepared), prepared, "already prepared: returned as is");
+  assert.equal(prepared.pieces, 10);
+  assert.equal(prepared.spin, 720);
+  const a = fragmentPieces(raw, 0.3), b = fragmentPieces(prepared, 0.3);
+  assert.deepEqual(a, b);
+  a.forEach((p, i) => {
+    const fa = fragmentFlight(raw, p, i, 0.3, 0.2), fb = fragmentFlight(prepared, p, i, 0.3, 0.2);
+    assert.deepEqual(fa, fb);
+    assert.deepEqual(fragmentPose(raw, p, fa, 0.7), fragmentPose(prepared, p, fb, 0.7));
+  });
+});
+test("no artwork logs one trace instead of failing silently", () => {
+  const warn = console.warn, warns = [];
+  console.warn = (...a) => warns.push(a.join(" "));
+  try {
+    const { r, token } = rig();
+    assert.equal(r.start({ ...token, mesh: { ...token.mesh, texture: null } }, halves, 0), null);
+    assert.deepEqual(warns, ["Animater fragments: no token artwork"]);
+  } finally { console.warn = warn; }
+});
+test("one piece failing to destroy does not leak the rest", () => {
+  const { r, token, layer } = rig();
+  const h = r.start(token, { ...halves, pattern: "dust", pieces: 16 }, 0);
+  layer.children[0].destroy = () => { throw new Error("nope"); };
+  assert.doesNotThrow(() => h.destroy());
+  assert.ok(layer.children.slice(1).every((c) => c.destroyed));
+});

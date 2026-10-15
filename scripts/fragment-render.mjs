@@ -1,18 +1,19 @@
 // Draws token fragments on each client: pieces of the token's own texture placed where the
 // token's art is drawn, moved by fragmentPose, destroyed at the end. Halves and shards are
 // masked sprites; dust specks are cropped sub-textures (no masks, so dozens stay cheap).
-import { fragmentPieces, fragmentFlight, fragmentPose } from "./fragments.mjs";
+import { prepareFragments, fragmentPieces, fragmentFlight, fragmentPose } from "./fragments.mjs";
 
 export function createFragmentRenderer({ PIXI, grid }) {
   return {
     // `base` is the transform the token is drawn at ({ x, y, rotation, sx, sy }), or a getter for it;
     // without it the live mesh is used. A getter is read every frame, so the pieces follow a rebase.
-    start(token, stage, cutAngle, baseOrGetter) {
+    start(token, rawStage, cutAngle, baseOrGetter) {
       const baseAt = typeof baseOrGetter === "function" ? baseOrGetter : () => baseOrGetter;
       // A copy: the getter may hand back the same object it later changes.
       const first = baseAt(), base = first ? { ...first } : first;
       const mesh = token?.mesh, texture = mesh?.texture;
-      if (!texture || !(token.center || mesh.position)) return null;
+      if (!texture || !(token.center || mesh.position)) { console.warn("Animater fragments: no token artwork"); return null; }
+      const stage = prepareFragments(rawStage);
       const layer = mesh.parent ?? globalThis.canvas?.primary, g = grid();
       const sx = base?.sx ?? mesh.scale?.x ?? 1, sy = base?.sy ?? mesh.scale?.y ?? 1;
       const flipX = Math.sign(sx || 1), flipY = Math.sign(sy || 1), turn = base?.rotation ?? mesh.rotation ?? 0;
@@ -78,7 +79,13 @@ export function createFragmentRenderer({ PIXI, grid }) {
             part.box.position.set(at.x + moved.x + pose.x * g, at.y + moved.y + pose.y * g); part.box.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha;
           }
         },
-        destroy() { for (const part of parts) { part.box.destroy({ children: true }); part.crop?.destroy(false); } },
+        // Each part on its own: one failure must not leak the rest.
+        destroy() {
+          for (const part of parts) {
+            try { part.box.destroy({ children: true }); } catch { /* keep cleaning */ }
+            try { part.crop?.destroy(false); } catch { /* keep cleaning */ }
+          }
+        },
       };
     },
   };

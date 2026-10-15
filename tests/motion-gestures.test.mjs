@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { MOTIONS, validateRecipe } from '../scripts/model.mjs';
 import { motionPose, motionDirection, combineMotionPoses, poseTransform, TokenMotionPlayer, heldPose, withFragmentSeed, HOLD_LIMIT_MS, HOLD_RELEASE_MS } from '../scripts/motion.mjs';
+import * as motionModule from '../scripts/motion.mjs';
 import { GENERATED_MOTION_DURATION } from '../scripts/motion-pacing.mjs';
 
 const NEW = ['press', 'sink', 'flicker', 'throw', 'brace', 'stagger', 'cower', 'slam', 'drift'];
@@ -407,4 +408,19 @@ test('the pieces spawn where the token is drawn and follow a rebase of the origi
   r.player.active.get(r.token).original.x += 100;
   assert.equal(seen().x, 100, 'follows the live original');
   assert.ok(Math.abs(seen().y - want.y) < 1e-9);
+});
+
+test('the sender stores the cut angle with the seed, and the player prefers it', () => {
+  const { withFragmentCut } = motionModule;
+  const s = withFragmentCut({ kind: 'motion', motion: 'fragments' }, { x: 0, y: -1 });
+  assert.ok(Math.abs(s.cutAngle + Math.PI / 2) < 1e-9);
+  assert.equal(withFragmentCut(s, { x: 1, y: 0 }), s, 'never overwritten');
+  const other = { kind: 'motion', motion: 'shake' };
+  assert.equal(withFragmentCut(other, { x: 1, y: 0 }), other);
+  assert.ok(Math.abs(fragStage({ cutAngle: s.cutAngle }).cutAngle - s.cutAngle) < 1e-9, 'validation keeps it');
+  let seen;
+  const r = fragRig({ start: (_t, _s, angle) => { seen = angle; return { update: () => {}, destroy: () => {} }; } });
+  void r.player.play(r.token, fragStage({ cutAngle: 2 }), { x: 1, y: 0 }, 'me');
+  r.now = 20; r.queued(r.now);
+  assert.equal(seen, 2, 'the broadcast angle wins over this client\'s direction');
 });
