@@ -60,6 +60,7 @@ test("the real Slice in half preset, saved as a copy, renders a visible glyph on
 });
 
 test("the halves never fade out completely in the animation", () => {
-  const svg = finisherGlyphSVG(validateRecipe({ ...FINISHER_PRESETS["slice-in-half"].build(), id: "s" }));
+  const svg = finisherGlyphSVG(validateRecipe({ ...FINISHER_PRESETS["slice-in-half"].build(), id: "s" }), { live: true });
+  assert.match(svg, /<animate attributeName="opacity"/);
   for (const m of svg.matchAll(/<animate attributeName="opacity" values="([^"]+)"/g)) assert.ok(Math.min(...m[1].split(";").map(Number)) >= 0.2, m[1]);
 });

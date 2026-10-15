@@ -11,16 +11,17 @@ const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "
 const choices = (table, current) => Object.entries(table).map(([k, v]) => `<option value="${esc(k)}" ${String(current) === k ? "selected" : ""}>${esc(v)}</option>`).join("");
 const hex = (v, fallback) => (/^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(String(v ?? "")) ? String(v) : fallback);
 
-// ---- Finisher glyph: a small looping picture of what a finisher does, as inline SVG ----
-// Viewbox 100x50. The animated group loops with SMIL; CSS swaps in the static twin when the
-// viewer prefers reduced motion. No ids, so many glyphs can share one page.
+// ---- Finisher glyph: a small picture of what a finisher does, as inline SVG ----
+// Viewbox 100x50. Drawn static (posed part-way through) by default; `live` draws the looping SMIL
+// twin instead, which the page swaps in only while a card or tile is hovered or focused.
+// No ids, so many glyphs can share one page.
 const W = 100, H = 50, LOOP = 'dur="2.4s" repeatCount="indefinite"';
 const num = (v, d = 1) => { const f = 10 ** d; return Number.isFinite(v) ? Math.round(v * f) / f + 0 : 0; };
 const pt = (p) => `${num(p.x)} ${num(p.y)}`;
-const wrap = (kind, color, size, body, extra = "") =>
-  `<svg class="an-glyph" data-kind="${kind}"${extra} viewBox="0 0 ${W} ${H}" width="${num(size * 2)}" height="${num(size)}" style="--glyph:${esc(color)}" aria-hidden="true" focusable="false">${body}</svg>`;
+const wrap = (kind, color, size, body, extra = "", live = false) =>
+  `<svg class="an-glyph${live ? " is-live" : ""}" data-kind="${kind}"${extra} viewBox="0 0 ${W} ${H}" width="${num(size * 2)}" height="${num(size)}" style="--glyph:${esc(color)}" aria-hidden="true" focusable="false">${body}</svg>`;
 
-function travelGlyph(r, keyframes) {
+function travelGlyph(r, keyframes, live) {
   const samples = Array.from({ length: 24 }, (_, i) => samplePath(keyframes, i / 23));
   const xs = samples.map((p) => p.x), ys = samples.map((p) => p.y);
   const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
@@ -36,18 +37,18 @@ function travelGlyph(r, keyframes) {
   }
   const fade = fades ? `<animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.55;0.7;1" ${LOOP}/>` : "";
   return `<path class="an-glyph-trail" d="${d}"/><circle class="an-glyph-start" cx="${num(pts[0].x)}" cy="${num(pts[0].y)}" r="2"/>${wall}`
-    + `<g class="an-glyph-anim"><circle class="an-glyph-dot" r="5"><animateMotion ${LOOP} path="${d}" keyPoints="0;1;1" keyTimes="0;0.7;1" calcMode="linear"/>${fade}</circle></g>`
-    + `<g class="an-glyph-still"><circle class="an-glyph-dot" cx="${num(end.x)}" cy="${num(end.y)}" r="5"${fades ? ' opacity="0.4"' : ""}/></g>`;
+    + (live ? `<g class="an-glyph-anim"><circle class="an-glyph-dot" r="5"><animateMotion ${LOOP} path="${d}" keyPoints="0;1;1" keyTimes="0;0.7;1" calcMode="linear"/>${fade}</circle></g>`
+    : `<g class="an-glyph-still"><circle class="an-glyph-dot" cx="${num(end.x)}" cy="${num(end.y)}" r="5"${fades ? ' opacity="0.4"' : ""}/></g>`);
 }
 
-function inPlaceGlyph(keyframes) {
+function inPlaceGlyph(keyframes, live) {
   const poses = [0, 0.25, 0.5, 0.75, 1].map((q) => samplePath(keyframes, q));
   const values = (key, d) => [...poses.map((p) => num(p[key], d)), num(poses.at(-1)[key], d)].join(";");
   const times = 'keyTimes="0;0.175;0.35;0.525;0.7;1"';
   const token = `<circle class="an-glyph-dot" r="10"/><line class="an-glyph-notch" x1="0" y1="0" x2="0" y2="-10"/>`;
+  if (!live) return `<g class="an-glyph-still"><g transform="translate(${W / 2} ${H / 2})">${token}</g></g>`;
   return `<g class="an-glyph-anim"><g transform="translate(${W / 2} ${H / 2})"><g><animateTransform attributeName="transform" type="rotate" values="${values("rotation", 0)}" ${times} ${LOOP}/>`
-    + `<g><animateTransform attributeName="transform" type="scale" values="${values("scale", 2)}" ${times} ${LOOP}/><animate attributeName="opacity" values="${values("alpha", 2)}" ${times} ${LOOP}/>${token}</g></g></g></g>`
-    + `<g class="an-glyph-still"><g transform="translate(${W / 2} ${H / 2})">${token}</g></g>`;
+    + `<g><animateTransform attributeName="transform" type="scale" values="${values("scale", 2)}" ${times} ${LOOP}/><animate attributeName="opacity" values="${values("alpha", 2)}" ${times} ${LOOP}/>${token}</g></g></g></g>`;
 }
 
 // A convex piece of the token's unit square, cut to the token's circle (both convex).
@@ -100,7 +101,7 @@ const BEHAVIOR_MARKS = {
 };
 const ABSORB_X = 8;
 
-function fragmentsGlyph(stage, color) {
+function fragmentsGlyph(stage, color, live) {
   const n = normalizeFragments(stage), cut = Math.PI / 5, R = 30, pieces = fragmentPieces(stage, cut);
   // Dust keeps every few specks so a glyph stays small; the flight still comes from the real index.
   const stride = Math.max(1, Math.ceil(pieces.length / 20));
@@ -132,31 +133,32 @@ function fragmentsGlyph(stage, color) {
     const scale = grown ? `<animateTransform attributeName="transform" type="scale" values="1 1;1 1;${ends};${ends}" keyTimes="0;0.2;0.75;1" ${LOOP}/>` : "";
     return `<g transform="translate(${num(cx)} ${num(cy)})"><g${grown ? "" : ` transform="scale(${num(sx, 3)} ${num(sy, 3)})"`}>${scale}<g transform="translate(${num(-cx)} ${num(-cy)})">${polygon(s)}</g></g></g>`;
   };
-  const anim = shapes.map((s) => `<g>${move(s)}${sized(s, true)}</g>`).join("");
-  const still = shapes.map((s) => `<g transform="translate(${num(s.dx * 0.35)} ${num(s.dy * 0.35)})">${sized(s, false)}</g>`).join("");
   const marks = (PATTERN_MARKS[n.pattern]?.(cut) ?? "") + (BEHAVIOR_MARKS[n.behavior]?.() ?? "");
-  return `${ghost}${marks}<g class="an-glyph-anim">${anim}</g><g class="an-glyph-still">${still}</g>`;
+  if (live) return `${ghost}${marks}<g class="an-glyph-anim">${shapes.map((s) => `<g>${move(s)}${sized(s, true)}</g>`).join("")}</g>`;
+  return `${ghost}${marks}<g class="an-glyph-still">${shapes.map((s) => `<g transform="translate(${num(s.dx * 0.35)} ${num(s.dy * 0.35)})">${sized(s, false)}</g>`).join("")}</g>`;
 }
 
-function knockbackGlyph(knockback) {
+function knockbackGlyph(knockback, live) {
   const len = 10 + Math.min(6, Math.max(0, knockback)) * 6, from = 40, tip = from + 9 + len;
   const arrow = `<path class="an-glyph-arrow" d="M${from + 9} 25 L${tip - 5} 25"/><polygon class="an-glyph-arrow" points="${tip},25 ${tip - 6},21 ${tip - 6},29"/>`;
   return `<circle class="an-glyph-attacker" cx="20" cy="25" r="4"/>${arrow}`
-    + `<g class="an-glyph-anim"><circle class="an-glyph-dot" cx="${from}" cy="25" r="7"><animateTransform attributeName="transform" type="translate" values="0 0;${num(len * 0.8)} 0;${num(len * 0.8)} 0" keyTimes="0;0.6;1" ${LOOP}/></circle></g>`
-    + `<g class="an-glyph-still"><circle class="an-glyph-dot" cx="${from}" cy="25" r="7"/></g>`;
+    + (live ? `<g class="an-glyph-anim"><circle class="an-glyph-dot" cx="${from}" cy="25" r="7"><animateTransform attributeName="transform" type="translate" values="0 0;${num(len * 0.8)} 0;${num(len * 0.8)} 0" keyTimes="0;0.6;1" ${LOOP}/></circle></g>`
+    : `<g class="an-glyph-still"><circle class="an-glyph-dot" cx="${from}" cy="25" r="7"/></g>`);
 }
 
-export function finisherGlyphSVG(recipe, { size = 80 } = {}) {
+// `key`: the page's handle for the live twin (data-glyph-live), set on the static glyph only.
+export function finisherGlyphSVG(recipe, { size = 80, live = false, key = "" } = {}) {
+  const tag = !live && key ? ` data-glyph-live="${esc(key)}"` : "";
   const color = hex(recipe?.color, "#9e8aff"), stages = Array.isArray(recipe?.stages) ? recipe.stages : [];
   const path = finisherTravelPath(recipe), keyframes = path ? normalizeKeyframes(path.keyframes, { limit: 24 }) : null;
   const fragments = stages.find((s) => s?.kind === "motion" && s.motion === "fragments");
-  if (keyframes && pathSquares(keyframes) >= 1) return wrap("travel", color, size, travelGlyph(recipe, keyframes));
+  if (keyframes && pathSquares(keyframes) >= 1) return wrap("travel", color, size, travelGlyph(recipe, keyframes, live), tag, live);
   if (fragments) {
     const n = normalizeFragments(fragments);
-    return wrap("fragments", color, size, fragmentsGlyph(fragments, color), ` data-pattern="${esc(n.pattern)}"${n.behavior ? ` data-behavior="${esc(n.behavior)}"` : ""}`);
+    return wrap("fragments", color, size, fragmentsGlyph(fragments, color, live), ` data-pattern="${esc(n.pattern)}"${n.behavior ? ` data-behavior="${esc(n.behavior)}"` : ""}${tag}`, live);
   }
-  if (keyframes) return wrap("inplace", color, size, inPlaceGlyph(keyframes));
-  return wrap("knockback", color, size, knockbackGlyph(Number(recipe?.finisher?.knockback) || 0));
+  if (keyframes) return wrap("inplace", color, size, inPlaceGlyph(keyframes, live), tag, live);
+  return wrap("knockback", color, size, knockbackGlyph(Number(recipe?.finisher?.knockback) || 0, live), tag, live);
 }
 
 // ---- The Finishers page ----
@@ -166,14 +168,54 @@ export const FINISHER_PRESET_GROUPS = {
   Pieces: ["slice-in-half", "bisect", "shatter-shards", "disintegrate", "shatter", "vortex-spiral", "diced", "claw-shred", "pixel-delete", "soul-drain", "frozen-shatter", "ember-ascent"],
 };
 const ENDING_PILL = { vanish: "Vanish", body: "Body", stay: "Stay" };
-const PRESET_GLYPHS = new Map();
-function presetGlyph(id) {
+// Live twins by key: a card's latest recipe (rebuilt on hover, since it can change), a preset's
+// recipe and its cached string. Static preset tiles never change, so their strings are cached too.
+const LIVE = new Map(), PRESET_GLYPHS = new Map(), LIVE_CAP = 500;
+const presetRecipe = (id) => { try { return presetFinisher(id, `preset-${id}`); } catch { return FINISHER_PRESETS[id].build(); } };
+export function presetGlyph(id) {
   if (!PRESET_GLYPHS.has(id)) {
-    let r;
-    try { r = presetFinisher(id, `preset-${id}`); } catch { r = FINISHER_PRESETS[id].build(); }
-    PRESET_GLYPHS.set(id, finisherGlyphSVG(r, { size: 22 }));
+    const r = presetRecipe(id);
+    LIVE.set(`preset:${id}`, { recipe: r, size: 22 });
+    PRESET_GLYPHS.set(id, finisherGlyphSVG(r, { size: 22, key: `preset:${id}` }));
   }
   return PRESET_GLYPHS.get(id);
+}
+function cardGlyph(r) {
+  const key = `card:${r.id}`;
+  if (!LIVE.has(key) && LIVE.size >= LIVE_CAP) for (const k of LIVE.keys()) if (k.startsWith("card:")) { LIVE.delete(k); break; }
+  LIVE.set(key, { recipe: r, size: 80 });
+  return finisherGlyphSVG(r, { key });
+}
+export function liveGlyphSVG(key) {
+  const entry = LIVE.get(key);
+  if (!entry) return null;
+  if (key.startsWith("preset:")) return (entry.svg ??= finisherGlyphSVG(entry.recipe, { size: entry.size, live: true }));
+  return finisherGlyphSVG(entry.recipe, { size: entry.size, live: true });
+}
+
+// One delegated hook per document: hovering or focusing a card or tile puts its looping twin next
+// to the static glyph (hidden meanwhile); leaving removes it. Bound from here so the page needs no
+// workspace wiring; a re-render patches the extra node away and the static glyph shows again.
+const BOUND = new WeakSet(), HOSTS = ".an-finishers .an-fcard, .an-finishers .an-preset-tile";
+function glyphHover(doc, event, on) {
+  const host = event.target?.closest?.(HOSTS);
+  if (!host || host.contains(event.relatedTarget)) return;
+  const still = host.querySelector("svg.an-glyph[data-glyph-live]");
+  if (!still) return;
+  const live = host.querySelector("svg.an-glyph.is-live");
+  if (!on) { live?.remove(); still.style.removeProperty("display"); return; }
+  if (live || doc.defaultView?.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) return;
+  const markup = liveGlyphSVG(still.dataset.glyphLive);
+  if (!markup) return;
+  still.insertAdjacentHTML("afterend", markup);
+  still.style.display = "none";
+}
+export function bindGlyphHover(doc = globalThis.document) {
+  if (typeof doc?.addEventListener !== "function" || BOUND.has(doc)) return false;
+  BOUND.add(doc);
+  for (const [type, on] of [["pointerover", true], ["focusin", true], ["pointerout", false], ["focusout", false]])
+    doc.addEventListener(type, (event) => glyphHover(doc, event, on));
+  return true;
 }
 
 function cardChipsHTML(r, itemSummary) {
@@ -196,19 +238,26 @@ function finisherCardHTML(r, players, itemSummary) {
   const id = esc(r.id), off = r.enabled === false;
   return `<article class="an-card an-fcard${off ? " is-off" : ""}" data-action="select" data-id="${id}" style="--effect:${esc(hex(r.color, "#9e8aff"))}">`
     + `<button type="button" data-action="select" data-id="${id}" class="an-fcard-open" aria-label="Open ${esc(r.name)}">`
-    + `<div class="an-art an-fcard-art">${finisherGlyphSVG(r)}<span class="an-fcard-badges"><span class="an-fcard-badge">${esc(FINISHER_ON[f.on])}</span>${off ? `<span class="an-fcard-badge is-off">Off</span>` : ""}</span></div>`
+    + `<div class="an-art an-fcard-art">${cardGlyph(r)}<span class="an-fcard-badges"><span class="an-fcard-badge">${esc(FINISHER_ON[f.on])}</span>${off ? `<span class="an-fcard-badge is-off">Off</span>` : ""}</span></div>`
     + `<div class="an-card-body"><h2>${esc(r.name)}</h2><div class="an-fcard-chips">${cardChipsHTML(r, itemSummary)}</div>`
     + `<div class="an-fcard-pills"><span class="an-pill">Ending: ${esc(ENDING_PILL[f.ending] ?? FINISHER_ENDINGS[f.ending] ?? f.ending)}</span><span class="an-pill">${esc(reach)}</span>${playersPill(f, players)}</div></div></button>`
     + `<span class="an-fcard-actions"><button type="button" data-action="select" data-id="${id}" class="an-fcard-quick">Edit</button><button type="button" data-action="recipe-menu-duplicate" data-id="${id}" class="an-fcard-quick">Duplicate</button></span></article>`;
 }
 
+// The preset groups never change: built once.
+let PRESET_GROUPS_HTML = null;
+function presetGroupsHTML() {
+  const tile = (id) => { const p = FINISHER_PRESETS[id]; return `<button type="button" data-action="new-finisher" data-preset="${esc(id)}" data-tooltip="${esc(p.description)}" class="an-preset-tile">${presetGlyph(id)}<span>${esc(p.name)}</span></button>`; };
+  return (PRESET_GROUPS_HTML ??= Object.entries(FINISHER_PRESET_GROUPS).map(([name, ids]) => `<div class="an-preset-group"><h3 class="an-preset-heading">${esc(name)}</h3><div class="an-preset-tiles">${ids.filter((id) => FINISHER_PRESETS[id]).map(tile).join("")}</div></div>`).join(""));
+}
+
 export function finishersPageHTML(w, recipe) {
   if (w.studio && recipe) return studioHTML(w, recipe);
+  bindGlyphHover();
   const all = w.listedRecipes().filter((r) => r.finisher), def = w.host.defaultFinisher?.() ?? "";
   const players = w.host.players?.() ?? [], itemSummary = w.host.itemSummary ? (uuid) => w.host.itemSummary(uuid) : null;
   const cards = all.map((r) => finisherCardHTML(r, players, itemSummary)).join("");
-  const tile = (id) => { const p = FINISHER_PRESETS[id]; return `<button type="button" data-action="new-finisher" data-preset="${esc(id)}" data-tooltip="${esc(p.description)}" class="an-preset-tile">${presetGlyph(id)}<span>${esc(p.name)}</span></button>`; };
-  const groups = Object.entries(FINISHER_PRESET_GROUPS).map(([name, ids]) => `<div class="an-preset-group"><h3 class="an-preset-heading">${esc(name)}</h3><div class="an-preset-tiles">${ids.filter((id) => FINISHER_PRESETS[id]).map(tile).join("")}</div></div>`).join("");
+  const groups = presetGroupsHTML();
   return `<div class="an-work is-library"><section class="an-library an-finishers">
     <div class="an-finishers-sub"><span>${all.length} finisher${all.length === 1 ? "" : "s"}</span><small>Assign them to spells, feats, actions and weapons. They play on the real token.</small></div>
     <label class="an-finisher-default"><span>Default finisher for other kills</span><select data-finisher-default><option value="">None (plain collapse)</option>${all.map((r) => `<option value="${esc(r.id)}" ${r.id === def ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>

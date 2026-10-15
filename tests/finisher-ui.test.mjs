@@ -175,7 +175,7 @@ const kindOf = (svg) => /^<svg[^>]*data-kind="([^"]+)"/.exec(svg)?.[1];
 
 test("finisherGlyphSVG draws a travel path with a moving dot, fading when the path ends invisible", () => {
   const r = withStages(fin("a", "X"), [pathStage([kf(0), kf(0.5, 1.5, 0.5), kf(1, 3, 0, { alpha: 0 })])]);
-  const svg = finisherGlyphSVG(r, { size: 40 });
+  const svg = finisherGlyphSVG(r, { size: 40, live: true });
   assert.match(svg, /^<svg [^>]*viewBox="0 0 100 50"/);
   assert.equal(kindOf(svg), "travel");
   assert.match(svg, /width="80" height="40"/);
@@ -184,7 +184,7 @@ test("finisherGlyphSVG draws a travel path with a moving dot, fading when the pa
   assert.equal((trail[0].match(/L/g) ?? []).length, 23, "24 samples");
   assert.match(svg, /<animateMotion [^>]*path="M/);
   assert.match(svg, /attributeName="opacity" values="1;1;0/, "fades out at the end");
-  assert.doesNotMatch(finisherGlyphSVG(withStages(fin("b", "X"), [pathStage([kf(0), kf(1, 3, 0)])])), /attributeName="opacity"/, "a visible end does not fade");
+  assert.doesNotMatch(finisherGlyphSVG(withStages(fin("b", "X"), [pathStage([kf(0), kf(1, 3, 0)])]), { live: true }), /attributeName="opacity"/, "a visible end does not fade");
   assert.doesNotMatch(svg, /an-glyph-wall/);
   assert.doesNotMatch(svg, /NaN|undefined/);
 });
@@ -200,7 +200,7 @@ test("finisherGlyphSVG adds a wall bar when the finisher slams into walls", () =
 test("finisherGlyphSVG splits the token for every fragment pattern", () => {
   for (const pattern of ["halves", "topBottom", "shards", "dust"]) {
     const r = withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", pattern, pieces: pattern === "dust" ? 16 : pattern === "shards" ? 5 : 2 }]);
-    const svg = finisherGlyphSVG(r);
+    const svg = finisherGlyphSVG(r, { live: true });
     assert.equal(kindOf(svg), "fragments", pattern);
     assert.match(svg, new RegExp(`data-pattern="${pattern}"`), pattern);
     const pieces = svg.match(/<polygon class="an-glyph-piece"/g) ?? [];
@@ -212,7 +212,7 @@ test("finisherGlyphSVG splits the token for every fragment pattern", () => {
 
 test("finisherGlyphSVG pulses an in-place path by its scale, rotation and alpha", () => {
   const r = withStages(fin("a", "X"), [pathStage([kf(0), kf(0.5, 0, 0, { rotation: 360, scale: 0.6 }), kf(1, 0, 0, { rotation: 720, scale: 0.05, alpha: 0 })])]);
-  const svg = finisherGlyphSVG(r);
+  const svg = finisherGlyphSVG(r, { live: true });
   assert.equal(kindOf(svg), "inplace");
   assert.match(svg, /type="scale" values="1;[^"]*0\.05"/);
   assert.match(svg, /type="rotate" values="0;[^"]*720"/);
@@ -229,12 +229,17 @@ test("finisherGlyphSVG draws an arrow away from the attacker for knockback-only 
   assert.doesNotMatch(svg, /NaN|undefined/);
 });
 
-test("finisherGlyphSVG is deterministic, static under reduced motion, and tinted with a validated colour", () => {
+test("finisherGlyphSVG is deterministic, static by default, live on request, and tinted with a validated colour", () => {
   for (const id of Object.keys(FINISHER_PRESETS)) {
     const a = finisherGlyphSVG(presetFinisher(id, "p")), b = finisherGlyphSVG(presetFinisher(id, "p"));
     assert.equal(a, b, id);
     assert.doesNotMatch(a, /NaN|undefined|Infinity/, id);
-    assert.match(a, /<g class="an-glyph-anim">[^]*<g class="an-glyph-still">/, `${id}: a static twin for reduced motion`);
+    assert.match(a, /<g class="an-glyph-still">/, `${id}: the static pose`);
+    assert.doesNotMatch(a, /<animate|<set /, `${id}: no SMIL by default`);
+    const live = finisherGlyphSVG(presetFinisher(id, "p"), { live: true });
+    assert.match(live, /<g class="an-glyph-anim">[^]*<animate/, `${id}: the looping twin`);
+    assert.doesNotMatch(live, /an-glyph-still|NaN|undefined|Infinity/, id);
+    assert.match(live, /^<svg class="an-glyph is-live"/, id);
   }
   assert.match(finisherGlyphSVG({ ...fin("a", "X"), color: "#12abef" }), /style="--glyph:#12abef"/);
   const bad = finisherGlyphSVG({ ...fin("a", "X"), color: `red"><script>alert(1)</script>` });
@@ -342,9 +347,86 @@ test("finisherGlyphSVG sketches each newer pattern's cut and hints the behaviour
 });
 
 test("behaviour glyph pieces end where the behaviour sends them", () => {
-  const svg = (behavior) => finisherGlyphSVG(withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", pattern: "shards", behavior }]));
+  const svg = (behavior) => finisherGlyphSVG(withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", pattern: "shards", behavior }]), { live: true });
   assert.match(svg("implode"), /type="scale" values="1 1;1 1;0\.05 0\.05;0\.05 0\.05"/, "implode shrinks to a point");
   assert.match(svg("drip"), /type="scale" values="1 1;1 1;1 2\.2;1 2\.2"/, "drip stretches");
   assert.doesNotMatch(svg("rise"), /type="scale" values="1 1;1 1;1 1;1 1"/ , "rise shrinks");
   assert.doesNotMatch(finisherGlyphSVG(withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", pattern: "shards" }])), /type="scale"/, "burst glyphs stay unscaled");
+});
+
+// ---- Finishers page performance: static glyphs, live only on hover ----
+import { presetGlyph, liveGlyphSVG, bindGlyphHover } from "../scripts/finisher-ui.mjs";
+
+test("the Finishers page draws every card and tile glyph static, keyed for its live twin", () => {
+  const recipes = ["launch", "wall-slam", "ash", "shatter-shards", "disintegrate", "soul-drain"].map((id, i) => ({ ...presetFinisher(id, `f${i}`), name: `F ${i}` }));
+  const html = pageOf(recipes);
+  assert.doesNotMatch(html, /<animate|<animateMotion|<animateTransform|<set /, "no SMIL anywhere on the page");
+  const svgs = html.match(/<svg class="an-glyph"[^>]*>/g) ?? [];
+  assert.equal(svgs.length, recipes.length + Object.keys(FINISHER_PRESETS).length);
+  for (const tag of svgs) assert.match(tag, /data-glyph-live="(?:card|preset):[^"]+"/, tag);
+  for (const r of recipes) assert.match(html, new RegExp(`data-glyph-live="card:${r.id}"`));
+  // Each key gives back the looping twin, at the size it was drawn.
+  assert.match(liveGlyphSVG("card:f0"), /^<svg class="an-glyph is-live"[^>]*width="160" height="80"[^]*<animateMotion/);
+  assert.match(liveGlyphSVG("preset:launch"), /^<svg class="an-glyph is-live"[^>]*width="44" height="22"[^]*<animate/);
+  assert.equal(liveGlyphSVG("card:nope"), null);
+});
+
+test("a preset tile's glyph is built once and cached by preset id", () => {
+  const a = presetGlyph("diced"), b = presetGlyph("diced");
+  assert.equal(a, b);
+  assert.doesNotMatch(a, /<animate/);
+  assert.match(a, /data-glyph-live="preset:diced"/);
+  assert.equal(liveGlyphSVG("preset:diced"), liveGlyphSVG("preset:diced"));
+});
+
+// A tiny DOM: one card host holding one static glyph.
+function hoverFixture({ reduce = false } = {}) {
+  const listeners = {}, inserted = [];
+  const still = { dataset: { glyphLive: "preset:launch" }, style: { display: "", removeProperty(k) { this[k] = ""; } }, insertAdjacentHTML: (where, html) => inserted.push({ where, html }) };
+  let live = null;
+  const host = {
+    contains: (n) => n === host || n === inner,
+    querySelector: (sel) => (sel.includes("is-live") ? live : sel.includes("data-glyph-live") ? still : null),
+  };
+  const inner = { closest: (sel) => (sel.includes(".an-preset-tile") ? host : null) };
+  const outside = { closest: () => null };
+  const doc = { defaultView: { matchMedia: (q) => ({ matches: reduce && q.includes("reduce") }) }, addEventListener: (type, fn) => { (listeners[type] ??= []).push(fn); } };
+  const fire = (type, target, relatedTarget = null) => listeners[type]?.forEach((fn) => fn({ type, target, relatedTarget }));
+  return { doc, still, inserted, inner, outside, fire, setLive: (v) => { live = v; } };
+}
+
+test("the hover hook swaps in the looping glyph while hovered or focused, and back after", () => {
+  const f = hoverFixture();
+  assert.equal(bindGlyphHover(f.doc), true);
+  assert.equal(bindGlyphHover(f.doc), false, "bound once per document");
+  f.fire("pointerover", f.inner, f.outside);
+  assert.equal(f.inserted.length, 1);
+  assert.equal(f.inserted[0].where, "afterend");
+  assert.match(f.inserted[0].html, /^<svg class="an-glyph is-live"[^]*<animate/);
+  assert.equal(f.still.style.display, "none");
+  let removed = 0;
+  f.setLive({ remove: () => { removed++; } });
+  f.fire("focusin", f.inner, f.inner);
+  assert.equal(f.inserted.length, 1, "already live: nothing doubles up");
+  f.fire("pointerout", f.inner, f.inner);
+  assert.equal(removed, 0, "moving within the card keeps it live");
+  f.fire("pointerout", f.inner, f.outside);
+  assert.equal(removed, 1);
+  assert.equal(f.still.style.display, "");
+});
+
+test("the hover hook never animates when the viewer prefers reduced motion", () => {
+  const f = hoverFixture({ reduce: true });
+  bindGlyphHover(f.doc);
+  f.fire("pointerover", f.inner, f.outside);
+  f.fire("focusin", f.inner, f.outside);
+  assert.equal(f.inserted.length, 0);
+  assert.equal(f.still.style.display, "");
+});
+
+test("building the page binds the hover hook only where a real document exists", () => {
+  assert.doesNotThrow(() => pageOf([]));
+  const saved = globalThis.document;
+  globalThis.document = { createElement() {} };
+  try { assert.doesNotThrow(() => pageOf([])); } finally { globalThis.document = saved; }
 });
