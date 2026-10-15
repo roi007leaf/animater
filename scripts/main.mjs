@@ -3,7 +3,7 @@ import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mj
 import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { displaceAllowed, landingSpot, withinKnockback } from "./displacement.mjs";
-import { matchFinishers, killFinisher, usePasses, finisherMoment, checkFinisherEvent, mayDisplace } from "./finisher-model.mjs";
+import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, finisherFires, createFinishedMemory } from "./finisher-model.mjs";
 import { playFinisher } from "./finisher-play.mjs";
 import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
@@ -142,6 +142,25 @@ async function receiveMotion(data, { strict = false } = {}) {
 const recipes = () =>
   clone(game.settings.get(ID, "recipes")?.recipes ?? starterRecipes());
 const playerDecisions = () => game.settings.get(ID, "playerApprovals") ?? {};
+// Players' finisher picks: the item's flag names it; it holds while the GM still gives it to an owner.
+const ownerUsers = (actor) => [...(game.users?.values?.() ?? [])].filter((u) => !u.isGM && actor?.testUserPermission?.(u, "OWNER")).map((u) => u.id);
+const itemKeys = (item) => ({ itemName: item?.name, itemSlug: item?.slug ?? item?.system?.slug, itemUuid: item?.uuid });
+const pickFor = (item) => (item ? pickedFinisher(recipes(), { choiceId: item.getFlag?.(ID, "finisher"), ownerUserIds: ownerUsers(item.actor), ...itemKeys(item) }) : null);
+const finisherChoices = (item, user = game.user) => playerFinisherChoices(recipes(), { userId: user?.id, ...itemKeys(item) })
+  .map((r) => ({ id: r.id, name: r.name, description: r.description ?? "", on: r.finisher.on }));
+// Other modules (pf2e-combater's item sheet) read and set an item's pick through api.finishers.
+const finishersApi = {
+  choices: finisherChoices,
+  getChoice: (item) => item?.getFlag?.(ID, "finisher") ?? null,
+  async setChoice(item, id) {
+    const user = game.user;
+    if (!item || !(user?.isGM || item.isOwner)) throw new Error("Only the item's owner or a GM can choose its finisher.");
+    if (id !== null && !finisherChoices(item, user).some((c) => c.id === id) && !(user.isGM && recipes().some((r) => r?.id === id && r.finisher)))
+      throw new Error("That finisher isn't available for this item.");
+    if (id === null) await item.unsetFlag(ID, "finisher"); else await item.setFlag(ID, "finisher", id);
+    Hooks.callAll("animater.finisherChoiceChanged", item, id);
+  },
+};
 const ownPlayerRecipes = () => clone(game.user?.getFlag?.(ID, "playerRecipes")?.recipes ?? []);
 // The player whose animations the GM has open in the Studio, if any.
 let reviewing = null;
@@ -1269,6 +1288,7 @@ Hooks.once("ready", () => {
     conditions: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_STATE_SOURCE), conditions: clone(game.system.id==='sf2e'?sfEntries('condition'):game.system.id==='dnd5e'?dndEntries('condition'):game.system.id==='pf2e'?PF2E_CONDITIONS:[]) }),
     effects: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_STATE_SOURCE), effects: clone(game.system.id==='sf2e'?sfEntries('effect'):game.system.id==='dnd5e'?dndEntries('effect'):game.system.id==='pf2e'?PF2E_EFFECTS:[]) }),
     refreshPersistent: () => persistentStates?.reconcile(),
+    finishers: finishersApi,
     // id, saved recipe name, or a recipe object (e.g. from resolve()).
     async play(id, context = manualContext()) {
       const recipe = findRecipe(id);
@@ -1351,12 +1371,27 @@ Hooks.once("ready", () => {
     const dead = Number(mover.actor?.system?.attributes?.hp?.value) <= 0;
     return playFinisher({ recipe, mover, attacker, target, dead }, finisherHost(attacker)).catch((error) => { runtime.trace("Blocked", error.message); return null; });
   };
+  // One action plays a finisher once per target: a crit that then kills only adds the ending.
+  // The crit's attack roll and the killing damage roll are separate messages, so the key is the
+  // attacker, the target and the finisher played.
+  const finished = createFinishedMemory();
+  const finishedKey = (attackerId, targetId, recipe) => `${attackerId ?? ""}:${targetId ?? ""}:${recipe.id}`;
+  // A critical hit: the owner's pick when it plays on crits, else the GM's critical finishers.
+  const playCritFinisher = (event, item) => {
+    const pick = pickFor(event.item);
+    const recipe = pick ? (pick.finisher.on !== "use" && finisherFires(pick.finisher, { outcome: event.outcome, killed: false }) ? pick : null) : critFinishers(recipes(), item)[0];
+    if (!recipe) return;
+    for (const target of (event.targets ?? []).filter(Boolean)) finished.mark(finishedKey(event.source?.id, target.id, recipe));
+    const movers = recipe.finisher.mover === "source" ? [event.source] : event.targets ?? [];
+    for (const mover of movers.filter(Boolean)) void runFinisher(recipe, { mover, attacker: event.source, target: recipe.finisher.mover === "source" ? event.targets?.[0] ?? null : mover });
+  };
   // Every successful use of an assigned item (the roll that has a degree of success, else the use).
   const finisherSeen = new Set();
   playUseFinishers = async (event) => {
     if (!event || !game.settings.get(ID, FINISHERS_SETTING) || !finisherMoment(event)) return;
     if (event.id) { if (finisherSeen.has(event.id)) return; finisherSeen.add(event.id); if (finisherSeen.size > 500) finisherSeen.delete(finisherSeen.values().next().value); }
     const item = { itemName: event.item?.name ?? event.itemName, itemSlug: event.item?.slug ?? event.item?.system?.slug, itemUuid: event.itemUuid ?? event.item?.uuid };
+    if (event.outcome === "criticalSuccess") playCritFinisher(event, item);
     for (const recipe of matchFinishers(recipes(), item, "use")) {
       if (!usePasses(recipe.finisher, event)) continue;
       const movers = recipe.finisher.mover === "source" ? [event.source] : event.targets ?? [];
@@ -1368,8 +1403,31 @@ Hooks.once("ready", () => {
     if (!game.settings.get(ID, FINISHERS_SETTING) || actor.type !== "npc" || token.document.hidden) return null;
     const ids = { actorId: actor.id, tokenId: token.id };
     const by = recallAttribution(damageLog, ids) ?? recallDamage(damageLog, ids);
-    const recipe = killFinisher(recipes(), { itemUuid: by?.itemUuid, itemName: by?.itemName }, game.settings.get(ID, DEFAULT_FINISHER), { crit: by?.crit === true });
-    return recipe && { recipe, attacker: by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null };
+    const attacker = by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null;
+    // The owner's pick for the killing item wins over the GM's finishers when it plays on this kill.
+    const pick = pickFor(killingItem(by, attacker));
+    const recipe = pick && pick.finisher.on !== "use" && finisherFires(pick.finisher, { outcome: by?.crit ? "criticalSuccess" : "success", killed: true }) ? pick
+      : killFinisher(recipes(), { itemUuid: by?.itemUuid, itemName: by?.itemName }, game.settings.get(ID, DEFAULT_FINISHER), { crit: by?.crit === true });
+    // The crit already played this finisher's travel on this token: only its ending is left.
+    const endingOnly = Boolean(recipe) && finished.has(finishedKey(by?.sourceTokenId, token.id, recipe));
+    return recipe && { recipe, attacker, endingOnly };
+  };
+  // The item that struck the killing blow, from the damage roll's origin.
+  const killingItem = (by, attacker) => {
+    if (!by?.itemUuid && !by?.itemName) return null;
+    let item = null;
+    try { item = by.itemUuid ? globalThis.fromUuidSync?.(by.itemUuid, { strict: false }) ?? null : null; } catch { item = null; }
+    return item ?? attacker?.actor?.items?.find?.((i) => (by.itemUuid && i.uuid === by.itemUuid) || (!by.itemUuid && i.name === by.itemName)) ?? null;
+  };
+  // Just the ending of a finisher whose travel already played: hidden or Defeated, as playFinisher ends.
+  const finishOnly = async (recipe, token, attacker) => {
+    const host = finisherHost(attacker), ending = recipe.finisher?.ending;
+    host.trace("Finisher", `${recipe.name}: ${token.name ?? "token"} (ending)`);
+    try {
+      if (ending === "vanish") { await host.fade(token); await host.commit(token, { hidden: true, finisher: recipe.id }); }
+      else if (ending === "body") await host.commit(token, { defeated: true, finisher: recipe.id });
+      return true;
+    } catch (error) { host.trace("Blocked", `Finisher ${recipe.name}: ${error.message}`); return false; }
   };
   // The collapse (or dramatic death) on a drop to 0 HP, else the energy-damage flash.
   const playDamageMoment = (actor, token, dropped) => {
@@ -1386,6 +1444,7 @@ Hooks.once("ready", () => {
   };
   const playKill = async (actor, token, kill) => {
     await motionSettled(token);
+    if (kill.endingOnly) return void await finishOnly(kill.recipe, token, kill.attacker);
     // Nothing played and nothing was written: the old collapse stands in.
     if ((await runFinisher(kill.recipe, { mover: token, attacker: kill.attacker, target: token })) === null) playDamageMoment(actor, token, true);
   };
