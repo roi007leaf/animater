@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, createFinishedMemory } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, createFinishedMemory, critFinishers } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -43,6 +43,21 @@ test("a critical-only kill finisher plays only on a crit; the default obeys the 
   assert.equal(killFinisher(list, { itemName: "Greataxe" }, "def"), null, "unknown crit is not a crit");
   assert.equal(killFinisher(list, { itemName: "Greataxe" }, "plain").id, "plain", "falls through to a default that needs no crit");
   assert.equal(killFinisher([fin("both", "Greataxe", { success: "critical" }), fin("any", "Greataxe")], { itemName: "Greataxe" }, "").id, "any");
+});
+
+test("a kill also plays the item's crit-or-kill finishers, in catalog order, before the default", () => {
+  const list = [fin("crit", "Greataxe", { on: "critical" }), fin("either", "Greataxe", { on: "criticalOrKill" }), fin("k", "Greataxe"), fin("def", "")];
+  assert.equal(killFinisher(list, { itemName: "Greataxe" }, "def").id, "either", "the first of the item's kill or crit-or-kill finishers");
+  assert.equal(killFinisher(list.filter((r) => r.id !== "either"), { itemName: "Greataxe" }, "def").id, "k", "a critical-only finisher is not a kill finisher");
+  assert.equal(killFinisher(list, { itemName: "Dagger" }, "def").id, "def", "the default fallback is unchanged");
+  assert.equal(killFinisher([fin("either", "Greataxe", { on: "criticalOrKill", success: "critical" })], { itemName: "Greataxe" }, "", { crit: false }), null, "Needs: Critical only still holds");
+});
+
+test("a crit plays the item's critical and crit-or-kill finishers", () => {
+  const list = [fin("k", "Greataxe"), fin("u", "Greataxe", { on: "use" }), fin("crit", "Greataxe", { on: "critical" }), fin("either", "", { on: "criticalOrKill" }, { itemUuid: "Actor.x.Item.y" }), fin("off", "Greataxe", { on: "critical" }, { enabled: false })];
+  assert.deepEqual(critFinishers(list, { itemName: "Greataxe", itemUuid: "Actor.x.Item.y" }).map((r) => r.id), ["crit", "either"]);
+  assert.deepEqual(critFinishers(list, { itemName: "Dagger" }), []);
+  assert.deepEqual(critFinishers(list, {}), []);
 });
 
 test("a use finisher on a roll needs a known outcome; a plain use needs none", () => {

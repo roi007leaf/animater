@@ -12,12 +12,18 @@ export function matchFinishers(recipes, { itemName, itemSlug, itemUuid } = {}, o
     ((r.itemUuid && itemUuid && r.itemUuid === itemUuid) || names(r).some((n) => wanted.has(normalize(n)))));
 }
 
-// The killing item's own kill finisher wins; otherwise the GM's default, if it is a finisher.
-// "Needs: Critical only" holds for both: without a crit they are passed over.
+// The item's finishers that play on any of `ons`, in catalog order.
+const matchAny = (recipes, item, ons) => live(recipes).filter((r) => ons.includes(r.finisher.on) && matchFinishers([r], item, r.finisher.on).length);
+
+// The killing item's own kill (or crit-or-kill) finisher wins; otherwise the GM's default, if it
+// is a finisher. "Needs: Critical only" holds for both: without a crit they are passed over.
 export function killFinisher(recipes, item = {}, defaultId = "", { crit = false } = {}) {
   const fits = (r) => passesSuccess(r.finisher, crit ? "criticalSuccess" : "success");
-  return matchFinishers(recipes, item, "kill").find(fits) ?? live(recipes).find((r) => r.id === defaultId && fits(r)) ?? null;
+  return matchAny(recipes, item, ["kill", "criticalOrKill"]).find(fits) ?? live(recipes).find((r) => r.id === defaultId && fits(r)) ?? null;
 }
+
+// The GM's finishers that a critical hit with this item plays (when no player pick plays instead).
+export const critFinishers = (recipes, item = {}) => matchAny(recipes, item, ["critical", "criticalOrKill"]);
 
 export function passesSuccess(finisher, outcome) {
   if (outcome === undefined || outcome === null) return true;
