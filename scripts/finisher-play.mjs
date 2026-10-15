@@ -115,7 +115,10 @@ export function pathAim(finisher, { mover, attacker, target }) {
 export const fadedAtEnd = (recipe, moves) => !moves && recipe.stages.some((s) => s.kind === "motion" && (s.motion === "path" || s.motion === "fragments")
   && s.motionEnd === "hold" && mine(s, recipe.finisher?.mover ?? "targets"));
 
-export async function playFinisher({ recipe, mover, attacker = null, target = null, dead = false }, host) {
+// Everything a finisher decides before it plays: where the mover lands (or hits a wall), and the
+// recipe composed for that. Reads Foundry only through `host.gridSize`, `host.landing` and
+// `host.trace`; writes nothing.
+export function planFinisher({ recipe, mover, attacker = null, target = null, dead = false }, host) {
   const f = recipe.finisher, grid = host.gridSize();
   const from = { x: mover.document.x, y: mover.document.y };
   const path = finisherTravelPath(recipe);
@@ -156,11 +159,19 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
   // Where Sequencer centres an effect on the mover, taken before anything moves.
   const at = { x: from.x + (mover.w ?? (mover.document.width ?? 1) * grid) / 2, y: from.y + (mover.h ?? (mover.document.height ?? 1) * grid) / 2 };
   const { recipe: composed, moves } = composeFinisher(recipe, { offset, frame, inPlace, survives: !dead, slam, vanishing, at });
+  return { composed, moves, to, from, context: finisherContext(f, { mover, attacker, target }) };
+}
+
+// The stages' source/targets roles follow who travels: a source-mover finisher plays from
+// the user and aims its target-subject effects at the target, not at the user.
+const finisherContext = (f, { mover, attacker, target }) =>
+  f.mover === "source" ? { source: mover, targets: target ? [target] : [] } : { source: attacker ?? mover, targets: [mover] };
+
+export async function playFinisher({ recipe, mover, attacker = null, target = null, dead = false }, host) {
+  const f = recipe.finisher;
+  const { composed, moves, to, from, context } = planFinisher({ recipe, mover, attacker, target, dead }, host);
   const commit = async (data) => host.commit(mover, { ...data, finisher: recipe.id });
   host.trace("Finisher", `${recipe.name}: ${mover.name ?? "token"}`);
-  // The stages' source/targets roles follow who travels: a source-mover finisher plays from
-  // the user and aims its target-subject effects at the target, not at the user.
-  const context = f.mover === "source" ? { source: mover, targets: target ? [target] : [] } : { source: attacker ?? mover, targets: [mover] };
   const plan = await host.play(composed, context);
   // null: nothing played and nothing was written, so the caller may play its own fallback.
   // false: it played but a write failed.
@@ -182,4 +193,25 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
     host.trace("Blocked", `Finisher ${recipe.name}: ${error.message}`);
     return false;
   }
+}
+
+// A test play (studio Play at table, Local preview, api.play): the finisher plays composed, as a
+// kill would, so the crash and landing show where the token hits and the travel stops at the wall.
+// It writes nothing: no move, no hide, no defeat; held poses ease back on their own.
+// The movers come from the play's own context; with none, the recipe plays as authored.
+// `play(recipe, context, first)` plays one composed recipe; `first` is true for the first mover only.
+export function previewFinisher(recipe, context, host, play) {
+  const f = recipe.finisher, targets = (context.targets ?? []).filter(Boolean);
+  const movers = !f ? [] : f.mover === "source"
+    ? (context.source ? [{ mover: context.source, attacker: context.source, target: targets[0] ?? null }] : [])
+    : targets.map((mover) => ({ mover, attacker: context.source ?? null, target: mover }));
+  if (!movers.length) return null;
+  const plays = movers.map((args, i) => {
+    let planned;
+    // Tested as the kill it stands for: a struck target is dead, a source mover (the user) lives.
+    try { planned = planFinisher({ recipe, ...args, dead: f.mover !== "source" }, host); }
+    catch (error) { host.trace("Blocked", `Finisher ${recipe.name}: ${error.message}`); planned = { composed: recipe, context: finisherContext(f, args) }; }
+    return play(planned.composed, { ...context, ...planned.context }, i === 0);
+  });
+  return Promise.all(plays).then((results) => results[0]);
 }

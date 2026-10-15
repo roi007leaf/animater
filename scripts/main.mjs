@@ -4,7 +4,7 @@ import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { displaceAllowed, landingSpot, withinKnockback } from "./displacement.mjs";
 import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, finisherFires, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE, passesSuccess } from "./finisher-model.mjs";
-import { playFinisher } from "./finisher-play.mjs";
+import { playFinisher, previewFinisher } from "./finisher-play.mjs";
 import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
@@ -329,6 +329,21 @@ function findRecipe(id) {
   const saved = recipes();
   return saved.find(r=>r.id===id) ?? builtinRecipe(id) ??
     saved.find(r=>typeof id === "string" && r.name?.trim().toLowerCase() === id.trim().toLowerCase());
+}
+// Where a finisher's mover lands: walks the grid until a wall, the scene edge or `squares`.
+const finisherLanding = (mover, direction, squares) => landingSpot({
+  from: { x: mover.document.x, y: mover.document.y }, direction, squares, grid: canvas.grid.size, size: { w: mover.w, h: mover.h },
+  collides: (a, b) => CONFIG.Canvas.polygonBackends.move.testCollision(a, b, { type: "move", mode: "any" }),
+  bounds: canvas.dimensions.sceneRect, snap: (p) => mover.getSnappedPosition?.(p) ?? p,
+});
+// A test play (studio Play at table / Local preview, api.play, api.preview). A finisher with a
+// mover token plays composed as a kill would (wall cut, crash and landing where the token hits)
+// but writes nothing; anything else, or a finisher with no token to move, plays as authored.
+function playTest(recipe, context, options = {}) {
+  const host = { gridSize: () => canvas.grid.size, landing: finisherLanding, trace: (status, detail) => runtime.trace(status, detail) };
+  const { onStart, ...rest } = options;
+  return previewFinisher(recipe, context, host, (composed, ctx, first) => runtime.play(composed, ctx, first ? options : rest))
+    ?? runtime.play(recipe, context, options);
 }
 // Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
 // (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
@@ -830,7 +845,7 @@ function workspaceHost() {
     },
     // Play at table without a placed template uses the same sample area as Local preview.
     play: (recipe, preview, options = {}) =>
-      runtime.play(recipe, manualContext(), { ...options, preview, sampleArea: !preview }),
+      playTest(recipe, manualContext(), { ...options, preview, sampleArea: !preview }),
     previewTokens: () => {
       if (!canvas.ready) return {};
       const context = manualContext();
@@ -1312,7 +1327,7 @@ Hooks.once("ready", () => {
       const recipe = findRecipe(id);
       if (!recipe) throw Error(`Unknown Animater recipe: ${id?.id ?? id}`);
       const source = sourceFor(context);
-      return runtime.play(recipe, {
+      return playTest(recipe, {
         ...context,
         source,
         targets: context.targets ?? [],
@@ -1327,7 +1342,7 @@ Hooks.once("ready", () => {
     preview: async (id) => {
       const r = findRecipe(id);
       if (!r) throw Error("Unknown recipe.");
-      return runtime.play(r, manualContext(), { preview: true });
+      return playTest(r, manualContext(), { preview: true });
     },
     stop: () => runtime.stop(),
   };
@@ -1370,11 +1385,7 @@ Hooks.once("ready", () => {
   // there, then it vanishes, stays as a body, or stays.
   const finisherHost = (attacker) => ({
     gridSize: () => canvas.grid.size,
-    landing: (mover, direction, squares) => landingSpot({
-      from: { x: mover.document.x, y: mover.document.y }, direction, squares, grid: canvas.grid.size, size: { w: mover.w, h: mover.h },
-      collides: (a, b) => CONFIG.Canvas.polygonBackends.move.testCollision(a, b, { type: "move", mode: "any" }),
-      bounds: canvas.dimensions.sceneRect, snap: (p) => mover.getSnappedPosition?.(p) ?? p,
-    }),
+    landing: finisherLanding,
     play: (recipe, context) => new Promise((resolve) => {
       runtime.play(installedStages(recipe), context, { onStart: (started) => resolve(started.playbackPlan) })
         .then(() => resolve(null), (error) => { runtime.trace("Blocked", error.message); resolve(null); });
