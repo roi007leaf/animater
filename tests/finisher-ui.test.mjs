@@ -48,3 +48,13 @@ test("the pinned Finisher section shows only for finishers, and not while the se
   assert.equal(finisherPinHTML(fin("a", "Shove"), true), "");
   assert.equal(finisherPinHTML({ id: "p", name: "Plain", stages: [] }, false), "");
 });
+
+test("a path finisher chooses what happens at walls; legacy travel does not", () => {
+  const r = fin("a", "Shove", { wall: "slam" });
+  r.stages = [{ kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 2, y: 0 }] }];
+  const html = finisherSettingsHTML(r);
+  assert.match(html, /<label>At walls<select data-field="finisher\.wall">/);
+  assert.match(html, /<option value="slam" selected>Slam into it<\/option>/);
+  assert.match(html, /<option value="fit" >Stop short smoothly<\/option>/);
+  assert.doesNotMatch(finisherSettingsHTML(fin("b", "Shove")), /finisher\.wall/);
+});

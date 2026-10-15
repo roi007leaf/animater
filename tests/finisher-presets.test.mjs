@@ -5,7 +5,7 @@ import { installedAssets } from "../scripts/model.mjs";
 import { finisherTravelPath } from "../scripts/finisher-model.mjs";
 import { assetDatabases } from "../tools/asset-databases.mjs";
 
-const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall"];
+const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall"];
 
 test("every preset is a valid kill finisher the GM can save as their own", () => {
   assert.deepEqual(Object.keys(FINISHER_PRESETS), IDS);
@@ -21,7 +21,7 @@ test("every preset is a valid kill finisher the GM can save as their own", () =>
 });
 
 test("flinging presets travel on a held keyframed path that lands upright", () => {
-  for (const id of ["launch", "skewer", "struck-down", "jolt", "blast"]) {
+  for (const id of ["launch", "skewer", "struck-down", "jolt", "blast", "wall-slam"]) {
     const r = presetFinisher(id, id), path = finisherTravelPath(r);
     assert.ok(path, `${id} has a held travel path`);
     const end = path.keyframes.at(-1);
@@ -46,4 +46,13 @@ test("every preset effect resolves in JB2A Patreon", async () => {
   for (const id of IDS)
     for (const s of presetFinisher(id, id).stages.filter((s) => !["motion", "sound"].includes(s.kind)))
       assert.ok(installedAssets(s, db.patreon).length, `${id}/${s.stageId}: ${s.assets.join(", ")}`);
+});
+
+test("Wall slam flies 6 squares, slams into a wall that stops it, and crashes there", () => {
+  const r = presetFinisher("wall-slam", "ws"), path = finisherTravelPath(r);
+  assert.equal(r.finisher.wall, "slam");
+  assert.equal(r.finisher.ending, "body");
+  assert.equal(path.keyframes.at(-1).x, 6);
+  assert.deepEqual(r.stages.filter((s) => s.stageId.startsWith("wall")).map((s) => s.stageId), ["wall-crack", "wall-shake", "wall-dust"]);
+  assert.ok(r.stages.some((s) => s.stageId === "landing"), "lands hard when nothing stops it");
 });
