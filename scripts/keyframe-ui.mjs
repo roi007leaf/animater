@@ -54,10 +54,11 @@ export function pathCanvasHTML(s, { selected = -1, finisher = null } = {}) {
 export function keyframeInspectorHTML(s, stageIndex, selected) {
   const kfs = keyframesOf(s), i = Math.max(0, Math.min(kfs.length - 1, selected)), k = kfs[i];
   const first = i === 0, last = i === kfs.length - 1, attrs = (key) => `data-field="keyframe" data-kf-field="${key}" data-kf-index="${i}" data-index="${stageIndex}"`;
-  const options = (value) => Object.entries(EASES).map(([key, label]) => `<option value="${esc(key)}" ${value === key ? "selected" : ""}>${esc(label)}</option>`).join("");
+  // Back eases overshoot and get clamped across a whole path, so only per-keyframe speed offers them.
+  const options = (value, skip = []) => Object.entries(EASES).filter(([key]) => !skip.includes(key)).map(([key, label]) => `<option value="${esc(key)}" ${value === key ? "selected" : ""}>${esc(label)}</option>`).join("");
   const num = (key, label, value, min, max, step, off = false) => `<label>${label}<input type="number" ${attrs(key)} min="${min}" max="${max}" step="${step}" value="${value}" ${off ? "disabled" : ""}></label>`;
   return `<div class="an-editor-section an-kf-inspector"><div class="an-section-title"><b>Keyframes</b><small>${kfs.length}/12 · drag dots in the preview</small></div>
-    <div class="an-field-row"><label>Path easing<select data-field="pathEase" data-index="${stageIndex}">${options(s.pathEase ?? "linear")}</select></label><button data-action="kf-smooth" class="an-quiet" data-tooltip="Every keyframe Linear: the path easing alone shapes the speed">Make smooth</button></div>
+    <div class="an-field-row"><label>Path easing<select data-field="pathEase" data-index="${stageIndex}">${options(s.pathEase ?? "linear", ["easeOutBack", "easeInBack"])}</select></label><button data-action="kf-smooth" class="an-quiet" data-tooltip="Every keyframe Linear: the path easing alone shapes the speed">Make smooth</button></div>
     <p class="an-hint">One easing for the whole motion.</p>
     <div class="an-kf-list" role="group" aria-label="Keyframes">${kfs.map((kk, j) => `<button data-action="kf-select" data-kf="${j}" class="${j === i ? "is-active" : ""}" aria-pressed="${j === i}">${j + 1}</button>`).join("")}</div>
     <div class="an-field-row">${num("at", "At (ms)", Math.round(k.at * s.duration), 0, s.duration, 10, first || last)}${num("x", "X (squares)", k.x, -12, 12, 0.25, first)}${num("y", "Y (squares)", k.y, -12, 12, 0.25, first)}</div>

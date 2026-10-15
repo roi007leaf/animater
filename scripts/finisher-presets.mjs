@@ -72,7 +72,7 @@ export const FINISHER_PRESETS = {
      path(Array.from({ length: 9 }, (_, i) => { const r = 0.6 * (1 - i / 8), t = (i * Math.PI) / 2; return kf(i / 8, i === 0 || i === 8 ? 0 : r * Math.cos(t), i === 0 || i === 8 ? 0 : r * Math.sin(t), { rotation: i * 135, scale: 1 - (0.95 * i) / 8, alpha: i === 8 ? 0 : 1 }); }), { delay: 200, duration: 2000, pathEase: "easeInQuad" })]),
   pancake: preset("Pancake", "Squashed flat into the floor.", { ending: "body" },
     [fx("slam", HIT, { duration: 800 }),
-     path([kf(0), kf(0.3, 0, 0, { stretch: 0.1 }), kf(1, 0, 0, { stretch: -0.6, scale: 0.9, ease: "easeOutBack" })], { delay: 150, duration: 500, pathEase: "easeOutBack" }),
+     path([kf(0), kf(0.3, 0, 0, { stretch: 0.1 }), kf(1, 0, 0, { stretch: -0.6, scale: 0.9, ease: "easeOutBack" })], { delay: 150, duration: 500, pathEase: "linear" }),
      fx("ring", ["jb2a.smoke.puff.ring.01.white", ...DUST], { delay: 600, duration: 1200 })]),
 };
 

@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { FINISHER_PRESETS, presetFinisher } from "../scripts/finisher-presets.mjs";
+import { motionPose } from "../scripts/motion.mjs";
 import { installedAssets } from "../scripts/model.mjs";
 import { finisherTravelPath } from "../scripts/finisher-model.mjs";
 import { assetDatabases } from "../tools/asset-databases.mjs";
@@ -90,7 +91,7 @@ test("the creative presets use fragments or keyframed paths as designed", () => 
 
 // One fluid motion per preset: the stage's pathEase shapes the speed, the keyframes are linear.
 const PATH_EASES = { launch: "easeOutQuad", skewer: "easeOutCubic", "struck-down": "easeOutCubic", ash: "easeInQuad", shatter: "linear", jolt: "easeOutQuad", blast: "easeOutCubic",
-  "wall-slam": "easeOutCubic", unmade: "easeInQuad", melt: "easeInQuad", ascend: "easeInOutQuad", "shaken-apart": "linear", "sky-launch": "easeInQuad", "ragdoll-tumble": "linear", "vortex-spiral": "easeInQuad", pancake: "easeOutBack" };
+  "wall-slam": "easeOutCubic", unmade: "easeInQuad", melt: "easeInQuad", ascend: "easeInOutQuad", "shaken-apart": "linear", "sky-launch": "easeInQuad", "ragdoll-tumble": "linear", "vortex-spiral": "easeInQuad", pancake: "linear" };
 test("every preset path is one fluid motion: a whole-path ease over linear keyframes", () => {
   assert.deepEqual(IDS.filter((id) => finisherTravelPath(presetFinisher(id, id))), Object.keys(PATH_EASES), "every path preset is listed");
   for (const [id, ease] of Object.entries(PATH_EASES)) {
@@ -109,4 +110,12 @@ test("Ragdoll tumble slows deliberately at each bounce: easing out into each ape
   assert.deepEqual(inner.map((kf) => [kf.sharp, kf.ease]), inner.map((kf) => (kf.sharp ? [true, "easeInQuad"] : [false, "easeOutQuad"])));
   assert.equal(inner.filter((kf) => kf.sharp).length, 3, "three landings");
   assert.equal(inner.filter((kf) => !kf.sharp).length, 3, "three apexes");
+});
+
+test("Pancake squashes over its whole stage: linear path, overshoot only on the last keyframe", () => {
+  const path = finisherTravelPath(presetFinisher("pancake", "p"));
+  assert.equal(path.pathEase, "linear");
+  assert.equal(path.keyframes.at(-1).ease, "easeOutBack");
+  const mid = motionPose(path, 0.5), late = motionPose(path, 0.99);
+  assert.notDeepEqual(mid, late, "the squash is still progressing mid-stage");
 });

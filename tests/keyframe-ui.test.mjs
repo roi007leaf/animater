@@ -131,3 +131,11 @@ test("Make smooth sets every keyframe linear and marks the recipe edited, only w
   assert.equal(b.w.edits, 0, "already smooth: no draft");
   assert.notEqual(b.w.message, "Path smoothed: one continuous motion. Save to apply.");
 });
+
+test("the Path easing select omits the overshooting back eases; per-keyframe speed keeps them", () => {
+  const html = keyframeInspectorHTML(stage, 3, 1);
+  const [pathSel, kfSel] = [/data-field="pathEase"[^>]*>([^]*?)<\/select>/, /data-kf-field="ease"[^>]*>([^]*?)<\/select>/].map((r) => html.match(r)[1]);
+  assert.doesNotMatch(pathSel, /easeOutBack|easeInBack/);
+  assert.match(kfSel, /value="easeOutBack"/);
+  assert.match(kfSel, /value="easeInBack"/);
+});
