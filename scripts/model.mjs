@@ -151,7 +151,7 @@ export function validateRecipe(input) {
     ...(input.teleportIn ? { teleportIn: input.teleportIn } : {}),
     ...(/^#[\da-f]{6}$/i.test(input.teleportTint ?? '') ? { teleportTint: input.teleportTint } : {}),
     ...(Number(input.teleportScale) > 0 ? { teleportScale: number(input.teleportScale, .1, 5, 1.8) } : {}),
-    ...(['pf2e','sf2e','dnd5e'].includes(input.systemId)?{systemId:input.systemId}:/^Compendium\.(pf2e|sf2e|dnd5e)\./.test(input.itemUuid??'')?{systemId:input.itemUuid.split('.')[1]}:{}),
+    ...(['pf2e','sf2e','dnd5e','daggerheart'].includes(input.systemId)?{systemId:input.systemId}:/^Compendium\.(pf2e|sf2e|dnd5e|daggerheart)\./.test(input.itemUuid??'')?{systemId:input.itemUuid.split('.')[1]}:{}),
     ...(!strikeScope&&text(input.catalogEntry,100)?{catalogEntry:text(input.catalogEntry,100)}:{}),
     ...(!strikeScope&&text(input.activityId,100)?{activityId:text(input.activityId,100)}:{}),
     ...(normalizePlaybackRoles(input.playbackRoles)?{playbackRoles:normalizePlaybackRoles(input.playbackRoles)}:{}),

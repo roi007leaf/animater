@@ -64,10 +64,11 @@ import { DEFEATED_LOOK, registerDefeatedLook, installDefeatedLook, markDefeated,
 import { DND_KINDS,DND5E_SOURCE,dndEntries,dndEntry,dndRecipe,normalizeDndCatalogState,resolveDndAutomaticRecipe, addDndBookEntries } from './dnd5e-catalog.mjs';
 import { saveReaction, twoeSaveOutcome, dnd5eSaveOutcome } from './outcome.mjs';
 import { approvalState, approvedPlayerRecipe, playerSubmissions, validatePlayerRecipes, decide } from './player-recipes.mjs';
-import { dndSettingKey,sfSettingKey } from './catalog-system.mjs';
+import { dndSettingKey,sfSettingKey,dhSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
 import {sfStateHost} from './sf2e-states.mjs';
+import { DH_KINDS, DAGGERHEART_SOURCE, dhEntries, dhEntry, dhRecipe, normalizeDhCatalogState, resolveDaggerheartAutomaticRecipe, findDhEntry } from "./daggerheart-catalog.mjs";
 import {QUALITY_CHOICES,qualityRank,allowsMotion,allowsTokenFx,stateBudget,usersForTier,usersForSound} from './quality.mjs';
 import {ConditionBody,bodyTreatment} from './condition-body.mjs';
 let conditionBody;
@@ -210,6 +211,7 @@ const acceptsEvents = () =>
   enabled() ||
   (game.system.id === "sf2e" && SF_KINDS.some(kind=>{const state=game.settings.get(ID,sfSettingKey(kind));return state?.enabled&&state.independent;})) ||
   (game.system.id === 'dnd5e' && DND_KINDS.some(kind=>{const state=game.settings.get(ID,dndSettingKey(kind));return state?.enabled&&state.independent;})) ||
+  (game.system.id === 'daggerheart' && DH_KINDS.some(kind=>{const state=game.settings.get(ID,dhSettingKey(kind));return state?.enabled&&state.independent;})) ||
   (game.system.id === "pf2e" &&
     ["spellCatalog", "featCatalog", "actionCatalog", "featureCatalog", "weaponCatalog"].some((key) => {
       const state = game.settings.get(ID, key);
@@ -439,6 +441,7 @@ function open() {
 // The catalog page an item's animation lives on (by system and item type).
 function itemPage(item) {
   const type = item?.type, sys = game.system.id;
+  if (sys === "daggerheart") return type === "domainCard" ? "spells" : type === "weapon" ? "weapons" : null;
   if (type === "spell") return "spells";
   if (type === "weapon" || (sys !== "dnd5e" && type === "shield")) return "weapons";
   if (type === "condition") return "conditions";
@@ -454,6 +457,7 @@ function catalogEntryFor(item) {
   try {
     if (game.system.id === "dnd5e") return findDndCatalogEntry(event);
     if (game.system.id === "sf2e") return findSfCatalogEntry(event);
+    if (game.system.id === "daggerheart") return findDhEntry(event);
     if (item.type === "spell") return findSpellEntry(event);
     if (["weapon", "shield"].includes(item.type)) return findWeaponEntry(event);
     if (["condition", "effect"].includes(item.type)) return findConditionEntry(item);
@@ -471,7 +475,7 @@ function recipeOrigin(recipe, context = {}) {
   if (recipes().some((r) => r.id === recipe.id)) return { type: "recipe", id: recipe.id };
   const sys = game.system.id, named = recipe.catalogEntry ?? recipe.stateEntry;
   if (named) {
-    const entry = sys === "sf2e" ? sfEntry(named) : sys === "dnd5e" ? dndEntry(named) : catalogStateEntry(named);
+    const entry = sys === "sf2e" ? sfEntry(named) : sys === "dnd5e" ? dndEntry(named) : sys === "daggerheart" ? dhEntry(named) : catalogStateEntry(named);
     if (entry?.kind) return { type: "catalog", system: sys, kind: entry.kind, id: entry.id ?? named };
   }
   const item = context?.item, entry = item ? catalogEntryFor(item) : null;
@@ -586,7 +590,8 @@ async function receiveDisplace(data, senderId) {
 // recipes stay), as each catalog's own "Use the catalog" button does.
 const CATALOG_KINDS = { pf2e: ["spellCatalog", "featCatalog", "actionCatalog", "featureCatalog", "weaponCatalog", "conditionCatalog", "effectCatalog"],
   sf2e: ["spell", "feat", "action", "feature", "weapon", "item", "condition", "effect"].map(sfSettingKey),
-  dnd5e: ["spell", "feat", "weapon", "item", "condition", "effect"].map(dndSettingKey) };
+  dnd5e: ["spell", "feat", "weapon", "item", "condition", "effect"].map(dndSettingKey),
+  daggerheart: DH_KINDS.map(dhSettingKey) };
 const catalogKeys = () => (CATALOG_KINDS[game.system.id] ?? []).filter((key) => game.settings.settings.has(`${ID}.${key}`));
 const catalogOn = (key) => { const s = game.settings.get(ID, key) ?? {}; return s.enabled === true && (s.scope ?? "all") === "all"; };
 function catalogsOn() { const keys = catalogKeys(); return { on: keys.filter(catalogOn).length, total: keys.length }; }
@@ -623,6 +628,12 @@ function builtinRecipe(id) {
   if(!entry)return null;
   const variant=entry.variants.find(v=>v.recipe.id===id),state=normalizeDndCatalogState(game.settings.get(ID,dndSettingKey(entry.kind)));
   return dndRecipe(entry,variant?.id,{motion:state.motion,sounds:state.sound?installedSoundCatalog(game.modules,globalThis.Sequencer?.Database):null,soundVolume:state.soundVolume});
+ }
+ if(game.system.id==='daggerheart'){
+  const entry=dhEntry(id)??dhEntries().find(e=>e.variants.some(v=>v.recipe.id===id));
+  if(!entry)return null;
+  const variant=entry.variants.find(v=>v.recipe.id===id),state=normalizeDhCatalogState(game.settings.get(ID,dhSettingKey(entry.kind)));
+  return dhRecipe(entry,variant?.id,{motion:state.motion});
  }
  if(game.system.id!=='pf2e')return null;
  return (catalogStateEntry(id) && stateRecipe(catalogStateEntry(id),{catalog:runtime.getCatalog()})) ??
@@ -750,6 +761,13 @@ function workspaceHost() {
       if(!game.user.isGM||game.system.id!=='dnd5e'||!DND_KINDS.includes(kind))throw Error('D&D catalog configuration requires a GM in a D&D world.');
       const key=dndSettingKey(kind);
       await game.settings.set(ID,key,normalizeDndCatalogState({...game.settings.get(ID,key),...change}));
+      persistentStates?.schedule();
+    },
+    dhCatalogState:kind=>normalizeDhCatalogState(game.settings.get(ID,dhSettingKey(kind))),
+    setDhCatalogState:async(kind,change)=>{
+      if(!game.user.isGM||game.system.id!=='daggerheart'||!DH_KINDS.includes(kind))throw Error('Daggerheart catalog configuration requires a GM in a Daggerheart world.');
+      const key=dhSettingKey(kind);
+      await game.settings.set(ID,key,normalizeDhCatalogState({...game.settings.get(ID,key),...change}));
       persistentStates?.schedule();
     },
     soundCatalog: () =>
@@ -995,6 +1013,7 @@ Hooks.once("init", () => {
     onChange:()=>{syncQuality();persistentStates?.schedule();}});
   for(const kind of SF_KINDS)game.settings.register(ID,sfSettingKey(kind),{scope:"world",config:false,type:Object,default:normalizeSfCatalogState(),onChange:()=>persistentStates?.schedule()});
   for(const kind of DND_KINDS)game.settings.register(ID,dndSettingKey(kind),{scope:'world',config:false,type:Object,default:normalizeDndCatalogState(),onChange:()=>persistentStates?.schedule()});
+  for(const kind of DH_KINDS)game.settings.register(ID,dhSettingKey(kind),{scope:'world',config:false,type:Object,default:normalizeDhCatalogState(),onChange:()=>persistentStates?.schedule()});
   for (const key of ["conditionCatalog", "effectCatalog"])
     game.settings.register(ID, key, { scope: "world", config: false, type: Object, default: normalizeStateCatalogState(), onChange: () => persistentStates?.schedule() });
   game.settings.register(ID, "weaponCatalog", { scope: "world", config: false, type: Object, default: normalizeWeaponCatalogState() });
@@ -1114,7 +1133,7 @@ function systemRecipe(event, saved) {
               ),
             },
           )
-        : game.system.id==='sf2e'?resolveSfAutomaticRecipe(event,kind=>game.settings.get(ID,sfSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):game.system.id==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):matchRecipe(saved,event);
+        : game.system.id==='sf2e'?resolveSfAutomaticRecipe(event,kind=>game.settings.get(ID,sfSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):game.system.id==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):game.system.id==='daggerheart'?resolveDaggerheartAutomaticRecipe(event,kind=>game.settings.get(ID,dhSettingKey(kind)),saved,{customEnabled:enabled()}):matchRecipe(saved,event);
 }
 // The recipe dispatch would play, or null. AA-customized items stay with AA.
 function resolveEvent(event) {
@@ -1387,13 +1406,13 @@ Hooks.once("ready", () => {
     recipes,
     catalog: () => clone(runtime.getCatalog()),
     activity: () => clone(runtime.log),
-    spells: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_SOURCE), spells: clone(game.system.id==='sf2e'?sfEntries('spell'):game.system.id==='dnd5e'?dndEntries('spell'):game.system.id==='pf2e'?PF2E_SPELLS:[]) }),
+    spells: () => ({ source: clone(game.system.id==='daggerheart'?DAGGERHEART_SOURCE:game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_SOURCE), spells: clone(game.system.id==='daggerheart'?dhEntries('card'):game.system.id==='sf2e'?sfEntries('spell'):game.system.id==='dnd5e'?dndEntries('spell'):game.system.id==='pf2e'?PF2E_SPELLS:[]) }),
     feats: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_FEAT_SOURCE), feats: clone(game.system.id==='sf2e'?sfEntries('feat'):game.system.id==='dnd5e'?dndEntries('feat'):game.system.id==='pf2e'?PF2E_FEATS:[]) }),
     actions: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:PF2E_ACTION_CATALOG.source), actions: clone(game.system.id==='sf2e'?sfEntries('action'):game.system.id==='pf2e'?PF2E_ACTION_CATALOG.entries:[]) }),
     features: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:PF2E_FEATURE_CATALOG.source), features: clone(game.system.id==='sf2e'?sfEntries('feature'):game.system.id==='pf2e'?PF2E_FEATURE_CATALOG.entries:[]) }),
-    weapons: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_WEAPON_SOURCE), weapons: clone(game.system.id==='sf2e'?sfEntries('weapon'):game.system.id==='dnd5e'?dndEntries('weapon'):game.system.id==='pf2e'?PF2E_WEAPONS:[]) }),
+    weapons: () => ({ source: clone(game.system.id==='daggerheart'?DAGGERHEART_SOURCE:game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_WEAPON_SOURCE), weapons: clone(game.system.id==='daggerheart'?dhEntries('weapon'):game.system.id==='sf2e'?sfEntries('weapon'):game.system.id==='dnd5e'?dndEntries('weapon'):game.system.id==='pf2e'?PF2E_WEAPONS:[]) }),
     items:()=>({source:clone(DND5E_SOURCE),items:clone(game.system.id==='dnd5e'?dndEntries('item'):[])}),
-    conditions: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_STATE_SOURCE), conditions: clone(game.system.id==='sf2e'?sfEntries('condition'):game.system.id==='dnd5e'?dndEntries('condition'):game.system.id==='pf2e'?PF2E_CONDITIONS:[]) }),
+    conditions: () => ({ source: clone(game.system.id==='daggerheart'?DAGGERHEART_SOURCE:game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_STATE_SOURCE), conditions: clone(game.system.id==='daggerheart'?dhEntries('condition'):game.system.id==='sf2e'?sfEntries('condition'):game.system.id==='dnd5e'?dndEntries('condition'):game.system.id==='pf2e'?PF2E_CONDITIONS:[]) }),
     effects: () => ({ source: clone(game.system.id==='sf2e'?SF2E_SOURCE:game.system.id==='dnd5e'?DND5E_SOURCE:PF2E_STATE_SOURCE), effects: clone(game.system.id==='sf2e'?sfEntries('effect'):game.system.id==='dnd5e'?dndEntries('effect'):game.system.id==='pf2e'?PF2E_EFFECTS:[]) }),
     refreshPersistent: () => persistentStates?.reconcile(),
     finishers: finishersApi,

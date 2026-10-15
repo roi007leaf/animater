@@ -20,6 +20,7 @@ import {Workspace} from '../scripts/workspace.mjs';
 import {previewFilters} from '../scripts/token-fx-preview.mjs';
 import {MediaLibrary} from '../scripts/media-library.mjs';
 import { rollMessage, dualityRoll, adversaryRoll, damageRoll, useHook } from "./fixtures/daggerheart-messages.mjs";
+import { dhEntries, dhRecipe as dhCatalogRecipe, useDhEntry } from "../scripts/daggerheart-catalog.mjs";
 globalThis.requestAnimationFrame = (fn) =>
   setTimeout(() => fn(performance.now()), 5);
 globalThis.cancelAnimationFrame = clearTimeout;
@@ -2348,4 +2349,24 @@ test("flash moments: a creature dropping, or marked defeated, asks for its momen
     delete game.combats;
     await f.api.stop();
   }
+});
+
+test("Daggerheart catalog: a card's spellcast roll plays its domain animation with the catalog on; the API lists the library", async () => {
+  const card = dhEntries("card").find((e) => e.name === "Blink Out");
+  const keys = card.variants.flatMap((v) => dhCatalogRecipe(card, v.id).stages.flatMap((s) => s.assets));
+  const f = await bootDaggerheart(keys);
+  f.settings.set("automatic", false);
+  f.settings.set("recipes", { schema: 1, recipes: [] });
+  f.settings.set("daggerheartCardCatalog", useDhEntry({}, card.id));
+  Object.assign(f.item, { type: "domainCard", name: card.name, system: { domain: card.domain, level: card.level, type: card.cardType } });
+  await f.fire("createChatMessage", rollMessage({ item: f.item, actor: f.actor, roll: dualityRoll({ type: "spellcast" }), action: { name: "Cast", roll: { type: "spellcast" } } }));
+  // "Played" is traced once the last delayed stage has started (the impact at 1.1 s).
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  assert.equal(played(f, card.name), 1, JSON.stringify(f.api.activity()));
+  assert.equal(f.api.spells().spells.length, 210);
+  assert.ok(f.api.spells().spells.every((e) => e.systemId === "daggerheart"));
+  assert.ok(f.api.weapons().weapons.every((e) => e.systemId === "daggerheart"));
+  assert.equal(f.api.conditions().conditions.length, 7);
+  assert.equal(f.api.feats().feats.length, 0);
+  await f.api.stop();
 });
