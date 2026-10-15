@@ -6,11 +6,12 @@ export const MAX_KEYFRAMES = 12;
 const base = { rotation: 0, scale: 1, alpha: 1, ease: "easeInOutQuad", sharp: false };
 export const DEFAULT_KEYFRAMES = Object.freeze([Object.freeze({ at: 0, x: 0, y: 0, ...base }), Object.freeze({ at: 1, x: 1, y: 0, ...base })]);
 const clamp = (v, min, max, fallback) => (v !== null && v !== "" && Number.isFinite(Number(v)) ? Math.min(max, Math.max(min, Number(v))) : fallback);
-const keyframe = (k) => ({ at: clamp(k.at, 0, 1, 0), x: clamp(k.x, -12, 12, 0), y: clamp(k.y, -12, 12, 0), rotation: clamp(k.rotation, -1440, 1440, 0),
+const keyframe = (k, limit = 12) => ({ at: clamp(k.at, 0, 1, 0), x: clamp(k.x, -limit, limit, 0), y: clamp(k.y, -limit, limit, 0), rotation: clamp(k.rotation, -1440, 1440, 0),
   scale: clamp(k.scale, 0.05, 5, 1), alpha: clamp(k.alpha, 0, 1, 1), ease: Object.hasOwn(EASES, k.ease) ? k.ease : "easeInOutQuad", sharp: k.sharp === true });
 
-export function normalizeKeyframes(input) {
-  const list = (Array.isArray(input) ? input : []).filter((k) => k && typeof k === "object").map(keyframe).sort((a, b) => a.at - b.at).slice(0, MAX_KEYFRAMES);
+// `limit` is the x/y clamp in squares: authored paths use 12; a finisher's rotated, fitted end needs more room.
+export function normalizeKeyframes(input, { limit = 12 } = {}) {
+  const list = (Array.isArray(input) ? input : []).filter((k) => k && typeof k === "object").map((k) => keyframe(k, limit)).sort((a, b) => a.at - b.at).slice(0, MAX_KEYFRAMES);
   if (list.length < 2) return DEFAULT_KEYFRAMES.map((k) => ({ ...k }));
   list[0] = { ...list[0], at: 0, x: 0, y: 0, rotation: 0, scale: 1, alpha: 1 };
   list[list.length - 1] = { ...list[list.length - 1], at: 1 };

@@ -73,3 +73,8 @@ test("editor helpers: insert from the curve, move time within neighbours, snap p
   assert.deepEqual(flipKeyframes(kfs).map((k) => k.y), [0, -1, 0]);
   assert.deepEqual(resetKeyframes(), DEFAULT_KEYFRAMES.map((k) => ({ ...k })));
 });
+
+test("the x/y clamp can be widened for a rotated finisher end, and defaults to 12", () => {
+  assert.equal(normalizeKeyframes([{ at: 0 }, { at: 1, x: 16 }], { limit: 17 }).at(-1).x, 16);
+  assert.equal(normalizeKeyframes([{ at: 0 }, { at: 1, x: 16 }]).at(-1).x, 12);
+});

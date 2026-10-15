@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { composeFinisher, travelEnd, planEnd, motionEnd, finisherDirection, playFinisher, fadedAtEnd, pathAim } from "../scripts/finisher-play.mjs";
-import { normalizeFinisher } from "../scripts/model.mjs";
+import { normalizeFinisher, validateRecipe } from "../scripts/model.mjs";
 
 const travel = { stageId: "fly", kind: "motion", motion: "leap", subject: "targets", motionEnd: "hold", duration: 1000, assets: [] };
 const recipe = (finisher = {}, stages = [travel, { stageId: "landing", kind: "impact", assets: ["jb2a.impact.003.white"] }]) =>
@@ -187,4 +187,19 @@ test("pathAim points away from the other token for either mover", () => {
   assert.deepEqual(pathAim(normalizeFinisher({ mover: "source" }), { mover: at("Hero", 0, 0), target: at("Orc", 100, 0) }), { x: -1, y: 0 });
   assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0, { alpha: 0 })])), true);
   assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0)])), false);
+});
+
+test("a framed path keeps its exact landing after remote validation, even when the pinned end exceeds 12", async () => {
+  const host = gridHost();
+  const c = Math.cos(Math.PI / 6) * 100, s = Math.sin(Math.PI / 6) * 100;
+  const mover = at("Orc", 1000, 1000), attacker = { name: "Hero", center: { x: mover.center.x - c, y: mover.center.y - s }, document: { x: 0, y: 0 } };
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 12, 12)]), mover, attacker, dead: false }, host);
+  const played = host.log.find((e) => e[0] === "play");
+  const [, frame, last] = played;
+  assert.ok(Math.abs(last.x) > 12 || Math.abs(last.y) > 12, "the pinned end really is outside the authored limit");
+  const stage = { ...pathTravel([kf(0), last]), motionFrame: frame };
+  const valid = validateRecipe({ id: "p", name: "Path", trigger: "manual", stages: [stage] }).stages[0];
+  const end = valid.keyframes.at(-1), commit = host.log.find((e) => e[0] === "commit")[1];
+  const fx = (end.x * frame.cos - end.y * frame.sin) * frame.k, fy = (end.x * frame.sin + end.y * frame.cos) * frame.k;
+  assert.ok(Math.abs(fx * 100 - (commit.x - commit.fromX)) < 1e-6 && Math.abs(fy * 100 - (commit.y - commit.fromY)) < 1e-6);
 });
