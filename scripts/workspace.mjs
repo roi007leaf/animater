@@ -17,7 +17,7 @@ import { presetFinisher } from "./finisher-presets.mjs";
 import { linkFinisher } from "./finisher-model.mjs";
 import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
-import { fragmentsControlsHTML, fragmentsPreviewSVG } from "./fragments-ui.mjs";
+import { fragmentsControlsHTML, fragmentsPreviewSVG, resetPiecesOnPattern } from "./fragments-ui.mjs";
 import { keyframesOf, keyframeDiamondsHTML, pathCanvasHTML, keyframeInspectorHTML } from "./keyframe-ui.mjs";
 import { normalizeKeyframes, insertKeyframe, moveKeyframeTime, deleteKeyframe, flipKeyframes, resetKeyframes } from "./keyframe-path.mjs";
 import { catalogSoundOptions, previewRecipeSounds } from "./spell-sounds.mjs";
@@ -1608,7 +1608,7 @@ export class Workspace {
     if(this.flashEditor?.input(t))return;
     if (t.hasAttribute?.("data-fragments-scrub")) {
       this.fragmentsPreviewAt = Number(t.value);
-      const s = this.edit()?.stages[Number(t.dataset.index)], svg = t.closest(".an-fragments")?.querySelector(".an-fragments-preview");
+      const s = this.recipe()?.stages[Number(t.dataset.index)], svg = t.closest(".an-fragments")?.querySelector(".an-fragments-preview");
       if (s && svg) svg.outerHTML = fragmentsPreviewSVG(s, this.fragmentsPreviewAt);
       return;
     }
@@ -1755,6 +1755,7 @@ export class Workspace {
       }
       return;
     }
+    resetPiecesOnPattern(s, key);
     s[key] =
       t.type === "checkbox"
         ? t.checked

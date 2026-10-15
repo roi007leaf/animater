@@ -23,3 +23,8 @@ export function fragmentsControlsHTML(stage, index, previewAt = 0.6) {
     ${fragmentsPreviewSVG(stage, previewAt)}<label>Preview<input type="range" min="0" max="1" step="0.01" value="${previewAt}" data-fragments-scrub data-index="${index}"></label>
     <p class="an-hint">Use End: hold in a finisher so the token stays hidden until it is hidden for good. "Follow the attack" cuts along the swing.</p></div>`;
 }
+
+// Changing a fragments stage's pattern drops the stored piece count so the new pattern's default applies.
+export function resetPiecesOnPattern(stage, key) {
+  if (key === "pattern" && stage?.motion === "fragments") delete stage.pieces;
+}
