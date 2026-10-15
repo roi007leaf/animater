@@ -204,6 +204,9 @@ export function validateRecipe(input) {
           scale: number(s.scale, 0.1, 5, 1),
           opacity: number(s.opacity, 0.1, 1, 1),
           below: s.below === true,
+          // A canvas point the effect plays at instead of on its token (a finisher's crash stays
+          // where the token hit, wherever the token is drawn when it starts). Offsets still apply.
+          ...(["impact", "aura"].includes(s.kind) && Number.isFinite(s.atPoint?.x) && Number.isFinite(s.atPoint?.y) ? { atPoint: { x: s.atPoint.x, y: s.atPoint.y } } : {}),
           // Random variants: stages sharing a group are alternatives, one plays each time.
           ...(/^[A-Za-z0-9-]{1,40}$/.test(s.variantGroup ?? "") ? { variantGroup: s.variantGroup } : {}),
           // Drawn over the bearer's artwork (head-level stars, strands across the body).
@@ -583,6 +586,7 @@ function buildPlan(recipe, catalog, context, requireMedia) {
         }
         landing = landings.get(key);
       }
+      landing ??= s.atPoint ?? null;
       for (let iteration = 0; iteration < o.repeats; iteration++) {
         if (
           o.repeatScope === "total" &&

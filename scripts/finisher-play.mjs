@@ -13,10 +13,13 @@ const mine = (s, mover) => (s.subject ?? "source") === mover;
 // `slam` ({ keyframes, t, aim }) is a travel path cut at a wall: it plays the cut part at the same
 // speed, the "wall*" stages play where it hits (they are dropped otherwise) and "landing" is dropped.
 // `vanishing` ({ aim }) is a travel path that ends invisible: it is aimed and held, never moved.
-export function composeFinisher(recipe, { offset = null, frame = null, inPlace, survives = false, slam = null, vanishing = null } = {}) {
+// `at` is the mover's centre before it moves (canvas px): the crash and landing are offset from
+// it, not from the token, which is somewhere else once its move is written.
+export function composeFinisher(recipe, { offset = null, frame = null, inPlace, survives = false, slam = null, vanishing = null, at = null } = {}) {
   const mover = recipe.finisher?.mover ?? "targets", travel = finisherTravelPath(recipe);
   let moves = false;
   const back = (s) => { const { motionEnd, motionOffset, motionFrame, ...rest } = s; return rest; };
+  const pinned = (s) => (at ? { ...s, atPoint: { x: at.x, y: at.y } } : s);
   // Impacts play on the targets; anything else on its own subject.
   const onMover = (s) => mine(s.kind === "impact" ? { subject: "targets" } : s, mover);
   // The cut keyframes are already resampled from the eased motion: they play linear.
@@ -35,7 +38,7 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
     if (String(s.stageId ?? "").startsWith("wall")) {
       if (!cut) return [];
       if (!onMover(s)) return s.kind === "motion" ? [] : atWall(s);
-      return s.kind === "motion" ? atWall(s) : { ...atWall(s), offsetX: wall.x, offsetY: wall.y };
+      return s.kind === "motion" ? atWall(s) : pinned({ ...atWall(s), offsetX: wall.x, offsetY: wall.y });
     }
     if (cut && s.stageId === "landing") return [];
     if (s.kind === "motion" && s.motion === "path" && s.motionEnd === "hold") {
@@ -64,7 +67,7 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
       return { ...s, motionOffset: offset };
     }
     if (offset && s.stageId === "landing" && mine(s.kind === "impact" ? { subject: "targets" } : s, mover))
-      return { ...s, offsetX: offset.x, offsetY: offset.y };
+      return pinned({ ...s, offsetX: offset.x, offsetY: offset.y });
     // A vanishing path is drawn with +x away from the attacker: the mover's effects authored in
     // that frame (Sky launch's twinkle) turn with it, as the wall stages do.
     if (vanishing && s.kind !== "motion" && onMover(s) && (Number(s.offsetX) || Number(s.offsetY))) {
@@ -150,7 +153,9 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
     }
   } catch (error) { host.trace("Blocked", `Finisher ${recipe.name} landing: ${error.message}`); }
   const offset = to && (to.x !== from.x || to.y !== from.y) ? { x: (to.x - from.x) / grid, y: (to.y - from.y) / grid } : null;
-  const { recipe: composed, moves } = composeFinisher(recipe, { offset, frame, inPlace, survives: !dead, slam, vanishing });
+  // Where Sequencer centres an effect on the mover, taken before anything moves.
+  const at = { x: from.x + (mover.w ?? (mover.document.width ?? 1) * grid) / 2, y: from.y + (mover.h ?? (mover.document.height ?? 1) * grid) / 2 };
+  const { recipe: composed, moves } = composeFinisher(recipe, { offset, frame, inPlace, survives: !dead, slam, vanishing, at });
   const commit = async (data) => host.commit(mover, { ...data, finisher: recipe.id });
   host.trace("Finisher", `${recipe.name}: ${mover.name ?? "token"}`);
   // The stages' source/targets roles follow who travels: a source-mover finisher plays from
