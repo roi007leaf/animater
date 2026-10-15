@@ -90,6 +90,32 @@ export default {
     impact: { assets: ["melee_generic.slash.02.002.blue"], on: "targets", tint: STEEL, scale: 0.7, at: 500 },
     extra: [{ role: "impact", on: "self", assets: ["healing_generic.burst.bluewhite", "healing_generic.03.burst.bluegreen"], tint: STEEL, scale: 0.6, at: 800 }],
     motion: { motion: "stagger", subject: "targets", at: 600 },
+    actions: {
+      // Clear 1 HP
+      CbKKgf1TboGPZitf: {
+        shape: "utility", motif: "CRITICAL flashes and a pale mend closes the fighter's wound",
+        notes: 'On a critical you "clear a Hit Point": the critical banner flashes and pale healing washes over the fighter.',
+        cast: { assets: ["ui.critical.yellow", "ui.critical.red"], tint: STEEL, scale: 0.5, offsetY: -0.7, offsetUnits: "token", duration: 1000 },
+        impact: { assets: ["healing_generic.burst.bluewhite", "healing_generic.03.burst.bluegreen"], tint: STEEL, scale: 0.7, at: 500 },
+        motion: { motion: "pulse", subject: "source", at: 600 },
+      },
+      // Clear 1 Armor Slot
+      hsI4QDa6Br52P2mc: {
+        shape: "ward", motif: "CRITICAL flashes and a steel rampart re-forms around the fighter",
+        notes: 'On a critical you "clear an Armor Slot": the critical banner flashes and a steel rampart of armour closes back around the fighter, who braces.',
+        cast: { assets: ["ui.critical.yellow", "ui.critical.red"], tint: STEEL, scale: 0.5, offsetY: -0.7, offsetUnits: "token", duration: 1000 },
+        impact: { assets: ["markers.shield_rampart.complete.03.white", "markers.shield_rampart.complete.01.orange"], tint: STEEL, scale: 0.8, at: 500, duration: 1600 },
+        motion: { motion: "brace", subject: "source", at: 600 },
+      },
+      // Deal 1 HP Damage
+      IqLoK4KHMpoTGQIM: {
+        shape: "debuff", motif: "CRITICAL flashes and a second steel slash bites deep into the target",
+        notes: 'On a critical "the target must mark an additional Hit Point": the critical banner flashes and a second, heavier slash bites the target, which reels.',
+        cast: { assets: ["ui.critical.yellow", "ui.critical.red"], tint: STEEL, scale: 0.5, offsetY: -0.7, offsetUnits: "token", duration: 1000 },
+        impact: { assets: ["melee_generic.slash.02.002.blue"], tint: STEEL, scale: 0.85, at: 500 },
+        motion: { motion: "recoil", subject: "targets", at: 600, intensity: 0.7 },
+      },
+    },
   },
   // Vitality (5): permanently gain two of a Stress slot, a Hit Point slot or +2 thresholds; then vault the card.
   sWUlSPOJEaXyQLCj: {

@@ -165,6 +165,25 @@ export default {
     impact: { assets: ["zoning.inward.circle.once.redyellow.01.01", "zoning.inward.circle.once.bluegreen.01.01"], scale: 1.1, at: 500 },
     aura: { assets: ["markers.chain.standard.complete.02.yellow", "markers.chain.standard.complete.02.red"], on: "targets", scale: 0.7, at: 900, duration: 2000 },
     motion: [{ motion: "brace", subject: "source", at: 200 }, { motion: "press", subject: "targets", at: 1000, intensity: 0.5 }],
+    actions: {
+      // Spend Hope
+      hxupFx3czFHz3xfG: {
+        shape: "ward", motif: "a warding circle plants the caster in a defensive stance behind a golden rampart",
+        notes: 'You "describe the defensive stance you take and spend a Hope": a golden abjuration circle locks under the caster and a rampart rises as they brace.',
+        cast: { assets: ["magic_signs.circle.02.abjuration.complete.yellow", "magic_signs.circle.02.abjuration.complete.blue"], below: true, scale: 0.9, duration: 2000 },
+        impact: { assets: ["markers.shield_rampart.complete.03.yellow", "markers.shield_rampart.complete.01.orange"], scale: 0.8, at: 500, duration: 1800 },
+        motion: { motion: "brace", subject: "source", at: 200 },
+      },
+      // Restrain
+      SKG6Gu0uJZxtYTnz: {
+        shape: "debuff", motif: "a ring of force drags the adversary in and golden chains bind it",
+        notes: 'An adversary that comes close is "pulled into Melee range and Restrained": a ring of force draws inward and golden chains bind it.',
+        cast: false,
+        impact: { assets: ["zoning.inward.circle.once.redyellow.01.01", "zoning.inward.circle.once.bluegreen.01.01"], on: "self", scale: 1.1, at: 0 },
+        aura: { assets: ["markers.chain.standard.complete.02.yellow", "markers.chain.standard.complete.02.red"], scale: 0.7, at: 500, duration: 2000 },
+        motion: { motion: "press", subject: "targets", at: 600, intensity: 0.5 },
+      },
+    },
   },
   // Lead by Example (9): after dealing damage, mark a Stress; the next PC to attack that adversary clears Stress or gains Hope.
   YWCRplmtwpCjpq5i: {

@@ -67,6 +67,16 @@ export default {
       impact: { assets: ["fairies.inward_burst.01.greenyellow", "fairies.inward_burst.01.bluepurple"], scale: 0.7 },
       aura: { assets: ["dancing_light.green"], scale: 0.35, offsetY: -0.8, offsetUnits: "token", duration: 2400, at: 800 },
     },
+    actions: {
+      // See Through Eyes
+      "8Y03LcPgXF30DfzZ": {
+        shape: "utility", motif: "green eyes open over the caster and over the familiar as their sight is shared",
+        notes: 'You "mark a Stress to see through their eyes": a green eye opens above the caster and another over the targeted familiar.',
+        cast: false,
+        impact: { assets: ["eyes.01.dark_green.single"], scale: 0.4, offsetY: -0.8, offsetUnits: "token", at: 0, duration: 1800 },
+        extra: [{ role: "impact", on: "targets", assets: ["eyes.01.dark_green.single"], scale: 0.4, offsetY: -0.8, offsetUnits: "token", at: 400, duration: 1800, label: "Familiar's eyes" }],
+      },
+    },
   },
   // Corrosive Projectile (3): an acid shot for d6+4 magic damage; Stress makes the target Corroded.
   qJaSNTuDfbPVr8Lb: {
@@ -223,5 +233,34 @@ export default {
     impact: { assets: ["sleet_storm.01.grey", "sleet_storm.01.blue"], on: "targets", scale: 0.7, at: 800, duration: 2000 },
     extra: [{ role: "impact", on: "targets", assets: ["wind_lines.01.leaves.02.green"], tint: "#9aa3a8", scale: 0.7, at: 1000, duration: 1400, label: "Winds lash" }],
     motion: { motion: "stagger", subject: "targets", at: 1100, intensity: 0.8 },
+    actions: {
+      // Blizzard
+      ZqnziDBlh5Re7SKs: {
+        shape: "burst", motif: "freezing cold whirls off the caster and driving sleet leaves every target brittle",
+        notes: 'Colour exception, icy blue: "Blizzard: Deal 2d20+8 magic damage and targets are temporarily Vulnerable", so cold gathers at the caster, sleet engulfs each target and a cracked shield marks it.',
+        cast: { assets: ["cast_generic.ice.01.blue", "cast_generic.02.blue"], scale: 0.7 },
+        impact: { assets: ["sleet_storm.01.blue", "sleet_storm.blue"], on: "targets", scale: 0.7, at: 600, duration: 2000 },
+        aura: { assets: ["markers.shield_cracked.purple"], tint: "#9fd3ff", on: "targets", scale: 0.5, at: 1300, duration: 1600 },
+        motion: { motion: "shake", subject: "targets", at: 900, intensity: 0.6 },
+      },
+      // Hurricane
+      FEPhujGa5lvu5fXr: {
+        shape: "burst", motif: "a howling whirlwind and a gale that hurls every target back",
+        notes: 'Colour exception, storm white: "Hurricane: Deal 3d10+10 magic damage and choose a direction the wind is blowing", so a white whirlwind spins up, a gale blasts out and wind lines batter each target back.',
+        cast: { assets: ["whirlwind.bluewhite", "whirlwind.bluegrey"], scale: 1, duration: 1600 },
+        travel: { assets: ["gust_of_wind.veryfast", "gust_of_wind.default"], at: 500 },
+        impact: { assets: ["wind_lines.01.01.white"], on: "targets", scale: 0.7, at: 900 },
+        motion: { motion: "recoil", subject: "targets", at: 1000, intensity: 0.9 },
+      },
+      // Sandstorm
+      CzMlqo91kuTgg1As: {
+        shape: "burst", motif: "a sand-coloured whirlwind and grit that scours every target",
+        notes: 'Colour exception, sand: "Sandstorm: Deal 5d6+9 magic damage", so a whirlwind of sand rises off the caster and stinging grit and tumbling stone scour each target.',
+        cast: { assets: ["whirlwind.bluegrey"], tint: "#c8a46a", scale: 0.9, duration: 1400 },
+        impact: { assets: ["falling_rocks.side.1x1.sandstone", "falling_rocks.side.1x1.grey"], tint: false, on: "targets", scale: 0.6, at: 800 },
+        extra: [{ role: "impact", on: "targets", assets: ["wind_lines.01.02.white"], tint: "#c8a46a", scale: 0.7, at: 900, duration: 1400, label: "Grit" }],
+        motion: { motion: "cower", subject: "targets", at: 1000, intensity: 0.6 },
+      },
+    },
   },
 };

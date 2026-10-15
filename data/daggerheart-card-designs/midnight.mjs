@@ -116,6 +116,24 @@ export default {
     extra: [{ role: "impact", on: "self", assets: ["misty_step.02.dark_black", "misty_step.02.blue"], scale: 0.8, at: 1500, label: "Reappear on the anchor" }],
     copies: { count: 1, spread: 0.15, opacity: 0.3, at: 300, duration: 1600 },
     motion: { motion: "flicker", subject: "source", at: 700, duration: 900 },
+    actions: {
+      // Activate
+      SE2C9Andtlw3OQLL: {
+        shape: "utility", motif: "a dark ring anchors the spot and a faint phantom of the caster stays on it",
+        notes: 'You "activate Phantom Retreat where you\'re currently standing": a dark portal ring marks the anchor under the caster and a faint phantom double settles on it.',
+        cast: { assets: ["portals.horizontal.ring.dark_purple", "portals.horizontal.ring"], below: true, scale: 0.7, duration: 2200 },
+        copies: { count: 1, spread: 0.1, opacity: 0.3, at: 400, duration: 2000 },
+      },
+      // Retreat
+      "1AJRAbFtDx8Pm26q": {
+        shape: "teleport", motif: "the caster dissolves in black mist and reforms on the anchor",
+        notes: 'You "disappear from where you are and reappear where you were standing when you activated Phantom Retreat": black mist swallows the caster and they flicker back out of a second plume on the anchor.',
+        cast: false,
+        impact: { assets: ["misty_step.01.dark_black", "misty_step.01.blue"], scale: 0.8, at: 0 },
+        extra: [{ role: "impact", on: "self", assets: ["misty_step.02.dark_black", "misty_step.02.blue"], scale: 0.8, at: 900, label: "Reappear on the anchor" }],
+        motion: { motion: "flicker", subject: "source", at: 200, duration: 900 },
+      },
+    },
   },
   // Dark Whispers (6): speak into a touched person's mind; mark a Stress to ask the GM a question about them.
   yL2qrSWmTwXVOySH: {

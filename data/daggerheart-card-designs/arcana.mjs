@@ -144,6 +144,17 @@ export default {
     travel: ["energy_strands.range.standard.purple", "energy_strands.range.standard.purple.01"],
     aura: { assets: ["energy_field.02.below.purple", "energy_field.02.below.blue"], on: "targets", below: true, scale: 0.8, duration: 2000 },
     motion: { motion: "levitate", subject: "targets", duration: 1600, intensity: 0.8 },
+    actions: {
+      // Throw Target
+      rgDZzUg8ivTTctsM: {
+        shape: "bolt", motif: "the mind's grip flings the lifted creature into a second target, cracking the ground",
+        notes: 'Throw Target: "you can throw the lifted target as an attack" against a second target, so violet force swirls at the caster and the struck target is slammed down onto cracking ground.',
+        cast: { assets: ["particles.swirl.purple", "particles.swirl.greenyellow"], scale: 0.6 },
+        impact: { assets: ["impact.ground_crack.01.purple", "impact.ground_crack.01.orange"], below: true, scale: 0.8, at: 700 },
+        extra: [{ role: "impact", on: "targets", assets: ["impact.003.dark_purple", "impact.005.purple", "particle_burst.01.rune.bluepurple"], scale: 0.8, at: 650, label: "Hurled body lands" }],
+        motion: [{ motion: "throw", subject: "source", at: 300, duration: 600 }, { motion: "slam", subject: "targets", at: 700, intensity: 0.8 }],
+      },
+    },
   },
   // Arcana-Touched (7): +1 to Spellcast Rolls; once per rest, switch the Hope and Fear Dice.
   "5PvMQKCjrgSxzstn": {
