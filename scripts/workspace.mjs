@@ -1,4 +1,5 @@
 import { uuid } from "./uuid.mjs";
+import { strikeFromDrag } from "./strike-finishers.mjs";
 import { OPTIONAL_FX_KINDS, fxAvailability } from './optional-fx.mjs';
 import {
   EVENTS,
@@ -2022,6 +2023,10 @@ export class Workspace {
     e.preventDefault();
     try {
       const data = JSON.parse(e.dataTransfer.getData("text/plain"));
+      // A PF2e sheet's Attacks entry (a basic unarmed or other synthetic strike has no Item to link):
+      // a finisher adds the strike's name, unlinked.
+      const strike = this.recipe()?.finisher ? strikeFromDrag(data, (uuid) => this.host.resolveActor?.(uuid) ?? globalThis.fromUuidSync?.(uuid, { strict: false }) ?? null) : null;
+      if (strike) { this.addFinisherName(strike.name); return; }
       if (data.type !== "Item" || !data.uuid)
         throw Error("Drop a Foundry item here.");
       const item = await this.host.resolveItem(data.uuid);

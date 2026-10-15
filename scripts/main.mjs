@@ -5,6 +5,7 @@ import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hi
 import { displaceAllowed, landingSpot, wallDistance, withinKnockback } from "./displacement.mjs";
 import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, pickPlays, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE, critTargets, saveFinisherEvent } from "./finisher-model.mjs";
 import { playFinisher, previewFinisher } from "./finisher-play.mjs";
+import { STRIKE_FLAG, strikeKey, strikeOf, strikePick, picksOnActor } from "./strike-finishers.mjs";
 import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
@@ -145,28 +146,38 @@ const recipes = () =>
 const playerDecisions = () => game.settings.get(ID, "playerApprovals") ?? {};
 // Players' finisher picks: the item's flag names it; it holds while the GM still gives it to an owner.
 const ownerUsers = (actor) => [...(game.users?.values?.() ?? [])].filter((u) => !u.isGM && actor?.testUserPermission?.(u, "OWNER")).map((u) => u.id);
-const itemKeys = (item) => ({ itemName: item?.name, itemSlug: item?.slug ?? item?.system?.slug, itemUuid: item?.uuid });
+// A synthetic strike (PF2e's basic unarmed or a rule-element strike, or a { actor, name, slug }
+// descriptor) has no Item document: its pick lives on the actor, by strike slug or name, and it
+// matches finishers by name and slug only (a rule-element strike's uuid names its feat).
+const itemKeys = (item) => ({ itemName: item?.name, itemSlug: item?.slug ?? item?.system?.slug, itemUuid: picksOnActor(item) ? undefined : item?.uuid });
+const choiceOf = (item) => (picksOnActor(item) ? strikePick(item.actor, strikeOf(item)) : item?.getFlag?.(ID, "finisher") ?? null);
 // An item whose actor any player owns plays only its owner's pick; NPC items keep the GM's name matching.
 const playerItem = (item) => Boolean(item) && ownerUsers(item.actor).length > 0;
-const pickFor = (item) => (item ? pickedFinisher(recipes(), { choiceId: item.getFlag?.(ID, "finisher"), ownerUserIds: ownerUsers(item.actor), ...itemKeys(item) }) : null);
+const pickFor = (item) => (item ? pickedFinisher(recipes(), { choiceId: choiceOf(item), ownerUserIds: ownerUsers(item.actor), ...itemKeys(item) }) : null);
 const finisherChoices = (item, user = game.user) => playerFinisherChoices(recipes(), { userId: user?.id, ...itemKeys(item) })
   .map((r) => ({ id: r.id, name: r.name, description: r.description ?? "", on: r.finisher.on }));
 // Other modules (pf2e-combater's item sheet) read and set an item's pick through api.finishers.
-// setChoice fires "animater.finisherChoiceChanged" (item, id) only on the client that changed it;
-// other clients see the item flag change through updateItem.
+// Each takes an Item or a strike descriptor { actor, name, slug } (a synthetic strike's pick is
+// stored on its actor). setChoice fires "animater.finisherChoiceChanged" (item, id) only on the
+// client that changed it; other clients see the flag change through updateItem / updateActor.
 const finishersApi = {
   choices: finisherChoices,
-  getChoice: (item) => item?.getFlag?.(ID, "finisher") ?? null,
+  getChoice: (item) => choiceOf(item),
   async setChoice(item, id) {
-    const user = game.user;
-    if (!item || !(user?.isGM || item.isOwner)) throw new Error("Only the item's owner or a GM can choose its finisher.");
+    const user = game.user, onActor = picksOnActor(item);
+    if (onActor && !strikeKey(strikeOf(item))) throw new Error("A strike needs a name or slug.");
+    const owned = onActor ? item.actor?.isOwner : item?.isOwner;
+    if (!item || !(user?.isGM || owned)) throw new Error(onActor ? "Only the actor's owner or a GM can choose this strike's finisher." : "Only the item's owner or a GM can choose its finisher.");
     // A GM may pick any finisher given to one of the item's player owners (or, on an item no player
     // owns, any that applies to it); never one that would not play.
     const fits = (r) => r?.id === id && r.finisher && r.enabled !== false && matchFinishers([r], itemKeys(item), r.finisher.on).length > 0;
     const owners = ownerUsers(item.actor), offered = (u) => finisherChoices(item, u).some((c) => c.id === id);
     const allowed = !user.isGM ? offered(user) : owners.length ? owners.some((u) => offered({ id: u })) : recipes().some(fits);
     if (id !== null && !allowed) throw new Error("That finisher isn't available for this item.");
-    if (id === null) await item.unsetFlag(ID, "finisher"); else await item.setFlag(ID, "finisher", id);
+    if (onActor) {
+      const key = strikeKey(strikeOf(item));
+      if (id === null) await item.actor.unsetFlag(ID, `${STRIKE_FLAG}.${key}`); else await item.actor.setFlag(ID, STRIKE_FLAG, { [key]: id });
+    } else if (id === null) await item.unsetFlag(ID, "finisher"); else await item.setFlag(ID, "finisher", id);
     Hooks.callAll("animater.finisherChoiceChanged", item, id);
   },
 };
@@ -1506,7 +1517,7 @@ Hooks.once("ready", () => {
     // known attacker, keeps the GM's kill finishers and the default finisher.
     const struck = killingItem(by, attacker);
     const players = struck ? playerItem(struck) : ownerUsers(attacker?.actor).length > 0;
-    const pick = players ? pickFor(struck) : null, item = { itemUuid: by?.itemUuid, itemName: by?.itemName };
+    const pick = players ? pickFor(struck) : null, item = { itemUuid: by?.synthetic ? undefined : by?.itemUuid, itemName: by?.itemName, itemSlug: by?.itemSlug ?? undefined };
     // A critically failed save against this item left its crit finisher's mark on this token: the
     // spell's own (non-critical) damage is that crit's killing blow, so the kill counts as critical.
     const base = { attackerId: by?.sourceTokenId, targetId: token.id, itemUuid: by?.itemUuid ?? "" };
@@ -1522,9 +1533,15 @@ Hooks.once("ready", () => {
     const endingOnly = saveKey ? finished.consume(saveKey) : by?.crit === true && finished.consume(finishedKey({ ...base, recipeId: recipe.id }));
     return { recipe, attacker, endingOnly };
   };
-  // The item that struck the killing blow, from the damage roll's origin.
+  // The item that struck the killing blow, from the damage roll's origin. A synthetic strike (no
+  // Item document) answers a descriptor on the attacking actor, whose flag holds its pick.
   const killingItem = (by, attacker) => {
-    if (!by?.itemUuid && !by?.itemName) return null;
+    if (!by?.itemUuid && !by?.itemName && !by?.itemSlug) return null;
+    if (by.synthetic) {
+      let actor = attacker?.actor ?? null;
+      try { actor ??= by.actorUuid ? globalThis.fromUuidSync?.(by.actorUuid, { strict: false }) ?? null : null; } catch { actor = null; }
+      return actor && (by.itemName || by.itemSlug) ? { actor, name: by.itemName ?? undefined, slug: by.itemSlug ?? undefined } : null;
+    }
     let item = null;
     try { item = by.itemUuid ? globalThis.fromUuidSync?.(by.itemUuid, { strict: false }) ?? null : null; } catch { item = null; }
     return item ?? attacker?.actor?.items?.find?.((i) => (by.itemUuid && i.uuid === by.itemUuid) || (!by.itemUuid && i.name === by.itemName)) ?? null;

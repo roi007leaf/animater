@@ -106,3 +106,21 @@ test("a damage roll remembers which item dealt it", () => {
   assert.equal(dnd.itemUuid, "Actor.w.Item.fb");
   assert.equal(dnd.itemName, null);
 });
+
+test("a synthetic strike's damage remembers the attacker actor and the strike's name and slug", () => {
+  class DamageRoll { constructor(instances) { this.instances = instances; } }
+  const actor = { items: { get: () => undefined } };
+  const fist = { id: "xxPF2ExUNARMEDxx", name: "Unarmed Attack", slug: "basic-unarmed", actor };
+  const msg = (item, options = []) => ({ item, speaker: { token: "atk" }, rolls: [new DamageRoll([{ type: "bludgeoning", total: 4 }])],
+    flags: { pf2e: { origin: { type: "weapon", actor: "Actor.a", uuid: "Actor.a.Item.xxPF2ExUNARMEDxx" }, context: { type: "damage-roll", options } } } });
+  const pf = damageFromMessage(msg(fist), "pf2e");
+  assert.equal(pf.synthetic, true);
+  assert.equal(pf.actorUuid, "Actor.a");
+  assert.equal(pf.itemName, "Unarmed Attack");
+  assert.equal(pf.itemSlug, "basic-unarmed");
+  const bare = damageFromMessage(msg(null, ["item:slug:basic-unarmed"]), "pf2e");
+  assert.equal(bare.synthetic, true, "an unresolved item with PF2e's synthetic id");
+  assert.equal(bare.itemSlug, "basic-unarmed", "the slug from the roll options");
+  const axe = damageFromMessage({ ...msg({ name: "Greataxe", slug: "greataxe" }), flags: { pf2e: { origin: { uuid: "Actor.a.Item.axe" }, context: { type: "damage-roll" } } } }, "pf2e");
+  assert.equal(axe.synthetic, false);
+});

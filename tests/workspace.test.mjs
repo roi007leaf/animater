@@ -824,3 +824,20 @@ test("the active nav page keeps is-active", () => {
   const html = navWorkspace({}, "finishers").navItemsHTML(navEnv);
   assert.match(html, /an-nav-item is-active" data-action="page" data-page="finishers"/);
 });
+
+test("a finisher's Applies to takes a PF2e strike dragged from a sheet's Attacks: its name, unlinked", async () => {
+  const f = workspace();
+  const r = { id: 'fin', name: 'Fin', trigger: 'manual', match: 'Shove', finisher: { on: 'kill' }, stages: [] };
+  f.w.edit = () => r;
+  f.w.recipe = () => r;
+  f.w.stopEditorPreview = () => {};
+  const actor = { system: { actions: [{ slug: 'basic-unarmed', label: 'Unarmed Attack', item: { id: 'xxPF2ExUNARMEDxx', name: 'Unarmed Attack', slug: 'basic-unarmed' } }] } };
+  f.w.host = { resolveActor: (uuid) => (uuid === 'Actor.a' ? actor : null), resolveItem: async (uuid) => (uuid === 'Item.axe' ? { uuid, name: 'Greataxe' } : null) };
+  const drop = (data) => f.w.onDrop({ target: { closest: (sel) => (sel === '.an-binding' ? {} : null) }, preventDefault() {}, dataTransfer: { getData: () => JSON.stringify(data) } });
+  await drop({ type: 'Action', index: 0, actorId: 'a', actorUUID: 'Actor.a' });
+  assert.equal(r.match, 'Shove, Unarmed Attack');
+  assert.equal(r.finisher.links?.['unarmed attack'], undefined, 'a strike has no item to link');
+  await drop({ type: 'Item', uuid: 'Item.axe' });
+  assert.equal(r.match, 'Shove, Unarmed Attack, Greataxe', 'ordinary item drops still work');
+  assert.equal(r.finisher.links.greataxe, 'Item.axe');
+});

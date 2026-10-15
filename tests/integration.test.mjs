@@ -1980,3 +1980,89 @@ test("api.finishers: a GM cannot pick, on a player-owned item, a finisher no own
   await assert.rejects(f.api.finishers.setChoice(f.item, "others"), /isn't available/);
   assert.equal(flags.finisher, "pick");
 });
+
+// Synthetic strikes (PF2e's basic unarmed, Fist): no Item document; the pick lives on the actor.
+function strikeOwner(t, f, { pick = "pick" } = {}) {
+  game.users.set("u1", { id: "u1", isGM: false });
+  const flags = { strikeFinishers: pick ? { fist: pick } : {} };
+  Object.assign(f.actor, {
+    isOwner: true,
+    items: { get: () => undefined },
+    testUserPermission: (user, level) => user?.id === "u1" && level === "OWNER",
+    getFlag: (scope, key) => (scope === "animater" ? flags[key] : undefined),
+    setFlag: async (scope, key, value) => { flags[key] = { ...flags[key], ...value }; },
+    unsetFlag: async (scope, path) => { const [key, sub] = path.split("."); delete flags[key]?.[sub]; },
+  });
+  const fist = { id: "xxxxxxFISTxxxxxx", uuid: "Actor.a.Item.xxxxxxFISTxxxxxx", documentName: "Item", name: "Fist", slug: "fist", actor: f.actor, getFlag: () => undefined };
+  stubGlobal(t, "fromUuidSync", () => null);
+  return { flags, fist };
+}
+const fistPick = (on, extra = {}) => ({ ...pickFin(on, ["u1"], extra), match: "Fist" });
+
+test("api.finishers: a strike descriptor's choices, and its pick set and cleared on the actor", async (t) => {
+  const f = await boot("pf2e");
+  const { flags, fist } = strikeOwner(t, f, { pick: null });
+  const changed = [];
+  stubGlobal(t, "Hooks", { ...globalThis.Hooks, callAll: (name, ...args) => changed.push([name, ...args]) });
+  f.settings.set("recipes", { schema: 1, recipes: [fistPick("critical"), { ...fistPick("kill"), id: "sword", name: "Sword", match: "Longsword" }, { ...pickFin("kill", ["u2"]), id: "theirs", name: "Theirs", match: "Fist" }] });
+  const strike = { actor: f.actor, name: "Fist", slug: "fist" };
+  assert.deepEqual(f.api.finishers.choices(strike, { id: "u1" }).map((c) => c.id), ["pick"]);
+  assert.equal(f.api.finishers.getChoice(strike), null);
+  await f.api.finishers.setChoice(strike, "pick");
+  assert.deepEqual(flags.strikeFinishers, { fist: "pick" }, "stored on the actor by strike slug");
+  assert.equal(f.api.finishers.getChoice(strike), "pick");
+  assert.equal(f.api.finishers.getChoice(fist), "pick", "the synthetic Fist item reads the same pick");
+  await assert.rejects(f.api.finishers.setChoice(strike, "sword"), /isn't available/, "a finisher for another strike");
+  await assert.rejects(f.api.finishers.setChoice(strike, "theirs"), /isn't available/, "a finisher no owner has");
+  await f.api.finishers.setChoice(fist, null);
+  assert.equal(f.api.finishers.getChoice(strike), null);
+  assert.deepEqual(changed.map((c) => c.slice(0, 1).concat(c.slice(2))), [["animater.finisherChoiceChanged", "pick"], ["animater.finisherChoiceChanged", null]]);
+  const before = game.user;
+  game.user = { id: "u2", isGM: false };
+  f.actor.isOwner = false;
+  await assert.rejects(f.api.finishers.setChoice(strike, "pick"), /owner or a GM/);
+  game.user = before;
+});
+
+test("synthetic strike: a Fist crit plays the actor's pick", async (t) => {
+  const f = await boot("pf2e");
+  const { fist } = strikeOwner(t, f);
+  watchTarget(f);
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [fistPick("critical")] });
+  await f.fire("createChatMessage", { ...strikeMessage(f, "crit", "criticalSuccess"), item: fist, flags: { pf2e: { context: { type: "attack-roll", outcome: "criticalSuccess", target: { token: "Scene.s.Token.target" } }, origin: { uuid: fist.uuid, actor: "Actor.a" } } } });
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const entries = f.api.activity().filter((e) => e.status === "Finisher");
+  assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
+  assert.match(entries[0].detail, /Pick: Orc/);
+  await f.api.stop();
+});
+
+test("synthetic strike: a Fist kill plays the actor's pick, even when the message's item is gone", async (t) => {
+  for (const item of ["fist", null]) {
+    const f = await boot("pf2e");
+    const { fist } = strikeOwner(t, f);
+    const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Fist"), fistPick("kill")], defaultFinisher: "gm",
+      damage: { item: item && fist, flags: { pf2e: { context: { type: "damage-roll", options: ["item:slug:fist"], target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: fist.uuid, actor: "Actor.a" } } } } });
+    assert.deepEqual(entries.map((e) => e.detail), ["Pick: Orc"], JSON.stringify(f.api.activity()));
+    await f.api.stop();
+  }
+});
+
+test("synthetic strike: a player's Fist with no pick plays no finisher on a crit or a kill, not even the default", async (t) => {
+  const f = await boot("pf2e");
+  const { fist } = strikeOwner(t, f, { pick: null });
+  watchTarget(f);
+  const gm = { ...pickFin("criticalOrKill", []), id: "gmcrit", name: "GM crit", match: "Fist" };
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [gm] });
+  await f.fire("createChatMessage", { ...strikeMessage(f, "crit", "criticalSuccess"), item: fist });
+  await settle();
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, JSON.stringify(f.api.activity()));
+  const entries = await killTarget(f, { finishers: [gm, killFin("gm", "GM drop", "Fist")], defaultFinisher: "gm",
+    damage: { id: "dmg2", item: fist, flags: { pf2e: { context: { type: "damage-roll", target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: fist.uuid, actor: "Actor.a" } } } } });
+  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});

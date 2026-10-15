@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Finishers:** synthetic PF2e strikes (Fist, the basic unarmed attack, rule-element strikes such as Jaws) can have a player finisher pick. `api.finishers.choices/getChoice/setChoice` also take a strike `{ actor, name, slug }`; its pick (and a synthetic strike item's) is kept on the actor (`flags.animater.strikeFinishers`), and crits and kills with the strike play it. A player's strike with no pick still plays no finisher. Dragging a strike from a PF2e sheet's Attacks onto a finisher's Applies to adds its name.
 - **Finishers:** fragments stay where the token was when they burst, even when a held travel lands under them and is written; a Wall slam that only reaches the scene edge (no wall) now shrinks to fit and lands instead of crashing into the edge.
 
 ## 1.0.2 (2026-10-15)
