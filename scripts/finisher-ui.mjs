@@ -1,6 +1,6 @@
 // The Finishers page, the studio's Finisher panel and the catalog entries' Finisher dropdown.
 import { FINISHER_ON, FINISHER_MOVERS, FINISHER_ENDINGS, FINISHER_SUCCESS } from "./model.mjs";
-import { linkedFinisher, finisherTravelPath } from "./finisher-model.mjs";
+import { linkedFinisher, finisherTravelPath, finisherChipText } from "./finisher-model.mjs";
 import { pathSquares } from "./keyframe-path.mjs";
 import { FINISHER_PRESETS } from "./finisher-presets.mjs";
 import { studioHTML } from "./studio.mjs";
@@ -38,3 +38,8 @@ export function finisherLinkHTML(w, entryName) {
   const current = linkedFinisher(finishers, entryName)?.id ?? "";
   return `<label class="an-finisher-link">Finisher<select data-finisher-link="${esc(entryName)}"><option value="">None</option>${finishers.map((r) => `<option value="${esc(r.id)}" ${r.id === current ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>`;
 }
+
+// The inspector's pinned Finisher section. Hidden while the settings dialog is open: both render the
+// same data-field inputs, and focus-restore after a render would jump into the first (pinned) copy.
+export const finisherPinHTML = (r, settingsOpen) => r.finisher && !settingsOpen
+  ? `<details class="an-finisher-pin" open><summary>Finisher · ${esc(finisherChipText(r))}</summary>${finisherSettingsHTML(r)}</details>` : "";
