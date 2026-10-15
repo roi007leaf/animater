@@ -109,6 +109,14 @@ export function finisherDirection(finisher, { mover, attacker, target }) {
 export function pathAim(finisher, { mover, attacker, target }) {
   return finisher.mover === "source" ? awayFrom(target?.center, mover?.center) : awayFrom(attacker?.center, mover?.center);
 }
+// With no attacker to aim from (a GM edits HP by hand), a finisher still lands and slams: it faces
+// the mover's token rotation (degrees) when that is a finite non-zero number, else +x.
+export function defaultAim(mover) {
+  const r = Number(mover?.document?.rotation ?? mover?.rotation);
+  if (!Number.isFinite(r) || r === 0) return { x: 1, y: 0 };
+  const rad = (r * Math.PI) / 180;
+  return { x: Math.cos(rad), y: Math.sin(rad) };
+}
 // A path that moved the token lands upright and visible, so a vanish still fades it. A mover
 // still held in place (shrunk, faded, turned) needs no separate fade: one would pop it back.
 // Fragments hide the real token while the pieces fly, so they need no fade either.
@@ -127,7 +135,7 @@ export function planFinisher({ recipe, mover, attacker = null, target = null, de
   try {
     if (path) {
       // In place or not is counted on the aimed end, the way the landing walks the grid.
-      const aim = pathAim(f, { mover, attacker, target });
+      const aim = pathAim(f, { mover, attacker, target }) ?? defaultAim(mover);
       const end = aim ? rotateBy(pathEnd(path.keyframes), aim) : pathEnd(path.keyframes), length = Math.hypot(end.x, end.y);
       const squares = Math.round(Math.max(Math.abs(end.x), Math.abs(end.y)));
       inPlace = squares === 0;
@@ -136,7 +144,7 @@ export function planFinisher({ recipe, mover, attacker = null, target = null, de
       // A survivor (not dead) never vanishes, nor does a non-vanish ending (it lands as before),
       // and an in-place path already stays put.
       const vanishes = dead && f.ending === "vanish" && !inPlace && path.keyframes.at(-1).alpha === 0;
-      if (vanishes) vanishing = { aim: aim ?? { x: 1, y: 0 } };
+      if (vanishes) vanishing = { aim };
       else if (aim && !inPlace) {
         to = host.landing(mover, { x: end.x / length, y: end.y / length }, squares);
         frame = { aim, length };
@@ -151,7 +159,7 @@ export function planFinisher({ recipe, mover, attacker = null, target = null, de
         }
       }
     } else {
-      const direction = f.knockback > 0 ? finisherDirection(f, { mover, attacker, target }) : null;
+      const direction = f.knockback > 0 ? (finisherDirection(f, { mover, attacker, target }) ?? defaultAim(mover)) : null;
       to = direction ? host.landing(mover, direction, f.knockback) : null;
     }
   } catch (error) { host.trace("Blocked", `Finisher ${recipe.name} landing: ${error.message}`); }

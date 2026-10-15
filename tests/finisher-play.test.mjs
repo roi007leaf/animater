@@ -89,10 +89,14 @@ test("a survivor of a use finisher is moved but never hidden or marked dead", as
   assert.ok(host.log.some(([kind, data]) => kind === "commit" && data.x === 300));
 });
 
-test("without an attacker nothing moves the document, and the ending waits for the whole finisher", async () => {
+test("without an attacker the knockback falls back to +x, and the ending still waits for the whole finisher", async () => {
   const host = fakeHost({ plan: [{ kind: "impact", delay: 0, duration: 1500 }] });
   await playFinisher({ recipe: recipe({ ending: "body" }), mover: token(), attacker: null, dead: true }, host);
-  assert.deepEqual(host.log.slice(1), [["play", null, "Orc", "Orc"], ["wait", 1500], ["commit", { defeated: true, finisher: "f" }]]);
+  const commits = host.log.filter((e) => e[0] === "commit");
+  assert.equal(commits.length, 2);
+  assert.equal(commits[0][1].x, 300, "moved along +x");
+  assert.deepEqual(commits[1], ["commit", { defeated: true, finisher: "f" }]);
+  assert.deepEqual(host.log.at(-2), ["wait", 1500]);
 });
 
 test("a finisher that never starts writes nothing and says so (null), so the caller can fall back", async () => {
@@ -166,8 +170,8 @@ test("a diagonal end off the grid lands on the snapped square with no jump", asy
   assert.ok(Math.abs(finalX * 100 - (commit.x - 100)) < 1e-6 && Math.abs(finalY * 100 - (commit.y - 100)) < 1e-6, "pose end == document landing");
 });
 
-test("a fully blocked path, or no attacker, does not move the token and the travel comes back", async () => {
-  for (const [host, attacker] of [[gridHost(0), at("Hero", 0, 100)], [gridHost(), null]]) {
+test("a fully blocked path does not move the token and the travel comes back", async () => {
+  for (const [host, attacker] of [[gridHost(0), at("Hero", 0, 100)]]) {
     await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 2, 0)]), mover: at("Orc", 100, 100), attacker, dead: false }, host);
     assert.ok(!host.log.some((e) => e[0] === "commit"));
     assert.equal(host.log.find((e) => e[0] === "play")[3], null, "hold stripped");

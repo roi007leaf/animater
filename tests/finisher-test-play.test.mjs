@@ -48,6 +48,43 @@ test("planFinisher with no wall: the landing is pinned and offset to the landing
   assert.equal(by(composed, "landing").offsetX, 6);
 });
 
+test("planFinisher with no attacker: a wall slam still cuts at the wall and offsets the crash", () => {
+  const recipe = presetFinisher("wall-slam", "ws");
+  const mover = token("Orc", 100, 100);
+  const { composed, to } = planFinisher({ recipe, mover, dead: true }, testHost(3));
+  assert.deepEqual(to, { x: 400, y: 100 });
+  for (const id of ["wall-crack", "wall-dust"]) {
+    assert.deepEqual(by(composed, id).atPoint, { x: 150, y: 150 });
+    assert.ok(Math.abs(by(composed, id).offsetX - 3.6) < 1e-9);
+  }
+});
+
+test("planFinisher with no attacker and no wall: the landing is offset", () => {
+  const recipe = presetFinisher("wall-slam", "ws");
+  const mover = token("Orc", 100, 100);
+  const { composed } = planFinisher({ recipe, mover, dead: true }, testHost(Infinity));
+  assert.deepEqual(by(composed, "landing").atPoint, { x: 150, y: 150 });
+  assert.equal(by(composed, "landing").offsetX, 6);
+});
+
+test("planFinisher with no attacker aims along the mover's rotation when it has one", () => {
+  const recipe = presetFinisher("wall-slam", "ws");
+  const mover = token("Orc", 100, 100);
+  mover.document.rotation = 90;
+  const { to } = planFinisher({ recipe, mover, dead: true }, testHost(Infinity));
+  assert.equal(to.x, 100);
+  assert.ok(to.y > 100);
+});
+
+test("planFinisher with an attacker is unchanged by the default aim", () => {
+  const recipe = presetFinisher("wall-slam", "ws");
+  const mover = token("Orc", 100, 100);
+  mover.document.rotation = 90;
+  const planned = planFinisher({ recipe, mover, attacker: token("Hero", 0, 100), target: mover, dead: true }, testHost(3));
+  assert.deepEqual(planned.to, { x: 400, y: 100 });
+  assert.ok(Math.abs(by(planned.composed, "wall-crack").offsetX - 3.6) < 1e-9);
+});
+
 test("previewFinisher plays each target's composed recipe, onStart for the first only, and writes nothing", async () => {
   const recipe = presetFinisher("wall-slam", "ws");
   const hero = token("Hero", 0, 100), orc = token("Orc", 100, 100), gob = token("Gob", 100, 300);
