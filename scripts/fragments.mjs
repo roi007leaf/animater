@@ -1,15 +1,36 @@
 // Token fragments: the real token's artwork cut into pieces that fly apart (halves, top/bottom,
-// shards, dust). Pure geometry in the token's unit square (-0.5..0.5); every client derives the
-// same pieces and flights from the shared seed.
+// shards, dust, cross, claw, diced, starburst, rings, pixelate, ribbons). Pure geometry in the
+// token's unit square (-0.5..0.5); every client derives the same pieces and flights from the shared seed.
 import { samplePath, normalizeKeyframes } from "./keyframe-path.mjs";
 
-export const FRAGMENT_PATTERNS = { halves: "Slice in half", topBottom: "Top / bottom", shards: "Shards", dust: "Dust" };
-const COUNTS = { halves: [2, 2, 2], topBottom: [2, 2, 2], shards: [4, 10, 7], dust: [16, 64, 48] };
+export const FRAGMENT_PATTERNS = {
+  halves: "Slice in half", topBottom: "Top / bottom", shards: "Shards", dust: "Dust",
+  cross: "Cross cut", claw: "Claw marks", diced: "Diced", starburst: "Starburst", rings: "Rings", pixelate: "Pixelate", ribbons: "Ribbons",
+};
+// [lo, hi, default] for the stored `pieces`. Diced counts per side (4 is 4x4); rings counts rings of 8 segments.
+export const FRAGMENT_COUNTS = {
+  halves: [2, 2, 2], topBottom: [2, 2, 2], shards: [4, 10, 7], dust: [16, 64, 48],
+  cross: [4, 4, 4], claw: [4, 4, 4], diced: [2, 6, 4], starburst: [6, 16, 10], rings: [2, 4, 3], pixelate: [16, 64, 36], ribbons: [6, 16, 10],
+};
+export const FRAGMENT_BEHAVIORS = { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down" };
+export const FRAGMENT_TINTS = { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly" };
+// How a tint draws: a PIXI tint on the table (stone adds one shared greyscale filter), a CSS filter
+// in the studio, and an alpha factor for both.
+export const FRAGMENT_TINT_LOOKS = {
+  none: { alpha: 1 },
+  frozen: { tint: 0xa8d8ff, alpha: 0.9, css: "saturate(.6) hue-rotate(170deg) brightness(1.1)" },
+  charred: { tint: 0x3a2a22, alpha: 1, css: "brightness(.35) sepia(.4)" },
+  stone: { tint: 0xb0aca4, alpha: 1, greyscale: 0.55, css: "grayscale(.85) brightness(.9)" },
+  ghost: { tint: 0xd8f0ff, alpha: 0.5, css: "brightness(1.3) saturate(.3)" },
+};
 const clamp = (v, min, max, fallback) => (v !== null && v !== "" && Number.isFinite(Number(v)) ? Math.min(max, Math.max(min, Number(v))) : fallback);
+const TOWARDS_LIMIT = 40;
 
 export function normalizeFragments(s = {}) {
-  const pattern = Object.hasOwn(FRAGMENT_PATTERNS, s.pattern) ? s.pattern : "halves", [lo, hi, def] = COUNTS[pattern];
+  const pattern = Object.hasOwn(FRAGMENT_PATTERNS, s.pattern) ? s.pattern : "halves", [lo, hi, def] = FRAGMENT_COUNTS[pattern];
   const seed = Number(s.seed), cutAngle = s.cutAngle === null || s.cutAngle === "" ? NaN : Number(s.cutAngle);
+  const behavior = Object.hasOwn(FRAGMENT_BEHAVIORS, s.behavior) ? s.behavior : "burst", tint = Object.hasOwn(FRAGMENT_TINTS, s.tint) ? s.tint : "none";
+  const tx = s.towards?.x, ty = s.towards?.y, limit = (v) => Math.min(TOWARDS_LIMIT, Math.max(-TOWARDS_LIMIT, v));
   return {
     pattern, cut: s.cut === "fixed" ? "fixed" : "attack", angle: clamp(s.angle, 0, 180, 0),
     pieces: Math.round(clamp(s.pieces, lo, hi, def)), spread: clamp(s.spread, 0, 3, 0.6), spin: clamp(s.spin, 0, 720, 30),
@@ -17,15 +38,36 @@ export function normalizeFragments(s = {}) {
     ...(Number.isInteger(seed) && seed >= 0 ? { seed } : {}),
     // The sender's cut angle (radians, on screen), so every client cuts the same way.
     ...(Number.isFinite(cutAngle) ? { cutAngle: Math.atan2(Math.sin(cutAngle), Math.cos(cutAngle)) } : {}),
+    // Burst and no tint stay unstored, so stages saved before them read back unchanged.
+    ...(behavior !== "burst" ? { behavior } : {}),
+    ...(tint !== "none" ? { tint } : {}),
+    // The sender's attacker centre less the target's, in screen squares: where "absorb" flies.
+    ...(Number.isFinite(tx) && Number.isFinite(ty) ? { towards: { x: limit(tx), y: limit(ty) } } : {}),
   };
 }
-// A stage normalized once (per renderer start); the geometry below takes it as is.
+// A stage normalized once (per renderer start); the geometry below takes it as is. Behaviour, tint
+// and towards are always set, so junk the raw stage carries under those keys (the generic effect
+// colour `tint: "#ffffff"`, say) never survives the spread.
 const PREPARED = new WeakSet();
 export function prepareFragments(stage) {
   if (stage && PREPARED.has(stage)) return stage;
-  const s = { ...stage, ...normalizeFragments(stage) };
+  const n = normalizeFragments(stage);
+  const s = { ...stage, ...n, behavior: n.behavior ?? "burst", tint: n.tint ?? "none", towards: n.towards };
   PREPARED.add(s);
   return s;
+}
+
+// How many pieces a stage cuts (absorb staggers by it; pixelate orders by it).
+export function fragmentCount(stage) {
+  const s = prepareFragments(stage);
+  switch (s.pattern) {
+    case "halves": case "topBottom": return 2;
+    case "cross": case "claw": return 4;
+    case "diced": return s.pieces * s.pieces;
+    case "rings": return s.pieces * 8;
+    case "dust": case "pixelate": { const cols = Math.ceil(Math.sqrt(s.pieces)); return cols * Math.round(s.pieces / cols); }
+    default: return s.pieces;
+  }
 }
 
 // mulberry32: tiny, fast and identical on every client.
@@ -60,6 +102,29 @@ function clip(pts, n, d) {
   return out;
 }
 const piece = (polygon) => ({ polygon, centroid: centroidOf(polygon) });
+const normal = (a) => ({ x: -Math.sin(a), y: Math.cos(a) });
+const flip = (n) => ({ x: -n.x, y: -n.y });
+// A wedge from angle t0 to t1 (under a half-turn) around c: two half-plane clips cut it exactly.
+function wedge(t0, t1, c = { x: 0, y: 0 }) {
+  const n0 = { x: -Math.sin(t0), y: Math.cos(t0) }, n1 = { x: Math.sin(t1), y: -Math.cos(t1) };
+  return clip(clip(SQUARE, n0, n0.x * c.x + n0.y * c.y), n1, n1.x * c.x + n1.y * c.y);
+}
+// The part of a convex polygon where lo <= n·p <= hi; an infinite bound is not cut.
+function band(pts, n, lo, hi) {
+  let out = pts;
+  if (lo > -Infinity) out = clip(out, n, lo);
+  if (hi < Infinity) out = clip(out, flip(n), -hi);
+  return out;
+}
+// A cols x rows grid of rects (dust, diced, pixelate), row by row; `ordered` numbers the cells.
+function gridPieces(cols, rows, ordered = false) {
+  const w = 1 / cols, h = 1 / rows, out = [];
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const x = -0.5 + c * w, y = -0.5 + r * h;
+    out.push({ ...piece([{ x, y }, { x: x + w, y }, { x: x + w, y: y + h }, { x, y: y + h }]), rect: { x, y, w, h }, ...(ordered ? { order: r * cols + c } : {}) });
+  }
+  return out;
+}
 
 // The cut angle is on screen; `turn` is the token art's rotation, so pieces are cut in the art's
 // own frame at the screen angle minus the turn (top/bottom stays level on screen).
@@ -71,23 +136,47 @@ export function fragmentPieces(stage, cutAngle, turn = 0) {
     const n = { x: -Math.sin(a), y: Math.cos(a) };
     return [piece(clip(SQUARE, { x: -n.x, y: -n.y }, 0)), piece(clip(SQUARE, n, 0))];
   }
-  if (s.pattern === "dust") {
-    const cols = Math.ceil(Math.sqrt(s.pieces)), rows = Math.round(s.pieces / cols), w = 1 / cols, h = 1 / rows, out = [];
-    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-      const x = -0.5 + c * w, y = -0.5 + r * h;
-      out.push({ ...piece([{ x, y }, { x: x + w, y }, { x: x + w, y: y + h }, { x, y: y + h }]), rect: { x, y, w, h } });
+  if (s.pattern === "dust" || s.pattern === "pixelate") {
+    const cols = Math.ceil(Math.sqrt(s.pieces));
+    return gridPieces(cols, Math.round(s.pieces / cols), s.pattern === "pixelate");
+  }
+  if (s.pattern === "diced") return gridPieces(s.pieces, s.pieces);
+  if (s.pattern === "cross") {
+    // Two perpendicular cuts through the centre at the swing +-45 degrees: one wedge faces the swing.
+    const a = screenCut(s, cutAngle) - turn, n1 = normal(a + Math.PI / 4), n2 = normal(a - Math.PI / 4);
+    return [[n1, n2], [n1, flip(n2)], [flip(n1), flip(n2)], [flip(n1), n2]].map(([u, v]) => piece(clip(clip(SQUARE, u, 0), v, 0)));
+  }
+  if (s.pattern === "claw") {
+    // Three parallel rakes along the swing tilted 30 degrees, a quarter apart: four strips.
+    const n = normal(screenCut(s, cutAngle) + Math.PI / 6 - turn), cuts = [-Infinity, -0.25, 0, 0.25, Infinity];
+    return cuts.slice(0, 4).map((lo, i) => piece(band(SQUARE, n, lo, cuts[i + 1])));
+  }
+  if (s.pattern === "starburst") {
+    // Even wedges around the exact centre, no jitter; only the base angle is seeded.
+    const base = rand() * Math.PI * 2, step = (Math.PI * 2) / s.pieces;
+    return Array.from({ length: s.pieces }, (_, i) => piece(wedge(base + i * step, base + (i + 1) * step)));
+  }
+  if (s.pattern === "rings") {
+    // Eight 45-degree wedges, each banded by straight lines square to its bisector at k/N of the
+    // half-diagonal: each segment stays convex, neighbours share edges exactly, the last ring takes the corners.
+    const step = Math.SQRT1_2 / s.pieces, out = [];
+    for (let k = 0; k < s.pieces; k++) for (let j = 0; j < 8; j++) {
+      const t0 = (j * Math.PI) / 4, mid = t0 + Math.PI / 8, b = { x: Math.cos(mid), y: Math.sin(mid) };
+      const poly = band(wedge(t0, t0 + Math.PI / 4), b, k ? k * step : -Infinity, k < s.pieces - 1 ? (k + 1) * step : Infinity);
+      if (poly.length >= 3 && polygonArea(poly) > 1e-9) out.push({ ...piece(poly), ring: k });
     }
     return out;
+  }
+  if (s.pattern === "ribbons") {
+    // Screen x in the art's own frame: the strips stay upright on screen however the token is turned.
+    const u = { x: Math.cos(turn), y: -Math.sin(turn) }, e = (Math.abs(u.x) + Math.abs(u.y)) / 2, w = (2 * e) / s.pieces;
+    return Array.from({ length: s.pieces }, (_, i) => piece(band(SQUARE, u, i ? -e + i * w : -Infinity, i < s.pieces - 1 ? -e + (i + 1) * w : Infinity)));
   }
   // Shards: wedges around a jittered centre; each wedge stays under a half-turn so two
   // half-plane clips cut it exactly.
   const c = { x: (rand() - 0.5) * 0.3, y: (rand() - 0.5) * 0.3 }, base = rand() * Math.PI * 2, step = (Math.PI * 2) / s.pieces;
   const angles = Array.from({ length: s.pieces }, (_, i) => base + i * step + (rand() - 0.5) * step * 0.4);
-  return angles.map((t0, i) => {
-    const t1 = i === angles.length - 1 ? angles[0] + Math.PI * 2 : angles[i + 1];
-    const n0 = { x: -Math.sin(t0), y: Math.cos(t0) }, n1 = { x: Math.sin(t1), y: -Math.cos(t1) };
-    return piece(clip(clip(SQUARE, n0, n0.x * c.x + n0.y * c.y), n1, n1.x * c.x + n1.y * c.y));
-  });
+  return angles.map((t0, i) => piece(wedge(t0, i === angles.length - 1 ? angles[0] + Math.PI * 2 : angles[i + 1], c)));
 }
 
 // Each piece's own flight, in screen squares relative to where it started: the piece's centroid
