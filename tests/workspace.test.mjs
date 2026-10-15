@@ -699,17 +699,60 @@ test("a finisher's Applies to takes dropped items, typed names and chip removal,
   await drop('Item.axe');
   assert.equal(r.match, 'Shove, Greataxe');
   assert.ok(!r.itemUuid, 'a finisher drop never binds a single item');
+  assert.deepEqual(r.finisher.links, { greataxe: 'Item.axe' }, 'the drop remembers its item for the card');
   let edits = 0;
   f.w.edit = () => { edits++; return r; };
+  await drop('Item.axe');
+  assert.equal(r.match, 'Shove, Greataxe', 'no duplicate');
+  assert.equal(edits, 0, 'the same item again leaves the recipe unedited');
   await drop('Item.shove');
   assert.equal(r.match, 'Shove, Greataxe', 'no duplicate, whatever the case');
-  assert.equal(edits, 0, 'a duplicate leaves the recipe unedited');
+  assert.equal(r.finisher.links.shove, 'Item.shove', 'dropping an item onto a typed name links it');
+  assert.equal(r.finisher.on, 'kill', 'the rest of the finisher stays');
   const input = { value: '  Fireball ', dataset: {}, hasAttribute: (name) => name === 'data-finisher-add' };
   f.w.onChange({ target: input });
   assert.equal(r.match, 'Shove, Greataxe, Fireball');
   assert.equal(input.value, '');
+  assert.equal(r.finisher.links.fireball, undefined, 'a typed name has no link');
   await f.click({ action: 'finisher-unlink', name: 'greataxe' });
   assert.equal(r.match, 'Shove, Fireball');
+  assert.deepEqual(r.finisher.links, { shove: 'Item.shove' }, 'removing a name removes its link');
+});
+
+test("a linked Applies-to card opens its own item, not the recipe's", async () => {
+  const f = workspace();
+  const r = { id: 'fin', name: 'Fin', trigger: 'manual', match: 'Greataxe', itemUuid: 'Item.legacy', finisher: { on: 'kill', links: { greataxe: 'Item.axe' } }, stages: [] };
+  f.w.recipe = () => r;
+  const opened = [];
+  f.w.host = { resolveItem: async (uuid) => ({ uuid, sheet: { render: async () => opened.push(uuid) } }) };
+  await f.click({ action: 'open-bound', uuid: 'Item.axe' });
+  assert.deepEqual(opened, ['Item.axe']);
+  await f.click({ action: 'open-bound' });
+  assert.deepEqual(opened, ['Item.axe', 'Item.legacy'], 'a recipe card still opens its bound item');
+});
+
+test("removing a linked name with no other change still drops the link; the catalog dropdown passes its uuid", async () => {
+  const f = workspace();
+  const r = { id: 'fin', name: 'Fin', trigger: 'manual', match: '', finisher: { on: 'kill', links: { shove: 'Item.s' } }, stages: [] };
+  let edits = 0;
+  f.w.edit = () => { edits++; return r; };
+  f.w.recipe = () => r;
+  await f.click({ action: 'finisher-unlink', name: 'Shove' });
+  assert.equal(edits, 1, 'a stale link is a change');
+  assert.deepEqual(r.finisher.links, {});
+  edits = 0;
+  await f.click({ action: 'finisher-unlink', name: 'Shove' });
+  assert.equal(edits, 0, 'nothing left to remove: undirtied');
+  const calls = [];
+  f.w.linkFinisherTo = async (...args) => calls.push(args);
+  f.w.onChange({ target: { value: 'fin', dataset: { finisherLink: 'Greataxe', finisherUuid: 'Compendium.x.Item.axe' }, hasAttribute: (name) => name === 'data-finisher-link' } });
+  f.w.onChange({ target: { value: '', dataset: { finisherLink: 'Shove' }, hasAttribute: (name) => name === 'data-finisher-link' } });
+  assert.deepEqual(calls, [['Greataxe', 'fin', 'Compendium.x.Item.axe'], ['Shove', '', undefined]]);
+  const saved = [];
+  f.w.host = { recipes: () => [{ id: 'fin', name: 'Fin', match: '', finisher: { on: 'kill' }, stages: [] }], save: async (list) => saved.push(list) };
+  delete f.w.linkFinisherTo;
+  await f.w.linkFinisherTo('Greataxe', 'fin', 'Compendium.x.Item.axe');
+  assert.deepEqual(saved[0][0].finisher.links, { greataxe: 'Compendium.x.Item.axe' });
 });
 
 test("removing a finisher chip also drops a hidden item binding; an absent name changes nothing", async () => {

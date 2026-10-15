@@ -14,7 +14,7 @@ import {
 } from "./model.mjs";
 import { finishersPageHTML, finisherSettingsHTML } from "./finisher-ui.mjs";
 import { presetFinisher } from "./finisher-presets.mjs";
-import { linkFinisher, addFinisherName, removeFinisherName } from "./finisher-model.mjs";
+import { linkFinisher, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem } from "./finisher-model.mjs";
 import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
 import { fragmentsControlsHTML, fragmentsPreviewSVG, resetPiecesOnPattern } from "./fragments-ui.mjs";
@@ -1199,10 +1199,11 @@ export class Workspace {
     const look = `<label>Teleport look<select data-field="teleportStyle">${styleOptions}${style === 'custom' ? '<option value="custom" selected disabled>Custom effects (choose below)</option>' : ''}</select></label>${this.teleportAssetHTML(r, 'teleportOut', 'Departure effect')}${this.teleportAssetHTML(r, 'teleportIn', 'Arrival effect')}<p class="an-hint">Browse to preview and choose each effect from Assets, or use your own media file. These cues play at the departure and arrival spots, in addition to the recipe's stages.</p><div class="an-field-row"><label>Effect size (× token width)<input type="number" min="0.1" max="5" step="0.1" data-field="teleportScale" value="${r.teleportScale ?? 1.8}"></label><label>Effect tint (optional)<input data-field="teleportTint" placeholder="#aa88ff" value="${esc(r.teleportTint ?? '')}" pattern="#[0-9a-fA-F]{6}"></label></div>`;
     return `<label>Teleport${known}<select data-field="teleport">${Object.entries(TELEPORT_WHO).map(([k, v]) => `<option value="${k}" ${k === mode ? "selected" : ""}>${k === "none" ? v : `${v}, to a spot you click`}</option>`).join("")}</select></label>${mode === "none" ? "" : `<div class="an-field-row"><label>Range in feet (0 = the spell's range)<input type="number" min="0" max="5280" step="5" data-field="teleportRange" value="${r.teleportRange ?? 0}"></label><label class="an-check"><input type="checkbox" data-field="teleportAdjacent" ${plan?.adjacent ? "checked" : ""}> Next to the caster</label></div>${look}`}<p class="an-hint">When it plays, the one who cast clicks where to go (a ring shows the range, Esc cancels). The token vanishes and reappears there: with finishers, the only Animater settings that really move a token.</p>`;
   }
-  // The catalog Finisher dropdown edits the finisher's applies-to list (one finisher per entry).
-  async linkFinisherTo(entryName, finisherId) {
+  // The catalog Finisher dropdown edits the finisher's applies-to list (one finisher per entry);
+  // `uuid`, the entry's item when known, shows as that name's Applies-to card.
+  async linkFinisherTo(entryName, finisherId, uuid) {
     try {
-      await this.host.save(linkFinisher(this.host.recipes(), entryName, finisherId));
+      await this.host.save(linkFinisher(this.host.recipes(), entryName, finisherId, uuid));
       this.message = finisherId ? `${entryName} now plays this finisher.` : `${entryName} no longer plays a finisher.`;
     } catch (error) { this.message = error.message; }
     this.render();
@@ -1649,7 +1650,7 @@ export class Workspace {
   onChange(e) {
     if(this.mediaLibrary?.change(e.target))return;
     if(this.flashEditor?.change(e.target))return;
-    if (e.target.hasAttribute("data-finisher-link")) { void this.linkFinisherTo(e.target.dataset.finisherLink, e.target.value); return; }
+    if (e.target.hasAttribute("data-finisher-link")) { void this.linkFinisherTo(e.target.dataset.finisherLink, e.target.value, e.target.dataset.finisherUuid); return; }
     if (e.target.hasAttribute("data-finisher-add")) { const name = e.target.value; e.target.value = ""; if (name.trim()) this.addFinisherName(name); return; }
     if (e.target.hasAttribute("data-finisher-default")) { void this.host.setDefaultFinisher(e.target.value).then(() => this.render(), (error) => { this.message = error.message; this.render(); }); return; }
     if(e.target.hasAttribute('data-dnd-variant')||e.target.dataset.dndFilter||e.target.dataset.dndOption){void this.dndCatalog?.change(e.target).catch(error=>{this.message=error.message;this.render();});return;}
@@ -1926,8 +1927,8 @@ export class Workspace {
         throw Error("Drop a Foundry item here.");
       const item = await this.host.resolveItem(data.uuid);
       if (!item) throw Error("Item could not be resolved.");
-      // A finisher applies to many names: the drop adds one chip, never a single bound item.
-      if (this.recipe()?.finisher) { this.addFinisherName(item.name); return; }
+      // A finisher applies to many names: the drop adds one card (linked to the item), never a single bound item.
+      if (this.recipe()?.finisher) { this.addFinisherName(item.name, item.uuid); return; }
       const r = this.edit();
       r.itemUuid = item.uuid;
       delete r.matchScope;
@@ -1940,13 +1941,15 @@ export class Workspace {
       this.render();
     }
   }
-  // A finisher's Applies-to chip list, edited in the draft (unsaved until Save).
-  addFinisherName(name) {
-    const was = String(this.recipe()?.match ?? ""), next = addFinisherName(was, name), added = String(name ?? "").trim();
-    // A name already there leaves the recipe untouched (not marked unsaved).
-    if (next === addFinisherName(was, "")) this.message = added ? `${added} is already in Applies to.` : this.message;
+  // A finisher's Applies-to card list, edited in the draft (unsaved until Save). `uuid`: the dropped
+  // item, remembered for that name's card; a typed name has none.
+  addFinisherName(name, uuid) {
+    const current = this.recipe(), was = String(current?.match ?? ""), next = addFinisherName(was, name), added = String(name ?? "").trim();
+    const finisher = current?.finisher, linked = uuid ? linkFinisherItem(finisher, added, uuid) : finisher;
+    // A name already there (and already linked to this item) leaves the recipe untouched (not marked unsaved).
+    if (next === addFinisherName(was, "") && linked === finisher) this.message = added ? `${added} is already in Applies to.` : this.message;
     // Finishers match by name; an older drop's hidden itemUuid goes with any edit.
-    else { const r = this.edit(); r.match = next; r.itemUuid = ""; this.message = `Added ${added}. Save to apply.`; }
+    else { const r = this.edit(); r.match = next; r.itemUuid = ""; r.finisher = linkFinisherItem(r.finisher, added, uuid); this.message = next === was ? `Linked ${added} to its item. Save to apply.` : `Added ${added}. Save to apply.`; }
     this.render();
   }
   // Feats, Actions and Features pages: data-action "<key>-auto", "select-<key>"…
@@ -2599,18 +2602,20 @@ export class Workspace {
         return;
       }
       if (action === "open-bound") {
-        const item = await this.host.resolveItem?.(this.recipe().itemUuid);
+        // A finisher's Applies-to card names its own item; a recipe opens its bound item.
+        const item = await this.host.resolveItem?.(b.dataset.uuid || this.recipe().itemUuid);
         if (!item?.sheet) throw Error("The bound item is unavailable.");
         await item.sheet.render({ force: true });
         return;
       }
       if (action === "finisher-unlink") {
-        // Finishers match by name: removing a chip also drops a hidden itemUuid from an older drop.
+        // Finishers match by name: removing a card also drops its link and a hidden itemUuid from an older drop.
         const current = this.recipe(), match = String(current?.match ?? ""), next = removeFinisherName(match, b.dataset.name);
-        if (next !== addFinisherName(match, "") || current?.itemUuid) {
+        if (next !== addFinisherName(match, "") || current?.itemUuid || unlinkFinisherItem(current?.finisher, b.dataset.name) !== current?.finisher) {
           const r = this.edit();
           r.match = next;
           r.itemUuid = "";
+          r.finisher = unlinkFinisherItem(r.finisher, b.dataset.name);
           this.message = `Removed ${b.dataset.name}. Save to apply.`;
         }
       }
