@@ -2293,3 +2293,32 @@ test("Daggerheart: api.resolve reads a roll message; an older system version war
   assert.equal(f.api.resolve(chat({ item: f.item, actor: f.actor, roll: adversaryRoll({ type: "trait" }), action: { name: "Act", roll: { type: "trait" } } })), null);
   await f.api.stop();
 });
+
+// Flash moments read each system's HP track (hp-state.mjs): PF2e counts down to 0, Daggerheart marks
+// hit points up to their maximum. A non-GM client asks the active GM to play the moment.
+test("flash moments: a creature dropping, or marked defeated, asks for its moment in PF2e and Daggerheart", async () => {
+  const tracks = {
+    pf2e: { type: "npc", alive: () => ({ attributes: { hp: { value: 5, max: 10 } } }), down: () => ({ attributes: { hp: { value: 0, max: 10 } } }), changes: { system: { attributes: { hp: { value: 0 } } } } },
+    daggerheart: { type: "adversary", alive: () => ({ resources: { hitPoints: { value: 2, max: 6 } } }), down: () => ({ resources: { hitPoints: { value: 6, max: 6 } } }), changes: { system: { resources: { hitPoints: { value: 6 } } } } },
+  };
+  for (const [system, track] of Object.entries(tracks)) {
+    const f = await boot(system);
+    game.user.isGM = false;
+    const orc = Object.assign(f.actor, { name: "Orc", type: track.type, system: track.alive() });
+    const ogre = { id: "b", name: "Ogre", type: track.type, system: track.alive() };
+    const combat = { id: "c", started: true, combatants: [{ actor: orc, token: { disposition: -1 }, defeated: false }, { actor: ogre, token: { disposition: -1 }, defeated: false }] };
+    game.combats = [combat];
+    const asked = () => f.calls.filter((c) => c[0] === "socket" && c[2]?.type === "flash-moment").map((c) => c[2].event);
+    const options = {};
+    await f.fire("preUpdateActor", orc, track.changes, options);
+    orc.system = track.down();
+    await f.fire("updateActor", orc, track.changes, options, "u");
+    assert.deepEqual(asked(), ["lastEnemy"], `${system}: dropping to its last hit point`);
+    await f.fire("updateCombatant", { actor: ogre, name: "Ogre", combat }, { defeated: true }, {}, "u");
+    assert.deepEqual(asked(), ["lastEnemy", "lastEnemy"], `${system}: marked defeated while standing`);
+    await f.fire("updateCombatant", { actor: orc, name: "Orc", combat }, { defeated: true }, {}, "u");
+    assert.equal(asked().length, 2, `${system}: one already down is not a second fall`);
+    delete game.combats;
+    await f.api.stop();
+  }
+});

@@ -5,12 +5,16 @@
 // moment (a crit it rolled, a creature it dropped) and ask the active GM to play it.
 import { STARTER_FLASHES, MOMENT_EVENTS, validateFlashes, validateFlash, chooseFlash, FLASH_EVENTS } from "./flash-model.mjs";
 import { createFlash } from "./flash-render.mjs";
+import { hpState, isKillTransition } from "./hp-state.mjs";
 
 export const FLASH_SETTING = "flashScreens", FLASH_DEFAULTS = "flashDefaults";
 const FRIENDLY = 1, HOSTILE = -1;
 const sideOf = (actor, token) => (actor?.hasPlayerOwner || token?.disposition === FRIENDLY ? "party" : token?.disposition === HOSTILE ? "enemies" : "other");
 const levelOf = (actor) => Number(actor?.level ?? actor?.system?.details?.level?.value ?? actor?.system?.details?.cr ?? 0) || 0;
-const hpOf = (actor) => Number(actor?.system?.attributes?.hp?.value);
+// Standing: the system's HP track is readable and not down (PF2e/SF2e/D&D above 0 HP; Daggerheart
+// short of its last hit point, a companion of its last stress).
+const systemOf = () => globalThis.game?.system?.id;
+const standingUp = (actor, systemId = systemOf()) => hpState(actor, systemId)?.down === false;
 // The encounter's visible combatants, as the portraits layer shows them: player-owned or
 // friendly tokens are the party, hostile ones the enemies. Hidden combatants never appear.
 export function encounterPeople(combat) {
@@ -21,13 +25,13 @@ export function encounterPeople(combat) {
   });
 }
 // A creature dropping to 0 HP in combat: which moment it is (or none).
-export function downMoment(combat, actor) {
+export function downMoment(combat, actor, systemId = systemOf()) {
   const combatant = Array.from(combat?.combatants ?? []).find((c) => c.actor?.id === actor?.id);
   if (!combatant || !combat?.started) return null;
   const side = sideOf(actor, combatant.token);
   if (side === "party") return "partyDown";
   if (side !== "enemies") return null;
-  const standing = Array.from(combat.combatants).filter((c) => sideOf(c.actor, c.token) === "enemies" && !c.defeated && hpOf(c.actor) > 0);
+  const standing = Array.from(combat.combatants).filter((c) => sideOf(c.actor, c.token) === "enemies" && !c.defeated && standingUp(c.actor, systemId));
   // The last one dropping is its own moment (Finish Him!); the combat's ending plays later, when it is closed.
   return standing.length === 1 ? "lastEnemy" : standing.length ? "enemyDown" : "finalEnemy";
 }
@@ -147,15 +151,16 @@ export function flashScreens(host) {
   Hooks.on("deleteCombat", (combat) => { if (activeGM() && combat.started) play(forCombat(combat, "end"), { everyone: true, combat }); });
   // A new round (round 1 is the opening).
   Hooks.on("updateCombat", (combat, changes) => { if (activeGM() && "round" in changes && combat.round > 1 && combat.started) moment("round", {}, combat); });
-  // A creature dropping to 0 HP: told by the client that changed its HP.
+  // A creature dropping to 0 HP (marking its last hit point in Daggerheart): told by the client that
+  // changed its HP. main.mjs's preUpdateActor leaves the hp-state before the change in options.
   Hooks.on("updateActor", (actor, changes, options, userId) => {
-    if (userId !== game.user.id || !(options.animaterHpBefore > 0) || !(hpOf(actor) <= 0)) return;
+    if (userId !== game.user.id || !isKillTransition(options.animaterHpBefore, hpState(actor, game.system.id))) return;
     const combat = runningCombat(actor), event = downMoment(combat, actor);
     if (event) moment(event, { name: actor.name }, combat);
   });
   // A creature marked defeated (dead) without dropping to 0 HP first: told by the client that marked it.
   Hooks.on("updateCombatant", (combatant, changes, options, userId) => {
-    if (userId !== game.user.id || changes.defeated !== true || !(hpOf(combatant.actor) > 0)) return;
+    if (userId !== game.user.id || changes.defeated !== true || !standingUp(combatant.actor)) return;
     const event = downMoment(combatant.combat, combatant.actor);
     if (event) moment(event, { name: combatant.name ?? combatant.actor?.name ?? "" }, combatant.combat);
   });

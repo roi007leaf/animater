@@ -312,3 +312,14 @@ test("the Crossed Swords starter validates with two sword blades meeting at the 
   for (const b of blades) assert.deepEqual([b.keys.find((k) => k.at === 700).x, b.keys.find((k) => k.at === 700).y], [50, 44]);
   assert.ok(s.layers.some((l) => l.kind === "flash" && l.start === 700));
 });
+
+test("moments in Daggerheart: a creature is down once it marks its last hit point", async () => {
+  const { downMoment } = await import("../scripts/flash-combat.mjs");
+  const who = (id, marked, max = 6) => ({ actor: { id, type: "adversary", system: { resources: { hitPoints: { value: marked, max } } } }, token: { disposition: -1 }, defeated: false });
+  const orcA = who("a", 6), orcB = who("b", 2), orcC = who("c", 0);
+  const combat = (list) => ({ started: true, combatants: list });
+  assert.equal(downMoment(combat([orcA, orcB, orcC]), orcA.actor, "daggerheart"), "enemyDown");
+  assert.equal(downMoment(combat([orcA, orcB]), orcA.actor, "daggerheart"), "lastEnemy");
+  assert.equal(downMoment(combat([orcA]), orcA.actor, "daggerheart"), "finalEnemy");
+  assert.equal(downMoment(combat([orcA, orcB]), orcA.actor, "pf2e"), "finalEnemy", "no PF2e hp track: nobody counts as standing");
+});
