@@ -47,3 +47,43 @@ test("the motion controls hide Distance and Intensity for fragments and pass the
   const lunge = Workspace.prototype.motionControlsHTML({ kind: "motion", motion: "lunge", duration: 600 }, 0);
   assert.ok(has(lunge, "distance") && has(lunge, "intensity"));
 });
+
+test("behaviour and tint selects, with the chosen behaviour's hint", () => {
+  const html = fragmentsControlsHTML({ ...s, behavior: "absorb", tint: "ghost" }, 1);
+  assert.match(html, /<select data-field="behavior" data-index="1">/);
+  assert.match(html, /<select data-field="tint" data-index="1">/);
+  assert.match(html, /<option value="absorb" selected>Drawn to the attacker<\/option>/);
+  assert.match(html, /<option value="ghost" selected>Ghostly<\/option>/);
+  const plain = fragmentsControlsHTML({ ...s, tint: "#ffffff" }, 0);
+  assert.match(plain, /<option value="burst" selected>Burst apart<\/option>/);
+  assert.match(plain, /<option value="none" selected>None<\/option>/, "the generic colour tint shows as None");
+  assert.doesNotMatch(plain, /data-behavior-hint/);
+  const hints = { implode: "Pieces collapse into the centre.", absorb: "Pieces stream into the attacker.", rise: "Pieces float away upward.", bounce: "Pieces fall, bounce once and settle.", drip: "Pieces stretch and slide down." };
+  for (const [behavior, hint] of Object.entries(hints)) assert.ok(fragmentsControlsHTML({ ...s, behavior }, 0).includes(`<p class="an-hint" data-behavior-hint>${hint}</p>`), behavior);
+});
+
+test("the Pieces field follows the pattern's range and names what it counts", () => {
+  const input = (stage) => /<label>([^<]+)<input type="number" min="(\d+)" max="(\d+)" step="1" data-field="pieces" data-index="0" value="(\d+)">/.exec(fragmentsControlsHTML(stage, 0))?.slice(1);
+  const fresh = (pattern) => ({ ...s, pattern, pieces: undefined });
+  assert.deepEqual(input(fresh("diced")), ["Per side", "2", "6", "4"]);
+  assert.deepEqual(input(fresh("rings")), ["Rings", "2", "4", "3"]);
+  assert.deepEqual(input(fresh("starburst")), ["Pieces", "6", "16", "10"]);
+  assert.deepEqual(input(fresh("pixelate")), ["Pieces", "16", "64", "36"]);
+  assert.deepEqual(input(fresh("ribbons")), ["Pieces", "6", "16", "10"]);
+  assert.deepEqual(input(fresh("dust")), ["Pieces", "16", "64", "48"]);
+  assert.deepEqual(input(s), ["Pieces", "4", "10", "7"]);
+  for (const pattern of ["cross", "claw"]) assert.equal(has(fragmentsControlsHTML(fresh(pattern), 0), "pieces"), false, `${pattern} always cuts four`);
+});
+
+test("Fade shows whenever pieces fade with the stage", () => {
+  assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "pixelate" }, 0), "fade"), false, "pixels fade per cell");
+  assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "dust", behavior: "rise" }, 0), "fade"), true, "rising dust fades with the stage");
+  assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "starburst" }, 0), "fade"), true);
+});
+
+test("the mini preview shrinks and stretches pieces only when a behaviour does", () => {
+  assert.match(fragmentsPreviewSVG({ ...s, behavior: "implode" }, 1), /scale\(0\.050 0\.050\)/);
+  assert.match(fragmentsPreviewSVG({ ...s, behavior: "drip" }, 1), /scale\(1\.000 2\.200\)/);
+  assert.doesNotMatch(fragmentsPreviewSVG(s, 0.6), /scale\(/);
+  assert.equal((fragmentsPreviewSVG({ ...s, pattern: "rings", pieces: 2 }, 0.5).match(/data-fragment=/g) ?? []).length, 16);
+});

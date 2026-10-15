@@ -318,3 +318,33 @@ test("the Finishers page escapes names, colours, players and items", () => {
   assert.match(html, /&lt;img src=x onerror=1&gt;/);
   assert.match(html, /data-id="a&quot;x"/);
 });
+
+test("finisherGlyphSVG sketches each newer pattern's cut and hints the behaviour", () => {
+  const cutStage = (extra) => withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", ...extra }]);
+  const marks = { cross: [/<line class="an-glyph-mark"/g, 2], claw: [/<line class="an-glyph-mark"/g, 3], diced: [/<line class="an-glyph-mark"/g, 4], starburst: [/<line class="an-glyph-mark"/g, 8],
+    rings: [/<circle class="an-glyph-mark"/g, 2], pixelate: [/<rect class="an-glyph-mark"/g, 4], ribbons: [/<path class="an-glyph-mark"/g, 3] };
+  for (const [pattern, [re, count]] of Object.entries(marks)) {
+    const svg = finisherGlyphSVG(cutStage({ pattern }));
+    assert.equal(kindOf(svg), "fragments", pattern);
+    assert.match(svg, new RegExp(`data-pattern="${pattern}"`), pattern);
+    assert.ok((svg.match(/<polygon class="an-glyph-piece"/g) ?? []).length >= 2, pattern);
+    assert.equal((svg.match(re) ?? []).length, count, pattern);
+    assert.doesNotMatch(svg, /NaN|undefined|Infinity/, pattern);
+    assert.doesNotMatch(svg, /data-behavior/, pattern);
+  }
+  for (const pattern of ["halves", "topBottom", "shards", "dust"]) assert.doesNotMatch(finisherGlyphSVG(cutStage({ pattern })), /an-glyph-mark|an-glyph-hint/, pattern);
+  const glyph = (behavior) => finisherGlyphSVG(cutStage({ pattern: "shards", behavior }));
+  assert.equal((glyph("implode").match(/class="an-glyph-hint"/g) ?? []).length, 4, "four arrows inward");
+  assert.match(glyph("absorb"), /<circle class="an-glyph-attacker"/);
+  assert.match(glyph("absorb"), /data-behavior="absorb"/);
+  for (const behavior of ["rise", "bounce", "drip"]) assert.equal((glyph(behavior).match(/class="an-glyph-hint"/g) ?? []).length, 1, behavior);
+  for (const behavior of ["implode", "absorb", "rise", "bounce", "drip"]) assert.doesNotMatch(glyph(behavior), /NaN|undefined|Infinity/, behavior);
+});
+
+test("behaviour glyph pieces end where the behaviour sends them", () => {
+  const svg = (behavior) => finisherGlyphSVG(withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", pattern: "shards", behavior }]));
+  assert.match(svg("implode"), /type="scale" values="1 1;1 1;0\.05 0\.05;0\.05 0\.05"/, "implode shrinks to a point");
+  assert.match(svg("drip"), /type="scale" values="1 1;1 1;1 2\.2;1 2\.2"/, "drip stretches");
+  assert.doesNotMatch(svg("rise"), /type="scale" values="1 1;1 1;1 1;1 1"/ , "rise shrinks");
+  assert.doesNotMatch(finisherGlyphSVG(withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", pattern: "shards" }])), /type="scale"/, "burst glyphs stay unscaled");
+});

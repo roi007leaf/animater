@@ -2,7 +2,7 @@
 import { normalize, FINISHER_ON, FINISHER_ENDINGS, FINISHER_SUCCESS, FINISHER_WALLS } from "./model.mjs";
 import { linkedFinisher, finisherTravelPath, finisherNames, finisherItemLink } from "./finisher-model.mjs";
 import { pathSquares, samplePath, normalizeKeyframes } from "./keyframe-path.mjs";
-import { fragmentPieces, fragmentFlight, normalizeFragments } from "./fragments.mjs";
+import { fragmentPieces, fragmentFlight, fragmentPose, normalizeFragments } from "./fragments.mjs";
 import { FINISHER_PRESETS, presetFinisher } from "./finisher-presets.mjs";
 import { studioHTML } from "./studio.mjs";
 import { finisherToursHTML } from "./finisher-tour.mjs";
@@ -66,25 +66,76 @@ function clipConvex(pts, clipper) {
   return out;
 }
 
+// Newer patterns get a line sketch of their cut over the pieces, and behaviours an arrow, so a
+// 22px card glyph still reads. Explicit strokes, like the pieces, so no stylesheet is needed.
+const GC = { x: W / 2, y: H / 2 }, GR = 15;
+const MARK = 'class="an-glyph-mark" fill="none" stroke="#e8eaf2" stroke-width="1" stroke-linecap="round" opacity="0.75"';
+const HINT = 'class="an-glyph-hint" fill="none" stroke="#e8eaf2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"';
+const polar = (a, r) => ({ x: GC.x + Math.cos(a) * r, y: GC.y + Math.sin(a) * r });
+const markLine = (a, b) => `<line ${MARK} x1="${num(a.x)}" y1="${num(a.y)}" x2="${num(b.x)}" y2="${num(b.y)}"/>`;
+const PATTERN_MARKS = {
+  cross: (cut) => [cut + Math.PI / 4, cut - Math.PI / 4].map((a) => markLine(polar(a, -GR), polar(a, GR))).join(""),
+  claw: (cut) => {
+    const a = cut + Math.PI / 6, n = { x: -Math.sin(a), y: Math.cos(a) }, d = { x: Math.cos(a) * GR * 0.85, y: Math.sin(a) * GR * 0.85 };
+    return [-0.25, 0, 0.25].map((o) => { const m = { x: GC.x + n.x * o * 2 * GR, y: GC.y + n.y * o * 2 * GR }; return markLine({ x: m.x - d.x, y: m.y - d.y }, { x: m.x + d.x, y: m.y + d.y }); }).join("");
+  },
+  diced: () => [-1, 1].flatMap((k) => [markLine({ x: GC.x + (k * GR) / 3, y: GC.y - GR }, { x: GC.x + (k * GR) / 3, y: GC.y + GR }), markLine({ x: GC.x - GR, y: GC.y + (k * GR) / 3 }, { x: GC.x + GR, y: GC.y + (k * GR) / 3 })]).join(""),
+  starburst: () => Array.from({ length: 8 }, (_, i) => markLine(polar((i * Math.PI) / 4, GR * 0.35), polar((i * Math.PI) / 4, GR * 1.3))).join(""),
+  rings: () => [0.4, 0.75].map((k) => `<circle ${MARK} cx="${GC.x}" cy="${GC.y}" r="${num(GR * k)}"/>`).join(""),
+  pixelate: () => [[1.25, -0.6], [1.5, -0.2], [1.3, 0.3], [1.65, 0.55]].map(([x, y]) => `<rect ${MARK} x="${num(GC.x + x * GR - 1.5)}" y="${num(GC.y + y * GR - 1.5)}" width="3" height="3"/>`).join(""),
+  ribbons: () => [-0.5, 0, 0.5].map((k) => `<path ${MARK} d="M${num(GC.x + k * GR)} ${GC.y - GR} q 3 5 0 10 t 0 10 t 0 10"/>`).join(""),
+};
+function hintArrow(from, to) {
+  const dx = to.x - from.x, dy = to.y - from.y, l = Math.hypot(dx, dy) || 1, ux = dx / l, uy = dy / l;
+  const left = { x: to.x - ux * 4 - uy * 2.5, y: to.y - uy * 4 + ux * 2.5 }, right = { x: to.x - ux * 4 + uy * 2.5, y: to.y - uy * 4 - ux * 2.5 };
+  return `<path ${HINT} d="M${pt(from)} L${pt(to)} M${pt(left)} L${pt(to)} L${pt(right)}"/>`;
+}
+const SIDE = GC.x + GR + 9, down = () => hintArrow({ x: SIDE, y: GC.y - 10 }, { x: SIDE, y: GC.y + 14 });
+const BEHAVIOR_MARKS = {
+  implode: () => [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2].map((a) => hintArrow(polar(a, GR + 9), polar(a, GR + 3))).join(""),
+  absorb: () => `<circle class="an-glyph-attacker" cx="${ABSORB_X}" cy="${GC.y}" r="3"/>${hintArrow({ x: GC.x - GR - 3, y: GC.y }, { x: ABSORB_X + 6, y: GC.y })}`,
+  rise: () => hintArrow({ x: SIDE, y: GC.y + 8 }, { x: SIDE, y: GC.y - 14 }),
+  bounce: down,
+  drip: down,
+};
+const ABSORB_X = 8;
+
 function fragmentsGlyph(stage, color) {
-  const cut = Math.PI / 5, R = 30, pieces = fragmentPieces(stage, cut);
+  const n = normalizeFragments(stage), cut = Math.PI / 5, R = 30, pieces = fragmentPieces(stage, cut);
   // Dust keeps every few specks so a glyph stays small; the flight still comes from the real index.
   const stride = Math.max(1, Math.ceil(pieces.length / 20));
   const shapes = pieces.map((p, i) => {
     if (i % stride) return null;
     const poly = clipConvex(p.polygon, CIRCLE).filter((q, j, all) => j === 0 || Math.hypot(q.x - all[j - 1].x, q.y - all[j - 1].y) > 1e-3);
     if (poly.length < 3) return null;
-    const end = fragmentFlight(stage, p, i, cut).keyframes.at(-1);
-    const dx = Math.max(-30, Math.min(30, end.x * R * 1.4)), dy = Math.max(-16, Math.min(16, end.y * R * 1.4));
+    const flight = fragmentFlight(stage, p, i, cut), end = flight.keyframes.at(-1), cx = W / 2 + p.centroid.x * R, cy = H / 2 + p.centroid.y * R;
+    let dx = Math.max(-30, Math.min(30, end.x * R * 1.4)), dy = Math.max(-16, Math.min(16, end.y * R * 1.4)), grow = null;
+    if (n.behavior) {
+      // The end is an offset from the piece's start, in squares: use it as is, and the pose's scale and stretch.
+      // Absorbed pieces land on the attacker mark instead, wherever the real attacker would be.
+      if (n.behavior === "absorb") { dx = ABSORB_X - cx; dy = GC.y - cy; }
+      else { dx = Math.max(-30, Math.min(30, end.x * R)); dy = Math.max(-16, Math.min(16, end.y * R)); }
+      const pose = fragmentPose(stage, p, flight, 1);
+      if (pose.scale !== 1 || pose.stretchY !== 1) grow = { sx: pose.scale, sy: pose.scale * pose.stretchY, cx, cy };
+    }
     const points = poly.map((q) => `${num(W / 2 + q.x * R)},${num(H / 2 + q.y * R)}`).join(" ");
-    return { points, dx, dy };
+    return { points, dx, dy, grow };
   }).filter(Boolean);
   // Explicit fill and outline so a piece never falls back to an invisible default if the stylesheet misses.
   const polygon = (s) => `<polygon class="an-glyph-piece" fill="${esc(color)}" stroke="#e8eaf2" stroke-width="1.2" stroke-linejoin="round" points="${s.points}"/>`;
   const ghost = `<circle class="an-glyph-ghost" cx="${W / 2}" cy="${H / 2}" r="${R}" fill="none" stroke="${esc(color)}" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.45"/>`;
-  const anim = shapes.map((s) => `<g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;${num(s.dx)} ${num(s.dy)};${num(s.dx)} ${num(s.dy)}" keyTimes="0;0.2;0.75;1" ${LOOP}/><animate attributeName="opacity" values="1;1;0.3;0.3" keyTimes="0;0.5;0.8;1" ${LOOP}/>${polygon(s)}</g>`).join("");
-  const still = shapes.map((s) => `<g transform="translate(${num(s.dx * 0.35)} ${num(s.dy * 0.35)})">${polygon(s)}</g>`).join("");
-  return `${ghost}<g class="an-glyph-anim">${anim}</g><g class="an-glyph-still">${still}</g>`;
+  const move = (s) => `<animateTransform attributeName="transform" type="translate" values="0 0;0 0;${num(s.dx)} ${num(s.dy)};${num(s.dx)} ${num(s.dy)}" keyTimes="0;0.2;0.75;1" ${LOOP}/><animate attributeName="opacity" values="1;1;0.3;0.3" keyTimes="0;0.5;0.8;1" ${LOOP}/>`;
+  // Shrinking or stretching pieces scale about their own centre, in nested groups so the animations do not clash.
+  const sized = (s, grown) => {
+    if (!s.grow) return polygon(s);
+    const { sx, sy, cx, cy } = s.grow, ends = grown ? `${num(sx, 3)} ${num(sy, 3)}` : "1 1";
+    const scale = grown ? `<animateTransform attributeName="transform" type="scale" values="1 1;1 1;${ends};${ends}" keyTimes="0;0.2;0.75;1" ${LOOP}/>` : "";
+    return `<g transform="translate(${num(cx)} ${num(cy)})"><g${grown ? "" : ` transform="scale(${num(sx, 3)} ${num(sy, 3)})"`}>${scale}<g transform="translate(${num(-cx)} ${num(-cy)})">${polygon(s)}</g></g></g>`;
+  };
+  const anim = shapes.map((s) => `<g>${move(s)}${sized(s, true)}</g>`).join("");
+  const still = shapes.map((s) => `<g transform="translate(${num(s.dx * 0.35)} ${num(s.dy * 0.35)})">${sized(s, false)}</g>`).join("");
+  const marks = (PATTERN_MARKS[n.pattern]?.(cut) ?? "") + (BEHAVIOR_MARKS[n.behavior]?.() ?? "");
+  return `${ghost}${marks}<g class="an-glyph-anim">${anim}</g><g class="an-glyph-still">${still}</g>`;
 }
 
 function knockbackGlyph(knockback) {
@@ -100,7 +151,10 @@ export function finisherGlyphSVG(recipe, { size = 80 } = {}) {
   const path = finisherTravelPath(recipe), keyframes = path ? normalizeKeyframes(path.keyframes, { limit: 24 }) : null;
   const fragments = stages.find((s) => s?.kind === "motion" && s.motion === "fragments");
   if (keyframes && pathSquares(keyframes) >= 1) return wrap("travel", color, size, travelGlyph(recipe, keyframes));
-  if (fragments) return wrap("fragments", color, size, fragmentsGlyph(fragments, color), ` data-pattern="${esc(normalizeFragments(fragments).pattern)}"`);
+  if (fragments) {
+    const n = normalizeFragments(fragments);
+    return wrap("fragments", color, size, fragmentsGlyph(fragments, color), ` data-pattern="${esc(n.pattern)}"${n.behavior ? ` data-behavior="${esc(n.behavior)}"` : ""}`);
+  }
   if (keyframes) return wrap("inplace", color, size, inPlaceGlyph(keyframes));
   return wrap("knockback", color, size, knockbackGlyph(Number(recipe?.finisher?.knockback) || 0));
 }
