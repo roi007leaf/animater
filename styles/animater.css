@@ -2589,6 +2589,8 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-tour-menu b { font-size: 12.5px; }
 .animater .an-flash-tour-menu small { font-size: 11px; color: var(--an-muted); }
 .animater .an-flash-guide { white-space: nowrap; }
+/* Show me on the Finishers page: the same pill as in the Flash editor. */
+.animater .an-finisher-guides > .an-flash-guide { width: auto; height: 26px; min-height: 26px; padding: 0 10px; font-size: 12px; border-radius: 999px; }
 .animater .an-flash-list .an-flash-card.is-action { --flash-accent: #6fc7ff; }
 /* Zoomable timeline: lanes as wide as the zoom, a ruler, a shared scrollbar. */
 .animater .an-flash-row-track { overflow: hidden; }

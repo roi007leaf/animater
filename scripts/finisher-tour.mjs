@@ -70,7 +70,7 @@ export function practiceFinisher(tour) {
 const flying = () => [
   { say: "Let's build a <b>finisher</b>: an animation that really moves the target token when it plays. This one flings the target along a path into a wall. It's a practice finisher that is never saved. Press <b>Next</b> when you're ready.",
     targets: [], show: async () => {} },
-  { say: "Click the <b>⚙</b> chip to open the <b>Finisher settings</b>, and set <b>Plays on</b> to <b>Killing blow</b>. (<b>At walls</b> appears once the finisher has a path. We'll set it later.)",
+  { say: "Click the <b>⚙</b> chip to open the <b>Recipe settings</b>, and set <b>Plays on</b> to <b>Killing blow</b>. (<b>At walls</b> appears once the finisher has a path. We'll set it later.)",
     targets: [SEL.settingsOpen, SEL.on, SEL.settingsClose],
     show: async (h) => { await h.openSettings(); await h.choose(SEL.on, "kill"); await h.pause(400); await h.closeSettings(); } },
   { say: "The <b>Target</b> track already has an impact stage. Name it <b>hit</b> in <b>Stage name</b>. Its <b>Visual asset</b> is an impact; <b>Browse ↗</b> picks another one from Assets.",
@@ -122,7 +122,7 @@ const flying = () => [
 const shattering = () => [
   { say: "Let's build a finisher that <b>shatters</b> the target: the token is cut into pieces that fly apart. It's a practice finisher that is never saved. Press <b>Next</b> when you're ready.",
     targets: [], show: async () => {} },
-  { say: "Click the <b>⚙</b> chip to open the <b>Finisher settings</b>. Set <b>Plays on</b> to <b>Critical hit or killing blow</b>, and <b>Ending</b> to <b>Vanish</b>, so nothing is left behind.",
+  { say: "Click the <b>⚙</b> chip to open the <b>Recipe settings</b>. Set <b>Plays on</b> to <b>Critical hit or killing blow</b>, and <b>Ending</b> to <b>Vanish</b>, so nothing is left behind.",
     targets: [SEL.settingsOpen, SEL.on, SEL.ending, SEL.settingsClose],
     show: async (h) => { await h.openSettings(); await h.choose(SEL.on, "criticalOrKill"); await h.choose(SEL.ending, "vanish"); await h.pause(400); await h.closeSettings(); } },
   { say: "The <b>Target</b> track already has a stage for the strike. Name it <b>slash</b> in <b>Stage name</b>.",
@@ -201,4 +201,53 @@ export function studioSurface(w, hand) {
   // Finisher fields live in the settings dialog: open it first.
   const find = async (selector) => { if (/data-field="finisher\./.test(selector)) await openSettings(); return q(selector); };
   return { openSettings, closeSettings, pathPoint, keyframeHandle, diamond, dragKeyframe, pointAt, scrubTo, find };
+}
+
+// ---- putting the studio back. The studio has no undo stack: its state is the page, the open
+// recipe, the drafts and their dirty flags, and the view (stage, keyframe, playhead, dialog, zoom).
+const STUDIO_FIELDS = ["page", "studio", "selected", "stageIndex", "studioTime", "keyframeIndex", "keyframeFocus", "studioSettings", "previewMode", "message", "studioZoom", "studioLoop", "fragmentsPreviewAt", "showFinisherTours"];
+const copyDrafts = (drafts) => new Map([...drafts].map(([id, r]) => [id, structuredClone(r)]));
+export function studioState(w) {
+  return { ...Object.fromEntries(STUDIO_FIELDS.map((k) => [k, w[k]])), drafts: copyDrafts(w.drafts), dirty: new Set(w.dirty) };
+}
+export function restoreStudio(w, state) {
+  w.stopEditorPreview?.();
+  w.studioPlaying = false;
+  const { drafts, dirty, ...fields } = state;
+  Object.assign(w, fields, { drafts: copyDrafts(drafts), dirty: new Set(dirty) });
+}
+// Per step (Back, Replay): the practice draft and what the studio shows of it.
+export const stepSnapshot = (w) => ({ draft: JSON.stringify(w.drafts.get(TOUR_PRACTICE_ID)), stageIndex: w.stageIndex, keyframeIndex: w.keyframeIndex, keyframeFocus: w.keyframeFocus, studioTime: w.studioTime, studioSettings: w.studioSettings, fragmentsPreviewAt: w.fragmentsPreviewAt });
+export function restoreStep(w, snap) {
+  w.stopEditorPreview?.();
+  w.studioPlaying = false;
+  const { draft, ...view } = snap;
+  w.drafts.set(TOUR_PRACTICE_ID, JSON.parse(draft));
+  w.dirty.delete(TOUR_PRACTICE_ID);
+  Object.assign(w, view, { page: "finishers", studio: true, selected: TOUR_PRACTICE_ID });
+  w.render();
+}
+
+// The Finishers page's "Show me" button and menu (the Flash menu's markup and classes).
+export function finisherToursHTML(open) {
+  const menu = open ? `<span class="an-flash-tour-menu" role="menu">${Object.entries(FINISHER_TOURS).map(([id, t]) => `<button role="menuitem" data-action="finisher-tour" data-finisher-tour="${id}"><b>${esc(t.label)}</b><small>${esc(t.detail)}</small></button>`).join("")}</span>` : "";
+  return `<span class="an-flash-guides an-finisher-guides"><button class="an-flash-guide" data-action="finisher-tours" aria-expanded="${!!open}" data-tooltip="Guided walkthroughs: watch a finisher being built, step by step">🎓 Show me ▾</button>${menu}</span>`;
+}
+
+// One tour at a time. Unsaved work in the studio is kept: it is snapshotted here and put back when
+// the tour ends (Finish, Stop, Esc, a click elsewhere, or an error), together with the page.
+export async function runFinisherTour(w, tour = "flying", { lead } = {}) {
+  if (w.touring) return;
+  const which = Object.hasOwn(FINISHER_TOURS, tour) ? tour : "flying";
+  w.touring = true;
+  const saved = studioState(w);
+  const putBack = () => { restoreStudio(w, saved); w.touring = false; w.render(); };
+  try {
+    w.stopEditorPreview?.();
+    w.drafts.set(TOUR_PRACTICE_ID, practiceFinisher(which));
+    w.dirty.delete(TOUR_PRACTICE_ID);
+    Object.assign(w, { page: "finishers", studio: true, selected: TOUR_PRACTICE_ID, studioTime: 0, stageIndex: 0, keyframeIndex: 0, keyframeFocus: false, studioSettings: false, previewMode: "recipe", studioPlaying: false, message: "" });
+    w.render();
+  } catch (error) { putBack(); throw error; }
+  await runTour({ root: w.root, steps: finisherSteps(which), lead, snapshot: () => stepSnapshot(w), restore: (snap) => restoreStep(w, snap), cleanup: putBack, surface: (hand) => studioSurface(w, hand) });
 }

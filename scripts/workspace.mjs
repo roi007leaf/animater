@@ -15,6 +15,7 @@ import {
 import { finishersPageHTML, finisherSettingsHTML } from "./finisher-ui.mjs";
 import { presetFinisher } from "./finisher-presets.mjs";
 import { linkFinisher, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem } from "./finisher-model.mjs";
+import { runFinisherTour, TOUR_PRACTICE_ID } from "./finisher-tour.mjs";
 import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
 import { fragmentsControlsHTML, fragmentsPreviewSVG, resetPiecesOnPattern } from "./fragments-ui.mjs";
@@ -2040,6 +2041,10 @@ export class Workspace {
       action = action === "recipe-menu-duplicate" ? "duplicate" : "delete";
     }
     try {
+      // The guided tour's practice finisher is never saved, copied or deleted (Ctrl+S clicks Save too).
+      if (["save", "duplicate", "delete"].includes(action) && this.recipe()?.id === TOUR_PRACTICE_ID) return;
+      if (action === "finisher-tours") { this.showFinisherTours = !this.showFinisherTours; this.render(); return; }
+      if (action === "finisher-tour") { this.showFinisherTours = false; void runFinisherTour(this, b.dataset.finisherTour); return; }
       if(await this.mediaLibrary?.action(action,b))return;
       if(await this.dndCatalog?.action(action,b))return;
       if(await this.flashEditor?.action(action,b))return;

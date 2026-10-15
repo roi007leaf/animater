@@ -5,6 +5,7 @@ import { pathSquares, samplePath, normalizeKeyframes } from "./keyframe-path.mjs
 import { fragmentPieces, fragmentFlight, normalizeFragments } from "./fragments.mjs";
 import { FINISHER_PRESETS, presetFinisher } from "./finisher-presets.mjs";
 import { studioHTML } from "./studio.mjs";
+import { finisherToursHTML } from "./finisher-tour.mjs";
 
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const choices = (table, current) => Object.entries(table).map(([k, v]) => `<option value="${esc(k)}" ${String(current) === k ? "selected" : ""}>${esc(v)}</option>`).join("");
@@ -157,7 +158,7 @@ export function finishersPageHTML(w, recipe) {
     <label class="an-finisher-default"><span>Default finisher for other kills</span><select data-finisher-default><option value="">None (plain collapse)</option>${all.map((r) => `<option value="${esc(r.id)}" ${r.id === def ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
     <p class="an-hint">Plays for NPC kills when no finisher matches the item.</p>
     ${cards ? `<div class="an-grid an-fcard-grid">${cards}</div>` : `<div class="an-empty an-finishers-empty">No finishers yet. Pick a preset below or start blank.</div>`}
-    <div class="an-section-title"><span>Presets</span><small>Copy one to make it yours</small></div>
+    <div class="an-section-title"><span>Presets</span><small>Copy one to make it yours</small>${finisherToursHTML(w.showFinisherTours)}</div>
     <div class="an-preset-groups">${groups}<div class="an-preset-tiles"><button type="button" data-action="new-finisher" class="an-preset-tile is-blank">+ Blank finisher</button></div></div>
   </section></div>`;
 }

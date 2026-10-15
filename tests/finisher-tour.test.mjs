@@ -124,3 +124,125 @@ for (const tour of ["flying", "shattering"]) {
     }
   });
 }
+
+import { studioState, restoreStudio, stepSnapshot, restoreStep, finisherToursHTML, runFinisherTour } from "../scripts/finisher-tour.mjs";
+import { finishersPageHTML } from "../scripts/finisher-ui.mjs";
+import { installFakeDOM } from "./helpers/fake-dom.mjs";
+import { readFileSync } from "node:fs";
+
+const settle = (ms = 20) => new Promise((r) => setTimeout(r, ms));
+// A GM mid-edit: their own finisher open in the studio with unsaved changes.
+function busyStudio() {
+  const w = Object.create(Workspace.prototype);
+  const mine = { ...practiceFinisher("flying"), id: "mine", name: "Mine" };
+  Object.assign(w, {
+    page: "finishers", studio: true, selected: "mine", stageIndex: 0, keyframeIndex: 2, keyframeFocus: true, studioTime: 450,
+    studioSettings: false, previewMode: "recipe", category: "All", busy: false, message: "Keyframe moved. Save to apply.", studioZoom: 2,
+    drafts: new Map([["mine", mine]]), dirty: new Set(["mine"]),
+    root: { querySelectorAll: () => [], querySelector: () => null },
+  });
+  w.saves = 0;
+  w.host = { environment: () => ({ demo: true }), catalog: () => [], recipes: () => [], players: () => [], itemSummary: () => null, save: async () => { w.saves++; }, confirm: async () => true };
+  w.render = () => {};
+  return w;
+}
+const click = (w, dataset) => w.onClick({ target: { closest: () => ({ dataset, disabled: false }) }, preventDefault() {} });
+
+test("the settings captions name the dialog by its heading, Recipe settings", () => {
+  for (const tour of Object.keys(FINISHER_TOURS)) {
+    const says = finisherSteps(tour).map((s) => s.say).join(" ");
+    assert.doesNotMatch(says, /Finisher settings/);
+    assert.match(says, /<b>⚙<\/b> chip to open the <b>Recipe settings<\/b>/);
+  }
+});
+
+test("the Finishers page has the Show me button, and its menu lists both tours", () => {
+  const page = (open) => finishersPageHTML({ studio: false, showFinisherTours: open, listedRecipes: () => [], host: { recipes: () => [], defaultFinisher: () => "" } });
+  assert.match(page(false), /<button class="an-flash-guide" data-action="finisher-tours" aria-expanded="false"[^>]*>🎓 Show me ▾<\/button>/);
+  assert.doesNotMatch(page(false), /data-finisher-tour=/);
+  const open = page(true);
+  assert.match(open, /aria-expanded="true"/);
+  assert.match(open, /<button role="menuitem" data-action="finisher-tour" data-finisher-tour="flying"><b>A flying finisher<\/b><small>Keyframes: fling the target/);
+  assert.match(open, /data-action="finisher-tour" data-finisher-tour="shattering"><b>A shattering finisher<\/b>/);
+  assert.equal(finisherToursHTML(true).match(/role="menuitem"/g).length, 2);
+});
+
+test("Show me toggles its menu; picking a tour closes it and never starts a second tour", async () => {
+  const w = busyStudio();
+  let renders = 0; w.render = () => { renders++; };
+  await click(w, { action: "finisher-tours" });
+  assert.equal(w.showFinisherTours, true); assert.equal(renders, 1);
+  w.touring = true;
+  await click(w, { action: "finisher-tour", finisherTour: "flying" });
+  assert.equal(w.showFinisherTours, false);
+  assert.equal(w.selected, "mine", "a tour already running: nothing else changes");
+});
+
+test("the practice finisher is never saved, duplicated or deleted", async () => {
+  const w = busyStudio();
+  w.drafts.set(TOUR_PRACTICE_ID, practiceFinisher("flying"));
+  w.selected = TOUR_PRACTICE_ID;
+  for (const action of ["save", "duplicate", "delete"]) await click(w, { action });
+  assert.equal(w.saves, 0);
+  assert.ok(w.drafts.has(TOUR_PRACTICE_ID));
+});
+
+test("studio snapshot and restore bring back page, recipe, drafts, dirty flags and view exactly", () => {
+  const w = busyStudio(), before = studioState(w);
+  w.drafts.get("mine").stages[0].label = "changed in place";
+  w.drafts.set(TOUR_PRACTICE_ID, practiceFinisher("shattering"));
+  Object.assign(w, { selected: TOUR_PRACTICE_ID, stageIndex: 3, studioTime: 0, keyframeIndex: 0, studioSettings: true, message: "", studioZoom: 1 });
+  w.dirty.add(TOUR_PRACTICE_ID);
+  restoreStudio(w, before);
+  assert.deepEqual(studioState(w), before);
+  assert.equal(w.drafts.get("mine").stages[0].label, "", "drafts are copies, not shared objects");
+  assert.equal(w.drafts.has(TOUR_PRACTICE_ID), false);
+  assert.equal(w.dirty.has(TOUR_PRACTICE_ID), false);
+});
+
+test("restoring the studio stops a playing preview", () => {
+  const w = busyStudio(), before = studioState(w);
+  let stopped = 0;
+  Object.assign(w, { studioPlaying: true, previewRun: { stop: () => { stopped++; } } });
+  restoreStudio(w, before);
+  assert.equal(stopped, 1);
+  assert.equal(w.studioPlaying, false);
+  Object.assign(w, { studioPlaying: true, previewRun: { stop: () => { stopped++; } } });
+  w.drafts.set(TOUR_PRACTICE_ID, practiceFinisher("flying"));
+  const snap = stepSnapshot(w);
+  w.drafts.get(TOUR_PRACTICE_ID).name = "edited by a step";
+  w.dirty.add(TOUR_PRACTICE_ID);
+  restoreStep(w, snap);
+  assert.equal(stopped, 2);
+  assert.equal(w.studioPlaying, false);
+  assert.equal(w.recipe().name, "Practice: Thunder shove");
+  assert.equal(w.dirty.has(TOUR_PRACTICE_ID), false);
+});
+
+test("a tour opens the practice finisher and Esc puts the studio back exactly", async () => {
+  const dom = installFakeDOM();
+  try {
+    const w = busyStudio(), before = studioState(w);
+    const running = runFinisherTour(w, "flying", { lead: 0 });
+    assert.equal(w.touring, true);
+    assert.equal(w.selected, TOUR_PRACTICE_ID);
+    assert.equal(w.recipe().name, "Practice: Thunder shove");
+    assert.equal(w.studio, true);
+    assert.equal(w.page, "finishers");
+    await settle();
+    assert.match(dom.caption().innerHTML, /Step 1 of 10/);
+    dom.fire("keydown", { key: "Escape" });
+    await running;
+    assert.equal(w.touring, false);
+    assert.deepEqual(studioState(w), before, "the GM's unsaved draft, dirty flag, selection and playhead are back");
+    assert.equal(w.listedRecipes().some((r) => r.id === TOUR_PRACTICE_ID), false);
+    assert.equal(w.saves, 0);
+    assert.equal(dom.caption(), null);
+  } finally { dom.restore(); }
+});
+
+test("the Show me pill is styled on the Finishers page and the stylesheet stays CRLF", () => {
+  const css = readFileSync(new URL("../styles/animater.css", import.meta.url), "utf8");
+  assert.match(css, /\.animater \.an-finisher-guides > \.an-flash-guide \{[^}]*height: 26px/);
+  assert.doesNotMatch(css, /[^\r]\n/, "every line ends in CRLF");
+});
