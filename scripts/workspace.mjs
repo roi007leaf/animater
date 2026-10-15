@@ -14,7 +14,7 @@ import {
 } from "./model.mjs";
 import { finishersPageHTML, finisherSettingsHTML } from "./finisher-ui.mjs";
 import { presetFinisher } from "./finisher-presets.mjs";
-import { linkFinisher } from "./finisher-model.mjs";
+import { linkFinisher, addFinisherName, removeFinisherName } from "./finisher-model.mjs";
 import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
 import { fragmentsControlsHTML, fragmentsPreviewSVG, resetPiecesOnPattern } from "./fragments-ui.mjs";
@@ -315,6 +315,7 @@ export class Workspace {
     }, { signal: this.abort.signal });
     root.addEventListener("keydown", (e) => {
       if (this.isStudio() && studioKey(this, e)) return;
+      if (e.key === "Enter" && e.target.hasAttribute?.("data-finisher-add")) { e.preventDefault(); this.onChange(e); return; }
       const bar = e.target.closest?.("[data-tl-bar]"); if (bar) { this.nudgeTimeline(bar, e); return; }
       const split = e.target.closest?.("[data-splitter]");
       if (split && ["ArrowLeft", "ArrowRight"].includes(e.key)) { e.preventDefault(); this.setInspectorWidth(this.inspectorWidth() + (e.key === "ArrowLeft" ? 20 : -20), split.closest(".an-work, .an-studio")); }
@@ -1308,7 +1309,7 @@ export class Workspace {
   }
   motionSyncNoticeHTML() { return motionSyncNoticeHTML(this.host.environment()); }
   recipeSettingsHTML(r) {
-    if (r.finisher) return finisherSettingsHTML(r);
+    if (r.finisher) return finisherSettingsHTML(r, { itemSummary: (uuid) => this.host.itemSummary?.(uuid) });
     const linked = r.lifecycle === "document";
     const scope = Object.hasOwn(STRIKE_SCOPES, r.matchScope ?? '') ? r.matchScope : null;
     const binding = !linked && ['attack', 'damage'].includes(r.trigger) ? `<label>Applies to<select data-field="matchScope">${options({ '': 'Item names / slugs', ...STRIKE_SCOPES }, r.matchScope ?? '')}</select></label>` : '';
@@ -1649,6 +1650,7 @@ export class Workspace {
     if(this.mediaLibrary?.change(e.target))return;
     if(this.flashEditor?.change(e.target))return;
     if (e.target.hasAttribute("data-finisher-link")) { void this.linkFinisherTo(e.target.dataset.finisherLink, e.target.value); return; }
+    if (e.target.hasAttribute("data-finisher-add")) { const name = e.target.value; e.target.value = ""; if (name.trim()) this.addFinisherName(name); return; }
     if (e.target.hasAttribute("data-finisher-default")) { void this.host.setDefaultFinisher(e.target.value).then(() => this.render(), (error) => { this.message = error.message; this.render(); }); return; }
     if(e.target.hasAttribute('data-dnd-variant')||e.target.dataset.dndFilter||e.target.dataset.dndOption){void this.dndCatalog?.change(e.target).catch(error=>{this.message=error.message;this.render();});return;}
     if (e.target.hasAttribute("data-state-damage")) { this.stateDamageType = e.target.value; this.render(); return; }
@@ -1924,6 +1926,8 @@ export class Workspace {
         throw Error("Drop a Foundry item here.");
       const item = await this.host.resolveItem(data.uuid);
       if (!item) throw Error("Item could not be resolved.");
+      // A finisher applies to many names: the drop adds one chip, never a single bound item.
+      if (this.recipe()?.finisher) { this.addFinisherName(item.name); return; }
       const r = this.edit();
       r.itemUuid = item.uuid;
       delete r.matchScope;
@@ -1935,6 +1939,16 @@ export class Workspace {
       this.message = error.message;
       this.render();
     }
+  }
+  // A finisher's Applies-to chip list, edited in the draft (unsaved until Save).
+  addFinisherName(name) {
+    const r = this.edit(), was = String(r.match ?? ""), next = addFinisherName(was, name);
+    const added = String(name ?? "").trim();
+    if (added) {
+      r.match = next;
+      this.message = next === addFinisherName(was, "") ? `${added} is already in Applies to.` : `Added ${added}. Save to apply.`;
+    }
+    this.render();
   }
   // Feats, Actions and Features pages: data-action "<key>-auto", "select-<key>"…
   async abilityAction(action, b) {
@@ -2585,6 +2599,11 @@ export class Workspace {
         if (!item?.sheet) throw Error("The bound item is unavailable.");
         await item.sheet.render({ force: true });
         return;
+      }
+      if (action === "finisher-unlink") {
+        const r = this.edit();
+        r.match = removeFinisherName(r.match, b.dataset.name);
+        this.message = `Removed ${b.dataset.name}. Save to apply.`;
       }
       if (action === "unbind") {
         this.edit().itemUuid = "";

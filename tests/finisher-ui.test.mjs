@@ -17,8 +17,7 @@ test("the Finishers page lists only finishers, with presets and the default choi
 
 test("the studio Finisher panel edits every finisher field", () => {
   const html = finisherSettingsHTML(fin("a", "Shove, greataxe", { on: "use", knockback: 2, ending: "vanish" }));
-  for (const field of ["finisher.on", "finisher.mover", "finisher.knockback", "finisher.ending", "finisher.success", "match"]) assert.match(html, new RegExp(`data-field="${field.replace(".", "\.")}"`), field);
-  assert.match(html, /value="Shove, greataxe"/);
+  for (const field of ["finisher.on", "finisher.mover", "finisher.knockback", "finisher.ending", "finisher.success"]) assert.match(html, new RegExp(`data-field="${field.replace(".", "\.")}"`), field);
   assert.match(html, /<option value="vanish" selected>/);
 });
 
@@ -51,4 +50,23 @@ test("a path finisher chooses what happens at walls; legacy travel does not", ()
   assert.match(html, /<option value="slam" selected>Slam into it<\/option>/);
   assert.match(html, /<option value="fit" >Stop short smoothly<\/option>/);
   assert.doesNotMatch(finisherSettingsHTML(fin("b", "Shove")), /finisher\.wall/);
+});
+
+test("Applies to is a chip list with remove buttons, a drop zone and an add-name input", () => {
+  const html = finisherSettingsHTML(fin("a", "Shove, greataxe ,", { on: "use" }));
+  assert.doesNotMatch(html, /data-field="match"/, "no plain match text input");
+  assert.match(html, /class="an-finisher-chip"[^]*?Shove[^]*?data-action="finisher-unlink" data-name="Shove"/);
+  assert.match(html, /data-action="finisher-unlink" data-name="greataxe"/);
+  assert.equal(html.match(/data-action="finisher-unlink"/g).length, 2, "one chip per trimmed name");
+  assert.match(html, /data-finisher-drop[^>]*>[^]*Drop spells, feats, actions, weapons or items here/);
+  assert.match(html, /<input[^>]*data-finisher-add[^>]*placeholder="Add a name…"/);
+  assert.match(finisherSettingsHTML(fin("b", "")), /an-finisher-chips is-empty/, "no names: an empty list, still with the drop zone");
+});
+
+test("a chip shows the bound item's icon when the host can name it", () => {
+  const r = { ...fin("a", "Greataxe, Shove"), itemUuid: "Item.axe" };
+  const html = finisherSettingsHTML(r, { itemSummary: (uuid) => (uuid === "Item.axe" ? { name: "greataxe", img: "axe.webp" } : null) });
+  assert.match(html, /<img src="axe\.webp" alt="">Greataxe/);
+  assert.equal(html.match(/<img /g).length, 1, "names without a known item have no icon");
+  assert.doesNotMatch(finisherSettingsHTML(r), /<img /, "no lookup, no icons");
 });

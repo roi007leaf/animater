@@ -1,6 +1,6 @@
 // The Finishers page, the studio's Finisher settings and the catalog entries' Finisher dropdown.
-import { FINISHER_ON, FINISHER_MOVERS, FINISHER_ENDINGS, FINISHER_SUCCESS, FINISHER_WALLS } from "./model.mjs";
-import { linkedFinisher, finisherTravelPath } from "./finisher-model.mjs";
+import { normalize, FINISHER_ON, FINISHER_MOVERS, FINISHER_ENDINGS, FINISHER_SUCCESS, FINISHER_WALLS } from "./model.mjs";
+import { linkedFinisher, finisherTravelPath, finisherNames } from "./finisher-model.mjs";
 import { pathSquares } from "./keyframe-path.mjs";
 import { FINISHER_PRESETS } from "./finisher-presets.mjs";
 import { studioHTML } from "./studio.mjs";
@@ -21,11 +21,24 @@ export function finishersPageHTML(w, recipe) {
   </section></div>`;
 }
 
-export function finisherSettingsHTML(r) {
+// Applies to: one chip per name in `match`. A name that is the bound item's shows its icon.
+function appliesToHTML(r, itemSummary) {
+  const bound = r.itemUuid ? itemSummary?.(r.itemUuid) : null, list = finisherNames(r.match);
+  const chips = list.map((n) => {
+    const icon = bound?.img && normalize(bound.name) === normalize(n) ? `<img src="${esc(bound.img)}" alt="">` : "";
+    return `<span class="an-finisher-chip">${icon}${esc(n)}<button type="button" class="an-icon" data-action="finisher-unlink" data-name="${esc(n)}" aria-label="Remove ${esc(n)}" data-tooltip="Remove ${esc(n)}">✕</button></span>`;
+  }).join("");
+  return `<div class="an-finisher-applies"><span class="an-label">Applies to</span>
+    <div class="an-finisher-chips${list.length ? "" : " is-empty"}">${chips || `<small>No items yet. Drop one below or add a name.</small>`}</div>
+    <div class="an-finisher-drop" data-finisher-drop>Drop spells, feats, actions, weapons or items here</div>
+    <input data-finisher-add aria-label="Add a name" placeholder="Add a name…"></div><p class="an-hint">Matched by item name. The Finisher dropdown on catalog entries edits this list too.</p>`;
+}
+
+export function finisherSettingsHTML(r, { itemSummary } = {}) {
   const f = r.finisher, path = finisherTravelPath(r), select = (key, label, table) => `<label>${label}<select data-field="finisher.${key}">${choices(table, f[key])}</select></label>`;
   return `<div class="an-editor-section an-binding an-finisher"><div class="an-section-title"><b>Finisher</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>
     <label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>
-    <label>Applies to<input data-field="match" placeholder="shove, greataxe, fireball" value="${esc(r.match)}"></label><p class="an-hint">Item names, commas between. The Finisher dropdown on catalog entries edits this list too.</p>
+    ${appliesToHTML(r, itemSummary)}
     ${select("on", "Plays on", FINISHER_ON)}${select("success", "Needs", FINISHER_SUCCESS)}${select("mover", "Moves", FINISHER_MOVERS)}
     ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the ${f.mover === "source" ? "target" : "attacker"} and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label>`}
     ${select("ending", "Ending", FINISHER_ENDINGS)}

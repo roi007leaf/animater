@@ -687,3 +687,24 @@ test("the inspector has no pinned Finisher section: finisher settings live in th
     assert.doesNotMatch(html, /data-field="finisher\./);
   }
 });
+
+test("a finisher's Applies to takes dropped items, typed names and chip removal, all into the draft", async () => {
+  const f = workspace();
+  const r = { id: 'fin', name: 'Fin', trigger: 'manual', match: 'Shove', finisher: { on: 'kill' }, stages: [] };
+  f.w.edit = () => r;
+  f.w.recipe = () => r;
+  f.w.stopEditorPreview = () => {};
+  f.w.host = { resolveItem: async (uuid) => ({ uuid, name: uuid === 'Item.axe' ? 'Greataxe' : 'shove' }) };
+  const drop = (uuid) => f.w.onDrop({ target: { closest: (sel) => (sel === '.an-binding' ? {} : null) }, preventDefault() {}, dataTransfer: { getData: () => JSON.stringify({ type: 'Item', uuid }) } });
+  await drop('Item.axe');
+  assert.equal(r.match, 'Shove, Greataxe');
+  assert.equal(r.itemUuid, undefined, 'a finisher drop never binds a single item');
+  await drop('Item.shove');
+  assert.equal(r.match, 'Shove, Greataxe', 'no duplicate, whatever the case');
+  const input = { value: '  Fireball ', dataset: {}, hasAttribute: (name) => name === 'data-finisher-add' };
+  f.w.onChange({ target: input });
+  assert.equal(r.match, 'Shove, Greataxe, Fireball');
+  assert.equal(input.value, '');
+  await f.click({ action: 'finisher-unlink', name: 'greataxe' });
+  assert.equal(r.match, 'Shove, Fireball');
+});
