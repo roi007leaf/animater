@@ -1,14 +1,15 @@
 // Daggerheart adapter (the Foundryborne `daggerheart` system): pure functions that turn its chat
 // messages and action hooks into Animater events and damage-log entries. Shapes verified against
-// daggerheart 2.10.11 (build/daggerheart.js): roll messages are type "dualityRoll" (players) or
+// daggerheart 2.10.12 (build/daggerheart.js): roll messages are type "dualityRoll" (players) or
 // "adversaryRoll" (adversaries); their system is DHActorRoll (source { actor uuid, item id, action },
 // targets [{ id: token id, actorId: actor uuid, difficulty, evasion }], damage { main, resources }),
 // and system.roll / item / action / actionActor are getters. The roll's own options.roll.type is
-// "attack" or "spellcast" (CONFIG.DH.GENERAL.rollTypes). A hit is the system's own rule
+// "action" or "reaction" (D20Roll.buildEvaluate overwrites it with the actionType), so the attack or
+// spellcast type is read from system.action.roll.type (CONFIG.DH.GENERAL.rollTypes). A hit is the system's own rule
 // (DHActorRoll._getCurrentTargets): a critical, or the total reaching difficulty || evasion.
 // Every read is optional-chained: a shape that moves in a later version skips the event
 // ({ skipped } for the caller to trace) and never throws.
-export const DAGGERHEART_VERIFIED = "2.10.11";
+export const DAGGERHEART_VERIFIED = "2.10.12";
 export const DH_ROLL_TYPES = new Set(["attack", "spellcast"]);
 export const DH_MESSAGE_TYPES = new Set(["dualityRoll", "adversaryRoll"]);
 // Weapon and action ranges (CONFIG.DH.GENERAL.range ids) that strike in melee.
@@ -25,11 +26,19 @@ export function versionBelow(version, floor = DAGGERHEART_VERIFIED) {
   return false;
 }
 
-const list = (value) => (Array.isArray(value) ? value : []);
+const list = (value) => (Array.isArray(value) ? value : value instanceof Set ? [...value] : []);
 const authorOf = (message) => message?.author?.id ?? message?.user?.id;
 const isPrivate = (message) => Boolean(message?.blind) || Array.from(message?.whisper ?? []).length > 0;
-const rollOf = (message) => message?.system?.roll ?? Array.from(message?.rolls ?? [])[0] ?? null;
-const rollTypeOf = (message) => rollOf(message)?.options?.roll?.type ?? message?.system?.action?.roll?.type ?? null;
+// A D20 or Duality roll only: a direct-damage message's rolls[0] is a DamageRoll.
+const isD20Roll = (r) => Boolean(r?.dHope || r?.d20 || /Duality|D20/.test(r?.constructor?.name ?? ""));
+const rollOf = (message) => message?.system?.roll ?? Array.from(message?.rolls ?? []).find(isD20Roll) ?? null;
+// options.roll.type is "action" / "reaction" on a real roll: the action's own type comes first.
+const rollTypeOf = (message) => {
+  const fromAction = message?.system?.action?.roll?.type;
+  if (DH_ROLL_TYPES.has(fromAction)) return fromAction;
+  const fromRoll = rollOf(message)?.options?.roll?.type;
+  return DH_ROLL_TYPES.has(fromRoll) ? fromRoll : fromAction ?? null;
+};
 const tokenUuids = (ids, sceneId) => (sceneId ? ids.map((id) => `Scene.${sceneId}.Token.${id}`) : []);
 const actorIdOf = (uuid) => String(uuid ?? "").match(/Actor\.([^.]+)/)?.[1] ?? null;
 export const domainOf = (item) => String(item?.system?.domain ?? "").toLowerCase() || null;
@@ -148,7 +157,7 @@ export function daggerheartRollEvent(message, userId, { sceneId = null } = {}) {
 
 // daggerheart.postUseAction: an action used without an attack or spellcast roll (a buff, a heal, a
 // feature). A rolled one is skipped: its roll message is the event, so it never plays twice.
-export function daggerheartUseEvent(action, config, { sceneId = null } = {}) {
+export function daggerheartUseEvent(action, config, { sceneId = null, tokenId = null } = {}) {
   if (!action || (config?.hasRoll && DH_ROLL_TYPES.has(action?.roll?.type))) return null;
   if (PRIVATE_MODES.has(config?.selectedMessageMode)) return null;
   const item = action?.item?.documentName === "Item" ? action.item : null;
@@ -158,6 +167,7 @@ export function daggerheartUseEvent(action, config, { sceneId = null } = {}) {
   return {
     type: "use", systemId: "daggerheart", ...(config?.message?.id ? { id: `use:${config.message.id}` } : {}),
     item, itemUuid: item?.uuid, ...named(item, name), actor, sceneId,
+    tokenId: tokenId ?? config?.message?.speaker?.token ?? config?.speaker?.token,
     targetUuids: tokenUuids(ids, sceneId), outcome: null, rollType: action?.roll?.type ?? null, duality: null,
     ...weaponModeOf(item, action), ...cardFields(item),
   };
@@ -171,8 +181,11 @@ function damageMain(system) {
 }
 function damageKindOf(message) {
   const main = damageMain(message?.system), { item, action } = sourceOf(message);
+  if (!main) return null;
   const rolled = list(main?.options?.damageTypes);
-  return dhDamageKind(rolled.length ? rolled : list(action?.damage?.main?.type).length ? action.damage.main.type : item?.system?.attack?.damage?.main?.type);
+  if (rolled.length) return dhDamageKind(rolled);
+  // action.damage.main.type is a SetField: a Set.
+  return dhDamageKind(action?.damage?.main?.type) ?? dhDamageKind(item?.system?.attack?.damage?.main?.type);
 }
 function damageCrit(message) {
   const flag = damageMain(message?.system)?.options?.isCritical;
@@ -206,6 +219,8 @@ export function daggerheartDamageEvent(message, userId, { sceneId = null } = {})
   if (!damageMain(system) && !Object.keys(system?.damage?.resources ?? {}).length) return null;
   if (authorOf(message) !== userId || isPrivate(message)) return null;
   const { item, action, actor, name } = sourceOf(message);
+  // Resource-only damage (stress, fear...) has no hit-point type: nothing to play.
+  if (!system?.hasHealing && !damageKindOf(message)) return null;
   if (!name) return { skipped: `${system?.title || "Daggerheart damage"}: its item or action could not be found.` };
   const { all, hit } = damagedTargets(message);
   if (all.length && !hit.length) return null;

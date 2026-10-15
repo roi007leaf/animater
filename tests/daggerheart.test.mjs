@@ -8,11 +8,11 @@ import { hero, orc, weapon, card, dualityRoll, adversaryRoll, damageRoll, target
 
 const sword = weapon("Longsword");
 
-test("version floor: below 2.10.11 warns, equal or newer does not", () => {
-  assert.equal(DAGGERHEART_VERIFIED, "2.10.11");
+test("version floor: below 2.10.12 warns, equal or newer does not", () => {
+  assert.equal(DAGGERHEART_VERIFIED, "2.10.12");
   assert.equal(versionBelow("2.9.4"), true);
   assert.equal(versionBelow("2.10.10"), true);
-  assert.equal(versionBelow("2.10.11"), false);
+  assert.equal(versionBelow("2.10.12"), false);
   assert.equal(versionBelow("2.11.0"), false);
   assert.equal(versionBelow("3"), false);
   assert.equal(versionBelow(undefined), true);
@@ -91,7 +91,7 @@ test("an attack with no targets: no target uuids, no per-target outcomes, outcom
 });
 
 test("a roll whose item and action cannot be found is skipped with a reason, never thrown", () => {
-  const skipped = daggerheartRollEvent(rollMessage({ item: null, action: null }), "u");
+  const skipped = daggerheartRollEvent(rollMessage({ item: null, action: { roll: { type: "attack" } } }), "u");
   assert.match(skipped.skipped, /could not be found/);
   const broken = rollMessage({ item: sword });
   broken.system.targets = "not a list";
@@ -163,7 +163,7 @@ test("damage: physical by weapon family, magical by domain, magical wins, crit f
   assert.equal(daggerheartDamage(rollMessage({ item: sword, damage: damageRoll(), hasHealing: true })), null, "healing is not damage");
   const missed = daggerheartDamage(rollMessage({ item: sword, roll: dualityRoll({ hope: 2, fear: 1, modifier: 0 }), damage: damageRoll() }));
   assert.equal(missed.tokenIds.size, 0, "a missed target took no damage");
-  const claws = daggerheartDamage(rollMessage({ type: "adversaryRoll", roll: adversaryRoll(), actor: orc, action: { name: "Claws", roll: { type: "attack" }, range: "melee", damage: { main: { type: ["physical"] } } }, damage: damageRoll({ types: [] }) }));
+  const claws = daggerheartDamage(rollMessage({ type: "adversaryRoll", roll: adversaryRoll(), actor: orc, action: { name: "Claws", roll: { type: "attack" }, range: "melee", damage: { main: { type: new Set(["physical"]) } } }, damage: damageRoll({ types: [] }) }));
   assert.equal(claws.dhType, "physical", "the action's damage type when the roll has none");
   assert.equal(claws.synthetic, true);
   assert.equal(claws.actorUuid, "Actor.orc");
@@ -225,4 +225,37 @@ test("damage types for finishers: physical by weapon family, magical by domain, 
   assert.equal(daggerheartDamageType({ type: "magical", item: { name: "Wand" } }), "force", "no domain → blown apart");
   assert.equal(daggerheartDamageType({ type: "magical", item: { system: { domain: "Homebrew" } } }), "force");
   assert.equal(daggerheartDamageType({ type: null }), null);
+});
+
+test("the roll type comes from system.action, since options.roll.type is overwritten with action or reaction", () => {
+  const spell = card("Blink Out", "arcana");
+  const msg = rollMessage({ item: spell, roll: dualityRoll({ type: "spellcast" }) });
+  assert.equal(msg.rolls[0].options.roll.type, "action");
+  assert.equal(msg.system.action.roll.type, "spellcast");
+  assert.equal(daggerheartRollEvent(msg, "u").rollType, "spellcast");
+  assert.equal(daggerheartAttackKind(msg), "spell");
+  const reaction = rollMessage({ item: sword, action: { name: "Parry", roll: { type: "reaction" } } });
+  assert.equal(daggerheartRollEvent(reaction, "u"), null);
+});
+
+test("a use event carries the token: the option, or the config message's speaker", () => {
+  const [action, config] = useHook({ item: card("Bond", "blade", { cardType: "ability" }) });
+  assert.equal(daggerheartUseEvent(action, config, { sceneId: "s", tokenId: "t9" }).tokenId, "t9");
+  assert.equal(daggerheartUseEvent(action, { ...config, message: { speaker: { token: "t5" } } }, { sceneId: "s" }).tokenId, "t5");
+});
+
+test("a direct-damage message's DamageRoll is not read as the attack roll", () => {
+  const msg = rollMessage({ type: "adversaryRoll", roll: null, hasRoll: false, item: sword, damage: damageRoll() });
+  msg.rolls = [{ isCritical: true, total: 5, options: {} }];
+  assert.equal(daggerheartDamage(msg).crit, false);
+  assert.equal(daggerheartDamageEvent(msg, "u").crit, false);
+});
+
+test("resource-only damage (stress) is no damage event, healing still is", () => {
+  assert.equal(daggerheartDamageEvent(rollMessage({ item: sword, damage: damageRoll({ types: ["stress"] }) }), "u"), null);
+  const resourceOnly = rollMessage({ item: sword });
+  resourceOnly.system.damage.resources = { stress: {} };
+  assert.equal(daggerheartDamageEvent(resourceOnly, "u"), null);
+  const heal = daggerheartDamageEvent(rollMessage({ item: sword, damage: damageRoll({ types: ["stress"] }), hasHealing: true }), "u");
+  assert.equal(heal.healing, true);
 });
