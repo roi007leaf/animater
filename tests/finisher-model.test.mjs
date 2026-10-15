@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
@@ -127,4 +127,22 @@ test("the chip warns when a travelling path lands tilted, shrunk or faded (the l
   assert.doesNotMatch(finisherChipText({ finisher: normalizeFinisher({}), stages: [upright] }), /tilted/);
   const inPlace = { ...path, keyframes: [path.keyframes[0], { at: 1, x: 0.2, y: 0, scale: 0.05, alpha: 0 }] };
   assert.doesNotMatch(finisherChipText({ finisher: normalizeFinisher({}), stages: [inPlace] }), /tilted/, "shrinking in place is fine");
+});
+
+test("addFinisherName appends a trimmed name once, ignoring case and blanks", () => {
+  assert.equal(addFinisherName("", "Shove"), "Shove");
+  assert.equal(addFinisherName(undefined, "  Shove "), "Shove");
+  assert.equal(addFinisherName("Shove", "Greataxe"), "Shove, Greataxe");
+  assert.equal(addFinisherName("Shove, Greataxe", "greataxe"), "Shove, Greataxe", "no duplicate, whatever the case");
+  assert.equal(addFinisherName("Shove,greataxe ,", "Fireball"), "Shove, greataxe, Fireball", "keeps the comma format");
+  assert.equal(addFinisherName("Shove", "   "), "Shove");
+  assert.equal(addFinisherName("Shove", null), "Shove");
+});
+
+test("removeFinisherName drops a name whatever its case and keeps the rest", () => {
+  assert.equal(removeFinisherName("Shove, Greataxe, Fireball", "greataxe"), "Shove, Fireball");
+  assert.equal(removeFinisherName("Shove", " SHOVE "), "");
+  assert.equal(removeFinisherName("Shove,Greataxe", "Missing"), "Shove, Greataxe");
+  assert.equal(removeFinisherName("", "Shove"), "");
+  assert.equal(removeFinisherName(undefined, ""), "");
 });

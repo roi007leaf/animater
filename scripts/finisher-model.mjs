@@ -66,6 +66,14 @@ export function linkFinisher(recipes, entryName, finisherId) {
   });
 }
 
+// The Applies-to chips: add or remove one name in `match`, case-insensitively, kept as "A, B".
+export function addFinisherName(match, name) {
+  const list = names({ match }), add = String(name ?? "").trim();
+  if (add && !list.some((n) => normalize(n) === normalize(add))) list.push(add);
+  return list.join(", ");
+}
+export const removeFinisherName = (match, name) => names({ match }).filter((n) => normalize(n) !== normalize(String(name ?? "").trim())).join(", ");
+
 export const linkedFinisher = (recipes, entryName) =>
   live(recipes).find((r) => names(r).some((n) => normalize(n) === normalize(entryName))) ?? null;
 
