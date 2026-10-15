@@ -15,7 +15,7 @@ import { RecipePreview } from "./recipe-preview.mjs";
 
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 export const STUDIO_TRACKS = Object.freeze([
-  { id: "caster", icon: "✦", name: "Caster", kind: "cast" },
+  { id: "caster", icon: "✦", name: "Source", kind: "cast" },
   { id: "flight", icon: "➶", name: "Flight", kind: "projectile" },
   { id: "target", icon: "◎", name: "Target", kind: "impact" },
   { id: "motion", icon: "⇄", name: "Token motion", kind: "motion" },
@@ -52,17 +52,28 @@ export function shownVariant(recipe, stage, selectedIndex = -1) {
   const selected = recipe.stages[selectedIndex];
   return members.includes(selected) ? selected : members[0];
 }
-export function studioTracks(recipe, selectedIndex = -1) {
+// A finisher leads with the tracks its moves live on; Source and Flight sit behind "+ More tracks"
+// unless they already hold stages.
+const FINISHER_ORDER = Object.freeze(["motion", "target", "sound", "fx", "caster", "flight"]);
+const FINISHER_HIDDEN = new Set(["caster", "flight"]);
+export function studioTracks(recipe, selectedIndex = -1, { more = false } = {}) {
   const layout = timelineLayout(recipe);
   const linked = recipe.lifecycle === "document";
   const visible = layout.rows.filter((row) => shownVariant(recipe, recipe.stages[row.index], selectedIndex) === recipe.stages[row.index]);
-  const tracks = STUDIO_TRACKS.map((t) => {
+  const order = recipe.finisher ? FINISHER_ORDER.map((id) => STUDIO_TRACKS.find((t) => t.id === id)) : STUDIO_TRACKS;
+  let tracks = order.map((t) => {
     const rows = visible.filter((row) => trackOf(recipe.stages[row.index]) === t.id);
     return { ...t, lanes: rows.length ? packLanes(rows) : [[]] };
   }).filter((t) => !linked || LINKED_TRACKS.has(t.id) || t.lanes[0].length);
+  let hiddenCount = 0;
+  if (recipe.finisher) {
+    const tucked = (t) => FINISHER_HIDDEN.has(t.id) && !t.lanes[0].length;
+    hiddenCount = tracks.filter(tucked).length;
+    if (!more) tracks = tracks.filter((t) => !tucked(t));
+  }
   // Leave room past the last stage so clips can be dragged later.
   const end = Math.max(0, ...layout.rows.map((r) => r.end));
-  return { tracks, rows: layout.rows, end, total: Math.max(2000, Math.ceil((end * 1.25 + 500) / 500) * 500) };
+  return { tracks, hiddenCount, rows: layout.rows, end, total: Math.max(2000, Math.ceil((end * 1.25 + 500) / 500) * 500) };
 }
 // Label spacing that stays readable at any zoom (~viewport px across the full scale).
 export function rulerStep(total, zoom, viewport = 900) {
@@ -83,7 +94,7 @@ export function studioHTML(w, r) {
   const env = w.host.environment(), canvasUnavailable = Boolean(env.demo), linked = r.lifecycle === "document";
   const motionBlocked = w.motionBlocked(r), unconfigured = w.status(r) === "Choose an asset";
   const index = Math.min(w.stageIndex, r.stages.length - 1), dirty = w.dirty.has(r.id), status = w.status(r), link = w.linkNote?.(r);
-  const duration = w.previewDuration(r), studio = studioTracks(r, w.stageIndex), zoom = w.studioZoom ?? 1;
+  const duration = w.previewDuration(r), studio = studioTracks(r, w.stageIndex, { more: !!w.studioMoreTracks }), zoom = w.studioZoom ?? 1;
   w.previewMode = "recipe";
   const bar = `<header class="an-st-bar"><button class="an-st-back" data-action="studio-close" data-tooltip="Back to all ${r.finisher ? "finishers" : "recipes"}">← ${r.finisher ? "Finishers" : "Recipes"}</button><input class="an-st-name" aria-label="Recipe name" data-field="name" value="${esc(r.name)}">${triggerChipHTML(w, r)}<span class="an-st-state ${status !== "Ready to play" || link?.warn ? "is-missing" : ""}" ${link ? `data-tooltip="${esc(link.text)}"` : ""}>${link?.warn ? "⚠" : "●"} ${esc(dirty ? "Unsaved changes" : link?.warn ? link.short : status)}</span><div class="an-st-bar-actions"><button class="an-icon" data-action="duplicate" data-tooltip="Duplicate recipe" aria-label="Duplicate recipe">⧉</button><button class="an-icon is-danger" data-action="delete" data-tooltip="Delete recipe" aria-label="Delete recipe"><i class="fas fa-trash" aria-hidden="true"></i></button><button data-action="revert" ${dirty ? "" : "disabled"}>Revert</button><button class="an-primary" data-action="save" data-tooltip="Save (Ctrl+S)" ${!dirty || w.busy ? "disabled" : ""}>${dirty ? (r.finisher ? "Save finisher" : "Save recipe") : "Saved ✓"}</button></div></header>`;
   const transport = `<div class="an-st-transport" role="group" aria-label="Playback">
@@ -99,10 +110,11 @@ export function studioHTML(w, r) {
     const canAdd = !w.busy && r.stages.length < MAX_STAGES && (!linked || LINKED_TRACKS.has(t.id));
     return `<div class="an-st-track${silenced(w).has(t.id) ? " is-muted" : ""}" data-st-track="${t.id}"><div class="an-st-head"><span class="an-st-head-icon">${t.icon}</span><b>${esc(t.name)}</b><button class="an-st-ms${w.studioMuted?.has(t.id) ? " is-on" : ""}" data-action="studio-mute" data-st-track="${t.id}" aria-pressed="${!!w.studioMuted?.has(t.id)}" data-tooltip="Mute: hide this track in the monitor">M</button><button class="an-st-ms is-solo${w.studioSolo?.has(t.id) ? " is-on" : ""}" data-action="studio-solo" data-st-track="${t.id}" aria-pressed="${!!w.studioSolo?.has(t.id)}" data-tooltip="Solo: show only soloed tracks in the monitor">S</button><button class="an-st-add" data-action="studio-add" data-st-track="${t.id}" data-tooltip="Add a ${esc(KINDS[t.kind])} stage at the playhead" aria-label="Add ${esc(t.name)} stage at playhead" ${canAdd ? "" : "disabled"}>+</button></div><div class="an-st-lanes">${t.lanes.map((lane) => `<div class="an-tl-lane"><div class="an-tl-track">${lane.map((row) => w.timelineBarHTML(r, row, index, studio.total)).join("")}</div></div>`).join("")}</div></div>`;
   }).join("");
+  const moreRow = studio.hiddenCount ? `<div class="an-st-more-row"><button class="an-st-more" data-action="studio-more" aria-expanded="${!!w.studioMoreTracks}" data-tooltip="${w.studioMoreTracks ? "Hide the empty Source and Flight tracks" : "Show the Source and Flight tracks"}">${w.studioMoreTracks ? "− Fewer tracks" : "+ More tracks"}</button></div>` : "";
   const timeline = `<section class="an-st-timeline" aria-label="Timeline">
     <div class="an-st-scroll" data-st-scroll style="--st-zoom:${zoom}"><div class="an-tl an-st-tl" data-tl-total="${studio.total}" data-studio-tl style="--tl-label:${HEAD_WIDTH}px">
       <div class="an-st-ruler-row"><div class="an-st-corner"><b data-st-time-corner>${seconds(w.studioTime ?? 0)}</b><span class="an-st-corner-tools"><button class="an-st-mini" data-action="studio-zoom-out" data-tooltip="Zoom out (Ctrl+wheel)" aria-label="Zoom out">−</button><button class="an-st-mini" data-action="studio-zoom-in" data-tooltip="Zoom in (Ctrl+wheel)" aria-label="Zoom in">+</button><button class="an-st-mini" data-action="studio-fit" data-tooltip="Fit the whole recipe" aria-label="Fit the whole recipe">⤢</button><button class="an-st-mini" data-action="studio-help" aria-label="Timeline help" data-tooltip="Timeline help:<br>• M / S mute or solo a track in the monitor<br>• + on a track adds a stage at the playhead<br>• Drag clips to move; they snap to other clips and the playhead (hold Alt to place freely)<br>• Drag a clip's right edge to change its length<br>• Right-click a clip: start at playhead, duplicate, delete<br>• Click or drag the ruler to scrub<br>• Space play/pause · Home/End · , . or arrows step · L loop<br>• Ctrl+D duplicate · Delete remove · Ctrl+S save · Ctrl+wheel zoom">?</button></span></div><div class="an-tl-track an-st-ruler" data-st-ruler data-tooltip="Click or drag to move the playhead">${rulerHTML(studio.total, zoom)}</div></div>
-      ${tracks}
+      ${tracks}${moreRow}
       <div class="an-st-end" style="left:${w.timelineX(studio.total, studio.end)}" data-tooltip="Recipe ends"></div>
       <svg class="an-st-links" data-st-links aria-hidden="true"></svg>
       <div class="an-tl-playhead an-st-playhead" data-tl-playhead style="left:${w.timelineX(studio.total, w.studioTime ?? 0)}"><span></span></div>
@@ -480,6 +492,7 @@ export async function studioAction(w, action, b) {
       if (!w.studioPlaying) queueSeek(w);
       return true;
     }
+    case "studio-more": w.studioMoreTracks = !w.studioMoreTracks; w.render(); return true;
     case "studio-zoom-in": applyZoom(w, (w.studioZoom ?? 1) * 1.5); return true;
     case "studio-zoom-out": applyZoom(w, (w.studioZoom ?? 1) / 1.5); return true;
     case "studio-help": return true;

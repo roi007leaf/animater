@@ -2824,3 +2824,6 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
   .animater .an-finishers .an-glyph-still{display:inline}
   .animater .an-finishers .an-fcard:hover,.animater .an-finishers .an-fcard:focus-within{transform:none}
 }
+.an-st-more-row{padding:4px 8px 4px 0;display:flex;justify-content:flex-start;position:sticky;left:0}
+.an-st-more{background:none;border:1px dashed var(--an-line,rgba(255,255,255,.25));border-radius:6px;padding:2px 10px;font-size:11px;cursor:pointer;color:inherit;opacity:.8}
+.an-st-more:hover,.an-st-more:focus-visible{opacity:1}

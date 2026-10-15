@@ -79,7 +79,7 @@ export function chainPreview(recipe, tokens = {}) {
       id: "source",
       subject: "source",
       token: tokens.source,
-      name: "Caster",
+      name: "Source",
       x: chained || targets.length > 1 ? 16 : 24,
       y: cone ? 50 : chained || targets.length > 1 ? 52 : 45,
     },

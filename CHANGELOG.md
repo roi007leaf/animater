@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Studio tracks:** a finisher's timeline now leads with Token motion, Target, Sound and Filters & scene. Source and Flight sit behind a "+ More tracks" row at the bottom (they show on their own when they hold stages). Normal recipes keep all six tracks. The "Caster" track, token and subject labels now read "Source" everywhere; saved data is unchanged.
 - The sidebar footer shows Animater's real version instead of a fixed "v0.2".
 
 ## 1.0.0 (2026-10-15)

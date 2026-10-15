@@ -21,7 +21,7 @@ export function starterRecipes() {
       "#ff9967",
       "attack",
       "fire bolt,ignition,produce flame",
-      "A caster flash, a fiery bolt, then a sharp impact.",
+      "A source flash, a fiery bolt, then a sharp impact.",
       [
         stage(
           "cast",
@@ -113,7 +113,7 @@ export function starterRecipes() {
       "#bf9dff",
       "use",
       "shield",
-      "A brief protective aura which follows its caster.",
+      "A brief protective aura which follows its source.",
       [
         stage(
           "aura",
@@ -184,7 +184,7 @@ export function starterRecipes() {
       "#e7c89c",
       "manual",
       "",
-      "Caster lunges, blade swings, target recoils. All tokens return to their pose.",
+      "Source lunges, blade swings, target recoils. All tokens return to their pose.",
       [
         {
           kind: "motion",
@@ -221,7 +221,7 @@ export function starterRecipes() {
       "#bf9dff",
       "manual",
       "",
-      "Caster rises and settles into an arcane burst.",
+      "Source rises and settles into an arcane burst.",
       [
         {
           kind: "motion",

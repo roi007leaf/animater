@@ -21,7 +21,7 @@ test("large rectangular preview tokens retain footprint, mirrored texture and ch
   const normal = w.previewActorHTML({
     subject: "source",
     token,
-    name: "Caster",
+    name: "Source",
   });
   assert.match(
     normal,

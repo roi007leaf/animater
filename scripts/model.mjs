@@ -57,7 +57,7 @@ function finisherLinks(input) {
   return Object.keys(links).length ? { links } : {};
 }
 export const KINDS = {
-  cast: "Caster",
+  cast: "Source",
   travel: "Source → target",
   projectile: "Moving orb / projectile",
   impact: "Target",
@@ -76,7 +76,7 @@ export const MOTIONS = {
   roll: "Rolling approach / evasion",
   dodge: "Lateral dodge and settle",
   lunge: "Lunge toward target",
-  recoil: "Recoil from caster",
+  recoil: "Recoil from source",
   shake: "Impact shake",
   spin: "Full spin",
   levitate: "Rise and settle",
