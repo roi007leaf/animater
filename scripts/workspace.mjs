@@ -56,6 +56,7 @@ import { handleStateCatalogAction } from "./state-catalog-actions.mjs";
 import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem} from './catalog-system.mjs';
 import {DndCatalogWorkspace} from './dnd5e-catalog-ui.mjs';
 import {sfCatalogProfile} from './sf2e-catalog.mjs';
+import {dhCatalogProfile} from './daggerheart-catalog.mjs';
 import { ORB_ELEMENTS, orbRecipe } from "./orb-builder.mjs";
 import { sampleRecipe, timedStages, variantMembers, previewVariants } from "./composition.mjs";
 import {
@@ -117,7 +118,8 @@ export class Workspace {
   constructor(root, host) {
     this.root = root;
     this.host = host;
-    this.dndCatalog = ['dnd5e','sf2e'].includes(worldCatalogSystem(host.environment?.()??{}))?new DndCatalogWorkspace(this,worldCatalogSystem(host.environment?.()??{})==='sf2e'?sfCatalogProfile:{}):null;
+    const catalogSystem = worldCatalogSystem(host.environment?.() ?? {});
+    this.dndCatalog = ['dnd5e','sf2e','daggerheart'].includes(catalogSystem) ? new DndCatalogWorkspace(this, catalogSystem === 'sf2e' ? sfCatalogProfile : catalogSystem === 'daggerheart' ? dhCatalogProfile : {}) : null;
     this.page = "recipes";
     this.search = "";
     this.category = "All";
@@ -1687,7 +1689,7 @@ export class Workspace {
   }
   // New recipe: the two kinds behave differently, so the author picks one up front.
   lastingRecipesAvailable() {
-    return !this.host.playerMode && ["pf2e", "sf2e", "dnd5e"].includes(this.host.environment?.()?.systemId);
+    return !this.host.playerMode && ["pf2e", "sf2e", "dnd5e", "daggerheart"].includes(this.host.environment?.()?.systemId);
   }
   newChooserHTML() {
     const choice = (action, icon, title, text, example) => `<button class="an-new-choice" data-action="${action}"><span class="an-new-icon">${icon}</span><b>${title}</b><small>${text}</small><small class="an-new-example">${example}</small></button>`;

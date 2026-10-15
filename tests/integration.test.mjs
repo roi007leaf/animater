@@ -2370,3 +2370,42 @@ test("Daggerheart catalog: a card's spellcast roll plays its domain animation wi
   assert.equal(f.api.feats().feats.length, 0);
   await f.api.stop();
 });
+
+test("Daggerheart: Hope plays a gold accent on the roller, Fear a purple one, a critical none; the setting turns it off", async () => {
+  const f = await bootDaggerheart(["jb2a.particle_burst.01.star.yellow", "jb2a.energy_strands.overlay.dark_purple.01"]);
+  f.settings.set("recipes", { schema: 1, recipes: [] });
+  await f.fire("createChatMessage", rollMessage({ id: "h", item: f.item, actor: f.actor, roll: dualityRoll({ hope: 9, fear: 3 }) }));
+  await f.fire("createChatMessage", rollMessage({ id: "f", item: f.item, actor: f.actor, roll: dualityRoll({ hope: 3, fear: 9 }) }));
+  await f.fire("createChatMessage", rollMessage({ id: "c", item: f.item, actor: f.actor, roll: dualityRoll({ hope: 6, fear: 6 }) }));
+  await settle();
+  assert.equal(played(f, "Hope"), 1, JSON.stringify(f.api.activity()));
+  assert.equal(played(f, "Fear"), 1);
+  assert.ok(f.calls.some((c) => c[0] === "file" && c[1] === "jb2a.particle_burst.01.star.yellow"));
+  f.settings.set("daggerheartDualityAccent", false);
+  await f.fire("createChatMessage", rollMessage({ id: "h2", item: f.item, actor: f.actor, roll: dualityRoll({ hope: 9, fear: 3 }) }));
+  await settle();
+  assert.equal(played(f, "Hope"), 1, "off: no accent");
+  await f.api.stop();
+});
+
+test("Daggerheart: a Death move plays its moment; Vulnerable shows a lasting layer while the condition catalog is on", async (t) => {
+  // Earlier tests can leave a fromUuidSync stub behind; the token and its effect exist here.
+  stubGlobal(t, "fromUuidSync", (uuid) => ({ uuid }));
+  const death = dhEntries("condition").find((e) => e.statusId === "deathMove"), vulnerable = dhEntries("condition").find((e) => e.statusId === "vulnerable");
+  const keys = [death, vulnerable].flatMap((e) => dhCatalogRecipe(e).stages.flatMap((s) => s.assets));
+  const f = await bootDaggerheart(keys);
+  f.settings.set("recipes", { schema: 1, recipes: [] });
+  f.settings.set("daggerheartConditionCatalog", { ...useDhEntry(useDhEntry({}, death.id), vulnerable.id), scope: "all" });
+  const effect = { id: "dm", uuid: "Actor.a.ActiveEffect.dm", name: "Death Move", statuses: new Set(["deathMove"]), parent: f.actor };
+  await f.fire("createActiveEffect", effect, {}, "u");
+  // "Played" is traced once the delayed smoke stage (0.9 s) has started.
+  await new Promise((resolve) => setTimeout(resolve, 1300));
+  assert.equal(played(f, "Death move"), 1, JSON.stringify(f.api.activity()));
+  const mark = { id: "vu", uuid: "Actor.a.ActiveEffect.vu", name: "Vulnerable", statuses: new Set(["vulnerable"]), active: true, parent: f.actor };
+  Object.assign(f.actor, { uuid: "Actor.a", appliedEffects: [mark], statuses: new Set(["vulnerable"]), effects: [mark] });
+  f.source.document.uuid = "Scene.s.Token.t";
+  await f.api.refreshPersistent();
+  await settle();
+  assert.ok(f.calls.some((c) => c[0] === "persist"), "a lasting layer");
+  await f.fire("canvasTearDown");
+});

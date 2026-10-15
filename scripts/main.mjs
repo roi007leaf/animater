@@ -10,7 +10,8 @@ import { STRIKE_FLAG, strikeKey, strikeOf, strikePick, picksOnActor } from "./st
 import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
-import { daggerheartRollEvent, daggerheartUseEvent, daggerheartDamageEvent, versionBelow as daggerheartVersionBelow, DAGGERHEART_VERIFIED } from "./daggerheart.mjs";
+import { daggerheartRollEvent, daggerheartUseEvent, daggerheartDamageEvent, dualityAccent, versionBelow as daggerheartVersionBelow, DAGGERHEART_VERIFIED } from "./daggerheart.mjs";
+import { dhStateHost, dhDefeatedStates } from "./daggerheart-states.mjs";
 import { applyEventElement } from "./element-choice.mjs";
 import { AA_ID, AA_TAKEOVER, aaCustomized, registerAATakeover } from "./integrations/automated-animations.mjs";
 import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
@@ -375,7 +376,7 @@ function playTest(recipe, context, options = {}) {
 // Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
 // (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
 const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
-const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens", FINISHERS_SETTING = "finishers", DEFAULT_FINISHER = "defaultFinisher";
+const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens", FINISHERS_SETTING = "finishers", DEFAULT_FINISHER = "defaultFinisher", DUALITY_ACCENT = "daggerheartDualityAccent";
 const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
@@ -1067,6 +1068,11 @@ Hooks.once("init", () => {
     onChange: () => persistentStates?.schedule(),
   });
   registerFlashSettings(ID);
+  game.settings.register(ID, DUALITY_ACCENT, {
+    name: "Hope/Fear accent",
+    hint: "Daggerheart: a duality roll with Hope adds a short gold glint on the roller's token, one with Fear a dark purple wisp, beside the item's own animation. Critical successes keep their own crit visuals.",
+    scope: "world", config: game.system.id === "daggerheart", type: Boolean, default: true,
+  });
   game.settings.register(ID, DAMAGE_REACTIONS, {
     name: "Damage reactions",
     hint: "A token that takes energy damage (fire, cold, lightning, acid, poison and so on) flashes in that damage's look. Physical damage keeps its weapon animation only.",
@@ -1351,9 +1357,9 @@ Hooks.once("ready", () => {
     },
   });
   runtime.refreshCatalog();
-  if (['pf2e','sf2e','dnd5e'].includes(game.system.id)) {
+  if (['pf2e','sf2e','dnd5e','daggerheart'].includes(game.system.id)) {
     persistentStates = new PersistentStates({
-      ...(game.system.id==='sf2e'?sfStateHost:game.system.id==='dnd5e'?dndStateHost:{}),
+      ...(game.system.id==='sf2e'?sfStateHost:game.system.id==='dnd5e'?dndStateHost:game.system.id==='daggerheart'?dhStateHost:{}),
       clientId,
       ready: () => Boolean(canvas.ready && environment().ready),
       sceneId: () => canvas.scene?.id,
@@ -1362,7 +1368,7 @@ Hooks.once("ready", () => {
       // Your own lasting recipes follow the same switch as every other custom recipe.
       customEnabled: () => enabled(),
       catalog: () => runtime.getCatalog(),
-      state: (kind) => game.settings.get(ID, game.system.id==='sf2e'?sfSettingKey(kind):game.system.id==='dnd5e'?dndSettingKey(kind):kind === "condition" ? "conditionCatalog" : "effectCatalog"),
+      state: (kind) => game.settings.get(ID, game.system.id==='sf2e'?sfSettingKey(kind):game.system.id==='dnd5e'?dndSettingKey(kind):game.system.id==='daggerheart'?dhSettingKey(kind):kind === "condition" ? "conditionCatalog" : "effectCatalog"),
       visibility: () => ({ isGM: game.user.isGM, secretConditions: ['pf2e','sf2e'].includes(game.system.id)&&game.settings.get(game.system.id, "metagame_secretCondition") === true }),
       gridSize: () => canvas.grid?.size ?? 100,
       gridDistance: () => canvas.scene?.grid?.distance ?? 5,
@@ -1379,7 +1385,8 @@ Hooks.once("ready", () => {
         return perceivedStates(slugs,token,observer);
       },
       opaqueArt:(token)=>squareTokenArt(token),
-      builtinStates:(token)=>defeatedStates(token.actor,{mode:game.settings.get(ID,DEFEATED_LOOK),statusId:defeatedStatusId()}),
+      // Daggerheart's defeated set (Defeated, Unconscious, Dead) all follow the Defeated look.
+      builtinStates:(token)=>game.system.id==='daggerheart'?dhDefeatedStates(token.actor,game.settings.get(ID,DEFEATED_LOOK)):defeatedStates(token.actor,{mode:game.settings.get(ID,DEFEATED_LOOK),statusId:defeatedStatusId()}),
       // A token deleted or left behind with its scene is not drawn on, and only existing documents are tied.
       tokenAlive:(token)=>!token?.destroyed&&(typeof fromUuidSync!=="function"||!token?.document?.uuid||!!fromUuidSync(token.document.uuid,{strict:false})),
       documentExists:(uuid)=>typeof fromUuidSync!=="function"||!!fromUuidSync(uuid,{strict:false}),
@@ -1726,9 +1733,19 @@ Hooks.once("ready", () => {
     Hooks.on("daggerheart.postUseAction", (action, config) => {
       void dispatch(resolved(() => daggerheartUseEvent(action, config, { sceneId: sceneId(), tokenId: action?.actor?.token?.id ?? null }), "Daggerheart action"));
     });
+    // Hope or Fear on this user's duality roll: a short accent on the roller's token, beside the item's own animation.
+    const playDualityAccent = async (message) => {
+      if (!acceptsEvents() || game.settings.get(ID, DUALITY_ACCENT) === false) return;
+      const accent = dualityAccent(message, game.user.id), token = accent && (!accent.sceneId || accent.sceneId === canvas.scene?.id) ? canvas.tokens?.get(accent.tokenId) : null;
+      if (!token) return;
+      await afterDice({ type: "check", messageId: message.id });
+      const playable = installedStages(validateRecipe(accent.recipe));
+      if (playable.stages.length) await runtime.play(playable, { source: token, targets: [] });
+    };
     Hooks.on("createChatMessage", (message) => {
       void dispatch(resolved(() => daggerheartRollEvent(message, game.user.id, { sceneId: sceneId() }), "Daggerheart roll"));
       void dispatch(resolved(() => daggerheartDamageEvent(message, game.user.id, { sceneId: sceneId() }), "Daggerheart damage"));
+      void playDualityAccent(message).catch((error) => runtime.trace("Blocked", error.message));
     });
     // Damage rolled from an attack or spellcast card is written onto that card: every client remembers
     // it (kills know their attacker, item and type). Anyone who owns the speaker's actor may roll it
@@ -1738,6 +1755,14 @@ Hooks.once("ready", () => {
       remember(damageFromMessage(message, "daggerheart"));
       const author = message?.author?.id ?? message?.user?.id;
       if (userId === game.user.id) void dispatch(resolved(() => daggerheartDamageEvent(message, author, { sceneId: sceneId() }), "Daggerheart damage"));
+    });
+    // A condition applied by this client: Death move plays its moment through dispatch; lasting
+    // conditions are the persistent layers' (daggerheart-states.mjs).
+    Hooks.on("createActiveEffect", (effect, _options, userId) => {
+      if (userId !== game.user.id || effect?.disabled || effect?.isSuppressed) return;
+      if (matchRecipe(recipes().filter((r) => r.lifecycle === "document"), { type: "effect", systemId: "daggerheart", item: effect })) return;
+      const actor = effect?.parent?.documentName === "Actor" ? effect.parent : effect?.parent?.actor;
+      if (actor) void dispatch({ id: `effect:${effect.uuid}`, type: "effect", systemId: "daggerheart", item: effect, actor });
     });
   }
   for (const hook of ["createMeasuredTemplate", "createRegion"])

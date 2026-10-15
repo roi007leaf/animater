@@ -233,3 +233,21 @@ export function daggerheartDamageEvent(message, userId, { sceneId = null } = {})
     ...weaponModeOf(item, action), ...cardFields(item),
   };
 }
+
+// Hope / Fear accent (world setting daggerheartDualityAccent): a ~600 ms glint or wisp on the roller's
+// token, played beside the item's own animation. A critical gets none: its crit visuals and finisher
+// already show it. Patreon keys first, then keys JB2A Free has.
+export const HOPE_ASSETS = Object.freeze(["jb2a.particle_burst.01.star.yellow", "jb2a.twinkling_stars.points07.orange"]);
+export const FEAR_ASSETS = Object.freeze(["jb2a.energy_strands.overlay.dark_purple.01", "jb2a.smoke.puff.centered.dark_purple", "jb2a.particle_burst.01.circle.bluepurple"]);
+export function dualityAccentRecipe(duality) {
+  const hope = duality === "hope";
+  if (!hope && duality !== "fear") return null;
+  return { id: `animater-dh-${duality}`, name: hope ? "Hope" : "Fear", trigger: "manual", color: hope ? "#f5c84c" : "#5b2a86",
+    stages: [{ stageId: duality, kind: "cast", assets: [...(hope ? HOPE_ASSETS : FEAR_ASSETS)], duration: 600, scale: 0.8, opacity: 0.9 }] };
+}
+// The accent for this user's public duality roll with Hope or Fear, and the token it plays on.
+export function dualityAccent(message, userId) {
+  if (message?.type !== "dualityRoll" || authorOf(message) !== userId || isPrivate(message)) return null;
+  const recipe = dualityAccentRecipe(dualityOf(rollOf(message)));
+  return recipe && message?.speaker?.token ? { recipe, tokenId: message.speaker.token, sceneId: message?.speaker?.scene ?? null } : null;
+}

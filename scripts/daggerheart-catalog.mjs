@@ -280,3 +280,18 @@ export function filterDhEntries(kind, { search = "", level = "all", theme = "all
   return dhEntries(kind).filter((e) => (level === "all" || e.level === Number(level)) && (theme === "all" || e.theme === theme)
     && (!query || normalize(`${e.name} ${e.descriptionText ?? ""} ${e.group ?? ""}`).includes(query))).sort((a, b) => (query ? score(b) - score(a) : 0));
 }
+
+// The shared catalog page (dnd5e-catalog-ui.mjs) for Daggerheart: domain cards on the spells page
+// with domain chips, weapons, conditions.
+const DOMAIN_CHIPS = Object.keys(DOMAIN_PALETTES).map((d) => [title(d), title(d)]);
+export const dhCatalogProfile = {
+  systemId: "daggerheart", label: "Daggerheart", source: DAGGERHEART_SOURCE, entries: dhEntries, entry: dhEntry, recipe: dhRecipe, filter: filterDhEntries,
+  normalize: normalizeDhCatalogState, enabled: dhEntryEnabled, use: useDhEntry, stateKey: "dhCatalogState", setStateKey: "setDhCatalogState",
+  kinds: { spells: "card", weapons: "weapon", conditions: "condition" },
+  labels: { card: "domain cards", weapon: "weapons", condition: "conditions" },
+  levelKind: "card", levelLabel: "Level", levels: Array.from({ length: 10 }, (_, i) => i + 1),
+  themeLabel: (kind) => (kind === "card" ? "Domain" : kind === "weapon" ? "Weapon family" : "Kind"),
+  chips: (kind) => (kind === "card" ? DOMAIN_CHIPS : null),
+  intro: "Native Daggerheart compendium content. Each animation is designed from the card's domain and kind, or the weapon's family and range.",
+  hint: "Native system compendiums.",
+};
