@@ -4,7 +4,7 @@ import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { displaceAllowed, landingSpot, wallDistance, withinKnockback } from "./displacement.mjs";
 import { hpPath, hpState, hpChange, isNpcActor, displaceHp } from "./hp-state.mjs";
-import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, pickPlays, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE, critTargets, saveFinisherEvent } from "./finisher-model.mjs";
+import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, pickPlays, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE, critTargets, targetPassed, saveFinisherEvent } from "./finisher-model.mjs";
 import { playFinisher, previewFinisher } from "./finisher-play.mjs";
 import { STRIKE_FLAG, strikeKey, strikeOf, strikePick, picksOnActor } from "./strike-finishers.mjs";
 import { createFragmentRenderer } from "./fragment-render.mjs";
@@ -1536,7 +1536,7 @@ Hooks.once("ready", () => {
     // A player's item: only its owner's use pick. An NPC's item: the GM's use finishers.
     const uses = playerItem(event.item) ? [pickPlays(pickFor(event.item), "use", { event })].filter(Boolean)
       : matchFinishers(recipes(), item, "use").filter((recipe) => usePasses(recipe.finisher, event));
-    for (const recipe of uses) for (const mover of (event.targets ?? []).filter(Boolean)) {
+    for (const recipe of uses) for (const mover of (event.targets ?? []).filter((t) => t && targetPassed(event, t))) {
       // A crit finisher already moves this target in this action: one finisher per token.
       if (!crit.has(mover.id)) void runFinisher(recipe, { mover, attacker: event.source });
     }

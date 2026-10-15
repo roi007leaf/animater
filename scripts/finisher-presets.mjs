@@ -2,6 +2,7 @@
 // ones travel on a held keyframed path so the token is moved to where it lands (finisher-play.mjs).
 import { validateRecipe } from "./model.mjs";
 import { damageLook, normalizeDamageType } from "./damage-moments.mjs";
+import { daggerheartDamageType } from "./daggerheart.mjs";
 
 const HIT = ["jb2a.impact.003.white", "jb2a.impact.005.white"];
 const DUST = ["jb2a.smoke.puff.side.grey", "jb2a.smoke.puff.centered.grey"];
@@ -177,3 +178,8 @@ export function damageTypeFinisher(type) {
   const id = FINISHER_BY_DAMAGE_TYPE[key];
   return Object.hasOwn(FINISHER_PRESETS, id) ? presetFinisher(id, `builtin-${id}`) : null;
 }
+
+// Daggerheart's "By damage type": physical by the killing weapon's family, magical by the card's domain
+// (daggerheartDamageType), then that type's preset. Its damage log already stores this type, so the
+// kill path's damageTypeFinisher reaches the same preset.
+export const daggerheartDamageFinisher = ({ type, item = null, itemName = null } = {}) => damageTypeFinisher(daggerheartDamageType({ type, item, itemName }));

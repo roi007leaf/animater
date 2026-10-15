@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- **Daggerheart** (system 2.10.11): actions, attack and spellcast rolls (with a hit, miss or critical per target), damage and kills animate automatically. Damage written onto an attack card plays once; private rolls stay quiet; a message whose item cannot be found shows a Skipped row in Activity.
+- **Daggerheart library:** domain cards (all ten domains, filter chips, levels 1-10), weapons (by family and range, with melee and ranged fallbacks for homebrew and adversary attacks) and conditions (Vulnerable, Hidden, Restrained as lasting layers; Death move as a moment; Defeated, Unconscious and Dead follow the Defeated look). Built by `tools/build-daggerheart.mjs` from the installed system.
+- **Hope/Fear accent** (world setting, on by default): a duality roll with Hope adds a short gold glint on the roller, one with Fear a dark purple wisp.
+- **Finishers in Daggerheart:** kills land when an adversary marks its last hit point (a companion its last stress); adversaries and creatures no player owns count as NPCs. "By damage type" picks by weapon family for physical damage and by domain for magical damage. A use or critical finisher plays only on the targets that roll struck.
+- **Kills in every system** now go through one per-system HP helper; PF2e, SF2e and D&D 5e behave as before.
+
 ## 1.0.3 (2026-10-15)
 
 - **Finishers:** the mover's impacts and auras that start once its travel has landed (blood linked to the travel's end, or timed after it) now play on the landing square, with the fragments, in test plays and at the table. They used to burst where the token stood, so linked fragments seemed to vanish: they were bursting several squares away, at the real landing.

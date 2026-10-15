@@ -89,8 +89,14 @@ export function saveFinisherEvent(message, systemId, userId) {
 export function critTargets(event) {
   const targets = (event?.targets ?? []).filter(Boolean);
   if (event?.type === "save") return event.outcome === "criticalFailure" ? targets : [];
-  return ["attack", "check"].includes(event?.type) && event.outcome === "criticalSuccess" ? targets : [];
+  if (!["attack", "check"].includes(event?.type)) return [];
+  // A roll judged per target (Daggerheart: against each target's own Difficulty or Evasion).
+  if (event.targetOutcomes) return targets.filter((t) => event.targetOutcomes[t.id] === "criticalSuccess");
+  return event.outcome === "criticalSuccess" ? targets : [];
 }
+
+// With per-target outcomes, a use finisher plays only on the targets the roll struck.
+export const targetPassed = (event, token) => !event?.targetOutcomes || ["success", "criticalSuccess"].includes(event.targetOutcomes[token?.id]);
 
 // The catalog dropdown: the entry belongs to at most one finisher. A given uuid is remembered
 // on that finisher for its Applies-to card; the finishers that lose the name forget its link.

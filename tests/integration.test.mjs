@@ -19,7 +19,7 @@ import {sfEntries,sfRecipe,useSfEntry} from '../scripts/sf2e-catalog.mjs';
 import {Workspace} from '../scripts/workspace.mjs';
 import {previewFilters} from '../scripts/token-fx-preview.mjs';
 import {MediaLibrary} from '../scripts/media-library.mjs';
-import { rollMessage, dualityRoll, adversaryRoll, damageRoll, useHook } from "./fixtures/daggerheart-messages.mjs";
+import { rollMessage, dualityRoll, adversaryRoll, damageRoll, useHook, target as dhTarget } from "./fixtures/daggerheart-messages.mjs";
 import { dhEntries, dhRecipe as dhCatalogRecipe, useDhEntry } from "../scripts/daggerheart-catalog.mjs";
 globalThis.requestAnimationFrame = (fn) =>
   setTimeout(() => fn(performance.now()), 5);
@@ -2408,4 +2408,87 @@ test("Daggerheart: a Death move plays its moment; Vulnerable shows a lasting lay
   await settle();
   assert.ok(f.calls.some((c) => c[0] === "persist"), "a lasting layer");
   await f.fire("canvasTearDown");
+});
+
+// Daggerheart: damage written onto the card, then the adversary's last hit point marked.
+async function dhDamageThenKill(f, { item, damage, defaultFinisher = "by-damage-type", finishers = [] }) {
+  Object.assign(f.item, item);
+  const npc = { id: "npc", type: "adversary", system: { resources: { hitPoints: { value: 3, max: 4 } } }, getActiveTokens: () => [f.target] };
+  Object.assign(f.target, { name: "Bandit", actor: npc, w: 100, h: 100 });
+  Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
+  f.settings.set("finishers", true);
+  f.settings.set("defaultFinisher", defaultFinisher);
+  f.settings.set("recipes", { schema: 1, recipes: finishers });
+  await f.fire("updateChatMessage", rollMessage({ id: "dmg", item: f.item, actor: f.actor, damage, targets: [dhTarget("target", { actorId: "Actor.npc" })] }), { system: { damage: {} } }, {}, "u");
+  const changes = { system: { resources: { hitPoints: { value: 4 } } } }, options = {};
+  await f.fire("preUpdateActor", npc, changes, options);
+  npc.system.resources.hitPoints.value = 4;
+  await f.fire("updateActor", npc, changes, options, "u");
+  await settle();
+  return f.api.activity().filter((e) => e.status === "Finisher");
+}
+
+test("Daggerheart kill by damage type: a Longsword carves, a Shortbow perforates, Arcana blows apart, Midnight consumes", async () => {
+  const cases = [
+    [{ type: "weapon", name: "Longsword", system: { attack: { range: "melee" } } }, damageRoll(), "Carved"],
+    [{ type: "weapon", name: "Shortbow", system: { attack: { range: "far" } } }, damageRoll(), "Perforated"],
+    [{ type: "domainCard", name: "Blink Out", system: { domain: "arcana", level: 4, type: "spell" } }, damageRoll({ types: ["magical"] }), "Blown apart"],
+    [{ type: "domainCard", name: "Dark Whispers", system: { domain: "midnight", level: 6, type: "spell" } }, damageRoll({ types: ["magical"] }), "Consumed"],
+  ];
+  for (const [item, damage, name] of cases) {
+    const f = await bootDaggerheart();
+    const entries = await dhDamageThenKill(f, { item, damage });
+    assert.equal(entries.length, 1, `${item.name}: ${JSON.stringify(f.api.activity())}`);
+    assert.match(entries[0].detail, new RegExp(`^${name}: Bandit`), item.name);
+    await f.api.stop();
+  }
+});
+
+test("Daggerheart kill: the killing item's own kill finisher wins; a player's item plays only its pick", async (t) => {
+  const own = await bootDaggerheart();
+  const mine = await dhDamageThenKill(own, { item: { type: "weapon", name: "Longsword" }, damage: damageRoll(), finishers: [killFin("cut", "Clean cut", "Longsword")] });
+  assert.equal(mine.length, 1, JSON.stringify(own.api.activity()));
+  assert.match(mine[0].detail, /Clean cut: Bandit/);
+  await own.api.stop();
+  const pc = await bootDaggerheart();
+  playerOwns(t, pc, { choice: null });
+  const none = await dhDamageThenKill(pc, { item: { type: "weapon", name: "Longsword" }, damage: damageRoll() });
+  assert.equal(none.length, 0, "a player's item with no pick plays no finisher, not even the built-in");
+  await pc.api.stop();
+});
+
+test("Daggerheart finishers: a use finisher plays on a hit, not a miss or an untargeted roll; a critical plays the critical finisher", async () => {
+  const f = await bootDaggerheart();
+  f.settings.set("finishers", true);
+  const fling = { id: "fling", name: "Fling", trigger: "manual", match: "Longsword", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] };
+  const crit = { id: "crit", name: "Crit", trigger: "manual", match: "Longsword", finisher: { on: "critical" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] };
+  f.settings.set("recipes", { schema: 1, recipes: [fling, crit] });
+  const finishers = () => f.api.activity().filter((e) => e.status === "Finisher");
+  await f.fire("createChatMessage", rollMessage({ id: "miss", item: f.item, actor: f.actor, roll: dualityRoll({ hope: 3, fear: 2, modifier: 0 }) }));
+  await f.fire("createChatMessage", rollMessage({ id: "none", item: f.item, actor: f.actor, targets: [] }));
+  await settle();
+  assert.equal(finishers().length, 0, JSON.stringify(f.api.activity()));
+  await f.fire("createChatMessage", rollMessage({ id: "hit", item: f.item, actor: f.actor }));
+  await settle();
+  assert.equal(finishers().length, 1);
+  assert.match(finishers()[0].detail, /Fling/);
+  await f.fire("createChatMessage", rollMessage({ id: "crit", item: f.item, actor: f.actor, roll: dualityRoll({ hope: 6, fear: 6 }) }));
+  await settle();
+  assert.ok(finishers().some((e) => /Crit/.test(e.detail)), JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("Daggerheart finishers: one roll at two targets plays the use finisher only on the target it hit", async (t) => {
+  const f = await bootDaggerheart();
+  addGoblin(t, f);
+  f.target.name = "Bandit";
+  f.settings.set("finishers", true);
+  const fling = { id: "fling", name: "Fling", trigger: "manual", match: "Longsword", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] };
+  f.settings.set("recipes", { schema: 1, recipes: [fling] });
+  await f.fire("createChatMessage", rollMessage({ id: "two", item: f.item, actor: f.actor, targets: [dhTarget("target", { evasion: 10 }), dhTarget("gob", { evasion: 30 })] }));
+  await settle();
+  const details = f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail);
+  assert.equal(details.length, 1, JSON.stringify(f.api.activity()));
+  assert.match(details[0], /Bandit/);
+  await f.api.stop();
 });
