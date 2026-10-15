@@ -5,13 +5,28 @@ import { prepareFragments, fragmentPieces, fragmentFlight, fragmentPose, FRAGMEN
 
 export function createFragmentRenderer({ PIXI, grid }) {
   // Stone's greyscale: one filter shared by every piece this renderer draws, made on first use.
-  let stone;
+  // Each handle that uses it holds one reference; the last release destroys it. A filter that
+  // cannot be made is cached as null, so the pieces go unfiltered and nothing retries.
+  let stone, holders = 0;
   const stoneFilter = (amount) => {
     if (stone === undefined) {
-      stone = PIXI.ColorMatrixFilter ? new PIXI.ColorMatrixFilter() : null;
-      stone?.greyscale(amount, false);
+      try {
+        const Filter = PIXI.ColorMatrixFilter ?? PIXI.filters?.ColorMatrixFilter;
+        stone = Filter ? new Filter() : null;
+        stone?.greyscale(amount, false);
+      } catch (error) {
+        console.warn("Animater fragments: no stone filter", error);
+        try { stone?.destroy?.(); } catch { /* already failing */ }
+        stone = null;
+      }
     }
     return stone;
+  };
+  const releaseStone = () => {
+    if (--holders > 0) return;
+    holders = 0;
+    try { stone?.destroy?.(); } catch { /* keep cleaning */ }
+    stone = undefined;
   };
   return {
     // `base` is the transform the token is drawn at ({ x, y, rotation, sx, sy }), or a getter for it;
@@ -43,6 +58,9 @@ export function createFragmentRenderer({ PIXI, grid }) {
       const place = (dx, dy) => { const r = rot(dx, dy); return { x: centre.x + r.x, y: centre.y + r.y }; };
       const sorting = { elevation: mesh.elevation ?? token.document?.elevation, sortLayer: mesh.sortLayer, sort: mesh.sort };
       const boxes = [], crops = [];
+      // This handle's hold on the shared stone filter, taken with its first stone piece.
+      let holdsStone = false;
+      const release = () => { if (holdsStone) { holdsStone = false; releaseStone(); } };
       let parts;
       try {
         parts = fragmentPieces(stage, cutAngle, turn).map((piece, i) => {
@@ -65,7 +83,10 @@ export function createFragmentRenderer({ PIXI, grid }) {
             box.addChild(mask); sprite.mask = mask;
           }
           if (look.tint !== undefined) sprite.tint = look.tint;
-          if (look.greyscale) { const filter = stoneFilter(look.greyscale); if (filter) sprite.filters = [filter]; }
+          if (look.greyscale) {
+            const filter = stoneFilter(look.greyscale);
+            if (filter) { if (!holdsStone) { holdsStone = true; holders++; } sprite.filters = [filter]; }
+          }
           box.addChild(sprite);
           const start = place(cx, cy); box.position.set(start.x, start.y); box.rotation = turn;
           // Foundry sorts by elevation, sortLayer, sort, then zIndex: match the token so pieces sit with it.
@@ -77,6 +98,7 @@ export function createFragmentRenderer({ PIXI, grid }) {
       } catch (error) {
         for (const box of boxes) { try { box.destroy({ children: true }); } catch { /* keep cleaning */ } }
         for (const crop of crops) { try { crop.destroy(false); } catch { /* keep cleaning */ } }
+        release();
         throw error;
       }
       const shift = () => {
@@ -100,6 +122,7 @@ export function createFragmentRenderer({ PIXI, grid }) {
             try { part.box.destroy({ children: true }); } catch { /* keep cleaning */ }
             try { part.crop?.destroy(false); } catch { /* keep cleaning */ }
           }
+          release();
         },
       };
     },

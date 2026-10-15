@@ -393,3 +393,45 @@ test("the sender measures towards from the fragmented token to the attacker, onc
   const shake = { kind: "motion", motion: "shake" };
   assert.equal(withFragmentTowards(shake, b, a, b, 100), shake);
 });
+
+test("the shared stone filter is reference-counted per handle and destroyed with the last one", () => {
+  const t = table();
+  class ColorMatrixFilter { constructor() { t.made.filters.push(this); this.destroyed = 0; } greyscale(amount, multiply) { this.grey = [amount, multiply]; } destroy() { this.destroyed++; } }
+  t.PIXI.ColorMatrixFilter = ColorMatrixFilter;
+  const stone = frag({ pattern: "shards", pieces: 6, tint: "stone" });
+  const one = t.r.start(t.token, stone, 0), two = t.r.start(t.token, stone, 0), plain = t.r.start(t.token, frag({ pattern: "halves" }), 0);
+  assert.equal(t.made.filters.length, 1, "both handles share one filter");
+  const filter = t.made.filters[0];
+  plain.destroy();
+  one.destroy();
+  assert.equal(filter.destroyed, 0, "the second handle still uses it");
+  one.destroy();
+  assert.equal(filter.destroyed, 0, "destroying a handle twice releases it once");
+  two.destroy();
+  assert.equal(filter.destroyed, 1, "the last release destroys it");
+  const three = t.r.start(t.token, stone, 0);
+  assert.equal(t.made.filters.length, 2, "a later start makes a fresh filter");
+  assert.ok(t.sprites().slice(-6).every((s) => s.filters[0] === t.made.filters[1]));
+  three.destroy();
+  assert.equal(t.made.filters[1].destroyed, 1);
+});
+
+test("a stone filter that cannot be made leaves the pieces unfiltered and is not retried", () => {
+  const t = table();
+  let tries = 0;
+  t.PIXI.ColorMatrixFilter = class { constructor() { tries++; throw new Error("no filters here"); } };
+  const stone = frag({ pattern: "shards", pieces: 6, tint: "stone" });
+  const one = t.r.start(t.token, stone, 0);
+  one.update(0.5);
+  assert.equal(t.layer.children.length, 6, "the pieces still render");
+  assert.ok(t.sprites().every((s) => s.filters === undefined && s.tint === 0xb0aca4));
+  t.r.start(t.token, stone, 0).destroy();
+  one.destroy();
+  assert.equal(tries, 1, "tried once for the renderer, not per piece or per start");
+  const nested = table();
+  delete nested.PIXI.ColorMatrixFilter;
+  nested.PIXI.filters = { ColorMatrixFilter: class { constructor() { nested.made.filters.push(this); } greyscale(a, m) { this.grey = [a, m]; } destroy() {} } };
+  nested.r.start(nested.token, stone, 0);
+  assert.equal(nested.made.filters.length, 1, "PIXI.filters.ColorMatrixFilter is the fallback");
+  assert.ok(nested.sprites().every((s) => s.filters?.[0] === nested.made.filters[0]));
+});
