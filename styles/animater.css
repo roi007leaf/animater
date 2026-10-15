@@ -2695,6 +2695,10 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-tile-text .an-flash-card-name { font-size: 13.5px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .animater .an-flash-tile-text small { color: var(--an-muted); font-size: 11px; }
 .animater .an-flash-tile .an-flash-badge { align-self: center; }
+.animater .an-flash-tile .an-flash-default { position: absolute; right: 10px; bottom: 12px; min-height: 0; height: 16px; border: 0; cursor: pointer; }
+.animater .an-flash-tile .an-flash-default.is-offer { color: var(--an-muted); background: rgba(255, 255, 255, 0.08); border: 1px solid var(--an-line); opacity: 0; }
+.animater .an-flash-tile:hover .an-flash-default.is-offer, .animater .an-flash-tile:focus-within .an-flash-default.is-offer, .animater .an-flash-default.is-offer:focus-visible { opacity: 1; }
+@media (hover: none), (max-width: 700px) { .animater .an-flash-tile .an-flash-default.is-offer { opacity: 1; } }
 .animater .an-flash-unsaved { color: #ffd34d; }
 .animater .an-flash-switch.is-inline { position: static; transform: none; margin-left: auto; }
 .animater-flash-pick .an-flash-switch { display: inline-flex; align-items: center; gap: 5px; width: auto; flex: 0 0 auto; height: 22px; min-height: 22px; line-height: 1; padding: 0 7px 0 3px; border-radius: 999px; font-size: 10.5px; font-weight: 700; color: var(--color-text-secondary, #aaa); background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; }

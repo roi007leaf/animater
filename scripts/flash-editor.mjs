@@ -212,19 +212,23 @@ export class FlashEditor {
     const list = this.screens(), defaults = this.host.flashDefaults();
     if (this.showGallery) return `<section class="an-flash-page is-library">${this.galleryHTML()}</section>`;
     const group = (f) => (f.event === "start" || f.event === "any" ? "start" : f.event === "end" ? "end" : f.event === "action" ? "action" : "moment");
-    const card = (f) => {
+    const card = (f, sectionKey) => {
       const isDefault = Object.keys(FLASH_EVENTS).some((ev) => defaults[ev] === f.id);
       const detail = f.event === "any" ? "Start or end" : FLASH_EVENTS[f.event];
       // During combat, the GM decides: each moment's screen has its own On/Off switch (off until turned on).
       const moment = group(f) === "moment", on = moment && defaults[f.event] === f.id, unsaved = f.id === this.selectedId && this.dirty;
-      const open = `<button class="an-flash-tile-open" data-action="flash-select" data-id="${esc(f.id)}" aria-label="Edit ${esc(f.name)}"><span class="an-flash-tpl-thumb" data-flash-thumb="mine:${esc(f.id)}"></span><span class="an-flash-tile-text"><span class="an-flash-card-name">${esc(f.name)}${unsaved ? ` <span class="an-flash-unsaved" title="Unsaved changes">•</span>` : ""}</span><small>${esc(detail)}</small></span>${isDefault && !moment ? `<span class="an-flash-badge">Default</span>` : ""}</button>`;
+      const open = `<button class="an-flash-tile-open" data-action="flash-select" data-id="${esc(f.id)}" aria-label="Edit ${esc(f.name)}"><span class="an-flash-tpl-thumb" data-flash-thumb="mine:${esc(f.id)}"></span><span class="an-flash-tile-text"><span class="an-flash-card-name">${esc(f.name)}${unsaved ? ` <span class="an-flash-unsaved" title="Unsaved changes">•</span>` : ""}</span><small>${esc(detail)}</small></span></button>`;
       const toggle = moment ? `<button class="an-flash-switch${on ? " is-on" : ""}" data-action="flash-moment-toggle" data-id="${esc(f.id)}" data-event="${esc(f.event)}" role="switch" aria-checked="${on}" data-tooltip="${on ? `Plays on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}: click to turn off` : `Off: click to play it on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}`}"><span></span>${on ? "On" : "Off"}</button>` : "";
-      return `<div class="an-flash-tile is-${group(f)}">${open}${toggle}</div>`;
+      // Start and end screens can be the default for their section's event ("any" screens toggle each section's own event).
+      const ev = sectionKey === "start" || sectionKey === "end" ? sectionKey : null;
+      const isDef = !!ev && defaults[ev] === f.id, evName = ev ? FLASH_EVENTS[ev] : "";
+      const pick = ev ? `<button class="an-flash-badge an-flash-default${isDef ? " is-on" : " is-offer"}" data-action="flash-card-default" data-id="${esc(f.id)}" data-event="${esc(ev)}" role="switch" aria-checked="${isDef}" data-tooltip="${isDef ? `Default for ${esc(evName)}. Click to turn off (the tracker then plays nothing unless it picks a screen)` : `Make this the default for ${esc(evName)}`}">${isDef ? "Default" : "Set default"}</button>` : "";
+      return `<div class="an-flash-tile is-${group(f)}">${open}${toggle}${pick}</div>`;
     };
     // Combat start: the opening can play as soon as combatants are added, before players see the tracker.
     const onAdd = defaults.startWhen === "add";
     const addSwitch = `<button class="an-flash-switch is-inline${onAdd ? " is-on" : ""}" data-action="flash-start-when" role="switch" aria-checked="${onAdd}" data-tooltip="${onAdd ? "The opening plays as soon as combatants are added: click to wait for Begin Combat" : "Off: the opening waits for Begin Combat. Click to play it as soon as combatants are added"}"><span></span>On add: ${onAdd ? "On" : "Off"}</button>`;
-    const section = (key, title, hint) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><div class="an-flash-libgroup-head"><span class="an-flash-sub">${title}</span><small>${hint}</small>${key === "start" ? addSwitch : ""}</div><div class="an-flash-tiles">${items.map(card).join("")}</div></div>` : ""; };
+    const section = (key, title, hint) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><div class="an-flash-libgroup-head"><span class="an-flash-sub">${title}</span><small>${hint}</small>${key === "start" ? addSwitch : ""}</div><div class="an-flash-tiles">${items.map((x) => card(x, key)).join("")}</div></div>` : ""; };
     return `<section class="an-flash-page is-library">${list.length
       ? section("start", "Combat start", "Pick one per combat in the Combat Tracker; the default plays otherwise.") + section("moment", "During combat", "Switch on the ones that should play.") + section("end", "Combat end", "Pick one per combat in the Combat Tracker; the default plays otherwise.") + section("action", "Before an animation", "Attach one to a recipe in its settings.")
       : `<div class="an-preview-empty">No flash screens yet. Make one with <b>+ New flash screen</b>.</div>`}</section>`;
@@ -722,6 +726,12 @@ export class FlashEditor {
         await this.host.setFlashStartOnAdd(!on);
         const picked = !on && before !== this.host.flashDefaults().start ? this.screens().find((s) => s.id === this.host.flashDefaults().start) : null;
         this.w.message = on ? "The opening now waits for Begin Combat." : `The opening now plays as soon as combatants are added.${picked ? ` Default opening: ${picked.name}.` : ""}`;
+        break;
+      }
+      case "flash-card-default": {
+        // A sibling of the card's open button, so it never opens the editor.
+        const on = this.host.flashDefaults()[b.dataset.event] === b.dataset.id;
+        await this.host.setFlashDefault(b.dataset.event, on ? "none" : b.dataset.id);
         break;
       }
       case "flash-moment-toggle": {
