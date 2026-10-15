@@ -52,21 +52,52 @@ test("a path finisher chooses what happens at walls; legacy travel does not", ()
   assert.doesNotMatch(finisherSettingsHTML(fin("b", "Shove")), /finisher\.wall/);
 });
 
-test("Applies to is a chip list with remove buttons, a drop zone and an add-name input", () => {
+test("Applies to is a card list with Unbind buttons, a drop zone and an add-name input", () => {
   const html = finisherSettingsHTML(fin("a", "Shove, greataxe ,", { on: "use" }));
   assert.doesNotMatch(html, /data-field="match"/, "no plain match text input");
-  assert.match(html, /class="an-finisher-chip"[^]*?Shove[^]*?data-action="finisher-unlink" data-name="Shove"/);
+  assert.doesNotMatch(html, /an-finisher-chip/, "no chips any more");
+  assert.match(html, /class="an-bound[^"]*"[^]*?<b>Shove<\/b>[^]*?data-action="finisher-unlink" data-name="Shove"/);
   assert.match(html, /data-action="finisher-unlink" data-name="greataxe"/);
-  assert.equal(html.match(/data-action="finisher-unlink"/g).length, 2, "one chip per trimmed name");
+  assert.equal(html.match(/data-action="finisher-unlink"/g).length, 2, "one card per trimmed name");
   assert.match(html, /data-finisher-drop[^>]*>[^]*Drop spells, feats, actions, weapons or items here/);
   assert.match(html, /<input[^>]*data-finisher-add[^>]*placeholder="Add a name…"/);
-  assert.match(finisherSettingsHTML(fin("b", "")), /an-finisher-chips is-empty/, "no names: an empty list, still with the drop zone");
+  assert.match(finisherSettingsHTML(fin("b", "")), /an-finisher-cards is-empty/, "no names: an empty list, still with the drop zone");
 });
 
-test("a chip shows the bound item's icon when the host can name it", () => {
+test("a linked name renders the bound-item card: image, type and source, opens its uuid, Unbind", () => {
+  const r = fin("a", "Greataxe", { links: { greataxe: "Compendium.pf2e.equipment-srd.Item.axe" } });
+  const summary = (uuid) => (uuid === "Compendium.pf2e.equipment-srd.Item.axe" ? { name: "Greataxe", img: "axe.webp", type: "weapon", source: "Equipment" } : null);
+  const html = finisherSettingsHTML(r, { itemSummary: summary });
+  assert.match(html, /<button type="button" class="an-bound-item" data-action="open-bound" data-uuid="Compendium\.pf2e\.equipment-srd\.Item\.axe" data-tooltip="Open Greataxe<br><small>[^"]*<\/small>" ><img src="axe\.webp" alt=""><span><b>Greataxe<\/b><small>Weapon · Equipment<\/small>/);
+  assert.match(html, /<button type="button" class="an-bound-unbind" data-action="finisher-unlink" data-name="Greataxe"[^>]*>Unbind<\/button>/);
+  const missing = finisherSettingsHTML(r, { itemSummary: () => null });
+  assert.match(missing, /data-action="open-bound" data-uuid="[^"]+" data-tooltip="[^"]*" disabled>[^]*<b>Greataxe<\/b><small>Item not found<\/small>/, "a lost item keeps its name, disabled");
+  assert.match(finisherSettingsHTML(r), /Item not found/, "no lookup at all: not found");
+});
+
+test("an unlinked name renders the generic By-name card, not clickable", () => {
+  const html = finisherSettingsHTML(fin("a", "Shove"), { itemSummary: () => ({ name: "x", img: "x.webp" }) });
+  assert.match(html, /<img src="icons\/svg\/item-bag\.svg" alt=""><span><b>Shove<\/b><small>By name<\/small>/);
+  assert.doesNotMatch(html, /data-action="open-bound"/);
+  assert.match(html, /data-action="finisher-unlink" data-name="Shove"[^>]*>Unbind</);
+});
+
+test("a legacy bound item still shows as its name's card", () => {
   const r = { ...fin("a", "Greataxe, Shove"), itemUuid: "Item.axe" };
-  const html = finisherSettingsHTML(r, { itemSummary: (uuid) => (uuid === "Item.axe" ? { name: "greataxe", img: "axe.webp" } : null) });
-  assert.match(html, /<img src="axe\.webp" alt="">Greataxe/);
-  assert.equal(html.match(/<img /g).length, 1, "names without a known item have no icon");
-  assert.doesNotMatch(finisherSettingsHTML(r), /<img /, "no lookup, no icons");
+  const html = finisherSettingsHTML(r, { itemSummary: (uuid) => (uuid === "Item.axe" ? { name: "greataxe", img: "axe.webp", type: "weapon", source: "World" } : null) });
+  assert.match(html, /data-uuid="Item\.axe"[^]*?<img src="axe\.webp" alt=""><span><b>Greataxe<\/b>/);
+  assert.equal(html.match(/data-action="open-bound"/g).length, 1, "only the matching name is linked");
+});
+
+test("Applies-to cards escape names, uuids and summaries", () => {
+  const r = fin("a", `<b>"x"</b>`, { links: { [`<b>"x"</b>`]: `Item."><script>` } });
+  const html = finisherSettingsHTML(r, { itemSummary: () => ({ name: "<i>", img: `"><img onerror=1>`, type: "<t>", source: "<s>" }) });
+  assert.doesNotMatch(html, /<script>|<b>"x"|<img onerror|<i>|<t>|<s>/);
+  assert.match(html, /&lt;b&gt;&quot;x&quot;&lt;\/b&gt;/);
+});
+
+test("the catalog dropdown carries the entry's uuid when it has one", () => {
+  const list = w([fin("a", "Greataxe")]);
+  assert.match(finisherLinkHTML(list, "Greataxe", "Compendium.x.Item.1"), /data-finisher-link="Greataxe" data-finisher-uuid="Compendium\.x\.Item\.1"/);
+  assert.doesNotMatch(finisherLinkHTML(list, "Greataxe"), /data-finisher-uuid/);
 });

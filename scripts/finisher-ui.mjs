@@ -1,6 +1,6 @@
 // The Finishers page, the studio's Finisher settings and the catalog entries' Finisher dropdown.
 import { normalize, FINISHER_ON, FINISHER_MOVERS, FINISHER_ENDINGS, FINISHER_SUCCESS, FINISHER_WALLS } from "./model.mjs";
-import { linkedFinisher, finisherTravelPath, finisherNames } from "./finisher-model.mjs";
+import { linkedFinisher, finisherTravelPath, finisherNames, finisherItemLink } from "./finisher-model.mjs";
 import { pathSquares } from "./keyframe-path.mjs";
 import { FINISHER_PRESETS } from "./finisher-presets.mjs";
 import { studioHTML } from "./studio.mjs";
@@ -21,15 +21,22 @@ export function finishersPageHTML(w, recipe) {
   </section></div>`;
 }
 
-// Applies to: one chip per name in `match`. A name that is the bound item's shows its icon.
+// Applies to: one card per name in `match`, shaped like a recipe's bound item. A name dropped
+// from an item (or the legacy bound item's name) opens that item; a typed name is matched by name only.
+const capital = (v) => (v ? v[0].toUpperCase() + v.slice(1) : "");
+const unbindHTML = (n) => `<button type="button" class="an-bound-unbind" data-action="finisher-unlink" data-name="${esc(n)}" aria-label="Remove ${esc(n)}" data-tooltip="Remove ${esc(n)}">Unbind</button>`;
+function appliesCardHTML(n, uuid, itemSummary) {
+  if (!uuid) return `<div class="an-bound is-by-name"><div class="an-bound-item"><img src="icons/svg/item-bag.svg" alt=""><span><b>${esc(n)}</b><small>By name</small></span></div>${unbindHTML(n)}</div>`;
+  const info = itemSummary?.(uuid) ?? null;
+  const meta = info ? [capital(info.type), info.source].filter(Boolean).join(" · ") : "Item not found";
+  return `<div class="an-bound"><button type="button" class="an-bound-item" data-action="open-bound" data-uuid="${esc(uuid)}" data-tooltip="Open ${esc(n)}<br><small>${esc(uuid)}</small>" ${info ? "" : "disabled"}><img src="${esc(info?.img || "icons/svg/item-bag.svg")}" alt=""><span><b>${esc(n)}</b><small>${esc(meta)}</small></span></button>${unbindHTML(n)}</div>`;
+}
 function appliesToHTML(r, itemSummary) {
-  const bound = r.itemUuid ? itemSummary?.(r.itemUuid) : null, list = finisherNames(r.match);
-  const chips = list.map((n) => {
-    const icon = bound?.img && normalize(bound.name) === normalize(n) ? `<img src="${esc(bound.img)}" alt="">` : "";
-    return `<span class="an-finisher-chip">${icon}${esc(n)}<button type="button" class="an-icon" data-action="finisher-unlink" data-name="${esc(n)}" aria-label="Remove ${esc(n)}" data-tooltip="Remove ${esc(n)}">✕</button></span>`;
-  }).join("");
+  const list = finisherNames(r.match), legacy = r.itemUuid ? itemSummary?.(r.itemUuid) : null;
+  const linkOf = (n) => finisherItemLink(r.finisher, n) ?? (legacy && normalize(legacy.name) === normalize(n) ? r.itemUuid : null);
+  const cards = list.map((n) => appliesCardHTML(n, linkOf(n), itemSummary)).join("");
   return `<div class="an-finisher-applies"><span class="an-label">Applies to</span>
-    <div class="an-finisher-chips${list.length ? "" : " is-empty"}">${chips || `<small>No items yet. Drop one below or add a name.</small>`}</div>
+    <div class="an-finisher-cards${list.length ? "" : " is-empty"}">${cards || `<small>No items yet. Drop one below or add a name.</small>`}</div>
     <div class="an-finisher-drop" data-finisher-drop>Drop spells, feats, actions, weapons or items here</div>
     <input data-finisher-add aria-label="Add a name" placeholder="Add a name…"></div><p class="an-hint">Matched by item name. The Finisher dropdown on catalog entries edits this list too.</p>`;
 }
@@ -45,9 +52,10 @@ export function finisherSettingsHTML(r, { itemSummary } = {}) {
     <p class="an-hint">${path ? "A stage named “landing” plays where it lands." : "Set a travel motion's End to “Hold at the end”: knockback replaces its distance and the token is moved to where it lands, stopping at walls. A stage named “landing” plays there."} Vanish and Body apply only to a creature at 0 HP.</p></div>`;
 }
 
-export function finisherLinkHTML(w, entryName) {
+// `uuid`: the catalog entry's item, remembered for its Applies-to card when given.
+export function finisherLinkHTML(w, entryName, uuid) {
   const finishers = w.host.recipes().filter((r) => r.finisher);
   if (!finishers.length || !entryName) return "";
   const current = linkedFinisher(finishers, entryName)?.id ?? "";
-  return `<label class="an-finisher-link">Finisher<select data-finisher-link="${esc(entryName)}"><option value="">None</option>${finishers.map((r) => `<option value="${esc(r.id)}" ${r.id === current ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>`;
+  return `<label class="an-finisher-link">Finisher<select data-finisher-link="${esc(entryName)}"${uuid ? ` data-finisher-uuid="${esc(uuid)}"` : ""}><option value="">None</option>${finishers.map((r) => `<option value="${esc(r.id)}" ${r.id === current ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>`;
 }
