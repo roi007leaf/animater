@@ -2831,3 +2831,56 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .an-st-more-row{padding:4px 8px 4px 0;display:flex;justify-content:flex-start;position:sticky;left:0}
 .an-st-more{background:none;border:1px dashed var(--an-line,rgba(255,255,255,.25));border-radius:6px;padding:2px 10px;font-size:11px;cursor:pointer;color:inherit;opacity:.8}
 .an-st-more:hover,.an-st-more:focus-visible{opacity:1}
+/* Activity: Now playing / History, row Stop and Exclude */
+.animater .an-activity-section {
+  margin-top: 18px;
+}
+.animater .an-activity-section h3 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--an-muted);
+  margin: 0 0 6px;
+}
+.animater .an-activity-section .an-log > div:not(.an-activity-actions) {
+  flex: 1;
+  min-width: 0;
+}
+.animater .an-activity-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  flex: none;
+}
+.animater .an-activity-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  line-height: 1;
+  font-size: 13px;
+  border: 1px solid var(--an-line);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--an-muted);
+  cursor: pointer;
+}
+.animater .an-activity-btn:hover,
+.animater .an-activity-btn:focus-visible {
+  color: var(--an-accent);
+  border-color: var(--an-accent);
+}
+.animater .an-activity-excluded {
+  font-size: 11px;
+  color: var(--an-muted);
+  white-space: nowrap;
+}
+.animater .an-activity-undo {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--an-accent);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 11px;
+}

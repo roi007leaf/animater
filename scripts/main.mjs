@@ -13,6 +13,7 @@ import { AA_ID, AA_TAKEOVER, aaCustomized, registerAATakeover } from "./integrat
 import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
 import { registerTriggerEngine } from "./integrations/trigger-engine.mjs";
 import { AnimaterRuntime, sameEffectName } from "./runtime.mjs";
+import { nowPlayingRows } from "./activity-actions.mjs";
 import { installedSoundCatalog, catalogSoundOptions } from "./spell-sounds.mjs";
 import { Workspace, JB2A_MISSING } from "./workspace.mjs";
 import { MediaLibraryLoader } from './media-library-sources.mjs';
@@ -448,6 +449,37 @@ function catalogEntryFor(item) {
   } catch {}
   return null;
 }
+// Where an automatic animation comes from, for the Activity page's Exclude: a saved recipe, or a
+// built-in catalog entry (catalog kind + entry id). null when neither is known (e.g. a damage rider).
+const PAGE_KINDS = { spells: "spell", weapons: "weapon", conditions: "condition", effects: "effect", feats: "feat", actions: "action", features: "feature", items: "item" };
+function recipeOrigin(recipe, context = {}) {
+  if (!recipe?.id) return null;
+  if (recipes().some((r) => r.id === recipe.id)) return { type: "recipe", id: recipe.id };
+  const sys = game.system.id, named = recipe.catalogEntry ?? recipe.stateEntry;
+  if (named) {
+    const entry = sys === "sf2e" ? sfEntry(named) : sys === "dnd5e" ? dndEntry(named) : catalogStateEntry(named);
+    if (entry?.kind) return { type: "catalog", system: sys, kind: entry.kind, id: entry.id ?? named };
+  }
+  const item = context?.item, entry = item ? catalogEntryFor(item) : null;
+  // A rider (Sneak Attack on a Strike) plays for the Strike's item but is not its entry.
+  if (!entry?.id || !String(recipe.id).includes(entry.id)) return null;
+  const kind = sys === "pf2e" ? PAGE_KINDS[itemPage(item)] : entry.kind;
+  return kind ? { type: "catalog", system: sys, kind, id: entry.id } : null;
+}
+// Activity page Stop: a GM ends a lasting animation for everyone; a player only on their own screen.
+async function stopActivityRow(row) {
+  if (row?.kind === "state" && row.key) {
+    await persistentStates?.stop(row.key);
+    if (game.user.isGM) game.socket?.emit?.(`module.${ID}`, { type: "activity-stop", sender: clientId, userId: game.user.id, key: row.key });
+    return;
+  }
+  if (row?.kind === "session" && row.session) await runtime.endSession(row.session, { everyone: game.user.isGM });
+}
+function receiveActivityStop(data, senderId) {
+  if (data?.type !== "activity-stop" || !data.key) return;
+  if (!game.users.get(senderId ?? data.userId)?.isGM) return;
+  void persistentStates?.stop(data.key);
+}
 // An item sheet's Animater button: your own recipe for it in the Studio, else its catalog entry.
 async function openForItem(item) {
   if (!game.user.isGM || !item) return;
@@ -788,6 +820,10 @@ function workspaceHost() {
       await game.settings.set(ID,key,value===true);
     },
     logs: () => runtime.log,
+    isGM: () => game.user.isGM,
+    // Activity page: lasting animations on the table now (runtime sessions + condition/effect layers).
+    nowPlaying: () => nowPlayingRows(runtime?.runningAnimations() ?? [], persistentStates?.running() ?? []),
+    stopAnimation: (row) => stopActivityRow(row),
     environment,
     enabled,
     catalogState: () =>
@@ -1124,7 +1160,7 @@ Hooks.once("ready", () => {
     trace:(status,detail)=>runtime?.trace(status,detail)});
   // Foundry's server relays a module event with the sender's user id as the second argument.
   game.socket?.on(`module.${ID}`, (data, senderId) => {
-    if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); flash?.receive(data); receiveFinished(data); void receiveTeleport(data, senderId).catch((e) => console.warn("Animater teleport:", e.message)); void receiveDisplace(data, senderId).catch((e) => console.warn("Animater finisher:", e.message)); }
+    if (data?.sender !== clientId) { void receiveMotion(data); void receiveOptionalFx(data); flash?.receive(data); receiveFinished(data); receiveActivityStop(data, senderId); void receiveTeleport(data, senderId).catch((e) => console.warn("Animater teleport:", e.message)); void receiveDisplace(data, senderId).catch((e) => console.warn("Animater finisher:", e.message)); }
   });
   Hooks.on("canvasTearDown", () => {
     void persistentStates?.clear();
@@ -1169,6 +1205,7 @@ Hooks.once("ready", () => {
     },
     // A player's GM-approved recipe animates their own characters first.
     resolveRecipe: (event, saved) => ownApprovedRecipe(event) ?? systemRecipe(event, saved),
+    recipeOrigin: (recipe, context) => recipeOrigin(recipe, context),
     ready: () => Boolean(canvas.ready && environment().ready),
     canPlay: (context) => Boolean(game.user.isGM || context.source?.isOwner),
     canSyncMotion: () => game.modules.get(ID)?.socket === true,
@@ -1224,7 +1261,9 @@ Hooks.once("ready", () => {
       });
     },
     sequence: () => new Sequence({ moduleName: ID }),
-    endEffects: (filters) => Sequencer.EffectManager.endEffects(filters),
+    // push false ends it on this screen only (a player's Activity Stop).
+    endEffects: (filters, push) => Sequencer.EffectManager.endEffects(filters, push),
+    effectRunning: (name) => (Sequencer.EffectManager.getEffects?.({ name })?.length ?? 1) > 0,
     endSounds: (filters) => Sequencer.SoundManager.endSounds(filters),
     // Sequencer synchronizes playback and loads media on each receiving client.
     // Waiting for every client here can stall the rolling user's animation.
@@ -1305,7 +1344,8 @@ Hooks.once("ready", () => {
       tokenAlive:(token)=>!token?.destroyed&&(typeof fromUuidSync!=="function"||!token?.document?.uuid||!!fromUuidSync(token.document.uuid,{strict:false})),
       documentExists:(uuid)=>typeof fromUuidSync!=="function"||!!fromUuidSync(uuid,{strict:false}),
       body:{add:(...a)=>conditionBody?.add(...a),remove:(...a)=>conditionBody?.remove(...a)},
-      trace: (status, detail) => runtime.trace(status, detail),
+      origin: (item, recipe) => recipeOrigin(recipe, { item }),
+      trace: (status, detail, recipe, meta) => runtime.trace(status, detail, recipe, meta),
     });
     for (const hook of ["createActiveEffect","updateActiveEffect","deleteActiveEffect","createItem", "updateItem", "deleteItem", "updateActor", "createToken", "updateToken", "deleteToken", "refreshToken", "canvasReady", "updateWorldTime", "updateCombat", "deleteCombat", "updateUser", "controlToken"])
       Hooks.on(hook, () => persistentStates.schedule());

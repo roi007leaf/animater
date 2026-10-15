@@ -110,7 +110,7 @@ export function storedStateDocument(item){
 // Each client derives its own visible layers from native documents. Persistent
 // Sequencer media is temporary/local: no socket playback or stale scene flags.
 export class PersistentStates{
- constructor(host){this.host=host;this.active=new Map();this.serial=0;this.revision=0;this.timer=null;this.closed=false;this.pending=new Set();}
+ constructor(host){this.host=host;this.active=new Map();this.stopped=new Set();this.serial=0;this.revision=0;this.timer=null;this.closed=false;this.pending=new Set();}
  async end(record){this.host.body?.remove(record.name);await Promise.all([this.host.end(record.name),this.host.stopFx?.(record.name)]);}
  schedule(){if(this.closed)return;clearTimeout(this.timer);this.timer=setTimeout(()=>{this.timer=null;void this.reconcile().catch(e=>this.host.trace?.('Blocked',`Persistent effects: ${e.message}`));},35);}
  // Would a lasting animation show for this condition or effect (its catalog on, or your own
@@ -129,21 +129,24 @@ export class PersistentStates{
   if(!this.closed&&h.ready()){
    const saved=h.recipes?.()??[],catalog=h.catalog(),visibility=h.visibility?.()??{},scene=h.sceneId();
    // The device quality setting caps how many states each token shows.
-   const budget=h.budget?.()??{states:Infinity,layers:Infinity};
+   const budget=h.budget?.()??{states:Infinity,layers:Infinity},present=new Set();
    for(const token of h.tokens()){
     if(!token.actor)continue;
     let shown=0;
     const states=shownStates([...(h.actorStates??actorStates)(token.actor),...(h.perceivedStates?.(token)??[])]);
     for(const item of states){
-     if(shown>=budget.states)break;
-     if(!(h.activeState??activeState)(item)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
+     if(!(h.activeState??activeState)(item))continue;
+     // A state stopped from the Activity page stays off while it remains on the token.
+     const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;present.add(key);
+     if(shown>=budget.states||this.stopped.has(key)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
      const kind=h.stateKind?.(item)??item.type,state=(h.normalizeState??normalizeStateCatalogState)(h.state(kind)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
-     const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType,grantedByOtherAura(item,token)]);
      const fade=state.fade===true;
      if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':'')+(motionOnly(item)?'body':'')+(fade?'fade':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false,bodyOnly:motionOnly(item),fade,quiet:fade&&!justApplied(item)});shown++;}
     }
    }
+   // Removed, its next application animates again.
+   for(const key of this.stopped)if(!present.has(key))this.stopped.delete(key);
   }
   // A state that changed (Frightened 2 becoming 1 at the end of a turn) keeps showing until its
   // replacement is up, so it never blinks out; states that are gone end now.
@@ -156,7 +159,7 @@ export class PersistentStates{
   for(const [key,d] of desired){
    if(this.closed||this.active.has(key))continue;
    replacing.add(key);
-   const record={...d,name:`animater-state-${h.clientId}-${++this.serial}`,cancelled:false};this.active.set(key,record);
+   const record={...d,name:`animater-state-${h.clientId}-${++this.serial}`,cancelled:false,startedAt:replaced.get(key)?.startedAt??Date.now()};this.active.set(key,record);
    const work=this.start(record).then(()=>retire(key),async error=>{await retire(key);if(this.active.get(key)===record)this.active.delete(key);await this.end(record);h.trace?.('Blocked',`${record.recipe.name}: ${error.message}`);});
    this.pending.add(work);void work.finally(()=>this.pending.delete(work));
   }
@@ -216,7 +219,7 @@ export class PersistentStates{
    catch(error){h.trace?.('Skipped',`Token Magic FX: ${error.message}`);}
   }));
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}
-  h.trace?.('Persistent',`${r.recipe.name} follows ${r.token.name??'token'} while its condition or effect lasts.`);
+  h.trace?.('Persistent',`${r.recipe.name} follows ${r.token.name??'token'} while its condition or effect lasts.`,r.recipe,{key:r.key,automatic:true,origin:this.originOf(r)});
   if(h.tokenAlive&&!h.tokenAlive(r.token)){await this.end(r);return;}
   if(shown.length)await sequence.play({local:true});
   // Removal/scene changes can race asynchronous texture loading.
@@ -227,6 +230,22 @@ export class PersistentStates{
    // Played once: the creature reacts only while the animation shows.
    if(r.fade)setTimeout(()=>{if(this.active.get(r.key)===r)h.body?.remove?.(r.name);},FADE_MS)?.unref?.();
   }
+ }
+ originOf(r){try{return this.host.origin?.(r.item,r.recipe)??null;}catch{return null;}}
+ // Lasting layers showing now, for the Activity page's Now playing (a faded one-time showing is over).
+ running(now=Date.now()){
+  return [...this.active.values()].filter(r=>!r.cancelled&&!r.quiet&&!(r.fade&&now-(r.startedAt??now)>FADE_MS)).map(r=>({key:r.key,name:r.recipe?.name??r.item?.name??'',on:r.token?.name??'',startedAt:r.startedAt??now,recipeId:r.recipe?.id,origin:this.originOf(r)}));
+ }
+ // Ends one state's animation here; it stays off until the condition or effect is removed and applied again.
+ async stop(key){
+  if(!key)return false;
+  this.stopped.add(key);
+  const record=this.active.get(key);
+  if(!record)return false;
+  this.active.delete(key);record.cancelled=true;await this.end(record);
+  this.host.trace?.('Stopped',`${record.recipe?.name??'Animation'} on ${record.token?.name??'token'}: stopped until it is applied again.`,record.recipe,{key});
+  this.host.changed?.(this.active.size);
+  return true;
  }
  async clear(){++this.revision;clearTimeout(this.timer);this.timer=null;const records=[...this.active.values()];this.active.clear();for(const r of records)r.cancelled=true;await Promise.all(records.map(r=>this.end(r)));}
  async destroy(){this.closed=true;await this.clear();}

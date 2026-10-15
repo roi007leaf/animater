@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Activity page:** a new **Now playing** list shows the lasting animations on the table right now (who they are on, how long they have run). **Stop ■** ends one of them: a lasting condition or effect animation stays off until the condition is applied again (a GM stops it for everyone; a player only on their own screen). GMs also get **Exclude ⊘** there and on automatic History rows: it leaves a built-in entry out of its catalog, or disables and saves your recipe. **Undo** puts it back.
 - New starter flash screen **Crossed Swords** (Combat start): two blades sweep in and clash, sparks fly, and "TO ARMS!" slams in over the scene name. Find it under + New flash screen.
 - **Flash screens gallery:** each Combat start and Combat end card now has a Default switch. Click it to make that screen the default for its event, or click the current default to turn it off. "Set default" shows on hover.
 - **Studio tracks:** a finisher's timeline now leads with Token motion, Target, Sound and Filters & scene. Source and Flight sit behind a "+ More tracks" row at the bottom (they show on their own when they hold stages). Normal recipes keep all six tracks. The "Caster" track, token and subject labels now read "Source" everywhere; saved data is unchanged.

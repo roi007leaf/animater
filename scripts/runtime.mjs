@@ -10,6 +10,7 @@ import { stageTiers } from './quality.mjs';
 import { withLastingArea } from './lasting-area.mjs';
 import { withOutcome } from './outcome.mjs';
 import { pickVariants } from './composition.mjs';
+import { activityEntryMeta, cleanOrigin } from './activity-actions.mjs';
 const SOUND_PRELOAD_TIMEOUT = 2000;
 // "Stay until the effect ends": if no effect from the item shows up on the token
 // within this time (never applied), the layer ends instead of lingering.
@@ -46,6 +47,8 @@ export class AnimaterRuntime {
     this.previewAreas = new Set();
     // Lasting areas that end with their caster's concentration: {session, actorId, itemId}.
     this.lasting = [];
+    // Lasting plays still on the table, for the Activity page's Now playing: session -> row.
+    this.running = new Map();
   }
   // The caster stopped concentrating: end the lasting areas of that spell (or, when
   // the spell is unknown, every concentration area that caster still holds).
@@ -62,16 +65,18 @@ export class AnimaterRuntime {
     if (!ending.length) return 0;
     this.lasting = this.lasting.filter((l) => !ending.includes(l));
     await Promise.allSettled(ending.map((l) => this.host.endEffects({ name: l.session })));
-    for (const l of ending) { clearTimeout(l.grace); this.sessions.delete(l.session); }
+    for (const l of ending) { clearTimeout(l.grace); this.sessions.delete(l.session); this.running.delete(l.session); }
     this.trace("Ended", `${ending.length} lasting ${ending.length === 1 ? "animation" : "animations"}: ${why}.`);
     return ending.length;
   }
-  trace(status, detail, recipe = null) {
+  // meta: {origin, session, key, preview, automatic} lets the Activity page act on the entry later.
+  trace(status, detail, recipe = null, meta = null) {
     this.log.unshift({
       time: new Date().toLocaleTimeString(),
       status,
       detail,
       recipe: recipe?.name ?? "",
+      ...activityEntryMeta(recipe, meta),
     });
     this.log.length = Math.min(this.log.length, 40);
     this.host.onTrace?.();
@@ -79,6 +84,36 @@ export class AnimaterRuntime {
   refreshCatalog() {
     this.catalog = registeredMedia(this.host.database).filter(a => a.type !== 'audio').sort((a,b)=>a.key.localeCompare(b.key));
     return this.catalog;
+  }
+  // Where an automatic play came from: the host knows its catalogs; a saved recipe is a recipe.
+  originOf(recipe, context) {
+    const known = cleanOrigin(this.host.recipeOrigin?.(recipe, context));
+    if (known) return known;
+    return recipe?.id && (this.host.recipes?.() ?? []).some((r) => r.id === recipe.id) ? { type: "recipe", id: recipe.id } : null;
+  }
+  // Lasting plays still running. A session whose effects are gone (its template was removed) drops out.
+  runningAnimations() {
+    for (const [session, row] of this.running)
+      if (row.layers && this.host.effectRunning && !this.host.effectRunning(session)) this.running.delete(session);
+    return [...this.running.values()].map(({ layers, ...row }) => ({ ...row }));
+  }
+  // Ends one lasting play: for everyone (Sequencer's synced end) or only on this screen.
+  async endSession(session, { everyone = true } = {}) {
+    const row = this.running.get(session);
+    if (!row && !this.sessions.has(session)) return false;
+    this.running.delete(session);
+    this.sessions.delete(session);
+    const ending = this.lasting.filter((l) => l.session === session);
+    for (const l of ending) clearTimeout(l.grace);
+    this.lasting = this.lasting.filter((l) => l.session !== session);
+    this.cancelWaits(session);
+    await Promise.allSettled([
+      this.host.endEffects({ name: session }, everyone),
+      this.host.endSounds?.({ name: session }),
+      this.host.stopOptionalFx?.({ session }),
+    ]);
+    this.trace("Stopped", `${row?.name ?? "Animation"}: stopped${everyone ? "" : " on this screen"}.`, row ? { id: row.recipeId, name: row.name } : null);
+    return true;
   }
   getCatalog() {
     return this.catalog.length ? this.catalog : this.refreshCatalog();
@@ -419,10 +454,19 @@ export class AnimaterRuntime {
           if (this.lasting.length > 50) this.lasting.shift();
         }
       }
+      const persists = !preview && plan.some((s) => s.persist);
+      const origin = !preview && context.automatic ? this.originOf(recipe, context) : null;
+      if (persists) this.running.set(session, {
+        session, name: recipe.name, recipeId: recipe.id, origin,
+        on: context.source?.name ?? context.source?.document?.name ?? "",
+        startedAt: Date.now(),
+        layers: plan.some((s) => s.persist && s.kind !== "motion" && !OPTIONAL_FX_KINDS.has(s.kind)),
+      });
       this.trace(
         preview ? "Previewed" : "Played",
         `${plan.length} effects · ${context.targets?.length ?? 0} targets`,
         recipe,
+        { origin, preview, automatic: !preview && context.automatic, session: persists ? session : null },
       );
       return session;
     } catch (error) {
@@ -482,6 +526,7 @@ export class AnimaterRuntime {
     await this.host.endEffects({ name: `${ID}-${this.host.userId()}-*` });
     await this.host.endSounds?.({ name: `${ID}-${this.host.userId()}-*` });
     this.sessions.clear();
+    this.running.clear();
     this.trace("Stopped", "Your Animater effects ended.");
   }
   clearPreviewAreas() {

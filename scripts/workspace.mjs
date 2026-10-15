@@ -43,6 +43,7 @@ import {
   PF2E_FEATS,
 } from "./feat-catalog.mjs";
 import { featCatalogHTML, ABILITY_PAGE_PROFILES, abilityProfileForPage, abilityProfileForKey, defaultAbilityFilters } from "./feat-catalog-ui.mjs";
+import { cleanOrigin, originKey, elapsedLabel, setOriginExcluded } from "./activity-actions.mjs";
 import { PF2E_WEAPONS, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, useCatalogWeapon, weaponCustomizationKey } from "./weapon-catalog.mjs";
 import { weaponCatalogHTML } from "./weapon-catalog-ui.mjs";
 import { openCatalogDetails } from "./catalog-details.mjs";
@@ -161,6 +162,8 @@ export class Workspace {
     this.selected = host.recipes()[0]?.id;
     this.drafts = new Map();
     this.dirty = new Set();
+    // Activity page exclusions this session, by origin, so a row can offer Undo.
+    this.activityExcluded = new Map();
     this.stageIndex = 0;
     this.assetSearch = "";
     this.selectedAssetKey = null;
@@ -1572,18 +1575,78 @@ export class Workspace {
   // only when the log changed (each entry also asks for a redraw as it is logged).
   watchActivity() {
     if (this.page !== "activity") { clearInterval(this.activityTimer); this.activityTimer = null; return; }
-    const mark = () => { const l = this.host.logs?.() ?? []; return `${l.length}:${l[0]?.time}:${l[0]?.detail}`; };
+    // Now playing changes (a start, an end, a removed template) redraw too; otherwise only the running times tick.
+    const mark = () => { const l = this.host.logs?.() ?? []; return `${l.length}:${l[0]?.time}:${l[0]?.detail}|${this.nowPlaying().map((r) => r.id).join(",")}`; };
     this.activitySeen = mark();
     if (this.activityTimer) return;
     this.activityTimer = setInterval(() => {
       if (this.page !== "activity" || !this.root?.isConnected) { clearInterval(this.activityTimer); this.activityTimer = null; return; }
       const now = mark();
-      if (now !== this.activitySeen) { this.activitySeen = now; this.render(); }
+      if (now !== this.activitySeen) { this.activitySeen = now; this.render(); return; }
+      for (const t of this.root.querySelectorAll?.("[data-started]") ?? []) t.textContent = elapsedLabel(Date.now() - Number(t.dataset.started));
     }, 1000);
   }
+  nowPlaying() {
+    try { return this.host.nowPlaying?.() ?? []; } catch { return []; }
+  }
+  activityGM() {
+    return this.host.isGM ? this.host.isGM() === true : !this.host.playerMode;
+  }
+  // Exclude ⊘ / Excluded · Undo for one row (GM only); attr is data-index="…" or data-entry="…".
+  activityExcludeHTML(origin, name, attr) {
+    if (!this.activityGM() || !cleanOrigin(origin)) return "";
+    if ((this.activityExcluded ??= new Map()).has(originKey(origin)))
+      return `<span class="an-activity-excluded">Excluded · <button type="button" class="an-activity-undo" data-action="activity-undo" ${attr} aria-label="Undo excluding ${esc(name)}" data-tooltip="Play it automatically again">Undo</button></span>`;
+    const what = cleanOrigin(origin).type === "recipe" ? "Exclude: disable this recipe (saved now)" : "Exclude: leave this entry out of its catalog";
+    return `<button type="button" class="an-activity-btn" data-action="activity-exclude" ${attr} aria-label="Exclude ${esc(name)} from automatic playback" data-tooltip="${what}">⊘</button>`;
+  }
   activityHTML() {
-    const logs = this.host.logs();
-    return `<div class="an-activity"><div class="an-info">Playback explained<p>Automatic events appear here with matching recipe, played effect count, or reason playback was blocked. The list updates live while this page is open. It shows what this browser played: each player's own casts are listed on their own Activity page.</p></div>${logs.map((l) => `<div class="an-log"><time>${esc(l.time)}</time><span class="an-badge ${l.status === "Blocked" ? "is-missing" : ""}">${esc(l.status)}</span><div><b>${esc(l.recipe)}</b><p>${esc(l.detail)}</p></div></div>`).join("") || `<div class="an-empty">No activity yet.<small>Preview a recipe or enable automatic playback.</small></div>`}</div>`;
+    const logs = this.host.logs?.() ?? [], playing = this.nowPlaying(), now = Date.now();
+    const nowRows = playing.map((r) => {
+      const attr = `data-entry="${esc(r.id)}"`, started = Number(r.startedAt) || now;
+      const tip = r.kind === "state" ? "Stop: the condition or effect stays, and animates again when reapplied" : "Stop this animation";
+      return `<div class="an-log an-now-row"><time data-started="${started}">${esc(elapsedLabel(now - started))}</time><div><b>${esc(r.name)}</b><p>${r.on ? `on ${esc(r.on)}` : ""}</p></div><div class="an-activity-actions"><button type="button" class="an-activity-btn" data-action="activity-stop" ${attr} aria-label="Stop ${esc(r.name)}" data-tooltip="${tip}">■</button>${this.activityExcludeHTML(r.origin, r.name, attr)}</div></div>`;
+    }).join("") || `<div class="an-empty">Nothing playing right now.</div>`;
+    // Only automatic plays that played can be excluded; previews, skips and blocks get no buttons.
+    const actionable = (l) => l?.automatic === true && !l.preview && ["Played", "Persistent"].includes(l.status);
+    const history = logs.map((l, i) => {
+      const actions = actionable(l) ? this.activityExcludeHTML(l.origin, l.recipe, `data-index="${i}"`) : "";
+      return `<div class="an-log"><time>${esc(l.time)}</time><span class="an-badge ${l.status === "Blocked" ? "is-missing" : ""}">${esc(l.status)}</span><div><b>${esc(l.recipe)}</b><p>${esc(l.detail)}</p></div>${actions ? `<div class="an-activity-actions">${actions}</div>` : ""}</div>`;
+    }).join("") || `<div class="an-empty">No activity yet.<small>Preview a recipe or enable automatic playback.</small></div>`;
+    return `<div class="an-activity"><div class="an-info">Playback explained<p>Automatic events appear here with matching recipe, played effect count, or reason playback was blocked. The list updates live while this page is open. It shows what this browser played: each player's own casts are listed on their own Activity page.</p></div><section class="an-activity-section" data-activity="now"><h3>Now playing</h3>${nowRows}</section><section class="an-activity-section" data-activity="history"><h3>History</h3>${history}</section></div>`;
+  }
+  // The Activity row a button acts on: a Now playing entry (data-entry) or a History entry (data-index).
+  activityRow(b) {
+    if (b.dataset.entry) return this.nowPlaying().find((r) => r.id === b.dataset.entry) ?? null;
+    const l = (this.host.logs?.() ?? [])[Number(b.dataset.index)];
+    return l ? { ...l, name: l.recipe } : null;
+  }
+  async activityAction(action, b) {
+    if (!["activity-stop", "activity-exclude", "activity-undo"].includes(action)) return false;
+    const row = this.activityRow(b);
+    if (!row) { this.render(); return true; }
+    if (action === "activity-stop") {
+      await this.host.stopAnimation?.(row);
+      this.message = `${row.name || "Animation"} stopped.`;
+      this.render();
+      return true;
+    }
+    if (!this.activityGM()) return true;
+    const key = originKey(row.origin), excluded = (this.activityExcluded ??= new Map());
+    if (!key) return true;
+    const options = { abilityProfile: abilityProfileForKey, drafts: this.drafts };
+    if (action === "activity-exclude") {
+      const changed = await setOriginExcluded(this.host, row.origin, true, options);
+      excluded.set(key, { changed });
+      this.message = cleanOrigin(row.origin).type === "recipe" ? `${row.name || "Recipe"} disabled and saved.` : `${row.name || "Entry"} excluded from its catalog.`;
+    } else {
+      // Undo reverts only what Exclude changed: an entry that was already excluded stays so.
+      if (excluded.get(key)?.changed !== false) await setOriginExcluded(this.host, row.origin, false, options);
+      excluded.delete(key);
+      this.message = `${row.name || "Entry"} plays automatically again.`;
+    }
+    this.render();
+    return true;
   }
   // One click for every built-in catalog of this system.
   everyCatalogHTML(env) {
@@ -2062,6 +2125,7 @@ export class Workspace {
       if(await this.mediaLibrary?.action(action,b))return;
       if(await this.dndCatalog?.action(action,b))return;
       if(await this.flashEditor?.action(action,b))return;
+      if (await this.activityAction(action, b)) return;
       if (await handleStateCatalogAction(this, action, b)) return;
       if (action === "item-details") {
         await openCatalogDetails(this, b.dataset.kind, b.dataset.id);
