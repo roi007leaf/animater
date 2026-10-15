@@ -5,7 +5,7 @@ import { installedAssets } from "../scripts/model.mjs";
 import { finisherTravelPath } from "../scripts/finisher-model.mjs";
 import { assetDatabases } from "../tools/asset-databases.mjs";
 
-const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall"];
+const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall", "slice-in-half", "bisect", "shatter-shards", "disintegrate", "sky-launch", "ragdoll-tumble", "vortex-spiral", "pancake"];
 
 test("every preset is a valid kill finisher the GM can save as their own", () => {
   assert.deepEqual(Object.keys(FINISHER_PRESETS), IDS);
@@ -66,4 +66,24 @@ test("Wall slam stretches mid-flight, lands unstretched and squashes on the wall
   assert.deepEqual([squash.kind, squash.motion, squash.duration, squash.intensity, squash.subject], ["motion", "squash", 450, 1.2, "targets"]);
   assert.equal(r.stages.find((s) => s.stageId === "wall-crack").scale, 0.8);
   assert.equal(r.stages.some((s) => s.stageId === "wall-shake"), false);
+});
+
+test("the creative presets use fragments or keyframed paths as designed", () => {
+  for (const id of ["slice-in-half", "bisect", "shatter-shards", "disintegrate"]) {
+    const r = presetFinisher(id, id), cut = r.stages.find((s) => s.motion === "fragments");
+    assert.ok(cut && cut.motionEnd === "hold" && cut.subject === "targets", id);
+    assert.equal(r.finisher.ending, "vanish", id);
+  }
+  assert.deepEqual(["slice-in-half", "bisect", "shatter-shards", "disintegrate"].map((id) => presetFinisher(id, id).stages.find((s) => s.motion === "fragments").pattern), ["halves", "topBottom", "shards", "dust"]);
+  const sky = finisherTravelPath(presetFinisher("sky-launch", "s"));
+  assert.equal(sky.keyframes.at(-1).alpha, 0);
+  const rag = finisherTravelPath(presetFinisher("ragdoll-tumble", "r"));
+  assert.ok(rag.keyframes.filter((k) => k.sharp).length >= 3, "three bounces");
+  assert.deepEqual([rag.keyframes.at(-1).rotation % 360, rag.keyframes.at(-1).scale, rag.keyframes.at(-1).stretch], [0, 1, 0], "lands upright");
+  const vortex = finisherTravelPath(presetFinisher("vortex-spiral", "v")).keyframes;
+  assert.deepEqual([vortex.at(-1).x, vortex.at(-1).y, vortex.at(-1).alpha], [0, 0, 0]);
+  assert.ok(vortex.length >= 8);
+  const pancake = finisherTravelPath(presetFinisher("pancake", "p")).keyframes.at(-1);
+  assert.equal(pancake.stretch, -0.6);
+  assert.equal(presetFinisher("pancake", "p").finisher.ending, "body");
 });

@@ -191,12 +191,11 @@ test("pathAim points away from the other token for either mover", () => {
   assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0, { alpha: 0 })]), true), false, "a path that moved the token lands visible: it still fades");
 });
 
-test("a travelling path that ends invisible still fades after it lands (the landing snaps it visible)", async () => {
+test("a survivor's path that ends invisible still lands, since it never vanishes", async () => {
   const host = gridHost();
-  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 3, 0, { alpha: 0 })], { ending: "vanish" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 3, 0, { alpha: 0 })], { ending: "vanish" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
   assert.ok(host.log.some((e) => e[0] === "commit" && e[1].x === 400), "it moved");
-  assert.ok(host.log.some((e) => e[0] === "fade"), "the separate fade runs");
-  assert.deepEqual(host.log.at(-1), ["commit", { hidden: true, finisher: "p" }]);
+  assert.ok(!host.log.some((e) => e[0] === "fade" || (e[0] === "commit" && e[1].hidden)), "a survivor is not hidden");
 });
 
 test("a framed path keeps its exact landing after remote validation, even when the pinned end exceeds 12", async () => {
@@ -395,4 +394,23 @@ test("a source mover's slam leaves the target's crash where it is and does not s
   assert.equal(crack.offsetX, undefined, "an impact plays on the target: not offset by the user's landing");
   assert.equal(starts(stages)["wall-crack"], 100 + byId(stages, "fly").duration, "still timed to the hit");
   assert.equal(byId(stages, "wall-shake"), undefined, "a targets shake would shake the wrong token");
+});
+
+test("a fragments finisher needs no separate fade: the token is already out of sight", async () => {
+  const recipe = { id: "f", name: "Slice", trigger: "manual", finisher: normalizeFinisher({ ending: "vanish" }), stages: [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", motionEnd: "hold", duration: 1400 }] };
+  const host = gridHost();
+  await playFinisher({ recipe, mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  assert.ok(!host.log.some((e) => e[0] === "fade"));
+  assert.deepEqual(host.log.at(-1), ["commit", { hidden: true, finisher: "f" }]);
+});
+
+test("a path that vanishes in flight never moves the token", async () => {
+  const host = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 3, 0, { scale: 0.05, alpha: 0 })], { ending: "vanish" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  assert.ok(!host.log.some((e) => e[0] === "landing"), "no landing for an invisible end");
+  assert.ok(!host.log.some((e) => e[0] === "commit" && e[1].x !== undefined), "no move");
+  assert.ok(!host.log.some((e) => e[0] === "fade"));
+  const [, frame, , end] = host.log.find((e) => e[0] === "play");
+  assert.deepEqual([frame.cos, frame.sin, frame.k], [1, 0, 1], "aimed away from the attacker");
+  assert.equal(end, "hold", "stays invisible until hidden");
 });
