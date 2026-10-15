@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { MAX_KEYFRAMES, DEFAULT_KEYFRAMES, normalizeKeyframes, samplePath, pathEnd, pathSquares, rotateBy, unrotateBy, snapSquares, insertKeyframe, moveKeyframeTime, moveKeyframePoint, deleteKeyframe, flipKeyframes, resetKeyframes, cutPath } from "../scripts/keyframe-path.mjs";
+import { MAX_KEYFRAMES, DEFAULT_KEYFRAMES, normalizeKeyframes, samplePath, pathEnd, pathSquares, rotateBy, unrotateBy, snapSquares, insertKeyframe, moveKeyframeTime, moveKeyframePoint, deleteKeyframe, flipKeyframes, resetKeyframes, cutPath, stretchScale, landsTilted } from "../scripts/keyframe-path.mjs";
 
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} vs ${b}`);
 const kfs = normalizeKeyframes([{ at: 0 }, { at: 0.5, x: 1, y: 1, rotation: 90, ease: "linear" }, { at: 1, x: 2, y: 0, scale: 0.5, alpha: 0.2, ease: "linear" }]);
@@ -134,4 +134,45 @@ test("cutPath resamples within the keyframe budget", () => {
   const { keyframes } = cutPath(many, 5.8);
   assert.ok(keyframes.length <= MAX_KEYFRAMES, `${keyframes.length}`);
   assert.ok(Math.abs(keyframes.at(-1).x - 5.8) < 1e-3);
+});
+
+test("stretch is clamped to -0.6..0.6, defaults to 0 and is 0 on the first keyframe", () => {
+  const n = normalizeKeyframes([{ at: 0, stretch: 0.4 }, { at: 0.5, x: 1, stretch: 2 }, { at: 0.7, x: 2, stretch: -5 }, { at: 1, x: 3 }]);
+  assert.deepEqual(n.map((k) => k.stretch), [0, 0.6, -0.6, 0]);
+  assert.equal(normalizeKeyframes([{ at: 0 }, { at: 1, x: 1, stretch: "bogus" }]).at(-1).stretch, 0);
+  assert.equal(DEFAULT_KEYFRAMES[1].stretch, 0);
+});
+
+test("samplePath interpolates stretch linearly, like scale", () => {
+  const k = normalizeKeyframes([{ at: 0 }, { at: 0.5, x: 1, stretch: 0.4, ease: "linear" }, { at: 1, x: 2, stretch: 0, ease: "linear" }]);
+  near(samplePath(k, 0.25).stretch, 0.2, "half way to the stretched keyframe");
+  near(samplePath(k, 0.5).stretch, 0.4, "on it");
+  near(samplePath(k, 0.75).stretch, 0.2, "half way back");
+});
+
+test("cutPath ends unstretched; resampled keyframes keep the sampled stretch", () => {
+  const k = normalizeKeyframes([{ at: 0 }, { at: 0.2, x: 1, stretch: 0.1 }, { at: 1, x: 6, stretch: 0.3, ease: "linear" }]);
+  const { keyframes, t } = cutPath(k, 3);
+  assert.equal(keyframes.at(-1).stretch, 0);
+  const inner = keyframes[2];
+  near(inner.stretch, samplePath(k, inner.at * t).stretch, "resampled from the original");
+  assert.ok(inner.stretch > 0.1);
+});
+
+test("stretchScale stretches along the travel angle and squeezes across it", () => {
+  const close = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} vs ${b}`);
+  const flat = stretchScale(-0.3, 0);
+  close(flat.scaleX, 0.7, "along x"); close(flat.scaleY, 1 / Math.sqrt(0.7), "across");
+  const down = stretchScale(-0.3, Math.PI / 2);
+  close(down.scaleX, flat.scaleY, "swapped x"); close(down.scaleY, flat.scaleX, "swapped y");
+  const diag = stretchScale(0.4, Math.PI / 4);
+  close(diag.scaleX, diag.scaleY, "diagonal");
+  assert.deepEqual(stretchScale(0, 1.234), { scaleX: 1, scaleY: 1 });
+  close(stretchScale(-5, 0).scaleX, 0.2, "never squashed below 0.2");
+});
+
+test("a travelling path ending stretched lands tilted", () => {
+  assert.equal(landsTilted(normalizeKeyframes([{ at: 0 }, { at: 1, x: 3, stretch: 0.2 }])), true);
+  assert.equal(landsTilted(normalizeKeyframes([{ at: 0 }, { at: 0.5, x: 1, stretch: 0.2 }, { at: 1, x: 3 }])), false, "only the end counts");
+  assert.equal(landsTilted(normalizeKeyframes([{ at: 0 }, { at: 1, x: 0.3, stretch: 0.2 }])), false, "in place never lands");
 });

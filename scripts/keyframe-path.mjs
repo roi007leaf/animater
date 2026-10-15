@@ -3,17 +3,17 @@
 import { easeValue, EASES } from "./stage-options.mjs";
 
 export const MAX_KEYFRAMES = 12;
-const base = { rotation: 0, scale: 1, alpha: 1, ease: "easeInOutQuad", sharp: false };
+const base = { rotation: 0, scale: 1, alpha: 1, stretch: 0, ease: "easeInOutQuad", sharp: false };
 export const DEFAULT_KEYFRAMES = Object.freeze([Object.freeze({ at: 0, x: 0, y: 0, ...base }), Object.freeze({ at: 1, x: 1, y: 0, ...base })]);
 const clamp = (v, min, max, fallback) => (v !== null && v !== "" && Number.isFinite(Number(v)) ? Math.min(max, Math.max(min, Number(v))) : fallback);
 const keyframe = (k, limit = 12) => ({ at: clamp(k.at, 0, 1, 0), x: clamp(k.x, -limit, limit, 0), y: clamp(k.y, -limit, limit, 0), rotation: clamp(k.rotation, -1440, 1440, 0),
-  scale: clamp(k.scale, 0.05, 5, 1), alpha: clamp(k.alpha, 0, 1, 1), ease: Object.hasOwn(EASES, k.ease) ? k.ease : "easeInOutQuad", sharp: k.sharp === true });
+  scale: clamp(k.scale, 0.05, 5, 1), alpha: clamp(k.alpha, 0, 1, 1), stretch: clamp(k.stretch, -0.6, 0.6, 0), ease: Object.hasOwn(EASES, k.ease) ? k.ease : "easeInOutQuad", sharp: k.sharp === true });
 
 // `limit` is the x/y clamp in squares: authored paths use 12; a finisher's rotated, fitted end needs more room.
 export function normalizeKeyframes(input, { limit = 12 } = {}) {
   const list = (Array.isArray(input) ? input : []).filter((k) => k && typeof k === "object").map((k) => keyframe(k, limit)).sort((a, b) => a.at - b.at).slice(0, MAX_KEYFRAMES);
   if (list.length < 2) return DEFAULT_KEYFRAMES.map((k) => ({ ...k }));
-  list[0] = { ...list[0], at: 0, x: 0, y: 0, rotation: 0, scale: 1, alpha: 1 };
+  list[0] = { ...list[0], at: 0, x: 0, y: 0, rotation: 0, scale: 1, alpha: 1, stretch: 0 };
   list[list.length - 1] = { ...list[list.length - 1], at: 1 };
   return list;
 }
@@ -38,15 +38,22 @@ export function samplePath(keyframes, q) {
   const mirror = (p, about) => ({ x: 2 * about.x - p.x, y: 2 * about.y - p.y });
   const point = a.sharp || b.sharp ? { x: a.x + (b.x - a.x) * u, y: a.y + (b.y - a.y) * u } : centripetal(k[i - 1] ?? mirror(b, a), a, b, k[i + 2] ?? mirror(a, b), u);
   const mix = (key) => a[key] + (b[key] - a[key]) * u;
-  return { x: point.x, y: point.y, rotation: mix("rotation"), scale: mix("scale"), alpha: mix("alpha") };
+  return { x: point.x, y: point.y, rotation: mix("rotation"), scale: mix("scale"), alpha: mix("alpha"), stretch: mix("stretch") };
 }
 
 export const pathEnd = (keyframes) => ({ x: keyframes.at(-1).x, y: keyframes.at(-1).y });
 // Whole squares the path travels, counted like grid movement (the longer axis).
 export const pathSquares = (keyframes) => { const e = pathEnd(keyframes); return Math.round(Math.max(Math.abs(e.x), Math.abs(e.y))); };
 // A travelling held path lands the real token, which snaps back upright, full size and visible.
-const upright = (k) => (k.rotation ?? 0) % 360 === 0 && (k.scale ?? 1) === 1 && (k.alpha ?? 1) === 1;
+const upright = (k) => (k.rotation ?? 0) % 360 === 0 && (k.scale ?? 1) === 1 && (k.alpha ?? 1) === 1 && (k.stretch ?? 0) === 0;
 export const landsTilted = (keyframes) => pathSquares(keyframes) >= 1 && !upright(keyframes.at(-1));
+// Squash & stretch: `stretch` along the travel `angle` (radians, in the mesh's own frame),
+// squeezed across it by 1/sqrt so the area stays about the same. Negative flattens.
+export function stretchScale(stretch, angle) {
+  if (!stretch) return { scaleX: 1, scaleY: 1 };
+  const a = Math.max(0.2, 1 + stretch), b = 1 / Math.sqrt(a), c = Math.cos(angle) ** 2, s = Math.sin(angle) ** 2;
+  return { scaleX: a * c + b * s, scaleY: a * s + b * c };
+}
 export const rotateBy = (v, dir) => ({ x: v.x * dir.x - v.y * dir.y, y: v.x * dir.y + v.y * dir.x });
 export const unrotateBy = (v, dir) => ({ x: v.x * dir.x + v.y * dir.y, y: -v.x * dir.y + v.y * dir.x });
 
@@ -68,7 +75,7 @@ export function cutPath(keyframes, reach) {
   const inner = Math.max(0, Math.min(3, MAX_KEYFRAMES - before.length - 1));
   const resampled = Array.from({ length: inner }, (_, i) => { const q = from + ((t - from) * (i + 1)) / (inner + 1); return { ...samplePath(keyframes, q), at: q, ease: "linear", sharp: false }; });
   const p = samplePath(keyframes, t);
-  const end = { at: t, x: p.x, y: p.y, rotation: Math.round(p.rotation / 360) * 360 + 0, scale: 1, alpha: 1, ease: "linear", sharp: false };
+  const end = { at: t, x: p.x, y: p.y, rotation: Math.round(p.rotation / 360) * 360 + 0, scale: 1, alpha: 1, stretch: 0, ease: "linear", sharp: false };
   return { keyframes: normalizeKeyframes([...before, ...resampled, end].map((k) => ({ ...k, at: k.at / t }))), t };
 }
 
