@@ -1,5 +1,5 @@
 // Daggerheart conditions as lasting layers (PersistentStates host). Vulnerable, Hidden and Restrained
-// are status effects on the actor; the defeated set (Defeated, Unconscious, Dead) follows the Defeated
+// are status effects on the actor; the defeated set (Defeated, Unconscious, Dead, Death move) follows the Defeated
 // look setting through the built-in states; Death move is a moment dispatched on createActiveEffect.
 // Other applied effects are listed so your own lasting recipes can attach to them.
 import { dhEntries, dhRecipe, dhEntryEnabled, normalizeDhCatalogState } from "./daggerheart-catalog.mjs";
@@ -7,7 +7,8 @@ import { matchRecipe } from "./model.mjs";
 import { defeatedStates } from "./defeated-look.mjs";
 
 const byStatus = new Map(dhEntries("condition").filter((e) => e.state?.lasting).map((e) => [e.statusId, e]));
-export const DH_DEFEATED_STATUSES = Object.freeze(["defeated", "unconscious", "dead"]);
+// The system's own defeated set (toggleDefeated, DH 2.10.12): the per-type default and a finisher's Dead.
+export const DH_DEFEATED_STATUSES = Object.freeze(["defeated", "unconscious", "dead", "deathMove"]);
 const statusesOf = (doc) => Array.from(doc?.statuses ?? []);
 export const findDhState = (state) => (state?.type === "condition" ? byStatus.get(state.statusId) ?? null : null);
 
@@ -51,10 +52,13 @@ export function resolveDhStateRecipe(state, options, saved = [], _catalog, { cus
   return custom ?? (entry ? dhRecipe(entry) : null);
 }
 
-// Each defeated status as the Defeated look's built-in lasting state (effect mode only).
+// The defeated set as the Defeated look's built-in lasting state (effect mode only): one layer per actor,
+// however many defeated statuses it has. It is keyed to the actor, not to an effect, so it carries on
+// while any defeated status remains and ends with the last one.
 export function dhDefeatedStates(actor, mode) {
-  const seen = new Set();
-  return DH_DEFEATED_STATUSES.flatMap((statusId) => defeatedStates(actor, { mode, statusId })).filter((s) => !seen.has(s.id) && seen.add(s.id));
+  const state = DH_DEFEATED_STATUSES.flatMap((statusId) => defeatedStates(actor, { mode, statusId }))[0];
+  if (!state) return [];
+  return [{ ...state, id: `defeated-${actor?.id ?? actor?.uuid}`, uuid: `${actor?.uuid}#defeated`, document: undefined }];
 }
 
 export const dhStateHost = {

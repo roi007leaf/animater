@@ -7,6 +7,8 @@ import { dhActorStates, dhStateVisible, resolveDhStateRecipe, dhDefeatedStates, 
 import { dualityAccentRecipe, dualityAccent, HOPE_ASSETS, FEAR_ASSETS } from "../scripts/daggerheart.mjs";
 import { catalogStoreFor } from "../scripts/activity-actions.mjs";
 import { validateRecipe } from "../scripts/model.mjs";
+import { installDefeatedLook, DEFEATED_RECIPE } from "../scripts/defeated-look.mjs";
+import { PersistentStates } from "../scripts/persistent-states.mjs";
 import { rollMessage, dualityRoll, adversaryRoll } from "./fixtures/daggerheart-messages.mjs";
 
 test("the Daggerheart LIBRARY group: domain cards, weapons, conditions", () => {
@@ -70,10 +72,11 @@ test("conditions as persistent states: Vulnerable, Hidden, Restrained; the defea
   assert.equal(resolveDhStateRecipe(states[0], normalizeDhCatalogState()), null, "catalog off");
   assert.equal(dhStateHost.stateKind(states[0]), "condition");
   assert.equal(dhStateHost.documentKey(states[0]), "condition:vulnerable");
-  assert.deepEqual([...DH_DEFEATED_STATUSES], ["defeated", "unconscious", "dead"]);
-  const defeated = { effects: [effect("x", ["unconscious"]), effect("y", ["dead"])] };
-  assert.equal(dhDefeatedStates(defeated, "effect").length, 2);
+  assert.deepEqual([...DH_DEFEATED_STATUSES], ["defeated", "unconscious", "dead", "deathMove"]);
+  const defeated = { id: "a", uuid: "Actor.a", effects: [effect("x", ["unconscious"]), effect("y", ["dead"])] };
+  assert.equal(dhDefeatedStates(defeated, "effect").length, 1, "one layer per actor however many defeated statuses");
   assert.equal(dhDefeatedStates(defeated, "overlay").length, 0);
+  assert.equal(dhDefeatedStates(defeated, "icon").length, 0);
   const hidden = { type: "condition", statusId: "hidden" }, token = { visible: true, document: { hidden: false } };
   assert.equal(dhStateVisible(hidden, token, { isGM: true }), true);
   assert.equal(dhStateVisible(hidden, token, { isGM: false }), false, "only owners and the GM see Hidden");
@@ -101,4 +104,60 @@ test("Activity Exclude reaches the Daggerheart catalog settings", async () => {
   const store = catalogStoreFor(host, { type: "catalog", system: "daggerheart", kind: "card", id: dhEntries("card")[0].id });
   await store.set(useDhEntry(store.get(), dhEntries("card")[0].id));
   assert.ok(states.card.selected.includes(dhEntries("card")[0].id));
+});
+
+test("the Defeated look clears the overlay on every status in Daggerheart's defeated set", () => {
+  for (const mode of ["overlay", "icon", "effect"]) {
+    const on = new Map();
+    installDefeatedLook({ on: (name, fn) => on.set(name, fn) }, { mode: () => mode, config: () => ({ specialStatusEffects: { DEFEATED: "dead" } }), statuses: () => DH_DEFEATED_STATUSES });
+    for (const statusId of [...DH_DEFEATED_STATUSES, "vulnerable"]) {
+      const doc = { statuses: new Set([statusId]), flags: { core: { overlay: true } }, updateSource(changes) { this.flags.core.overlay = changes["flags.core.overlay"]; } };
+      on.get("preCreateActiveEffect")(doc, { statuses: [statusId], flags: { core: { overlay: true } } }, {}, "u");
+      const cleared = mode !== "overlay" && statusId !== "vulnerable";
+      assert.equal(doc.flags.core.overlay, !cleared, `${mode} ${statusId} create`);
+      const changes = { "flags.core.overlay": true };
+      on.get("preUpdateActiveEffect")({ statuses: new Set([statusId]), flags: { core: {} } }, changes, {}, "u");
+      assert.equal(changes["flags.core.overlay"], !cleared, `${mode} ${statusId} update`);
+    }
+  }
+});
+
+test("Daggerheart's defeated layer: one per actor, kept until the last defeated status is removed", async () => {
+  const calls = [], effect = (id, statuses) => ({ id, uuid: `Scene.s.Token.t.Actor.a.ActiveEffect.${id}`, statuses: new Set(statuses), active: true });
+  const actor = { id: "a", uuid: "Scene.s.Token.t.Actor.a", items: [], effects: [], appliedEffects: [], statuses: new Set(), hasPlayerOwner: false };
+  const token = { id: "t", name: "Orc", document: { uuid: "Scene.s.Token.t" }, actor, visible: true, w: 100, h: 100 };
+  const proxy = new Proxy({}, { get: (_, method) => (...args) => { calls.push([method, ...args]); return proxy; } });
+  const manager = new PersistentStates({ ...dhStateHost, clientId: "c", ready: () => true, sceneId: () => "s", tokens: () => [token], recipes: () => [],
+    state: () => ({ enabled: false }), visibility: () => ({ isGM: true }), gridSize: () => 100,
+    catalog: () => [{ key: "jb2a.toll_the_dead.grey.skull_smoke.01", file: "skull.webm", width: 400, height: 400 }],
+    sequence: () => ({ effect: () => proxy, play: async (o) => calls.push(["play", o]) }), end: async (name) => calls.push(["end", name]),
+    body: { add: () => {}, remove: () => {} },
+    builtinStates: (t) => dhDefeatedStates(t.actor, "effect") });
+  const plays = () => calls.filter((c) => c[0] === "play").length, ends = () => calls.filter((c) => c[0] === "end").length;
+  const unconscious = effect("u", ["unconscious"]), dead = effect("d", ["dead"]);
+  actor.effects = [unconscious]; await manager.reconcile();
+  assert.equal(manager.active.size, 1); assert.equal(plays(), 1);
+  assert.equal([...manager.active.values()][0].recipe, DEFEATED_RECIPE);
+  actor.effects = [unconscious, dead]; await manager.reconcile();
+  assert.equal(manager.active.size, 1, "a finisher's Dead on top: still one layer"); assert.equal(plays(), 1, "not restarted");
+  actor.effects = [dead]; await manager.reconcile();
+  assert.equal(manager.active.size, 1, "one status left: the layer stays"); assert.equal(plays(), 1); assert.equal(ends(), 0);
+  actor.effects = []; await manager.reconcile();
+  assert.equal(manager.active.size, 0, "the last one removed: it ends"); assert.equal(ends(), 1);
+  await manager.destroy();
+});
+
+test("the defeated set's entries offer no Use, Customize or Exclude: they follow the Defeated look setting", () => {
+  const { ui } = workspace("conditions");
+  for (const status of ["defeated", "unconscious", "dead"]) {
+    ui.selected.condition = `daggerheart-condition-${status}`;
+    const html = ui.html();
+    assert.equal(ui.entry().statusId, status);
+    for (const action of ["dnd-use", "dnd-copy", "dnd-exclude"]) assert.ok(!html.includes(`data-action="${action}"`), `${status} ${action}`);
+    assert.ok(html.includes("Defeated look setting"), status);
+    assert.ok(html.includes('data-action="recipe-preview"'), "preview still works");
+  }
+  ui.selected.condition = "daggerheart-condition-vulnerable";
+  const vulnerable = ui.html();
+  for (const action of ["dnd-use", "dnd-copy", "dnd-exclude"]) assert.ok(vulnerable.includes(`data-action="${action}"`), `vulnerable ${action}`);
 });

@@ -11,7 +11,7 @@ import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
 import { daggerheartRollEvent, daggerheartUseEvent, daggerheartDamageEvent, dualityAccent, versionBelow as daggerheartVersionBelow, DAGGERHEART_VERIFIED } from "./daggerheart.mjs";
-import { dhStateHost, dhDefeatedStates } from "./daggerheart-states.mjs";
+import { dhStateHost, dhDefeatedStates, DH_DEFEATED_STATUSES } from "./daggerheart-states.mjs";
 import { applyEventElement } from "./element-choice.mjs";
 import { AA_ID, AA_TAKEOVER, aaCustomized, registerAATakeover } from "./integrations/automated-animations.mjs";
 import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
@@ -1097,7 +1097,7 @@ Hooks.once("init", () => {
   });
   game.settings.register(ID, DEFAULT_FINISHER, { scope: "world", config: false, type: String, default: "" });
   registerDefeatedLook(game.settings, ID, { onChange: () => persistentStates?.schedule() });
-  installDefeatedLook(Hooks, { mode: () => game.settings.get(ID, DEFEATED_LOOK) });
+  installDefeatedLook(Hooks, { mode: () => game.settings.get(ID, DEFEATED_LOOK), statuses: () => (game.system.id === "daggerheart" ? DH_DEFEATED_STATUSES : [defeatedStatusId()]) });
   game.settings.registerMenu(ID, "workspace", {
     name: "Animater workspace",
     label: "Open Animater",
@@ -1385,7 +1385,7 @@ Hooks.once("ready", () => {
         return perceivedStates(slugs,token,observer);
       },
       opaqueArt:(token)=>squareTokenArt(token),
-      // Daggerheart's defeated set (Defeated, Unconscious, Dead) all follow the Defeated look.
+      // Daggerheart's defeated set (Defeated, Unconscious, Dead, Death move) follows the Defeated look, as one layer per actor.
       builtinStates:(token)=>game.system.id==='daggerheart'?dhDefeatedStates(token.actor,game.settings.get(ID,DEFEATED_LOOK)):defeatedStates(token.actor,{mode:game.settings.get(ID,DEFEATED_LOOK),statusId:defeatedStatusId()}),
       // A token deleted or left behind with its scene is not drawn on, and only existing documents are tied.
       tokenAlive:(token)=>!token?.destroyed&&(typeof fromUuidSync!=="function"||!token?.document?.uuid||!!fromUuidSync(token.document.uuid,{strict:false})),

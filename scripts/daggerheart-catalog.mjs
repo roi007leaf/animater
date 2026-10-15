@@ -292,6 +292,8 @@ export const dhCatalogProfile = {
   levelKind: "card", levelLabel: "Level", levels: Array.from({ length: 10 }, (_, i) => i + 1),
   themeLabel: (kind) => (kind === "card" ? "Domain" : kind === "weapon" ? "Weapon family" : "Kind"),
   chips: (kind) => (kind === "card" ? DOMAIN_CHIPS : null),
+  // Defeated, Unconscious and Dead play only through the Defeated look setting, so the page offers no Use there.
+  governedBy: (entry) => (entry?.state?.defeated ? "Follows the Defeated look setting (Configure Settings → Animater → Defeated look). Use, Customize and Exclude do not apply." : null),
   intro: "Native Daggerheart compendium content. Each animation is designed from the card's domain and kind, or the weapon's family and range.",
   hint: "Native system compendiums.",
 };

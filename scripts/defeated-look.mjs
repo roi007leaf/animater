@@ -28,8 +28,9 @@ export async function markDefeated(actor,mode,config=globalThis.CONFIG){
 
 // Clears the overlay flag on the defeated status as it is created or updated. Existing effects
 // are never rewritten: a change of setting applies from then on.
-export function installDefeatedLook(hooks,{mode,config=()=>globalThis.CONFIG}){
- const applies=(effect,data)=>iconOnly(mode())&&(hasStatus(effect,defeatedStatusId(config()))||hasStatus(data,defeatedStatusId(config())));
+// statuses: the ids that count as defeated (a system with its own defeated set, as Daggerheart).
+export function installDefeatedLook(hooks,{mode,config=()=>globalThis.CONFIG,statuses=()=>[defeatedStatusId(config())]}){
+ const applies=(effect,data)=>iconOnly(mode())&&statuses().some(id=>hasStatus(effect,id)||hasStatus(data,id));
  hooks.on('preCreateActiveEffect',(effect,data)=>{
   if(!applies(effect,data))return;
   if(effect?.flags?.core?.overlay===true||data?.flags?.core?.overlay===true||data?.['flags.core.overlay']===true)effect.updateSource({'flags.core.overlay':false});
