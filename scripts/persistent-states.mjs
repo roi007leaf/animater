@@ -108,6 +108,8 @@ export function storedStateDocument(item){
  return current?.uuid??null;
 }
 
+// A built-in state is not in any catalog: it shows at full strength, with its body treatment.
+const BUILTIN_STATE=Object.freeze({opacity:1,motion:true});
 // Each client derives its own visible layers from native documents. Persistent
 // Sequencer media is temporary/local: no socket playback or stale scene flags.
 export class PersistentStates{
@@ -134,13 +136,14 @@ export class PersistentStates{
    for(const token of h.tokens()){
     if(!token.actor)continue;
     let shown=0;
-    const states=shownStates([...(h.actorStates??actorStates)(token.actor),...(h.perceivedStates?.(token)??[])]);
+    // Built-in states (Defeated, in the Animater effect look) carry their own recipe.
+    const states=shownStates([...(h.actorStates??actorStates)(token.actor),...(h.builtinStates?.(token)??[]),...(h.perceivedStates?.(token)??[])]);
     for(const item of states){
      if(!(h.activeState??activeState)(item))continue;
      // A state stopped from the Activity page stays off while it remains on the token.
      const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;present.add(key);
      if(shown>=budget.states||this.stopped.has(key)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
-     const kind=h.stateKind?.(item)??item.type,state=(h.normalizeState??normalizeStateCatalogState)(h.state(kind)),recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
+     const kind=h.stateKind?.(item)??item.type,state=item.animaterRecipe?BUILTIN_STATE:(h.normalizeState??normalizeStateCatalogState)(h.state(kind)),recipe=item.animaterRecipe??(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType,grantedByOtherAura(item,token)]);
      const fade=state.fade===true;
      if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':'')+(motionOnly(item)?'body':'')+(fade?'fade':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false,bodyOnly:motionOnly(item),fade,quiet:fade&&!justApplied(item)});shown++;}
@@ -228,7 +231,7 @@ export class PersistentStates{
   if(r.cancelled||this.closed||this.active.get(r.key)!==r){await this.end(r);return;}
   // The creature itself reacts (trembles, sways, turns to stone…) while the state lasts.
   if(r.motion!==false){
-   h.body?.add(r.name,r.token,bodyTreatment(r.item.name??r.recipe.name),{strength:level.scale});
+   h.body?.add(r.name,r.token,r.item.animaterBody??bodyTreatment(r.item.name??r.recipe.name),{strength:level.scale});
    // Played once: the creature reacts only while the animation shows.
    if(r.fade)setTimeout(()=>{if(this.active.get(r.key)===r)h.body?.remove?.(r.name);},FADE_MS)?.unref?.();
   }

@@ -2066,3 +2066,20 @@ test("synthetic strike: a player's Fist with no pick plays no finisher on a crit
   assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
   await f.api.stop();
 });
+
+test("Defeated look: the finisher body ending marks Defeated without the overlay unless the look is Foundry's", async () => {
+  for (const [look, overlay] of [["overlay", true], ["icon", false], ["effect", false]]) {
+    const f = await boot("pf2e");
+    assert.equal(f.settings.get("defeatedLook"), "overlay", "registered with Foundry's look as the default");
+    f.settings.set("defeatedLook", look);
+    const writes = watchTarget(f);
+    await killTarget(f, { finishers: [killFin("burn", "Burn up", "Ignition")] });
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    assert.deepEqual(writes.filter((w) => w[0] === "status").map((w) => w.slice(1)), [["dead", { active: true, overlay }]], look);
+    // Any other source (combat tracker, system) creating the status goes through the same rule.
+    const effect = { statuses: new Set(["dead"]), flags: { core: { overlay: true } }, updateSource(c) { this.flags.core.overlay = c["flags.core.overlay"]; } };
+    await f.fire("preCreateActiveEffect", effect, { statuses: ["dead"], flags: { core: { overlay: true } } }, {}, "u");
+    assert.equal(effect.flags.core.overlay, overlay, `${look}: tracker toggle`);
+    await f.api.stop();
+  }
+});

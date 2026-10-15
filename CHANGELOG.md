@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- **Defeated look** (world setting): how a Defeated token is drawn, from the combat tracker, the system or a finisher body ending. **Foundry default** keeps the skull over the whole token; **Small icon** makes it a normal status icon; **Animater effect** adds faint grey skull smoke and a greyed body while it stays Defeated (listed in Activity's Now playing, where Stop ends it until the next defeat). Applies from then on; existing Defeated effects keep their look.
 - **Local preview and table plays:** a recipe's opening Sequencer effects at a token (impacts, slashes, splashes) no longer vanish when that token breaks into fragments (or fully fades). The token's art is now kept at a tiny, invisible alpha instead of 0, so modules that hide every Sequencer effect at a token whose art reads as hidden (PF2e Visioner) keep drawing them.
 - **Token fragments:** new behaviour **Crumble to a heap**: pieces fall straight down, the top of the token first, with a little jitter and roll, and pile up in a low heap at its feet before fading. New finisher preset **Turn to dust** (Pieces): turned to grey stone, crumbles into a heap of dust, then a last puff.
 - **Finishers page:** the card and preset glyphs are drawn still and only animate while their card or tile is hovered or focused (never with reduced motion), so the page no longer runs ~300 looping SVG animations at once. The page HTML is about half the size, and the preset tiles are built once.

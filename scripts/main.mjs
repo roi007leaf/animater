@@ -58,6 +58,7 @@ const abilitySettingKey = item => item?.type === "action" ? "actionCatalog" : is
 import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, resolveAutomaticWeaponRecipe } from "./weapon-catalog.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, PF2E_STATE_SOURCE, normalizeStateCatalogState, catalogStateEntry, stateRecipe } from "./state-catalog.mjs";
 import { PersistentStates, perceivedStates } from "./persistent-states.mjs";
+import { DEFEATED_LOOK, registerDefeatedLook, installDefeatedLook, markDefeated, defeatedStates, defeatedStatusId } from "./defeated-look.mjs";
 import { DND_KINDS,DND5E_SOURCE,dndEntries,dndEntry,dndRecipe,normalizeDndCatalogState,resolveDndAutomaticRecipe, addDndBookEntries } from './dnd5e-catalog.mjs';
 import { saveReaction, twoeSaveOutcome, dnd5eSaveOutcome } from './outcome.mjs';
 import { approvalState, approvedPlayerRecipe, playerSubmissions, validatePlayerRecipes, decide } from './player-recipes.mjs';
@@ -556,7 +557,7 @@ async function applyDisplace(doc, { x, y, hidden, defeated, fromX, fromY, finish
   if (Number.isFinite(x) && Number.isFinite(y)) Object.assign(update, { x, y, [`flags.${ID}.displaced`]: { ...origin, finisher: (typeof finisher === "string" ? finisher : "").slice(0, 80) } });
   if (hidden === true) update.hidden = true;
   if (Object.keys(update).length) await doc.update(update, { animate: false, animater: { displace: true } });
-  if (defeated === true) await doc.actor?.toggleStatusEffect?.(CONFIG.specialStatusEffects?.DEFEATED ?? "dead", { active: true, overlay: true });
+  if (defeated === true) await markDefeated(doc.actor, game.settings.get(ID, DEFEATED_LOOK));
 }
 async function commitDisplace(token, data, attacker = null) {
   if (game.user.isGM) return applyDisplace(token.document, data);
@@ -1068,6 +1069,8 @@ Hooks.once("init", () => {
     scope: "world", config: true, type: Boolean, default: false,
   });
   game.settings.register(ID, DEFAULT_FINISHER, { scope: "world", config: false, type: String, default: "" });
+  registerDefeatedLook(game.settings, ID, { onChange: () => persistentStates?.schedule() });
+  installDefeatedLook(Hooks, { mode: () => game.settings.get(ID, DEFEATED_LOOK) });
   game.settings.registerMenu(ID, "workspace", {
     name: "Animater workspace",
     label: "Open Animater",
@@ -1351,6 +1354,7 @@ Hooks.once("ready", () => {
         return perceivedStates(slugs,token,observer);
       },
       opaqueArt:(token)=>squareTokenArt(token),
+      builtinStates:(token)=>defeatedStates(token.actor,{mode:game.settings.get(ID,DEFEATED_LOOK),statusId:defeatedStatusId()}),
       // A token deleted or left behind with its scene is not drawn on, and only existing documents are tied.
       tokenAlive:(token)=>!token?.destroyed&&(typeof fromUuidSync!=="function"||!token?.document?.uuid||!!fromUuidSync(token.document.uuid,{strict:false})),
       documentExists:(uuid)=>typeof fromUuidSync!=="function"||!!fromUuidSync(uuid,{strict:false}),
