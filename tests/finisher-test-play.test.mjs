@@ -109,7 +109,17 @@ test("previewFinisher: no mover token or no finisher block falls back (null) to 
   assert.equal(previewFinisher({ id: "r", name: "R", stages: [] }, { source: hero, targets: [token("Orc", 100, 100)] }, testHost(3), play), null);
   const sourceMover = presetFinisher("wall-slam", "ws");
   sourceMover.finisher = { ...sourceMover.finisher, mover: "source" };
-  assert.equal(previewFinisher(sourceMover, { targets: [token("Orc", 100, 100)] }, testHost(3), play), null, "source mover with no source token");
+  assert.equal(previewFinisher(sourceMover, { source: hero, targets: [] }, testHost(3), play), null, "an old source mover moves targets too: none, nothing to compose");
+});
+
+test("previewFinisher: an old source-mover finisher moves the target, aimed away from the source", async () => {
+  const recipe = presetFinisher("wall-slam", "ws");
+  recipe.finisher = { ...recipe.finisher, mover: "source" };
+  const hero = token("Hero", 0, 100), orc = token("Orc", 100, 100), plays = [];
+  await previewFinisher(recipe, { source: hero, targets: [orc] }, testHost(3), (composed, context) => { plays.push(context); return true; });
+  assert.equal(plays.length, 1);
+  assert.equal(plays[0].source, hero);
+  assert.deepEqual(plays[0].targets, [orc]);
 });
 
 test("playFinisher still writes the landing for automation", async () => {

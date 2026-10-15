@@ -20,14 +20,15 @@ test("the canvas draws the path, a draggable dot per keyframe, and a finisher's 
   assert.match(plain, /data-kf-scrub/);
   assert.doesNotMatch(plain, /data-kf-landing/);
   assert.match(plain, /away from the other token/);
-  const fin = pathCanvasHTML(stage, { selected: 2, finisher: { mover: "targets", ending: "body" } });
+  const fin = pathCanvasHTML(stage, { selected: 2, finisher: { ending: "body" } });
   assert.match(fin, /data-kf-landing/);
   assert.match(fin, /away from the attacker/);
+  assert.match(pathCanvasHTML(stage, { finisher: { mover: "source", ending: "body" } }), /away from the attacker/, "an old source mover moves the target too");
 });
 
 test("the landing square sits where the grid walk lands, not on the rounded end", () => {
   const s = { ...stage, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: 2.6, y: 1.4 }]) };
-  const html = pathCanvasHTML(s, { finisher: { mover: "targets", ending: "body" } });
+  const html = pathCanvasHTML(s, { finisher: { ending: "body" } });
   assert.match(html, /data-kf-landing x="2\.5" y="1\.5"/, "square (3, 2): three longer-axis steps along the end direction");
 });
 

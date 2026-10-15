@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { composeFinisher, travelEnd, planEnd, motionEnd, finisherDirection, playFinisher, fadedAtEnd, pathAim } from "../scripts/finisher-play.mjs";
+import { composeFinisher, travelEnd, planEnd, motionEnd, finisherDirection, playFinisher, fadedAtEnd } from "../scripts/finisher-play.mjs";
 import { normalizeFinisher, validateRecipe } from "../scripts/model.mjs";
 import { timedStages } from "../scripts/composition.mjs";
 
@@ -22,11 +22,13 @@ test("compose without a landing square strips the hold so travel comes back", ()
   assert.equal(r.stages[0].motionEnd, undefined);
 });
 
-test("compose leaves other movers' stages alone", () => {
-  const { recipe: r, moves } = composeFinisher(recipe({ mover: "source" }), { offset: { x: 1, y: 0 } });
+test("compose leaves the user's own stages alone: only the target travels", () => {
+  const { recipe: r, moves } = composeFinisher(recipe({}, [{ ...travel, subject: "source" }]), { offset: { x: 1, y: 0 } });
   assert.equal(moves, false);
   assert.equal(r.stages[0].motionOffset, undefined);
-  assert.equal(r.stages[0].motionEnd, undefined, "a held stage that is not the mover's returns");
+  assert.equal(r.stages[0].motionEnd, undefined, "a held stage that is not the target's returns");
+  const old = composeFinisher(recipe({ mover: "source" }), { offset: { x: 1, y: 0 } });
+  assert.deepEqual(old.recipe.stages[0].motionOffset, { x: 1, y: 0 }, "an old source mover moves the target");
 });
 
 test("travel end is when the last landing travel finishes; plan end is when everything does", () => {
@@ -42,11 +44,11 @@ test("the ending starts when the mover's last motion ends, else when the plan en
   assert.equal(motionEnd([{ kind: "impact", delay: 0, duration: 1500 }]), 1500);
 });
 
-test("targets are flung away from the attacker; the user travels toward the target", () => {
+test("targets are flung away from the attacker", () => {
   const at = (x, y) => ({ center: { x, y } });
-  assert.deepEqual(finisherDirection(normalizeFinisher({}), { mover: at(100, 0), attacker: at(0, 0) }), { x: 1, y: 0 });
-  assert.deepEqual(finisherDirection(normalizeFinisher({ mover: "source" }), { mover: at(0, 0), target: at(0, 100) }), { x: 0, y: 1 });
-  assert.equal(finisherDirection(normalizeFinisher({}), { mover: at(1, 1), attacker: null }), null);
+  assert.deepEqual(finisherDirection({ mover: at(100, 0), attacker: at(0, 0) }), { x: 1, y: 0 });
+  assert.deepEqual(finisherDirection({ mover: at(0, 100), attacker: at(0, 0) }), { x: 0, y: 1 });
+  assert.equal(finisherDirection({ mover: at(1, 1), attacker: null }), null);
 });
 
 const token = (name = "Orc") => ({ name, center: { x: 150, y: 150 }, document: { x: 100, y: 100 } });
@@ -121,9 +123,9 @@ test("a refused move is traced and skips the ending", async () => {
   assert.ok(!host.log.some(([kind]) => kind === "fade"));
 });
 
-test("a source-mover finisher plays from the user and aims its effects at the target", async () => {
+test("a finisher (even an old source-mover one) plays from the attacker on the target it moves", async () => {
   const host = fakeHost();
-  await playFinisher({ recipe: recipe({ mover: "source", knockback: 0, ending: "stay" }), mover: token("Hero"), target: token("Orc"), attacker: token("Hero"), dead: false }, host);
+  await playFinisher({ recipe: { ...recipe({ knockback: 0, ending: "stay" }), finisher: { ...normalizeFinisher({ knockback: 0, ending: "stay" }), mover: "source" } }, mover: token("Orc"), target: token("Orc"), attacker: token("Hero"), dead: false }, host);
   assert.deepEqual(host.log[1], ["play", null, "Hero", "Orc"]);
 });
 
@@ -187,9 +189,9 @@ test("an in-place path keeps its hold and never moves the document", async () =>
   assert.deepEqual(host.log.at(-1), ["commit", { hidden: true, finisher: "p" }]);
 });
 
-test("pathAim points away from the other token for either mover", () => {
-  assert.deepEqual(pathAim(normalizeFinisher({}), { mover: at("Orc", 100, 0), attacker: at("Hero", 0, 0) }), { x: 1, y: 0 });
-  assert.deepEqual(pathAim(normalizeFinisher({ mover: "source" }), { mover: at("Hero", 0, 0), target: at("Orc", 100, 0) }), { x: -1, y: 0 });
+test("paths aim away from the attacker; a vanished or still mover needs no fade", () => {
+  assert.deepEqual(finisherDirection({ mover: at("Orc", 100, 0), attacker: at("Hero", 0, 0) }), { x: 1, y: 0 });
+  assert.equal(finisherDirection({ mover: at("Orc", 100, 0), attacker: null }), null, "no attacker: the caller falls back to the mover's facing");
   assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 0.3, 0, { alpha: 0 })]), false), true);
   assert.equal(fadedAtEnd({ ...pathRecipe([]), stages: [pathTravel([kf(0), kf(1, 1, 0)], { motionEnd: undefined })] }, false), false, "nothing held in place");
   assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0, { alpha: 0 })]), true), false, "a path that moved the token lands visible: it still fades");
@@ -240,14 +242,6 @@ test("in place is decided from the aimed end: (0.6, 0) at 45° rounds to no squa
   assert.equal(kept.moves, false);
 });
 
-test("a source-mover path lands away from the target", async () => {
-  const host = gridHost();
-  const recipe = { ...pathRecipe([], { mover: "source" }), stages: [pathTravel([kf(0), kf(1, 2, 0)], { subject: "source" })] };
-  await playFinisher({ recipe, mover: at("Hero", 100, 100), attacker: at("Hero", 100, 100), target: at("Orc", 200, 100), dead: false }, host);
-  const [, dx, dy, squares] = host.log.find((e) => e[0] === "landing");
-  assert.deepEqual([dx + 0, dy + 0, squares], [-1, 0, 2], "mover left of the target is pushed further left");
-  assert.deepEqual(host.log.find((e) => e[0] === "commit")[1], { x: -100, y: 100, fromX: 100, fromY: 100, finisher: "p" });
-});
 
 test("an in-place held path skips the separate fade even when it ends visible", async () => {
   const host = gridHost();
@@ -398,19 +392,6 @@ test("a stage linked to a dropped stage keeps its time and loses the link", asyn
     assert.doesNotThrow(() => timedStages(validateRecipe({ ...linked, stages })));
   }
   assert.equal(before, 2600);
-});
-
-test("a source mover's slam leaves the target's crash where it is and does not shake the target", async () => {
-  const keyframes = [kf(0), kf(1, 6, 0)];
-  const base = slamRecipe(keyframes);
-  const r = { ...base, finisher: normalizeFinisher({ knockback: 5, wall: "slam", mover: "source" }), stages: [pathTravel(keyframes, { subject: "source", delay: 100 }), ...base.stages.slice(1)] };
-  const host = slamHost(1);
-  await playFinisher({ recipe: r, mover: at("Hero", 100, 100), attacker: at("Hero", 100, 100), target: at("Orc", 200, 100), dead: false }, host);
-  const stages = played(host), crack = byId(stages, "wall-crack");
-  assert.equal(host.log.find((e) => e[0] === "commit")[1].x, 0, "the user did move one square");
-  assert.equal(crack.offsetX, undefined, "an impact plays on the target: not offset by the user's landing");
-  assert.equal(starts(stages)["wall-crack"], 100 + byId(stages, "fly").duration, "still timed to the hit");
-  assert.equal(byId(stages, "wall-shake"), undefined, "a targets shake would shake the wrong token");
 });
 
 test("a fragments finisher needs no separate fade: the token is already out of sight", async () => {

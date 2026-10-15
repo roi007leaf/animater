@@ -38,7 +38,7 @@ export function pathCanvasHTML(s, { selected = -1, finisher = null } = {}) {
   const end = kfs.at(-1), length = Math.hypot(end.x, end.y);
   const spot = (length ? landingSteps({ x: 0, y: 0 }, { x: end.x / length, y: end.y / length }, pathSquares(kfs), 1).at(-1) : null) ?? { x: 0, y: 0 };
   const landing = finisher && s.motionEnd === "hold" ? `<rect class="an-kf-landing" data-kf-landing x="${spot.x - 0.5}" y="${spot.y - 0.5}" width="1" height="1"/>` : "";
-  const away = finisher ? (finisher.mover === "source" ? "away from the target" : "away from the attacker") : "away from the other token";
+  const away = finisher ? "away from the attacker" : "away from the other token";
   return `<div class="an-kf-canvas" data-kf-canvas data-kf-view="${v.x} ${v.y} ${v.w} ${v.h}" aria-label="Keyframed path: drag the dots to move keyframes">
     <svg viewBox="${v.x} ${v.y} ${v.w} ${v.h}" preserveAspectRatio="xMidYMid meet">
       <g class="an-kf-grid">${grid.join("")}</g>${landing}

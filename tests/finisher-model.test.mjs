@@ -1,14 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { validateRecipe, normalizeFinisher } from "../scripts/model.mjs";
-import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, pickPlays, createFinishedMemory, critFinishers, finishedKey, finishedMessage } from "../scripts/finisher-model.mjs";
+import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment, checkFinisherEvent, linkFinisher, linkedFinisher, mayDisplace, finisherTravelPath, finisherChipText, addFinisherName, removeFinisherName, linkFinisherItem, unlinkFinisherItem, finisherItemLink, finisherAvailableTo, playerFinisherChoices, pickedFinisher, finisherFires, pickPlays, createFinishedMemory, critFinishers, finishedKey, finishedMessage, critTargets, saveFinisherEvent } from "../scripts/finisher-model.mjs";
 
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
 test("the finisher block is normalized, kept, and makes the recipe a manual Finisher", () => {
-  assert.deepEqual(normalizeFinisher({}), { on: "kill", mover: "targets", knockback: 0, ending: "body", success: "success", wall: "fit", players: [] });
-  assert.deepEqual(normalizeFinisher({ on: "use", mover: "source", knockback: 9, ending: "vanish", success: "critical", wall: "slam" }), { on: "use", mover: "source", knockback: 6, ending: "vanish", success: "critical", wall: "slam", players: [] });
+  assert.deepEqual(normalizeFinisher({}), { on: "kill", knockback: 0, ending: "body", success: "success", wall: "fit", players: [] });
+  assert.deepEqual(normalizeFinisher({ on: "use", knockback: 9, ending: "vanish", success: "critical", wall: "slam" }), { on: "use", knockback: 6, ending: "vanish", success: "critical", wall: "slam", players: [] });
   assert.equal(normalizeFinisher({ wall: "bounce" }).wall, "fit", "an unknown wall mode stops short");
+  assert.equal(Object.hasOwn(normalizeFinisher({ mover: "source" }), "mover"), false, "an old saved mover: \"source\" loads as moving the targets");
   const r = validateRecipe({ id: "f", name: "F", trigger: "attack", category: "Custom", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", assets: [] }] });
   assert.equal(r.trigger, "manual", "normal dispatch never matches a finisher");
   assert.equal(r.category, "Finisher");
@@ -103,6 +104,42 @@ test("a PF2e Shove check becomes a finisher event with its outcome and target", 
   assert.equal(checkFinisherEvent(reroll, "pf2e", "u"), null, "reroll");
 });
 
+// PF2e/SF2e saving-throw messages (checked against the PF2e system's Check.roll): flags.pf2e.context
+// has type "saving-throw", the saver's own outcome, origin { actor, token } (the caster's uuids) and
+// target { actor, token } (the saver); flags.pf2e.origin is the spell's getOriginData() ({ actor, uuid, type }).
+const saveMessage = (outcome, extra = {}) => ({ id: "sv1", author: { id: "u" }, speaker: { scene: "s", token: "orc" },
+  flags: { pf2e: { context: { type: "saving-throw", outcome, origin: { actor: "Actor.wiz", token: "Scene.s.Token.wizard" }, target: { actor: "Actor.orc", token: "Scene.s.Token.orc" }, ...extra }, origin: { actor: "Actor.wiz", uuid: "Actor.wiz.Item.fireball", type: "spell" } } } });
+
+test("a saving throw against a spell is a finisher event: the saver is the target, the caster the source", () => {
+  assert.deepEqual(saveFinisherEvent(saveMessage("criticalFailure"), "pf2e", "u"), { type: "save", systemId: "pf2e", id: "finisher-save:sv1", messageId: "sv1", itemUuid: "Actor.wiz.Item.fireball", tokenId: "wizard", sceneId: "s", targetUuid: "Scene.s.Token.orc", outcome: "criticalFailure" });
+  assert.equal(saveFinisherEvent(saveMessage("criticalFailure"), "pf2e", "other"), null, "only the roller's client");
+  assert.equal(saveFinisherEvent({ ...saveMessage("criticalFailure"), whisper: ["gm"] }, "pf2e", "u"), null, "a hidden save stays quiet");
+  assert.equal(saveFinisherEvent(saveMessage("criticalFailure", { isReroll: true }), "pf2e", "u"), null, "reroll");
+  assert.equal(saveFinisherEvent(saveMessage("criticalFailure", { type: "skill-check" }), "pf2e", "u"), null, "not a save");
+  const plain = saveMessage("criticalFailure"); delete plain.flags.pf2e.origin;
+  assert.equal(saveFinisherEvent(plain, "pf2e", "u"), null, "a save against no item has nothing to play");
+  const lost = saveFinisherEvent(saveMessage("criticalFailure", { origin: { actor: "Actor.wiz" } }), "pf2e", "u");
+  assert.equal(lost.tokenId, undefined, "a caster without a token: no attacker token (the item's actor may stand in)");
+  const self = saveFinisherEvent(saveMessage("criticalFailure", { origin: { actor: "Actor.orc", token: "Scene.s.Token.orc" } }), "pf2e", "u");
+  assert.equal(self.tokenId, undefined, "the saver is never its own attacker");
+  const speakerOnly = saveMessage("criticalFailure"); delete speakerOnly.flags.pf2e.context.target;
+  assert.equal(saveFinisherEvent(speakerOnly, "pf2e", "u").targetUuid, "Scene.s.Token.orc", "the speaker's token is the saver");
+  assert.equal(saveFinisherEvent({ ...saveMessage("failure"), flags: { sf2e: saveMessage("failure").flags.pf2e } }, "sf2e", "u").systemId, "sf2e");
+});
+
+test("critTargets: a critical attack or check strikes all its targets; a save, only a critically failed saver", () => {
+  const orc = { id: "orc" }, gob = { id: "gob" };
+  assert.deepEqual(critTargets({ type: "attack", outcome: "criticalSuccess", targets: [orc] }), [orc], "an attack crit on one target");
+  assert.deepEqual(critTargets({ type: "attack", outcome: "criticalSuccess", targets: [orc, gob] }), [orc, gob], "a critical roll against several targets strikes them all");
+  assert.deepEqual(critTargets({ type: "check", outcome: "criticalSuccess", targets: [orc, null] }), [orc]);
+  assert.deepEqual(critTargets({ type: "attack", outcome: "success", targets: [orc] }), []);
+  assert.deepEqual(critTargets({ type: "save", outcome: "criticalFailure", targets: [orc] }), [orc], "the saver crit-failed: the caster critically struck it");
+  for (const outcome of ["criticalSuccess", "success", "failure", undefined]) assert.deepEqual(critTargets({ type: "save", outcome, targets: [orc] }), [], `a ${outcome} save`);
+  assert.deepEqual(critTargets({ type: "use", outcome: "criticalSuccess", targets: [orc] }), [], "a use has no degree of its own");
+  assert.deepEqual(critTargets({ type: "damage", outcome: "criticalSuccess", targets: [orc] }), []);
+  assert.deepEqual(critTargets(null), []);
+});
+
 test("the catalog dropdown moves an entry to exactly one finisher, case-insensitively", () => {
   const list = [fin("a", "Shove, greataxe"), fin("b", "Fireball"), { id: "plain", name: "P", match: "Greataxe", stages: [] }];
   const moved = linkFinisher(list, "Greataxe", "b");
@@ -124,7 +161,8 @@ test("a player may move a token they own, or one their own token struck", () => 
 test("a finisher's travel path is the mover's held keyframed path", () => {
   const path = { kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [] };
   assert.equal(finisherTravelPath({ finisher: normalizeFinisher({}), stages: [{ kind: "impact" }, path] }), path);
-  assert.equal(finisherTravelPath({ finisher: normalizeFinisher({ mover: "source" }), stages: [path] }), null, "another mover's path is not the travel");
+  assert.equal(finisherTravelPath({ finisher: normalizeFinisher({}), stages: [{ ...path, subject: "source" }] }), null, "the user's own path is not the travel");
+  assert.equal(finisherTravelPath({ finisher: normalizeFinisher({ mover: "source" }), stages: [path] }), path, "an old source mover moves the target");
   assert.equal(finisherTravelPath({ finisher: normalizeFinisher({}), stages: [{ ...path, motionEnd: undefined }] }), null, "a returning path does not travel");
 });
 

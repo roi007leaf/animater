@@ -17,7 +17,8 @@ test("the Finishers page lists only finishers, with presets and the default choi
 
 test("the studio Finisher panel edits every finisher field", () => {
   const html = finisherSettingsHTML(fin("a", "Shove, greataxe", { on: "use", knockback: 2, ending: "vanish" }));
-  for (const field of ["finisher.on", "finisher.mover", "finisher.knockback", "finisher.ending", "finisher.success"]) assert.match(html, new RegExp(`data-field="${field.replace(".", "\.")}"`), field);
+  for (const field of ["finisher.on", "finisher.knockback", "finisher.ending", "finisher.success"]) assert.match(html, new RegExp(`data-field="${field.replace(".", "\.")}"`), field);
+  assert.doesNotMatch(html, /data-field="finisher\.mover"|>Moves</, "finishers move only their targets: no Moves choice");
   assert.match(html, /<option value="vanish" selected>/);
 });
 
@@ -36,8 +37,7 @@ test("a path finisher hides knockback and says the path decides the landing", ()
   assert.match(html, /keyframed path ends \(2 sq\), away from the attacker/);
   assert.doesNotMatch(html, /aimed away/);
   assert.doesNotMatch(html, /knockback replaces its distance/, "the legacy hint does not apply to a path");
-  const source = { ...fin("c", "Charge", { mover: "source" }), stages: [{ ...r.stages[0], subject: "source" }] };
-  assert.match(finisherSettingsHTML(source), /away from the target/);
+  assert.match(finisherSettingsHTML({ ...r, finisher: { ...r.finisher, mover: "source" } }), /away from the attacker/, "an old source mover still says attacker");
   assert.match(finisherSettingsHTML(fin("b", "Shove")), /knockback replaces its distance/, "legacy travel keeps its hint");
   assert.match(finisherSettingsHTML(fin("b", "Shove", { knockback: 4 })), /data-field="finisher\.knockback"/, "legacy travel keeps knockback");
 });

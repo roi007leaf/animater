@@ -1,5 +1,5 @@
 // The Finishers page, the studio's Finisher settings and the catalog entries' Finisher dropdown.
-import { normalize, FINISHER_ON, FINISHER_MOVERS, FINISHER_ENDINGS, FINISHER_SUCCESS, FINISHER_WALLS } from "./model.mjs";
+import { normalize, FINISHER_ON, FINISHER_ENDINGS, FINISHER_SUCCESS, FINISHER_WALLS } from "./model.mjs";
 import { linkedFinisher, finisherTravelPath, finisherNames, finisherItemLink } from "./finisher-model.mjs";
 import { pathSquares } from "./keyframe-path.mjs";
 import { FINISHER_PRESETS } from "./finisher-presets.mjs";
@@ -54,8 +54,8 @@ export function finisherSettingsHTML(r, { itemSummary, players = [] } = {}) {
   return `<div class="an-editor-section an-binding an-finisher"><div class="an-section-title"><b>Finisher</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>
     <label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>
     ${appliesToHTML(r, itemSummary)}
-    ${select("on", "Plays on", FINISHER_ON)}${availableToHTML(f, players)}${select("success", "Needs", FINISHER_SUCCESS)}${select("mover", "Moves", FINISHER_MOVERS)}
-    ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the ${f.mover === "source" ? "target" : "attacker"} and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label>`}
+    ${select("on", "Plays on", FINISHER_ON)}${availableToHTML(f, players)}${select("success", "Needs", FINISHER_SUCCESS)}
+    ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the attacker and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label>`}
     ${select("ending", "Ending", FINISHER_ENDINGS)}
     <p class="an-hint">${path ? "A stage named “landing” plays where it lands." : "Set a travel motion's End to “Hold at the end”: knockback replaces its distance and the token is moved to where it lands, stopping at walls. A stage named “landing” plays there."} Vanish and Body apply only to a creature at 0 HP.</p></div>`;
 }

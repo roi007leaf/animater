@@ -3,7 +3,7 @@ import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mj
 import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { displaceAllowed, landingSpot, withinKnockback } from "./displacement.mjs";
-import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, pickPlays, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE } from "./finisher-model.mjs";
+import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, pickPlays, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE, critTargets, saveFinisherEvent } from "./finisher-model.mjs";
 import { playFinisher, previewFinisher } from "./finisher-play.mjs";
 import { createFragmentRenderer } from "./fragment-render.mjs";
 import { starterRecipes } from "./presets.mjs";
@@ -1400,46 +1400,43 @@ Hooks.once("ready", () => {
     trace: (status, detail) => runtime.trace(status, detail),
   });
   // Resolves playFinisher's answer: true played, false a write failed, null never played.
-  const runFinisher = (recipe, { mover, attacker, target }) => {
+  const runFinisher = (recipe, { mover, attacker }) => {
     const dead = Number(mover.actor?.system?.attributes?.hp?.value) <= 0;
-    return playFinisher({ recipe, mover, attacker, target, dead }, finisherHost(attacker)).catch((error) => { runtime.trace("Blocked", error.message); return null; });
+    return playFinisher({ recipe, mover, attacker, dead }, finisherHost(attacker)).catch((error) => { runtime.trace("Blocked", error.message); return null; });
   };
-  // A critical hit: a player's item plays only its owner's pick, when it plays on crits; an NPC's
-  // item plays the GM's critical finishers. Marks each target (on every client) and answers the
-  // targets and movers it started on.
-  const playCritFinisher = (event, item) => {
-    const started = { targets: new Set(), movers: new Set() };
-    const recipe = playerItem(event.item) ? pickPlays(pickFor(event.item), "crit", { outcome: event.outcome }) : critFinishers(recipes(), item)[0];
+  // A critical strike: a player's item plays only its owner's pick, when it plays on crits; an NPC's
+  // item plays the GM's critical finishers. It plays on each critically struck target (critTargets),
+  // from the event's source (for a save, the caster), marks each one on every client and answers
+  // the ids of the targets it started on.
+  const playCritFinisher = (event, item, struck) => {
+    const started = new Set();
+    const recipe = playerItem(event.item) ? pickPlays(pickFor(event.item), "crit", { outcome: "criticalSuccess" }) : critFinishers(recipes(), item)[0];
     if (!recipe) return started;
-    const targets = (event.targets ?? []).filter(Boolean);
-    const keyOf = (target) => finishedKey({ attackerId: event.source?.id, targetId: target.id, itemUuid: item.itemUuid ?? "", recipeId: recipe.id });
-    for (const target of targets) { started.targets.add(target.id); announceFinished(keyOf(target), true); }
-    // A play that never started (blocked) takes its marks back, so the kill plays it in full.
-    const retract = (played, struck) => { if (played === null) for (const target of struck) announceFinished(keyOf(target), false); };
-    if (recipe.finisher.mover === "source") {
-      if (event.source) { started.movers.add(event.source); void runFinisher(recipe, { mover: event.source, attacker: event.source, target: targets[0] ?? null }).then((played) => retract(played, targets)); }
-      else retract(null, targets);
-    } else for (const mover of targets) { started.movers.add(mover); void runFinisher(recipe, { mover, attacker: event.source, target: mover }).then((played) => retract(played, [mover])); }
+    const keyOf = (target) => finishedKey({ attackerId: event.source?.id, targetId: target.id, itemUuid: item.itemUuid ?? "", recipeId: recipe.id, save: event.type === "save" });
+    for (const mover of struck) {
+      started.add(mover.id);
+      announceFinished(keyOf(mover), true);
+      // A play that never started (blocked) takes its mark back, so the kill plays it in full.
+      void runFinisher(recipe, { mover, attacker: event.source }).then((played) => { if (played === null) announceFinished(keyOf(mover), false); });
+    }
     return started;
   };
-  // Every successful use of an assigned item (the roll that has a degree of success, else the use).
+  // Every successful use of an assigned item (the roll that has a degree of success, else the use),
+  // and every target it critically struck (a critical roll, or a critically failed save against it).
   const finisherSeen = new Set();
   playUseFinishers = async (event) => {
-    if (!event || !game.settings.get(ID, FINISHERS_SETTING) || !finisherMoment(event)) return;
+    const struck = critTargets(event), moment = finisherMoment(event);
+    if (!event || !game.settings.get(ID, FINISHERS_SETTING) || (!moment && !struck.length)) return;
     if (event.id) { if (finisherSeen.has(event.id)) return; finisherSeen.add(event.id); if (finisherSeen.size > 500) finisherSeen.delete(finisherSeen.values().next().value); }
     const item = { itemName: event.item?.name ?? event.itemName, itemSlug: event.item?.slug ?? event.item?.system?.slug, itemUuid: event.itemUuid ?? event.item?.uuid };
-    const crit = event.outcome === "criticalSuccess" ? playCritFinisher(event, item) : { targets: new Set(), movers: new Set() };
+    const crit = struck.length ? playCritFinisher(event, item, struck) : new Set();
+    if (!moment) return;
     // A player's item: only its owner's use pick. An NPC's item: the GM's use finishers.
     const uses = playerItem(event.item) ? [pickPlays(pickFor(event.item), "use", { event })].filter(Boolean)
       : matchFinishers(recipes(), item, "use").filter((recipe) => usePasses(recipe.finisher, event));
-    for (const recipe of uses) {
-      const movers = recipe.finisher.mover === "source" ? [event.source] : event.targets ?? [];
-      for (const mover of movers.filter(Boolean)) {
-        // A crit finisher already moves this target (or this mover) in this action: one finisher per token.
-        const struck = recipe.finisher.mover === "source" ? event.targets?.[0] : mover;
-        if (crit.movers.has(mover) || (struck && crit.targets.has(struck.id))) continue;
-        void runFinisher(recipe, { mover, attacker: event.source, target: event.targets?.[0] ?? null });
-      }
+    for (const recipe of uses) for (const mover of (event.targets ?? []).filter(Boolean)) {
+      // A crit finisher already moves this target in this action: one finisher per token.
+      if (!crit.has(mover.id)) void runFinisher(recipe, { mover, attacker: event.source });
     }
   };
   // The killing blow on an NPC: the killing item's kill finisher, else the default finisher.
@@ -1449,15 +1446,18 @@ Hooks.once("ready", () => {
     const by = recallAttribution(damageLog, ids) ?? recallDamage(damageLog, ids);
     const attacker = by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null;
     // A player's killing item plays only its owner's pick ("None" or no pick: no finisher, not even
-    // the default); "Needs: Critical only" holds for it. An NPC's item, or no known item, keeps the
-    // GM's kill finishers and the default finisher.
+    // the default); "Needs: Critical only" holds for it. An item that cannot be found, struck by a
+    // player's token, is still a player's kill: no finisher. An NPC's item, or no known item and no
+    // known attacker, keeps the GM's kill finishers and the default finisher.
     const struck = killingItem(by, attacker), outcome = by?.crit ? "criticalSuccess" : "success";
-    const recipe = playerItem(struck) ? pickPlays(pickFor(struck), "kill", { outcome })
+    const players = struck ? playerItem(struck) : ownerUsers(attacker?.actor).length > 0;
+    const recipe = players ? pickPlays(pickFor(struck), "kill", { outcome })
       : killFinisher(recipes(), { itemUuid: by?.itemUuid, itemName: by?.itemName }, game.settings.get(ID, DEFAULT_FINISHER), { crit: by?.crit === true });
     // The crit already played this finisher's travel on this token: only its ending is left.
-    // Only a critical killing blow is that crit's own damage; the mark is used once.
-    const endingOnly = Boolean(recipe) && by?.crit === true
-      && finished.consume(finishedKey({ attackerId: by?.sourceTokenId, targetId: token.id, itemUuid: by?.itemUuid ?? "", recipeId: recipe.id }));
+    // A critical killing blow is that crit's own damage; a critically failed save is ended by the
+    // spell's own (non-critical) damage. The mark is used once.
+    const key = recipe && { attackerId: by?.sourceTokenId, targetId: token.id, itemUuid: by?.itemUuid ?? "", recipeId: recipe.id };
+    const endingOnly = Boolean(recipe) && finished.consume(finishedKey({ ...key, save: by?.crit !== true }));
     return recipe && { recipe, attacker, endingOnly };
   };
   // The item that struck the killing blow, from the damage roll's origin.
@@ -1494,7 +1494,7 @@ Hooks.once("ready", () => {
     await motionSettled(token);
     if (kill.endingOnly) return void await finishOnly(kill.recipe, token, kill.attacker);
     // Nothing played and nothing was written: the old collapse stands in.
-    if ((await runFinisher(kill.recipe, { mover: token, attacker: kill.attacker, target: token })) === null) playDamageMoment(actor, token, true);
+    if ((await runFinisher(kill.recipe, { mover: token, attacker: kill.attacker })) === null) playDamageMoment(actor, token, true);
   };
   Hooks.on("updateActor", (actor, changes, options, userId) => {
     const before = options.animaterHpBefore, after = hpOf(actor);
@@ -1514,6 +1514,9 @@ Hooks.once("ready", () => {
       // Gated and paced like dispatch: events accepted, AA-customized items left alone, dice landed.
       const check = acceptsEvents() ? checkFinisherEvent(message, game.system.id, game.user.id) : null;
       if (check && !yieldsToAA(check)) void afterDice(check).then(() => enrich(check)).then((e) => e && !yieldsToAA(e) && playUseFinishers(e)).catch((error) => runtime.trace("Blocked", error.message));
+      // A save against a spell or effect: a critical failure is a crit finisher on the saver.
+      const saved = acceptsEvents() ? saveFinisherEvent(message, game.system.id, game.user.id) : null;
+      if (saved) void afterDice(saved).then(() => enrich(saved)).then((e) => e && !yieldsToAA(e) && playUseFinishers(e)).catch((error) => runtime.trace("Blocked", error.message));
       // A saving throw against a spell or effect: the saving creature reacts by degree.
       const save = (message.author?.id ?? message.user?.id) === game.user.id ? twoeSaveOutcome(message, game.system.id) : null;
       if (save) return void playSaveReaction(save, message.speaker?.token, message.id, message.speaker?.scene);

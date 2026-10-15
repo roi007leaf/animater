@@ -1402,7 +1402,7 @@ test("finishers off: an assigned use finisher does not play", async () => {
 
 // A killing blow on an NPC: a damage roll from "Ignition" aimed at the target token, then the
 // actor's HP drops to 0 through preUpdateActor/updateActor as Foundry fires them.
-async function killTarget(f, { finishers = [], defaultFinisher = "", crit = false } = {}) {
+async function killTarget(f, { finishers = [], defaultFinisher = "", crit = false, damage = {} } = {}) {
   foundry.utils.hasProperty ??= (object, path) => path.split(".").reduce((o, k) => (o && k in o ? o[k] : undefined), object) !== undefined;
   const npc = { id: "npc", type: "npc", system: { attributes: { hp: { value: 5 } } }, getActiveTokens: () => [f.target] };
   Object.assign(f.target, { name: "Orc", actor: npc, w: 100, h: 100 });
@@ -1412,7 +1412,7 @@ async function killTarget(f, { finishers = [], defaultFinisher = "", crit = fals
   f.settings.set("defaultFinisher", defaultFinisher);
   f.settings.set("recipes", { schema: 1, recipes: finishers });
   await f.fire("createChatMessage", { id: "dmg", author: { id: "u" }, item: f.item, actor: f.actor, isRoll: true, rolls: [{ instances: [{ type: "fire", total: 9 }] }],
-    flags: { pf2e: { context: { type: "damage-roll", ...(crit ? { outcome: "criticalSuccess" } : {}), target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
+    flags: { pf2e: { context: { type: "damage-roll", ...(crit ? { outcome: "criticalSuccess" } : {}), target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } , ...damage });
   const changes = { system: { attributes: { hp: { value: 0 } } } }, options = {};
   await f.fire("preUpdateActor", npc, changes, options);
   npc.system.attributes.hp.value = 0;
@@ -1740,6 +1740,126 @@ test("crit finisher and GM use finisher on the same target: only the crit finish
   await new Promise((resolve) => setTimeout(resolve, 250));
   const entries = f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail);
   assert.deepEqual(entries, ["Pick: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+// A saving throw against Ignition, rolled by the saver (as PF2e's Check.roll writes it): the caster's
+// token in context.origin, the saver in context.target and the speaker, the spell in flags.pf2e.origin.
+const saveMessage = (f, id, outcome, saver = "target") => ({ id, author: { id: "u" }, isRoll: true, speaker: { scene: "s", token: saver },
+  flags: { pf2e: { context: { type: "saving-throw", outcome, origin: { actor: "Actor.a", token: "Scene.s.Token.t" }, target: { actor: `Actor.${saver}`, token: `Scene.s.Token.${saver}` } }, origin: { actor: "Actor.a", uuid: f.item.uuid, type: "spell" } } } });
+const gmCrit = () => ({ ...pickFin("criticalOrKill", []), id: "gmcrit", name: "GM crit" });
+function saveSetup(f, finishers) {
+  watchTarget(f);
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: finishers });
+}
+
+test("save: a critically failed save plays the caster's crit finisher on the saver, the caster as attacker", async () => {
+  const f = await boot("pf2e");
+  saveSetup(f, [gmCrit()]);
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.deepEqual(f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail), ["GM crit: Orc"], JSON.stringify(f.api.activity()));
+  assert.deepEqual(finishedEmits(f).map((e) => [e.key, e.played]), [["t:target:Actor.a.Item.i:gmcrit:save", true]], "marked as struck by the caster's token");
+  await f.api.stop();
+});
+
+for (const outcome of ["criticalSuccess", "success", "failure"]) {
+  test(`save: a ${outcome} save plays no crit finisher`, async () => {
+    const f = await boot("pf2e");
+    saveSetup(f, [gmCrit()]);
+    await f.fire("createChatMessage", saveMessage(f, "sv", outcome));
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, JSON.stringify(f.api.activity()));
+  });
+}
+
+test("save: the pick on the caster's (player-owned) spell plays, the GM's crit finisher does not", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f);
+  saveSetup(f, [gmCrit(), pickFin("critical")]);
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.deepEqual(f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail), ["Pick: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+// A second creature in the area: a goblin token beside the orc.
+function addGoblin(t, f) {
+  const gob = { id: "gob", name: "Gob", visible: true, center: { x: 500, y: 100 }, w: 100, h: 100,
+    actor: { id: "gob", type: "npc", system: { attributes: { hp: { value: 5 } } } },
+    document: { x: 450, y: 50, parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {}, testUserPermission: () => true, update: async () => {} },
+    mesh: { position: { x: 500, y: 100, set() {} }, rotation: 0, scale: { x: 1, y: 1, set() {} } } };
+  gob.actor.getActiveTokens = () => [gob];
+  const get = canvas.tokens.get, from = globalThis.fromUuid;
+  canvas.tokens.get = (id) => (id === "gob" ? gob : get(id));
+  stubGlobal(t, "fromUuid", async (uuid) => (uuid === "Scene.s.Token.gob" ? { object: gob } : from(uuid)));
+  return gob;
+}
+
+test("save: an area spell's saves play the crit finisher only on the creatures that critically failed", async (t) => {
+  const f = await boot("pf2e");
+  addGoblin(t, f);
+  saveSetup(f, [gmCrit()]);
+  game.user.targets = new Set([f.target, canvas.tokens.get("gob")]);
+  await f.fire("createChatMessage", saveMessage(f, "sv-orc", "criticalFailure", "target"));
+  await f.fire("createChatMessage", saveMessage(f, "sv-gob", "failure", "gob"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.deepEqual(f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail), ["GM crit: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("kill path: one area spell that kills two creatures plays a finisher on each", async (t) => {
+  const f = await boot("pf2e");
+  const gob = addGoblin(t, f);
+  foundry.utils.hasProperty ??= (object, path) => path.split(".").reduce((o, k) => (o && k in o ? o[k] : undefined), object) !== undefined;
+  const npc = { id: "npc", type: "npc", system: { attributes: { hp: { value: 5 } } }, getActiveTokens: () => [f.target] };
+  Object.assign(f.target, { name: "Orc", actor: npc, w: 100, h: 100 });
+  Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("recipes", { schema: 1, recipes: [killFin("burn", "Burn up", "Ignition")] });
+  // An area's damage roll is aimed at nobody in particular.
+  await f.fire("createChatMessage", { id: "dmg", author: { id: "u" }, item: f.item, actor: f.actor, isRoll: true, rolls: [{ instances: [{ type: "fire", total: 9 }] }],
+    flags: { pf2e: { context: { type: "damage-roll" }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
+  for (const actor of [npc, gob.actor]) {
+    const changes = { system: { attributes: { hp: { value: 0 } } } }, options = {};
+    await f.fire("preUpdateActor", actor, changes, options);
+    actor.system.attributes.hp.value = 0;
+    await f.fire("updateActor", actor, changes, options, "u");
+  }
+  await settle();
+  assert.deepEqual(f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail).sort(), ["Burn up: Gob", "Burn up: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("save: a crit-failed save that the spell's (non-critical) damage then kills plays only the ending", async () => {
+  const f = await boot("pf2e");
+  saveSetup(f, [gmCrit()]);
+  await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  const entries = await killTarget(f, { finishers: [gmCrit()] });
+  assert.deepEqual(entries.map((e) => e.detail).sort(), ["GM crit: Orc", "GM crit: Orc (ending)"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("kill path: an unknown killing item from a player's token plays no finisher, not even the default", async (t) => {
+  const f = await boot("pf2e");
+  game.users.set("u1", { id: "u1", isGM: false });
+  f.actor.testUserPermission = (user, level) => user?.id === "u1" && level === "OWNER";
+  stubGlobal(t, "fromUuidSync", () => null);
+  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition")], defaultFinisher: "gm", damage: { item: null, flags: { pf2e: { context: { type: "damage-roll", target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: "Actor.a.Item.gone" } } } } });
+  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  await f.api.stop();
+});
+
+test("kill path: an unknown killing item and an unknown attacker keep the default finisher", async () => {
+  const f = await boot("pf2e");
+  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition")], defaultFinisher: "gm", damage: { item: null, speaker: { scene: "s" }, flags: { pf2e: { context: { type: "damage-roll", target: { token: "Scene.s.Token.target", actor: "Actor.npc" } } } } } });
+  assert.deepEqual(entries.map((e) => e.detail), ["GM drop: Orc"], JSON.stringify(f.api.activity()));
   await f.api.stop();
 });
 

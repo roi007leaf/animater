@@ -60,6 +60,29 @@ export function checkFinisherEvent(message, systemId, userId) {
   return { type: "check", systemId, id: `finisher-check:${message.id}`, messageId: message.id, itemName: action, tokenId: message.speaker?.token, sceneId: message.speaker?.scene, targetUuid: context.target?.token, outcome: context.outcome };
 }
 
+// PF2e/SF2e: a creature's saving throw against a spell or effect. The saver (the speaker, also
+// context.target) is the one struck; the caster is context.origin.token, a token uuid. The spell is
+// flags.<system>.origin.uuid, which carries the caster's finisher pick. Without a resolvable caster
+// token there is no tokenId (the item's actor may stand in); a save against itself has no attacker.
+export function saveFinisherEvent(message, systemId, userId) {
+  const flags = message?.flags?.[systemId], context = flags?.context, speaker = message?.speaker ?? {};
+  if ((message?.author?.id ?? message?.user?.id) !== userId || context?.type !== "saving-throw") return null;
+  if (message.blind || message.whisper?.length || context.isReroll || !flags.origin?.uuid) return null;
+  const saver = context.target?.token ?? (speaker.scene && speaker.token ? `Scene.${speaker.scene}.Token.${speaker.token}` : null);
+  if (!saver) return null;
+  const caster = context.origin?.token && context.origin.token !== saver ? /Token.([^.]+)$/.exec(context.origin.token)?.[1] : undefined;
+  return { type: "save", systemId, id: `finisher-save:${message.id}`, messageId: message.id, itemUuid: flags.origin.uuid, tokenId: caster, sceneId: speaker.scene, targetUuid: saver, outcome: context.outcome };
+}
+
+// The targets a use critically struck, which its crit finisher plays on: every target of a
+// critical attack roll or check, or the saver whose own saving throw against it critically failed.
+// A critically successful save never counts. An area spell rolls one save per creature.
+export function critTargets(event) {
+  const targets = (event?.targets ?? []).filter(Boolean);
+  if (event?.type === "save") return event.outcome === "criticalFailure" ? targets : [];
+  return ["attack", "check"].includes(event?.type) && event.outcome === "criticalSuccess" ? targets : [];
+}
+
 // The catalog dropdown: the entry belongs to at most one finisher. A given uuid is remembered
 // on that finisher for its Applies-to card; the finishers that lose the name forget its link.
 export function linkFinisher(recipes, entryName, finisherId, uuid) {
@@ -106,9 +129,9 @@ export const linkedFinisher = (recipes, entryName) =>
 // token that struck it (a fighter flinging an enemy they do not own).
 export const mayDisplace = ({ ownsToken, ownsAttacker }) => Boolean(ownsToken || ownsAttacker);
 
-// The mover's held keyframed path: its drawn length is the knockback.
+// The target's held keyframed path (a finisher moves only its targets): its drawn length is the knockback.
 export const finisherTravelPath = (recipe) => recipe?.stages?.find((s) => s.kind === "motion" && s.motion === "path" && s.motionEnd === "hold"
-  && (s.subject ?? "source") === (recipe.finisher?.mover ?? "targets")) ?? null;
+  && s.subject === "targets") ?? null;
 
 const ENDING_SHORT = { vanish: "Vanish", body: "Body", stay: "Stay" };
 // What the studio chip says about a finisher: when it plays, where it lands, how it ends.
@@ -165,7 +188,8 @@ export function createFinishedMemory(ttlMs = 30000, now = Date.now) {
 }
 // The crit's attack roll and the killing damage roll are separate messages (often on separate
 // clients), so one action is the attacker, the target, the item and the finisher played.
-export const finishedKey = ({ attackerId, targetId, itemUuid, recipeId }) => `${attackerId ?? ""}:${targetId ?? ""}:${itemUuid ?? ""}:${recipeId ?? ""}`;
+// A critically failed save marks its own key (`save`): the spell's non-critical damage ends it.
+export const finishedKey = ({ attackerId, targetId, itemUuid, recipeId, save = false }) => `${attackerId ?? ""}:${targetId ?? ""}:${itemUuid ?? ""}:${recipeId ?? ""}${save ? ":save" : ""}`;
 // Every client keeps the memory: a crit broadcasts its mark (played) or takes it back (played: false).
 export const FINISHED_MESSAGE = "finisher-played";
 export function finishedMessage(data) {

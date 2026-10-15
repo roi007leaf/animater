@@ -6,7 +6,8 @@ import { finisherTravelPath } from "./finisher-model.mjs";
 import { timedStages } from "./composition.mjs";
 
 const TRAVEL = new Set(["rush", "leap", "roll"]);
-const mine = (s, mover) => (s.subject ?? "source") === mover;
+// A finisher moves only its targets: the mover's stages are the target-subject ones.
+const mine = (s) => s.subject === "targets";
 
 // `inPlace` is decided by playFinisher from the aimed end; `survives` strips in-place holds,
 // which would otherwise leave a survivor shrunk or faded until the hold runs out.
@@ -16,12 +17,12 @@ const mine = (s, mover) => (s.subject ?? "source") === mover;
 // `at` is the mover's centre before it moves (canvas px): the crash and landing are offset from
 // it, not from the token, which is somewhere else once its move is written.
 export function composeFinisher(recipe, { offset = null, frame = null, inPlace, survives = false, slam = null, vanishing = null, at = null } = {}) {
-  const mover = recipe.finisher?.mover ?? "targets", travel = finisherTravelPath(recipe);
+  const travel = finisherTravelPath(recipe);
   let moves = false;
   const back = (s) => { const { motionEnd, motionOffset, motionFrame, ...rest } = s; return rest; };
   const pinned = (s) => (at ? { ...s, atPoint: { x: at.x, y: at.y } } : s);
   // Impacts play on the targets; anything else on its own subject.
-  const onMover = (s) => mine(s.kind === "impact" ? { subject: "targets" } : s, mover);
+  const onMover = (s) => s.kind === "impact" || mine(s);
   // The cut keyframes are already resampled from the eased motion: they play linear.
   const cut = slam && travel ? { ...travel, keyframes: slam.keyframes, pathEase: "linear", duration: Math.max(100, Math.round((travel.duration ?? 0) * slam.t)) } : null;
   // A held cut hits the wall as it ends; the bump (no landing) returns, reaching the wall at 85%.
@@ -42,10 +43,10 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
     }
     if (cut && s.stageId === "landing") return [];
     if (s.kind === "motion" && s.motion === "path" && s.motionEnd === "hold") {
-      if (!mine(s, mover)) return back(s);
+      if (!mine(s)) return back(s);
       // In place (a spin, a shrink): it keeps its hold, nothing moves.
       const isTravel = original === travel;
-      if (isTravel && vanishing && mine(s, mover)) return { ...s, motionFrame: { cos: vanishing.aim.x, sin: vanishing.aim.y, k: 1 } };
+      if (isTravel && vanishing && mine(s)) return { ...s, motionFrame: { cos: vanishing.aim.x, sin: vanishing.aim.y, k: 1 } };
       const still = isTravel ? (inPlace ?? pathSquares(s.keyframes) === 0) : pathSquares(s.keyframes) === 0;
       if (still) return survives ? back(s) : s;
       // Only the travel path lands: a second travelling copy would fly the token twice.
@@ -59,14 +60,14 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
       return { ...s, keyframes, motionFrame: { cos: frame.aim.x, sin: frame.aim.y, k } };
     }
     // Fragments hold the real token hidden; a survivor must reappear once the pieces fade.
-    if (survives && s.kind === "motion" && s.motion === "fragments" && s.motionEnd === "hold" && mine(s, mover)) return back(s);
+    if (survives && s.kind === "motion" && s.motion === "fragments" && s.motionEnd === "hold" && mine(s)) return back(s);
     if (s.kind === "motion" && TRAVEL.has(s.motion) && s.motionEnd === "hold") {
       // Only the mover's travel can land; anything else, or no landing square, comes back.
-      if (!offset || frame || !mine(s, mover)) return back(s);
+      if (!offset || frame || !mine(s)) return back(s);
       moves = true;
       return { ...s, motionOffset: offset };
     }
-    if (offset && s.stageId === "landing" && mine(s.kind === "impact" ? { subject: "targets" } : s, mover))
+    if (offset && s.stageId === "landing" && onMover(s))
       return pinned({ ...s, offsetX: offset.x, offsetY: offset.y });
     // A vanishing path is drawn with +x away from the attacker: the mover's effects authored in
     // that frame (Sky launch's twinkle) turn with it, as the wall stages do.
@@ -101,14 +102,8 @@ export const planEnd = (plan) => ends(plan);
 // a non-held motion (a sink) spring back to full opacity first.
 export const motionEnd = (plan) => plan.some((s) => s.kind === "motion") ? ends(plan.filter((s) => s.kind === "motion")) : planEnd(plan);
 
-export function finisherDirection(finisher, { mover, attacker, target }) {
-  return finisher.mover === "source" ? awayFrom(mover?.center, target?.center) : awayFrom(attacker?.center, mover?.center);
-}
-
-// Keyframed paths are drawn with +x away from the other token, for either mover.
-export function pathAim(finisher, { mover, attacker, target }) {
-  return finisher.mover === "source" ? awayFrom(target?.center, mover?.center) : awayFrom(attacker?.center, mover?.center);
-}
+// The target is flung away from the attacker; keyframed paths are drawn with +x that way.
+export const finisherDirection = ({ mover, attacker }) => awayFrom(attacker?.center, mover?.center);
 // With no attacker to aim from (a GM edits HP by hand), a finisher still lands and slams: it faces
 // the mover's token rotation (degrees) when that is a finite non-zero number, else +x.
 export function defaultAim(mover) {
@@ -121,12 +116,12 @@ export function defaultAim(mover) {
 // still held in place (shrunk, faded, turned) needs no separate fade: one would pop it back.
 // Fragments hide the real token while the pieces fly, so they need no fade either.
 export const fadedAtEnd = (recipe, moves) => !moves && recipe.stages.some((s) => s.kind === "motion" && (s.motion === "path" || s.motion === "fragments")
-  && s.motionEnd === "hold" && mine(s, recipe.finisher?.mover ?? "targets"));
+  && s.motionEnd === "hold" && mine(s));
 
 // Everything a finisher decides before it plays: where the mover lands (or hits a wall), and the
 // recipe composed for that. Reads Foundry only through `host.gridSize`, `host.landing` and
 // `host.trace`; writes nothing.
-export function planFinisher({ recipe, mover, attacker = null, target = null, dead = false }, host) {
+export function planFinisher({ recipe, mover, attacker = null, dead = false }, host) {
   const f = recipe.finisher, grid = host.gridSize();
   const from = { x: mover.document.x, y: mover.document.y };
   const path = finisherTravelPath(recipe);
@@ -135,7 +130,7 @@ export function planFinisher({ recipe, mover, attacker = null, target = null, de
   try {
     if (path) {
       // In place or not is counted on the aimed end, the way the landing walks the grid.
-      const aim = pathAim(f, { mover, attacker, target }) ?? defaultAim(mover);
+      const aim = finisherDirection({ mover, attacker }) ?? defaultAim(mover);
       const end = aim ? rotateBy(pathEnd(path.keyframes), aim) : pathEnd(path.keyframes), length = Math.hypot(end.x, end.y);
       const squares = Math.round(Math.max(Math.abs(end.x), Math.abs(end.y)));
       inPlace = squares === 0;
@@ -159,7 +154,7 @@ export function planFinisher({ recipe, mover, attacker = null, target = null, de
         }
       }
     } else {
-      const direction = f.knockback > 0 ? (finisherDirection(f, { mover, attacker, target }) ?? defaultAim(mover)) : null;
+      const direction = f.knockback > 0 ? (finisherDirection({ mover, attacker }) ?? defaultAim(mover)) : null;
       to = direction ? host.landing(mover, direction, f.knockback) : null;
     }
   } catch (error) { host.trace("Blocked", `Finisher ${recipe.name} landing: ${error.message}`); }
@@ -167,17 +162,15 @@ export function planFinisher({ recipe, mover, attacker = null, target = null, de
   // Where Sequencer centres an effect on the mover, taken before anything moves.
   const at = { x: from.x + (mover.w ?? (mover.document.width ?? 1) * grid) / 2, y: from.y + (mover.h ?? (mover.document.height ?? 1) * grid) / 2 };
   const { recipe: composed, moves } = composeFinisher(recipe, { offset, frame, inPlace, survives: !dead, slam, vanishing, at });
-  return { composed, moves, to, from, context: finisherContext(f, { mover, attacker, target }) };
+  return { composed, moves, to, from, context: finisherContext({ mover, attacker }) };
 }
 
-// The stages' source/targets roles follow who travels: a source-mover finisher plays from
-// the user and aims its target-subject effects at the target, not at the user.
-const finisherContext = (f, { mover, attacker, target }) =>
-  f.mover === "source" ? { source: mover, targets: target ? [target] : [] } : { source: attacker ?? mover, targets: [mover] };
+// The finisher plays from the attacker (or, with none, the mover itself) on the target it moves.
+const finisherContext = ({ mover, attacker }) => ({ source: attacker ?? mover, targets: [mover] });
 
-export async function playFinisher({ recipe, mover, attacker = null, target = null, dead = false }, host) {
+export async function playFinisher({ recipe, mover, attacker = null, dead = false }, host) {
   const f = recipe.finisher;
-  const { composed, moves, to, from, context } = planFinisher({ recipe, mover, attacker, target, dead }, host);
+  const { composed, moves, to, from, context } = planFinisher({ recipe, mover, attacker, dead }, host);
   const commit = async (data) => host.commit(mover, { ...data, finisher: recipe.id });
   host.trace("Finisher", `${recipe.name}: ${mover.name ?? "token"}`);
   const plan = await host.play(composed, context);
@@ -210,15 +203,13 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
 // `play(recipe, context, first)` plays one composed recipe; `first` is true for the first mover only.
 export function previewFinisher(recipe, context, host, play) {
   const f = recipe.finisher, targets = (context.targets ?? []).filter(Boolean);
-  const movers = !f ? [] : f.mover === "source"
-    ? (context.source ? [{ mover: context.source, attacker: context.source, target: targets[0] ?? null }] : [])
-    : targets.map((mover) => ({ mover, attacker: context.source ?? null, target: mover }));
+  const movers = !f ? [] : targets.map((mover) => ({ mover, attacker: context.source ?? null }));
   if (!movers.length) return null;
   const plays = movers.map((args, i) => {
     let planned;
-    // Tested as the kill it stands for: a struck target is dead, a source mover (the user) lives.
-    try { planned = planFinisher({ recipe, ...args, dead: f.mover !== "source" }, host); }
-    catch (error) { host.trace("Blocked", `Finisher ${recipe.name}: ${error.message}`); planned = { composed: recipe, context: finisherContext(f, args) }; }
+    // Tested as the kill it stands for: the struck target is dead.
+    try { planned = planFinisher({ recipe, ...args, dead: true }, host); }
+    catch (error) { host.trace("Blocked", `Finisher ${recipe.name}: ${error.message}`); planned = { composed: recipe, context: finisherContext(args) }; }
     return play(planned.composed, { ...context, ...planned.context }, i === 0);
   });
   return Promise.all(plays).then((results) => results[0]);
