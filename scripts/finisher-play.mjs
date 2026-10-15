@@ -64,6 +64,12 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
     }
     if (offset && s.stageId === "landing" && mine(s.kind === "impact" ? { subject: "targets" } : s, mover))
       return { ...s, offsetX: offset.x, offsetY: offset.y };
+    // A vanishing path is drawn with +x away from the attacker: the mover's effects authored in
+    // that frame (Sky launch's twinkle) turn with it, as the wall stages do.
+    if (vanishing && s.kind !== "motion" && onMover(s) && (Number(s.offsetX) || Number(s.offsetY))) {
+      const at = rotateBy({ x: Number(s.offsetX) || 0, y: Number(s.offsetY) || 0 }, vanishing.aim);
+      return { ...s, offsetX: at.x, offsetY: at.y };
+    }
     return s;
   });
   return { recipe: { ...recipe, stages: unlinkDropped(recipe.stages, stages) }, moves };
@@ -120,8 +126,9 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
       inPlace = squares === 0;
       // Gone in flight (ends invisible): aimed, held until hidden, never moved — moving an
       // invisible token would only show it again at the landing.
-      // A survivor (not dead) never vanishes, and an in-place path already stays put.
-      const vanishes = dead && !inPlace && path.keyframes.at(-1).alpha === 0;
+      // A survivor (not dead) never vanishes, nor does a non-vanish ending (it lands as before),
+      // and an in-place path already stays put.
+      const vanishes = dead && f.ending === "vanish" && !inPlace && path.keyframes.at(-1).alpha === 0;
       if (vanishes) vanishing = { aim: aim ?? { x: 1, y: 0 } };
       else if (aim && !inPlace) {
         to = host.landing(mover, { x: end.x / length, y: end.y / length }, squares);

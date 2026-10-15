@@ -425,3 +425,28 @@ test("a surviving target's fragments stage drops its hold so the token reappears
   assert.equal(played.motionEnd, undefined);
   assert.ok(!host.log.some((e) => e[0] === "fade" || (e[0] === "commit" && (e[1].hidden || e[1].defeated))));
 });
+
+test("a vanishing path turns the mover's effect offsets with its aim", async () => {
+  const twinkle = { stageId: "twinkle", kind: "impact", assets: ["a"], offsetX: 3, offsetY: 0, delay: 1200, duration: 1000 };
+  const r = { ...pathRecipe([kf(0), kf(1, 3, 0, { scale: 0.05, alpha: 0 })], { ending: "vanish" }) };
+  r.stages = [...r.stages, twinkle];
+  let stages;
+  const host = gridHost(), play = host.play;
+  host.play = async (x, c) => { stages = x.stages; return play(x, c); };
+  await playFinisher({ recipe: r, mover: at("Orc", 100, 100), attacker: at("Hero", 200, 100), dead: true }, host);
+  const t = stages.find((s) => s.stageId === "twinkle");
+  assert.ok(Math.abs(t.offsetX + 3) < 1e-9 && Math.abs(t.offsetY) < 1e-9, `twinkle at (${t.offsetX}, ${t.offsetY})`);
+  const { recipe: down } = composeFinisher(r, { vanishing: { aim: { x: 0, y: 1 } } });
+  const d = down.stages.find((s) => s.stageId === "twinkle");
+  assert.ok(Math.abs(d.offsetX) < 1e-9 && Math.abs(d.offsetY - 3) < 1e-9);
+  const { recipe: plain } = composeFinisher(r, {});
+  assert.equal(plain.stages.find((s) => s.stageId === "twinkle").offsetX, 3, "not vanishing: left as authored");
+});
+
+test("only a vanish ending vanishes in flight; a body ending still lands the invisible path", async () => {
+  const host = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 3, 0, { alpha: 0 })], { ending: "body" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  assert.ok(host.log.some((e) => e[0] === "landing"), "it lands");
+  assert.ok(host.log.some((e) => e[0] === "commit" && e[1].x === 400), "it moved");
+  assert.deepEqual(host.log.at(-1), ["commit", { defeated: true, finisher: "p" }]);
+});
