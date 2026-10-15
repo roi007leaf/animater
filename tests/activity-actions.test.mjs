@@ -252,3 +252,70 @@ test("nowPlayingRows merges running sessions and lasting states, newest first", 
   const list = nowPlayingRows([{ session: "s1", name: "A", on: "X", startedAt: 1 }], [{ key: "k1", name: "B", on: "Y", startedAt: 2 }]);
   assert.deepEqual(list.map((r) => [r.id, r.kind]), [["state:k1", "state"], ["session:s1", "session"]]);
 });
+
+// --- Now playing previews ---------------------------------------------------------------
+const catalogFixture = [{ key: "jb2a.impact.001.orange", file: "modules/jb2a/Library/impact_001_orange.webm", type: "animation" }];
+function previewWorkspace(playing) {
+  const f = activityWorkspace({ playing });
+  f.w.host.catalog = () => catalogFixture;
+  f.w.host.mediaURL = (file) => `/${file}`;
+  return nowOf(f.w.activityHTML());
+}
+const withVisual = { ...live[0], asset: "jb2a.impact.001.orange", portrait: "tokens/silva.webp", icon: "icons/item.webp" };
+
+test("a Now playing row with a visual shows a paused, muted video thumbnail with the resolved src", () => {
+  const html = previewWorkspace([withVisual]);
+  const video = html.match(/<video[^>]*>/)[0];
+  assert.match(video, /src="\/modules\/jb2a\/Library\/impact_001_orange\.webm"/);
+  assert.match(video, /\bmuted\b/);
+  assert.match(video, /\bplaysinline\b/);
+  assert.match(video, /preload="metadata"/);
+  assert.doesNotMatch(video, /autoplay/);
+  assert.match(html, /class="an-now-thumb"/);
+});
+
+test("a row without a visual falls back to the item icon, then a generic icon", () => {
+  const sound = { ...live[0], asset: "", icon: "icons/item.webp" };
+  let html = previewWorkspace([sound]);
+  assert.doesNotMatch(html, /<video/);
+  assert.match(html, /<img[^>]*src="icons\/item\.webp"/);
+  html = previewWorkspace([{ ...live[0], asset: "", icon: "" }]);
+  assert.doesNotMatch(html, /<video/);
+  assert.match(html, /an-now-thumb is-generic/);
+});
+
+test("an image asset uses an img, not a video", () => {
+  const w = activityWorkspace({ playing: [{ ...live[0], asset: "x.png" }] });
+  w.w.host.catalog = () => [{ key: "x.png", file: "art/x.png", type: "image" }];
+  const html = nowOf(w.w.activityHTML());
+  assert.doesNotMatch(html, /<video/);
+  assert.match(html, /<img[^>]*src="art\/x\.png"/);
+});
+
+test("the token portrait shows before 'on Silva'", () => {
+  const html = previewWorkspace([withVisual]);
+  assert.match(html, /<img class="an-now-token"[^>]*src="tokens\/silva\.webp"[^>]*>\s*on Valeros/);
+});
+
+test("the effect line names the asset and carries the full key in a tooltip", () => {
+  const html = previewWorkspace([withVisual]);
+  assert.match(html, /<small class="an-now-asset" data-tooltip="jb2a\.impact\.001\.orange">impact\.001\.orange<\/small>/);
+});
+
+test("preview fields are escaped", () => {
+  const evil = { ...live[0], asset: 'a"><script>x</script>.webm', portrait: 'p"><i onerror=1>', icon: "" };
+  const w = activityWorkspace({ playing: [evil] });
+  w.w.host.catalog = () => [];
+  const html = nowOf(w.w.activityHTML());
+  assert.doesNotMatch(html, /<script>|<i onerror/);
+});
+
+test("runtime and persistent rows carry their main visual, icon and portrait", async () => {
+  const f = runtimeFixture();
+  const ward = lasting("mine");
+  await f.runtime.play(ward, { source: { ...source, document: { texture: { src: "tokens/v.webp" } } }, targets: [], item: { img: "icons/w.webp" }, automatic: true });
+  const [row] = f.runtime.runningAnimations();
+  assert.equal(row.asset, "jb2a.impact.001.orange");
+  assert.equal(row.portrait, "tokens/v.webp");
+  assert.equal(row.icon, "icons/w.webp");
+});

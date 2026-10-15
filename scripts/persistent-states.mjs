@@ -3,6 +3,7 @@ import {planRecipe} from './model.mjs';
 import {artworkSize, offsetInGridSquares,tokenFootprint,effectFootprint} from './media-preview.mjs';
 import {applyEffectOptions} from './stage-options.mjs';
 import {mediaForReference} from './media-library-model.mjs';
+import {previewFields} from './activity-actions.mjs';
 import {bodyTreatment} from './condition-body.mjs';
 import {coversToken,hollowFootage} from './state-presentation.mjs';
 
@@ -170,6 +171,7 @@ export class PersistentStates{
  async start(r){
   const h=this.host,catalog=h.catalog(),grid=h.gridSize();
   const plan=planRecipe(r.recipe,catalog,{source:r.token,targets:[],gridSize:grid});
+  r.visualPlan=plan;
   const sequence=h.sequence();
   // Inside someone else's aura: a quiet copy (one telling layer, token-sized, a little dimmer). The ring is the owner's.
   const granted=grantedByOtherAura(r.item,r.token);
@@ -234,7 +236,7 @@ export class PersistentStates{
  originOf(r){try{return this.host.origin?.(r.item,r.recipe)??null;}catch{return null;}}
  // Lasting layers showing now, for the Activity page's Now playing (a faded one-time showing is over).
  running(now=Date.now()){
-  return [...this.active.values()].filter(r=>!r.cancelled&&!r.quiet&&!(r.fade&&now-(r.startedAt??now)>FADE_MS)).map(r=>({key:r.key,name:r.recipe?.name??r.item?.name??'',on:r.token?.name??'',startedAt:r.startedAt??now,recipeId:r.recipe?.id,origin:this.originOf(r)}));
+  return [...this.active.values()].filter(r=>!r.cancelled&&!r.quiet&&!(r.fade&&now-(r.startedAt??now)>FADE_MS)).map(r=>({key:r.key,name:r.recipe?.name??r.item?.name??'',on:r.token?.name??'',startedAt:r.startedAt??now,recipeId:r.recipe?.id,origin:this.originOf(r),...previewFields(r.visualPlan,r.token,r.item)}));
  }
  // Ends one state's animation here; it stays off until the condition or effect is removed and applied again.
  async stop(key){

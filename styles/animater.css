@@ -2884,3 +2884,37 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
   cursor: pointer;
   font-size: 11px;
 }
+
+.animater .an-now-thumb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 44px;
+  flex: none;
+  overflow: hidden;
+  background: var(--an-bg);
+  border: 1px solid var(--an-line);
+  border-radius: 6px;
+  color: var(--an-muted);
+}
+.animater .an-now-thumb video,
+.animater .an-now-thumb img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.animater .an-now-thumb.is-icon img { width: 32px; height: 32px; object-fit: cover; border-radius: 4px; }
+.animater .an-now-token {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--an-line);
+}
+.animater .an-now-asset {
+  display: block;
+  margin-top: 2px;
+  color: var(--an-muted);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

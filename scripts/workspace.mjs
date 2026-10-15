@@ -43,7 +43,7 @@ import {
   PF2E_FEATS,
 } from "./feat-catalog.mjs";
 import { featCatalogHTML, ABILITY_PAGE_PROFILES, abilityProfileForPage, abilityProfileForKey, defaultAbilityFilters } from "./feat-catalog-ui.mjs";
-import { cleanOrigin, originKey, elapsedLabel, setOriginExcluded } from "./activity-actions.mjs";
+import { cleanOrigin, originKey, elapsedLabel, setOriginExcluded, assetLabel } from "./activity-actions.mjs";
 import { PF2E_WEAPONS, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, useCatalogWeapon, weaponCustomizationKey } from "./weapon-catalog.mjs";
 import { weaponCatalogHTML } from "./weapon-catalog-ui.mjs";
 import { openCatalogDetails } from "./catalog-details.mjs";
@@ -250,11 +250,20 @@ export class Workspace {
       const box=event.target.closest?.('.an-media-preview');
       if(box)box.querySelector('.an-media-preview-error').hidden=true;
       const video=event.target;
-      if(video.tagName==='VIDEO'&&video.closest('.an-asset-thumb')&&Number.isFinite(video.duration)&&video.duration>0)video.currentTime=Math.min(2,video.duration*.35);
+      if(video.tagName==='VIDEO'&&video.closest('.an-asset-thumb, .an-now-thumb')&&Number.isFinite(video.duration)&&video.duration>0)video.currentTime=Math.min(2,video.duration*.35);
     }, {capture:true,signal:this.abort.signal});
     root.addEventListener('load',event=>{
       if(event.target.tagName==='IMG')event.target.closest?.('.an-media-preview')?.querySelector('.an-media-preview-error')?.setAttribute('hidden','');
     }, {capture:true,signal:this.abort.signal});
+    // Now playing thumbnails play while their row is hovered or focused, and pause after.
+    const nowClip = (event, on) => {
+      const row = event.target.closest?.('.an-now-row');
+      if (!row || (!on && row.contains(event.relatedTarget))) return;
+      const video = row.querySelector('.an-now-thumb video');
+      if (on) void video?.play?.()?.catch?.(() => {}); else video?.pause?.();
+    };
+    for (const [type, on] of [['pointerover', true], ['pointerout', false], ['focusin', true], ['focusout', false]])
+      root.addEventListener(type, (event) => nowClip(event, on), { signal: this.abort.signal });
     root.addEventListener('pointerover', event => {
       const video=event.target.closest?.('.an-asset-thumb')?.querySelector('video');
       if(video)void video.play().catch(()=>{});
@@ -1589,6 +1598,17 @@ export class Workspace {
   nowPlaying() {
     try { return this.host.nowPlaying?.() ?? []; } catch { return []; }
   }
+  // The row's picture: its main footage (a paused clip that plays on hover or focus), else the
+  // item/condition icon, else a generic mark.
+  nowThumbHTML(r) {
+    const file = r.asset ? mediaForReference(this.host.catalog?.() ?? [], r.asset)?.file : null;
+    if (file) {
+      const url = esc(this.host.mediaURL?.(file) ?? file);
+      return `<span class="an-now-thumb">${mediaType(file) === "image" ? `<img src="${url}" alt="" loading="lazy">` : `<video muted playsinline preload="metadata" src="${url}" aria-hidden="true"></video>`}</span>`;
+    }
+    if (r.icon) return `<span class="an-now-thumb is-icon"><img src="${esc(r.icon)}" alt="" loading="lazy"></span>`;
+    return `<span class="an-now-thumb is-generic" aria-hidden="true">✦</span>`;
+  }
   activityGM() {
     return this.host.isGM ? this.host.isGM() === true : !this.host.playerMode;
   }
@@ -1605,7 +1625,9 @@ export class Workspace {
     const nowRows = playing.map((r) => {
       const attr = `data-entry="${esc(r.id)}"`, started = Number(r.startedAt) || now;
       const tip = r.kind === "state" ? "Stop: the condition or effect stays, and animates again when reapplied" : "Stop this animation";
-      return `<div class="an-log an-now-row"><time data-started="${started}">${esc(elapsedLabel(now - started))}</time><div><b>${esc(r.name)}</b><p>${r.on ? `on ${esc(r.on)}` : ""}</p></div><div class="an-activity-actions"><button type="button" class="an-activity-btn" data-action="activity-stop" ${attr} aria-label="Stop ${esc(r.name)}" data-tooltip="${tip}">■</button>${this.activityExcludeHTML(r.origin, r.name, attr)}</div></div>`;
+      const token = r.portrait ? `<img class="an-now-token" src="${esc(r.portrait)}" alt="" loading="lazy"> ` : "";
+      const effect = r.asset ? `<small class="an-now-asset" data-tooltip="${esc(r.asset)}">${esc(assetLabel(r.asset))}</small>` : "";
+      return `<div class="an-log an-now-row">${this.nowThumbHTML(r)}<time data-started="${started}">${esc(elapsedLabel(now - started))}</time><div><b>${esc(r.name)}</b><p>${r.on ? `${token}on ${esc(r.on)}` : ""}</p>${effect}</div><div class="an-activity-actions"><button type="button" class="an-activity-btn" data-action="activity-stop" ${attr} aria-label="Stop ${esc(r.name)}" data-tooltip="${tip}">■</button>${this.activityExcludeHTML(r.origin, r.name, attr)}</div></div>`;
     }).join("") || `<div class="an-empty">Nothing playing right now.</div>`;
     // Only automatic plays that played can be excluded; previews, skips and blocks get no buttons.
     const actionable = (l) => l?.automatic === true && !l.preview && ["Played", "Persistent"].includes(l.status);

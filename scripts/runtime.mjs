@@ -5,6 +5,7 @@ import { OPTIONAL_FX_KINDS } from './optional-fx.mjs';
 import { applyEffectOptions, applyMediaOptions } from "./stage-options.mjs";
 import { tokenFootprint, effectFootprint, artworkSize, offsetInGridSquares, beamGeometry } from "./media-preview.mjs";
 import { prepareRecipeSounds } from "./spell-sounds.mjs";
+import { previewFields } from './activity-actions.mjs';
 import { registeredMedia, mediaForReference } from './media-library-model.mjs';
 import { stageTiers } from './quality.mjs';
 import { withLastingArea } from './lasting-area.mjs';
@@ -460,6 +461,7 @@ export class AnimaterRuntime {
         session, name: recipe.name, recipeId: recipe.id, origin,
         on: context.source?.name ?? context.source?.document?.name ?? "",
         startedAt: Date.now(),
+        ...previewFields(plan, context.source, context.item),
         layers: plan.some((s) => s.persist && s.kind !== "motion" && !OPTIONAL_FX_KINDS.has(s.kind)),
       });
       this.trace(

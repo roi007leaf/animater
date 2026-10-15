@@ -76,3 +76,18 @@ export async function setOriginExcluded(host, origin, excluded, { abilityProfile
   await store.set({ excluded: excluded ? [...list, o.id] : list.filter((id) => id !== o.id) });
   return true;
 }
+
+// What a Now playing row previews: the first stage that shows footage (its asset key), the item
+// icon, and the token portrait. All plain strings, so a row stays small.
+const VISUAL_KINDS = new Set(["impact", "aura", "attach", "sprite"]);
+export const mainVisual = (plan) => String((plan ?? []).find((s) => VISUAL_KINDS.has(s?.kind) && s.asset)?.asset ?? "");
+export const portraitOf = (token) => String(token?.document?.texture?.src ?? token?.texture?.src ?? token?.actor?.img ?? token?.document?.actor?.img ?? "");
+export function previewFields(plan, token, item) {
+  const out = {}, asset = mainVisual(plan), portrait = portraitOf(token), icon = item?.img ? String(item.img) : "";
+  if (asset) out.asset = asset;
+  if (portrait) out.portrait = portrait;
+  if (icon) out.icon = icon;
+  return out;
+}
+// A short name for an asset: a JB2A key loses its "jb2a." prefix; a file path becomes its file name.
+export const assetLabel = (asset) => String(asset ?? "").split(/[\/]/).pop().replace(/^jb2a\./i, "");
