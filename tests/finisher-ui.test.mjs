@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { finishersPageHTML, finisherSettingsHTML, finisherLinkHTML, finisherPinHTML } from "../scripts/finisher-ui.mjs";
+import { finishersPageHTML, finisherSettingsHTML, finisherLinkHTML } from "../scripts/finisher-ui.mjs";
 import { normalizeFinisher } from "../scripts/model.mjs";
 
 const fin = (id, match, finisher = {}) => ({ id, name: `Fin ${id}`, color: "#c0392b", match, category: "Finisher", trigger: "manual", enabled: true, finisher: normalizeFinisher(finisher), stages: [] });
@@ -41,12 +41,6 @@ test("a path finisher hides knockback and says the path decides the landing", ()
   assert.match(finisherSettingsHTML(source), /away from the target/);
   assert.match(finisherSettingsHTML(fin("b", "Shove")), /knockback replaces its distance/, "legacy travel keeps its hint");
   assert.match(finisherSettingsHTML(fin("b", "Shove", { knockback: 4 })), /data-field="finisher\.knockback"/, "legacy travel keeps knockback");
-});
-
-test("the pinned Finisher section shows only for finishers, and not while the settings dialog is open", () => {
-  assert.match(finisherPinHTML(fin("a", "Shove"), false), /an-finisher-pin/);
-  assert.equal(finisherPinHTML(fin("a", "Shove"), true), "");
-  assert.equal(finisherPinHTML({ id: "p", name: "Plain", stages: [] }, false), "");
 });
 
 test("a path finisher chooses what happens at walls; legacy travel does not", () => {

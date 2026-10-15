@@ -12,7 +12,7 @@ import {
   MAX_STAGES,
   normalizeFinisher,
 } from "./model.mjs";
-import { finishersPageHTML, finisherSettingsHTML, finisherPinHTML } from "./finisher-ui.mjs";
+import { finishersPageHTML, finisherSettingsHTML } from "./finisher-ui.mjs";
 import { presetFinisher } from "./finisher-presets.mjs";
 import { linkFinisher } from "./finisher-model.mjs";
 import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
@@ -1329,7 +1329,7 @@ export class Workspace {
     const key = resolveAsset(s, this.host.catalog());
     const file = mediaForReference(this.host.catalog(),key)?.file;
     const assetFree = ["motion", "sprite", "sound"].includes(s.kind) || OPTIONAL_FX_KINDS.has(s.kind);
-    return `${finisherPinHTML(r, this.studioSettings)}<div class="an-inspector-head"><span class="an-eyebrow">STAGE ${index + 1} OF ${r.stages.length}</span><span class="an-inspector-tools"><span class="an-st-kind kind-${esc(s.kind)}">${esc(KINDS[s.kind])}</span><button class="an-icon is-danger an-stage-remove" data-action="remove-stage" aria-label="Remove this stage" data-tooltip="${r.stages.length === 1 ? "A recipe needs at least one stage" : "Remove this stage"}" ${r.stages.length === 1 || this.busy ? "disabled" : ""}><i class="fas fa-trash" aria-hidden="true"></i></button></span></div>
+    return `<div class="an-inspector-head"><span class="an-eyebrow">STAGE ${index + 1} OF ${r.stages.length}</span><span class="an-inspector-tools"><span class="an-st-kind kind-${esc(s.kind)}">${esc(KINDS[s.kind])}</span><button class="an-icon is-danger an-stage-remove" data-action="remove-stage" aria-label="Remove this stage" data-tooltip="${r.stages.length === 1 ? "A recipe needs at least one stage" : "Remove this stage"}" ${r.stages.length === 1 || this.busy ? "disabled" : ""}><i class="fas fa-trash" aria-hidden="true"></i></button></span></div>
       <div class="an-editor-section an-stage-fields">
         <label>Stage name<input data-field="label" data-index="${index}" value="${esc(s.label ?? "")}" placeholder="${esc(KINDS[s.kind])}"></label>${this.stageVariantHTML(s, index, linked)}${linked ? "" : this.randomVariantHTML(r, s)}
         ${OPTIONAL_FX_KINDS.has(s.kind) ? this.optionalFxControlsHTML(s,index) : s.kind === "motion" ? this.motionControlsHTML(s, index, r) : s.kind === "sound" ? `<label>Audio file<input data-field="soundFile" data-index="${index}" placeholder="sounds/spell.ogg" value="${esc(s.soundFile)}"></label>${this.host.soundCatalog || this.host.pickMedia ? `<button data-action="browse-sound">Browse sounds</button>` : ""}${this.soundVolumeHTML(s, index, audioPreview)}<p class="an-hint">Relative Foundry audio path. Sound plays with recipe; Stop ends it too.</p>` : s.kind === "sprite" ? `<p class="an-hint">Copies token artwork into Sequencer. Configure copies, shadows and tracks below.</p>` : `<label>Visual asset<button class="an-asset-picker" data-action="browse">${this.assetThumbHTML(file)}<span class="an-asset-picker-text">${esc(key ?? s.assets[0] ?? "Choose an asset")}<span>Browse ↗</span></span></button></label>${key && key !== s.assets[0] ? `<p class="an-hint">Using installed fallback variant. Choose another in Assets anytime.</p>` : ""}`}

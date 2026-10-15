@@ -675,3 +675,15 @@ test('the Activity page follows new entries while open, and stops watching elsew
  t.mock.timers.tick(3000);
  assert.equal(renders, 1, 'no polling off the Activity page');
 });
+
+test("the inspector has no pinned Finisher section: finisher settings live in the settings dialog", () => {
+  const { w } = workspace();
+  const recipe = { ...spellRecipe(PF2E_SPELLS.find((s) => s.name === "Frostbite")), finisher: { on: "kill", mover: "targets", knockback: 0, ending: "stay", success: "any", wall: "fit" } };
+  w.host = { environment: () => ({ motionReady: true }), catalog: () => [] };
+  for (const open of [false, true]) {
+    w.studioSettings = open;
+    const html = w.inspectorHTML(recipe);
+    assert.doesNotMatch(html, /an-finisher-pin/);
+    assert.doesNotMatch(html, /data-field="finisher\./);
+  }
+});
