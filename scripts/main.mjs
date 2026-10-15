@@ -463,7 +463,7 @@ async function receiveDisplace(data, senderId) {
   if (data?.type !== "displace-commit" || !game.users.activeGM?.isSelf) return;
   const user = senderId ? game.users.get(senderId) : null, doc = await fromUuid(String(data.uuid ?? ""));
   if (!user || doc?.documentName !== "Token") return;
-  // A move stays within the longest knockback of where the token stands, and on the scene.
+  // A move stays within the longest landing (a keyframed path's) of where the token stands, and on the scene.
   const grid = canvas.grid?.size ?? 100, w = doc.width ?? 1, h = doc.height ?? 1;
   if ((data.x !== undefined || data.y !== undefined) && !withinKnockback({ from: { x: doc.x, y: doc.y }, to: { x: data.x, y: data.y }, grid,
     size: Math.max(w, h), bounds: canvas.dimensions?.sceneRect ?? null, footprint: { w: w * grid, h: h * grid } })) return;

@@ -46,12 +46,12 @@ export function displaceAllowed({ isOwner, alreadyHidden, hp, hidden, defeated, 
   return !(hidden || defeated) || hp <= 0;
 }
 
-// A requested move the GM writes stays within the longest knockback (6 squares) plus the
-// token's own size, and keeps the token's footprint on the scene (`footprint` in px,
-// defaults to size squares).
+// A requested move the GM writes stays within the longest landing plus the token's own size:
+// a keyframed path's 12 authored squares reach ~17 once rotated off-axis. It also keeps the
+// token's footprint on the scene (`footprint` in px, defaults to size squares).
 export function withinKnockback({ from, to, grid, size = 1, bounds = null, footprint = null }) {
   if (![from?.x, from?.y, to?.x, to?.y, grid].every(Number.isFinite)) return false;
-  const reach = (6 + Math.max(1, Number(size) || 1)) * grid;
+  const reach = (17 + Math.max(1, Number(size) || 1)) * grid;
   // Squares count like landingSteps: a diagonal step is one square, so measure the longer axis.
   if (Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y)) > reach) return false;
   const box = footprint ?? { w: (Number(size) || 1) * grid, h: (Number(size) || 1) * grid };
