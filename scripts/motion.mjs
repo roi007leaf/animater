@@ -14,9 +14,10 @@ function pathPose(stage, p, direction, grid, holds) {
     x: (local.x * cos - local.y * sin) * k * grid * settle,
     y: (local.x * sin + local.y * cos) * k * grid * settle,
     rotation: ((local.rotation * Math.PI) / 180) * settle,
-    scale: 1 + (local.scale - 1) * settle,
+    // An overshooting ease may carry size below zero or opacity outside 0..1: clamp both.
+    scale: Math.max(0.01, 1 + (local.scale - 1) * settle),
   };
-  if (keyframes.some((kf) => kf.alpha < 1)) pose.alpha = 1 - (1 - local.alpha) * settle;
+  if (keyframes.some((kf) => kf.alpha < 1)) pose.alpha = Math.min(1, Math.max(0, 1 - (1 - local.alpha) * settle));
   return pose;
 }
 // Pure pose function shared by canvas playback and the editor's motion preview.

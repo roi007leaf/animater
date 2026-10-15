@@ -196,3 +196,14 @@ test('a path or recoil with no other token faces +x wherever the token stands', 
     assert.deepEqual(motionDirection(token, token, token, motion, 100), { x: 1, y: 0 }, `${motion}: self-only`);
   }
 });
+
+test('an overshooting ease never turns a path inside out or past fully visible', () => {
+  const kf = (at, extra = {}) => ({ at, x: 0, y: 0, rotation: 0, scale: 1, alpha: 1, ease: 'linear', sharp: false, ...extra });
+  const shrink = { kind: 'motion', motion: 'path', motionEnd: 'hold', keyframes: [kf(0), kf(1, { scale: 0.05, ease: 'easeOutBack' })] };
+  const fade = { kind: 'motion', motion: 'path', motionEnd: 'hold', keyframes: [kf(0), kf(0.5, { alpha: 0.9 }), kf(1, { alpha: 0, ease: 'easeOutBack' })] };
+  for (let n = 0; n <= 100; n++) {
+    assert.ok(motionPose(shrink, n / 100).scale >= 0.01, `scale at ${n}%`);
+    const alpha = motionPose(fade, n / 100).alpha ?? 1;
+    assert.ok(alpha >= 0 && alpha <= 1, `alpha at ${n}%`);
+  }
+});
