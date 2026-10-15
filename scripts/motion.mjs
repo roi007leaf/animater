@@ -208,6 +208,12 @@ export function motionPose(
 // A held motion keeps its end pose until the token's document moves there; if that never
 // happens (no GM to write it), it eases back to rest instead of freezing.
 export const HOLD_LIMIT_MS = 3000, HOLD_RELEASE_MS = 400;
+// A motion that hides the token (fragments, a full fade) keeps its art at this alpha, not 0.
+// It draws nothing (under half of one 8-bit step), but modules that hide every Sequencer
+// effect at a token whose art reads as hidden (alpha 0, e.g. PF2e Visioner) would otherwise
+// cut the recipe's own impacts and filters on that token the moment the pieces fly.
+export const HIDDEN_ALPHA = 1 / 1024;
+export const meshAlpha = (original, poseAlpha) => Math.max(HIDDEN_ALPHA, original * poseAlpha);
 // A fragments stage carries one seed so every client cuts the same pieces.
 export const withFragmentSeed = (stage, rand = Math.random) =>
   stage?.kind === "motion" && stage.motion === "fragments" && !Number.isInteger(stage.seed) ? { ...stage, seed: Math.floor(rand() * 2147483647) } : stage;
@@ -430,7 +436,7 @@ export class TokenMotionPlayer {
         mesh.position.set(original.x + pose.x, original.y + pose.y);
         mesh.rotation = original.rotation + pose.rotation;
         mesh.scale.set(original.sx * pose.scale * (pose.scaleX ?? 1), original.sy * pose.scale * (pose.scaleY ?? 1));
-        if (pose.alpha !== undefined) { mesh.alpha = original.alpha * pose.alpha; run.alphaTouched = true; }
+        if (pose.alpha !== undefined) { mesh.alpha = meshAlpha(original.alpha, pose.alpha); run.alphaTouched = true; }
         else if (run.alphaTouched) mesh.alpha = original.alpha;
         if (!run.tracks.length) this.end(token);
         else run.frame = this.frame(tick);

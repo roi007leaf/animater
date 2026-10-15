@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { MOTIONS, validateRecipe } from '../scripts/model.mjs';
-import { motionPose, motionDirection, combineMotionPoses, poseTransform, TokenMotionPlayer, heldPose, withFragmentSeed, HOLD_LIMIT_MS, HOLD_RELEASE_MS } from '../scripts/motion.mjs';
+import { motionPose, motionDirection, combineMotionPoses, poseTransform, TokenMotionPlayer, heldPose, withFragmentSeed, HOLD_LIMIT_MS, HOLD_RELEASE_MS, HIDDEN_ALPHA } from '../scripts/motion.mjs';
 import * as motionModule from '../scripts/motion.mjs';
 import { GENERATED_MOTION_DURATION } from '../scripts/motion-pacing.mjs';
 
@@ -335,10 +335,10 @@ test('the player drives the fragment renderer and never leaves the token visible
   const token = { mesh, visible: true, document: { x: 0, y: 0, rotation: 0, width: 1, height: 1, texture: {} } };
   const done = player.play(token, fragStage({ motionEnd: 'hold' }), { x: 0, y: 1 }, 'me');
   now = 50; queued(now);
-  assert.equal(mesh.alpha, 0, 'invisible while the pieces fly');
+  assert.equal(mesh.alpha, HIDDEN_ALPHA, 'invisible while the pieces fly');
   now = 150; queued(now);
   assert.equal(await done, true);
-  assert.equal(mesh.alpha, 0, 'still invisible while held');
+  assert.equal(mesh.alpha, HIDDEN_ALPHA, 'still invisible while held');
   assert.deepEqual(log[0], ['start', 'halves', 1.57], 'cut follows the swing direction');
   assert.ok(log.some((e) => e[0] === 'update'));
   assert.deepEqual(log.at(-1), ['destroy'], 'pieces are gone when the stage ends');
@@ -366,7 +366,7 @@ test('a renderer whose start throws never breaks the run or leaves the token stu
     const r = fragRig({ start: () => { throw new Error('boom'); } });
     const done = r.player.play(r.token, fragStage(), { x: 1, y: 0 }, 'me');
     r.now = 50; r.queued(r.now);
-    assert.equal(r.mesh.alpha, 0, 'stays hidden for the stage as designed');
+    assert.equal(r.mesh.alpha, HIDDEN_ALPHA, 'stays hidden for the stage as designed');
     r.now = 60; r.queued(r.now);
     r.now = 150; r.queued(r.now);
     assert.equal(await done, true);
@@ -511,4 +511,22 @@ test('the sender stores the cut angle with the seed, and the player prefers it',
   void r.player.play(r.token, fragStage({ cutAngle: 2 }), { x: 1, y: 0 }, 'me');
   r.now = 20; r.queued(r.now);
   assert.equal(seen, 2, 'the broadcast angle wins over this client\'s direction');
+});
+
+// Live repro (Twin Takedown, Local preview): fragments at 450 ms zeroed the target's mesh alpha,
+// and PF2e Visioner hid every Sequencer effect at a token whose art reads as hidden
+// (alpha <= 0), cutting the recipe's opening slashes and splash on that token.
+test('a token hidden by its own motion draws nothing yet never reads as hidden art', () => {
+  const readsHidden = mesh => mesh.visible === false || mesh.renderable === false || mesh.alpha <= 0;
+  const drawsNothing = mesh => mesh.alpha * 255 < 0.5;
+  const r = fragRig({ start: () => ({ update: () => {}, destroy: () => {} }) });
+  void r.player.play(r.token, fragStage({ motionEnd: 'hold' }), { x: 1, y: 0 }, 'me');
+  r.now = 50; r.queued(r.now);
+  assert.ok(drawsNothing(r.mesh), 'the pieces replace the token');
+  assert.equal(readsHidden(r.mesh), false, 'effects anchored at the token keep drawing');
+  const f = fragRig();
+  void f.player.play(f.token, { kind: 'motion', motion: 'fade', duration: 100, distance: 0, intensity: 1, motionEnd: 'hold' }, { x: 1, y: 0 }, 'me');
+  f.now = 100; f.queued(f.now);
+  assert.ok(drawsNothing(f.mesh), 'a full fade is gone');
+  assert.equal(readsHidden(f.mesh), false, 'a full fade keeps effects at the token');
 });
