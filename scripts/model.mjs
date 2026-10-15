@@ -30,7 +30,7 @@ export const STRIKE_SCOPES = { melee: 'All melee strikes', ranged: 'All ranged s
 // Finishers: recipes that play on the real token for assigned items (scripts/finisher-model.mjs).
 export const FINISHER_ON = { kill: "Killing blow", use: "Every successful use", critical: "Critical hit", criticalOrKill: "Critical hit or killing blow" };
 export const FINISHER_ENDINGS = { vanish: "Vanish (fade, then hidden)", body: "Body (stays, Defeated)", stay: "Stay" };
-export const FINISHER_SUCCESS = { success: "Success or critical", critical: "Critical only" };
+export const FINISHER_SUCCESS = { success: "Any success", critical: "Only on a critical" };
 export const FINISHER_WALLS = { fit: "Stop short smoothly", slam: "Slam into it" };
 export function normalizeFinisher(input = {}) {
   const pick = (table, value, fallback) => (Object.hasOwn(table, value) ? value : fallback);

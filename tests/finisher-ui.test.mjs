@@ -124,3 +124,32 @@ test("All players disables the per-player boxes", () => {
   assert.match(html, /data-finisher-player="\*"[^>]*checked/);
   assert.match(html, /data-finisher-player="u1"[^>]*disabled/);
 });
+
+test("Needs shows only for Every successful use and Killing blow, each with its hint", () => {
+  const html = (on) => finisherSettingsHTML(fin("a", "Shove", { on, success: "critical" }));
+  for (const on of ["use", "kill"]) assert.match(html(on), /<label>Needs<select data-field="finisher\.success">/, on);
+  for (const on of ["critical", "criticalOrKill"]) assert.doesNotMatch(html(on), /data-field="finisher\.success"/, on);
+  assert.match(html("use"), /<p class="an-hint">Which results count as a successful use\.<\/p>/);
+  assert.match(html("kill"), /<p class="an-hint">Critical only: the killing blow must itself be a critical\.<\/p>/);
+  assert.doesNotMatch(html("use"), /killing blow must itself/);
+  assert.match(html("use"), /<option value="success" >Any success<\/option><option value="critical" selected>Only on a critical<\/option>/);
+});
+
+test("Available to says only a player's pick plays for their items", () => {
+  const html = finisherSettingsHTML(fin("a", "X"), { players: [{ id: "u1", name: "Ana", color: "#f00" }] });
+  assert.match(html, /<p class="an-hint">Chosen players can pick this finisher for their own items in Combater; only a player's pick plays for their items\. NPCs and GM creatures use Applies-to automatically\.<\/p>/);
+  assert.doesNotMatch(html, /The GM always can/);
+});
+
+import { Workspace } from "../scripts/workspace.mjs";
+test("changing Plays on re-renders the settings, so Needs shows or hides", () => {
+  const r = fin("a", "Shove", { on: "use", success: "critical" });
+  let renders = 0;
+  const ws = Object.assign(Object.create(Workspace.prototype), { busy: false, stopEditorPreview() {}, edit: () => r, render: () => { renders += 1; } });
+  const target = { value: "critical", type: "select-one", dataset: { field: "finisher.on" }, hasAttribute: () => false };
+  ws.onChange({ target });
+  assert.equal(r.finisher.on, "critical");
+  assert.equal(r.finisher.success, "critical", "the stored Needs value is untouched");
+  assert.equal(renders, 1);
+  assert.doesNotMatch(finisherSettingsHTML(r), /data-field="finisher\.success"/);
+});
