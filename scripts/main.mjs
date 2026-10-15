@@ -1529,7 +1529,7 @@ Hooks.once("ready", () => {
     const saveKey = critIds.map((recipeId) => finishedKey({ ...base, recipeId, save: true })).find((key) => finished.has(key));
     const crit = by?.crit === true || Boolean(saveKey);
     const recipe = players ? pickPlays(pick, "kill", { outcome: crit ? "criticalSuccess" : "success" })
-      : killFinisher(recipes(), item, game.settings.get(ID, DEFAULT_FINISHER), { crit });
+      : killFinisher(recipes(), item, game.settings.get(ID, DEFAULT_FINISHER), { crit, damageType: recallDamage(damageLog, ids)?.type ?? by?.type });
     if (!recipe) return null;
     // The crit already played a finisher's travel on this token: only an ending is left. A critical
     // killing blow is that crit's own damage (the same finisher's mark); after a save crit, whichever

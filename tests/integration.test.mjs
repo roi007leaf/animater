@@ -2083,3 +2083,52 @@ test("Defeated look: the finisher body ending marks Defeated without the overlay
     await f.api.stop();
   }
 });
+
+// The "By damage type" default: the killing blow's damage type picks a built-in finisher.
+const damageOf = (type) => ({ rolls: [{ instances: [{ type, total: 9 }] }] });
+test("kill path, by damage type: a piercing kill plays Perforated, a fire kill Cinders", async () => {
+  for (const [type, name] of [["piercing", "Perforated"], ["fire", "Cinders"]]) {
+    const f = await boot("pf2e");
+    const entries = await killTarget(f, { finishers: [killFin("other", "Other", "Dagger")], defaultFinisher: "by-damage-type", damage: damageOf(type) });
+    assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
+    assert.match(entries[0].detail, new RegExp(`^${name}: Orc`));
+    await f.api.stop();
+  }
+});
+
+test("kill path, by damage type: an unknown type keeps the old collapse", async () => {
+  const f = await boot("pf2e");
+  const entries = await killTarget(f, { defaultFinisher: "by-damage-type", damage: damageOf("untyped") });
+  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  await f.api.stop();
+});
+
+// Review focus: HP set to 0 by hand, or a roll with no typed damage, leaves nothing in the damage log.
+test("kill path, by damage type: no damage type remembered keeps the old collapse", async () => {
+  const f = await boot("pf2e");
+  const entries = await killTarget(f, { defaultFinisher: "by-damage-type", damage: { rolls: [] } });
+  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  await f.api.stop();
+});
+
+test("kill path, by damage type: the killing item's own kill finisher still wins", async () => {
+  const f = await boot("pf2e");
+  const entries = await killTarget(f, { finishers: [killFin("burn", "Burn up", "Ignition")], defaultFinisher: "by-damage-type" });
+  assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
+  assert.match(entries[0].detail, /Burn up: Orc/);
+  await f.api.stop();
+});
+
+test("kill path, by damage type: a player's item plays only its pick, never the built-in", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f, { choice: null });
+  const entries = await killTarget(f, { defaultFinisher: "by-damage-type" });
+  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  await f.api.stop();
+});

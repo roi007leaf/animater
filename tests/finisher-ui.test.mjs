@@ -465,3 +465,13 @@ test("finisherGlyphSVG sketches the damage patterns and hints the damage behavio
   }
   assert.match(finisherGlyphSVG(cutStage({ pattern: "crush", behavior: "flatten" }), { live: true }), /type="scale" values="1 1;1 1;1\.15 0\.35;1\.15 0\.35"/, "flatten squashes wide and flat");
 });
+
+test("the default finisher select offers By damage type, with its hint while chosen", () => {
+  const plain = pageOf([fin("a", "X")]);
+  assert.match(plain, /<select data-finisher-default><option value="">None \(plain collapse\)<\/option><option value="by-damage-type" >By damage type \(built-in\)<\/option><option value="a" >Fin a<\/option>/);
+  assert.doesNotMatch(plain, /data-finisher-default-hint/);
+  const chosen = pageOf([fin("a", "X")], { def: "by-damage-type" });
+  assert.match(chosen, /<option value="by-damage-type" selected>By damage type \(built-in\)<\/option>/);
+  assert.ok(chosen.includes(`<p class="an-hint" data-finisher-default-hint>Plays the built-in finisher that matches the killing blow's damage type (Perforated for piercing, Cinders for fire…).</p>`));
+  assert.match(chosen, /<p class="an-hint">Plays for NPC kills when no finisher matches the item\.<\/p>/);
+});

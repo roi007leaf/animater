@@ -2,6 +2,7 @@
 // Applies-to reuses recipe matching: comma-separated names in `match`, or one exact itemUuid.
 import { normalize, FINISHER_ON } from "./model.mjs";
 import { pathSquares, landsTilted } from "./keyframe-path.mjs";
+import { BY_DAMAGE_TYPE, damageTypeFinisher } from "./finisher-presets.mjs";
 
 const names = (r) => String(r.match ?? "").split(",").map((n) => n.trim()).filter(Boolean);
 const live = (recipes) => recipes.filter((r) => r?.finisher && r.enabled !== false);
@@ -17,9 +18,13 @@ const matchAny = (recipes, item, ons) => live(recipes).filter((r) => ons.include
 
 // The killing item's own kill (or crit-or-kill) finisher wins; otherwise the GM's default, if it
 // is a finisher. "Needs: Only on a critical" holds for both: without a crit they are passed over.
-export function killFinisher(recipes, item = {}, defaultId = "", { crit = false } = {}) {
+// The default "by-damage-type" plays the built-in preset for the killing blow's damage type.
+export function killFinisher(recipes, item = {}, defaultId = "", { crit = false, damageType = null } = {}) {
   const fits = (r) => passesSuccess(r.finisher, crit ? "criticalSuccess" : "success");
-  return matchAny(recipes, item, ["kill", "criticalOrKill"]).find(fits) ?? live(recipes).find((r) => r.id === defaultId && fits(r)) ?? null;
+  const own = matchAny(recipes, item, ["kill", "criticalOrKill"]).find(fits);
+  if (own) return own;
+  if (defaultId === BY_DAMAGE_TYPE) { const built = damageTypeFinisher(damageType); return built && fits(built) ? built : null; }
+  return live(recipes).find((r) => r.id === defaultId && fits(r)) ?? null;
 }
 
 // The GM's finishers that a critical hit with this item plays (when no player pick plays instead).

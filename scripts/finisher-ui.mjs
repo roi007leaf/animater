@@ -3,7 +3,7 @@ import { normalize, FINISHER_ON, FINISHER_ENDINGS, FINISHER_SUCCESS, FINISHER_WA
 import { linkedFinisher, finisherTravelPath, finisherNames, finisherItemLink } from "./finisher-model.mjs";
 import { pathSquares, samplePath, normalizeKeyframes } from "./keyframe-path.mjs";
 import { fragmentPieces, fragmentFlight, fragmentPose, normalizeFragments } from "./fragments.mjs";
-import { FINISHER_PRESETS, presetFinisher } from "./finisher-presets.mjs";
+import { FINISHER_PRESETS, presetFinisher, BY_DAMAGE_TYPE } from "./finisher-presets.mjs";
 import { studioHTML } from "./studio.mjs";
 import { finisherToursHTML } from "./finisher-tour.mjs";
 
@@ -289,8 +289,9 @@ export function finishersPageHTML(w, recipe) {
   const groups = presetGroupsHTML();
   return `<div class="an-work is-library"><section class="an-library an-finishers">
     <div class="an-finishers-sub"><span>${all.length} finisher${all.length === 1 ? "" : "s"}</span><small>Assign them to spells, feats, actions and weapons. They play on the real token.</small></div>
-    <label class="an-finisher-default"><span>Default finisher for other kills</span><select data-finisher-default><option value="">None (plain collapse)</option>${all.map((r) => `<option value="${esc(r.id)}" ${r.id === def ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
+    <label class="an-finisher-default"><span>Default finisher for other kills</span><select data-finisher-default><option value="">None (plain collapse)</option><option value="${BY_DAMAGE_TYPE}" ${def === BY_DAMAGE_TYPE ? "selected" : ""}>By damage type (built-in)</option>${all.map((r) => `<option value="${esc(r.id)}" ${r.id === def ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
     <p class="an-hint">Plays for NPC kills when no finisher matches the item.</p>
+    ${def === BY_DAMAGE_TYPE ? `<p class="an-hint" data-finisher-default-hint>Plays the built-in finisher that matches the killing blow's damage type (Perforated for piercing, Cinders for fire…).</p>` : ""}
     ${cards ? `<div class="an-grid an-fcard-grid">${cards}</div>` : `<div class="an-empty an-finishers-empty">No finishers yet. Pick a preset below or start blank.</div>`}
     <div class="an-section-title"><span>Presets</span><small>Copy one to make it yours</small>${finisherToursHTML(w.showFinisherTours)}</div>
     <div class="an-preset-groups">${groups}<div class="an-preset-tiles"><button type="button" data-action="new-finisher" class="an-preset-tile is-blank">+ Blank finisher</button></div></div>

@@ -339,3 +339,15 @@ test("a stored Needs never gates critical modes, where it is hidden", () => {
   const k = fin("k", "Sword", { on: "kill", success: "critical" });
   assert.equal(killFinisher([k], { itemName: "Sword" }), null);
 });
+
+test("the by-damage-type default plays the damage type's built-in finisher when no finisher of the item's applies", () => {
+  const list = [fin("axe", "Greataxe"), fin("def", "")];
+  assert.equal(killFinisher(list, { itemName: "Dagger" }, "by-damage-type", { damageType: "piercing" }).id, "builtin-perforated");
+  assert.equal(killFinisher(list, { itemName: "Dagger" }, "by-damage-type", { damageType: "fire" }).name, "Cinders");
+  assert.equal(killFinisher(list, { itemName: "Greataxe" }, "by-damage-type", { damageType: "fire" }).id, "axe", "a name-matched finisher still wins");
+  assert.equal(killFinisher(list, { itemName: "Dagger" }, "by-damage-type", { damageType: "untyped" }), null, "an unknown type: the plain collapse");
+  assert.equal(killFinisher(list, { itemName: "Dagger" }, "by-damage-type"), null, "no damage type known: the plain collapse");
+  assert.equal(killFinisher(list, { itemName: "Dagger" }, "by-damage-type", { damageType: "fire", crit: true }).id, "builtin-cinders", "any success, crit or not");
+  assert.equal(killFinisher(list, { itemName: "Dagger" }, "def", { damageType: "fire" }).id, "def", "another default ignores the damage type");
+  assert.equal(killFinisher([fin("by-damage-type", "")], {}, "by-damage-type", { damageType: "fire" }).id, "builtin-cinders", "the built-in, not a finisher that happens to share the id");
+});
