@@ -54,6 +54,8 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
       const keyframes = s.keyframes.map((kf, i, all) => (i === all.length - 1 ? { ...kf, x: last.x, y: last.y } : kf));
       return { ...s, keyframes, motionFrame: { cos: frame.aim.x, sin: frame.aim.y, k } };
     }
+    // Fragments hold the real token hidden; a survivor must reappear once the pieces fade.
+    if (survives && s.kind === "motion" && s.motion === "fragments" && s.motionEnd === "hold" && mine(s, mover)) return back(s);
     if (s.kind === "motion" && TRAVEL.has(s.motion) && s.motionEnd === "hold") {
       // Only the mover's travel can land; anything else, or no landing square, comes back.
       if (!offset || frame || !mine(s, mover)) return back(s);
@@ -116,7 +118,7 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
       const end = aim ? rotateBy(pathEnd(path.keyframes), aim) : pathEnd(path.keyframes), length = Math.hypot(end.x, end.y);
       const squares = Math.round(Math.max(Math.abs(end.x), Math.abs(end.y)));
       inPlace = squares === 0;
-      // Gone in flight (ends invisible): aimed, held until hidden, never moved — moving an
+      // Gone in flight (ends invisible): aimed, held until hidden, never moved â€” moving an
       // invisible token would only show it again at the landing.
       // A survivor (not dead) never vanishes, and an in-place path already stays put.
       const vanishes = dead && !inPlace && path.keyframes.at(-1).alpha === 0;

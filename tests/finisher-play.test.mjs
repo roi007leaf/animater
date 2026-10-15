@@ -414,3 +414,14 @@ test("a path that vanishes in flight never moves the token", async () => {
   assert.deepEqual([frame.cos, frame.sin, frame.k], [1, 0, 1], "aimed away from the attacker");
   assert.equal(end, "hold", "stays invisible until hidden");
 });
+
+test("a surviving target's fragments stage drops its hold so the token reappears", async () => {
+  const recipe = { id: "f", name: "Slice", trigger: "manual", finisher: normalizeFinisher({ ending: "vanish" }), stages: [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", motionEnd: "hold", duration: 1400 }] };
+  let played;
+  const host = gridHost();
+  const play = host.play;
+  host.play = async (r, c) => { played = r.stages[0]; return play(r, c); };
+  await playFinisher({ recipe, mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  assert.equal(played.motionEnd, undefined);
+  assert.ok(!host.log.some((e) => e[0] === "fade" || (e[0] === "commit" && (e[1].hidden || e[1].defeated))));
+});
