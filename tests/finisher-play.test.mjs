@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { composeFinisher, travelEnd, planEnd, motionEnd, finisherDirection, playFinisher, fadedAtEnd } from "../scripts/finisher-play.mjs";
 import { normalizeFinisher, validateRecipe } from "../scripts/model.mjs";
 import { timedStages } from "../scripts/composition.mjs";
+import { motionPose } from "../scripts/motion.mjs";
 
 const travel = { stageId: "fly", kind: "motion", motion: "leap", subject: "targets", motionEnd: "hold", duration: 1000, assets: [] };
 const recipe = (finisher = {}, stages = [travel, { stageId: "landing", kind: "impact", assets: ["jb2a.impact.003.white"] }]) =>
@@ -24,9 +25,11 @@ test("compose without a landing square strips the hold so travel comes back", ()
 
 test("compose leaves the user's own stages alone: only the target travels", () => {
   const { recipe: r, moves } = composeFinisher(recipe({}, [{ ...travel, subject: "source" }]), { offset: { x: 1, y: 0 } });
-  assert.equal(moves, false);
-  assert.equal(r.stages[0].motionOffset, undefined);
-  assert.equal(r.stages[0].motionEnd, undefined, "a held stage that is not the target's returns");
+  const own = r.stages.find((s) => s.stageId === "fly");
+  assert.equal(own.motionOffset, undefined);
+  assert.equal(own.motionEnd, undefined, "a held stage that is not the target's returns");
+  assert.equal(moves, true, "the target, with no travel of its own, is shoved instead");
+  assert.deepEqual(r.stages.filter((s) => s.motionOffset).map((s) => [s.subject, s.motionOffset]), [["targets", { x: 1, y: 0 }]]);
   const old = composeFinisher(recipe({ mover: "source" }), { offset: { x: 1, y: 0 } });
   assert.deepEqual(old.recipe.stages[0].motionOffset, { x: 1, y: 0 }, "an old source mover moves the target");
 });
@@ -447,4 +450,104 @@ test("only a vanish ending vanishes in flight; a body ending still lands the inv
   assert.ok(host.log.some((e) => e[0] === "landing"), "it lands");
   assert.ok(host.log.some((e) => e[0] === "commit" && e[1].x === 400), "it moved");
   assert.deepEqual(host.log.at(-1), ["commit", { defeated: true, finisher: "p" }]);
+});
+
+// Knockback on a finisher with no travel of its own: the target is shoved knockback squares away
+// from the attacker (stopping at walls), lands upright, and the rest plays where it landed.
+const slice = (finisher = {}) => ({ id: "s", name: "Slice", trigger: "manual", finisher: normalizeFinisher({ knockback: 3, ending: "vanish", ...finisher }), stages: [
+  { stageId: "slash", kind: "impact", assets: ["jb2a.melee_generic.slash"], duration: 700 },
+  { stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", motionEnd: "hold", delay: 250, duration: 1400, pattern: "halves", assets: [] }] });
+const cleave = (finisher = {}) => ({ id: "c", name: "Cleave", trigger: "manual", finisher: normalizeFinisher({ knockback: 2, ending: "body", ...finisher }), stages: [
+  { stageId: "slash", kind: "impact", assets: ["jb2a.melee_generic.slash"], duration: 900, offsetY: 0.5 },
+  { stageId: "fall", kind: "motion", motion: "collapse", subject: "targets", delay: 900, duration: 1400, assets: [] },
+  { stageId: "dust", kind: "impact", assets: ["jb2a.impact.003.white"], afterStage: "fall", timingAnchor: "start", duration: 500 }] });
+// Plays the composed recipe the way the runtime times it.
+const timedHost = (blockAfter = Infinity) => {
+  const host = gridHost(blockAfter);
+  host.play = async (r) => { host.played = r; return timedStages(validateRecipe(r)); };
+  return host;
+};
+const shoveOf = (r) => r.stages.find((s) => s.kind === "motion" && s.motion === "rush" && s.motionOffset);
+
+test("a fragments-only finisher with knockback 3 is shoved first, lands upright, and is cut where it landed", async () => {
+  const host = timedHost();
+  await playFinisher({ recipe: slice(), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  const r = host.played, shove = shoveOf(r);
+  assert.ok(shove, "a shove stage is composed");
+  assert.equal(r.stages[0], shove, "at the start of the recipe");
+  assert.deepEqual(shove.motionOffset, { x: 3, y: 0 });
+  assert.equal(shove.motionEnd, "hold");
+  assert.equal(shove.subject, "targets");
+  assert.ok(shove.duration >= 250 && shove.duration <= 350, `shove takes ${shove.duration} ms`);
+  const end = motionPose(validateRecipe(r).stages[0], 1, { x: 1, y: 0 }, 100);
+  assert.ok(Math.abs(end.x - 300) < 1e-6 && Math.abs(end.rotation) < 1e-9, "lands upright on the square");
+  const plan = timedStages(validateRecipe(r));
+  const t = (id) => plan.find((s) => s.stageId === id).delay;
+  assert.equal(t("slash"), shove.duration, "the slash starts after the shove");
+  assert.equal(t("cut"), shove.duration + 250, "the cut keeps its own delay after the shove");
+  const slash = r.stages.find((s) => s.stageId === "slash");
+  assert.deepEqual(slash.atPoint, { x: 150, y: 150 });
+  assert.equal(slash.offsetX, 3, "the slash plays on the landing square");
+  const waits = host.log.filter((e) => e[0] === "wait"), commits = host.log.filter((e) => e[0] === "commit");
+  assert.deepEqual(waits[0], ["wait", shove.duration], "the move is written as the shove ends");
+  assert.deepEqual(commits[0][1], { x: 400, y: 100, fromX: 100, fromY: 100, finisher: "s" });
+  assert.ok(!host.log.some((e) => e[0] === "fade"), "the pieces already hide the token: no separate fade");
+  assert.deepEqual(host.log.at(-1), ["commit", { hidden: true, finisher: "s" }]);
+});
+
+test("a shove of more squares takes a little longer", () => {
+  const one = shoveOf(composeFinisher(slice(), { offset: { x: 1, y: 0 } }).recipe), four = shoveOf(composeFinisher(slice(), { offset: { x: 4, y: 0 } }).recipe);
+  assert.ok(one.duration < four.duration && one.duration >= 250 && four.duration <= 350);
+  assert.equal(composeFinisher(slice(), { offset: { x: 1, y: 0 } }).moves, true);
+});
+
+test("an impact-only finisher's impacts land at the new spot", async () => {
+  const host = timedHost();
+  await playFinisher({ recipe: cleave(), mover: at("Orc", 100, 100), attacker: at("Hero", 100, 0), dead: true }, host);
+  const r = host.played, shove = shoveOf(r), by = (id) => r.stages.find((s) => s.stageId === id);
+  assert.deepEqual(shove.motionOffset, { x: 0, y: 2 }, "away from the attacker above");
+  for (const id of ["slash", "dust"]) assert.deepEqual(by(id).atPoint, { x: 150, y: 150 }, `${id} pinned`);
+  assert.deepEqual([by("slash").offsetX, by("slash").offsetY], [0, 2.5], "the authored offset rides on the landing");
+  assert.deepEqual([by("dust").offsetX, by("dust").offsetY], [0, 2]);
+  assert.equal(by("dust").afterStage, "fall", "a linked stage keeps its link and follows the shifted stage");
+  const plan = timedStages(validateRecipe(r)), t = (id) => plan.find((s) => s.stageId === id).delay;
+  assert.deepEqual([t("slash"), t("fall"), t("dust")], [shove.duration, shove.duration + 900, shove.duration + 900]);
+  assert.deepEqual(host.log.find((e) => e[0] === "commit")[1], { x: 100, y: 300, fromX: 100, fromY: 100, finisher: "c" });
+  assert.deepEqual(host.log.at(-1), ["commit", { defeated: true, finisher: "c" }]);
+});
+
+test("a wall within 1 square shortens the shove", async () => {
+  const host = timedHost(1);
+  await playFinisher({ recipe: slice(), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  assert.deepEqual(shoveOf(host.played).motionOffset, { x: 1, y: 0 });
+  assert.equal(host.played.stages.find((s) => s.stageId === "slash").offsetX, 1);
+  assert.deepEqual(host.log.find((e) => e[0] === "commit")[1], { x: 200, y: 100, fromX: 100, fromY: 100, finisher: "s" });
+  const blocked = timedHost(0);
+  await playFinisher({ recipe: slice(), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, blocked);
+  assert.equal(shoveOf(blocked.played), undefined, "a wall right there: no shove");
+  assert.ok(!blocked.log.some((e) => e[0] === "commit" && e[1].x !== undefined));
+});
+
+test("knockback 0 and a travelling finisher are unchanged", async () => {
+  const still = timedHost();
+  await playFinisher({ recipe: slice({ knockback: 0 }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, still);
+  assert.deepEqual(still.played.stages.map((s) => s.stageId), ["slash", "cut"]);
+  assert.equal(still.played.stages[0].delay, undefined);
+  assert.ok(!still.log.some((e) => e[0] === "commit" && e[1].x !== undefined));
+  const plain = composeFinisher(slice(), {});
+  assert.equal(plain.moves, false);
+  assert.equal(plain.recipe.stages.length, 2, "no landing square: no shove");
+  const pathed = composeFinisher(pathRecipe([kf(0), kf(1, 2, 0)]), { offset: { x: 2, y: 0 }, frame: { aim: { x: 1, y: 0 }, length: 2 } });
+  assert.equal(pathed.recipe.stages.length, 1, "a path finisher travels on its path");
+  assert.equal(shoveOf(pathed.recipe), undefined);
+  const leap = composeFinisher(recipe(), { offset: { x: 2, y: 0 } });
+  assert.deepEqual(leap.recipe.stages.map((s) => s.stageId), ["fly", "landing"], "a held leap travels as before");
+});
+
+test("a survivor of a use finisher is still shoved, never hidden", async () => {
+  const host = timedHost();
+  await playFinisher({ recipe: slice({ on: "use" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  assert.ok(shoveOf(host.played));
+  assert.ok(host.log.some((e) => e[0] === "commit" && e[1].x === 400));
+  assert.ok(!host.log.some((e) => e[0] === "fade" || (e[0] === "commit" && (e[1].hidden || e[1].defeated))));
 });

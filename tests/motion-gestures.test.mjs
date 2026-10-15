@@ -444,6 +444,19 @@ test('the pieces spawn where the token is drawn and follow a rebase of the origi
   assert.ok(Math.abs(seen().y - want.y) < 1e-9);
 });
 
+test('pieces spawned on a held shove stay put when the shove is written to the document', () => {
+  let seen;
+  const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
+  void r.player.play(r.token, hold('rush', { motionOffset: { x: 2, y: 0 }, duration: 100 }), { x: 1, y: 0 }, 'me');
+  void r.player.play(r.token, fragStage({ duration: 1000 }), { x: 1, y: 0 }, 'me');
+  r.now = 120; r.queued(r.now);
+  assert.ok(Math.abs(seen().x - 200) < 1e-6, 'spawned on the shoved square');
+  r.token.document.x += 200;
+  r.now = 150; r.queued(r.now);
+  assert.equal(r.player.active.get(r.token).original.x, 200, 'rebased');
+  assert.ok(Math.abs(seen().x - 200) < 1e-6, 'the shove is not counted twice once it is written');
+});
+
 test('the sender stores the cut angle with the seed, and the player prefers it', () => {
   const { withFragmentCut } = motionModule;
   const s = withFragmentCut({ kind: 'motion', motion: 'fragments' }, { x: 0, y: -1 });

@@ -169,3 +169,53 @@ test("a studio test play of wall slam draws the crash at the wall through the re
   for (const d of crash) assert.deepEqual([Math.round(d.x), d.y], [510, 150], `${d.file} at the wall: ${JSON.stringify(d)}`);
   assert.deepEqual([orc.document.x, orc.document.y], [100, 100], "the token is never moved");
 });
+
+test("planFinisher: a fragments-only finisher with knockback is shoved to the landing square and cut there", () => {
+  const recipe = { ...presetFinisher("slice-in-half", "sl"), finisher: { ...presetFinisher("slice-in-half", "sl").finisher, knockback: 3 } };
+  const mover = token("Orc", 100, 100);
+  const planned = planFinisher({ recipe, mover, attacker: token("Hero", 0, 100), dead: true }, testHost(Infinity));
+  assert.equal(planned.moves, true);
+  assert.deepEqual(planned.to, { x: 400, y: 100 });
+  const [shove] = planned.composed.stages;
+  assert.equal(shove.motion, "rush");
+  assert.deepEqual(shove.motionOffset, { x: 3, y: 0 });
+  assert.equal(by(planned.composed, "slash").offsetX, 3);
+  assert.equal(by(planned.composed, "cut").delay, 250 + shove.duration);
+  assert.equal(planFinisher({ recipe, mover, attacker: token("Hero", 0, 100), dead: true }, testHost(1)).composed.stages[0].motionOffset.x, 1, "a wall shortens it");
+});
+
+test("a studio test play of a shove draws the slash on the landing square and writes nothing", async () => {
+  const base = presetFinisher("slice-in-half", "sl"), recipe = { ...base, finisher: { ...base.finisher, knockback: 2 } };
+  const assets = [...new Set(recipe.stages.flatMap((s) => s.assets))];
+  const drawn = [], motions = [];
+  const host = {
+    database: { entryExists: () => true, getPathsUnder: () => assets, getAllFileEntries: (k) => [`${k}.webm`] },
+    enabled: () => true, recipes: () => [], ready: () => true, canPlay: () => true, userId: () => "u", gridSize: () => GRID,
+    sequence: () => {
+      const effects = [];
+      const chain = (calls) => new Proxy({}, { get: (_, key) => (...args) => { calls.push([key, ...args]); return chain(calls); } });
+      return {
+        effect: () => { const calls = []; effects.push(calls); return chain(calls); },
+        sound: () => chain([]),
+        play: async () => {
+          for (const calls of effects) {
+            const [, where, { offset }] = calls.find((c) => c[0] === "atLocation");
+            const at = where.document ? where.center : where;
+            drawn.push({ x: at.x + offset.x * GRID, y: at.y + offset.y * GRID });
+          }
+        },
+      };
+    },
+    endEffects: async () => {}, motion: async (stage) => { motions.push(stage); },
+  };
+  const runtime = new AnimaterRuntime(host);
+  runtime.refreshCatalog();
+  runtime.wait = async () => true;
+  const hero = token("Hero", 0, 100), orc = token("Orc", 100, 100);
+  const writes = { ...testHost(Infinity), commit: () => assert.fail("a test play never writes"), fade: () => assert.fail("nor fades") };
+  await previewFinisher(recipe, { source: hero, targets: [orc] }, writes, (composed, context) => runtime.play(composed, context, { preview: true }));
+  assert.ok(drawn.length >= 1);
+  for (const d of drawn) assert.deepEqual([Math.round(d.x), d.y], [350, 150], "the slash plays two squares over");
+  assert.ok(motions.some((m) => m.motion === "rush" && m.motionOffset?.x === 2), "the shove is played");
+  assert.deepEqual([orc.document.x, orc.document.y], [100, 100], "the token is never moved");
+});

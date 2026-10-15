@@ -202,7 +202,7 @@ export function finisherSettingsHTML(r, { itemSummary, players = [] } = {}) {
     <label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>
     ${appliesToHTML(r, itemSummary)}
     ${select("on", "Plays on", FINISHER_ON)}${availableToHTML(f, players)}${needsHTML(f, select)}
-    ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the attacker and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label>`}
+    ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the attacker and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label><p class="an-hint">Shoves the target this far away from the attacker before the rest plays (stops at walls).</p>`}
     ${select("ending", "Ending", FINISHER_ENDINGS)}
     <p class="an-hint">${path ? "A stage named “landing” plays where it lands." : "Set a travel motion's End to “Hold at the end”: knockback replaces its distance and the token is moved to where it lands, stopping at walls. A stage named “landing” plays there."} Vanish and Body apply only to a creature at 0 HP.</p></div>`;
 }

@@ -1447,6 +1447,24 @@ test("kill path: neither an assigned nor a default finisher keeps the old collap
   await f.api.stop();
 });
 
+test("kill path: a knockback finisher with no travel of its own shoves the NPC away and writes it where it lands", async (t) => {
+  const f = await boot("pf2e");
+  const writes = [];
+  f.target.document.update = async (data) => { writes.push(data); Object.assign(f.target.document, { x: data.x ?? f.target.document.x, y: data.y ?? f.target.document.y }); };
+  const wallAt = 520;
+  stubGlobal(t, "CONFIG", { ...CONFIG, Canvas: { polygonBackends: { move: { testCollision: (a, b) => Math.max(a.x, b.x) >= wallAt } } } });
+  canvas.dimensions = { sceneRect: { x: 0, y: 0, width: 3000, height: 3000 } };
+  const shove = { ...killFin("shove", "Shove", "Ignition"), finisher: { on: "kill", knockback: 3, ending: "body" } };
+  const entries = await killTarget(f, { finishers: [shove] });
+  assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 600));
+  const moved = writes.find((w) => w.x !== undefined);
+  assert.ok(moved, JSON.stringify(f.api.activity()));
+  assert.deepEqual([moved.x, moved.y], [450, 50], "two squares away from the attacker, stopped short of the wall");
+  assert.deepEqual(moved["flags.animater.displaced"], { fromX: 250, fromY: 50, finisher: "shove" });
+  await f.api.stop();
+});
+
 test("displace-commit: the GM writes for the sender who owns the attacker, never for a forged or unrelated user", async () => {
   const f = await boot("pf2e");
   const updates = [], scene = { id: "s" };

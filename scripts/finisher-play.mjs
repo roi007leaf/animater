@@ -34,6 +34,10 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
     const { startMode, startRef, ...rest } = s, delay = Math.max(0, (cut.delay ?? 0) + cut.duration - early);
     return cut.stageId ? { ...rest, afterStage: cut.stageId, timingAnchor: "end", startOffset: -early, delay } : { ...rest, afterStage: "", delay };
   };
+  // Knockback with no travel of its own (a slice, a cleave): a short held rush shoves the mover onto
+  // the landing square first, and everything else plays after it, the mover's effects on that square.
+  const shove = offset && !frame && !travel && !recipe.stages.some((s) => s.kind === "motion" && TRAVEL.has(s.motion) && s.motionEnd === "hold" && mine(s))
+    ? shoveStage(recipe.stages, offset) : null;
   const stages = recipe.stages.flatMap((original) => {
     const s = cut && original === travel ? cut : original;
     if (String(s.stageId ?? "").startsWith("wall")) {
@@ -69,6 +73,8 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
     }
     if (offset && s.stageId === "landing" && onMover(s))
       return pinned({ ...s, offsetX: offset.x, offsetY: offset.y });
+    if (shove && PINNABLE.has(s.kind) && onMover(s))
+      return pinned({ ...s, offsetX: (Number(s.offsetX) || 0) + offset.x, offsetY: (Number(s.offsetY) || 0) + offset.y });
     // A vanishing path is drawn with +x away from the attacker: the mover's effects authored in
     // that frame (Sky launch's twinkle) turn with it, as the wall stages do.
     if (vanishing && s.kind !== "motion" && onMover(s) && (Number(s.offsetX) || Number(s.offsetY))) {
@@ -77,7 +83,24 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
     }
     return s;
   });
-  return { recipe: { ...recipe, stages: unlinkDropped(recipe.stages, stages) }, moves };
+  const kept = unlinkDropped(recipe.stages, stages);
+  if (!shove) return { recipe: { ...recipe, stages: kept }, moves };
+  // Linked stages follow their reference; the rest start once the shove has landed.
+  const after = kept.map((s) => (s.afterStage ? s : { ...s, delay: (Number(s.delay) || 0) + shove.duration }));
+  return { recipe: { ...recipe, stages: [shove, ...after] }, moves: true };
+}
+
+// Effects that can be pinned to a point (model.mjs keeps atPoint on these only).
+const PINNABLE = new Set(["impact", "aura"]);
+// A quick held rush onto the landing square: about a quarter second, a little longer the farther it
+// goes. It arrives at 70% and holds upright there until the document is written at its end.
+function shoveStage(stages, offset) {
+  const ids = new Set(stages.map((s) => s.stageId));
+  let stageId = "shove";
+  while (ids.has(stageId)) stageId += "-auto";
+  const squares = Math.min(4, Math.hypot(offset.x, offset.y));
+  return { stageId, label: "Knockback", kind: "motion", motion: "rush", subject: "targets", motionEnd: "hold", motionOffset: { x: offset.x, y: offset.y },
+    motionArrival: 70, delay: 0, duration: Math.round(250 + 25 * squares), assets: [] };
 }
 
 // A stage linked to a dropped stage would stop the finisher ("linked stage was removed"): it keeps
@@ -115,7 +138,7 @@ export function defaultAim(mover) {
 // A path that moved the token lands upright and visible, so a vanish still fades it. A mover
 // still held in place (shrunk, faded, turned) needs no separate fade: one would pop it back.
 // Fragments hide the real token while the pieces fly, so they need no fade either.
-export const fadedAtEnd = (recipe, moves) => !moves && recipe.stages.some((s) => s.kind === "motion" && (s.motion === "path" || s.motion === "fragments")
+export const fadedAtEnd = (recipe, moves) => recipe.stages.some((s) => s.kind === "motion" && ((!moves && s.motion === "path") || s.motion === "fragments")
   && s.motionEnd === "hold" && mine(s));
 
 // Everything a finisher decides before it plays: where the mover lands (or hits a wall), and the

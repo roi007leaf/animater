@@ -42,6 +42,14 @@ test("a path finisher hides knockback and says the path decides the landing", ()
   assert.match(finisherSettingsHTML(fin("b", "Shove", { knockback: 4 })), /data-field="finisher\.knockback"/, "legacy travel keeps knockback");
 });
 
+test("the knockback field says it shoves the target before the rest plays; a path hides it", () => {
+  const hint = /Shoves the target this far away from the attacker before the rest plays \(stops at walls\)\./;
+  assert.match(finisherSettingsHTML(fin("b", "Slice", { knockback: 2 })), hint);
+  const r = fin("a", "Fly", { knockback: 4 });
+  r.stages = [{ kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 2, y: 0 }] }];
+  assert.doesNotMatch(finisherSettingsHTML(r), hint);
+});
+
 test("a path finisher chooses what happens at walls; legacy travel does not", () => {
   const r = fin("a", "Shove", { wall: "slam" });
   r.stages = [{ kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 2, y: 0 }] }];
