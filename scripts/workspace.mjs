@@ -538,9 +538,9 @@ export class Workspace {
         <div class="an-nav-caption">WORKSPACE</div>
         ${(this.host.playerMode ? [["recipes", "✦", this.host.reviewing?.() ? `${esc(this.host.reviewing().userName)}'s animations` : "My animations"],["assets", "▦", "Assets"]] : [
           ["recipes", "✦", "Recipes"],
-          ["finishers", "✸", "Finishers"],
           ...catalogNavigation(env),
           ["assets", "▦", "Assets"],
+          ["finishers", "✸", "Finishers"],
           ...(this.host.flashScreens ? [["flash", "⚡", "Flash screens"]] : []),
           ["activity", "◷", "Activity"],
           ["setup", "⚙", "Setup"],
