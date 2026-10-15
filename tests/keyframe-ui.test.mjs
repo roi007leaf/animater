@@ -87,3 +87,12 @@ test("Delete removes a keyframe only for the focused path stage", () => {
   assert.equal(keyframeDeleteApplies({ ...base, keyframeFocus: false }), false);
   assert.equal(keyframeDeleteApplies({ ...base, isPath: false }), false);
 });
+
+test("the inspector edits stretch after size, off on the first keyframe, and explains it", () => {
+  const html = keyframeInspectorHTML(stage, 3, 1);
+  assert.match(html, /Stretch<input type="number" data-field="keyframe" data-kf-field="stretch" data-kf-index="1" data-index="3" min="-0.6" max="0.6" step="0.05" value="0" >/);
+  assert.ok(html.indexOf('data-kf-field="scale"') < html.indexOf('data-kf-field="stretch"'), "after Size");
+  assert.match(html, /Stretch squeezes or stretches along the travel direction \(negative = flatten\)\./);
+  assert.match(keyframeInspectorHTML(stage, 3, 0), /data-kf-field="stretch"[^>]*disabled/);
+  assert.match(keyframeInspectorHTML({ ...stage, keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 1, y: 0 }] }, 0, 1), /data-kf-field="stretch"[^>]*value="0"/, "an old keyframe without stretch shows 0");
+});
