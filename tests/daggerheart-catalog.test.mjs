@@ -68,8 +68,9 @@ test("card design is deterministic: kind by rolls and card type, intensity by le
   assert.deepEqual(blink.variants.map((v) => v.recipe.trigger), ["attack"]);
   assert.equal(blink.theme, "Arcana");
   assert.equal(dhRecipe(blink).color, DOMAIN_PALETTES.arcana.color);
-  assert.ok(dhRecipe(blink).stages.some((s) => s.kind === "travel" && s.assets[0] === "jb2a.magic_missile.purple"));
-  assert.ok(dhRecipe(named("card", "Book of Illiat")).stages.some((s) => s.assets[0].startsWith("jb2a.magic_signs.circle.")), "grimoires draw a magic circle");
+  assert.ok(dhRecipe(blink).stages.some((s) => s.kind === "motion" && s.motion === "flicker"), "Blink Out plays its design: a teleport blink");
+  assert.ok(cardStages("bolt", p, 1).some((s) => s.kind === "travel" && s.assets[0] === p.projectile[0]), "the palette rule for undesigned cards shoots the domain's projectile");
+  assert.ok(cardStages("circle", p, 1).some((s) => s.assets[0].startsWith("jb2a.magic_signs.circle.")), "grimoires draw a magic circle");
 });
 
 test("weapon families pick the strike, range picks melee or projectile", () => {

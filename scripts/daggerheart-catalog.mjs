@@ -1,8 +1,11 @@
 // Daggerheart library: domain cards and weapons from data/daggerheart-catalog.mjs (built by
 // tools/build-daggerheart.mjs from the system's compendia) and the system's conditions, each with a
-// deterministic animation: a card by its domain's palette and its kind, a weapon by the family its
-// name names and its range, a condition by its look. Card text is not parsed. Pure: no Foundry globals.
+// deterministic animation: a card by its design record (data/daggerheart-card-designs/, authored from
+// the card's text) or, without one, by its domain's palette and its kind; a weapon by the family its
+// name names and its range, a condition by its look. Pure: no Foundry globals.
 import { DAGGERHEART_SOURCE, DAGGERHEART_CARDS, DAGGERHEART_WEAPONS } from "../data/daggerheart-catalog.mjs";
+import { CARD_DESIGNS } from "../data/daggerheart-card-designs/index.mjs";
+import { designStages } from "./daggerheart-card-design.mjs";
 import { clone, normalize, validateRecipe, matchRecipe, matchStrikeOverride } from "./model.mjs";
 import { DH_ROLL_TYPES, MELEE_RANGES, dhDamageKind, weaponFamily } from "./daggerheart.mjs";
 import { DEFEATED_RECIPE } from "./defeated-look.mjs";
@@ -174,15 +177,20 @@ const recipeFor = (entry, variantId, trigger, stages, extra = {}) => validateRec
   id: `animater-${variantId}`, name: entry.name, description: "", category: "Daggerheart", color: entry.color, trigger,
   systemId: "daggerheart", itemUuid: entry.uuid ?? "", catalogEntry: entry.id, stages, ...extra,
 });
+// A designed card plays its record (its `use` record on the use variant when it has both); others
+// keep the palette rules.
 function cardEntry(card) {
-  const palette = domainPalette(card.domain), domain = title(card.domain) || "Unknown";
+  const palette = domainPalette(card.domain), domain = title(card.domain) || "Unknown", record = CARD_DESIGNS[card.id] ?? null;
   const entry = { id: `daggerheart-card-${card.id}`, systemId: "daggerheart", kind: "card", uuid: `Compendium.daggerheart.${DAGGERHEART_SOURCE.packs?.card ?? "domains"}.Item.${card.id}`,
     name: card.name, img: card.img, level: card.level, domain: card.domain, cardType: card.cardType, edition: domain, group: CARD_TYPES[card.cardType] ?? title(card.cardType),
-    theme: domain, quality: "themed", color: palette.color, sourceURL: `${SOURCE_URL}/src/packs/domains`,
-    descriptionText: `${domain} ${CARD_TYPES[card.cardType] ?? card.cardType} level ${card.level}` };
-  entry.variants = Object.entries(cardDesigns(card)).filter(([, design]) => design).map(([trigger, design]) => {
+    theme: domain, quality: record ? "signature" : "themed", color: palette.color, sourceURL: `${SOURCE_URL}/src/packs/domains`,
+    descriptionText: `${domain} ${CARD_TYPES[card.cardType] ?? card.cardType} level ${card.level}${record ? ` · ${record.motif}` : ""}` };
+  const variants = Object.entries(cardDesigns(card)).filter(([, design]) => design);
+  entry.variants = variants.map(([trigger, design]) => {
     const id = `${entry.id}-${trigger}`;
-    return { id, label: `${trigger === "attack" ? "spellcast roll" : "use"} · ${design}`, design, recipe: recipeFor(entry, id, trigger, cardStages(design, palette, card.level)) };
+    const part = record && (trigger === "use" && variants.length > 1 && record.use ? record.use : record);
+    const stages = part ? designStages(part, { palette, level: card.level, levelScale }) : cardStages(design, palette, card.level);
+    return { id, label: `${trigger === "attack" ? "spellcast roll" : "use"} · ${part ? part.shape : design}`, design: part ? part.shape : design, recipe: recipeFor(entry, id, trigger, stages) };
   });
   return entry;
 }
@@ -294,6 +302,6 @@ export const dhCatalogProfile = {
   chips: (kind) => (kind === "card" ? DOMAIN_CHIPS : null),
   // Defeated, Unconscious and Dead play only through the Defeated look setting, so the page offers no Use there.
   governedBy: (entry) => (entry?.state?.defeated ? "Follows the Defeated look setting (Configure Settings → Animater → Defeated look). Use, Customize and Exclude do not apply." : null),
-  intro: "Native Daggerheart compendium content. Each animation is designed from the card's domain and kind, or the weapon's family and range.",
+  intro: "Native Daggerheart compendium content. Designed cards animate what their text does; the rest follow their domain and kind. Weapons follow their family and range.",
   hint: "Native system compendiums.",
 };

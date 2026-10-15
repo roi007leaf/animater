@@ -2360,8 +2360,9 @@ test("Daggerheart catalog: a card's spellcast roll plays its domain animation wi
   f.settings.set("daggerheartCardCatalog", useDhEntry({}, card.id));
   Object.assign(f.item, { type: "domainCard", name: card.name, system: { domain: card.domain, level: card.level, type: card.cardType } });
   await f.fire("createChatMessage", rollMessage({ item: f.item, actor: f.actor, roll: dualityRoll({ type: "spellcast" }), action: { name: "Cast", roll: { type: "spellcast" } } }));
-  // "Played" is traced once the last delayed stage has started (the impact at 1.1 s).
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  // "Played" is traced once the last delayed stage has started.
+  const last = Math.max(...card.variants.flatMap((v) => dhCatalogRecipe(card, v.id).stages.map((s) => s.delay ?? 0)));
+  await new Promise((resolve) => setTimeout(resolve, last + 400));
   assert.equal(played(f, card.name), 1, JSON.stringify(f.api.activity()));
   assert.equal(f.api.spells().spells.length, 210);
   assert.ok(f.api.spells().spells.every((e) => e.systemId === "daggerheart"));
