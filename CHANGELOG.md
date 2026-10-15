@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.2 (2026-10-15)
 
 - **Activity page:** each Now playing row now shows a small preview of its main animation (it plays when you hover the row), the token it is on, and the effect name under the title.
 
