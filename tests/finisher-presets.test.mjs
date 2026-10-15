@@ -53,6 +53,17 @@ test("Wall slam flies 6 squares, slams into a wall that stops it, and crashes th
   assert.equal(r.finisher.wall, "slam");
   assert.equal(r.finisher.ending, "body");
   assert.equal(path.keyframes.at(-1).x, 6);
-  assert.deepEqual(r.stages.filter((s) => s.stageId.startsWith("wall")).map((s) => s.stageId), ["wall-crack", "wall-shake", "wall-dust"]);
+  assert.deepEqual(r.stages.filter((s) => s.stageId.startsWith("wall")).map((s) => s.stageId), ["wall-crack", "wall-squash", "wall-dust"]);
   assert.ok(r.stages.some((s) => s.stageId === "landing"), "lands hard when nothing stops it");
+});
+
+test("Wall slam stretches mid-flight, lands unstretched and squashes on the wall", () => {
+  const r = presetFinisher("wall-slam", "ws"), path = finisherTravelPath(r);
+  assert.ok(path.keyframes.some((k) => k.stretch > 0), "stretched in flight");
+  assert.equal(path.keyframes.find((k) => k.at === 0.6).stretch, 0.22);
+  assert.equal(path.keyframes.at(-1).stretch, 0, "lands unstretched");
+  const squash = r.stages.find((s) => s.stageId === "wall-squash");
+  assert.deepEqual([squash.kind, squash.motion, squash.duration, squash.intensity, squash.subject], ["motion", "squash", 450, 1.2, "targets"]);
+  assert.equal(r.stages.find((s) => s.stageId === "wall-crack").scale, 0.8);
+  assert.equal(r.stages.some((s) => s.stageId === "wall-shake"), false);
 });
