@@ -2681,6 +2681,10 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-tile-text small { color: var(--an-muted); font-size: 11px; }
 .animater .an-flash-tile .an-flash-badge { align-self: center; }
 .animater .an-flash-unsaved { color: #ffd34d; }
+.animater .an-flash-switch.is-inline { position: static; transform: none; margin-left: auto; }
+.animater-flash-pick .an-flash-switch { display: inline-flex; align-items: center; gap: 5px; width: auto; flex: 0 0 auto; height: 22px; min-height: 22px; line-height: 1; padding: 0 7px 0 3px; border-radius: 999px; font-size: 10.5px; font-weight: 700; color: var(--color-text-secondary, #aaa); background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; }
+.animater-flash-pick .an-flash-switch span { width: 14px; height: 14px; border-radius: 50%; background: currentColor; }
+.animater-flash-pick .an-flash-switch.is-on { color: #1b1530; background: #ffd34d; border-color: #ffd34d; padding: 0 3px 0 7px; flex-direction: row-reverse; }
 .animater .an-flash-tile .an-flash-switch { top: auto; bottom: 12px; right: 10px; transform: none; }
 .animater .an-brand small { white-space: nowrap; letter-spacing: 0.06em; }
 /* Editor header: back, name and actions; then the screen's timing. */

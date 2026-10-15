@@ -221,7 +221,10 @@ export class FlashEditor {
       const toggle = moment ? `<button class="an-flash-switch${on ? " is-on" : ""}" data-action="flash-moment-toggle" data-id="${esc(f.id)}" data-event="${esc(f.event)}" role="switch" aria-checked="${on}" data-tooltip="${on ? `Plays on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}: click to turn off` : `Off: click to play it on every ${esc(FLASH_EVENTS[f.event].toLowerCase())}`}"><span></span>${on ? "On" : "Off"}</button>` : "";
       return `<div class="an-flash-tile is-${group(f)}">${open}${toggle}</div>`;
     };
-    const section = (key, title, hint) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><div class="an-flash-libgroup-head"><span class="an-flash-sub">${title}</span><small>${hint}</small></div><div class="an-flash-tiles">${items.map(card).join("")}</div></div>` : ""; };
+    // Combat start: the opening can play as soon as combatants are added, before players see the tracker.
+    const onAdd = defaults.startWhen === "add";
+    const addSwitch = `<button class="an-flash-switch is-inline${onAdd ? " is-on" : ""}" data-action="flash-start-when" role="switch" aria-checked="${onAdd}" data-tooltip="${onAdd ? "The opening plays as soon as combatants are added: click to wait for Begin Combat" : "Off: the opening waits for Begin Combat. Click to play it as soon as combatants are added"}"><span></span>On add: ${onAdd ? "On" : "Off"}</button>`;
+    const section = (key, title, hint) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><div class="an-flash-libgroup-head"><span class="an-flash-sub">${title}</span><small>${hint}</small>${key === "start" ? addSwitch : ""}</div><div class="an-flash-tiles">${items.map(card).join("")}</div></div>` : ""; };
     return `<section class="an-flash-page is-library">${list.length
       ? section("start", "Combat start", "Pick one per combat in the Combat Tracker; the default plays otherwise.") + section("moment", "During combat", "Switch on the ones that should play.") + section("end", "Combat end", "Pick one per combat in the Combat Tracker; the default plays otherwise.") + section("action", "Before an animation", "Attach one to a recipe in its settings.")
       : `<div class="an-preview-empty">No flash screens yet. Make one with <b>+ New flash screen</b>.</div>`}</section>`;
@@ -711,6 +714,12 @@ export class FlashEditor {
       case "flash-eye": {
         const id = s.layers[Number(b.dataset.index)]?.id, set = (this.hidden ??= new Set());
         if (id) { if (set.has(id)) set.delete(id); else set.add(id); }
+        break;
+      }
+      case "flash-start-when": {
+        const on = this.host.flashDefaults().startWhen === "add";
+        await this.host.setFlashDefault("startWhen", on ? "begin" : "add");
+        this.w.message = on ? "The opening now waits for Begin Combat." : "The opening now plays as soon as combatants are added.";
         break;
       }
       case "flash-moment-toggle": {
