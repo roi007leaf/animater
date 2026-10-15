@@ -1945,7 +1945,8 @@ export class Workspace {
     const was = String(this.recipe()?.match ?? ""), next = addFinisherName(was, name), added = String(name ?? "").trim();
     // A name already there leaves the recipe untouched (not marked unsaved).
     if (next === addFinisherName(was, "")) this.message = added ? `${added} is already in Applies to.` : this.message;
-    else { this.edit().match = next; this.message = `Added ${added}. Save to apply.`; }
+    // Finishers match by name; an older drop's hidden itemUuid goes with any edit.
+    else { const r = this.edit(); r.match = next; r.itemUuid = ""; this.message = `Added ${added}. Save to apply.`; }
     this.render();
   }
   // Feats, Actions and Features pages: data-action "<key>-auto", "select-<key>"…
@@ -2599,9 +2600,14 @@ export class Workspace {
         return;
       }
       if (action === "finisher-unlink") {
-        const r = this.edit();
-        r.match = removeFinisherName(r.match, b.dataset.name);
-        this.message = `Removed ${b.dataset.name}. Save to apply.`;
+        // Finishers match by name: removing a chip also drops a hidden itemUuid from an older drop.
+        const current = this.recipe(), match = String(current?.match ?? ""), next = removeFinisherName(match, b.dataset.name);
+        if (next !== addFinisherName(match, "") || current?.itemUuid) {
+          const r = this.edit();
+          r.match = next;
+          r.itemUuid = "";
+          this.message = `Removed ${b.dataset.name}. Save to apply.`;
+        }
       }
       if (action === "unbind") {
         this.edit().itemUuid = "";

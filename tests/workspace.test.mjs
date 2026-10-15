@@ -698,7 +698,7 @@ test("a finisher's Applies to takes dropped items, typed names and chip removal,
   const drop = (uuid) => f.w.onDrop({ target: { closest: (sel) => (sel === '.an-binding' ? {} : null) }, preventDefault() {}, dataTransfer: { getData: () => JSON.stringify({ type: 'Item', uuid }) } });
   await drop('Item.axe');
   assert.equal(r.match, 'Shove, Greataxe');
-  assert.equal(r.itemUuid, undefined, 'a finisher drop never binds a single item');
+  assert.ok(!r.itemUuid, 'a finisher drop never binds a single item');
   let edits = 0;
   f.w.edit = () => { edits++; return r; };
   await drop('Item.shove');
@@ -710,4 +710,25 @@ test("a finisher's Applies to takes dropped items, typed names and chip removal,
   assert.equal(input.value, '');
   await f.click({ action: 'finisher-unlink', name: 'greataxe' });
   assert.equal(r.match, 'Shove, Fireball');
+});
+
+test("removing a finisher chip also drops a hidden item binding; an absent name changes nothing", async () => {
+  const { matchFinishers } = await import("../scripts/finisher-model.mjs");
+  const f = workspace();
+  const r = { id: 'fin', name: 'Fin', trigger: 'manual', enabled: true, match: 'Longsword', itemUuid: 'Actor.a.Item.sword', finisher: { on: 'kill' }, stages: [] };
+  let edits = 0;
+  f.w.edit = () => { edits++; return r; };
+  f.w.recipe = () => r;
+  await f.click({ action: 'finisher-unlink', name: 'Longsword' });
+  assert.equal(r.match, '');
+  assert.equal(r.itemUuid, '');
+  assert.deepEqual(matchFinishers([r], { itemName: 'Longsword', itemUuid: 'Actor.a.Item.sword' }, 'kill'), []);
+  edits = 0;
+  await f.click({ action: 'finisher-unlink', name: 'Shove' });
+  assert.equal(edits, 0, 'an absent name with no binding leaves the recipe undirtied');
+  r.match = 'Shove'; r.itemUuid = 'Actor.a.Item.sword';
+  f.w.host = { resolveItem: async (uuid) => ({ uuid, name: 'Greataxe' }) };
+  await f.w.onDrop({ target: { closest: (sel) => (sel === '.an-binding' ? {} : null) }, preventDefault() {}, dataTransfer: { getData: () => JSON.stringify({ type: 'Item', uuid: 'Item.axe' }) } });
+  assert.equal(r.match, 'Shove, Greataxe');
+  assert.equal(r.itemUuid, '', 'any Applies-to edit drops the legacy binding');
 });
