@@ -183,6 +183,40 @@ test('validation repairs path keyframes and keeps the finisher frame only on pat
   assert.equal(v(pathStage()).motionEnd, 'hold', 'a path may hold where it lands');
 });
 
+const straight = (extra = {}) => v({ kind: 'motion', motion: 'path', subject: 'targets', duration: 1000, motionEnd: 'hold', ...extra });
+test('a path eases its whole motion with pathEase, not keyframe by keyframe', () => {
+  const two = straight({ keyframes: [{ at: 0 }, { at: 1, x: 4 }], pathEase: 'easeInQuad' });
+  assert.ok(Math.abs(motionPose(two, 0.5, { x: 1, y: 0 }, 100).x - 100) < 1e-6, 'ease-in: a quarter of the way at half time');
+  assert.ok(Math.abs(motionPose(straight({ keyframes: [{ at: 0 }, { at: 1, x: 4 }] }), 0.5, { x: 1, y: 0 }, 100).x - 200) < 1e-6, 'linear by default');
+  // Linear keyframes and one whole-path ease: no stop at the middle keyframe.
+  const three = straight({ keyframes: [{ at: 0 }, { at: 0.5, x: 2 }, { at: 1, x: 4 }], pathEase: 'easeOutCubic' });
+  const mid = 1 - Math.cbrt(0.5), w = 0.005;
+  assert.ok(Math.abs(motionPose(three, mid, { x: 1, y: 0 }, 100).x - 200) < 1e-6, 'on the middle keyframe');
+  const speed = (motionPose(three, mid + w, { x: 1, y: 0 }, 100).x - motionPose(three, mid - w, { x: 1, y: 0 }, 100).x) / (2 * w);
+  assert.ok(speed > 100, `still moving through the middle keyframe: ${speed} px per stage`);
+});
+
+test('an overshooting pathEase never carries the path past its end', () => {
+  const s = straight({ keyframes: [{ at: 0 }, { at: 1, x: 2 }], pathEase: 'easeOutBack' });
+  for (let n = 0; n <= 100; n++) assert.ok(motionPose(s, n / 100, { x: 1, y: 0 }, 100).x <= 200 + 1e-9, `at ${n}%`);
+  assert.ok(Math.abs(motionPose(s, 1, { x: 1, y: 0 }, 100).x - 200) < 1e-9);
+});
+
+test('a returning path eases its first 85% with pathEase and still settles back', () => {
+  const s = straight({ motionEnd: undefined, keyframes: [{ at: 0 }, { at: 1, x: 4 }], pathEase: 'easeInQuad' });
+  assert.ok(Math.abs(motionPose(s, 0.425, { x: 1, y: 0 }, 100).x - 100) < 1e-6, 'a quarter of the way at half of 85%');
+  assert.ok(Math.abs(motionPose(s, 0.85, { x: 1, y: 0 }, 100).x - 400) < 1e-6);
+  assert.deepEqual(motionPose(s, 1, { x: 1, y: 0 }, 100), { x: 0, y: 0, rotation: 0, scale: 1 });
+});
+
+test('pathEase is kept only on path stages and repaired to linear', () => {
+  assert.equal(v(pathStage({ pathEase: 'easeOutCubic' })).pathEase, 'easeOutCubic');
+  assert.equal(v(pathStage()).pathEase, 'linear', 'missing');
+  assert.equal(v(pathStage({ pathEase: 'bogus' })).pathEase, 'linear', 'invalid');
+  assert.equal(v({ kind: 'motion', motion: 'rush', pathEase: 'easeOutCubic' }).pathEase, undefined);
+  assert.equal(v({ kind: 'motion', motion: 'lunge', pathEase: 'easeInQuad' }).pathEase, undefined);
+});
+
 test('a path faces away from the other token, like a recoil', () => {
   const token = { center: { x: 100, y: 0 } }, other = { center: { x: 0, y: 0 } };
   const dir = motionDirection(token, other, token, 'path', 100);

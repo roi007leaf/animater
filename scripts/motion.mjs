@@ -2,13 +2,17 @@ import { samplePath, stretchScale, DEFAULT_KEYFRAMES } from "./keyframe-path.mjs
 import { MOTIONS } from "./model.mjs";
 import { shakeCycles, settledProgress } from "./motion-pacing.mjs";
 import { PATH_MOTIONS, HOLDING_MOTIONS, motionPhases, pathDistance } from "./motion-path.mjs";
+import { easeValue } from "./stage-options.mjs";
 // A keyframed path fills the whole motion when it holds; otherwise its last 15% eases back to
 // rest like every other gesture. A finisher's frame aims and shrinks it on every client alike.
 const PATH_RETURN = 0.15;
 function pathPose(stage, p, direction, grid, holds) {
   const keyframes = stage.keyframes ?? DEFAULT_KEYFRAMES;
   const settle = holds || p <= 1 - PATH_RETURN ? 1 : 1 - settledProgress((p - (1 - PATH_RETURN)) / PATH_RETURN);
-  const local = samplePath(keyframes, holds ? p : Math.min(1, p / (1 - PATH_RETURN)));
+  // One ease over the whole path (keyframes are usually linear), so it never stops at a keyframe.
+  // An overshooting ease may carry it past either end: clamp to the path.
+  const q = easeValue(holds ? p : Math.min(1, p / (1 - PATH_RETURN)), stage.pathEase ?? "linear");
+  const local = samplePath(keyframes, Math.min(1, Math.max(0, q)));
   const frame = stage.motionFrame, cos = frame ? frame.cos : direction.x, sin = frame ? frame.sin : direction.y, k = frame ? frame.k : 1;
   const pose = {
     x: (local.x * cos - local.y * sin) * k * grid * settle,

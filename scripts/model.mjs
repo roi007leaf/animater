@@ -1,6 +1,6 @@
 import { normalizeKeyframes } from "./keyframe-path.mjs";
 import { normalizeFragments } from "./fragments.mjs";
-import { normalizeOptions, validateSoundFile } from "./stage-options.mjs";
+import { normalizeOptions, validateSoundFile, EASES } from "./stage-options.mjs";
 import { fallbackColorParity } from "./color-parity.mjs";
 import { OPTIONAL_FX_KINDS, normalizeFxStage } from './optional-fx.mjs';
 import { visualReference, safeMediaFile, mediaType } from './media-library-model.mjs';
@@ -268,6 +268,8 @@ export function validateRecipe(input) {
                 // Keyframed path: the real token's authored movement; finishers add an aim frame.
                 // A framed finisher end is a rotated authored end, so it may reach 12*sqrt(2); clamping at 12 would move it off the landing.
                 ...(s.motion === "fragments" ? normalizeFragments(s) : {}),
+                // One ease for the whole path's progress; its keyframes are linear by default.
+                ...(s.motion === "path" ? { pathEase: Object.hasOwn(EASES, s.pathEase) ? s.pathEase : "linear" } : {}),
                 ...(s.motion === "path" ? { keyframes: normalizeKeyframes(s.keyframes, { limit: s.motionFrame && ["cos", "sin", "k"].every((key) => Number.isFinite(Number(s.motionFrame[key]))) ? 17 : 12 }) } : {}),
                 ...(s.motion === "path" && s.motionFrame && ["cos", "sin", "k"].every((key) => Number.isFinite(Number(s.motionFrame[key])))
                   ? { motionFrame: { cos: number(s.motionFrame.cos, -1, 1, 1), sin: number(s.motionFrame.sin, -1, 1, 0), k: number(s.motionFrame.k, 0, 1, 1) } } : {}),
