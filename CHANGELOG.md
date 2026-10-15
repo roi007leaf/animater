@@ -1,9 +1,13 @@
 # Changelog
 
-## Unreleased
+## 1.1.0 (2026-10-15)
 
 - **Daggerheart** (system 2.10.12): actions, attack and spellcast rolls (with a hit, miss or critical per target), damage and kills animate automatically. Damage written onto an attack card plays once; private rolls stay quiet; a message whose item cannot be found shows a Skipped row in Activity.
 - **Daggerheart library:** domain cards (all ten domains, filter chips, levels 1-10), weapons (by family and range, with melee and ranged fallbacks for homebrew and adversary attacks) and conditions (Vulnerable, Hidden, Restrained as lasting layers; Death move as a moment; Defeated, Unconscious and Dead follow the Defeated look, as one lasting layer per creature). Built by `tools/build-daggerheart.mjs` from the installed system.
+- **Every domain card has its own animation:** all 210 cards are designed from what their text does: bolts, wards, summons, teleports, illusions, heals, curses and more. They stay in each domain's colours, with exceptions where a card calls for them (Cinder Grasp burns, Earthquake is earth). Cards with several separate effects play one per action, so each spell in a Codex Book (Fireball, Mystic Tether, Telepathy...) has its own look. Everything plays in JB2A Free and Patreon.
+- **Daggerheart library pages** are named Domain cards, Weapons and Conditions; the domain chips replace the duplicate Domain dropdown.
+- **Activity:** lasting conditions (Daggerheart Vulnerable, Hidden, Restrained and the defeated set) no longer add a misleading Skipped row; their layer is listed as Persistent.
+- **Recipe preview:** the "Play every stage together" hint sits under the composition label instead of over the token names.
 - **Hope/Fear accent** (world setting, on by default): a duality roll with Hope adds a short gold glint on the roller, one with Fear a dark purple wisp.
 - **Finishers in Daggerheart:** kills land when an adversary marks its last hit point (a companion its last stress); adversaries and creatures no player owns count as NPCs. "By damage type" picks by weapon family for physical damage and by domain for magical damage. A use or critical finisher plays only on the targets that roll struck.
 - **Kills in every system** now go through one per-system HP helper; PF2e, SF2e and D&D 5e behave as before.
