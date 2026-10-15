@@ -19,7 +19,9 @@ export async function runTour({ root, steps, snapshot, restore, cleanup = () => 
   const done = new Promise((r) => { finish = r; });
   const end = () => { if (ended) return; ended = true; run++; finish(); };
   const onPointer = (e) => { if (e.isTrusted && !caption.contains(e.target)) end(); };
-  const onKey = (e) => { if (e.key === "Escape") end(); };
+  // Foundry's KeyboardManager listens on window in the bubble phase, and its "dismiss" binding
+  // closes the window. This capture listener on window runs before it, so Esc only ends the tour.
+  const onKey = (e) => { if (e.key !== "Escape") return; e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation?.(); end(); };
   window.addEventListener("pointerdown", onPointer, { capture: true });
   window.addEventListener("keydown", onKey, { capture: true });
 
@@ -40,14 +42,17 @@ export async function runTour({ root, steps, snapshot, restore, cleanup = () => 
       await moveTo(center(el)); await press(); el.click(); await pause(500);
     };
     // `receiver` gets the moves and the release: window (Flash), or the dragged element itself
-    // when the editor listens on it (the studio's keyframe dots).
-    const drag = async (target, to, ms = 1600, { receiver = window } = {}) => {
+    // when the editor listens on it (the studio's keyframe dots). `cancel` is the event an
+    // interrupted drag ends with: "pointercancel" tells the editor to commit nothing, because the
+    // editor has already been put back by then.
+    const drag = async (target, to, ms = 1600, { receiver = window, cancel = "pointerup" } = {}) => {
       if (!target) throw new Interrupted();
       const from = center(target);
       await moveTo(from);
       setDown(true);
       target.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, clientX: from.x, clientY: from.y, button: 0, pointerId: 1 }));
       const steps = 30;
+      let finished = false;
       try {
         for (let i = 1; i <= steps; i++) {
           check();
@@ -55,8 +60,9 @@ export async function runTour({ root, steps, snapshot, restore, cleanup = () => 
           place(p, ms / steps); await wait(ms / steps);
           receiver.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: p.x, clientY: p.y, button: 0, pointerId: 1 }));
         }
+        finished = true;
       } finally {
-        receiver.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, clientX: pos.x, clientY: pos.y, button: 0, pointerId: 1 }));
+        receiver.dispatchEvent(new PointerEvent(finished ? "pointerup" : cancel, { bubbles: true, clientX: pos.x, clientY: pos.y, button: 0, pointerId: 1 }));
         setDown(false);
       }
       await pause(500);

@@ -33,14 +33,18 @@ export function installFakeDOM() {
   };
   globalThis.document = { createElement: element, body };
   globalThis.window = {
-    addEventListener: (type, fn) => listeners.push({ type, fn }),
+    addEventListener: (type, fn, options) => listeners.push({ type, fn, options }),
     removeEventListener: (type, fn) => { const i = listeners.findIndex((l) => l.type === type && l.fn === fn); if (i >= 0) listeners.splice(i, 1); },
     dispatchEvent: (event) => { windowEvents.push(event.type); return true; },
   };
   globalThis.innerWidth = 1200;
   globalThis.innerHeight = 800;
   globalThis.PointerEvent = class { constructor(type, init = {}) { this.type = type; Object.assign(this, init); } };
-  const fire = (type, event) => { for (const l of listeners.filter((x) => x.type === type)) l.fn(event); };
+  // A real event always has these; a test can pass its own to watch them.
+  const fire = (type, event) => {
+    for (const m of ["preventDefault", "stopPropagation", "stopImmediatePropagation"]) event[m] ??= () => {};
+    for (const l of listeners.filter((x) => x.type === type)) l.fn(event);
+  };
   const find = (cls) => body.children.find((c) => c.className === cls) ?? null;
   return {
     body, listeners, windowEvents, fire,

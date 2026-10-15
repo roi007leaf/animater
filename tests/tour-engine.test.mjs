@@ -89,6 +89,26 @@ test("Esc or a real click outside the caption ends it; other keys and synthetic 
   } finally { u.dom.restore(); }
 });
 
+// Foundry's KeyboardManager listens for keydown on window in the bubble phase; its core
+// "dismiss" binding would close the Animater window (and the restored drafts with it). The tour's
+// listener is a window capture listener, so it runs first, and it swallows the Esc.
+test("Esc is swallowed: prevented and stopped in the window capture phase before Foundry sees it", async () => {
+  const t = start([{ say: "One", show: async () => {} }]);
+  try {
+    await settle();
+    const key = t.dom.listeners.find((l) => l.type === "keydown");
+    assert.equal(key.options?.capture, true, "registered for the capture phase");
+    const event = (k) => ({ key: k, calls: [], preventDefault() { this.calls.push("prevent"); }, stopPropagation() { this.calls.push("stop"); }, stopImmediatePropagation() { this.calls.push("immediate"); } });
+    const other = event("a");
+    t.dom.fire("keydown", other);
+    assert.deepEqual(other.calls, [], "other keys reach the page untouched");
+    const esc = event("Escape");
+    t.dom.fire("keydown", esc); await t.done;
+    assert.deepEqual(esc.calls.sort(), ["immediate", "prevent", "stop"]);
+    assert.equal(t.cleaned.length, 1);
+  } finally { t.dom.restore(); }
+});
+
 test("the last step's Next says Finish and ends the tour", async () => {
   const t = start([{ say: "One", show: async () => {} }, { say: "Two", show: async () => {} }]);
   try {
@@ -146,6 +166,19 @@ test("an interrupted drag still releases the pointer", async () => {
     assert.deepEqual(events.at(-1), ["receiver", "pointerup"]);
     assert.equal(cursor.classList.contains("is-down"), false);
     assert.deepEqual(t.dom.windowEvents, [], "a receiver keeps the moves off window");
+  } finally { t.dom.restore(); }
+});
+
+test("an interrupted drag can be cancelled instead of released, so the editor commits nothing", async () => {
+  const events = [];
+  const target = { getBoundingClientRect: () => ({ left: 0, top: 0, width: 10, height: 10 }), dispatchEvent: (e) => { events.push(e.type); return true; } };
+  const t = start([{ say: "Drag", show: async (h) => { await h.drag(target, { x: 300, y: 300 }, 3000, { receiver: target, cancel: "pointercancel" }); } }]);
+  try {
+    await settle(1500);
+    t.button("stop").click(); await t.done; await settle(150);
+    assert.equal(events[0], "pointerdown");
+    assert.equal(events.at(-1), "pointercancel");
+    assert.ok(!events.includes("pointerup"), "no release reaches the editor");
   } finally { t.dom.restore(); }
 });
 
