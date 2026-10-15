@@ -8,6 +8,7 @@ const BEHAVIOR_HINTS = {
   rise: "Pieces float away upward.",
   bounce: "Pieces fall, bounce once and settle.",
   drip: "Pieces stretch and slide down.",
+  crumble: "Pieces fall from the top down and pile up at its feet.",
 };
 // The piece count names what it counts.
 const PIECES_LABEL = { diced: "Per side", rings: "Rings" };

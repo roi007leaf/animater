@@ -12,7 +12,7 @@ export const FRAGMENT_COUNTS = {
   halves: [2, 2, 2], topBottom: [2, 2, 2], shards: [4, 10, 7], dust: [16, 64, 48],
   cross: [4, 4, 4], claw: [4, 4, 4], diced: [2, 6, 4], starburst: [6, 16, 10], rings: [2, 4, 3], pixelate: [16, 64, 36], ribbons: [6, 16, 10],
 };
-export const FRAGMENT_BEHAVIORS = { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down" };
+export const FRAGMENT_BEHAVIORS = { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap" };
 export const FRAGMENT_TINTS = { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly" };
 // How a tint draws: a PIXI tint on the table (stone adds one shared greyscale filter), a CSS filter
 // in the studio, and an alpha factor for both.
@@ -287,6 +287,20 @@ function behaviorFlight(s, p, index, cutAngle, turn, size, c, out, rand) {
       { at: 0.68, x: ox * 0.9, y: 0.25, rotation: r * 0.85, ease: "easeOutQuad" },
       { at: 0.84, x: ox, y: 0.4, rotation: r, sharp: true, ease: "easeInQuad" },
       { at: 1, x: ox, y: 0.4, rotation: r, ease: "easeOutQuad" }]) };
+  }
+  if (s.behavior === "crumble") {
+    // Straight down, top first (by the piece's height on screen), landing in a low heap at the
+    // token's feet: 0.45-0.55 of the art's height below its centre, spread a little wider than
+    // the token, with a small sideways jitter and a little roll (a piece already that low stays put,
+    // a turned corner below the heap only settles onto it). Fades only late in the stage's window.
+    const h = size.h || 1, w = size.w || 1, height = Math.min(1, Math.max(0, home.y / h + 0.5));
+    const start = 0.45 * height, end = start + 0.4, jitter = (rand() * 2 - 1) * 0.06 * w;
+    const dx = home.x * 0.15 + jitter, dy = Math.max(h * (0.45 + rand() * 0.1), Math.min(home.y, h * 0.55)) - home.y, roll = s.spin * 0.25 * (rand() * 2 - 1);
+    const window = Math.max(0, 1 - s.fade / Math.max(1, s.duration ?? 1400));
+    return { start, end, fade: [window + (1 - window) * 0.6, 1], keyframes: normalizeKeyframes([{ at: 0 }, { at: start, sharp: true },
+      { at: start + 0.2, x: dx * 0.3 - jitter * 0.5, y: dy * 0.25, rotation: roll * 0.3, sharp: true, ease: "easeInQuad" },
+      { at: end, x: dx, y: dy, rotation: roll, sharp: true, ease: "easeInQuad" },
+      { at: 1, x: dx, y: dy, rotation: roll, ease: "linear" }], AIMED) };
   }
   // Drip: each piece starts within the first 30%, stretches to 2.2x its height and slides down.
   const start = rand() * 0.3;

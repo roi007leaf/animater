@@ -6,7 +6,7 @@ import { installedAssets } from "../scripts/model.mjs";
 import { finisherTravelPath } from "../scripts/finisher-model.mjs";
 import { assetDatabases } from "../tools/asset-databases.mjs";
 
-const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall", "slice-in-half", "bisect", "shatter-shards", "disintegrate", "sky-launch", "ragdoll-tumble", "vortex-spiral", "pancake", "diced", "claw-shred", "soul-drain", "frozen-shatter", "ember-ascent", "pixel-delete"];
+const IDS = ["launch", "cleave", "skewer", "struck-down", "ash", "shatter", "jolt", "blast", "wall-slam", "unmade", "melt", "ascend", "shaken-apart", "soul-departs", "fall", "slice-in-half", "bisect", "shatter-shards", "disintegrate", "sky-launch", "ragdoll-tumble", "vortex-spiral", "pancake", "diced", "claw-shred", "soul-drain", "frozen-shatter", "ember-ascent", "pixel-delete", "turn-to-dust"];
 
 test("every preset is a valid kill finisher the GM can save as their own", () => {
   assert.deepEqual(Object.keys(FINISHER_PRESETS), IDS);
@@ -139,4 +139,19 @@ test("the fragments v2 presets: one hit and one held fragments stage each, as de
   }
   const diced = prepareFragments(presetFinisher("diced", "d").stages.find((s) => s.motion === "fragments"));
   assert.deepEqual([diced.spin, diced.fall], [200, 0.6]);
+});
+
+test("Turn to dust: petrified grey, crumbles top-down into a heap of dust, then a last puff", () => {
+  const r = presetFinisher("turn-to-dust", "t");
+  assert.equal(FINISHER_PRESETS["turn-to-dust"].name, "Turn to dust");
+  assert.deepEqual([r.trigger, r.finisher.ending, r.finisher.knockback], ["manual", "vanish", 0]);
+  assert.deepEqual(r.stages.map((s) => s.stageId), ["petrify", "crumble", "puff"]);
+  const [petrify, cut, puff] = r.stages;
+  assert.equal(petrify.kind, "impact");
+  const n = prepareFragments(cut);
+  assert.deepEqual([n.pattern, n.pieces, n.behavior, n.tint, n.spread, n.spin, n.fade], ["dust", 56, "crumble", "stone", 0.3, 40, 900]);
+  assert.deepEqual([cut.motionEnd, cut.subject, cut.delay, cut.duration], ["hold", "targets", 600, 2200]);
+  assert.deepEqual([puff.kind, puff.assets, puff.delay], ["impact", ["jb2a.smoke.puff.centered.grey"], 1900]);
+  assert.equal(Object.values(FINISHER_PRESET_GROUPS).flat().filter((id) => id === "turn-to-dust").length, 1);
+  assert.ok(FINISHER_PRESET_GROUPS.Pieces.includes("turn-to-dust"), "in Pieces");
 });

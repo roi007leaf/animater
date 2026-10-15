@@ -33,7 +33,7 @@ test("the new patterns are registered with their labels and piece ranges", () =>
     { cross: "Cross cut", claw: "Claw marks", diced: "Diced", starburst: "Starburst", rings: "Rings", pixelate: "Pixelate", ribbons: "Ribbons" });
   assert.deepEqual(Object.fromEntries(NEW.map((k) => [k, FRAGMENT_COUNTS[k]])),
     { cross: [4, 4, 4], claw: [4, 4, 4], diced: [2, 6, 4], starburst: [6, 16, 10], rings: [2, 4, 3], pixelate: [16, 64, 36], ribbons: [6, 16, 10] });
-  assert.deepEqual(FRAGMENT_BEHAVIORS, { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down" });
+  assert.deepEqual(FRAGMENT_BEHAVIORS, { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap" });
   assert.deepEqual(FRAGMENT_TINTS, { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly" });
 });
 
@@ -197,7 +197,7 @@ test("halves, top/bottom, shards and dust with no behaviour pose exactly as befo
 });
 
 test("flights with a behaviour are deterministic", () => {
-  for (const behavior of ["implode", "absorb", "rise", "bounce", "drip"]) {
+  for (const behavior of ["implode", "absorb", "rise", "bounce", "drip", "crumble"]) {
     const s = stage({ pattern: "shards", behavior, towards: { x: -2, y: 1 } }), [p] = fragmentPieces(s, 0.3);
     assert.deepEqual(fragmentFlight(s, p, 0, 0.3, 0.2), fragmentFlight(s, p, 0, 0.3, 0.2), behavior);
   }
@@ -460,4 +460,44 @@ test("a stone filter that cannot be made leaves the pieces unfiltered and is not
   nested.r.start(nested.token, stone, 0);
   assert.equal(nested.made.filters.length, 1, "PIXI.filters.ColorMatrixFilter is the fallback");
   assert.ok(nested.sprites().every((s) => s.filters?.[0] === nested.made.filters[0]));
+});
+
+test("crumble: every piece of every pattern ends in a low heap at the token's feet, a little wider than the token", () => {
+  for (const pattern of ALL) for (const turn of [0, 0.8]) for (const size of [{ w: 1, h: 1 }, { w: 2, h: 2 }]) {
+    const s = { ...stage({ pattern, behavior: "crumble", spin: 40, fade: 900 }), duration: 2200 };
+    for (const { p, f, end } of flights(s, 0.4, turn, size)) {
+      const c = onScreen(p, turn, size), x = c.x + end.x, y = c.y + end.y;
+      for (const v of [x, y, end.rotation, end.scale, f.start, f.end]) assert.ok(Number.isFinite(v), `${pattern}: ${v}`);
+      assert.ok(y >= 0.45 * size.h - 1e-9 && y <= 0.55 * size.h + 1e-9, `${pattern} turn ${turn}: lands at ${y / size.h} of the height below centre`);
+      assert.ok(Math.abs(x) <= (turn ? 0.95 : 0.75) * size.w, `${pattern}: heap x ${x}`);
+      assert.ok(Math.abs(end.rotation) <= s.spin * 0.5 + 1e-9, `${pattern}: rotates a little`);
+      assert.equal(end.scale, 1);
+      assert.equal(end.alpha, 0);
+    }
+  }
+});
+
+test("crumble: higher pieces start falling first, pieces fall straight down with a small jitter, and fade only late", () => {
+  const s = { ...stage({ pattern: "dust", pieces: 49, behavior: "crumble", spin: 40, fade: 900 }), duration: 2200 }, all = flights(s, 0);
+  const top = all.filter(({ p }) => p.centroid.y < -0.3), bottom = all.filter(({ p }) => p.centroid.y > 0.3);
+  assert.ok(top.length && bottom.length);
+  assert.ok(Math.max(...top.map(({ f }) => f.start)) < Math.min(...bottom.map(({ f }) => f.start)), "the top goes first");
+  for (const { p, f, at } of all) {
+    assert.ok(f.start >= 0 && f.end <= 1 && f.end > f.start);
+    assert.deepEqual([at(f.start).x, at(f.start).y], [0, 0], "still until its turn");
+    assert.ok(Math.abs(at(1).x) <= Math.abs(p.centroid.x) * 0.2 + 0.08 + 1e-9, "mostly straight down");
+    // The stage's fade window is the last 900 / 2200; the pieces stay solid through most of it.
+    const window = 1 - 900 / 2200;
+    assert.equal(at(window + (1 - window) * 0.5).alpha, 1, "still solid halfway through the fade window");
+    assert.ok(at(0.99).alpha < 1);
+  }
+  const xs = all.map(({ at }) => at(1).x);
+  assert.ok(new Set(xs.map((x) => x.toFixed(4))).size > 10, "jittered, not lockstep");
+});
+
+test("crumble is deterministic per seed and differs between seeds", () => {
+  const ends = (seed) => flights(stage({ pattern: "shards", behavior: "crumble", seed }), 0.3).map(({ end }) => [end.x, end.y, end.rotation]);
+  assert.deepEqual(ends(3), ends(3));
+  assert.notDeepEqual(ends(3), ends(4));
+  assert.equal(normalizeFragments({ behavior: "crumble" }).behavior, "crumble");
 });

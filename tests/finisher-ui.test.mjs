@@ -430,3 +430,15 @@ test("building the page binds the hover hook only where a real document exists",
   globalThis.document = { createElement() {} };
   try { assert.doesNotThrow(() => pageOf([])); } finally { globalThis.document = saved; }
 });
+
+test("a crumble finisher's glyph hints a fall to a heap, static and live", () => {
+  const r = withStages(fin("a", "X"), [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", pattern: "dust", pieces: 56, behavior: "crumble" }]);
+  for (const live of [false, true]) {
+    const svg = finisherGlyphSVG(r, { live });
+    assert.match(svg, /data-behavior="crumble"/);
+    assert.ok((svg.match(/class="an-glyph-hint"/g) ?? []).length >= 2, "a down arrow and a heap");
+    assert.ok((svg.match(/<polygon class="an-glyph-piece"/g) ?? []).length >= 8);
+    assert.doesNotMatch(svg, /NaN|undefined|Infinity/);
+  }
+  assert.match(presetGlyph("turn-to-dust"), /data-behavior="crumble"/);
+});

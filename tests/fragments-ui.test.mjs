@@ -89,3 +89,11 @@ test("the mini preview shrinks and stretches pieces only when a behaviour does",
   assert.doesNotMatch(fragmentsPreviewSVG(s, 0.6), /scale\(/);
   assert.equal((fragmentsPreviewSVG({ ...s, pattern: "rings", pieces: 2 }, 0.5).match(/data-fragment=/g) ?? []).length, 16);
 });
+
+test("crumble is offered in the Behaviour select, with its hint, and keeps the stage's Fade field", () => {
+  const html = fragmentsControlsHTML({ ...s, pattern: "dust", behavior: "crumble" }, 0);
+  assert.match(html, /<option value="crumble" selected>Crumble to a heap<\/option>/);
+  assert.ok(html.includes(`<p class="an-hint" data-behavior-hint>Pieces fall from the top down and pile up at its feet.</p>`));
+  assert.match(html, /data-field="fade"/);
+  assert.doesNotMatch(fragmentsPreviewSVG({ ...s, behavior: "crumble" }, 0.7), /NaN/);
+});

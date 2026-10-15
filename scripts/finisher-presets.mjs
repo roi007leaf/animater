@@ -92,6 +92,10 @@ export const FINISHER_PRESETS = {
   "pixel-delete": preset("Pixel delete", "Erased cell by cell, like a glitch.", { knockback: 0, ending: "vanish" },
     [fx("glitch", look("force").hit, { duration: 900 }),
      move("cut", "fragments", { motionEnd: "hold", delay: 200, duration: 1600, pattern: "pixelate", pieces: 49, spread: 0.5, drift: 0.6, fall: 0.3, fade: 400 })]),
+  "turn-to-dust": preset("Turn to dust", "Turned to grey stone, then crumbles from the top into a heap of dust.", { knockback: 0, ending: "vanish" },
+    [fx("petrify", ["jb2a.impact.boulder.01", "jb2a.impact.005.dark_white"], { duration: 1000 }),
+     move("crumble", "fragments", { motionEnd: "hold", delay: 600, duration: 2200, pattern: "dust", pieces: 56, behavior: "crumble", tint: "stone", spread: 0.3, spin: 40, fade: 900 }),
+     fx("puff", ["jb2a.smoke.puff.centered.grey"], { delay: 1900, duration: 1200 })]),
 };
 
 export function presetFinisher(id, newId) {

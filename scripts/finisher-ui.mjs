@@ -98,6 +98,8 @@ const BEHAVIOR_MARKS = {
   rise: () => hintArrow({ x: SIDE, y: GC.y + 8 }, { x: SIDE, y: GC.y - 14 }),
   bounce: down,
   drip: down,
+  // A down arrow onto a little heap.
+  crumble: () => `${hintArrow({ x: SIDE, y: GC.y - 12 }, { x: SIDE, y: GC.y + 8 })}<path ${HINT} d="M${SIDE - 7} ${GC.y + 15} Q${SIDE} ${GC.y + 9} ${SIDE + 7} ${GC.y + 15}"/>`,
 };
 const ABSORB_X = 8;
 
@@ -165,7 +167,7 @@ export function finisherGlyphSVG(recipe, { size = 80, live = false, key = "" } =
 export const FINISHER_PRESET_GROUPS = {
   Flung: ["launch", "wall-slam", "sky-launch", "ragdoll-tumble", "jolt", "blast", "skewer", "struck-down"],
   "In place": ["ash", "melt", "ascend", "unmade", "soul-departs", "fall", "shaken-apart", "pancake", "cleave"],
-  Pieces: ["slice-in-half", "bisect", "shatter-shards", "disintegrate", "shatter", "vortex-spiral", "diced", "claw-shred", "pixel-delete", "soul-drain", "frozen-shatter", "ember-ascent"],
+  Pieces: ["slice-in-half", "bisect", "shatter-shards", "disintegrate", "shatter", "vortex-spiral", "diced", "claw-shred", "pixel-delete", "soul-drain", "frozen-shatter", "ember-ascent", "turn-to-dust"],
 };
 const ENDING_PILL = { vanish: "Vanish", body: "Body", stay: "Stay" };
 // Live twins by key: a card's latest recipe (rebuilt on hover, since it can change), a preset's
