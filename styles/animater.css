@@ -2739,6 +2739,7 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .an-kf-dot.is-on{fill:var(--effect,#9e8aff)}
 .an-kf-scrub{fill:#ffd166;opacity:.9;pointer-events:none}
 .an-kf-landing{fill:rgba(255,209,102,.12);stroke:#ffd166;stroke-width:.05;stroke-dasharray:.12 .08}
+.animater .an-kf-inspector .an-hint.is-warn{color:#ffb86b}
 .an-kf-list{display:flex;flex-wrap:wrap;gap:4px}
 .an-finisher-pin{margin-bottom:8px}
 .an-finisher-pin>summary{cursor:pointer;font-weight:600}

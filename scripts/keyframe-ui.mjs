@@ -1,6 +1,6 @@
 // Keyframed path editing: diamonds on the timeline bar, the grid path canvas and the inspector.
 import { EASES } from "./stage-options.mjs";
-import { samplePath, DEFAULT_KEYFRAMES, snapSquares } from "./keyframe-path.mjs";
+import { samplePath, DEFAULT_KEYFRAMES, snapSquares, landsTilted } from "./keyframe-path.mjs";
 
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 export const keyframesOf = (s) => (Array.isArray(s?.keyframes) && s.keyframes.length >= 2 ? s.keyframes : DEFAULT_KEYFRAMES);
@@ -56,7 +56,8 @@ export function keyframeInspectorHTML(s, stageIndex, selected) {
     <div class="an-field-row">${num("rotation", "Rotation°", k.rotation, -1440, 1440, 5, first)}${num("scale", "Size ×", k.scale, 0.05, 5, 0.05, first)}${num("alpha", "Opacity", k.alpha, 0, 1, 0.05, first)}</div>
     <div class="an-field-row"><label>Easing<select ${attrs("ease")}>${Object.entries(EASES).map(([key, label]) => `<option value="${esc(key)}" ${k.ease === key ? "selected" : ""}>${esc(label)}</option>`).join("")}</select></label><label class="an-check"><input type="checkbox" ${attrs("sharp")} ${k.sharp ? "checked" : ""}> Sharp corner</label></div>
     <div class="an-play-actions"><button data-action="kf-add" ${kfs.length >= 12 || last ? "disabled" : ""}>+ Keyframe after</button><button data-action="kf-delete" class="an-quiet" ${first || last ? "disabled" : ""}>Delete keyframe</button><button data-action="kf-flip" class="an-quiet">Flip path</button><button data-action="kf-reset" class="an-quiet">Reset to straight shove</button></div>
-    <p class="an-hint">+x is away from the other token. Easing shapes the speed into each keyframe. In a finisher with End: hold, the token is moved to where the path ends.</p></div>`;
+    <p class="an-hint">+x is away from the other token. Easing shapes the speed into each keyframe. In a finisher with End: hold, the token is moved to where the path ends.</p>${s.motionEnd === "hold" && landsTilted(kfs) ? `
+    <p class="an-hint is-warn" role="note">This path travels: when the token lands it snaps back to upright, full size and visible. End on rotation 0/360/…, size 1, opacity 1 — fade or shrink in place instead.</p>` : ""}</div>`;
 }
 
 // Where the playhead puts the token on the path (squares), for the canvas scrub.

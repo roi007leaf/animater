@@ -185,8 +185,16 @@ test("an in-place path keeps its hold and never moves the document", async () =>
 test("pathAim points away from the other token for either mover", () => {
   assert.deepEqual(pathAim(normalizeFinisher({}), { mover: at("Orc", 100, 0), attacker: at("Hero", 0, 0) }), { x: 1, y: 0 });
   assert.deepEqual(pathAim(normalizeFinisher({ mover: "source" }), { mover: at("Hero", 0, 0), target: at("Orc", 100, 0) }), { x: -1, y: 0 });
-  assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0, { alpha: 0 })])), true);
-  assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0)])), false);
+  assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 0.3, 0, { alpha: 0 })]), false), true);
+  assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0, { alpha: 0 })]), true), false, "a path that moved the token lands visible: it still fades");
+});
+
+test("a travelling path that ends invisible still fades after it lands (the landing snaps it visible)", async () => {
+  const host = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 3, 0, { alpha: 0 })], { ending: "vanish" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  assert.ok(host.log.some((e) => e[0] === "commit" && e[1].x === 400), "it moved");
+  assert.ok(host.log.some((e) => e[0] === "fade"), "the separate fade runs");
+  assert.deepEqual(host.log.at(-1), ["commit", { hidden: true, finisher: "p" }]);
 });
 
 test("a framed path keeps its exact landing after remote validation, even when the pinned end exceeds 12", async () => {

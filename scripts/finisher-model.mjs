@@ -1,7 +1,7 @@
 // Which finishers an item plays, and the link between a catalog entry and a finisher.
 // Applies-to reuses recipe matching: comma-separated names in `match`, or one exact itemUuid.
 import { normalize, FINISHER_ON } from "./model.mjs";
-import { pathSquares } from "./keyframe-path.mjs";
+import { pathSquares, landsTilted } from "./keyframe-path.mjs";
 
 const names = (r) => String(r.match ?? "").split(",").map((n) => n.trim()).filter(Boolean);
 const live = (recipes) => recipes.filter((r) => r?.finisher && r.enabled !== false);
@@ -81,5 +81,5 @@ const ENDING_SHORT = { vanish: "Vanish", body: "Body", stay: "Stay" };
 // What the studio chip says about a finisher: when it plays, where it lands, how it ends.
 export function finisherChipText(recipe) {
   const f = recipe.finisher, path = finisherTravelPath(recipe), squares = path ? pathSquares(path.keyframes) : f.knockback;
-  return `${FINISHER_ON[f.on]} · ${squares ? `lands ${squares} sq` : "in place"} · ${ENDING_SHORT[f.ending]}`;
+  return `${FINISHER_ON[f.on]} · ${squares ? `lands ${squares} sq` : "in place"} · ${ENDING_SHORT[f.ending]}${path && landsTilted(path.keyframes) ? " · ⚠ lands tilted" : ""}`;
 }

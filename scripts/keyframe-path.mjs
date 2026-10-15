@@ -44,6 +44,9 @@ export function samplePath(keyframes, q) {
 export const pathEnd = (keyframes) => ({ x: keyframes.at(-1).x, y: keyframes.at(-1).y });
 // Whole squares the path travels, counted like grid movement (the longer axis).
 export const pathSquares = (keyframes) => { const e = pathEnd(keyframes); return Math.round(Math.max(Math.abs(e.x), Math.abs(e.y))); };
+// A travelling held path lands the real token, which snaps back upright, full size and visible.
+const upright = (k) => (k.rotation ?? 0) % 360 === 0 && (k.scale ?? 1) === 1 && (k.alpha ?? 1) === 1;
+export const landsTilted = (keyframes) => pathSquares(keyframes) >= 1 && !upright(keyframes.at(-1));
 export const rotateBy = (v, dir) => ({ x: v.x * dir.x - v.y * dir.y, y: v.x * dir.y + v.y * dir.x });
 export const unrotateBy = (v, dir) => ({ x: v.x * dir.x + v.y * dir.y, y: -v.x * dir.y + v.y * dir.x });
 

@@ -118,3 +118,12 @@ test("the studio chip says how a finisher plays, where it lands, and how it ends
   assert.equal(finisherChipText({ finisher: normalizeFinisher({ on: "use", ending: "vanish" }), stages: [{ ...path, keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 0, y: 0 }] }] }), "Every successful use · in place · Vanish");
   assert.equal(finisherChipText({ finisher: normalizeFinisher({ knockback: 2, ending: "stay" }), stages: [] }), "Killing blow · lands 2 sq · Stay", "legacy travel uses knockback");
 });
+
+test("the chip warns when a travelling path lands tilted, shrunk or faded (the landing snaps it upright)", () => {
+  const path = { kind: "motion", motion: "path", subject: "targets", motionEnd: "hold", keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 3, y: 0, rotation: 90 }] };
+  assert.equal(finisherChipText({ finisher: normalizeFinisher({ ending: "body" }), stages: [path] }), "Killing blow · lands 3 sq · Body · ⚠ lands tilted");
+  const upright = { ...path, keyframes: [path.keyframes[0], { ...path.keyframes[1], rotation: 720 }] };
+  assert.doesNotMatch(finisherChipText({ finisher: normalizeFinisher({}), stages: [upright] }), /tilted/);
+  const inPlace = { ...path, keyframes: [path.keyframes[0], { at: 1, x: 0.2, y: 0, scale: 0.05, alpha: 0 }] };
+  assert.doesNotMatch(finisherChipText({ finisher: normalizeFinisher({}), stages: [inPlace] }), /tilted/, "shrinking in place is fine");
+});

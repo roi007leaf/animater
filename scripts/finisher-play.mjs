@@ -53,8 +53,9 @@ export function finisherDirection(finisher, { mover, attacker, target }) {
 export function pathAim(finisher, { mover, attacker, target }) {
   return finisher.mover === "source" ? awayFrom(target?.center, mover?.center) : awayFrom(attacker?.center, mover?.center);
 }
-// A held path that already ends invisible needs no separate fade (a new fade would pop it back).
-export const fadedAtEnd = (recipe) => finisherTravelPath(recipe)?.keyframes?.at(-1)?.alpha === 0;
+// An in-place held path that already ends invisible needs no separate fade (a new fade would
+// pop it back). A path that moved the token lands upright and visible, so that one still fades.
+export const fadedAtEnd = (recipe, moves) => !moves && finisherTravelPath(recipe)?.keyframes?.at(-1)?.alpha === 0;
 
 export async function playFinisher({ recipe, mover, attacker = null, target = null, dead = false }, host) {
   const f = recipe.finisher, grid = host.gridSize();
@@ -96,7 +97,7 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
     const ending = dead ? f.ending : "stay";
     if (ending === "stay") return true;
     await host.wait(Math.max(0, motionEnd(plan) - landed));
-    if (ending === "vanish") { if (!fadedAtEnd(composed)) await host.fade(mover); await commit({ hidden: true }); }
+    if (ending === "vanish") { if (!fadedAtEnd(composed, moves)) await host.fade(mover); await commit({ hidden: true }); }
     else await commit({ defeated: true });
     return true;
   } catch (error) {

@@ -45,6 +45,16 @@ test("the inspector edits the selected keyframe and offers add, delete, flip, re
   assert.match(first, /data-action="kf-delete"[^>]*disabled/);
 });
 
+test("the inspector warns when a held path travels and its end is not upright", () => {
+  const warn = /This path travels: when the token lands it snaps back to upright/;
+  const tilted = { ...stage, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: 3, y: 0, rotation: 45 }]) };
+  assert.match(keyframeInspectorHTML(tilted, 0, 1), warn);
+  assert.match(keyframeInspectorHTML({ ...stage, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: 3, y: 0, alpha: 0.5 }]) }, 0, 1), warn, "faded counts");
+  assert.doesNotMatch(keyframeInspectorHTML(stage, 0, 1), warn, "an upright end");
+  assert.doesNotMatch(keyframeInspectorHTML({ ...stage, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: 0.3, y: 0, rotation: 45, scale: 0.05 }]) }, 0, 1), warn, "in place");
+  assert.doesNotMatch(keyframeInspectorHTML({ ...tilted, motionEnd: "return" }, 0, 1), warn, "a returning path never lands");
+});
+
 test("the scrub token follows the path in time with the playhead", () => {
   assert.deepEqual(scrubPoint(stage, 500, 0), { x: 0, y: 0 }, "before the stage starts: at the token");
   const mid = scrubPoint(stage, 500, 900);
