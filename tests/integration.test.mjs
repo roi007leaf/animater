@@ -34,7 +34,7 @@ function assertAttenuatedAudio(calls,profiles,userVolume){
  }
  assert.ok(checked>0,'Audible optional cues were compiled');
 }
-async function boot(system, extraKeys = []) {
+async function boot(system, extraKeys = [], { version } = {}) {
   let renderedApp;
   const hooks = new Map(),
     settings = new Map(),
@@ -65,7 +65,10 @@ async function boot(system, extraKeys = []) {
         DialogV2: { confirm: async () => true },
       },
     },
-    utils: { saveDataToFile: () => {}, randomID: () => "previewtemplate1" },
+    utils: {
+      saveDataToFile: () => {}, randomID: () => "previewtemplate1",
+      hasProperty: (object, path) => path.split(".").reduce((o, k) => (o && typeof o === "object" && k in o ? o[k] : undefined), object) !== undefined,
+    },
   };
   const actor = { id: "a", documentName: "Actor" };
   const source = { id: "t", actor, isOwner: true, controlled: true };
@@ -92,7 +95,7 @@ async function boot(system, extraKeys = []) {
     system: {
       id: system,
       title: system,
-      version: system === "sf2e" ? "1.5.1" : system === "pf2e" ? "8.5.1" : "6.0.5",
+      version: version ?? ({ sf2e: "1.5.1", pf2e: "8.5.1", daggerheart: "2.10.11" }[system] ?? "6.0.5"),
     },
     user: { id: "u", isGM: true, targets: new Set([target]) },
     modules: new Map([
@@ -2131,4 +2134,72 @@ test("kill path, by damage type: a player's item plays only its pick, never the 
   await new Promise((resolve) => setTimeout(resolve, 200));
   assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
   await f.api.stop();
+});
+
+// Daggerheart: an adversary's hit points are marked up to the maximum; the last mark is the kill.
+async function killDaggerheart(f, { type = "adversary", track = "hitPoints", before = 3, after = 4, max = 4, finishers = [killFin("def", "Default drop", "")], defaultFinisher = "def", owners = [] } = {}) {
+  const npc = { id: "npc", type, system: { resources: { [track]: { value: before, max } } }, getActiveTokens: () => [f.target],
+    testUserPermission: (user, level) => owners.includes(user?.id) && level === "OWNER" };
+  for (const id of owners) game.users.set(id, { id, isGM: false });
+  Object.assign(f.target, { name: "Bandit", actor: npc, w: 100, h: 100 });
+  Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
+  f.settings.set("finishers", true);
+  f.settings.set("automatic", true);
+  f.settings.set("defaultFinisher", defaultFinisher);
+  f.settings.set("recipes", { schema: 1, recipes: finishers });
+  const changes = { system: { resources: { [track]: { value: after } } } }, options = {};
+  await f.fire("preUpdateActor", npc, changes, options);
+  npc.system.resources[track].value = after;
+  await f.fire("updateActor", npc, changes, options, "u");
+  await settle();
+  return f.api.activity().filter((e) => e.status === "Finisher");
+}
+
+test("Daggerheart kill: the adversary's last hit point marked plays the default finisher", async () => {
+  const f = await boot("daggerheart");
+  const entries = await killDaggerheart(f);
+  assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
+  assert.match(entries[0].detail, /Default drop: Bandit/);
+  await f.api.stop();
+});
+
+test("Daggerheart kill: an adversary already at max, or one whose marks are cleared, plays nothing", async () => {
+  for (const [before, after] of [[4, 4], [3, 1]]) {
+    const f = await boot("daggerheart");
+    const entries = await killDaggerheart(f, { before, after });
+    assert.equal(entries.length, 0, `${before}→${after}: ${JSON.stringify(f.api.activity())}`);
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    assert.equal(f.target.mesh.rotation, 0, "no collapse either");
+    await f.api.stop();
+  }
+});
+
+test("Daggerheart kill: a companion goes down on its stress track; a player's character is not an NPC", async () => {
+  const companion = await boot("daggerheart");
+  assert.equal((await killDaggerheart(companion, { type: "companion", track: "stress", before: 2, after: 3, max: 3 })).length, 1, JSON.stringify(companion.api.activity()));
+  await companion.api.stop();
+  const pc = await boot("daggerheart");
+  assert.equal((await killDaggerheart(pc, { type: "character", owners: ["u1"] })).length, 0, "a player-owned character plays no kill finisher");
+  game.users.delete("u1");
+  await pc.api.stop();
+});
+
+test("PF2e kill path is unchanged: a heal or an NPC already at 0 plays nothing", async () => {
+  for (const [before, after] of [[0, -2], [3, 5]]) {
+    const f = await boot("pf2e");
+    const npc = { id: "npc", type: "npc", system: { attributes: { hp: { value: before } } }, getActiveTokens: () => [f.target] };
+    Object.assign(f.target, { name: "Orc", actor: npc, w: 100, h: 100 });
+    Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
+    f.settings.set("finishers", true); f.settings.set("automatic", true); f.settings.set("defaultFinisher", "def");
+    f.settings.set("recipes", { schema: 1, recipes: [killFin("def", "Default drop", "")] });
+    const changes = { system: { attributes: { hp: { value: after } } } }, options = {};
+    await f.fire("preUpdateActor", npc, changes, options);
+    npc.system.attributes.hp.value = after;
+    await f.fire("updateActor", npc, changes, options, "u");
+    await settle();
+    assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, `${before}→${after}`);
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    assert.equal(f.target.mesh.rotation, 0, "no collapse");
+    await f.api.stop();
+  }
 });

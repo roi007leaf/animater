@@ -3,6 +3,7 @@ import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mj
 import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
 import { displaceAllowed, landingSpot, wallDistance, withinKnockback } from "./displacement.mjs";
+import { hpPath, hpState, hpChange, isNpcActor, displaceHp } from "./hp-state.mjs";
 import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, pickPlays, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE, critTargets, saveFinisherEvent } from "./finisher-model.mjs";
 import { playFinisher, previewFinisher } from "./finisher-play.mjs";
 import { STRIKE_FLAG, strikeKey, strikeOf, strikePick, picksOnActor } from "./strike-finishers.mjs";
@@ -575,7 +576,7 @@ async function receiveDisplace(data, senderId) {
     size: Math.max(w, h), bounds: canvas.dimensions?.sceneRect ?? null, footprint: { w: w * grid, h: h * grid } })) return;
   const attacker = data.attackerUuid ? await fromUuid(String(data.attackerUuid)) : null;
   const ownsAttacker = attacker?.documentName === "Token" && attacker.parent === doc.parent && attacker.testUserPermission(user, "OWNER");
-  const request = { isOwner: mayDisplace({ ownsToken: doc.testUserPermission(user, "OWNER"), ownsAttacker }), alreadyHidden: doc.hidden, hp: Number(doc.actor?.system?.attributes?.hp?.value),
+  const request = { isOwner: mayDisplace({ ownsToken: doc.testUserPermission(user, "OWNER"), ownsAttacker }), alreadyHidden: doc.hidden, hp: displaceHp(doc.actor, game.system.id),
     hidden: data.hidden === true, defeated: data.defeated === true, ...(data.x !== undefined || data.y !== undefined ? { x: data.x, y: data.y } : {}) };
   if (!displaceAllowed(request)) return;
   await applyDisplace(doc, data);
@@ -1443,12 +1444,13 @@ Hooks.once("ready", () => {
   // Stages whose artwork is not installed (Free vs Patreon) are left out rather than blocking the rest.
   // Token Magic layers play only where Token Magic FX is available.
   const installedStages = (recipe) => ({ ...recipe, stages: recipe.stages.filter((s) => ["motion", "sound"].includes(s.kind) || (s.kind === "tokenfx" ? fxCatalog().tokenReady : resolveAsset(s, runtime.getCatalog()))) });
-  // A creature dropping to 0 HP collapses once (D&D 5e, PF2e and SF2e keep HP in the
-  // same place), finished in the damage's look; its Unconscious or Dying body treatment
-  // takes over afterwards. Energy damage short of that flashes on the token.
-  const hpOf = (actor) => Number(actor?.system?.attributes?.hp?.value);
+  // A creature going down collapses once (dropping to 0 HP in D&D 5e, PF2e and SF2e; marking
+  // its last hit point in Daggerheart, or a companion its last stress), finished in the damage's
+  // look; its Unconscious or Dying body treatment takes over afterwards. Energy damage short of
+  // that flashes on the token. hp-state.mjs reads each system's track.
+  const hpOf = (actor) => hpState(actor, game.system.id);
   Hooks.on("preUpdateActor", (actor, changes, options) => {
-    if (foundry.utils.hasProperty(changes, "system.attributes.hp.value")) options.animaterHpBefore = hpOf(actor);
+    if (foundry.utils.hasProperty(changes, hpPath(actor, game.system.id))) options.animaterHpBefore = hpOf(actor);
   });
   // Finishers play on the real token (finisher-play.mjs): travel lands, the token is moved
   // there, then it vanishes, stays as a body, or stays.
@@ -1467,7 +1469,7 @@ Hooks.once("ready", () => {
   });
   // Resolves playFinisher's answer: true played, false a write failed, null never played.
   const runFinisher = (recipe, { mover, attacker }) => {
-    const dead = Number(mover.actor?.system?.attributes?.hp?.value) <= 0;
+    const dead = hpOf(mover.actor)?.down === true;
     return playFinisher({ recipe, mover, attacker, dead }, finisherHost(attacker)).catch((error) => { runtime.trace("Blocked", error.message); return null; });
   };
   // A critical strike: a player's item plays only its owner's pick, when it plays on crits; an NPC's
@@ -1509,9 +1511,10 @@ Hooks.once("ready", () => {
     }
     return crit;
   };
-  // The killing blow on an NPC: the killing item's kill finisher, else the default finisher.
+  // The killing blow on an NPC (hp-state.mjs: a PF2e/SF2e/D&D npc; a Daggerheart adversary or any
+  // creature no player owns): the killing item's kill finisher, else the default finisher.
   const killFinisherFor = (actor, token) => {
-    if (!game.settings.get(ID, FINISHERS_SETTING) || actor.type !== "npc" || token.document.hidden) return null;
+    if (!game.settings.get(ID, FINISHERS_SETTING) || !isNpcActor(actor, game.system.id, { playerOwned: ownerUsers(actor).length > 0 }) || token.document.hidden) return null;
     const ids = { actorId: actor.id, tokenId: token.id };
     const by = recallAttribution(damageLog, ids) ?? recallDamage(damageLog, ids);
     const attacker = by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null;
@@ -1580,9 +1583,9 @@ Hooks.once("ready", () => {
     if ((await runFinisher(kill.recipe, { mover: token, attacker: kill.attacker })) === null) playDamageMoment(actor, token, true);
   };
   Hooks.on("updateActor", (actor, changes, options, userId) => {
-    const before = options.animaterHpBefore, after = hpOf(actor);
-    if (userId !== game.user.id || !acceptsEvents() || !(before > 0) || !(after < before)) return;
-    const dropped = after <= 0;
+    const change = hpChange(options.animaterHpBefore, hpOf(actor));
+    if (userId !== game.user.id || !acceptsEvents() || !change) return;
+    const dropped = change.dropped;
     if (!dropped && !game.settings.get(ID, DAMAGE_REACTIONS)) return;
     for (const token of actor.getActiveTokens?.() ?? []) {
       if (token.document?.parent?.id !== canvas.scene?.id) continue;
