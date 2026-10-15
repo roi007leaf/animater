@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.0.1 (2026-10-15)
+
+After updating, restart Foundry and hard-reload the browser (Ctrl+Shift+R) so the new version loads.
 
 - **Activity page:** a new **Now playing** list shows the lasting animations on the table right now (who they are on, how long they have run). **Stop ■** ends one of them: a lasting condition or effect animation stays off until the condition is applied again (a GM stops it for everyone; a player only on their own screen). GMs also get **Exclude ⊘** there and on automatic History rows: it leaves a built-in entry out of its catalog, or disables and saves your recipe. **Undo** puts it back.
 - New starter flash screen **Crossed Swords** (Combat start): two blades sweep in and clash, sparks fly, and "TO ARMS!" slams in over the scene name. Find it under + New flash screen.
