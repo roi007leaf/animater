@@ -25,10 +25,12 @@ test("Daggerheart by damage type: physical by weapon family, magical by domain",
   assert.equal(id("physical", { name: "Warhammer" }), "builtin-pulverized");
   assert.equal(id("physical", { name: "Mace" }), "builtin-pulverized");
   assert.equal(id("physical", { name: "Rocket Maul" }), "builtin-pulverized");
+  assert.equal(id("physical", { name: "Round Shield" }), "builtin-pulverized", "a shield bash pulverizes");
   assert.equal(id("physical", { name: "Claws" }), "builtin-carved", "unknown → carved");
   const domain = (d) => ({ system: { domain: d } });
   assert.equal(id("magical", domain("arcana")), "builtin-blown-apart");
   assert.equal(id("magical", domain("midnight")), "builtin-consumed");
+  assert.equal(id("magical", domain("dread")), "builtin-consumed", "Dread (void) consumes");
   assert.equal(id("magical", domain("splendor")), "builtin-smitten");
   assert.equal(id("magical", domain("grace")), "builtin-smitten");
   assert.equal(id("magical", domain("sage")), "builtin-withered");

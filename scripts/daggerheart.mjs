@@ -14,7 +14,7 @@ export const DH_ROLL_TYPES = new Set(["attack", "spellcast"]);
 export const DH_MESSAGE_TYPES = new Set(["dualityRoll", "adversaryRoll"]);
 // Weapon and action ranges (CONFIG.DH.GENERAL.range ids) that strike in melee.
 export const MELEE_RANGES = new Set(["melee", "veryClose"]);
-// The domains of 2.10.11's domain cards (the spec's nine, plus Dread).
+// The domains of 2.10.12's domain cards (the spec's nine, plus Dread).
 export const DH_DOMAINS = Object.freeze(["arcana", "blade", "bone", "codex", "dread", "grace", "midnight", "sage", "splendor", "valor"]);
 // Foundry v14 message modes (and their legacy roll-mode names) that hide a roll from the table.
 const PRIVATE_MODES = new Set(["gm", "blind", "self", "gmroll", "blindroll", "selfroll"]);

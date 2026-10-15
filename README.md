@@ -121,7 +121,7 @@ Hooks: `animater.preDispatch(event, recipe)` runs before automatic playback (ret
 - Actions whose area is placed separately (e.g. Dragon Breath) use their regular animation; template-driven action areas are planned.
 - Token motion is cosmetic; it never moves tokens or changes their documents.
 - D&D 5e catalogs use public 2014 and 2024 SRD content. Passive features are excluded from active ability catalogs.
-- Daggerheart support is verified against system 2.10.11 and has had the least live testing. Its library lists the system's own domain cards, weapons and conditions (names and icons only); animations are designed from the card's domain and kind or the weapon's family and range, not from card text.
+- Daggerheart support is verified against system 2.10.12 and has had the least live testing. Its library lists the system's own domain cards, weapons and conditions (names and icons only); animations are designed from the card's domain and kind or the weapon's family and range, not from card text.
 - No animation, sound or icon media is bundled; everything comes from the JB2A and sound modules you install.
 
 ## Development
