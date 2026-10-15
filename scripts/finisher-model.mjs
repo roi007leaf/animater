@@ -27,6 +27,8 @@ export const critFinishers = (recipes, item = {}) => matchAny(recipes, item, ["c
 
 export function passesSuccess(finisher, outcome) {
   if (outcome === undefined || outcome === null) return true;
+  // Needs is hidden for the critical modes: a value stored before a switch must not gate them.
+  if (["critical", "criticalOrKill"].includes(finisher.on)) return true;
   return finisher.success === "critical" ? outcome === "criticalSuccess" : ["success", "criticalSuccess"].includes(outcome);
 }
 

@@ -51,7 +51,7 @@ test("a kill also plays the item's crit-or-kill finishers, in catalog order, bef
   assert.equal(killFinisher(list, { itemName: "Greataxe" }, "def").id, "either", "the first of the item's kill or crit-or-kill finishers");
   assert.equal(killFinisher(list.filter((r) => r.id !== "either"), { itemName: "Greataxe" }, "def").id, "k", "a critical-only finisher is not a kill finisher");
   assert.equal(killFinisher(list, { itemName: "Dagger" }, "def").id, "def", "the default fallback is unchanged");
-  assert.equal(killFinisher([fin("either", "Greataxe", { on: "criticalOrKill", success: "critical" })], { itemName: "Greataxe" }, "", { crit: false }), null, "Needs: Critical only still holds");
+  assert.equal(killFinisher([fin("either", "Greataxe", { on: "criticalOrKill", success: "critical" })], { itemName: "Greataxe" }, "", { crit: false })?.id, "either", "Needs is hidden for crit-or-kill, so a stored critical-only does not gate it");
 });
 
 test("a crit plays the item's critical and crit-or-kill finishers", () => {
@@ -329,4 +329,13 @@ test("a finished broadcast is read only when well formed", () => {
   assert.equal(finishedMessage({ type: "finisher-played", key: "x".repeat(401) }), null);
   assert.equal(finishedMessage({ type: "finisher-played", key: "k", played: "no" }), null);
   assert.equal(finishedMessage(null), null);
+});
+
+test("a stored Needs never gates critical modes, where it is hidden", () => {
+  const r = fin("cok", "Sword", { on: "criticalOrKill", success: "critical" });
+  assert.equal(passesSuccess(r.finisher, "success"), true);
+  assert.equal(killFinisher([r], { itemName: "Sword" })?.id, "cok");
+  assert.equal(pickPlays(r, "kill", { outcome: "success" })?.id, "cok");
+  const k = fin("k", "Sword", { on: "kill", success: "critical" });
+  assert.equal(killFinisher([k], { itemName: "Sword" }), null);
 });
