@@ -51,7 +51,9 @@ export const rotateBy = (v, dir) => ({ x: v.x * dir.x - v.y * dir.y, y: v.x * di
 export const unrotateBy = (v, dir) => ({ x: v.x * dir.x + v.y * dir.y, y: -v.x * dir.y + v.y * dir.x });
 
 // A path stopped by a wall `reach` squares out: cut where it first gets there, keeping its speed.
-// The cut end lands upright (whole turns, full size, visible). A path that never gets there is kept.
+// The partial segment is resampled from the original with linear keyframes: reusing its ease over
+// the shorter span would replay the whole curve and slow it to a stop at the wall. The cut end
+// lands upright (whole turns, full size, visible). A path that never gets there is kept.
 export function cutPath(keyframes, reach) {
   const out = (t) => { const p = samplePath(keyframes, t); return Math.hypot(p.x, p.y) >= reach - 1e-9; };
   const STEPS = 200;
@@ -62,10 +64,12 @@ export function cutPath(keyframes, reach) {
   while (hi - lo > 1e-4) { const mid = (lo + hi) / 2; if (out(mid)) hi = mid; else lo = mid; }
   const t = hi;
   if (t >= 1) return { keyframes, t: 1 };
-  const p = samplePath(keyframes, t), segment = keyframes.find((k) => k.at >= t) ?? keyframes.at(-1);
-  const kept = keyframes.filter((k) => k.at < t).map((k) => ({ ...k, at: k.at / t }));
-  const end = { at: 1, x: p.x, y: p.y, rotation: Math.round(p.rotation / 360) * 360 + 0, scale: 1, alpha: 1, ease: segment.ease, sharp: false };
-  return { keyframes: normalizeKeyframes([...kept, end]), t };
+  const before = keyframes.filter((k) => k.at < t), from = before.at(-1).at;
+  const inner = Math.max(0, Math.min(3, MAX_KEYFRAMES - before.length - 1));
+  const resampled = Array.from({ length: inner }, (_, i) => { const q = from + ((t - from) * (i + 1)) / (inner + 1); return { ...samplePath(keyframes, q), at: q, ease: "linear", sharp: false }; });
+  const p = samplePath(keyframes, t);
+  const end = { at: t, x: p.x, y: p.y, rotation: Math.round(p.rotation / 360) * 360 + 0, scale: 1, alpha: 1, ease: "linear", sharp: false };
+  return { keyframes: normalizeKeyframes([...before, ...resampled, end].map((k) => ({ ...k, at: k.at / t }))), t };
 }
 
 // Editor helpers. The first keyframe is where the token stands and the last ends the motion.

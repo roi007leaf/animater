@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { composeFinisher, travelEnd, planEnd, motionEnd, finisherDirection, playFinisher, fadedAtEnd, pathAim } from "../scripts/finisher-play.mjs";
 import { normalizeFinisher, validateRecipe } from "../scripts/model.mjs";
+import { timedStages } from "../scripts/composition.mjs";
 
 const travel = { stageId: "fly", kind: "motion", motion: "leap", subject: "targets", motionEnd: "hold", duration: 1000, assets: [] };
 const recipe = (finisher = {}, stages = [travel, { stageId: "landing", kind: "impact", assets: ["jb2a.impact.003.white"] }]) =>
@@ -275,6 +276,8 @@ const slamHost = (blockAfter) => {
 };
 const played = (host) => host.log.find((e) => e[0] === "stages")[1];
 const byId = (stages, id) => stages.find((s) => s.stageId === id);
+// When each stage really starts: links win over numeric delays.
+const starts = (stages) => Object.fromEntries(timedStages({ stages }).map((s) => [s.stageId, s.delay]));
 
 test("slam, blocked after 3 of 6 squares: the path is cut at the wall at full speed and the crash plays there", async () => {
   const host = slamHost(3);
@@ -286,9 +289,9 @@ test("slam, blocked after 3 of 6 squares: the path is cut at the wall at full sp
   const fx = (last.x * cos - last.y * sin) * k, fy = (last.x * sin + last.y * cos) * k;
   assert.ok(Math.abs(fx * 100 - 300) < 1e-6 && Math.abs(fy * 100) < 1e-6, "pose end == commit landing");
   assert.ok(Math.abs(fly.duration - 500) <= 2, `about half the time: ${fly.duration}`);
-  const crack = byId(stages, "wall-crack"), shake = byId(stages, "wall-shake");
-  assert.equal(crack.delay, 100 + fly.duration);
-  assert.equal(shake.delay, 100 + fly.duration);
+  const crack = byId(stages, "wall-crack"), shake = byId(stages, "wall-shake"), start = starts(stages);
+  assert.equal(start["wall-crack"], 100 + fly.duration);
+  assert.equal(start["wall-shake"], 100 + fly.duration);
   assert.deepEqual([crack.offsetX, crack.offsetY], [3.5, 0], "half a square past the landing, toward the wall");
   assert.equal(shake.offsetX, undefined, "a motion stage is not offset");
   assert.equal(byId(stages, "landing"), undefined, "no landing: it hit the wall");
@@ -327,8 +330,8 @@ test("slam against a wall right there: a short bump that comes back, the crash s
   assert.equal(fly.motionFrame, undefined);
   assert.ok(Math.abs(Math.hypot(fly.keyframes.at(-1).x, fly.keyframes.at(-1).y) - 0.4) < 0.01, "bumps 0.4 square");
   assert.ok(Math.abs(fly.duration - 200) <= 2, `about 1000 * 0.2: ${fly.duration}`);
-  const crack = byId(stages, "wall-crack");
-  assert.equal(crack.delay, 100 + fly.duration);
+  const crack = byId(stages, "wall-crack"), start = starts(stages);
+  assert.ok(Math.abs(start["wall-crack"] - (100 + 0.85 * fly.duration)) <= 1, "the crash plays at contact: a returning path reaches its end at 85%");
   assert.deepEqual([crack.offsetX, crack.offsetY], [0.5, 0]);
   assert.ok(byId(stages, "wall-shake"));
   assert.equal(byId(stages, "landing"), undefined);
@@ -348,4 +351,48 @@ test("a killed mover's slam bump still comes back, and a short cut still lands",
   await playFinisher({ recipe: slamRecipe([kf(0), kf(1, 6, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, short);
   assert.ok(byId(played(short), "fly").motionFrame, "the cut travel is framed");
   assert.equal(short.log.find((e) => e[0] === "commit")[1].x, 200);
+});
+
+test("wall stages follow the cut travel's end even when the travel is linked after another stage", async () => {
+  const base = slamRecipe([kf(0), kf(1, 6, 0)]);
+  const hit = { stageId: "hit", kind: "impact", assets: ["jb2a.impact.005.white"], delay: 0, duration: 800 };
+  const r = { ...base, stages: [hit, { ...base.stages[0], delay: 0, afterStage: "hit", timingAnchor: "start", startOffset: 250 }, ...base.stages.slice(1)] };
+  const host = slamHost(3);
+  await playFinisher({ recipe: r, mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  const stages = played(host), start = starts(stages), fly = byId(stages, "fly");
+  assert.equal(start.fly, 250);
+  assert.equal(start["wall-crack"], 250 + fly.duration);
+  assert.equal(start["wall-shake"], 250 + fly.duration);
+});
+
+test("a stage linked to a dropped stage keeps its time and loses the link", async () => {
+  const base = slamRecipe([kf(0), kf(1, 6, 0)]);
+  const sound = { stageId: "boom", kind: "sound", assets: [], soundFile: "sounds/boom.ogg", delay: 0, duration: 1000, afterStage: "wall-crack", timingAnchor: "end", startOffset: 0, startMode: "after", startRef: "wall-crack" };
+  const r = { ...base, stages: [...base.stages, sound] };
+  const before = starts(r.stages).boom;
+  for (const [blockAfter, gone] of [[Infinity, "wall-crack"], [3, "landing"]]) {
+    const linked = { ...r, stages: r.stages.map((s) => (s.stageId === "boom" ? { ...s, afterStage: gone, startRef: gone } : s)) };
+    const was = starts(linked.stages).boom;
+    const host = slamHost(blockAfter);
+    await playFinisher({ recipe: linked, mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+    const stages = played(host), boom = byId(stages, "boom");
+    assert.equal(byId(stages, gone), undefined, `${gone} is dropped`);
+    assert.ok(!boom.afterStage && boom.startMode === undefined && boom.startRef === undefined, "unlinked");
+    assert.equal(boom.delay, was, "plays when it did");
+    assert.doesNotThrow(() => timedStages(validateRecipe({ ...linked, stages })));
+  }
+  assert.equal(before, 2600);
+});
+
+test("a source mover's slam leaves the target's crash where it is and does not shake the target", async () => {
+  const keyframes = [kf(0), kf(1, 6, 0)];
+  const base = slamRecipe(keyframes);
+  const r = { ...base, finisher: normalizeFinisher({ knockback: 5, wall: "slam", mover: "source" }), stages: [pathTravel(keyframes, { subject: "source", delay: 100 }), ...base.stages.slice(1)] };
+  const host = slamHost(1);
+  await playFinisher({ recipe: r, mover: at("Hero", 100, 100), attacker: at("Hero", 100, 100), target: at("Orc", 200, 100), dead: false }, host);
+  const stages = played(host), crack = byId(stages, "wall-crack");
+  assert.equal(host.log.find((e) => e[0] === "commit")[1].x, 0, "the user did move one square");
+  assert.equal(crack.offsetX, undefined, "an impact plays on the target: not offset by the user's landing");
+  assert.equal(starts(stages)["wall-crack"], 100 + byId(stages, "fly").duration, "still timed to the hit");
+  assert.equal(byId(stages, "wall-shake"), undefined, "a targets shake would shake the wrong token");
 });

@@ -3,6 +3,7 @@
 import { awayFrom } from "./displacement.mjs";
 import { cutPath, pathEnd, pathSquares, rotateBy, unrotateBy } from "./keyframe-path.mjs";
 import { finisherTravelPath } from "./finisher-model.mjs";
+import { timedStages } from "./composition.mjs";
 
 const TRAVEL = new Set(["rush", "leap", "roll"]);
 const mine = (s, mover) => (s.subject ?? "source") === mover;
@@ -15,20 +16,29 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
   const mover = recipe.finisher?.mover ?? "targets", travel = finisherTravelPath(recipe);
   let moves = false;
   const back = (s) => { const { motionEnd, motionOffset, motionFrame, ...rest } = s; return rest; };
+  // Impacts play on the targets; anything else on its own subject.
+  const onMover = (s) => mine(s.kind === "impact" ? { subject: "targets" } : s, mover);
   const cut = slam && travel ? { ...travel, keyframes: slam.keyframes, duration: Math.max(100, Math.round((travel.duration ?? 0) * slam.t)) } : null;
-  const hit = cut ? (cut.delay ?? 0) + cut.duration : 0;
+  // A held cut hits the wall as it ends; the bump (no landing) returns, reaching the wall at 85%.
+  const early = cut && !offset ? Math.round(cut.duration * 0.15) : 0;
   const wall = { x: (offset?.x ?? 0) + (slam?.aim.x ?? 0) * 0.5, y: (offset?.y ?? 0) + (slam?.aim.y ?? 0) * 0.5 };
+  // Linked to the travel's end, so the crash follows it wherever the travel itself is timed from.
+  const atWall = (s) => {
+    const { startMode, startRef, ...rest } = s, delay = Math.max(0, (cut.delay ?? 0) + cut.duration - early);
+    return cut.stageId ? { ...rest, afterStage: cut.stageId, timingAnchor: "end", startOffset: -early, delay } : { ...rest, afterStage: "", delay };
+  };
   const stages = recipe.stages.flatMap((original) => {
     const s = cut && original === travel ? cut : original;
     if (String(s.stageId ?? "").startsWith("wall")) {
       if (!cut) return [];
-      return s.kind === "motion" ? { ...s, delay: hit } : { ...s, delay: hit, offsetX: wall.x, offsetY: wall.y };
+      if (!onMover(s)) return s.kind === "motion" ? [] : atWall(s);
+      return s.kind === "motion" ? atWall(s) : { ...atWall(s), offsetX: wall.x, offsetY: wall.y };
     }
     if (cut && s.stageId === "landing") return [];
     if (s.kind === "motion" && s.motion === "path" && s.motionEnd === "hold") {
       if (!mine(s, mover)) return back(s);
       // In place (a spin, a shrink): it keeps its hold, nothing moves.
-      const isTravel = s === travel || (cut && s === cut);
+      const isTravel = original === travel;
       const still = isTravel ? (inPlace ?? pathSquares(s.keyframes) === 0) : pathSquares(s.keyframes) === 0;
       if (still) return survives ? back(s) : s;
       // Only the travel path lands: a second travelling copy would fly the token twice.
@@ -51,7 +61,22 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
       return { ...s, offsetX: offset.x, offsetY: offset.y };
     return s;
   });
-  return { recipe: { ...recipe, stages }, moves };
+  return { recipe: { ...recipe, stages: unlinkDropped(recipe.stages, stages) }, moves };
+}
+
+// A stage linked to a dropped stage would stop the finisher ("linked stage was removed"): it keeps
+// the time it had and loses the link, as deleting a stage in the studio does.
+function unlinkDropped(before, after) {
+  const kept = new Set(after.map((s) => s.stageId));
+  const gone = new Set(before.map((s) => s.stageId).filter((id) => id && !kept.has(id)));
+  if (!gone.size) return after;
+  let resolved = [];
+  try { resolved = timedStages({ stages: before }); } catch { /* keep the numeric delay */ }
+  return after.map((s) => {
+    if (!gone.has(s.afterStage) && !gone.has(s.startRef)) return s;
+    const { startMode, startRef, timingAnchor, startOffset, ...rest } = s, was = resolved.find((r) => r.stageId === s.stageId)?.delay;
+    return { ...rest, afterStage: "", delay: Number.isFinite(was) ? Math.round(was) : (s.delay ?? 0) };
+  });
 }
 
 const ends = (stages) => Math.max(0, ...stages.map((s) => (s.delay ?? 0) + (s.duration ?? 0)));
