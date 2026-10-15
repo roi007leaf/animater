@@ -5,8 +5,12 @@ import { fragmentPieces, fragmentFlight, fragmentPose } from "./fragments.mjs";
 
 export function createFragmentRenderer({ PIXI, grid }) {
   return {
-    // `base` is the mesh's un-posed transform ({ x, y, rotation, sx, sy }); without it the live mesh is used.
-    start(token, stage, cutAngle, base) {
+    // `base` is the transform the token is drawn at ({ x, y, rotation, sx, sy }), or a getter for it;
+    // without it the live mesh is used. A getter is read every frame, so the pieces follow a rebase.
+    start(token, stage, cutAngle, baseOrGetter) {
+      const baseAt = typeof baseOrGetter === "function" ? baseOrGetter : () => baseOrGetter;
+      // A copy: the getter may hand back the same object it later changes.
+      const first = baseAt(), base = first ? { ...first } : first;
       const mesh = token?.mesh, texture = mesh?.texture;
       if (!texture || !(token.center || mesh.position)) return null;
       const layer = mesh.parent ?? globalThis.canvas?.primary, g = grid();
@@ -61,12 +65,17 @@ export function createFragmentRenderer({ PIXI, grid }) {
         for (const crop of crops) { try { crop.destroy(false); } catch { /* keep cleaning */ } }
         throw error;
       }
+      const shift = () => {
+        const now = baseAt(), dx = (now?.x ?? 0) - (base?.x ?? 0), dy = (now?.y ?? 0) - (base?.y ?? 0);
+        return pos && Number.isFinite(dx) && Number.isFinite(dy) ? { x: dx, y: dy } : { x: 0, y: 0 };
+      };
       return {
         update(p) {
+          const moved = shift();
           for (const part of parts) {
             // The flight is already in screen terms: only the piece's own offset turns with the art.
             const pose = fragmentPose(stage, part.piece, part.flight, p), at = place(part.cx, part.cy);
-            part.box.position.set(at.x + pose.x * g, at.y + pose.y * g); part.box.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha;
+            part.box.position.set(at.x + moved.x + pose.x * g, at.y + moved.y + pose.y * g); part.box.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha;
           }
         },
         destroy() { for (const part of parts) { part.box.destroy({ children: true }); part.crop?.destroy(false); } },

@@ -374,7 +374,16 @@ export class TokenMotionPlayer {
           const progress = Math.min(1, elapsed / track.stage.duration);
           if (track.stage.motion === "fragments" && progress > 0 && !track.started && progress < 1) {
             track.started = true;
-            this.guard(track, () => { track.pieces = this.fragments?.start(token, track.stage, track.stage.cut === "fixed" ? (track.stage.angle * Math.PI) / 180 : Math.atan2(track.direction.y, track.direction.x), run.original) ?? null; });
+            // Spawn where the token is drawn: the live original (rebased when a held travel lands)
+            // plus the other tracks' pose at this moment.
+            const others = combineMotionPoses(run.tracks.filter((other) => other !== track).map((other) => {
+              const ms = time - other.start;
+              return ms < other.stage.duration ? motionPose(other.stage, ms / other.stage.duration, other.direction, this.grid())
+                : heldPose(other.stage, ms - other.stage.duration, other.direction, this.grid()) ?? motionPose(other.stage, 1, other.direction, this.grid());
+            }));
+            const base = () => ({ ...run.original, x: run.original.x + others.x, y: run.original.y + others.y, rotation: run.original.rotation + others.rotation,
+              sx: run.original.sx * others.scale * (others.scaleX ?? 1), sy: run.original.sy * others.scale * (others.scaleY ?? 1) });
+            this.guard(track, () => { track.pieces = this.fragments?.start(token, track.stage, track.stage.cut === "fixed" ? (track.stage.angle * Math.PI) / 180 : Math.atan2(track.direction.y, track.direction.x), base) ?? null; });
           }
           if (track.pieces && progress > 0) { if (progress < 1) this.guard(track, () => track.pieces.update(progress)); else this.release(track); }
           if (progress < 1) {

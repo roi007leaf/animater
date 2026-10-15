@@ -185,3 +185,35 @@ test("top/bottom on a turned token still splits on the screen horizontal", () =>
   assert.ok(from[bottom].y - from[top].y > 10, "one piece above the other at the start");
   assert.ok(to[top].y < to[bottom].y, "the top piece ends above the bottom piece");
 });
+
+test("a live base moves the pieces with it when the document is rebased mid-stage", () => {
+  const { r, token, layer } = rig({ position: { x: 0, y: 0 }, anchor: { x: 0.5, y: 0.5 } });
+  const base = { x: 200, y: 200, rotation: 0, sx: 1, sy: 1 };
+  const h = r.start(token, halves, 0, () => base);
+  h.update(0.5);
+  const before = layer.children.map((c) => ({ x: c.x, y: c.y }));
+  base.x += 40; base.y -= 25;
+  h.update(0.5);
+  layer.children.forEach((c, i) => assert.ok(Math.abs(c.x - before[i].x - 40) < 1e-9 && Math.abs(c.y - before[i].y + 25) < 1e-9));
+});
+
+import { TokenMotionPlayer } from "../scripts/motion.mjs";
+test("player and renderer: pieces shift with the document when a held track lands mid-stage", () => {
+  const layer = { children: [], addChild(c) { this.children.push(c); } };
+  const texture = { baseTexture: { width: 100, height: 100 }, frame: { x: 0, y: 0, width: 100, height: 100 } };
+  const mesh = { texture, parent: layer, width: 100, height: 100, anchor: { x: 0.5, y: 0.5 }, rotation: 0, alpha: 1,
+    position: { x: 50, y: 50, set(x, y) { this.x = x; this.y = y; } }, scale: { x: 1, y: 1, set(x, y) { this.x = x; this.y = y; } } };
+  const token = { mesh, visible: true, w: 100, h: 100, document: { x: 0, y: 0, rotation: 0, width: 1, height: 1, texture: {} } };
+  let now = 0, queued = null;
+  const player = new TokenMotionPlayer({ frame: (cb) => (queued = cb), cancel: () => {}, now: () => now, grid: () => 100, fragments: createFragmentRenderer({ PIXI: fakePixi(), grid: () => 100 }) });
+  void player.play(token, { kind: "motion", motion: "fade", motionEnd: "hold", duration: 50 }, { x: 1, y: 0 }, "me");
+  void player.play(token, { kind: "motion", motion: "fragments", pattern: "halves", seed: 2, duration: 1000 }, { x: 1, y: 0 }, "me");
+  now = 30; queued(now);
+  now = 60; queued(now);
+  const before = layer.children.map((c) => ({ x: c.x, y: c.y }));
+  assert.equal(before.length, 2);
+  token.document.x = 100;
+  queued(now);
+  assert.equal(player.active.get(token).original.x, 150, "rebased");
+  layer.children.forEach((c, i) => assert.ok(Math.abs(c.x - before[i].x - 100) < 1e-9 && Math.abs(c.y - before[i].y) < 1e-9));
+});

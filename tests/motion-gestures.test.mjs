@@ -390,5 +390,21 @@ test('the player gives the renderer the un-posed transform', () => {
   const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
   void r.player.play(r.token, fragStage(), { x: 1, y: 0 }, 'me');
   r.now = 20; r.queued(r.now);
-  assert.deepEqual(seen, { x: 0, y: 0, rotation: 0, sx: 1, sy: 1, alpha: 1 });
+  assert.equal(typeof seen, 'function', 'a live getter');
+  assert.deepEqual(seen(), { x: 0, y: 0, rotation: 0, sx: 1, sy: 1, alpha: 1 });
+});
+
+test('the pieces spawn where the token is drawn and follow a rebase of the original', () => {
+  let seen;
+  const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
+  const lift = v({ kind: 'motion', motion: 'levitate', subject: 'targets', duration: 100 });
+  void r.player.play(r.token, lift, { x: 1, y: 0 }, 'me');
+  void r.player.play(r.token, fragStage({ duration: 1000 }), { x: 1, y: 0 }, 'me');
+  r.now = 50; r.queued(r.now);
+  const want = motionPose(lift, 0.5, { x: 1, y: 0 }, 100);
+  assert.ok(want.y < 0);
+  assert.ok(Math.abs(seen().y - want.y) < 1e-9 && seen().x === 0, 'pose of the other tracks at start time is included');
+  r.player.active.get(r.token).original.x += 100;
+  assert.equal(seen().x, 100, 'follows the live original');
+  assert.ok(Math.abs(seen().y - want.y) < 1e-9);
 });
