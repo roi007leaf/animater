@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Keyframed path (new token motion): draw the real token's movement as keyframes — position in squares, rotation, size and opacity, with easing and sharp corners — on timeline diamonds, a grid path canvas you drag points on, and exact numbers in the inspector. Works in every recipe (returns to start) and in finishers, where the path is aimed away from the attacker, its length is the knockback, it shrinks to fit walls, and the token is moved to where it ends. The finisher presets are rebuilt on keyframed paths, and finishers now show their own chip ("Killing blow · lands 3 sq · Body"), "← Finishers" and "Save finisher" in the studio.
 - Finishers (Module Settings → Finishers, then the new Finishers page): design finishing moves in the studio or copy one of 14 presets (Launch, Cleave, Burn to ash, Shatter…), and assign them to spells, feats, actions and weapons — on their Applies-to list or with the Finisher dropdown on catalog entries. A finisher plays on the real token on a killing blow or on every successful use (Shove can always fling): the token is thrown, lands on the square where its travel ends (stopping at walls), and then vanishes, stays as a Defeated body, or stays. Player-side moves are written by the active GM. Unhide the token (and remove Defeated) to undo; it stays on the square where it landed. Token motion still never changes the real token position, except finishers, which move the token where it lands.
 
 ## 0.3.17 (2026-10-13)

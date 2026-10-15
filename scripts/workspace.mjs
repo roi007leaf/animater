@@ -301,6 +301,14 @@ export class Workspace {
     root.addEventListener("wheel", (e) => studioWheel(this, e), { passive: false, signal: this.abort.signal });
     root.addEventListener("contextmenu", (e) => studioContextMenu(this, e), { signal: this.abort.signal });
     root.addEventListener("dblclick", (e) => {
+      const pathBar = e.target.closest?.("[data-tl-bar]");
+      const pathStage = pathBar && this.isStudio() ? this.recipe()?.stages[Number(pathBar.dataset.tlBar)] : null;
+      if (pathStage?.motion === "path" && !e.target.closest("[data-kf-diamond]")) {
+        const rect = pathBar.getBoundingClientRect(), s = this.edit().stages[Number(pathBar.dataset.tlBar)];
+        const kfs = normalizeKeyframes(s.keyframes), at = (e.clientX - rect.left) / Math.max(1, rect.width), next = insertKeyframe(kfs, at);
+        if (next !== kfs) { s.keyframes = next; this.stageIndex = Number(pathBar.dataset.tlBar); this.keyframeIndex = next.findIndex((k) => Math.abs(k.at - Math.min(0.99, Math.max(0.01, at))) < 0.006); this.message = "Keyframe added. Save to apply."; this.render(); }
+        return;
+      }
       const h = e.target.closest?.("[data-splitter]"); if (h) this.setInspectorWidth(380, h.closest(".an-work, .an-studio"));
       if (e.target.closest?.("[data-st-hsplit]")) { this.studioTimelineHeight = 280; try { globalThis.localStorage?.removeItem("animater.timelineHeight"); } catch {} this.render(); }
     }, { signal: this.abort.signal });
@@ -685,9 +693,30 @@ export class Workspace {
   }
   // The selected keyframe of a path stage, kept inside its keyframe list.
   selectedKeyframe(s) { return Math.max(0, Math.min(keyframesOf(s).length - 1, this.keyframeIndex ?? 0)); }
+  // Diamonds: click selects a keyframe, dragging an inner one retimes it inside its neighbours.
+  dragKeyframeTime(diamond, e) {
+    e.preventDefault(); e.stopPropagation();
+    const stageIndex = Number(diamond.dataset.kfStage), index = Number(diamond.dataset.kfDiamond), bar = diamond.closest("[data-tl-bar]");
+    this.stageIndex = stageIndex; this.keyframeIndex = index; this.keyframeFocus = true;
+    const kfs = keyframesOf(this.recipe()?.stages[stageIndex]);
+    if (index === 0 || index === kfs.length - 1 || !bar) { this.render(); return; }
+    const rect = bar.getBoundingClientRect();
+    let at = kfs[index].at;
+    const move = (ev) => { at = Math.min(1, Math.max(0, (ev.clientX - rect.left) / Math.max(1, rect.width))); diamond.style.left = `${(at * 100).toFixed(2)}%`; };
+    const up = () => {
+      diamond.removeEventListener("pointermove", move); diamond.removeEventListener("pointerup", up); diamond.removeEventListener("pointercancel", up);
+      const s = this.edit()?.stages[stageIndex];
+      if (s) { s.keyframes = moveKeyframeTime(normalizeKeyframes(s.keyframes), index, at); this.message = "Keyframe retimed. Save to apply."; }
+      this.render();
+    };
+    diamond.setPointerCapture?.(e.pointerId);
+    diamond.addEventListener("pointermove", move); diamond.addEventListener("pointerup", up); diamond.addEventListener("pointercancel", up);
+  }
   timelineX(total, ms) { return `calc(var(--tl-label) + (100% - var(--tl-label)) * ${Math.max(0, Math.min(1, ms / total))})`; }
   onTimelinePointer(e) {
     if (e.target.closest?.(".an-tl-variant-tabs")) return;
+    const diamond = e.target.closest?.("[data-kf-diamond]");
+    if (diamond && !this.busy && e.button === 0) { this.dragKeyframeTime(diamond, e); return; }
     const bar = e.target.closest?.("[data-tl-bar]");
     if (!bar || this.busy || e.button !== 0) return;
     e.preventDefault();
@@ -2399,15 +2428,24 @@ export class Workspace {
         return;
       }
       if (["kf-select", "kf-add", "kf-delete", "kf-flip", "kf-reset"].includes(action)) {
+        if (action === "kf-select") {
+          // Selecting is view state: it never creates a draft.
+          if (this.recipe()?.stages[this.stageIndex]?.motion !== "path") return;
+          this.keyframeIndex = Number(b.dataset.kf); this.keyframeFocus = true; this.render();
+          return;
+        }
         const r = this.edit(), s = r?.stages[this.stageIndex];
         if (!s || s.motion !== "path") return;
         const kfs = normalizeKeyframes(s.keyframes), i = this.selectedKeyframe(s);
-        if (action === "kf-select") this.keyframeIndex = Number(b.dataset.kf);
-        if (action === "kf-add") { s.keyframes = insertKeyframe(kfs, (kfs[i].at + kfs[Math.min(kfs.length - 1, i + 1)].at) / 2); this.keyframeIndex = i + 1; }
+        let changed = true;
+        if (action === "kf-add") {
+          const next = insertKeyframe(kfs, (kfs[i].at + kfs[Math.min(kfs.length - 1, i + 1)].at) / 2);
+          if (next === kfs) changed = false; else { s.keyframes = next; this.keyframeIndex = i + 1; }
+        }
         if (action === "kf-delete") { s.keyframes = deleteKeyframe(kfs, i); this.keyframeIndex = Math.max(0, i - 1); }
         if (action === "kf-flip") s.keyframes = flipKeyframes(kfs);
         if (action === "kf-reset") { s.keyframes = resetKeyframes(); this.keyframeIndex = 1; }
-        if (action !== "kf-select") this.message = "Path updated. Save to apply.";
+        if (changed) this.message = "Path updated. Save to apply.";
         this.render();
         return;
       }

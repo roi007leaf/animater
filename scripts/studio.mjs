@@ -8,6 +8,8 @@ import { finisherChipText } from "./finisher-model.mjs";
 import { KINDS, EVENTS, STRIKE_SCOPES, MAX_STAGES, validateRecipe, clone } from "./model.mjs";
 import { timelineLayout, packLanes, linkStartModes } from "./choreography.mjs";
 import { sampleRecipe, timedStages, previewVariants, variantMembers } from "./composition.mjs";
+import { canvasToSquares, keyframesOf, scrubPoint } from "./keyframe-ui.mjs";
+import { moveKeyframePoint, deleteKeyframe, normalizeKeyframes } from "./keyframe-path.mjs";
 import { previewRecipeSounds } from "./spell-sounds.mjs";
 import { RecipePreview } from "./recipe-preview.mjs";
 
@@ -143,6 +145,12 @@ export function studioFrame(w, frame) {
   const t = el(w, "[data-st-time]"), c = el(w, "[data-st-time-corner]");
   if (t) t.textContent = seconds(frame.time);
   if (c) c.textContent = seconds(frame.time);
+  // The path canvas's scrub token rides the curve with the playhead.
+  const scrub = el(w, "[data-kf-scrub]"), r = scrub && w.recipe(), s = r?.stages[w.stageIndex];
+  if (scrub && s?.motion === "path") {
+    const p = scrubPoint(s, sampleRecipe(r).stages[w.stageIndex]?.delay ?? 0, frame.time);
+    scrub.setAttribute("cx", p.x); scrub.setAttribute("cy", p.y);
+  }
 }
 function placePlayhead(w) {
   const head = el(w, "[data-tl-playhead]");
@@ -315,6 +323,26 @@ export function studioContextMenu(w, e) {
 export function studioPointer(w, e) {
   if (!e.target.closest?.(".an-st-menu")) closeMenu(w);
   if (e.button !== 0 || !e.target.closest?.(".an-studio")) return false;
+  const dot = e.target.closest?.("[data-kf-dot]");
+  if (dot && !w.busy) {
+    // Dragging a keyframe dot moves that point; Shift snaps to whole squares.
+    e.preventDefault();
+    const canvas = dot.closest("[data-kf-canvas]"), svg = canvas.querySelector("svg"), [vx, vy, vw, vh] = canvas.dataset.kfView.split(" ").map(Number);
+    const index = Number(dot.dataset.kfDot), stageIndex = w.stageIndex;
+    w.keyframeIndex = index; w.keyframeFocus = true;
+    let last = null;
+    const move = (ev) => { last = canvasToSquares(ev, svg.getBoundingClientRect(), { x: vx, y: vy, w: vw, h: vh }); last.whole = ev.shiftKey; dot.setAttribute("cx", last.x); dot.setAttribute("cy", last.y); };
+    const up = () => {
+      dot.removeEventListener("pointermove", move); dot.removeEventListener("pointerup", up); dot.removeEventListener("pointercancel", up);
+      const s = w.edit()?.stages[stageIndex];
+      if (s && last) { s.keyframes = moveKeyframePoint(normalizeKeyframes(s.keyframes), index, last.x, last.y, last.whole); w.message = "Keyframe moved. Save to apply."; }
+      w.render();
+    };
+    dot.setPointerCapture?.(e.pointerId);
+    dot.addEventListener("pointermove", move); dot.addEventListener("pointerup", up); dot.addEventListener("pointercancel", up);
+    return true;
+  }
+  if (!e.target.closest?.("[data-kf-dot], [data-kf-diamond]")) w.keyframeFocus = false;
   const split = e.target.closest("[data-st-hsplit]");
   if (split) {
     e.preventDefault();
@@ -359,6 +387,13 @@ export function studioKey(w, e) {
   if (!onBar && (key === "ArrowLeft" || key === "ArrowRight")) { moveTo(w, (w.studioTime ?? 0) + (key === "ArrowLeft" ? -1 : 1) * (e.shiftKey ? 500 : 50)); return stop(); }
   if (w.busy) return false;
   const i = onBar ? Number(e.target.closest("[data-tl-bar]").dataset.tlBar) : w.stageIndex;
+  const selectedStage = w.recipe()?.stages[w.stageIndex];
+  if ((key === "Delete" || key === "Backspace") && w.keyframeFocus && selectedStage?.motion === "path") {
+    // With a keyframe in focus, Delete removes that keyframe (never the first or last), not the stage.
+    const kfs = normalizeKeyframes(selectedStage.keyframes), i = Math.max(0, Math.min(kfs.length - 1, w.keyframeIndex ?? 0));
+    if (i > 0 && i < kfs.length - 1) { w.edit().stages[w.stageIndex].keyframes = deleteKeyframe(kfs, i); w.keyframeIndex = i - 1; w.message = "Keyframe deleted. Save to apply."; w.render(); }
+    return stop();
+  }
   if ((key === "Delete" || key === "Backspace") && (onBar || e.target.matches(".an-studio"))) { stop(); removeStage(w, i); return true; }
   if (ctrl && key.toLowerCase() === "d") { stop(); duplicateStage(w, i); return true; }
   return false;

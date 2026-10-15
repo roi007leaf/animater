@@ -58,3 +58,9 @@ export function keyframeInspectorHTML(s, stageIndex, selected) {
     <div class="an-play-actions"><button data-action="kf-add" ${kfs.length >= 12 || last ? "disabled" : ""}>+ Keyframe after</button><button data-action="kf-delete" class="an-quiet" ${first || last ? "disabled" : ""}>Delete keyframe</button><button data-action="kf-flip" class="an-quiet">Flip path</button><button data-action="kf-reset" class="an-quiet">Reset to straight shove</button></div>
     <p class="an-hint">+x is away from the other token. Easing shapes the speed into each keyframe. In a finisher with End: hold, the token is moved to where the path ends.</p></div>`;
 }
+
+// Where the playhead puts the token on the path (squares), for the canvas scrub.
+export function scrubPoint(s, startMs, timeMs) {
+  const p = samplePath(keyframesOf(s), Math.min(1, Math.max(0, (timeMs - startMs) / Math.max(1, s.duration))));
+  return { x: n2(p.x), y: n2(p.y) };
+}
