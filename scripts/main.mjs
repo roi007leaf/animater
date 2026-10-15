@@ -724,6 +724,7 @@ function workspaceHost() {
     // Players edit their own recipes (on their user); the GM's stay world-wide.
     // While the GM reviews a player, the Studio shows and saves that player's recipes.
     defaultFinisher: () => game.settings.get(ID, DEFAULT_FINISHER) ?? "",
+    players: () => game.users.filter((u) => !u.isGM).map((u) => ({ id: u.id, name: u.name, color: u.color?.css ?? u.color ?? "" })),
     setDefaultFinisher: async (id) => {
       if (!game.user.isGM) throw Error("Only a GM can choose the default finisher.");
       await game.settings.set(ID, DEFAULT_FINISHER, String(id ?? ""));

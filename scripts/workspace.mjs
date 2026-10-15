@@ -1310,7 +1310,7 @@ export class Workspace {
   }
   motionSyncNoticeHTML() { return motionSyncNoticeHTML(this.host.environment()); }
   recipeSettingsHTML(r) {
-    if (r.finisher) return finisherSettingsHTML(r, { itemSummary: (uuid) => this.host.itemSummary?.(uuid) });
+    if (r.finisher) return finisherSettingsHTML(r, { itemSummary: (uuid) => this.host.itemSummary?.(uuid), players: this.host.players?.() ?? [] });
     const linked = r.lifecycle === "document";
     const scope = Object.hasOwn(STRIKE_SCOPES, r.matchScope ?? '') ? r.matchScope : null;
     const binding = !linked && ['attack', 'damage'].includes(r.trigger) ? `<label>Applies to<select data-field="matchScope">${options({ '': 'Item names / slugs', ...STRIKE_SCOPES }, r.matchScope ?? '')}</select></label>` : '';
@@ -1652,6 +1652,7 @@ export class Workspace {
     if(this.flashEditor?.change(e.target))return;
     if (e.target.hasAttribute("data-finisher-link")) { void this.linkFinisherTo(e.target.dataset.finisherLink, e.target.value, e.target.dataset.finisherUuid); return; }
     if (e.target.hasAttribute("data-finisher-add")) { const name = e.target.value; e.target.value = ""; if (name.trim()) this.addFinisherName(name); return; }
+    if (e.target.hasAttribute("data-finisher-player")) { this.togglePlayer(e.target.dataset.finisherPlayer, e.target.checked); return; }
     if (e.target.hasAttribute("data-finisher-default")) { void this.host.setDefaultFinisher(e.target.value).then(() => this.render(), (error) => { this.message = error.message; this.render(); }); return; }
     if(e.target.hasAttribute('data-dnd-variant')||e.target.dataset.dndFilter||e.target.dataset.dndOption){void this.dndCatalog?.change(e.target).catch(error=>{this.message=error.message;this.render();});return;}
     if (e.target.hasAttribute("data-state-damage")) { this.stateDamageType = e.target.value; this.render(); return; }
@@ -1943,6 +1944,14 @@ export class Workspace {
   }
   // A finisher's Applies-to card list, edited in the draft (unsaved until Save). `uuid`: the dropped
   // item, remembered for that name's card; a typed name has none.
+  togglePlayer(id, on) {
+    const r = this.edit();
+    if (!r?.finisher) return;
+    const had = r.finisher.players ?? [];
+    const next = id === "*" ? (on ? ["*"] : []) : on ? [...had.filter((x) => x !== "*"), id] : had.filter((x) => x !== id);
+    r.finisher = normalizeFinisher({ ...r.finisher, players: [...new Set(next)] });
+    this.render();
+  }
   addFinisherName(name, uuid) {
     const current = this.recipe(), was = String(current?.match ?? ""), next = addFinisherName(was, name), added = String(name ?? "").trim();
     const finisher = current?.finisher, linked = uuid ? linkFinisherItem(finisher, added, uuid) : finisher;

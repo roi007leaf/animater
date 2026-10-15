@@ -11,7 +11,9 @@ const choices = (table, current) => Object.entries(table).map(([k, v]) => `<opti
 export function finishersPageHTML(w, recipe) {
   if (w.studio && recipe) return studioHTML(w, recipe);
   const all = w.listedRecipes().filter((r) => r.finisher), def = w.host.defaultFinisher?.() ?? "";
-  const cards = all.map((r) => `<button data-action="select" data-id="${esc(r.id)}" class="an-card" style="--effect:${esc(r.color)}"><div class="an-art"><span>✸</span><small>${esc(FINISHER_ON[r.finisher.on])}</small></div><div class="an-card-body"><h2>${esc(r.name)}</h2><p>${esc(r.match || r.itemUuid ? r.match || "One bound item" : "Not assigned yet")}</p><div class="an-card-meta"><span>${esc(FINISHER_ENDINGS[r.finisher.ending])}</span><span>${r.finisher.knockback ? `${r.finisher.knockback} sq knockback` : "No knockback"}</span></div></div></button>`).join("");
+  const names = w.host.players?.() ?? [];
+  const whoHas = (f) => (f.players ?? []).includes("*") ? "All players" : names.filter((p) => (f.players ?? []).includes(p.id)).map((p) => p.name).join(", ") || "GM only";
+  const cards = all.map((r) => `<button data-action="select" data-id="${esc(r.id)}" class="an-card" style="--effect:${esc(r.color)}"><div class="an-art"><span>✸</span><small>${esc(FINISHER_ON[r.finisher.on])}</small></div><div class="an-card-body"><h2>${esc(r.name)}</h2><p>${esc(r.match || r.itemUuid ? r.match || "One bound item" : "Not assigned yet")}</p><div class="an-card-meta"><span>${esc(FINISHER_ENDINGS[r.finisher.ending])}</span><span>${r.finisher.knockback ? `${r.finisher.knockback} sq knockback` : "No knockback"}</span><span>${esc(whoHas(r.finisher))}</span></div></div></button>`).join("");
   return `<div class="an-work is-library"><section class="an-library">
     <div class="an-section-title"><span>${all.length} finisher${all.length === 1 ? "" : "s"}</span><small>Assign them to spells, feats, actions and weapons. They play on the real token.</small></div>
     <label>Default finisher for other kills<select data-finisher-default><option value="">None (plain collapse)</option>${all.map((r) => `<option value="${esc(r.id)}" ${r.id === def ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
@@ -41,12 +43,18 @@ function appliesToHTML(r, itemSummary) {
     <input data-finisher-add aria-label="Add a name" placeholder="Add a name…"></div><p class="an-hint">Matched by item name. The Finisher dropdown on catalog entries edits this list too.</p>`;
 }
 
-export function finisherSettingsHTML(r, { itemSummary } = {}) {
+function availableToHTML(f, players) {
+  const has = f.players ?? [], everyone = has.includes("*");
+  const boxes = players.map((p) => `<label class="an-check"><input type="checkbox" data-finisher-player="${esc(p.id)}" ${has.includes(p.id) ? "checked" : ""} ${everyone ? "disabled" : ""}><i class="an-player-dot" style="background:${esc(p.color)}"></i>${esc(p.name)}</label>`).join("");
+  return `<div class="an-finisher-players"><span class="an-label">Available to</span><label class="an-check"><input type="checkbox" data-finisher-player="*" ${everyone ? "checked" : ""}>All players</label>${boxes}</div><p class="an-hint">Chosen players can also trigger this finisher with the matching item. The GM always can.</p>`;
+}
+
+export function finisherSettingsHTML(r, { itemSummary, players = [] } = {}) {
   const f = r.finisher, path = finisherTravelPath(r), select = (key, label, table) => `<label>${label}<select data-field="finisher.${key}">${choices(table, f[key])}</select></label>`;
   return `<div class="an-editor-section an-binding an-finisher"><div class="an-section-title"><b>Finisher</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>
     <label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>
     ${appliesToHTML(r, itemSummary)}
-    ${select("on", "Plays on", FINISHER_ON)}${select("success", "Needs", FINISHER_SUCCESS)}${select("mover", "Moves", FINISHER_MOVERS)}
+    ${select("on", "Plays on", FINISHER_ON)}${availableToHTML(f, players)}${select("success", "Needs", FINISHER_SUCCESS)}${select("mover", "Moves", FINISHER_MOVERS)}
     ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the ${f.mover === "source" ? "target" : "attacker"} and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label>`}
     ${select("ending", "Ending", FINISHER_ENDINGS)}
     <p class="an-hint">${path ? "A stage named “landing” plays where it lands." : "Set a travel motion's End to “Hold at the end”: knockback replaces its distance and the token is moved to where it lands, stopping at walls. A stage named “landing” plays there."} Vanish and Body apply only to a creature at 0 HP.</p></div>`;

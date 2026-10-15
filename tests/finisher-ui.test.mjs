@@ -101,3 +101,26 @@ test("the catalog dropdown carries the entry's uuid when it has one", () => {
   assert.match(finisherLinkHTML(list, "Greataxe", "Compendium.x.Item.1"), /data-finisher-link="Greataxe" data-finisher-uuid="Compendium\.x\.Item\.1"/);
   assert.doesNotMatch(finisherLinkHTML(list, "Greataxe"), /data-finisher-uuid/);
 });
+
+test("finisher settings let the GM give it to players", () => {
+  const r = fin("a", "Longsword", { players: ["u1"] });
+  const html = finisherSettingsHTML(r, { players: [{ id: "u1", name: "Ana", color: "#f00" }, { id: "u2", name: "Bo", color: "#0f0" }] });
+  assert.match(html, /data-finisher-player="\*"/);
+  assert.match(html, /data-finisher-player="u1"[^>]*checked/);
+  assert.doesNotMatch(html, /data-finisher-player="u2"[^>]*checked/);
+  assert.match(html, /Critical hit or killing blow/);
+});
+
+test("finisher cards say who has it", () => {
+  const players = [{ id: "u1", name: "Ana" }];
+  const page = (p) => finishersPageHTML({ studio: false, listedRecipes: () => [fin("a", "X", { players: p })], host: { recipes: () => [], defaultFinisher: () => "", players: () => players } });
+  assert.match(page(["*"]), /All players/);
+  assert.match(page(["u1"]), /Ana/);
+  assert.match(page([]), /GM only/);
+});
+
+test("All players disables the per-player boxes", () => {
+  const html = finisherSettingsHTML(fin("a", "X", { players: ["*"] }), { players: [{ id: "u1", name: "Ana", color: "#f00" }] });
+  assert.match(html, /data-finisher-player="\*"[^>]*checked/);
+  assert.match(html, /data-finisher-player="u1"[^>]*disabled/);
+});

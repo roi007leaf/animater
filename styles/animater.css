@@ -2756,3 +2756,6 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .an-fragments-preview{width:100%;max-width:220px;aspect-ratio:1;display:block;margin:6px auto;background:rgba(0,0,0,.25);border-radius:8px}
 .an-fragments-preview polygon{fill:rgba(158,138,255,.55);stroke:#fff;stroke-width:.01}
 .an-fragments-outline{fill:none;stroke:rgba(255,255,255,.25);stroke-width:.01;stroke-dasharray:.04 .03}
+.animater .an-finisher-players{display:grid;gap:4px;margin:6px 0 2px}
+.animater .an-finisher-players .an-check{display:flex;align-items:center;gap:6px}
+.animater .an-player-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
