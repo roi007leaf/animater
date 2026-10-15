@@ -186,6 +186,7 @@ test("pathAim points away from the other token for either mover", () => {
   assert.deepEqual(pathAim(normalizeFinisher({}), { mover: at("Orc", 100, 0), attacker: at("Hero", 0, 0) }), { x: 1, y: 0 });
   assert.deepEqual(pathAim(normalizeFinisher({ mover: "source" }), { mover: at("Hero", 0, 0), target: at("Orc", 100, 0) }), { x: -1, y: 0 });
   assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 0.3, 0, { alpha: 0 })]), false), true);
+  assert.equal(fadedAtEnd({ ...pathRecipe([]), stages: [pathTravel([kf(0), kf(1, 1, 0)], { motionEnd: undefined })] }, false), false, "nothing held in place");
   assert.equal(fadedAtEnd(pathRecipe([kf(0), kf(1, 1, 0, { alpha: 0 })]), true), false, "a path that moved the token lands visible: it still fades");
 });
 
@@ -210,4 +211,52 @@ test("a framed path keeps its exact landing after remote validation, even when t
   const end = valid.keyframes.at(-1), commit = host.log.find((e) => e[0] === "commit")[1];
   const fx = (end.x * frame.cos - end.y * frame.sin) * frame.k, fy = (end.x * frame.sin + end.y * frame.cos) * frame.k;
   assert.ok(Math.abs(fx * 100 - (commit.x - commit.fromX)) < 1e-6 && Math.abs(fy * 100 - (commit.y - commit.fromY)) < 1e-6);
+});
+
+test("a duplicated travelling path is not flown twice: only the travel path is framed", () => {
+  const a = pathTravel([kf(0), kf(1, 2, 0)]), b = { ...pathTravel([kf(0), kf(1, 2, 0)]), stageId: "fly-copy" };
+  const spin = { ...pathTravel([kf(0), kf(1, 0, 0, { rotation: 360 })]), stageId: "spin" };
+  const { recipe: r, moves } = composeFinisher({ ...pathRecipe([]), stages: [a, b, spin] }, { offset: { x: 2, y: 0 }, frame: { aim: { x: 1, y: 0 }, length: 2 } });
+  assert.equal(moves, true);
+  assert.equal(r.stages.filter((s) => s.motionFrame).length, 1);
+  assert.ok(r.stages[0].motionFrame, "the travel path (the first) is the framed one");
+  assert.equal(r.stages[1].motionEnd, undefined, "the copy comes back");
+  assert.equal(r.stages[2].motionEnd, "hold", "an in-place held path keeps its hold");
+});
+
+test("in place is decided from the aimed end: (0.6, 0) at 45° rounds to no square", async () => {
+  const host = gridHost();
+  const mover = at("Orc", 1000, 1000), d = 100 / Math.SQRT2, attacker = { name: "Hero", center: { x: mover.center.x - d, y: mover.center.y - d }, document: { x: 0, y: 0 } };
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 0.6, 0)]), mover, attacker, dead: false }, host);
+  assert.ok(!host.log.some((e) => e[0] === "landing"), "no landing asked for");
+  assert.equal(host.log.find((e) => e[0] === "play")[1], null, "not framed");
+  assert.ok(!host.log.some((e) => e[0] === "commit" && e[1].x !== undefined), "no move");
+  const kept = composeFinisher(pathRecipe([kf(0), kf(1, 0.6, 0)]), { inPlace: true });
+  assert.equal(kept.recipe.stages[0].motionEnd, "hold", "an in-place travel path keeps its hold");
+  assert.equal(kept.moves, false);
+});
+
+test("a source-mover path lands away from the target", async () => {
+  const host = gridHost();
+  const recipe = { ...pathRecipe([], { mover: "source" }), stages: [pathTravel([kf(0), kf(1, 2, 0)], { subject: "source" })] };
+  await playFinisher({ recipe, mover: at("Hero", 100, 100), attacker: at("Hero", 100, 100), target: at("Orc", 200, 100), dead: false }, host);
+  const [, dx, dy, squares] = host.log.find((e) => e[0] === "landing");
+  assert.deepEqual([dx + 0, dy + 0, squares], [-1, 0, 2], "mover left of the target is pushed further left");
+  assert.deepEqual(host.log.find((e) => e[0] === "commit")[1], { x: -100, y: 100, fromX: 100, fromY: 100, finisher: "p" });
+});
+
+test("an in-place held path skips the separate fade even when it ends visible", async () => {
+  const host = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 0, 0, { scale: 0.5 })], { ending: "vanish" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, host);
+  assert.ok(!host.log.some((e) => e[0] === "fade"), "a fade would pop it back to full size");
+  assert.deepEqual(host.log.at(-1), ["commit", { hidden: true, finisher: "p" }]);
+});
+
+test("a survivor does not sit shrunk: an in-place held path loses its hold", async () => {
+  const host = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 0, 0, { scale: 0.3, alpha: 0.2 })], { on: "use" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  assert.equal(host.log.find((e) => e[0] === "play")[3], null, "hold stripped");
+  const dead = gridHost();
+  await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 0, 0, { scale: 0.3, alpha: 0.2 })], { ending: "body" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, dead);
+  assert.equal(dead.log.find((e) => e[0] === "play")[3], "hold", "a killed mover keeps it");
 });

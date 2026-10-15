@@ -7,16 +7,20 @@ import { finisherTravelPath } from "./finisher-model.mjs";
 const TRAVEL = new Set(["rush", "leap", "roll"]);
 const mine = (s, mover) => (s.subject ?? "source") === mover;
 
-export function composeFinisher(recipe, { offset = null, frame = null } = {}) {
-  const mover = recipe.finisher?.mover ?? "targets";
+// `inPlace` is decided by playFinisher from the aimed end; `survives` strips in-place holds,
+// which would otherwise leave a survivor shrunk or faded until the hold runs out.
+export function composeFinisher(recipe, { offset = null, frame = null, inPlace, survives = false } = {}) {
+  const mover = recipe.finisher?.mover ?? "targets", travel = finisherTravelPath(recipe);
   let moves = false;
   const back = (s) => { const { motionEnd, motionOffset, motionFrame, ...rest } = s; return rest; };
   const stages = recipe.stages.map((s) => {
     if (s.kind === "motion" && s.motion === "path" && s.motionEnd === "hold") {
       if (!mine(s, mover)) return back(s);
       // In place (a spin, a shrink): it keeps its hold, nothing moves.
-      if (pathSquares(s.keyframes) === 0) return s;
-      if (!offset || !frame) return back(s);
+      const still = s === travel ? (inPlace ?? pathSquares(s.keyframes) === 0) : pathSquares(s.keyframes) === 0;
+      if (still) return survives ? back(s) : s;
+      // Only the travel path lands: a second travelling copy would fly the token twice.
+      if (s !== travel || !offset || !frame) return back(s);
       moves = true;
       // Shrink the whole path to the reachable square, then pin its end exactly on it so the
       // pose and the document agree to the pixel.
@@ -53,22 +57,26 @@ export function finisherDirection(finisher, { mover, attacker, target }) {
 export function pathAim(finisher, { mover, attacker, target }) {
   return finisher.mover === "source" ? awayFrom(target?.center, mover?.center) : awayFrom(attacker?.center, mover?.center);
 }
-// An in-place held path that already ends invisible needs no separate fade (a new fade would
-// pop it back). A path that moved the token lands upright and visible, so that one still fades.
-export const fadedAtEnd = (recipe, moves) => !moves && finisherTravelPath(recipe)?.keyframes?.at(-1)?.alpha === 0;
+// A path that moved the token lands upright and visible, so a vanish still fades it. A mover
+// still held in place (shrunk, faded, turned) needs no separate fade: one would pop it back.
+export const fadedAtEnd = (recipe, moves) => !moves && recipe.stages.some((s) => s.kind === "motion" && s.motion === "path"
+  && s.motionEnd === "hold" && mine(s, recipe.finisher?.mover ?? "targets"));
 
 export async function playFinisher({ recipe, mover, attacker = null, target = null, dead = false }, host) {
   const f = recipe.finisher, grid = host.gridSize();
   const from = { x: mover.document.x, y: mover.document.y };
   const path = finisherTravelPath(recipe);
-  let to = null, frame = null;
+  let to = null, frame = null, inPlace;
   // A landing that cannot be worked out plays the finisher in place rather than not at all.
   try {
     if (path) {
+      // In place or not is counted on the aimed end, the way the landing walks the grid.
       const aim = pathAim(f, { mover, attacker, target });
-      const end = aim && rotateBy(pathEnd(path.keyframes), aim), length = end ? Math.hypot(end.x, end.y) : 0;
-      if (aim && pathSquares(path.keyframes) > 0 && length > 0) {
-        to = host.landing(mover, { x: end.x / length, y: end.y / length }, Math.round(Math.max(Math.abs(end.x), Math.abs(end.y))));
+      const end = aim ? rotateBy(pathEnd(path.keyframes), aim) : pathEnd(path.keyframes), length = Math.hypot(end.x, end.y);
+      const squares = Math.round(Math.max(Math.abs(end.x), Math.abs(end.y)));
+      inPlace = squares === 0;
+      if (aim && !inPlace) {
+        to = host.landing(mover, { x: end.x / length, y: end.y / length }, squares);
         frame = { aim, length };
       }
     } else {
@@ -77,7 +85,7 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
     }
   } catch (error) { host.trace("Blocked", `Finisher ${recipe.name} landing: ${error.message}`); }
   const offset = to && (to.x !== from.x || to.y !== from.y) ? { x: (to.x - from.x) / grid, y: (to.y - from.y) / grid } : null;
-  const { recipe: composed, moves } = composeFinisher(recipe, { offset, frame });
+  const { recipe: composed, moves } = composeFinisher(recipe, { offset, frame, inPlace, survives: !dead });
   const commit = async (data) => host.commit(mover, { ...data, finisher: recipe.id });
   host.trace("Finisher", `${recipe.name}: ${mover.name ?? "token"}`);
   // The stages' source/targets roles follow who travels: a source-mover finisher plays from
