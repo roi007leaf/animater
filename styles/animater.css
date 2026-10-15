@@ -2801,7 +2801,8 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-finishers .an-glyph-attacker{fill:var(--an-muted)}
 .animater .an-finishers path.an-glyph-arrow{fill:none;stroke:var(--glyph);stroke-width:2;stroke-dasharray:3 3}
 .animater .an-finishers polygon.an-glyph-arrow{fill:var(--glyph)}
-.animater .an-finishers .an-glyph-piece{fill:var(--glyph);stroke:var(--an-bg);stroke-width:.8;filter:drop-shadow(0 0 2px var(--glyph))}
+.animater .an-finishers .an-glyph-piece{fill:var(--glyph);stroke:var(--an-text,#e8eaf2);stroke-width:1.2;filter:drop-shadow(0 0 2px var(--glyph))}
+.animater .an-finishers .an-glyph-ghost{fill:none;stroke:var(--glyph);stroke-dasharray:3 3;opacity:.45}
 .animater .an-finishers .an-glyph-still{display:none}
 .animater .an-finishers .an-preset-groups{display:grid;gap:14px;margin-bottom:22px}
 .animater .an-finishers .an-preset-heading{margin:0 0 6px;padding:0;border:0;font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--an-muted)}

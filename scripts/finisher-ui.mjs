@@ -66,7 +66,7 @@ function clipConvex(pts, clipper) {
   return out;
 }
 
-function fragmentsGlyph(stage) {
+function fragmentsGlyph(stage, color) {
   const cut = Math.PI / 5, R = 30, pieces = fragmentPieces(stage, cut);
   // Dust keeps every few specks so a glyph stays small; the flight still comes from the real index.
   const stride = Math.max(1, Math.ceil(pieces.length / 20));
@@ -79,10 +79,12 @@ function fragmentsGlyph(stage) {
     const points = poly.map((q) => `${num(W / 2 + q.x * R)},${num(H / 2 + q.y * R)}`).join(" ");
     return { points, dx, dy };
   }).filter(Boolean);
-  const polygon = (s) => `<polygon class="an-glyph-piece" points="${s.points}"/>`;
-  const anim = shapes.map((s) => `<g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;${num(s.dx)} ${num(s.dy)};${num(s.dx)} ${num(s.dy)}" keyTimes="0;0.2;0.75;1" ${LOOP}/><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.8;1" ${LOOP}/>${polygon(s)}</g>`).join("");
+  // Explicit fill and outline so a piece never falls back to an invisible default if the stylesheet misses.
+  const polygon = (s) => `<polygon class="an-glyph-piece" fill="${esc(color)}" stroke="#e8eaf2" stroke-width="1.2" stroke-linejoin="round" points="${s.points}"/>`;
+  const ghost = `<circle class="an-glyph-ghost" cx="${W / 2}" cy="${H / 2}" r="${R}" fill="none" stroke="${esc(color)}" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.45"/>`;
+  const anim = shapes.map((s) => `<g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;${num(s.dx)} ${num(s.dy)};${num(s.dx)} ${num(s.dy)}" keyTimes="0;0.2;0.75;1" ${LOOP}/><animate attributeName="opacity" values="1;1;0.3;0.3" keyTimes="0;0.5;0.8;1" ${LOOP}/>${polygon(s)}</g>`).join("");
   const still = shapes.map((s) => `<g transform="translate(${num(s.dx * 0.35)} ${num(s.dy * 0.35)})">${polygon(s)}</g>`).join("");
-  return `<g class="an-glyph-anim">${anim}</g><g class="an-glyph-still">${still}</g>`;
+  return `${ghost}<g class="an-glyph-anim">${anim}</g><g class="an-glyph-still">${still}</g>`;
 }
 
 function knockbackGlyph(knockback) {
@@ -98,7 +100,7 @@ export function finisherGlyphSVG(recipe, { size = 80 } = {}) {
   const path = finisherTravelPath(recipe), keyframes = path ? normalizeKeyframes(path.keyframes, { limit: 24 }) : null;
   const fragments = stages.find((s) => s?.kind === "motion" && s.motion === "fragments");
   if (keyframes && pathSquares(keyframes) >= 1) return wrap("travel", color, size, travelGlyph(recipe, keyframes));
-  if (fragments) return wrap("fragments", color, size, fragmentsGlyph(fragments), ` data-pattern="${esc(normalizeFragments(fragments).pattern)}"`);
+  if (fragments) return wrap("fragments", color, size, fragmentsGlyph(fragments, color), ` data-pattern="${esc(normalizeFragments(fragments).pattern)}"`);
   if (keyframes) return wrap("inplace", color, size, inPlaceGlyph(keyframes));
   return wrap("knockback", color, size, knockbackGlyph(Number(recipe?.finisher?.knockback) || 0));
 }
@@ -138,7 +140,7 @@ function finisherCardHTML(r, players, itemSummary) {
   const f = r.finisher, path = finisherTravelPath(r), squares = path ? pathSquares(normalizeKeyframes(path.keyframes, { limit: 24 })) : 0;
   const reach = path ? (squares ? `Travels ${squares} sq` : "In place") : f.knockback ? `Knockback: ${f.knockback} sq` : "Knockback: none";
   const id = esc(r.id), off = r.enabled === false;
-  return `<article class="an-card an-fcard${off ? " is-off" : ""}" style="--effect:${esc(hex(r.color, "#9e8aff"))}">`
+  return `<article class="an-card an-fcard${off ? " is-off" : ""}" data-action="select" data-id="${id}" style="--effect:${esc(hex(r.color, "#9e8aff"))}">`
     + `<button type="button" data-action="select" data-id="${id}" class="an-fcard-open" aria-label="Open ${esc(r.name)}">`
     + `<div class="an-art an-fcard-art">${finisherGlyphSVG(r)}<span class="an-fcard-badges"><span class="an-fcard-badge">${esc(FINISHER_ON[f.on])}</span>${off ? `<span class="an-fcard-badge is-off">Off</span>` : ""}</span></div>`
     + `<div class="an-card-body"><h2>${esc(r.name)}</h2><div class="an-fcard-chips">${cardChipsHTML(r, itemSummary)}</div>`
