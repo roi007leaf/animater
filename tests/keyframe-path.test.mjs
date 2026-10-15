@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { MAX_KEYFRAMES, DEFAULT_KEYFRAMES, normalizeKeyframes, samplePath, pathEnd, pathSquares, rotateBy, unrotateBy, snapSquares, insertKeyframe, moveKeyframeTime, moveKeyframePoint, deleteKeyframe, flipKeyframes, resetKeyframes, cutPath, stretchScale, landsTilted } from "../scripts/keyframe-path.mjs";
+import { MAX_KEYFRAMES, DEFAULT_KEYFRAMES, normalizeKeyframes, samplePath, pathEnd, pathSquares, rotateBy, unrotateBy, snapSquares, insertKeyframe, moveKeyframeTime, moveKeyframePoint, deleteKeyframe, flipKeyframes, resetKeyframes, cutPath, stretchScale, landsTilted, smoothKeyframes } from "../scripts/keyframe-path.mjs";
+import { easeValue } from "../scripts/stage-options.mjs";
 
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} vs ${b}`);
 const kfs = normalizeKeyframes([{ at: 0 }, { at: 0.5, x: 1, y: 1, rotation: 90, ease: "linear" }, { at: 1, x: 2, y: 0, scale: 0.5, alpha: 0.2, ease: "linear" }]);
@@ -9,7 +10,7 @@ test("keyframes are clamped, sorted, pinned at the start and repaired when unusa
   const n = normalizeKeyframes([{ at: 1, x: 40, rotation: 9999, scale: 0, alpha: 3, ease: "bogus" }, { at: 0.3, x: 5, y: 2 }, { at: 0.1, x: 9, y: 9, rotation: 45 }]);
   assert.deepEqual(n.map((k) => k.at), [0, 0.3, 1]);
   assert.deepEqual([n[0].x, n[0].y, n[0].rotation, n[0].scale, n[0].alpha], [0, 0, 0, 1, 1], "first keyframe is where the token stands");
-  assert.deepEqual([n[2].x, n[2].rotation, n[2].scale, n[2].alpha, n[2].ease], [12, 1440, 0.05, 1, "easeInOutQuad"]);
+  assert.deepEqual([n[2].x, n[2].rotation, n[2].scale, n[2].alpha, n[2].ease], [12, 1440, 0.05, 1, "linear"]);
   assert.deepEqual(normalizeKeyframes(null), DEFAULT_KEYFRAMES.map((k) => ({ ...k })));
   assert.deepEqual(normalizeKeyframes([{ at: 0.5, x: 3 }]).map((k) => [k.at, k.x]), [[0, 0], [1, 1]], "one keyframe is not a path");
   assert.equal(normalizeKeyframes(Array.from({ length: 20 }, (_, i) => ({ at: i / 19, x: i / 4 }))).length, 12);
@@ -35,6 +36,23 @@ test("duplicate times: the path still ends on its true last point", () => {
   const dup = normalizeKeyframes([{ at: 0 }, { at: 1, x: 3 }, { at: 1, x: 5 }]);
   assert.equal(samplePath(dup, 1).x, 5);
   assert.equal(samplePath(dup, 1).x, pathEnd(dup).x);
+});
+
+test("keyframes default to linear speed; a stored ease is kept", () => {
+  assert.ok(DEFAULT_KEYFRAMES.every((k) => k.ease === "linear"), "the default shove");
+  const n = normalizeKeyframes([{ at: 0 }, { at: 0.5, x: 1 }, { at: 1, x: 2, ease: "easeOutCubic" }]);
+  assert.deepEqual(n.map((k) => k.ease), ["linear", "linear", "easeOutCubic"]);
+  near(samplePath(normalizeKeyframes([{ at: 0 }, { at: 1, x: 1 }]), 0.25).x, 0.25, "linear by default");
+  assert.equal(insertKeyframe(kfs, 0.25)[1].ease, "linear", "an inserted keyframe is linear");
+});
+
+test("smoothKeyframes makes every keyframe linear and leaves an already smooth path alone", () => {
+  const eased = normalizeKeyframes([{ at: 0 }, { at: 0.4, x: 1, ease: "easeInQuad", sharp: true }, { at: 1, x: 3, ease: "easeOutBack", rotation: 90 }]);
+  const before = structuredClone(eased), smooth = smoothKeyframes(eased);
+  assert.deepEqual(smooth.map((k) => k.ease), ["linear", "linear", "linear"]);
+  assert.deepEqual(smooth.map((k) => [k.at, k.x, k.rotation, k.sharp]), eased.map((k) => [k.at, k.x, k.rotation, k.sharp]), "only the eases change");
+  assert.deepEqual(eased, before, "not mutated");
+  assert.equal(smoothKeyframes(smooth), smooth, "nothing to change: the same array");
 });
 
 test("each segment's easing shapes the speed into its keyframe", () => {
@@ -96,37 +114,27 @@ test("cutPath lands the cut end upright: rotation to the nearest whole turn, ful
   assert.deepEqual([keyframes.at(-1).scale, keyframes.at(-1).alpha], [1, 1]);
 });
 
-test("cutPath keeps earlier keyframes, rescaled to the cut time", () => {
+test("cutPath resamples the motion up to the wall evenly in time, every channel, with linear keyframes", () => {
   const k = normalizeKeyframes([{ at: 0, x: 0, y: 0 }, { at: 0.2, x: 1, y: 0, scale: 1.2 }, { at: 1, x: 6, y: 0, ease: "easeOutCubic" }]);
   const { keyframes, t } = cutPath(k, 3);
-  assert.equal(keyframes.length, 6, "start, the kept 0.2 keyframe, 3 resampled points, the cut end");
-  assert.ok(Math.abs(keyframes[1].at - 0.2 / t) < 1e-9);
-  assert.equal(keyframes[1].scale, 1.2);
-  assert.ok(keyframes.slice(2).every((k) => k.ease === "linear" && k.sharp === false));
+  assert.ok(keyframes.length >= 8 && keyframes.length <= MAX_KEYFRAMES, `${keyframes.length}`);
+  assert.ok(keyframes.every((kf) => kf.ease === "linear" && kf.sharp === false));
+  for (const kf of keyframes.slice(1, -1)) {
+    const o = samplePath(k, kf.at * t);
+    for (const key of ["x", "y", "rotation", "scale", "alpha", "stretch"]) near(kf[key], o[key], `${key} at ${kf.at}`);
+  }
+  const gaps = keyframes.slice(1).map((kf, i) => kf.at - keyframes[i].at);
+  assert.ok(gaps.every((g) => Math.abs(g - gaps[0]) < 1e-9), "evenly spaced in time");
   assert.ok(Math.abs(Math.hypot(keyframes.at(-1).x, keyframes.at(-1).y) - 3) < 1e-3);
 });
 
-test("cutPath leaves a path that never reaches the wall untouched", () => {
-  for (const reach of [6, 7]) {
-    const k = line(), cut = cutPath(k, reach);
-    assert.equal(cut.t, 1, `reach ${reach}`);
-    assert.deepEqual(cut.keyframes, k);
-  }
-});
-
-test("cutPath keeps the original motion up to the wall: same positions in time, still fast at impact", () => {
-  // The Wall slam preset's path: it is still moving fast when a wall 3 squares out stops it.
-  const original = normalizeKeyframes([{ at: 0, x: 0, y: 0 }, { at: 0.12, x: 0.5, y: 0, scale: 1.08 }, { at: 1, x: 6, y: 0, ease: "easeOutCubic" }]);
-  const d = 1000, { keyframes, t } = cutPath(original, 3), cutDuration = d * t;
-  const at = (k, q) => { const p = samplePath(k, q); return { x: p.x, y: p.y }; };
-  for (const f of [0.2, 0.4, 0.6, 0.8, 0.95]) {
-    const ms = f * cutDuration, a = at(keyframes, ms / cutDuration), b = at(original, ms / d);
-    assert.ok(Math.hypot(a.x - b.x, a.y - b.y) < 0.15, `at ${Math.round(ms)} ms: cut ${a.x.toFixed(3)} vs original ${b.x.toFixed(3)}`);
-  }
-  const step = (k, from, to) => { const a = at(k, from), b = at(k, to); return Math.hypot(b.x - a.x, b.y - a.y); };
-  const cutSpeed = step(keyframes, 0.95, 1), originalSpeed = step(original, 0.95 * t, t);
-  assert.ok(cutSpeed > 0.5 * originalSpeed, `impact speed ${cutSpeed} vs ${originalSpeed}`);
-  assert.ok(keyframes.length <= MAX_KEYFRAMES);
+test("cutPath with a whole-path ease: searches the stage's own time and resamples the eased motion", () => {
+  const k = normalizeKeyframes([{ at: 0 }, { at: 1, x: 6 }]);
+  const { keyframes, t } = cutPath(k, 3, "easeOutCubic");
+  near(t, 1 - Math.cbrt(0.5), "easeOutCubic reaches half way at 1 - cbrt(0.5)");
+  for (const kf of keyframes.slice(1, -1)) near(kf.x, 6 * easeValue(kf.at * t, "easeOutCubic"), `x at ${kf.at}`);
+  near(cutPath(k, 3).t, 0.5, "linear by default");
+  assert.equal(cutPath(k, 7, "easeOutCubic").t, 1, "never reaches the wall: untouched");
 });
 
 test("cutPath resamples within the keyframe budget", () => {
@@ -154,7 +162,7 @@ test("cutPath ends unstretched; resampled keyframes keep the sampled stretch", (
   const k = normalizeKeyframes([{ at: 0 }, { at: 0.2, x: 1, stretch: 0.1 }, { at: 1, x: 6, stretch: 0.3, ease: "linear" }]);
   const { keyframes, t } = cutPath(k, 3);
   assert.equal(keyframes.at(-1).stretch, 0);
-  const inner = keyframes[2];
+  const inner = keyframes.at(-2);
   near(inner.stretch, samplePath(k, inner.at * t).stretch, "resampled from the original");
   assert.ok(inner.stretch > 0.1);
 });

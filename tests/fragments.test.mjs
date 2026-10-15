@@ -255,3 +255,14 @@ test("one piece failing to destroy does not leak the rest", () => {
   assert.doesNotThrow(() => h.destroy());
   assert.ok(layer.children.slice(1).every((c) => c.destroyed));
 });
+
+test("fragment flights keep their own eases now that path keyframes default to linear", () => {
+  const moves = (a, b) => ["x", "y", "rotation", "scale", "alpha", "stretch"].some((key) => a[key] !== b[key]);
+  for (const pattern of ["halves", "topBottom", "shards", "dust"]) {
+    const s = stage({ pattern, spin: 90 }), pieces = fragmentPieces(s, 0);
+    pieces.forEach((p, i) => {
+      const k = fragmentFlight(s, p, i, 0.3).keyframes;
+      for (let j = 1; j < k.length; j++) if (moves(k[j - 1], k[j])) assert.notEqual(k[j].ease, "linear", `${pattern} piece ${i} keyframe ${j}`);
+    });
+  }
+});

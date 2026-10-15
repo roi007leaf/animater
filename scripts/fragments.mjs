@@ -100,7 +100,7 @@ export function fragmentFlight(stage, p, index, cutAngle, turn = 0) {
     const wind = { x: Math.cos(cutAngle), y: Math.sin(cutAngle) }, lead = 0.5 - (c.x * wind.x + c.y * wind.y);
     const start = Math.min(0.4, Math.max(0, lead * 0.4)), end = Math.min(1, start + 0.6), reach = s.spread * (0.5 + rand() * 0.5);
     const dx = out.x * reach * 0.4 + wind.x * (reach * 0.6 + s.drift), dy = out.y * reach * 0.4 + wind.y * (reach * 0.6 + s.drift) - 0.2;
-    return { start, end, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: end, x: dx, y: dy, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutQuad" }, { at: 1, x: dx, y: dy, rotation: s.spin * (rand() * 2 - 1) }]) };
+    return { start, end, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: end, x: dx, y: dy, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutQuad" }, { at: 1, x: dx, y: dy, rotation: s.spin * (rand() * 2 - 1), ease: "easeInOutQuad" }]) };
   }
   if (s.pattern === "shards") {
     const dist = s.spread * (0.7 + rand() * 0.6);
@@ -112,7 +112,7 @@ export function fragmentFlight(stage, p, index, cutAngle, turn = 0) {
   if (s.pattern === "topBottom" && side > 0) return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.4 }, { at: 1, x: 0, y: s.fall * 0.1, ease: "easeInQuad" }]) };
   const along = s.pattern === "topBottom" ? s.spread * 0.3 : 0;
   const mx = n.x * side * s.spread * 0.5 + Math.cos(a) * along, my = n.y * side * s.spread * 0.5 + Math.sin(a) * along + s.fall * 0.3;
-  return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.15, x: mx * 0.15, y: my * 0.15 }, { at: 1, x: mx, y: my, rotation: side * s.spin * (s.pattern === "topBottom" ? 3 : 1), ease: "easeOutQuad" }]) };
+  return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.15, x: mx * 0.15, y: my * 0.15, ease: "easeInOutQuad" }, { at: 1, x: mx, y: my, rotation: side * s.spin * (s.pattern === "topBottom" ? 3 : 1), ease: "easeOutQuad" }]) };
 }
 
 export function fragmentPose(stage, p, flight, t) {

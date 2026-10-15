@@ -3,11 +3,11 @@
 import { easeValue, EASES } from "./stage-options.mjs";
 
 export const MAX_KEYFRAMES = 12;
-const base = { rotation: 0, scale: 1, alpha: 1, stretch: 0, ease: "easeInOutQuad", sharp: false };
+const base = { rotation: 0, scale: 1, alpha: 1, stretch: 0, ease: "linear", sharp: false };
 export const DEFAULT_KEYFRAMES = Object.freeze([Object.freeze({ at: 0, x: 0, y: 0, ...base }), Object.freeze({ at: 1, x: 1, y: 0, ...base })]);
 const clamp = (v, min, max, fallback) => (v !== null && v !== "" && Number.isFinite(Number(v)) ? Math.min(max, Math.max(min, Number(v))) : fallback);
 const keyframe = (k, limit = 12) => ({ at: clamp(k.at, 0, 1, 0), x: clamp(k.x, -limit, limit, 0), y: clamp(k.y, -limit, limit, 0), rotation: clamp(k.rotation, -1440, 1440, 0),
-  scale: clamp(k.scale, 0.05, 5, 1), alpha: clamp(k.alpha, 0, 1, 1), stretch: clamp(k.stretch, -0.6, 0.6, 0), ease: Object.hasOwn(EASES, k.ease) ? k.ease : "easeInOutQuad", sharp: k.sharp === true });
+  scale: clamp(k.scale, 0.05, 5, 1), alpha: clamp(k.alpha, 0, 1, 1), stretch: clamp(k.stretch, -0.6, 0.6, 0), ease: Object.hasOwn(EASES, k.ease) ? k.ease : "linear", sharp: k.sharp === true });
 
 // `limit` is the x/y clamp in squares: authored paths use 12; a finisher's rotated, fitted end needs more room.
 export function normalizeKeyframes(input, { limit = 12 } = {}) {
@@ -58,25 +58,27 @@ export const rotateBy = (v, dir) => ({ x: v.x * dir.x - v.y * dir.y, y: v.x * di
 export const unrotateBy = (v, dir) => ({ x: v.x * dir.x + v.y * dir.y, y: -v.x * dir.y + v.y * dir.x });
 
 // A path stopped by a wall `reach` squares out: cut where it first gets there, keeping its speed.
-// The partial segment is resampled from the original with linear keyframes: reusing its ease over
+// `ease` is the stage's whole-path ease, so `t` is in the stage's own time. The cut plays exactly
+// the original motion up to the wall: it is resampled evenly in time into linear keyframes, to be
+// played with a linear whole-path ease over `t` of the duration. Reusing the original eases over
 // the shorter span would replay the whole curve and slow it to a stop at the wall. The cut end
 // lands upright (whole turns, full size, visible). A path that never gets there is kept.
-export function cutPath(keyframes, reach) {
-  const out = (t) => { const p = samplePath(keyframes, t); return Math.hypot(p.x, p.y) >= reach - 1e-9; };
+const CUT_SAMPLES = Math.min(8, MAX_KEYFRAMES - 1);
+export function cutPath(keyframes, reach, ease = "linear") {
+  const at = (p) => samplePath(keyframes, Math.min(1, Math.max(0, easeValue(p, ease))));
+  const out = (p) => { const s = at(p); return Math.hypot(s.x, s.y) >= reach - 1e-9; };
   const STEPS = 200;
   let hi = null;
   for (let i = 1; i <= STEPS; i++) if (out(i / STEPS)) { hi = i / STEPS; break; }
   if (hi === null) return { keyframes, t: 1 };
   let lo = hi - 1 / STEPS;
-  while (hi - lo > 1e-4) { const mid = (lo + hi) / 2; if (out(mid)) hi = mid; else lo = mid; }
+  while (hi - lo > 1e-9) { const mid = (lo + hi) / 2; if (out(mid)) hi = mid; else lo = mid; }
   const t = hi;
   if (t >= 1) return { keyframes, t: 1 };
-  const before = keyframes.filter((k) => k.at < t), from = before.at(-1).at;
-  const inner = Math.max(0, Math.min(3, MAX_KEYFRAMES - before.length - 1));
-  const resampled = Array.from({ length: inner }, (_, i) => { const q = from + ((t - from) * (i + 1)) / (inner + 1); return { ...samplePath(keyframes, q), at: q, ease: "linear", sharp: false }; });
-  const p = samplePath(keyframes, t);
-  const end = { at: t, x: p.x, y: p.y, rotation: Math.round(p.rotation / 360) * 360 + 0, scale: 1, alpha: 1, stretch: 0, ease: "linear", sharp: false };
-  return { keyframes: normalizeKeyframes([...before, ...resampled, end].map((k) => ({ ...k, at: k.at / t }))), t };
+  const resampled = Array.from({ length: CUT_SAMPLES }, (_, i) => ({ ...at((t * i) / CUT_SAMPLES), at: i / CUT_SAMPLES, ease: "linear", sharp: false }));
+  const p = at(t);
+  const end = { at: 1, x: p.x, y: p.y, rotation: Math.round(p.rotation / 360) * 360 + 0, scale: 1, alpha: 1, stretch: 0, ease: "linear", sharp: false };
+  return { keyframes: normalizeKeyframes([...resampled, end]), t };
 }
 
 // Editor helpers. The first keyframe is where the token stands and the last ends the motion.
@@ -84,7 +86,7 @@ export const snapSquares = (v, whole = false) => (whole ? Math.round(v) : Math.r
 export function insertKeyframe(keyframes, at) {
   const t = clamp(at, 0.01, 0.99, 0.5);
   if (keyframes.length >= MAX_KEYFRAMES || keyframes.some((k) => Math.abs(k.at - t) < 0.005)) return keyframes;
-  return normalizeKeyframes([...keyframes, { ...samplePath(keyframes, t), at: t, ease: "easeInOutQuad" }]);
+  return normalizeKeyframes([...keyframes, { ...samplePath(keyframes, t), at: t, ease: "linear" }]);
 }
 export function moveKeyframeTime(keyframes, index, at) {
   if (index <= 0 || index >= keyframes.length - 1) return keyframes;
@@ -98,3 +100,6 @@ export function moveKeyframePoint(keyframes, index, x, y, whole = false) {
 export const deleteKeyframe = (keyframes, index) => (index <= 0 || index >= keyframes.length - 1 ? keyframes : keyframes.filter((_, i) => i !== index));
 export const flipKeyframes = (keyframes) => keyframes.map((k) => ({ ...k, y: k.y ? -k.y : 0 }));
 export const resetKeyframes = () => DEFAULT_KEYFRAMES.map((k) => ({ ...k }));
+// "Make smooth": every keyframe linear, so the whole-path ease alone shapes the speed. An already
+// smooth path is returned as is, so the editor can tell nothing changed.
+export const smoothKeyframes = (keyframes) => (keyframes.every((k) => k.ease === "linear") ? keyframes : keyframes.map((k) => ({ ...k, ease: "linear" })));
