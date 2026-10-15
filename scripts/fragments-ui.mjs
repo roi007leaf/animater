@@ -31,8 +31,8 @@ export function fragmentsControlsHTML(stage, index, previewAt = 0.6, { finisher 
   const field = (key, label, min, max, step) => `<label>${label}<input type="number" min="${min}" max="${max}" step="${step}" data-field="${key}" data-index="${index}" value="${s[key]}"></label>`;
   const select = (key, label, table) => `<label>${label}<select data-field="${key}" data-index="${index}">${Object.entries(table).map(([k, v]) => `<option value="${esc(k)}" ${s[key] === k ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`;
   const [lo, hi] = FRAGMENT_COUNTS[s.pattern], hint = BEHAVIOR_HINTS[s.behavior];
-  // Bursting dust specks and pixels fade over their own windows; everything else fades with the stage.
-  const ownFade = (s.pattern === "dust" || s.pattern === "pixelate") && s.behavior === "burst";
+  // Bursting dust specks and pixels, and absorbed pieces, fade over their own windows; everything else fades with the stage.
+  const ownFade = ((s.pattern === "dust" || s.pattern === "pixelate") && s.behavior === "burst") || s.behavior === "absorb";
   return `<div class="an-editor-section an-fragments"><div class="an-section-title"><b>Token fragments</b><small>The real token disappears as the pieces fly</small></div>
     <div class="an-field-row">${select("pattern", "Pattern", FRAGMENT_PATTERNS)}${select("cut", "Cut", { attack: "Follow the attack", fixed: "Fixed angle" })}${s.cut === "fixed" ? field("angle", "Angle°", 0, 180, 5) : ""}</div>
     <div class="an-field-row">${select("behavior", "Behaviour", FRAGMENT_BEHAVIORS)}${select("tint", "Tint", FRAGMENT_TINTS)}</div>

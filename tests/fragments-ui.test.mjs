@@ -79,6 +79,8 @@ test("Fade shows whenever pieces fade with the stage", () => {
   assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "pixelate" }, 0), "fade"), false, "pixels fade per cell");
   assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "dust", behavior: "rise" }, 0), "fade"), true, "rising dust fades with the stage");
   assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "starburst" }, 0), "fade"), true);
+  assert.equal(has(fragmentsControlsHTML({ ...s, behavior: "absorb" }, 0), "fade"), false, "absorb fades over its own last quarter");
+  assert.equal(has(fragmentsControlsHTML({ ...s, pattern: "dust", behavior: "absorb" }, 0), "fade"), false);
 });
 
 test("the mini preview shrinks and stretches pieces only when a behaviour does", () => {
