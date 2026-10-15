@@ -19,7 +19,7 @@ import { motionPose, motionDirection, poseTransform } from "./motion.mjs";
 import { isPathMotion } from "./motion-path.mjs";
 import { fragmentsControlsHTML, fragmentsPreviewSVG, resetPiecesOnPattern } from "./fragments-ui.mjs";
 import { keyframesOf, keyframeDiamondsHTML, pathCanvasHTML, keyframeInspectorHTML } from "./keyframe-ui.mjs";
-import { normalizeKeyframes, insertKeyframe, moveKeyframeTime, deleteKeyframe, flipKeyframes, resetKeyframes } from "./keyframe-path.mjs";
+import { normalizeKeyframes, insertKeyframe, moveKeyframeTime, deleteKeyframe, flipKeyframes, resetKeyframes, smoothKeyframes } from "./keyframe-path.mjs";
 import { catalogSoundOptions, previewRecipeSounds } from "./spell-sounds.mjs";
 import { starterRecipes } from "./presets.mjs";
 import { reorderStages, recipeDuration, RecipeClock, linkStartModes, moveRow, snapStart, timelineLayout, packLanes } from "./choreography.mjs";
@@ -2448,7 +2448,7 @@ export class Workspace {
         this.render();
         return;
       }
-      if (["kf-select", "kf-add", "kf-delete", "kf-flip", "kf-reset"].includes(action)) {
+      if (["kf-select", "kf-add", "kf-delete", "kf-flip", "kf-reset", "kf-smooth"].includes(action)) {
         if (action === "kf-select") {
           // Selecting is view state: it never creates a draft.
           if (this.recipe()?.stages[this.stageIndex]?.motion !== "path") return;
@@ -2463,12 +2463,17 @@ export class Workspace {
           const next = insertKeyframe(kfs0, (kfs0[i].at + kfs0[Math.min(kfs0.length - 1, i + 1)].at) / 2);
           if (next === kfs0) changed = false;
           else { s = this.edit().stages[this.stageIndex]; s.keyframes = next; this.keyframeIndex = i + 1; }
+        } else if (action === "kf-smooth") {
+          // Only edits (and so only makes a draft) when some keyframe was not linear yet.
+          const next = smoothKeyframes(kfs0);
+          if (next === kfs0) changed = false;
+          else { s = this.edit().stages[this.stageIndex]; s.keyframes = next; }
         } else s = this.edit().stages[this.stageIndex];
         if (!s) return;
         if (action === "kf-delete") { s.keyframes = deleteKeyframe(kfs, i); this.keyframeIndex = Math.max(0, i - 1); }
         if (action === "kf-flip") s.keyframes = flipKeyframes(kfs);
         if (action === "kf-reset") { s.keyframes = resetKeyframes(); this.keyframeIndex = 1; }
-        if (changed) this.message = "Path updated. Save to apply.";
+        if (changed) this.message = action === "kf-smooth" ? "Path smoothed: one continuous motion. Save to apply." : "Path updated. Save to apply.";
         this.render();
         return;
       }

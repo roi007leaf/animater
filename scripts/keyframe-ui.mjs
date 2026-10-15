@@ -54,14 +54,18 @@ export function pathCanvasHTML(s, { selected = -1, finisher = null } = {}) {
 export function keyframeInspectorHTML(s, stageIndex, selected) {
   const kfs = keyframesOf(s), i = Math.max(0, Math.min(kfs.length - 1, selected)), k = kfs[i];
   const first = i === 0, last = i === kfs.length - 1, attrs = (key) => `data-field="keyframe" data-kf-field="${key}" data-kf-index="${i}" data-index="${stageIndex}"`;
+  const options = (value) => Object.entries(EASES).map(([key, label]) => `<option value="${esc(key)}" ${value === key ? "selected" : ""}>${esc(label)}</option>`).join("");
   const num = (key, label, value, min, max, step, off = false) => `<label>${label}<input type="number" ${attrs(key)} min="${min}" max="${max}" step="${step}" value="${value}" ${off ? "disabled" : ""}></label>`;
   return `<div class="an-editor-section an-kf-inspector"><div class="an-section-title"><b>Keyframes</b><small>${kfs.length}/12 · drag dots in the preview</small></div>
+    <div class="an-field-row"><label>Path easing<select data-field="pathEase" data-index="${stageIndex}">${options(s.pathEase ?? "linear")}</select></label><button data-action="kf-smooth" class="an-quiet" data-tooltip="Every keyframe Linear: the path easing alone shapes the speed">Make smooth</button></div>
+    <p class="an-hint">One easing for the whole motion.</p>
     <div class="an-kf-list" role="group" aria-label="Keyframes">${kfs.map((kk, j) => `<button data-action="kf-select" data-kf="${j}" class="${j === i ? "is-active" : ""}" aria-pressed="${j === i}">${j + 1}</button>`).join("")}</div>
     <div class="an-field-row">${num("at", "At (ms)", Math.round(k.at * s.duration), 0, s.duration, 10, first || last)}${num("x", "X (squares)", k.x, -12, 12, 0.25, first)}${num("y", "Y (squares)", k.y, -12, 12, 0.25, first)}</div>
     <div class="an-field-row">${num("rotation", "Rotation°", k.rotation, -1440, 1440, 5, first)}${num("scale", "Size ×", k.scale, 0.05, 5, 0.05, first)}${num("stretch", "Stretch", k.stretch ?? 0, -0.6, 0.6, 0.05, first)}${num("alpha", "Opacity", k.alpha, 0, 1, 0.05, first)}</div>
-    <div class="an-field-row"><label>Easing<select ${attrs("ease")}>${Object.entries(EASES).map(([key, label]) => `<option value="${esc(key)}" ${k.ease === key ? "selected" : ""}>${esc(label)}</option>`).join("")}</select></label><label class="an-check"><input type="checkbox" ${attrs("sharp")} ${k.sharp ? "checked" : ""}> Sharp corner</label></div>
+    <div class="an-field-row"><label>Speed into this keyframe<select ${attrs("ease")}>${options(k.ease ?? "linear")}</select></label><label class="an-check"><input type="checkbox" ${attrs("sharp")} ${k.sharp ? "checked" : ""}> Sharp corner</label></div>
+    <p class="an-hint">Use for deliberate pauses or bounces; otherwise leave Linear.</p>
     <div class="an-play-actions"><button data-action="kf-add" ${kfs.length >= 12 || last ? "disabled" : ""}>+ Keyframe after</button><button data-action="kf-delete" class="an-quiet" ${first || last ? "disabled" : ""}>Delete keyframe</button><button data-action="kf-flip" class="an-quiet">Flip path</button><button data-action="kf-reset" class="an-quiet">Reset to straight shove</button></div>
-    <p class="an-hint">+x is away from the other token. Easing shapes the speed into each keyframe. Stretch squeezes or stretches along the travel direction (negative = flatten). In a finisher with End: hold, the token is moved to where the path ends.</p>${s.motionEnd === "hold" && landsTilted(kfs) ? `
+    <p class="an-hint">+x is away from the other token. Stretch squeezes or stretches along the travel direction (negative = flatten). In a finisher with End: hold, the token is moved to where the path ends.</p>${s.motionEnd === "hold" && landsTilted(kfs) ? `
     <p class="an-hint is-warn" role="note">This path travels: when the token lands it snaps back to upright, full size and visible. End on rotation 0/360/…, size 1, stretch 0, opacity 1 — fade or shrink in place instead.</p>` : ""}</div>`;
 }
 
