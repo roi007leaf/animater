@@ -33,7 +33,8 @@ test("the new patterns are registered with their labels and piece ranges", () =>
     { cross: "Cross cut", claw: "Claw marks", diced: "Diced", starburst: "Starburst", rings: "Rings", pixelate: "Pixelate", ribbons: "Ribbons" });
   assert.deepEqual(Object.fromEntries(NEW.map((k) => [k, FRAGMENT_COUNTS[k]])),
     { cross: [4, 4, 4], claw: [4, 4, 4], diced: [2, 6, 4], starburst: [6, 16, 10], rings: [2, 4, 3], pixelate: [16, 64, 36], ribbons: [6, 16, 10] });
-  assert.deepEqual(FRAGMENT_BEHAVIORS, { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap" });
+  assert.deepEqual(FRAGMENT_BEHAVIORS, { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap",
+    flatten: "Crushed flat", shudder: "Shudder apart", glitch: "Glitch out", sink: "Sink and fade" });
   assert.deepEqual(FRAGMENT_TINTS, { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly" });
 });
 

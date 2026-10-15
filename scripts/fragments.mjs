@@ -14,7 +14,10 @@ export const FRAGMENT_COUNTS = {
   cross: [4, 4, 4], claw: [4, 4, 4], diced: [2, 6, 4], starburst: [6, 16, 10], rings: [2, 4, 3], pixelate: [16, 64, 36], ribbons: [6, 16, 10],
   perforate: [3, 6, 4], slashes: [2, 4, 3], crush: [2, 4, 3], lightning: [2, 2, 2],
 };
-export const FRAGMENT_BEHAVIORS = { burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap" };
+export const FRAGMENT_BEHAVIORS = {
+  burst: "Burst apart", implode: "Implode", absorb: "Drawn to the attacker", rise: "Rise away", bounce: "Fall and bounce", drip: "Melt down", crumble: "Crumble to a heap",
+  flatten: "Crushed flat", shudder: "Shudder apart", glitch: "Glitch out", sink: "Sink and fade",
+};
 export const FRAGMENT_TINTS = { none: "None", frozen: "Frozen", charred: "Charred", stone: "Stone", ghost: "Ghostly" };
 // How a tint draws: a PIXI tint on the table (stone adds one shared greyscale filter), a CSS filter
 // in the studio, and an alpha factor for both.
@@ -272,6 +275,32 @@ export function fragmentFlight(stage, p, index, cutAngle, turn = 0, size = { w: 
     const dx = out.x * reach * 0.4 + wind.x * (reach * 0.6 + s.drift), dy = out.y * reach * 0.4 + wind.y * (reach * 0.6 + s.drift) - 0.2;
     return { start, end, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: end, x: dx, y: dy, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutQuad" }, { at: 1, x: dx, y: dy, rotation: s.spin * (rand() * 2 - 1), ease: "easeInOutQuad" }]) };
   }
+  if (s.pattern === "perforate") {
+    // The exit wound: out in a cone of +-35 degrees along the attack; the far side goes first.
+    const a = finite(screenCut(s, cutAngle)), along = c.x * Math.cos(a) + c.y * Math.sin(a), start = Math.min(0.35, Math.max(0, (0.5 - along) * 0.3));
+    const dir = a + (rand() * 2 - 1) * ((35 * Math.PI) / 180), dist = s.spread * (0.9 + rand() * 0.6);
+    return { start, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, x: Math.cos(dir) * dist, y: Math.sin(dir) * dist, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutCubic" }]) };
+  }
+  if (s.pattern === "slashes") {
+    // Strips slide along the cut, alternating sides; the higher a strip, the farther it slides and topples.
+    const a = finite(screenCut(s, cutAngle)), strip = p.strip ?? index, side = strip % 2 ? 1 : -1, high = Math.min(1, Math.max(0, 0.5 - c.y));
+    const slide = side * s.spread * (0.3 + 0.7 * high), start = Math.min(0.3, strip * 0.06);
+    return { start, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, x: Math.cos(a) * slide, y: Math.sin(a) * slide + s.fall * 0.3, rotation: side * s.spin * (0.3 + high), ease: "easeOutQuad" }]) };
+  }
+  if (s.pattern === "crush") {
+    // The inner ring stays and sinks; the outer rings scatter low, the outermost last.
+    const ring = p.ring ?? 0;
+    if (!ring) return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: 0, y: 0.15 + s.fall * 0.2, scale: 0.85, ease: "easeInQuad" }]) };
+    const dist = s.spread * (0.4 + 0.3 * ring) * (0.8 + rand() * 0.4), start = (0.1 * ring) / Math.max(1, s.pieces - 1);
+    return { start, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, x: out.x * dist, y: Math.abs(out.y) * dist * 0.3 + 0.2 + s.fall * 0.3, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutCubic" }]) };
+  }
+  if (s.pattern === "lightning") {
+    // Each half jerks apart along the bolt's normal with two quick kinks, then settles; a half moves as one.
+    const a = finite(screenCut(s, cutAngle)), n = { x: -Math.sin(a), y: Math.cos(a) }, d = { x: Math.cos(a), y: Math.sin(a) }, push = (p.group ? 1 : -1) * s.spread * 0.5;
+    const jerk = (u, k) => ({ x: n.x * push * u + d.x * k, y: n.y * push * u + d.y * k });
+    return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.1, ...jerk(0.35, 0.06), sharp: true }, { at: 0.2, ...jerk(0.55, -0.06), sharp: true },
+      { at: 0.3, ...jerk(0.8, 0.04), sharp: true }, { at: 1, ...jerk(1, 0), ease: "easeOutQuad" }]) };
+  }
   if (s.pattern === "shards") {
     const dist = s.spread * (0.7 + rand() * 0.6);
     return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: out.x * dist, y: out.y * dist + s.fall * 0.3, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutCubic" }]) };
@@ -381,13 +410,58 @@ function behaviorFlight(s, p, index, cutAngle, turn, size, c, out, rand) {
       { at: end, x: dx, y: dy, rotation: roll, sharp: true, ease: "easeInQuad" },
       { at: 1, x: dx, y: dy, rotation: roll, ease: "linear" }], AIMED) };
   }
+  if (s.behavior === "flatten") {
+    // Squashed to 0.35 of its height and 1.15 of its width about the art's bottom on screen over
+    // the first quarter, then skidding out along that floor, slowing.
+    const h = size.h || 1, w = size.w || 1, floor = (Math.abs(Math.cos(turn)) * h + Math.abs(Math.sin(turn)) * w) / 2;
+    const sx = home.x * 0.15, sy = (floor - home.y) * 0.65, side = Math.sign(home.x) || (rand() < 0.5 ? -1 : 1), skid = side * s.spread * (0.5 + rand() * 0.5);
+    return { start: 0, end: 1, squash: { until: 0.25, x: 1.15, y: 0.35 }, keyframes: normalizeKeyframes([{ at: 0 },
+      { at: 0.25, x: sx, y: sy, sharp: true, ease: "easeOutQuad" },
+      { at: 1, x: sx + skid, y: sy, rotation: spin * 0.15, ease: "easeOutQuad" }], AIMED) };
+  }
+  if (s.behavior === "shudder") {
+    // The whole token shakes for the first 35% (fragmentPose adds the shake), then bursts with the
+    // pattern's own flight squeezed into the rest.
+    const burst = fragmentFlight({ ...s, behavior: "burst" }, p, index, cutAngle, turn, size), squeeze = (t) => 0.35 + 0.65 * t;
+    const fade = burst.fade ? burst.fade.map(squeeze) : s.pattern === "dust" ? [squeeze(burst.start + (burst.end - burst.start) * 0.3), squeeze(burst.end)] : null;
+    return { start: squeeze(burst.start), end: squeeze(burst.end), ...(fade ? { fade } : {}), shake: { until: 0.35, amp: 0.04, seed: s.seed ?? 1 },
+      keyframes: normalizeKeyframes([{ at: 0 }, ...burst.keyframes.map((k, i) => ({ ...k, at: squeeze(k.at), ...(i ? {} : { sharp: true }) }))]) };
+  }
+  if (s.behavior === "glitch") {
+    // 6-8 seeded moments, each snapping to an offset of up to 0.15 and blinking 1 / 0.3; gone at the
+    // piece's own end time. fragmentPose holds each step; the keyframes only say where it ends.
+    const count = 6 + Math.floor(rand() * 3), last = 0.75 + rand() * 0.2, steps = [];
+    for (let j = 0; j < count; j++) steps.push({ at: (last * (j + 0.5 + (rand() - 0.5) * 0.6)) / count, x: (rand() * 2 - 1) * 0.15, y: (rand() * 2 - 1) * 0.15, alpha: j % 2 ? 0.3 : 1 });
+    const final = steps.at(-1);
+    steps.push({ at: last, x: final.x, y: final.y, alpha: 0 });
+    return { start: steps[0].at, end: last, steps, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: final.x, y: final.y, sharp: true }]) };
+  }
+  if (s.behavior === "sink") {
+    // Down 0.3 squares, pulled a little inward, shrinking to 0.85, fading over the last half.
+    const start = rand() * 0.15;
+    return { start, end: 1, fade: [0.5, 1], keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, x: -home.x * 0.15, y: 0.3, scale: 0.85, ease: "easeInQuad" }], AIMED) };
+  }
   // Drip: each piece starts within the first 30%, stretches to 2.2x its height and slides down.
   const start = rand() * 0.3;
   return { start, end: 1, stretchY: 2.2, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, y: s.fall + 0.4, ease: "easeInQuad" }]) };
 }
 
+// Shudder's shake: one seeded offset per 1/48 of the stage, the same for every piece.
+const SHAKE_STEPS = 48;
+function shakeOffset({ amp, seed }, q) {
+  const r = seededRandom(((seed >>> 0) * 31 + Math.floor(q * SHAKE_STEPS) + 1) >>> 0);
+  return { x: (r() * 2 - 1) * amp, y: (r() * 2 - 1) * amp };
+}
+
 export function fragmentPose(stage, p, flight, t) {
-  const s = prepareFragments(stage), q = Math.min(1, Math.max(0, t)), at = samplePath(flight.keyframes, q);
+  const s = prepareFragments(stage), q = Math.min(1, Math.max(0, t));
+  // Glitch: each step's offset and alpha hold until the next step.
+  if (flight.steps) {
+    let step = null;
+    for (const k of flight.steps) { if (q < k.at) break; step = k; }
+    return { x: step?.x ?? 0, y: step?.y ?? 0, rotation: 0, alpha: step?.alpha ?? 1, scale: 1, stretchX: 1, stretchY: 1 };
+  }
+  const at = samplePath(flight.keyframes, q);
   // Pieces fade over the stage's last `fade` ms; a bursting dust speck fades over its own window,
   // and a flight with its own `fade` window (pixels, absorbed pieces) over that.
   const speck = s.pattern === "dust" && s.behavior === "burst";
@@ -395,5 +469,12 @@ export function fragmentPose(stage, p, flight, t) {
   const fadeTo = flight.fade ? flight.fade[1] : speck ? flight.end : 1;
   const alpha = q <= fadeFrom ? 1 : q >= fadeTo ? 0 : 1 - (q - fadeFrom) / (fadeTo - fadeFrom);
   const grow = flight.stretchY ? Math.min(1, Math.max(0, (q - flight.start) / Math.max(1e-9, flight.end - flight.start))) : 0;
-  return { x: at.x, y: at.y, rotation: at.rotation, alpha, scale: at.scale, stretchY: flight.stretchY ? 1 + (flight.stretchY - 1) * grow : 1 };
+  // Flatten squashes over its first stretch of time, then holds.
+  const squash = flight.squash ? Math.min(1, q / Math.max(1e-9, flight.squash.until)) : 0;
+  const shake = flight.shake && q < flight.shake.until ? shakeOffset(flight.shake, q) : null;
+  return {
+    x: shake ? at.x + shake.x : at.x, y: shake ? at.y + shake.y : at.y, rotation: at.rotation, alpha, scale: at.scale,
+    stretchX: flight.squash ? 1 + (flight.squash.x - 1) * squash : 1,
+    stretchY: flight.squash ? 1 + (flight.squash.y - 1) * squash : flight.stretchY ? 1 + (flight.stretchY - 1) * grow : 1,
+  };
 }

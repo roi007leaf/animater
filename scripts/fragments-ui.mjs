@@ -9,6 +9,10 @@ const BEHAVIOR_HINTS = {
   bounce: "Pieces fall, bounce once and settle.",
   drip: "Pieces stretch and slide down.",
   crumble: "Pieces fall from the top down and pile up at its feet.",
+  flatten: "Pieces squash down, then skid low across the floor.",
+  shudder: "It vibrates hard, then bursts.",
+  glitch: "Pieces jitter out of place and blink away.",
+  sink: "Pieces sag into the ground and fade.",
 };
 // The piece count names what it counts.
 const PIECES_LABEL = { diced: "Per side", rings: "Rings", perforate: "Punctures", slashes: "Cuts", crush: "Rings" };
@@ -32,8 +36,8 @@ export function fragmentsControlsHTML(stage, index, previewAt = 0.6, { finisher 
   const field = (key, label, min, max, step) => `<label>${label}<input type="number" min="${min}" max="${max}" step="${step}" data-field="${key}" data-index="${index}" value="${s[key]}"></label>`;
   const select = (key, label, table) => `<label>${label}<select data-field="${key}" data-index="${index}">${Object.entries(table).map(([k, v]) => `<option value="${esc(k)}" ${s[key] === k ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`;
   const [lo, hi] = FRAGMENT_COUNTS[s.pattern], hint = BEHAVIOR_HINTS[s.behavior];
-  // Bursting dust specks and pixels, and absorbed pieces, fade over their own windows; everything else fades with the stage.
-  const ownFade = ((s.pattern === "dust" || s.pattern === "pixelate") && s.behavior === "burst") || s.behavior === "absorb";
+  // Bursting dust specks and pixels, and absorbed, glitching or sinking pieces, fade over their own windows; everything else fades with the stage.
+  const ownFade = ((s.pattern === "dust" || s.pattern === "pixelate") && s.behavior === "burst") || ["absorb", "glitch", "sink"].includes(s.behavior);
   return `<div class="an-editor-section an-fragments"><div class="an-section-title"><b>Token fragments</b><small>The real token disappears as the pieces fly</small></div>
     <div class="an-field-row">${select("pattern", "Pattern", FRAGMENT_PATTERNS)}${select("cut", "Cut", { attack: "Follow the attack", fixed: "Fixed angle" })}${s.cut === "fixed" ? field("angle", "Angle°", 0, 180, 5) : ""}</div>
     <div class="an-field-row">${select("behavior", "Behaviour", FRAGMENT_BEHAVIORS)}${select("tint", "Tint", FRAGMENT_TINTS)}</div>
