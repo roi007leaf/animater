@@ -31,6 +31,7 @@ export const FINISHER_ON = { kill: "Killing blow", use: "Every successful use" }
 export const FINISHER_MOVERS = { targets: "The target", source: "The one using it" };
 export const FINISHER_ENDINGS = { vanish: "Vanish (fade, then hidden)", body: "Body (stays, Defeated)", stay: "Stay" };
 export const FINISHER_SUCCESS = { success: "Success or critical", critical: "Critical only" };
+export const FINISHER_WALLS = { fit: "Stop short smoothly", slam: "Slam into it" };
 export function normalizeFinisher(input = {}) {
   const pick = (table, value, fallback) => (Object.hasOwn(table, value) ? value : fallback);
   const knockback = Number(input.knockback);
@@ -40,6 +41,7 @@ export function normalizeFinisher(input = {}) {
     knockback: Number.isFinite(knockback) ? Math.min(6, Math.max(0, Math.round(knockback))) : 0,
     ending: pick(FINISHER_ENDINGS, input.ending, "body"),
     success: pick(FINISHER_SUCCESS, input.success, "success"),
+    wall: pick(FINISHER_WALLS, input.wall, "fit"),
   };
 }
 export const KINDS = {

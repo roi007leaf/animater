@@ -1,7 +1,7 @@
 // Plays a finisher on the real token: travel lands on a square (motionOffset + hold), the
 // document is moved there, then the ending runs. Foundry is reached only through `host`.
 import { awayFrom } from "./displacement.mjs";
-import { pathEnd, pathSquares, rotateBy, unrotateBy } from "./keyframe-path.mjs";
+import { cutPath, pathEnd, pathSquares, rotateBy, unrotateBy } from "./keyframe-path.mjs";
 import { finisherTravelPath } from "./finisher-model.mjs";
 
 const TRAVEL = new Set(["rush", "leap", "roll"]);
@@ -9,18 +9,30 @@ const mine = (s, mover) => (s.subject ?? "source") === mover;
 
 // `inPlace` is decided by playFinisher from the aimed end; `survives` strips in-place holds,
 // which would otherwise leave a survivor shrunk or faded until the hold runs out.
-export function composeFinisher(recipe, { offset = null, frame = null, inPlace, survives = false } = {}) {
+// `slam` ({ keyframes, t, aim }) is a travel path cut at a wall: it plays the cut part at the same
+// speed, the "wall*" stages play where it hits (they are dropped otherwise) and "landing" is dropped.
+export function composeFinisher(recipe, { offset = null, frame = null, inPlace, survives = false, slam = null } = {}) {
   const mover = recipe.finisher?.mover ?? "targets", travel = finisherTravelPath(recipe);
   let moves = false;
   const back = (s) => { const { motionEnd, motionOffset, motionFrame, ...rest } = s; return rest; };
-  const stages = recipe.stages.map((s) => {
+  const cut = slam && travel ? { ...travel, keyframes: slam.keyframes, duration: Math.max(100, Math.round((travel.duration ?? 0) * slam.t)) } : null;
+  const hit = cut ? (cut.delay ?? 0) + cut.duration : 0;
+  const wall = { x: (offset?.x ?? 0) + (slam?.aim.x ?? 0) * 0.5, y: (offset?.y ?? 0) + (slam?.aim.y ?? 0) * 0.5 };
+  const stages = recipe.stages.flatMap((original) => {
+    const s = cut && original === travel ? cut : original;
+    if (String(s.stageId ?? "").startsWith("wall")) {
+      if (!cut) return [];
+      return s.kind === "motion" ? { ...s, delay: hit } : { ...s, delay: hit, offsetX: wall.x, offsetY: wall.y };
+    }
+    if (cut && s.stageId === "landing") return [];
     if (s.kind === "motion" && s.motion === "path" && s.motionEnd === "hold") {
       if (!mine(s, mover)) return back(s);
       // In place (a spin, a shrink): it keeps its hold, nothing moves.
-      const still = s === travel ? (inPlace ?? pathSquares(s.keyframes) === 0) : pathSquares(s.keyframes) === 0;
+      const isTravel = s === travel || (cut && s === cut);
+      const still = isTravel ? (inPlace ?? pathSquares(s.keyframes) === 0) : pathSquares(s.keyframes) === 0;
       if (still) return survives ? back(s) : s;
       // Only the travel path lands: a second travelling copy would fly the token twice.
-      if (s !== travel || !offset || !frame) return back(s);
+      if (!isTravel || !offset || !frame) return back(s);
       moves = true;
       // Shrink the whole path to the reachable square, then pin its end exactly on it so the
       // pose and the document agree to the pixel.
@@ -66,7 +78,7 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
   const f = recipe.finisher, grid = host.gridSize();
   const from = { x: mover.document.x, y: mover.document.y };
   const path = finisherTravelPath(recipe);
-  let to = null, frame = null, inPlace;
+  let to = null, frame = null, inPlace, slam = null;
   // A landing that cannot be worked out plays the finisher in place rather than not at all.
   try {
     if (path) {
@@ -78,6 +90,15 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
       if (aim && !inPlace) {
         to = host.landing(mover, { x: end.x / length, y: end.y / length }, squares);
         frame = { aim, length };
+        // Slam: a wall cuts the path where it hits, at full speed, instead of shrinking it to fit.
+        const landed = to && Math.round(Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y)) / grid);
+        if (to && f.wall === "slam" && landed < squares) {
+          // Rotation keeps lengths, so the world offset's length is the reach in the path's frame.
+          const cut = cutPath(path.keyframes, landed > 0 ? Math.hypot(to.x - from.x, to.y - from.y) / grid : 0.4);
+          slam = { ...cut, aim };
+          const cutEnd = pathEnd(cut.keyframes);
+          if (landed > 0) frame = { aim, length: Math.hypot(cutEnd.x, cutEnd.y) };
+        }
       }
     } else {
       const direction = f.knockback > 0 ? finisherDirection(f, { mover, attacker, target }) : null;
@@ -85,7 +106,7 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
     }
   } catch (error) { host.trace("Blocked", `Finisher ${recipe.name} landing: ${error.message}`); }
   const offset = to && (to.x !== from.x || to.y !== from.y) ? { x: (to.x - from.x) / grid, y: (to.y - from.y) / grid } : null;
-  const { recipe: composed, moves } = composeFinisher(recipe, { offset, frame, inPlace, survives: !dead });
+  const { recipe: composed, moves } = composeFinisher(recipe, { offset, frame, inPlace, survives: !dead, slam });
   const commit = async (data) => host.commit(mover, { ...data, finisher: recipe.id });
   host.trace("Finisher", `${recipe.name}: ${mover.name ?? "token"}`);
   // The stages' source/targets roles follow who travels: a source-mover finisher plays from

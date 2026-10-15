@@ -260,3 +260,92 @@ test("a survivor does not sit shrunk: an in-place held path loses its hold", asy
   await playFinisher({ recipe: pathRecipe([kf(0), kf(1, 0, 0, { scale: 0.3, alpha: 0.2 })], { ending: "body" }), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, dead);
   assert.equal(dead.log.find((e) => e[0] === "play")[3], "hold", "a killed mover keeps it");
 });
+
+// Wall slam: a path stopped by a wall is cut where it hits, not shrunk, and the wall-* stages play there.
+const slamRecipe = (keyframes, wall = "slam") => ({ ...pathRecipe(keyframes, { wall }), stages: [
+  pathTravel(keyframes, { delay: 100 }),
+  { stageId: "wall-crack", kind: "impact", assets: ["jb2a.impact.005.white"], delay: 1100, duration: 1500 },
+  { stageId: "wall-shake", kind: "motion", motion: "shake", subject: "targets", assets: [], delay: 1100, duration: 500 },
+  { stageId: "landing", kind: "impact", assets: ["jb2a.impact.003.white"], delay: 1100, duration: 1200 },
+] });
+const slamHost = (blockAfter) => {
+  const host = gridHost(blockAfter);
+  host.play = async (r) => { host.log.push(["stages", r.stages]); return r.stages.map((s) => ({ ...s, delay: s.delay ?? 0 })); };
+  return host;
+};
+const played = (host) => host.log.find((e) => e[0] === "stages")[1];
+const byId = (stages, id) => stages.find((s) => s.stageId === id);
+
+test("slam, blocked after 3 of 6 squares: the path is cut at the wall at full speed and the crash plays there", async () => {
+  const host = slamHost(3);
+  await playFinisher({ recipe: slamRecipe([kf(0), kf(1, 6, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  const stages = played(host), fly = byId(stages, "fly"), last = fly.keyframes.at(-1), { k, cos, sin } = fly.motionFrame;
+  assert.ok(Math.abs(last.x * k - 3) < 0.01 && Math.abs(last.y) < 1e-9, "ends about 3 squares out");
+  const commit = host.log.find((e) => e[0] === "commit")[1];
+  assert.deepEqual(commit, { x: 400, y: 100, fromX: 100, fromY: 100, finisher: "p" });
+  const fx = (last.x * cos - last.y * sin) * k, fy = (last.x * sin + last.y * cos) * k;
+  assert.ok(Math.abs(fx * 100 - 300) < 1e-6 && Math.abs(fy * 100) < 1e-6, "pose end == commit landing");
+  assert.ok(Math.abs(fly.duration - 500) <= 2, `about half the time: ${fly.duration}`);
+  const crack = byId(stages, "wall-crack"), shake = byId(stages, "wall-shake");
+  assert.equal(crack.delay, 100 + fly.duration);
+  assert.equal(shake.delay, 100 + fly.duration);
+  assert.deepEqual([crack.offsetX, crack.offsetY], [3.5, 0], "half a square past the landing, toward the wall");
+  assert.equal(shake.offsetX, undefined, "a motion stage is not offset");
+  assert.equal(byId(stages, "landing"), undefined, "no landing: it hit the wall");
+});
+
+test("slam, not blocked: flies the full path and lands hard", async () => {
+  const host = slamHost();
+  const keyframes = [kf(0), kf(1, 6, 0)];
+  await playFinisher({ recipe: slamRecipe(keyframes), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  const stages = played(host), fly = byId(stages, "fly");
+  assert.deepEqual(fly.keyframes, keyframes);
+  assert.equal(fly.duration, 1000);
+  assert.ok(!stages.some((s) => s.stageId.startsWith("wall")), "no wall, no crash");
+  assert.equal(byId(stages, "landing").offsetX, 6);
+  assert.equal(host.log.find((e) => e[0] === "commit")[1].x, 700);
+});
+
+test("fit mode, blocked: the path still shrinks to the free square and the wall stages are dropped", async () => {
+  const host = slamHost(3);
+  await playFinisher({ recipe: slamRecipe([kf(0), kf(1, 6, 0)], "fit"), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  const stages = played(host), fly = byId(stages, "fly");
+  assert.equal(fly.motionFrame.k, 0.5);
+  assert.equal(fly.duration, 1000);
+  assert.deepEqual(fly.keyframes.at(-1).x, 6);
+  assert.ok(!stages.some((s) => s.stageId.startsWith("wall")));
+  assert.equal(byId(stages, "landing").offsetX, 3);
+  assert.equal(host.log.find((e) => e[0] === "commit")[1].x, 400);
+});
+
+test("slam against a wall right there: a short bump that comes back, the crash still plays", async () => {
+  const host = slamHost(0);
+  await playFinisher({ recipe: slamRecipe([kf(0), kf(1, 2, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  const stages = played(host), fly = byId(stages, "fly");
+  assert.ok(!host.log.some((e) => e[0] === "commit"), "nothing moves");
+  assert.equal(fly.motionEnd, undefined, "the bump returns");
+  assert.equal(fly.motionFrame, undefined);
+  assert.ok(Math.abs(Math.hypot(fly.keyframes.at(-1).x, fly.keyframes.at(-1).y) - 0.4) < 0.01, "bumps 0.4 square");
+  assert.ok(Math.abs(fly.duration - 200) <= 2, `about 1000 * 0.2: ${fly.duration}`);
+  const crack = byId(stages, "wall-crack");
+  assert.equal(crack.delay, 100 + fly.duration);
+  assert.deepEqual([crack.offsetX, crack.offsetY], [0.5, 0]);
+  assert.ok(byId(stages, "wall-shake"));
+  assert.equal(byId(stages, "landing"), undefined);
+});
+
+test("a recipe without a slam never plays wall stages", () => {
+  const r = { ...recipe(), stages: [travel, { stageId: "wall-dust", kind: "impact", assets: [] }, { stageId: "landing", kind: "impact", assets: [] }] };
+  const { recipe: out } = composeFinisher(r, { offset: { x: 2, y: 0 } });
+  assert.deepEqual(out.stages.map((s) => s.stageId), ["fly", "landing"]);
+});
+
+test("a killed mover's slam bump still comes back, and a short cut still lands", async () => {
+  const bump = slamHost(0);
+  await playFinisher({ recipe: slamRecipe([kf(0), kf(1, 2, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, bump);
+  assert.equal(byId(played(bump), "fly").motionEnd, undefined, "no hold at 0.4 square");
+  const short = slamHost(1);
+  await playFinisher({ recipe: slamRecipe([kf(0), kf(1, 6, 0)]), mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: true }, short);
+  assert.ok(byId(played(short), "fly").motionFrame, "the cut travel is framed");
+  assert.equal(short.log.find((e) => e[0] === "commit")[1].x, 200);
+});

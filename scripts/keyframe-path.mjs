@@ -50,6 +50,24 @@ export const landsTilted = (keyframes) => pathSquares(keyframes) >= 1 && !uprigh
 export const rotateBy = (v, dir) => ({ x: v.x * dir.x - v.y * dir.y, y: v.x * dir.y + v.y * dir.x });
 export const unrotateBy = (v, dir) => ({ x: v.x * dir.x + v.y * dir.y, y: -v.x * dir.y + v.y * dir.x });
 
+// A path stopped by a wall `reach` squares out: cut where it first gets there, keeping its speed.
+// The cut end lands upright (whole turns, full size, visible). A path that never gets there is kept.
+export function cutPath(keyframes, reach) {
+  const out = (t) => { const p = samplePath(keyframes, t); return Math.hypot(p.x, p.y) >= reach - 1e-9; };
+  const STEPS = 200;
+  let hi = null;
+  for (let i = 1; i <= STEPS; i++) if (out(i / STEPS)) { hi = i / STEPS; break; }
+  if (hi === null) return { keyframes, t: 1 };
+  let lo = hi - 1 / STEPS;
+  while (hi - lo > 1e-4) { const mid = (lo + hi) / 2; if (out(mid)) hi = mid; else lo = mid; }
+  const t = hi;
+  if (t >= 1) return { keyframes, t: 1 };
+  const p = samplePath(keyframes, t), segment = keyframes.find((k) => k.at >= t) ?? keyframes.at(-1);
+  const kept = keyframes.filter((k) => k.at < t).map((k) => ({ ...k, at: k.at / t }));
+  const end = { at: 1, x: p.x, y: p.y, rotation: Math.round(p.rotation / 360) * 360 + 0, scale: 1, alpha: 1, ease: segment.ease, sharp: false };
+  return { keyframes: normalizeKeyframes([...kept, end]), t };
+}
+
 // Editor helpers. The first keyframe is where the token stands and the last ends the motion.
 export const snapSquares = (v, whole = false) => (whole ? Math.round(v) : Math.round(v * 4) / 4) + 0;
 export function insertKeyframe(keyframes, at) {

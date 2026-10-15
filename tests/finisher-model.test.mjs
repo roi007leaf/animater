@@ -6,8 +6,9 @@ import { matchFinishers, killFinisher, passesSuccess, usePasses, finisherMoment,
 const fin = (id, match, finisher = {}, extra = {}) => ({ id, name: id, trigger: "manual", match, finisher: normalizeFinisher(finisher), stages: [{ kind: "motion", motion: "shake", assets: [] }], ...extra });
 
 test("the finisher block is normalized, kept, and makes the recipe a manual Finisher", () => {
-  assert.deepEqual(normalizeFinisher({}), { on: "kill", mover: "targets", knockback: 0, ending: "body", success: "success" });
-  assert.deepEqual(normalizeFinisher({ on: "use", mover: "source", knockback: 9, ending: "vanish", success: "critical" }), { on: "use", mover: "source", knockback: 6, ending: "vanish", success: "critical" });
+  assert.deepEqual(normalizeFinisher({}), { on: "kill", mover: "targets", knockback: 0, ending: "body", success: "success", wall: "fit" });
+  assert.deepEqual(normalizeFinisher({ on: "use", mover: "source", knockback: 9, ending: "vanish", success: "critical", wall: "slam" }), { on: "use", mover: "source", knockback: 6, ending: "vanish", success: "critical", wall: "slam" });
+  assert.equal(normalizeFinisher({ wall: "bounce" }).wall, "fit", "an unknown wall mode stops short");
   const r = validateRecipe({ id: "f", name: "F", trigger: "attack", category: "Custom", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", assets: [] }] });
   assert.equal(r.trigger, "manual", "normal dispatch never matches a finisher");
   assert.equal(r.category, "Finisher");

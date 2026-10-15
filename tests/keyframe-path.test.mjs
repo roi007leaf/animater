@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { DEFAULT_KEYFRAMES, normalizeKeyframes, samplePath, pathEnd, pathSquares, rotateBy, unrotateBy, snapSquares, insertKeyframe, moveKeyframeTime, moveKeyframePoint, deleteKeyframe, flipKeyframes, resetKeyframes } from "../scripts/keyframe-path.mjs";
+import { DEFAULT_KEYFRAMES, normalizeKeyframes, samplePath, pathEnd, pathSquares, rotateBy, unrotateBy, snapSquares, insertKeyframe, moveKeyframeTime, moveKeyframePoint, deleteKeyframe, flipKeyframes, resetKeyframes, cutPath } from "../scripts/keyframe-path.mjs";
 
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} vs ${b}`);
 const kfs = normalizeKeyframes([{ at: 0 }, { at: 0.5, x: 1, y: 1, rotation: 90, ease: "linear" }, { at: 1, x: 2, y: 0, scale: 0.5, alpha: 0.2, ease: "linear" }]);
@@ -77,4 +77,39 @@ test("editor helpers: insert from the curve, move time within neighbours, snap p
 test("the x/y clamp can be widened for a rotated finisher end, and defaults to 12", () => {
   assert.equal(normalizeKeyframes([{ at: 0 }, { at: 1, x: 16 }], { limit: 17 }).at(-1).x, 16);
   assert.equal(normalizeKeyframes([{ at: 0 }, { at: 1, x: 16 }]).at(-1).x, 12);
+});
+
+const line = (extra = {}) => normalizeKeyframes([{ at: 0, x: 0, y: 0 }, { at: 1, x: 6, y: 0, ease: "linear", ...extra }]);
+test("cutPath ends a path where it first reaches the wall, at full speed", () => {
+  const { keyframes, t } = cutPath(line(), 3);
+  assert.ok(Math.abs(t - 0.5) < 1e-3, `t=${t}`);
+  assert.ok(Math.abs(keyframes.at(-1).x - 3) < 1e-3);
+  assert.equal(keyframes.at(-1).at, 1);
+  assert.equal(keyframes.at(-1).ease, "linear", "the ease of the segment it was cut in");
+  assert.equal(keyframes.at(-1).sharp, false);
+});
+
+test("cutPath lands the cut end upright: rotation to the nearest whole turn, full size and visible", () => {
+  const { keyframes, t } = cutPath(line({ rotation: 720, scale: 1.5, alpha: 0.5 }), 1.8);
+  assert.ok(Math.abs(samplePath(line({ rotation: 720 }), t).rotation - 216) < 1, "cut where it has turned about 216");
+  assert.equal(keyframes.at(-1).rotation, 360);
+  assert.deepEqual([keyframes.at(-1).scale, keyframes.at(-1).alpha], [1, 1]);
+});
+
+test("cutPath keeps earlier keyframes, rescaled to the cut time", () => {
+  const k = normalizeKeyframes([{ at: 0, x: 0, y: 0 }, { at: 0.2, x: 1, y: 0, scale: 1.2 }, { at: 1, x: 6, y: 0, ease: "easeOutCubic" }]);
+  const { keyframes, t } = cutPath(k, 3);
+  assert.equal(keyframes.length, 3);
+  assert.ok(Math.abs(keyframes[1].at - 0.2 / t) < 1e-9);
+  assert.equal(keyframes[1].scale, 1.2);
+  assert.equal(keyframes.at(-1).ease, "easeOutCubic");
+  assert.ok(Math.abs(Math.hypot(keyframes.at(-1).x, keyframes.at(-1).y) - 3) < 1e-3);
+});
+
+test("cutPath leaves a path that never reaches the wall untouched", () => {
+  for (const reach of [6, 7]) {
+    const k = line(), cut = cutPath(k, reach);
+    assert.equal(cut.t, 1, `reach ${reach}`);
+    assert.deepEqual(cut.keyframes, k);
+  }
 });
