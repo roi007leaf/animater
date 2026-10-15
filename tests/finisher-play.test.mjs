@@ -296,6 +296,19 @@ test("slam, blocked after 3 of 6 squares: the path is cut at the wall at full sp
   assert.equal(byId(stages, "landing"), undefined, "no landing: it hit the wall");
 });
 
+test("slam with a whole-path ease: cut at the wall in the stage's own time, played linear, pinned on the landing", async () => {
+  const host = slamHost(3), keyframes = [kf(0), kf(1, 6, 0)], r = slamRecipe(keyframes);
+  r.stages[0] = { ...r.stages[0], pathEase: "easeOutCubic" };
+  await playFinisher({ recipe: r, mover: at("Orc", 100, 100), attacker: at("Hero", 0, 100), dead: false }, host);
+  const fly = byId(played(host), "fly"), last = fly.keyframes.at(-1), { k } = fly.motionFrame;
+  assert.equal(fly.pathEase, "linear", "the cut keyframes already carry the ease");
+  assert.ok(Math.abs(fly.duration - 1000 * (1 - Math.cbrt(0.5))) <= 2, `reaches 3 of 6 squares at 1 - cbrt(0.5) of the time: ${fly.duration}`);
+  assert.ok(Math.abs(last.x * k - 3) < 1e-9 && Math.abs(last.y) < 1e-9, "pose end == commit landing");
+  assert.deepEqual(host.log.find((e) => e[0] === "commit")[1], { x: 400, y: 100, fromX: 100, fromY: 100, finisher: "p" });
+  const mid = fly.keyframes[4];
+  assert.ok(Math.abs(mid.x - 6 * (1 - (1 - (1 - Math.cbrt(0.5)) / 2) ** 3)) < 1e-6, "half way through the cut: where the eased original is then");
+});
+
 test("slam, not blocked: flies the full path and lands hard", async () => {
   const host = slamHost();
   const keyframes = [kf(0), kf(1, 6, 0)];

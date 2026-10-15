@@ -19,7 +19,8 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
   const back = (s) => { const { motionEnd, motionOffset, motionFrame, ...rest } = s; return rest; };
   // Impacts play on the targets; anything else on its own subject.
   const onMover = (s) => mine(s.kind === "impact" ? { subject: "targets" } : s, mover);
-  const cut = slam && travel ? { ...travel, keyframes: slam.keyframes, duration: Math.max(100, Math.round((travel.duration ?? 0) * slam.t)) } : null;
+  // The cut keyframes are already resampled from the eased motion: they play linear.
+  const cut = slam && travel ? { ...travel, keyframes: slam.keyframes, pathEase: "linear", duration: Math.max(100, Math.round((travel.duration ?? 0) * slam.t)) } : null;
   // A held cut hits the wall as it ends; the bump (no landing) returns, reaching the wall at 85%.
   const early = cut && !offset ? Math.round(cut.duration * 0.15) : 0;
   // The crash sits 0.6 square past the landing (or the origin), on the wall side.
@@ -137,7 +138,7 @@ export async function playFinisher({ recipe, mover, attacker = null, target = nu
         const landed = to && Math.round(Math.max(Math.abs(to.x - from.x), Math.abs(to.y - from.y)) / grid);
         if (to && f.wall === "slam" && landed < squares) {
           // Rotation keeps lengths, so the world offset's length is the reach in the path's frame.
-          const cut = cutPath(path.keyframes, landed > 0 ? Math.hypot(to.x - from.x, to.y - from.y) / grid : 0.3);
+          const cut = cutPath(path.keyframes, landed > 0 ? Math.hypot(to.x - from.x, to.y - from.y) / grid : 0.3, path.pathEase ?? "linear");
           slam = { ...cut, aim };
           const cutEnd = pathEnd(cut.keyframes);
           if (landed > 0) frame = { aim, length: Math.hypot(cutEnd.x, cutEnd.y) };
