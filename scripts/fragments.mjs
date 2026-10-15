@@ -180,11 +180,13 @@ export function fragmentPieces(stage, cutAngle, turn = 0) {
 }
 
 // Each piece's own flight, in screen squares relative to where it started: the piece's centroid
-// is turned onto the screen first, so falls go down and wind blows away on screen.
-export function fragmentFlight(stage, p, index, cutAngle, turn = 0) {
+// is turned onto the screen first, so falls go down and wind blows away on screen. `size` is the
+// art's size in squares: only the flights that aim at a point (implode, absorb) need it.
+export function fragmentFlight(stage, p, index, cutAngle, turn = 0, size = { w: 1, h: 1 }) {
   const s = prepareFragments(stage), rand = seededRandom(((s.seed ?? 1) + index * 7919) >>> 0);
   const c = { x: Math.cos(turn) * p.centroid.x - Math.sin(turn) * p.centroid.y, y: Math.sin(turn) * p.centroid.x + Math.cos(turn) * p.centroid.y };
   const len = Math.hypot(c.x, c.y) || 1, out = { x: c.x / len, y: c.y / len };
+  if (s.behavior !== "burst") return behaviorFlight(s, p, index, cutAngle, turn, size, c, out, rand);
   if (s.pattern === "dust") {
     const wind = { x: Math.cos(cutAngle), y: Math.sin(cutAngle) }, lead = 0.5 - (c.x * wind.x + c.y * wind.y);
     const start = Math.min(0.4, Math.max(0, lead * 0.4)), end = Math.min(1, start + 0.6), reach = s.spread * (0.5 + rand() * 0.5);
@@ -195,6 +197,47 @@ export function fragmentFlight(stage, p, index, cutAngle, turn = 0) {
     const dist = s.spread * (0.7 + rand() * 0.6);
     return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: out.x * dist, y: out.y * dist + s.fall * 0.3, rotation: s.spin * (rand() * 2 - 1), ease: "easeOutCubic" }]) };
   }
+  if (s.pattern === "cross") {
+    // Each wedge flies out along its centroid, tipping outward.
+    const dist = s.spread * (0.8 + rand() * 0.4);
+    return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 1, x: out.x * dist, y: out.y * dist + s.fall * 0.3, rotation: Math.sign(out.x || 1) * s.spin, ease: "easeOutCubic" }]) };
+  }
+  if (s.pattern === "claw") {
+    // Strips slide apart along the rake normal, one after another; the outer ones go further.
+    const a = screenCut(s, cutAngle) + Math.PI / 6, n = { x: -Math.sin(a), y: Math.cos(a) }, off = c.x * n.x + c.y * n.y, side = Math.sign(off || 1);
+    const push = side * s.spread * (0.3 + Math.abs(off) * 1.6), start = Math.min(0.3, index * 0.08);
+    return { start, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, x: n.x * push, y: n.y * push + s.fall * 0.3, rotation: side * s.spin * 0.5, ease: "easeOutQuad" }]) };
+  }
+  if (s.pattern === "diced") {
+    // Cubes hop out a little, then drop by `fall`, tumbling.
+    const dist = s.spread * 0.5 * (0.6 + rand() * 0.8), roll = rand() * 2 - 1;
+    return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.35, x: out.x * dist, y: out.y * dist - 0.15, rotation: s.spin * roll * 0.4, ease: "easeOutQuad" }, { at: 1, x: out.x * dist * 1.2, y: out.y * dist + s.fall, rotation: s.spin * roll, ease: "easeInQuad" }]) };
+  }
+  if (s.pattern === "starburst") {
+    // A fast radial burst out to spread x 1.2, then held while it fades.
+    const dist = s.spread * 1.2 * (0.9 + rand() * 0.2), x = out.x * dist, y = out.y * dist, rotation = s.spin * (rand() * 2 - 1);
+    return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.6, x, y, rotation, ease: "easeOutCubic" }, { at: 1, x, y, rotation, ease: "easeOutCubic" }]) };
+  }
+  if (s.pattern === "rings") {
+    // Each ring expands outward; outer rings start later.
+    const ring = p.ring ?? 0, start = s.pieces > 1 ? (0.3 * ring) / (s.pieces - 1) : 0, dist = s.spread * (0.6 + ring * 0.3);
+    return { start, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, x: out.x * dist, y: out.y * dist, rotation: s.spin * 0.3 * (rand() * 2 - 1), ease: "easeOutCubic" }]) };
+  }
+  if (s.pattern === "pixelate") {
+    // Cells drop out in scanline order, each fading and falling a little over its own window.
+    const total = fragmentCount(s), order = p.order ?? index, start = total > 1 ? (0.6 * order) / (total - 1) : 0, end = Math.min(1, start + 0.4);
+    const dx = (rand() * 2 - 1) * s.drift * 0.3, dy = 0.15 + s.fall * 0.3;
+    return { start, end, fade: [start, end], keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: end, x: dx, y: dy, ease: "easeInQuad" }, { at: 1, x: dx, y: dy, ease: "easeInQuad" }]) };
+  }
+  if (s.pattern === "ribbons") {
+    // Strips sway sideways on a sine while they fall, starting one after another.
+    const start = s.pieces > 1 ? (0.3 * index) / (s.pieces - 1) : 0, amp = 0.08 + s.drift * 0.2, drop = s.fall + 0.2, phase = index * 0.7;
+    const sway = Array.from({ length: 6 }, (_, j) => {
+      const u = (j + 1) / 6;
+      return { at: start + (1 - start) * u, x: amp * (Math.sin(phase + u * Math.PI * 3) - Math.sin(phase)), y: drop * u * u, ease: "linear" };
+    });
+    return { start, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, ...sway]) };
+  }
   // Halves: apart along the cut's normal; top/bottom lets the top half slide off and topple.
   const a = screenCut(s, cutAngle);
   const n = { x: -Math.sin(a), y: Math.cos(a) }, side = Math.sign(c.x * n.x + c.y * n.y) || 1;
@@ -204,11 +247,60 @@ export function fragmentFlight(stage, p, index, cutAngle, turn = 0) {
   return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: 0.15, x: mx * 0.15, y: my * 0.15, ease: "easeInOutQuad" }, { at: 1, x: mx, y: my, rotation: side * s.spin * (s.pattern === "topBottom" ? 3 : 1), ease: "easeOutQuad" }]) };
 }
 
+// Behaviours other than burst replace the pattern's own flight, for every pattern. Absorb's
+// point can be 40 squares out plus the piece's own offset, so those keyframes get a wider clamp.
+const AIMED = { limit: 48 };
+function behaviorFlight(s, p, index, cutAngle, turn, size, c, out, rand) {
+  // The piece's centroid offset from the token's centre, on screen, in squares.
+  const lx = p.centroid.x * size.w, ly = p.centroid.y * size.h;
+  const home = { x: Math.cos(turn) * lx - Math.sin(turn) * ly, y: Math.sin(turn) * lx + Math.cos(turn) * ly };
+  const spin = s.spin * (rand() * 2 - 1);
+  if (s.behavior === "implode") {
+    // To the centre, shrinking; the outer pieces go first.
+    const start = 0.35 * (1 - Math.min(1, Math.hypot(c.x, c.y) / Math.SQRT1_2));
+    return { start, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, x: -home.x, y: -home.y, rotation: spin * 0.5, scale: 0.05, ease: "easeInQuad" }], AIMED) };
+  }
+  if (s.behavior === "absorb") {
+    // To the attacker, one after another, bending a little on the way, fading over the last quarter.
+    const to = s.towards ?? { x: -Math.cos(cutAngle) * 1.5, y: -Math.sin(cutAngle) * 1.5 };
+    const d = { x: to.x - home.x, y: to.y - home.y }, dl = Math.hypot(d.x, d.y) || 1, bend = (rand() * 2 - 1) * 0.15 * dl;
+    const start = (0.4 * index) / Math.max(1, fragmentCount(s) - 1), mid = start + (1 - start) / 2;
+    return { start, end: 1, fade: [start + (1 - start) * 0.75, 1], keyframes: normalizeKeyframes([{ at: 0 }, { at: start },
+      { at: mid, x: d.x / 2 - (d.y / dl) * bend, y: d.y / 2 + (d.x / dl) * bend, rotation: spin * 0.5, scale: 0.6, ease: "easeInQuad" },
+      { at: 1, x: d.x, y: d.y, rotation: spin, scale: 0.2, ease: "easeOutQuad" }], AIMED) };
+  }
+  if (s.behavior === "rise") {
+    // Up by spread + 0.5 squares, swaying 0.15 either side, shrinking to 0.4.
+    const side = rand() < 0.5 ? -1 : 1, start = rand() * 0.2, up = -(s.spread + 0.5), at = (u) => start + (1 - start) * u;
+    return { start, end: 1, keyframes: normalizeKeyframes([{ at: 0 }, { at: start },
+      { at: at(1 / 3), x: 0.15 * side, y: up / 3, scale: 0.8, ease: "linear" },
+      { at: at(2 / 3), x: -0.15 * side, y: (2 * up) / 3, rotation: spin * 0.15, scale: 0.6, ease: "linear" },
+      { at: 1, x: 0, y: up, rotation: spin * 0.3, scale: 0.4, ease: "linear" }]) };
+  }
+  if (s.behavior === "bounce") {
+    // Out a little, down to a floor 0.4 below the start, one bounce of 0.15, settled. Sharp
+    // keyframes keep each fall a straight line, so a piece never dips under its floor.
+    const ox = out.x * s.spread * 0.4, r = spin * 0.5;
+    return { start: 0, end: 1, keyframes: normalizeKeyframes([{ at: 0 },
+      { at: 0.2, x: ox * 0.5, y: -0.2, rotation: r * 0.3, ease: "easeOutQuad" },
+      { at: 0.5, x: ox * 0.8, y: 0.4, rotation: r * 0.7, sharp: true, ease: "easeInQuad" },
+      { at: 0.68, x: ox * 0.9, y: 0.25, rotation: r * 0.85, ease: "easeOutQuad" },
+      { at: 0.84, x: ox, y: 0.4, rotation: r, sharp: true, ease: "easeInQuad" },
+      { at: 1, x: ox, y: 0.4, rotation: r, ease: "easeOutQuad" }]) };
+  }
+  // Drip: each piece starts within the first 30%, stretches to 2.2x its height and slides down.
+  const start = rand() * 0.3;
+  return { start, end: 1, stretchY: 2.2, keyframes: normalizeKeyframes([{ at: 0 }, { at: start }, { at: 1, y: s.fall + 0.4, ease: "easeInQuad" }]) };
+}
+
 export function fragmentPose(stage, p, flight, t) {
   const s = prepareFragments(stage), q = Math.min(1, Math.max(0, t)), at = samplePath(flight.keyframes, q);
-  // Pieces fade over the stage's last `fade` ms; a dust speck fades over its own window.
-  const fadeFrom = s.pattern === "dust" ? flight.start + (flight.end - flight.start) * 0.3 : Math.max(0, 1 - s.fade / Math.max(1, stage.duration ?? 1400));
-  const fadeTo = s.pattern === "dust" ? flight.end : 1;
+  // Pieces fade over the stage's last `fade` ms; a bursting dust speck fades over its own window,
+  // and a flight with its own `fade` window (pixels, absorbed pieces) over that.
+  const speck = s.pattern === "dust" && s.behavior === "burst";
+  const fadeFrom = flight.fade ? flight.fade[0] : speck ? flight.start + (flight.end - flight.start) * 0.3 : Math.max(0, 1 - s.fade / Math.max(1, stage.duration ?? 1400));
+  const fadeTo = flight.fade ? flight.fade[1] : speck ? flight.end : 1;
   const alpha = q <= fadeFrom ? 1 : q >= fadeTo ? 0 : 1 - (q - fadeFrom) / (fadeTo - fadeFrom);
-  return { x: at.x, y: at.y, rotation: at.rotation, alpha };
+  const grow = flight.stretchY ? Math.min(1, Math.max(0, (q - flight.start) / Math.max(1e-9, flight.end - flight.start))) : 0;
+  return { x: at.x, y: at.y, rotation: at.rotation, alpha, scale: at.scale, stretchY: flight.stretchY ? 1 + (flight.stretchY - 1) * grow : 1 };
 }

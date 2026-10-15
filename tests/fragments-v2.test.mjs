@@ -137,3 +137,177 @@ test("the recipe model keeps behaviour, tint and towards; a saved stage's colour
   const prepared = prepareFragments(plain);
   assert.deepEqual([prepared.behavior, prepared.tint], ["burst", "none"], "the generic #ffffff effect colour is not a fragments tint");
 });
+
+import { fragmentFlight, fragmentPose } from "../scripts/fragments.mjs";
+
+const ALL = ["halves", "topBottom", "shards", "dust", ...NEW];
+const onScreen = (p, turn = 0, size = { w: 1, h: 1 }) => {
+  const x = p.centroid.x * size.w, y = p.centroid.y * size.h;
+  return { x: Math.cos(turn) * x - Math.sin(turn) * y, y: Math.sin(turn) * x + Math.cos(turn) * y };
+};
+const flights = (s, angle, turn = 0, size) => fragmentPieces(s, angle, turn).map((p, i) => {
+  const f = fragmentFlight(s, p, i, angle, turn, size);
+  return { p, f, end: fragmentPose(s, p, f, 1), at: (t) => fragmentPose(s, p, f, t) };
+});
+
+// Today's poses (seed 7, spin 90, drift 0.5, cut 0.4, turn 0.3), taken before this change: [piece, t, x, y, rotation, alpha].
+const SNAPSHOT = {
+  halves: [
+    [0, 0.25, 0.034071248046767214, -0.05433828066083379, -19.930795847750872, 1],
+    [0, 0.6, 0.09328651470444851, -0.1487773154339231, -70.06920415224913, 0.9333333333333333],
+    [0, 0.95, 0.1164814144275584, -0.18576953154893652, -89.68858131487889, 0.11666666666666681],
+    [1, 0.25, -0.034071248046767214, 0.1068338788570213, 19.930795847750872, 1],
+    [1, 0.6, -0.09328651470444853, 0.2925093966986165, 70.06920415224913, 0.9333333333333333],
+    [1, 0.95, -0.11648141442755842, 0.36523937429492, 89.68858131487889, 0.11666666666666681],
+  ],
+  topBottom: [
+    [0, 0.25, 0.05249559819618752, -0.06124486456221878, -59.79238754325261, 1],
+    [0, 0.6, 0.14373208126469336, -0.16768742814214224, -210.2076124567474, 0.9333333333333333],
+    [0, 0.95, 0.17946984274598343, -0.20938148320364736, -269.06574394463667, 0.11666666666666681],
+    [1, 0.25, 0, -1.4648352927694939e-13, 0, 1],
+    [1, 0.6, 0, 0.0006996036832114794, 0, 0.9333333333333333],
+    [1, 0.95, 0, 0.024565242508539895, 0, 0.11666666666666681],
+  ],
+  shards: [
+    [0, 0.25, 0.2152570687315402, 0.1695525097641993, -45.58371882114443, 1],
+    [0, 0.6, 0.3485070120349779, 0.27451009580850255, -73.8012727638334, 0.9333333333333333],
+    [0, 0.95, 0.3722900092505059, 0.2932433568873147, -78.83765769736958, 0.11666666666666681],
+    [6, 0.25, 0.3550078381992076, -0.20956471490236425, 17.58848499302985, 1],
+    [6, 0.6, 0.5747672848509552, -0.33929093733814136, 28.4762325681746, 0.9333333333333333],
+    [6, 0.95, 0.6139908535687487, -0.36244500637924587, 30.41952247767476, 0.11666666666666681],
+  ],
+  dust: [
+    [0, 0.25, -1.4728995723696924e-13, 1.0759355403737608e-14, 0, 1],
+    [0, 0.6, 0.35590384257061264, -0.02599835048911238, -45.928506341497275, 0.9230629586087842],
+    [0, 0.95, 0.5715928094521667, -0.04175417182871659, -78.53644531127091, 0.08972962527545081],
+    [48, 0.25, 0.6289025294912988, 0.2405924827114016, -15.692902262400578, 0.8626513271055021],
+    [48, 0.6, 0.9009066792152269, 0.34465018739708314, -24.68890350510762, 0.029317993772168705],
+    [48, 0.95, 0.9009071589022503, 0.3446503709057931, 37.8935175585575, 0],
+  ],
+};
+test("halves, top/bottom, shards and dust with no behaviour pose exactly as before, at scale 1", () => {
+  for (const [pattern, rows] of Object.entries(SNAPSHOT)) {
+    const s = stage({ pattern, spin: 90, drift: 0.5 }), pieces = fragmentPieces(s, 0.4, 0.3);
+    for (const [i, t, x, y, rotation, alpha] of rows) {
+      const pose = fragmentPose(s, pieces[i], fragmentFlight(s, pieces[i], i, 0.4, 0.3), t);
+      for (const [key, want] of Object.entries({ x, y, rotation, alpha })) assert.ok(Math.abs(pose[key] - want) < 1e-12, `${pattern} #${i} t=${t} ${key}: ${pose[key]} vs ${want}`);
+      assert.deepEqual([pose.scale, pose.stretchY], [1, 1], `${pattern} #${i} t=${t}`);
+    }
+  }
+});
+
+test("flights with a behaviour are deterministic", () => {
+  for (const behavior of ["implode", "absorb", "rise", "bounce", "drip"]) {
+    const s = stage({ pattern: "shards", behavior, towards: { x: -2, y: 1 } }), [p] = fragmentPieces(s, 0.3);
+    assert.deepEqual(fragmentFlight(s, p, 0, 0.3, 0.2), fragmentFlight(s, p, 0, 0.3, 0.2), behavior);
+  }
+});
+
+test("implode: every piece of every pattern ends at the token's centre, nearly gone; the outside goes first", () => {
+  for (const pattern of ALL) for (const turn of [0, 0.8]) {
+    for (const { p, end } of flights(stage({ pattern, behavior: "implode" }), 0.4, turn)) {
+      const c = onScreen(p, turn);
+      assert.ok(Math.hypot(c.x + end.x, c.y + end.y) < 0.05, `${pattern} turn ${turn}`);
+      assert.ok(end.scale <= 0.1, `${pattern}: scale ${end.scale}`);
+      assert.equal(end.alpha, 0);
+    }
+  }
+  const dust = flights(stage({ pattern: "dust", behavior: "implode", pieces: 49 }), 0);
+  assert.ok(dust[0].f.start < dust[24].f.start, "the corner speck starts before the centre one");
+});
+
+test("implode on a 2x2 token, turned, still ends at its centre", () => {
+  const size = { w: 2, h: 2 };
+  for (const { p, end } of flights(stage({ pattern: "cross", behavior: "implode" }), 0.2, 1.1, size)) {
+    const c = onScreen(p, 1.1, size);
+    assert.ok(Math.hypot(c.x + end.x, c.y + end.y) < 1e-9);
+  }
+});
+
+test("absorb: pieces stream to towards, staggered by index, shrinking, fading over the last quarter", () => {
+  const towards = { x: -3, y: 1.5 };
+  for (const pattern of ALL) {
+    const all = flights(stage({ pattern, behavior: "absorb", towards }), 0.4);
+    for (const { p, end } of all) {
+      const c = onScreen(p);
+      assert.ok(Math.hypot(c.x + end.x - towards.x, c.y + end.y - towards.y) < 0.1, pattern);
+      assert.ok(Math.abs(end.scale - 0.2) < 1e-9, `${pattern}: scale ${end.scale}`);
+      assert.equal(end.alpha, 0);
+    }
+    const starts = all.map((x) => x.f.start);
+    assert.equal(starts[0], 0, pattern);
+    assert.ok(Math.abs(starts.at(-1) - 0.4) < 1e-9, pattern);
+    assert.ok(starts.every((v, i) => !i || v > starts[i - 1]), `${pattern}: staggered by index`);
+    const { f, at } = all.at(-1);
+    assert.equal(at(f.start + (1 - f.start) * 0.7).alpha, 1, `${pattern}: still whole before the last quarter`);
+  }
+});
+
+test("absorb without towards heads 1.5 squares back along the cut; a far attacker on a big turned token is still reached", () => {
+  for (const { p, end } of flights(stage({ pattern: "shards", behavior: "absorb" }), 0.6)) {
+    const c = onScreen(p);
+    assert.ok(Math.hypot(c.x + end.x + 1.5 * Math.cos(0.6), c.y + end.y + 1.5 * Math.sin(0.6)) < 0.1);
+  }
+  const far = stage({ pattern: "starburst", behavior: "absorb", towards: { x: 400, y: -400 } }), size = { w: 3, h: 3 };
+  assert.deepEqual(far.towards, { x: 40, y: -40 });
+  for (const { p, end } of flights(far, 0.2, 1.1, size)) {
+    const c = onScreen(p, 1.1, size);
+    assert.ok(Math.hypot(c.x + end.x - 40, c.y + end.y + 40) < 1e-6, "lands on the clamped attacker point");
+  }
+});
+
+test("rise: pieces drift up by at least the spread, swaying, shrinking to 0.4", () => {
+  for (const pattern of ["dust", "cross", "ribbons", "halves"]) {
+    const s = stage({ pattern, behavior: "rise", spread: 1.2 });
+    for (const { end, at } of flights(s, 0)) {
+      assert.ok(end.y <= at(0).y - s.spread, `${pattern}: ${end.y}`);
+      assert.ok(Math.abs(end.scale - 0.4) < 1e-9);
+      assert.ok(Array.from({ length: 21 }, (_, i) => Math.abs(at(i / 20).x)).some((x) => x > 0.05), `${pattern}: sways`);
+      assert.equal(end.alpha, 0);
+    }
+  }
+});
+
+test("bounce: pieces never pass the floor 0.4 below their start, bounce back up once, and settle on it", () => {
+  for (const pattern of ["shards", "diced", "halves"]) {
+    for (const { at } of flights(stage({ pattern, behavior: "bounce" }), 0.3)) {
+      const ys = Array.from({ length: 101 }, (_, i) => at(i / 100).y);
+      assert.ok(Math.max(...ys) <= 0.4 + 1e-9, `${pattern}: never below the floor`);
+      const land = ys.findIndex((y) => y >= 0.4 - 1e-9);
+      assert.ok(land > 0, `${pattern}: lands`);
+      assert.ok(Math.min(...ys.slice(land)) <= 0.4 - 0.1, `${pattern}: rises again after landing`);
+      assert.ok(Math.abs(ys[100] - 0.4) < 1e-9, `${pattern}: settles on the floor`);
+    }
+  }
+});
+
+test("drip: pieces stretch down to at least twice their height and slide down by fall + 0.4", () => {
+  const s = stage({ pattern: "ribbons", behavior: "drip", fall: 0.5 });
+  for (const { f, end, at } of flights(s, 0)) {
+    assert.equal(at(0).stretchY, 1);
+    assert.ok(end.stretchY >= 2, `stretch ${end.stretchY}`);
+    assert.ok(Math.abs(end.y - 0.9) < 1e-9);
+    assert.ok(f.start >= 0 && f.start <= 0.3);
+  }
+});
+
+test("each new pattern's own burst", () => {
+  for (const { p, end } of flights(stage({ pattern: "cross" }), 0.4)) assert.ok(end.x * p.centroid.x + end.y * p.centroid.y > 0, "cross wedges fly outward");
+  const claw = flights(stage({ pattern: "claw", spread: 1 }), 0.4), reach = claw.map((x) => Math.hypot(x.end.x, x.end.y));
+  assert.ok(Math.min(reach[0], reach[3]) > Math.max(reach[1], reach[2]), `outer claw strips go further: ${reach}`);
+  assert.deepEqual(claw.map((x) => x.f.start), [0, 0.08, 0.16, 0.24]);
+  for (const { at } of flights(stage({ pattern: "diced", fall: 0.6 }), 0)) assert.ok(at(1).y > at(0.35).y, "dice fall after flying out");
+  const burst = stage({ pattern: "starburst", spread: 1 });
+  for (const { end } of flights(burst, 0)) assert.ok(Math.hypot(end.x, end.y) >= 1.2 * 0.9 - 1e-9, "starburst reaches spread x 1.2");
+  const rings = flights(stage({ pattern: "rings", pieces: 3 }), 0);
+  for (const { p, f } of rings) assert.ok(Math.abs(f.start - 0.15 * p.ring) < 1e-9, "outer rings start later");
+  const pixels = flights(stage({ pattern: "pixelate", pieces: 36 }), 0);
+  assert.ok(pixels.every((x, i) => !i || x.f.start > pixels[i - 1].f.start), "cells go in scanline order");
+  assert.equal(pixels[0].at(0.5).alpha, 0, "the first cell is gone by half time");
+  assert.equal(pixels[35].at(0.5).alpha, 1, "the last cell is still there");
+  for (const { at } of flights(stage({ pattern: "ribbons", fall: 0.4, drift: 0.5 }), 0)) {
+    assert.ok(Math.abs(at(1).y - 0.6) < 1e-9, "ribbons fall by fall + 0.2");
+    assert.ok(Array.from({ length: 21 }, (_, i) => Math.abs(at(i / 20).x)).some((x) => x > 0.05), "ribbons sway");
+  }
+  for (const pattern of NEW) for (const { end } of flights(stage({ pattern }), 0.4)) assert.equal(end.alpha, 0, pattern);
+});
