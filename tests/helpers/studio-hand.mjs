@@ -13,7 +13,7 @@ export function findInHTML(html, selector) {
   const m = /^([a-z][a-z0-9-]*)?((?:\.[\w-]+|\[[\w-]+(?:="[^"]*")?\])*)$/i.exec(selector.trim());
   if (!m || !selector.trim()) throw Error(`Unsupported selector (compound only): ${selector}`);
   // Classes come from outside the [attr="…"] parts, so the dot in finisher.on is not a class.
-  const tag = m[1]?.toLowerCase(), classes = [...m[2].replace(/\[[^\]]*\]/g, "").matchAll(/\.([\w-]+)/g)].map((x) => x[1]);
+  const tag = m[1]?.toLowerCase(), classes = [...m[2].replace(/\[[\w-]+(?:="[^"]*")?\]/g, "").matchAll(/\.([\w-]+)/g)].map((x) => x[1]);
   const wants = [...m[2].matchAll(/\[([\w-]+)(?:="([^"]*)")?\]/g)].map((x) => [x[1].toLowerCase(), x[2]]);
   const found = [];
   for (const t of html.matchAll(/<([a-z][a-z0-9-]*)((?:\s+[^\s=>"'/]+(?:="[^"]*")?)*)\s*\/?>/gi)) {

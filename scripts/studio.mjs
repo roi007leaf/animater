@@ -328,12 +328,15 @@ export function studioPointer(w, e) {
     // Dragging a keyframe dot moves that point; Shift snaps to whole squares.
     e.preventDefault();
     const canvas = dot.closest("[data-kf-canvas]"), svg = canvas.querySelector("svg"), [vx, vy, vw, vh] = canvas.dataset.kfView.split(" ").map(Number);
-    const index = Number(dot.dataset.kfDot), stageIndex = w.stageIndex;
+    const index = Number(dot.dataset.kfDot), stageIndex = w.stageIndex, recipeId = w.recipe()?.id;
     w.keyframeIndex = index; w.keyframeFocus = true;
     let last = null;
     const move = (ev) => { last = canvasToSquares(ev, svg.getBoundingClientRect(), { x: vx, y: vy, w: vw, h: vh }); last.whole = ev.shiftKey; dot.setAttribute("cx", last.x); dot.setAttribute("cy", last.y); };
-    const up = () => {
+    const up = (ev) => {
       dot.removeEventListener("pointermove", move); dot.removeEventListener("pointerup", up); dot.removeEventListener("pointercancel", up);
+      // A cancelled drag commits nothing, and neither does one whose recipe or stage was swapped
+      // out from under it (a guided tour putting the studio back mid-drag, finisher-tour.mjs).
+      if (ev?.type === "pointercancel" || w.recipe()?.id !== recipeId || w.stageIndex !== stageIndex) last = null;
       // A click or a drag that snaps back to the same point is not an edit: no draft, no unsaved mark.
       const kfs = last ? normalizeKeyframes(w.recipe()?.stages[stageIndex]?.keyframes) : null;
       const next = kfs && moveKeyframePoint(kfs, index, last.x, last.y, last.whole);

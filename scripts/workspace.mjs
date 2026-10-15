@@ -1658,6 +1658,9 @@ export class Workspace {
   onChange(e) {
     if(this.mediaLibrary?.change(e.target))return;
     if(this.flashEditor?.change(e.target))return;
+    // The guided tour's practice finisher (listed while a tour runs) is never stored as the default
+    // or linked to an entry: keyboard users can reach these pickers mid-tour.
+    if ((e.target.hasAttribute("data-finisher-link") || e.target.hasAttribute("data-finisher-default")) && e.target.value === TOUR_PRACTICE_ID) { this.render(); return; }
     if (e.target.hasAttribute("data-finisher-link")) { void this.linkFinisherTo(e.target.dataset.finisherLink, e.target.value, e.target.dataset.finisherUuid); return; }
     if (e.target.hasAttribute("data-finisher-add")) { const name = e.target.value; e.target.value = ""; if (name.trim()) this.addFinisherName(name); return; }
     if (e.target.hasAttribute("data-finisher-player")) { this.togglePlayer(e.target.dataset.finisherPlayer, e.target.checked); return; }
@@ -2051,7 +2054,11 @@ export class Workspace {
       // The guided tour's practice finisher is never saved, copied or deleted (Ctrl+S clicks Save too).
       if (["save", "duplicate", "delete"].includes(action) && this.recipe()?.id === TOUR_PRACTICE_ID) return;
       if (action === "finisher-tours") { this.showFinisherTours = !this.showFinisherTours; this.render(); return; }
-      if (action === "finisher-tour") { this.showFinisherTours = false; void runFinisherTour(this, b.dataset.finisherTour); return; }
+      if (action === "finisher-tour") {
+        this.showFinisherTours = false;
+        runFinisherTour(this, b.dataset.finisherTour).catch((error) => { this.message = error.message; this.render(); });
+        return;
+      }
       if(await this.mediaLibrary?.action(action,b))return;
       if(await this.dndCatalog?.action(action,b))return;
       if(await this.flashEditor?.action(action,b))return;

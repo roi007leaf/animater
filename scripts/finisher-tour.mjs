@@ -168,8 +168,10 @@ export function studioSurface(w, hand) {
   };
   const keyframeHandle = (i) => q(kfDot(i));
   const diamond = (i) => q(kfDiamond(i));
-  // The studio listens for a dot's moves on the dot itself (studio.mjs studioPointer).
-  const dragKeyframe = async (i, x, y) => { const dot = need(keyframeHandle(i)); await hand.drag(dot, pathPoint(x, y), 1400, { receiver: dot }); };
+  // The studio listens for a dot's moves on the dot itself (studio.mjs studioPointer). A drag cut
+  // short by Back, Replay or Stop ends in pointercancel: the studio has been put back by then, and
+  // a release would commit the move into whatever recipe is open now.
+  const dragKeyframe = async (i, x, y) => { const dot = need(keyframeHandle(i)); await hand.drag(dot, pathPoint(x, y), 1400, { receiver: dot, cancel: "pointercancel" }); };
   const pointAt = async (selector) => {
     const el = need(q(selector));
     el.scrollIntoView({ block: "nearest" }); await hand.pause(150);
@@ -241,7 +243,12 @@ export async function runFinisherTour(w, tour = "flying", { lead } = {}) {
   const which = Object.hasOwn(FINISHER_TOURS, tour) ? tour : "flying";
   w.touring = true;
   const saved = studioState(w);
-  const putBack = () => { restoreStudio(w, saved); w.touring = false; w.render(); };
+  let back = false;
+  const putBack = () => {
+    if (back) return;
+    back = true;
+    try { restoreStudio(w, saved); } finally { w.touring = false; w.render(); }
+  };
   try {
     w.stopEditorPreview?.();
     w.drafts.set(TOUR_PRACTICE_ID, practiceFinisher(which));
@@ -249,5 +256,8 @@ export async function runFinisherTour(w, tour = "flying", { lead } = {}) {
     Object.assign(w, { page: "finishers", studio: true, selected: TOUR_PRACTICE_ID, studioTime: 0, stageIndex: 0, keyframeIndex: 0, keyframeFocus: false, studioSettings: false, previewMode: "recipe", studioPlaying: false, message: "" });
     w.render();
   } catch (error) { putBack(); throw error; }
-  await runTour({ root: w.root, steps: finisherSteps(which), lead, snapshot: () => stepSnapshot(w), restore: (snap) => restoreStep(w, snap), cleanup: putBack, surface: (hand) => studioSurface(w, hand) });
+  // A throw in the engine's own setup (or in its cleanup) still puts the studio back.
+  try {
+    await runTour({ root: w.root, steps: finisherSteps(which), lead, snapshot: () => stepSnapshot(w), restore: (snap) => restoreStep(w, snap), cleanup: putBack, surface: (hand) => studioSurface(w, hand) });
+  } catch (error) { putBack(); throw error; }
 }
