@@ -1942,12 +1942,10 @@ export class Workspace {
   }
   // A finisher's Applies-to chip list, edited in the draft (unsaved until Save).
   addFinisherName(name) {
-    const r = this.edit(), was = String(r.match ?? ""), next = addFinisherName(was, name);
-    const added = String(name ?? "").trim();
-    if (added) {
-      r.match = next;
-      this.message = next === addFinisherName(was, "") ? `${added} is already in Applies to.` : `Added ${added}. Save to apply.`;
-    }
+    const was = String(this.recipe()?.match ?? ""), next = addFinisherName(was, name), added = String(name ?? "").trim();
+    // A name already there leaves the recipe untouched (not marked unsaved).
+    if (next === addFinisherName(was, "")) this.message = added ? `${added} is already in Applies to.` : this.message;
+    else { this.edit().match = next; this.message = `Added ${added}. Save to apply.`; }
     this.render();
   }
   // Feats, Actions and Features pages: data-action "<key>-auto", "select-<key>"…

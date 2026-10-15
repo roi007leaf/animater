@@ -699,8 +699,11 @@ test("a finisher's Applies to takes dropped items, typed names and chip removal,
   await drop('Item.axe');
   assert.equal(r.match, 'Shove, Greataxe');
   assert.equal(r.itemUuid, undefined, 'a finisher drop never binds a single item');
+  let edits = 0;
+  f.w.edit = () => { edits++; return r; };
   await drop('Item.shove');
   assert.equal(r.match, 'Shove, Greataxe', 'no duplicate, whatever the case');
+  assert.equal(edits, 0, 'a duplicate leaves the recipe unedited');
   const input = { value: '  Fireball ', dataset: {}, hasAttribute: (name) => name === 'data-finisher-add' };
   f.w.onChange({ target: input });
   assert.equal(r.match, 'Shove, Greataxe, Fireball');
