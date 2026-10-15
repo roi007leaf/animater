@@ -8,7 +8,7 @@ import {
 } from "./stage-options.mjs";
 import { sampleRecipe } from "./composition.mjs";
 import { chainPreview } from "./chain-preview.mjs";
-import { prepareFragments, fragmentPieces, fragmentFlight, fragmentPose } from "./fragments.mjs";
+import { prepareFragments, fragmentPieces, fragmentFlight, fragmentPose, FRAGMENT_TINT_LOOKS } from "./fragments.mjs";
 import { clearPreviewMediaFailure, markPreviewMediaFailure } from "./preview-media-status.mjs";
 import {
   beamGeometry,
@@ -21,13 +21,13 @@ import {
 // Token fragments in the preview: each piece is a copy of the token image clipped to the piece's
 // polygon (unit square -0.5..0.5 as percent of the image) and turned about its centroid.
 const percent = (v) => Math.round((v + 0.5) * 100000) / 1000 || 0;
-export function fragmentPreviewParts(stage, cutAngle, turn = 0) {
+export function fragmentPreviewParts(stage, cutAngle, turn = 0, size) {
   const s = prepareFragments(stage);
   return fragmentPieces(s, cutAngle, turn).map((piece, i) => ({
     clip: `polygon(${piece.polygon.map((p) => `${percent(p.x)}% ${percent(p.y)}%`).join(", ")})`,
     origin: `${percent(piece.centroid.x)}% ${percent(piece.centroid.y)}%`,
     piece,
-    flight: fragmentFlight(s, piece, i, cutAngle, turn),
+    flight: fragmentFlight(s, piece, i, cutAngle, turn, size),
   }));
 }
 // The artwork a fragments stage cuts: the token image, or a placeholder actor's glyph element.
@@ -476,6 +476,25 @@ export class RecipePreview {
     const direction = this.stageDirection(stage, subject, targetIndex);
     return Math.atan2(direction.y, direction.x);
   }
+  // Where absorbed pieces fly: the attacker's preview token less this one, in preview squares,
+  // as the table's sender measures it; a stage that already carries towards keeps it.
+  fragmentTowards(stage, subject, targetIndex = 0) {
+    if (Number.isFinite(stage.towards?.x) && Number.isFinite(stage.towards?.y)) return stage.towards;
+    const grid = this.chain ? this.grid ?? 55 : 55;
+    let token, other;
+    if (this.chain) {
+      const at = (a) => a && { x: (a.x * (this.scene.clientWidth || 400)) / 100, y: (a.y * (this.scene.clientHeight || 300)) / 100 };
+      const actor = this.chain.actors.find((a) => a.id === stage.destination?.id) ?? this.chain.actors.find((a) => a.subject === subject && (subject === "source" || a.targetIndex === targetIndex));
+      const source = this.chain.actors[0], target = this.chain.actors.find((a) => a.id === stage.motionTarget?.id) ?? this.chain.actors[targetIndex + 1];
+      token = at(actor);
+      other = at(actor === source || (actor?.id && actor.id === source?.id) ? target : source);
+    } else {
+      const w = this.scene.clientWidth || 400, y = 0.45 * (this.scene.clientHeight || 300), source = { x: 0.24 * w, y }, target = { x: 0.76 * w, y };
+      token = subject === "source" ? source : target;
+      other = subject === "source" ? target : source;
+    }
+    return token && other ? { x: (other.x - token.x) / grid, y: (other.y - token.y) / grid } : null;
+  }
   drawFragments(token, art, subject, targetIndex, frame) {
     const active = this.activeFragments(subject, targetIndex, frame);
     let entry = this.fragments.get(token);
@@ -488,8 +507,8 @@ export class RecipePreview {
     for (const part of entry.parts) {
       const pose = fragmentPose(entry.prepared, part.piece, part.flight, active.progress);
       part.box.style.transform = `translate(-50%,-50%) translate(${pose.x * grid}px,${pose.y * grid}px) rotate(${entry.turn}rad)`;
-      part.cut.style.transform = `rotate(${pose.rotation}deg)`;
-      part.box.style.opacity = pose.alpha;
+      part.cut.style.transform = `rotate(${pose.rotation}deg) scale(${pose.scale},${pose.scale * pose.stretchY})`;
+      part.box.style.opacity = pose.alpha * entry.look.alpha;
     }
   }
   // Built once per activation; each frame only moves them.
@@ -502,15 +521,19 @@ export class RecipePreview {
     const height = art.style?.height || `${(info?.spriteHeight ?? info?.height ?? 1) * 55}px`;
     const isImage = art.tagName === "IMG";
     const src = isImage ? art.getAttribute?.("src") ?? art.src : null;
-    const prepared = prepareFragments(stage);
+    // Absorb flies to the attacker's preview token, measured the way the table sends it.
+    const towards = this.fragmentTowards(stage, subject, targetIndex);
+    const prepared = prepareFragments(towards ? { ...stage, towards } : stage);
+    const look = FRAGMENT_TINT_LOOKS[prepared.tint] ?? FRAGMENT_TINT_LOOKS.none;
+    const grid = this.chain ? this.grid ?? 55 : 55, size = { w: (parseFloat(width) || 55) / grid, h: (parseFloat(height) || 55) / grid };
     const holder = doc.createElement("div");
     holder.className = "an-fragment-pieces";
     Object.assign(holder.style, { position: "absolute", inset: "0", pointerEvents: "none" });
-    const parts = fragmentPreviewParts(prepared, this.fragmentCutAngle(stage, subject, targetIndex), turn).map((part) => {
+    const parts = fragmentPreviewParts(prepared, this.fragmentCutAngle(stage, subject, targetIndex), turn, size).map((part) => {
       const box = doc.createElement("div"), cut = doc.createElement("div"), copy = isImage ? doc.createElement("img") : doc.createElement("div");
       box.dataset.fragmentPiece = "";
       Object.assign(box.style, { position: "absolute", left: "50%", top: "50%", width, height, transformOrigin: "50% 50%" });
-      Object.assign(cut.style, { position: "absolute", inset: "0", clipPath: part.clip, transformOrigin: part.origin });
+      Object.assign(cut.style, { position: "absolute", inset: "0", clipPath: part.clip, transformOrigin: part.origin, ...(look.css ? { filter: look.css } : {}) });
       if (isImage) {
         copy.setAttribute("src", src);
         copy.setAttribute("alt", "");
@@ -526,7 +549,7 @@ export class RecipePreview {
       return { ...part, box, cut };
     });
     token.appendChild(holder);
-    const entry = { stage, prepared, turn, parts, holder };
+    const entry = { stage, prepared, turn, parts, holder, look };
     this.fragments.set(token, entry);
     return entry;
   }

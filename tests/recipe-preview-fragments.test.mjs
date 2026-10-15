@@ -201,3 +201,26 @@ test("after a non-held stage a placeholder's pieces are removed and its glyph sh
   assert.equal(pieces(token).length, 0);
   assert.equal(glyph.style.visibility, "");
 });
+
+test("preview pieces scale and stretch with the pose and wear the tint's filter", () => {
+  const { token, draw } = fixture({ pattern: "shards", pieces: 5, behavior: "drip", tint: "frozen" });
+  draw(100);
+  assert.ok(cuts(token).every((c) => c.style.filter === "saturate(.6) hue-rotate(170deg) brightness(1.1)"));
+  assert.ok(pieces(token).every((p) => Math.abs(Number(p.style.opacity) - 0.9) < 1e-9), "frozen pieces at 0.9 opacity");
+  draw(999);
+  assert.ok(cuts(token).every((c) => /^rotate\(-?[\d.e-]+deg\) scale\(1,2\.\d+\)$/.test(c.style.transform)), cuts(token)[0].style.transform);
+  const plain = fixture({ pattern: "halves" });
+  plain.draw(500);
+  assert.ok(cuts(plain.token).every((c) => / scale\(1,1\)$/.test(c.style.transform) && !c.style.filter), "classic pieces: no scale change, no filter");
+});
+
+test("the preview aims absorb at the attacker's preview token, as the table sends it", () => {
+  const { player, token, draw } = fixture({ pattern: "starburst", behavior: "absorb" });
+  const stage = player.recipe.stages[0];
+  const t = player.fragmentTowards(stage, "targets", 0);
+  assert.ok(Math.abs(t.x + 208 / 55) < 1e-9 && Math.abs(t.y) < 1e-9, "the caster stands 208px to the left in a 55px grid");
+  assert.ok(Math.abs(player.fragmentTowards(stage, "source", 0).x - 208 / 55) < 1e-9);
+  assert.deepEqual(player.fragmentTowards({ ...stage, towards: { x: 1, y: 2 } }, "targets", 0), { x: 1, y: 2 }, "a sent towards wins");
+  draw(500);
+  assert.ok(Math.abs(player.fragments.get(token).prepared.towards.x + 208 / 55) < 1e-9);
+});

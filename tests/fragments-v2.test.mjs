@@ -311,3 +311,85 @@ test("each new pattern's own burst", () => {
   }
   for (const pattern of NEW) for (const { end } of flights(stage({ pattern }), 0.4)) assert.equal(end.alpha, 0, pattern);
 });
+
+import { createFragmentRenderer } from "../scripts/fragment-render.mjs";
+import { withFragmentTowards } from "../scripts/motion.mjs";
+
+function fakePixi() {
+  const made = { filters: [], crops: 0 };
+  class Container { constructor() { this.children = []; this.alpha = 1; this.rotation = 0; this.position = { set: (x, y) => { this.x = x; this.y = y; } }; this.scale = { set: (x, y) => { this.sx = x; this.sy = y; } }; } addChild(...c) { this.children.push(...c); } destroy() { this.destroyed = true; } }
+  class Sprite { constructor(t) { this.texture = t; this.anchor = { set() {} }; this.position = { set() {} }; } }
+  class Graphics { beginFill() { return this; } drawPolygon() { return this; } endFill() { return this; } }
+  class Texture { constructor(base, frame) { made.crops++; this.baseTexture = base; this.frame = frame; } destroy() {} }
+  class Rectangle { constructor(x, y, w, h) { Object.assign(this, { x, y, width: w, height: h }); } }
+  class ColorMatrixFilter { constructor() { made.filters.push(this); } greyscale(amount, multiply) { this.grey = [amount, multiply]; } }
+  return { PIXI: { Container, Sprite, Graphics, Texture, Rectangle, ColorMatrixFilter }, made };
+}
+const table = ({ size = 100 } = {}) => {
+  const { PIXI, made } = fakePixi(), layer = { children: [], addChild(c) { this.children.push(c); } };
+  const texture = { baseTexture: { width: 200, height: 200 }, frame: { x: 0, y: 0, width: 200, height: 200 } };
+  const token = { center: { x: 500, y: 300 }, w: size, h: size, mesh: { texture, rotation: 0, scale: { x: 1, y: 1 }, parent: layer } };
+  const sprites = () => layer.children.map((box) => box.children.find((c) => c instanceof PIXI.Sprite));
+  return { r: createFragmentRenderer({ PIXI, grid: () => 100 }), token, layer, made, sprites, PIXI };
+};
+const frag = (extra) => ({ motion: "fragments", seed: 3, duration: 1000, ...extra });
+
+test("the renderer scales and stretches each piece box by its pose", () => {
+  const drip = table();
+  drip.r.start(drip.token, frag({ pattern: "shards", pieces: 6, behavior: "drip" }), 0).update(1);
+  assert.ok(drip.layer.children.every((b) => b.sx === 1 && Math.abs(b.sy - 2.2) < 1e-9), "drip stretches to 2.2");
+  const implode = table();
+  implode.r.start(implode.token, frag({ pattern: "cross", behavior: "implode" }), 0).update(1);
+  assert.ok(implode.layer.children.every((b) => Math.abs(b.sx - 0.05) < 1e-9 && Math.abs(b.sy - 0.05) < 1e-9));
+  const plain = table();
+  plain.r.start(plain.token, frag({ pattern: "halves" }), 0).update(0.5);
+  assert.ok(plain.layer.children.every((b) => b.sx === 1 && b.sy === 1), "the classic patterns stay full size");
+});
+
+test("tints set the sprite colour and alpha; stone shares one greyscale filter", () => {
+  const looks = { frozen: [0xa8d8ff, 0.9], charred: [0x3a2a22, 1], ghost: [0xd8f0ff, 0.5], stone: [0xb0aca4, 1] };
+  for (const [tint, [colour, alpha]] of Object.entries(looks)) {
+    const t = table();
+    t.r.start(t.token, frag({ pattern: "shards", pieces: 6, tint }), 0).update(0.05);
+    assert.ok(t.sprites().every((s) => s.tint === colour), tint);
+    assert.ok(t.layer.children.every((b) => Math.abs(b.alpha - alpha) < 1e-9), `${tint}: alpha`);
+    if (tint === "stone") {
+      assert.equal(t.made.filters.length, 1, "one filter for every piece");
+      assert.deepEqual(t.made.filters[0].grey, [0.55, false]);
+      assert.ok(t.sprites().every((s) => s.filters?.length === 1 && s.filters[0] === t.made.filters[0]));
+    } else assert.ok(t.sprites().every((s) => s.filters === undefined), `${tint}: no filter`);
+  }
+  const none = table();
+  none.r.start(none.token, frag({ pattern: "dust", pieces: 16 }), 0).update(0.05);
+  assert.ok(none.sprites().every((s) => s.tint === undefined && s.filters === undefined));
+  assert.equal(none.made.filters.length, 0);
+});
+
+test("diced and pixelate draw cropped sub-textures, like dust", () => {
+  const t = table();
+  t.r.start(t.token, frag({ pattern: "diced", pieces: 3 }), 0);
+  assert.equal(t.made.crops, 9);
+  t.r.start(t.token, frag({ pattern: "pixelate", pieces: 16 }), 0);
+  assert.equal(t.made.crops, 25);
+});
+
+test("on a 2x2 token implode ends at its centre and absorb at the attacker point", () => {
+  const t = table({ size: 200 });
+  t.r.start(t.token, frag({ pattern: "diced", pieces: 3, behavior: "implode" }), 0).update(1);
+  assert.ok(t.layer.children.every((b) => Math.abs(b.x - 500) < 1e-6 && Math.abs(b.y - 300) < 1e-6));
+  const a = table({ size: 200 });
+  a.r.start(a.token, frag({ pattern: "starburst", behavior: "absorb", towards: { x: -3, y: 0 } }), 0).update(1);
+  assert.ok(a.layer.children.every((b) => Math.abs(b.x - 200) < 1e-6 && Math.abs(b.y - 300) < 1e-6), "three squares left of the centre");
+});
+
+test("the sender measures towards from the fragmented token to the attacker, once", () => {
+  const a = { id: "a", center: { x: 100, y: 100 } }, b = { id: "b", center: { x: 400, y: 300 } }, frag0 = { kind: "motion", motion: "fragments" };
+  const s = withFragmentTowards(frag0, b, a, b, 100);
+  assert.deepEqual(s.towards, { x: -3, y: -2 });
+  assert.equal(withFragmentTowards(s, b, a, { id: "c", center: { x: 0, y: 0 } }, 100), s, "never overwritten");
+  assert.deepEqual(withFragmentTowards(frag0, a, a, b, 100).towards, { x: 3, y: 2 }, "the attacker itself breaking up flies toward its target");
+  assert.equal(withFragmentTowards(frag0, b, null, b, 100), frag0, "no attacker known: nothing sent");
+  assert.equal(withFragmentTowards(frag0, b, a, b, 0), frag0, "no grid: nothing sent");
+  const shake = { kind: "motion", motion: "shake" };
+  assert.equal(withFragmentTowards(shake, b, a, b, 100), shake);
+});

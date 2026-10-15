@@ -1,9 +1,18 @@
 // Draws token fragments on each client: pieces of the token's own texture placed where the
 // token's art is drawn, moved by fragmentPose, destroyed at the end. Halves and shards are
 // masked sprites; dust specks are cropped sub-textures (no masks, so dozens stay cheap).
-import { prepareFragments, fragmentPieces, fragmentFlight, fragmentPose } from "./fragments.mjs";
+import { prepareFragments, fragmentPieces, fragmentFlight, fragmentPose, FRAGMENT_TINT_LOOKS } from "./fragments.mjs";
 
 export function createFragmentRenderer({ PIXI, grid }) {
+  // Stone's greyscale: one filter shared by every piece this renderer draws, made on first use.
+  let stone;
+  const stoneFilter = (amount) => {
+    if (stone === undefined) {
+      stone = PIXI.ColorMatrixFilter ? new PIXI.ColorMatrixFilter() : null;
+      stone?.greyscale(amount, false);
+    }
+    return stone;
+  };
   return {
     // `base` is the transform the token is drawn at ({ x, y, rotation, sx, sy }), or a getter for it;
     // without it the live mesh is used. A getter is read every frame, so the pieces follow a rebase.
@@ -13,7 +22,7 @@ export function createFragmentRenderer({ PIXI, grid }) {
       const first = baseAt(), base = first ? { ...first } : first;
       const mesh = token?.mesh, texture = mesh?.texture;
       if (!texture || !(token.center || mesh.position)) { console.warn("Animater fragments: no token artwork"); return null; }
-      const stage = prepareFragments(rawStage);
+      const stage = prepareFragments(rawStage), look = FRAGMENT_TINT_LOOKS[stage.tint] ?? FRAGMENT_TINT_LOOKS.none;
       const layer = mesh.parent ?? globalThis.canvas?.primary, g = grid();
       const sx = base?.sx ?? mesh.scale?.x ?? 1, sy = base?.sy ?? mesh.scale?.y ?? 1;
       const flipX = Math.sign(sx || 1), flipY = Math.sign(sy || 1), turn = base?.rotation ?? mesh.rotation ?? 0;
@@ -24,6 +33,8 @@ export function createFragmentRenderer({ PIXI, grid }) {
         return now && was ? (s * Math.abs(was)) / Math.abs(now) : s;
       };
       const w = live(mesh.width, mesh.scale?.x, sx, token.w), h = live(mesh.height, mesh.scale?.y, sy, token.h);
+      // The art's size in squares: implode and absorb aim at points, so their flights need it.
+      const size = { w: w / (g || 100), h: h / (g || 100) };
       const rot = (dx, dy) => ({ x: Math.cos(turn) * dx - Math.sin(turn) * dy, y: Math.sin(turn) * dx + Math.cos(turn) * dy });
       // The mesh position sits at the anchor; the art's centre is offset from it.
       const pos = mesh.position ? { x: base?.x ?? mesh.position.x, y: base?.y ?? mesh.position.y } : null;
@@ -53,13 +64,15 @@ export function createFragmentRenderer({ PIXI, grid }) {
             const mask = new PIXI.Graphics().beginFill(0xffffff).drawPolygon(piece.polygon.flatMap((p) => [p.x * w - cx, p.y * h - cy])).endFill();
             box.addChild(mask); sprite.mask = mask;
           }
+          if (look.tint !== undefined) sprite.tint = look.tint;
+          if (look.greyscale) { const filter = stoneFilter(look.greyscale); if (filter) sprite.filters = [filter]; }
           box.addChild(sprite);
           const start = place(cx, cy); box.position.set(start.x, start.y); box.rotation = turn;
           // Foundry sorts by elevation, sortLayer, sort, then zIndex: match the token so pieces sit with it.
           for (const [key, value] of Object.entries(sorting)) if (value !== undefined) box[key] = value;
           if (mesh.zIndex !== undefined) box.zIndex = mesh.zIndex + 1;
           layer.addChild(box);
-          return { box, crop, piece, flight: fragmentFlight(stage, piece, i, cutAngle, turn), cx, cy };
+          return { box, crop, piece, flight: fragmentFlight(stage, piece, i, cutAngle, turn, size), cx, cy };
         });
       } catch (error) {
         for (const box of boxes) { try { box.destroy({ children: true }); } catch { /* keep cleaning */ } }
@@ -76,7 +89,9 @@ export function createFragmentRenderer({ PIXI, grid }) {
           for (const part of parts) {
             // The flight is already in screen terms: only the piece's own offset turns with the art.
             const pose = fragmentPose(stage, part.piece, part.flight, p), at = place(part.cx, part.cy);
-            part.box.position.set(at.x + moved.x + pose.x * g, at.y + moved.y + pose.y * g); part.box.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha;
+            part.box.position.set(at.x + moved.x + pose.x * g, at.y + moved.y + pose.y * g); part.box.rotation = turn + (pose.rotation * Math.PI) / 180; part.box.alpha = pose.alpha * look.alpha;
+            // The box's origin is the piece's centroid, so it scales and stretches about it, mask included.
+            part.box.scale?.set(pose.scale, pose.scale * pose.stretchY);
           }
         },
         // Each part on its own: one failure must not leak the rest.

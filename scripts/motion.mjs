@@ -216,6 +216,16 @@ export const withFragmentSeed = (stage, rand = Math.random) =>
 export const withFragmentCut = (stage, direction) =>
   stage?.kind === "motion" && stage.motion === "fragments" && !Number.isFinite(stage.cutAngle) && Number.isFinite(direction?.x) && Number.isFinite(direction?.y)
     ? { ...stage, cutAngle: Math.atan2(direction.y, direction.x) } : stage;
+// Absorbed pieces fly to the attacker: the sender's other token's centre less this token's, in
+// squares on screen. Sent with the cut so every client agrees; nothing is sent without an attacker.
+export function withFragmentTowards(stage, token, source, target, grid = 100) {
+  if (stage?.kind !== "motion" || stage.motion !== "fragments" || (Number.isFinite(stage.towards?.x) && Number.isFinite(stage.towards?.y))) return stage;
+  const other = token === source || (token?.id && token.id === source?.id) ? target : source;
+  const a = token?.center, b = other?.center;
+  if (!a || !b || other === token || !(grid > 0)) return stage;
+  const x = (b.x - a.x) / grid, y = (b.y - a.y) / grid;
+  return Number.isFinite(x) && Number.isFinite(y) ? { ...stage, towards: { x, y } } : stage;
+}
 export function heldPose(stage, heldMs, direction, grid = 100) {
   if (stage.motionEnd !== "hold" || !HOLDING_MOTIONS.has(stage.motion) || heldMs >= HOLD_LIMIT_MS + HOLD_RELEASE_MS) return null;
   const end = motionPose(stage, 1, direction, grid);
