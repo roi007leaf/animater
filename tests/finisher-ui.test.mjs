@@ -57,6 +57,8 @@ test("a path finisher chooses what happens at walls; legacy travel does not", ()
   assert.match(html, /<label>At walls<select data-field="finisher\.wall">/);
   assert.match(html, /<option value="slam" selected>Slam into it<\/option>/);
   assert.match(html, /<option value="fit" >Stop short smoothly<\/option>/);
+  assert.ok(html.includes('<p class="an-hint">Flies toward the nearest wall within reach (never back toward the attacker) and crashes into it.</p>'), "the slam hint");
+  assert.ok(!finisherSettingsHTML({ ...r, finisher: normalizeFinisher({ wall: "fit" }) }).includes("nearest wall"), "no slam hint for fit");
   assert.doesNotMatch(finisherSettingsHTML(fin("b", "Shove")), /finisher\.wall/);
 });
 

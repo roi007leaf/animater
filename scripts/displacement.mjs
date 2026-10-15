@@ -38,6 +38,20 @@ export function landingSpot({ from, direction, squares, grid, size, collides = (
   return spot;
 }
 
+// How far (squares) the first wall is along the direction, walking the same steps and collision test
+// as landingSpot: the middle of the first blocked step. null when no wall is crossed within `squares`;
+// the scene edge stops the walk but is not a wall.
+export function wallDistance({ from, direction, squares, grid, size, collides = () => false, bounds = null, snap }) {
+  let spot = { x: from.x, y: from.y };
+  for (const step of landingSteps(from, direction, squares, grid, snap)) {
+    if (!inside(step, size, bounds)) return null;
+    if (collides(centerOf(spot, size), centerOf(step, size)))
+      return Math.hypot((spot.x + step.x) / 2 - from.x, (spot.y + step.y) / 2 - from.y) / grid;
+    spot = step;
+  }
+  return null;
+}
+
 // Whether the active GM writes what a player asked for: only for a token that player
 // controls (or whose attacker they control), still visible; hiding or Defeated only once down.
 export function displaceAllowed({ isOwner, alreadyHidden, hp, hidden, defeated, x, y }) {

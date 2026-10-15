@@ -196,13 +196,16 @@ function availableToHTML(f, players) {
 const NEEDS_HINTS = { use: "Which results count as a successful use.", kill: "Critical only: the killing blow must itself be a critical." };
 const needsHTML = (f, select) => (NEEDS_HINTS[f.on] ? `${select("success", "Needs", FINISHER_SUCCESS)}<p class="an-hint">${esc(NEEDS_HINTS[f.on])}</p>` : "");
 
+// The At walls option in effect, with what it does.
+const WALL_HINTS = { slam: "Flies toward the nearest wall within reach (never back toward the attacker) and crashes into it." };
+
 export function finisherSettingsHTML(r, { itemSummary, players = [] } = {}) {
   const f = r.finisher, path = finisherTravelPath(r), select = (key, label, table) => `<label>${label}<select data-field="finisher.${key}">${choices(table, f[key])}</select></label>`;
   return `<div class="an-editor-section an-binding an-finisher"><div class="an-section-title"><b>Finisher</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>
     <label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>
     ${appliesToHTML(r, itemSummary)}
     ${select("on", "Plays on", FINISHER_ON)}${availableToHTML(f, players)}${needsHTML(f, select)}
-    ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the attacker and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label><p class="an-hint">Shoves the target this far away from the attacker before the rest plays (stops at walls).</p>`}
+    ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the attacker and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}${WALL_HINTS[f.wall] ? `<p class="an-hint">${esc(WALL_HINTS[f.wall])}</p>` : ""}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label><p class="an-hint">Shoves the target this far away from the attacker before the rest plays (stops at walls).</p>`}
     ${select("ending", "Ending", FINISHER_ENDINGS)}
     <p class="an-hint">${path ? "A stage named “landing” plays where it lands." : "Set a travel motion's End to “Hold at the end”: knockback replaces its distance and the token is moved to where it lands, stopping at walls. A stage named “landing” plays there."} Vanish and Body apply only to a creature at 0 HP.</p></div>`;
 }

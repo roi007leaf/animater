@@ -2,7 +2,7 @@ import { uuid } from "./uuid.mjs";
 import { ID, validateRecipe, clone, matchRecipe, resolveAsset } from "./model.mjs";
 import { registerFlashSettings, flashScreens } from "./flash-combat.mjs";
 import { damageFromMessage, damageFromParts, recallDamage, recallAttribution, hitRecipe, deathRecipe } from "./damage-moments.mjs";
-import { displaceAllowed, landingSpot, withinKnockback } from "./displacement.mjs";
+import { displaceAllowed, landingSpot, wallDistance, withinKnockback } from "./displacement.mjs";
 import { matchFinishers, killFinisher, critFinishers, usePasses, finisherMoment, checkFinisherEvent, mayDisplace, pickedFinisher, playerFinisherChoices, pickPlays, createFinishedMemory, finishedKey, finishedMessage, FINISHED_MESSAGE, critTargets, saveFinisherEvent } from "./finisher-model.mjs";
 import { playFinisher, previewFinisher } from "./finisher-play.mjs";
 import { createFragmentRenderer } from "./fragment-render.mjs";
@@ -337,16 +337,19 @@ function findRecipe(id) {
     saved.find(r=>typeof id === "string" && r.name?.trim().toLowerCase() === id.trim().toLowerCase());
 }
 // Where a finisher's mover lands: walks the grid until a wall, the scene edge or `squares`.
-const finisherLanding = (mover, direction, squares) => landingSpot({
+const finisherWalk = (mover, direction, squares) => ({
   from: { x: mover.document.x, y: mover.document.y }, direction, squares, grid: canvas.grid.size, size: { w: mover.w, h: mover.h },
   collides: (a, b) => CONFIG.Canvas.polygonBackends.move.testCollision(a, b, { type: "move", mode: "any" }),
   bounds: canvas.dimensions.sceneRect, snap: (p) => mover.getSnappedPosition?.(p) ?? p,
 });
+const finisherLanding = (mover, direction, squares) => landingSpot(finisherWalk(mover, direction, squares));
+// How far (squares) the first wall is along that walk, or null: Wall slam seeks the nearest one.
+const finisherWallHit = (mover, direction, squares) => wallDistance(finisherWalk(mover, direction, squares));
 // A test play (studio Play at table / Local preview, api.play, api.preview). A finisher with a
 // mover token plays composed as a kill would (wall cut, crash and landing where the token hits)
 // but writes nothing; anything else, or a finisher with no token to move, plays as authored.
 function playTest(recipe, context, options = {}) {
-  const host = { gridSize: () => canvas.grid.size, landing: finisherLanding, trace: (status, detail) => runtime.trace(status, detail) };
+  const host = { gridSize: () => canvas.grid.size, landing: finisherLanding, wallHit: finisherWallHit, trace: (status, detail) => runtime.trace(status, detail) };
   const { onStart, ...rest } = options;
   return previewFinisher(recipe, context, host, (composed, ctx, first) => runtime.play(composed, ctx, first ? options : rest))
     ?? runtime.play(recipe, context, options);
@@ -1392,6 +1395,7 @@ Hooks.once("ready", () => {
   const finisherHost = (attacker) => ({
     gridSize: () => canvas.grid.size,
     landing: finisherLanding,
+    wallHit: finisherWallHit,
     play: (recipe, context) => new Promise((resolve) => {
       runtime.play(installedStages(recipe), context, { onStart: (started) => resolve(started.playbackPlan) })
         .then(() => resolve(null), (error) => { runtime.trace("Blocked", error.message); resolve(null); });

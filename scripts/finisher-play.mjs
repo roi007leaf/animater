@@ -135,6 +135,23 @@ export function defaultAim(mover) {
   const rad = (r * Math.PI) / 180;
   return { x: Math.cos(rad), y: Math.sin(rad) };
 }
+// Wall slam's aim: `steps` directions evenly from -90° to +90° around `away` (0° among them), each
+// probed for its first wall (`probe(direction)` → squares or null). The nearest wall within `reach`
+// wins; on a tie, the direction closest to straight away. null when no wall is in reach.
+export function seekWall(away, probe, { reach = Infinity, steps = 25 } = {}) {
+  const n = Math.max(1, Math.round(steps)), base = Math.atan2(away.y, away.x);
+  const angles = Array.from({ length: n }, (_, i) => (n === 1 ? 0 : -Math.PI / 2 + (Math.PI * i) / (n - 1)))
+    .sort((a, b) => Math.abs(a) - Math.abs(b));
+  let best = null;
+  for (const angle of angles) {
+    const aim = angle === 0 ? { x: away.x, y: away.y } : { x: Math.cos(base + angle), y: Math.sin(base + angle) };
+    const distance = probe(aim);
+    if (distance == null || !Number.isFinite(distance) || distance > reach + 1e-9) continue;
+    if (!best || distance < best.distance - 1e-9) best = { aim, distance, angle };
+  }
+  return best;
+}
+
 // A path that moved the token lands upright and visible, so a vanish still fades it. A mover
 // still held in place (shrunk, faded, turned) needs no separate fade: one would pop it back.
 // Fragments hide the real token while the pieces fly, so they need no fade either.
@@ -142,7 +159,7 @@ export const fadedAtEnd = (recipe, moves) => recipe.stages.some((s) => s.kind ==
   && s.motionEnd === "hold" && mine(s));
 
 // Everything a finisher decides before it plays: where the mover lands (or hits a wall), and the
-// recipe composed for that. Reads Foundry only through `host.gridSize`, `host.landing` and
+// recipe composed for that. Reads Foundry only through `host.gridSize`, `host.landing`, `host.wallHit` and
 // `host.trace`; writes nothing.
 export function planFinisher({ recipe, mover, attacker = null, dead = false }, host) {
   const f = recipe.finisher, grid = host.gridSize();
@@ -153,15 +170,24 @@ export function planFinisher({ recipe, mover, attacker = null, dead = false }, h
   try {
     if (path) {
       // In place or not is counted on the aimed end, the way the landing walks the grid.
-      const aim = finisherDirection({ mover, attacker }) ?? defaultAim(mover);
-      const end = aim ? rotateBy(pathEnd(path.keyframes), aim) : pathEnd(path.keyframes), length = Math.hypot(end.x, end.y);
-      const squares = Math.round(Math.max(Math.abs(end.x), Math.abs(end.y)));
+      let aim = finisherDirection({ mover, attacker }) ?? defaultAim(mover);
+      const aimed = (a) => {
+        const end = rotateBy(pathEnd(path.keyframes), a);
+        return { end, length: Math.hypot(end.x, end.y), squares: Math.round(Math.max(Math.abs(end.x), Math.abs(end.y))) };
+      };
+      let { end, length, squares } = aimed(aim);
       inPlace = squares === 0;
       // Gone in flight (ends invisible): aimed, held until hidden, never moved — moving an
       // invisible token would only show it again at the landing.
       // A survivor (not dead) never vanishes, nor does a non-vanish ending (it lands as before),
       // and an in-place path already stays put.
       const vanishes = dead && f.ending === "vanish" && !inPlace && path.keyframes.at(-1).alpha === 0;
+      // Wall slam flies toward the nearest wall within reach, never back toward the attacker.
+      if (!vanishes && !inPlace && f.wall === "slam" && typeof host.wallHit === "function") {
+        const probe = (d) => { const a = aimed(d); return a.squares > 0 ? host.wallHit(mover, { x: a.end.x / a.length, y: a.end.y / a.length }, a.squares) : null; };
+        const sought = seekWall(aim, probe, { reach: length });
+        if (sought) ({ end, length, squares } = aimed(aim = sought.aim));
+      }
       if (vanishes) vanishing = { aim };
       else if (aim && !inPlace) {
         to = host.landing(mover, { x: end.x / length, y: end.y / length }, squares);
