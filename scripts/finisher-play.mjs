@@ -83,7 +83,12 @@ export function composeFinisher(recipe, { offset = null, frame = null, inPlace, 
     }
     return s;
   });
-  const kept = unlinkDropped(recipe.stages, stages);
+  const unlinked = unlinkDropped(recipe.stages, stages);
+  // The mover's impacts and auras that start once its travel has landed (blood linked to the travel's
+  // end) play on the landing square, as "landing" does: a test play never writes the move, and a real
+  // play writes it at travelEnd, racing them. Otherwise they burst where the token stood.
+  const kept = offset && moves && !shove ? afterLanding(unlinked, (s) => PINNABLE.has(s.kind) && onMover(s) && !s.atPoint
+    && s.stageId !== "landing" && !String(s.stageId ?? "").startsWith("wall"), (s) => pinned({ ...s, offsetX: (Number(s.offsetX) || 0) + offset.x, offsetY: (Number(s.offsetY) || 0) + offset.y })) : unlinked;
   if (!shove) return { recipe: { ...recipe, stages: kept }, moves };
   // Linked stages follow their reference; the rest start once the shove has landed.
   const after = kept.map((s) => (s.afterStage ? s : { ...s, delay: (Number(s.delay) || 0) + shove.duration }));
@@ -101,6 +106,17 @@ function shoveStage(stages, offset) {
   const squares = Math.min(4, Math.hypot(offset.x, offset.y));
   return { stageId, label: "Knockback", kind: "motion", motion: "rush", subject: "targets", motionEnd: "hold", motionOffset: { x: offset.x, y: offset.y },
     motionArrival: 70, delay: 0, duration: Math.round(250 + 25 * squares), assets: [] };
+}
+
+// Moves the stages that `eligible` picks and that start at or after the mover's travel lands (its
+// held, landing motion ends); timing is resolved as the runtime does. Unresolvable timing moves nothing.
+function afterLanding(stages, eligible, move) {
+  let timed;
+  try { timed = timedStages({ stages }); } catch { return stages; }
+  const travels = timed.filter((s) => s.kind === "motion" && mine(s) && s.motionEnd === "hold" && (s.motionFrame || s.motionOffset));
+  if (!travels.length) return stages;
+  const lands = Math.max(...travels.map((s) => s.delay + s.duration));
+  return stages.map((s, i) => (eligible(s) && timed[i].delay >= lands ? move(s) : s));
 }
 
 // A stage linked to a dropped stage would stop the finisher ("linked stage was removed"): it keeps

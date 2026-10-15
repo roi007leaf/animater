@@ -3,9 +3,10 @@
 // writes the token (no move, no hide, no defeat).
 import test from "node:test";
 import assert from "node:assert/strict";
-import { planFinisher, playFinisher, previewFinisher } from "../scripts/finisher-play.mjs";
+import { planFinisher, playFinisher, previewFinisher, travelEnd } from "../scripts/finisher-play.mjs";
 import { presetFinisher } from "../scripts/finisher-presets.mjs";
 import { AnimaterRuntime } from "../scripts/runtime.mjs";
+import { previewPlan } from "../scripts/model.mjs";
 
 const GRID = 100;
 const token = (name, x, y) => {
@@ -255,4 +256,49 @@ test("a local preview waits out the whole plan and plays every effect at full le
     const effects = plan.filter((s) => s.kind === "impact").map((s) => s.duration * (s.playbackRate ?? 1));
     assert.deepEqual([...durations].sort((a, b) => a - b), [...effects].sort((a, b) => a - b), `${recipe.name}: full effect durations`);
   }
+});
+
+// Shield Boss: a held travel path, then blood and fragments linked to its end. The pieces burst
+// where the travel lands; the mover's effects that start once it has landed play there too, in a
+// test play (nothing written) and a real play (the move is written at travelEnd, racing them).
+const shieldBoss = ({ linked = true } = {}) => {
+  const base = presetFinisher("wall-slam", "sb");
+  const at = linked ? { afterStage: "fly", timingAnchor: "end", delay: 0 } : { delay: 1100 };
+  return { ...base, stages: [...base.stages.filter((s) => s.stageId !== "landing"),
+    { stageId: "blood", kind: "impact", assets: ["jb2a.liquid.splash.red"], duration: 1300, ...at },
+    { stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", assets: [], pattern: "crush", behavior: "flatten", motionEnd: "hold", duration: 1600, ...at }] };
+};
+const noWall = (blockAfter) => ({ ...testHost(blockAfter), wallHit: () => null });
+
+test("a linked fragments stage starts exactly when the composed travel lands, fit or slam", () => {
+  for (const [label, host, end] of [["full", noWall(Infinity), 1100], ["fit at 4", noWall(4), 1100], ["slam at 3", { ...testHost(3), wallHit: () => 3 }, null]]) {
+    const mover = token("Hob", 2200, 1400), attacker = token("Flint", 2400, 825);
+    const { composed, context } = planFinisher({ recipe: shieldBoss(), mover, attacker, dead: true }, host);
+    const plan = previewPlan(composed, { ...context, gridSize: GRID });
+    const cut = plan.find((s) => s.stageId === "cut"), fly = plan.find((s) => s.stageId === "fly");
+    assert.equal(cut.delay, travelEnd(plan), `${label}: the pieces start as the travel lands`);
+    assert.equal(cut.delay, fly.delay + fly.duration, label);
+    if (end) assert.equal(cut.delay, end, label);
+    assert.equal(cut.duration, 1600, label);
+  }
+});
+
+test("the mover's effects that start once the travel lands play on the landing square, linked or not", () => {
+  for (const linked of [true, false]) {
+    const mover = token("Hob", 2200, 1400), attacker = token("Flint", 2400, 825);
+    const { composed, to, from } = planFinisher({ recipe: shieldBoss({ linked }), mover, attacker, dead: true }, noWall(Infinity));
+    const blood = by(composed, "blood"), hit = by(composed, "hit");
+    assert.deepEqual(blood.atPoint, { x: 2250, y: 1450 }, `${linked}: pinned to where the mover stood`);
+    assert.deepEqual([blood.offsetX, blood.offsetY], [(to.x - from.x) / GRID, (to.y - from.y) / GRID], `${linked}: offset to the landing`);
+    assert.equal(hit.atPoint, undefined, `${linked}: the opening hit stays on the token`);
+    assert.equal(by(composed, "cut").atPoint, undefined, "a motion is never pinned");
+  }
+  // A Wall slam: the crash at the wall, the blood where the token stops.
+  const mover = token("Hob", 100, 100);
+  const { composed } = planFinisher({ recipe: shieldBoss(), mover, attacker: token("Hero", 0, 100), dead: true }, testHost(3));
+  assert.equal(by(composed, "blood").offsetX, 3);
+  assert.ok(Math.abs(by(composed, "wall-crack").offsetX - 3.6) < 1e-9, "the crash stays at the wall");
+  // A survivor that does not move keeps its effects on the token.
+  const still = planFinisher({ recipe: shieldBoss(), mover: token("Hob", 100, 100), attacker: token("Hero", 0, 100), dead: true }, testHost(0)).composed;
+  assert.equal(by(still, "blood").atPoint, undefined, "no landing, nothing pinned");
 });

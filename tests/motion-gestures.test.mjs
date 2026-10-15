@@ -530,3 +530,24 @@ test('a token hidden by its own motion draws nothing yet never reads as hidden a
   assert.ok(drawsNothing(f.mesh), 'a full fade is gone');
   assert.equal(readsHidden(f.mesh), false, 'a full fade keeps effects at the token');
 });
+
+test('fragments linked to a held travel\'s end burst on the landing, with or without the move written', () => {
+  // The runtime starts both from one clock, so the pieces can arrive a few ms before the travel lands.
+  const travel = v({ kind: 'motion', motion: 'path', subject: 'targets', motionEnd: 'hold', duration: 1000, pathEase: 'easeOutCubic',
+    keyframes: [{ at: 0, x: 0, y: 0 }, { at: 1, x: 6, y: 0 }], motionFrame: { cos: 0, sin: 1, k: 1 } });
+  for (const lead of [0, 5]) for (const commit of [false, true]) {
+    let seen;
+    const r = fragRig({ start: (_t, _s, _a, base) => { seen = base; return { update: () => {}, destroy: () => {} }; } });
+    void r.player.play(r.token, travel, { x: 1, y: 0 }, 'me');
+    r.now = 500; r.queued(r.now);
+    r.now = 1000 - lead;
+    void r.player.play(r.token, fragStage({ motionEnd: 'hold', duration: 1600 }), { x: 1, y: 0 }, 'me');
+    r.now = 1000 - lead + 16; r.queued(r.now);
+    const label = `lead ${lead}, ${commit ? 'written' : 'test play'}`;
+    assert.ok(seen, `${label}: pieces drawn`);
+    assert.ok(Math.abs(seen().x) < 1e-6 && Math.abs(seen().y - 600) < 1, `${label}: spawned on the landing (${seen().x}, ${seen().y})`);
+    if (commit) { r.token.document.y += 600; r.now = 1040; r.queued(r.now); }
+    for (const t of [1300, 2500]) { r.now = t; r.queued(r.now); assert.ok(Math.abs(seen().y - 600) < 1, `${label} at ${t}: ${seen().y}`); }
+    assert.equal(r.mesh.alpha, HIDDEN_ALPHA, `${label}: the token stays hidden under the pieces`);
+  }
+});
