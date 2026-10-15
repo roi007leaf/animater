@@ -346,7 +346,7 @@ export class TokenMotionPlayer {
           original.y += token.document.y - location.y;
           location.x = token.document.x;
           location.y = token.document.y;
-          run.tracks = run.tracks.filter((track) => { if (!isHeld(track)) return true; track.pieces?.destroy(); track.pieces = null; return false; });
+          run.tracks = run.tracks.filter((track) => { if (!isHeld(track)) return true; this.release(track); return false; });
           moved = false;
         }
         if (
@@ -372,9 +372,11 @@ export class TokenMotionPlayer {
         run.tracks = run.tracks.filter(track => {
           const elapsed = time - track.start;
           const progress = Math.min(1, elapsed / track.stage.duration);
-          if (track.stage.motion === "fragments" && !track.pieces && progress < 1)
-            track.pieces = this.fragments?.start(token, track.stage, track.stage.cut === "fixed" ? (track.stage.angle * Math.PI) / 180 : Math.atan2(track.direction.y, track.direction.x)) ?? null;
-          if (track.pieces) { if (progress < 1) track.pieces.update(progress); else { track.pieces.destroy(); track.pieces = null; } }
+          if (track.stage.motion === "fragments" && progress > 0 && !track.started && progress < 1) {
+            track.started = true;
+            this.guard(track, () => { track.pieces = this.fragments?.start(token, track.stage, track.stage.cut === "fixed" ? (track.stage.angle * Math.PI) / 180 : Math.atan2(track.direction.y, track.direction.x)) ?? null; });
+          }
+          if (track.pieces && progress > 0) { if (progress < 1) this.guard(track, () => track.pieces.update(progress)); else this.release(track); }
           if (progress < 1) {
             poses.push(motionPose(track.stage, progress, track.direction, this.grid()));
             return true;
@@ -397,6 +399,20 @@ export class TokenMotionPlayer {
       run.frame = this.frame(tick);
     });
   }
+  // A broken renderer must never stick the token: drop its pieces and play on without them.
+  release(track) {
+    const pieces = track.pieces;
+    track.pieces = null;
+    try { pieces?.destroy(); } catch (error) { this.warnFragments(error); }
+  }
+  guard(track, work) {
+    try { work(); } catch (error) { this.warnFragments(error); this.release(track); }
+  }
+  warnFragments(error) {
+    if (this.warnedFragments) return;
+    this.warnedFragments = true;
+    console.warn("Animater fragments:", error?.message ?? error);
+  }
   end(token, restorePosition = true, restoreRotation = true, restoreScale = true) {
     const run = this.active.get(token);
     if (!run) return;
@@ -409,7 +425,7 @@ export class TokenMotionPlayer {
       if (restoreScale) run.mesh.scale.set(run.original.sx, run.original.sy);
       if (run.alphaTouched) run.mesh.alpha = run.original.alpha;
     }
-    for (const track of run.tracks) { track.pieces?.destroy(); track.pieces = null; }
+    for (const track of run.tracks) this.release(track);
     for (const track of run.tracks) track.resolve(true);
   }
   stop(owner, { prefix = false } = {}) {

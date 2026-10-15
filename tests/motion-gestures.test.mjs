@@ -315,3 +315,72 @@ test('the player drives the fragment renderer and never leaves the token visible
   p2.stop();
   assert.deepEqual(log2, ['destroy'], 'Stop destroys pieces');
 });
+
+const fragRig = (fragments) => {
+  const r = { now: 0, queued: null, warns: [] };
+  r.player = new TokenMotionPlayer({ frame: (cb) => (r.queued = cb), cancel: () => {}, now: () => r.now, grid: () => 100, fragments });
+  r.mesh = { position: { x: 0, y: 0, set(x, y) { this.x = x; this.y = y; } }, rotation: 0, scale: { x: 1, y: 1, set(x, y) { this.x = x; this.y = y; } }, alpha: 1 };
+  r.token = { mesh: r.mesh, visible: true, document: { x: 0, y: 0, rotation: 0, width: 1, height: 1, texture: {} } };
+  return r;
+};
+
+test('a renderer whose start throws never breaks the run or leaves the token stuck', async () => {
+  const warn = console.warn, warns = [];
+  console.warn = (...a) => warns.push(a);
+  try {
+    const r = fragRig({ start: () => { throw new Error('boom'); } });
+    const done = r.player.play(r.token, fragStage(), { x: 1, y: 0 }, 'me');
+    r.now = 50; r.queued(r.now);
+    assert.equal(r.mesh.alpha, 0, 'stays hidden for the stage as designed');
+    r.now = 60; r.queued(r.now);
+    r.now = 150; r.queued(r.now);
+    assert.equal(await done, true);
+    assert.equal(r.mesh.alpha, 1, 'alpha restored at the end');
+    assert.equal(r.player.active.size, 0);
+    assert.equal(warns.length, 1, 'logged once');
+    assert.equal(warns[0][0], 'Animater fragments:');
+    assert.equal(warns[0][1], 'boom');
+  } finally { console.warn = warn; }
+});
+
+test('a renderer whose update throws has its pieces destroyed and the tick survives', async () => {
+  const warn = console.warn;
+  console.warn = () => {};
+  try {
+    let destroyed = 0, starts = 0;
+    const r = fragRig({ start: () => { starts++; return { update: () => { throw new Error('bad'); }, destroy: () => { destroyed++; } }; } });
+    const done = r.player.play(r.token, fragStage(), { x: 1, y: 0 }, 'me');
+    r.now = 50;
+    assert.doesNotThrow(() => r.queued(r.now));
+    assert.equal(destroyed, 1);
+    r.now = 60; r.queued(r.now);
+    assert.equal(starts, 1, 'does not restart after failing');
+    r.now = 150; r.queued(r.now);
+    assert.equal(await done, true);
+    assert.equal(r.mesh.alpha, 1);
+  } finally { console.warn = warn; }
+});
+
+test('a throwing destroy does not stop end() from restoring and resolving', async () => {
+  const warn = console.warn;
+  console.warn = () => {};
+  try {
+    const r = fragRig({ start: () => ({ update: () => {}, destroy: () => { throw new Error('d'); } }) });
+    const done = r.player.play(r.token, fragStage(), { x: 1, y: 0 }, 'me');
+    r.now = 20; r.queued(r.now);
+    assert.doesNotThrow(() => r.player.stop());
+    assert.equal(await done, true);
+    assert.equal(r.mesh.alpha, 1);
+  } finally { console.warn = warn; }
+});
+
+test('a tick at progress 0 does not start the pieces', () => {
+  let starts = 0;
+  const r = fragRig({ start: () => { starts++; return { update: () => {}, destroy: () => {} }; } });
+  r.now = 100;
+  void r.player.play(r.token, fragStage(), { x: 1, y: 0 }, 'me');
+  r.queued(90);
+  assert.equal(starts, 0);
+  r.now = 100; r.queued(120);
+  assert.equal(starts, 1);
+});
