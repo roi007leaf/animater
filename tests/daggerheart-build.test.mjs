@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { cardRow, weaponRow, conditionIdsFrom, validateRows, renderModule, CONDITION_IDS } from "../tools/build-daggerheart.mjs";
+import { cardRow, cardText, weaponRow, conditionIdsFrom, validateRows, renderModule, renderTextModule, plainText, CONDITION_IDS } from "../tools/build-daggerheart.mjs";
 
 const longsword = { _id: "Iv8BZM1R24QMT72M", name: "Longsword", type: "weapon", img: "icons/weapons/swords/sword-guard.webp",
   system: { tier: 1, burden: "twoHanded", attack: { range: "melee", roll: { trait: "agility", type: "attack" }, damage: { main: { type: ["physical"] } } } } };
@@ -29,6 +29,41 @@ test("rows keep only the fields the library needs", () => {
   assert.deepEqual(cardRow(touched), { id: "5PvMQKCjrgSxzstn", name: "Arcana-Touched", img: "systems/daggerheart/assets/icons/domains/domain-card/arcana.png", domain: "arcana", level: 7, cardType: "ability", recallCost: 2,
     actions: [{ type: "effect", roll: null, target: "any" }] });
   assert.deepEqual(cardRow({ _id: "x", name: "Bare", system: {} }).actions, []);
+});
+
+const cinder = { _id: "5PvMQKCjrgSxzst2", name: "Cinder Grasp", type: "domainCard", system: { domain: "Arcana", level: 2, type: "spell",
+  description: "<p>Make a <strong>Spellcast Roll</strong> against a target within Melee range.&nbsp;It&#39;s <em>On Fire</em>.</p>",
+  actions: { a1: { type: "attack", name: "Cast", roll: { type: "spellcast" }, target: { type: "any", amount: 2 }, range: "melee",
+    damage: { main: { applyTo: "hitPoints", type: ["magical"], value: { custom: { enabled: false }, multiplier: "flat", flatMultiplier: 1, dice: "d20", bonus: 3 } }, resources: {} },
+    effects: [{ _id: "fx1", onSave: false }], areas: [{ name: "Blast", type: "placed", shape: "emanation", size: "close" }] },
+    a2: { type: "healing", name: "Hope", roll: { type: null }, target: { type: "self" }, range: "self",
+    damage: { main: null, resources: { hope: { applyTo: "hope", value: { custom: { enabled: true, formula: "3" } } } } }, effects: [] } } },
+  effects: [{ _id: "fx1", name: "On Fire", statuses: ["burning"] }] };
+
+test("card text: plain description and the actions' rolls, targets, ranges, damage, effects and areas", () => {
+  assert.equal(plainText("<p>A <strong>b</strong>&nbsp;c&#39;s &amp; d</p><p>e</p>"), "A b c's & d e");
+  assert.deepEqual(cardText(cinder), { id: "5PvMQKCjrgSxzst2", name: "Cinder Grasp", domain: "arcana", level: 2, cardType: "spell",
+    description: "Make a Spellcast Roll against a target within Melee range. It's On Fire.",
+    actions: [
+      { name: "Cast", type: "attack", roll: "spellcast", target: "any", amount: 2, range: "melee",
+        parts: [{ applyTo: "hitPoints", types: ["magical"], formula: "1d20+3" }],
+        effects: [{ name: "On Fire", statuses: ["burning"] }], areas: [{ shape: "emanation", size: "close", type: "placed" }] },
+      { name: "Hope", type: "healing", roll: null, target: "self", amount: null, range: "self", parts: [{ applyTo: "hope", types: [], formula: "3" }], effects: [], areas: [] },
+    ] });
+});
+
+test("the text module round-trips", async () => {
+  const text = renderTextModule({ source: { version: "x" }, texts: [cardText(cinder)] });
+  const mod = await import(`data:text/javascript;base64,${Buffer.from(text).toString("base64")}`);
+  assert.equal(mod.DAGGERHEART_CARD_TEXT["5PvMQKCjrgSxzst2"].name, "Cinder Grasp");
+});
+
+test("the committed card text covers every card", async () => {
+  const { DAGGERHEART_CARDS } = await import("../data/daggerheart-catalog.mjs");
+  const { DAGGERHEART_CARD_TEXT } = await import("../data/daggerheart-card-text.mjs");
+  assert.deepEqual(Object.keys(DAGGERHEART_CARD_TEXT).sort(), DAGGERHEART_CARDS.map((c) => c.id).sort());
+  for (const t of Object.values(DAGGERHEART_CARD_TEXT)) { assert.ok(t.description.length > 20, t.name); assert.doesNotMatch(t.description, /<|&nbsp;/, t.name); }
+  assert.match(DAGGERHEART_CARD_TEXT[DAGGERHEART_CARDS.find((c) => c.name === "Blink Out").id].description, /teleport/);
 });
 
 test("condition ids are read from the system bundle, CRLF or LF", () => {
