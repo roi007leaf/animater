@@ -202,6 +202,8 @@ export function motionDirection(token, source, target, motion, grid = 100) {
       : source;
   const a = ["recoil", "path"].includes(motion) ? other?.center : token?.center;
   const b = ["recoil", "path"].includes(motion) ? token?.center : other?.center;
+  // Away from nobody: a fixed +x, not a vector from the map origin that changes with position.
+  if (["recoil", "path"].includes(motion) && (!a || !b)) return { x: 1, y: 0 };
   const x = (b?.x ?? 1) - (a?.x ?? 0),
     y = (b?.y ?? 0) - (a?.y ?? 0);
   const length = Math.hypot(x, y);

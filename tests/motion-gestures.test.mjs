@@ -187,3 +187,12 @@ test('a path faces away from the other token, like a recoil', () => {
   const dir = motionDirection(token, other, token, 'path', 100);
   assert.ok(Math.abs(dir.x - 1) < 1e-6 && Math.abs(dir.y) < 1e-6);
 });
+
+test('a path or recoil with no other token faces +x wherever the token stands', () => {
+  const token = { id: 't', center: { x: 1250, y: 450 } };
+  for (const motion of ['path', 'recoil']) {
+    assert.deepEqual(motionDirection(token, token, null, motion, 100), { x: 1, y: 0 }, `${motion}: token is its own source, no target`);
+    assert.deepEqual(motionDirection(token, null, token, motion, 100), { x: 1, y: 0 }, `${motion}: no source`);
+    assert.deepEqual(motionDirection(token, token, token, motion, 100), { x: 1, y: 0 }, `${motion}: self-only`);
+  }
+});
