@@ -378,7 +378,7 @@ function playTest(recipe, context, options = {}) {
 // Dice So Nice: an attack or damage animation waits until that roll's 3D dice land
 // (never longer than DICE_WAIT_LIMIT, and not at all when Dice So Nice shows none).
 const WAIT_FOR_DICE = "waitForDice", DICE_WAIT_LIMIT = 8000;
-const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens", FINISHERS_SETTING = "finishers", DEFAULT_FINISHER = "defaultFinisher", DUALITY_ACCENT = "daggerheartDualityAccent";
+const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", TELEPORT_TOKENS = "teleportTokens", DEFAULT_FINISHER = "defaultFinisher", DUALITY_ACCENT = "daggerheartDualityAccent";
 const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
@@ -1094,11 +1094,6 @@ Hooks.once("init", () => {
     hint: "A creature dropping to 0 HP goes down in the look of the damage that dropped it: burned to ash, frozen and shattered, fried by lightning. Off: a plain collapse.",
     scope: "world", config: true, type: Boolean, default: true,
   });
-  game.settings.register(ID, FINISHERS_SETTING, {
-    name: "Finishers",
-    hint: "Finishers you assign to spells, feats, actions and weapons play on the real token: on a killing blow, or on every successful use. Off: none play.",
-    scope: "world", config: true, type: Boolean, default: false,
-  });
   game.settings.register(ID, DEFAULT_FINISHER, { scope: "world", config: false, type: String, default: "" });
   registerDefeatedLook(game.settings, ID, { onChange: () => persistentStates?.schedule() });
   installDefeatedLook(Hooks, { mode: () => game.settings.get(ID, DEFEATED_LOOK), statuses: () => (game.system.id === "daggerheart" ? DH_DEFEATED_STATUSES : [defeatedStatusId()]) });
@@ -1530,7 +1525,7 @@ Hooks.once("ready", () => {
   const finisherSeen = new Set();
   playUseFinishers = async (event) => {
     const struck = critTargets(event), moment = finisherMoment(event);
-    if (!event || !game.settings.get(ID, FINISHERS_SETTING) || (!moment && !struck.length)) return;
+    if (!event || (!moment && !struck.length)) return;
     if (event.id) { if (finisherSeen.has(event.id)) return; finisherSeen.add(event.id); if (finisherSeen.size > 500) finisherSeen.delete(finisherSeen.values().next().value); }
     const item = { itemName: event.item?.name ?? event.itemName, itemSlug: event.item?.slug ?? event.item?.system?.slug, itemUuid: event.itemUuid ?? event.item?.uuid };
     const crit = struck.length ? playCritFinisher(event, item, struck) : new Set();
@@ -1548,7 +1543,7 @@ Hooks.once("ready", () => {
   // The killing blow on an NPC (hp-state.mjs: a PF2e/SF2e/D&D npc; a Daggerheart adversary or any
   // creature no player owns): the killing item's kill finisher, else the default finisher.
   const killFinisherFor = (actor, token) => {
-    if (!game.settings.get(ID, FINISHERS_SETTING) || !isNpcActor(actor, game.system.id, { playerOwned: ownerUsers(actor).length > 0 }) || token.document.hidden) return null;
+    if (!isNpcActor(actor, game.system.id, { playerOwned: ownerUsers(actor).length > 0 }) || token.document.hidden) return null;
     const ids = { actorId: actor.id, tokenId: token.id };
     const by = recallAttribution(damageLog, ids) ?? recallDamage(damageLog, ids);
     const attacker = by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null;

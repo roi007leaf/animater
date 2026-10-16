@@ -1384,7 +1384,6 @@ test("D&D 5e bootstrap: native V2 activity hooks, no chat duplication, circular 
 
 test("PF2e: a use finisher plays on a successful attack with its item, not on a miss", async () => {
   const f = await boot("pf2e");
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [{ id: "fling", name: "Fling", trigger: "manual", match: "Ignition", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] }] });
   const message = (id, outcome) => ({ id, author: { id: "u" }, item: f.item, actor: f.actor, isRoll: true, flags: { pf2e: { context: { type: "attack-roll", outcome, target: { token: "Scene.s.Token.target" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
@@ -1396,15 +1395,6 @@ test("PF2e: a use finisher plays on a successful attack with its item, not on a 
   assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 1);
 });
 
-test("finishers off: an assigned use finisher does not play", async () => {
-  const f = await boot("pf2e");
-  f.settings.set("automatic", true);
-  f.settings.set("recipes", { schema: 1, recipes: [{ id: "fling", name: "Fling", trigger: "manual", match: "Ignition", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] }] });
-  await f.fire("createChatMessage", { id: "hit", author: { id: "u" }, item: f.item, actor: f.actor, isRoll: true, flags: { pf2e: { context: { type: "attack-roll", outcome: "success", target: { token: "Scene.s.Token.target" } }, origin: { uuid: f.item.uuid } } }, speaker: { scene: "s", token: "t" } });
-  await settle();
-  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0);
-});
-
 // A killing blow on an NPC: a damage roll from "Ignition" aimed at the target token, then the
 // actor's HP drops to 0 through preUpdateActor/updateActor as Foundry fires them.
 async function killTarget(f, { finishers = [], defaultFinisher = "", crit = false, damage = {} } = {}) {
@@ -1412,7 +1402,6 @@ async function killTarget(f, { finishers = [], defaultFinisher = "", crit = fals
   const npc = { id: "npc", type: "npc", system: { attributes: { hp: { value: 5 } } }, getActiveTokens: () => [f.target] };
   Object.assign(f.target, { name: "Orc", actor: npc, w: 100, h: 100 });
   Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("defaultFinisher", defaultFinisher);
   f.settings.set("recipes", { schema: 1, recipes: finishers });
@@ -1426,6 +1415,14 @@ async function killTarget(f, { finishers = [], defaultFinisher = "", crit = fals
   return f.api.activity().filter((e) => e.status === "Finisher");
 }
 const killFin = (id, name, match) => ({ id, name, trigger: "manual", match, finisher: { on: "kill", knockback: 0, ending: "body" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 100, assets: [] }] });
+
+test("finishers are part of the module: there is no setting to turn them on or off", async () => {
+  const f = await boot("pf2e");
+  assert.equal(f.settings.has("finishers"), false, "no Finishers setting is registered");
+  const entries = await killTarget(f, { finishers: [killFin("burn", "Burn up", "Ignition")] });
+  assert.deepEqual(entries.map((e) => e.detail), ["Burn up: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
 
 test("kill path: the killing item's kill finisher plays on the NPC", async () => {
   const f = await boot("pf2e");
@@ -1532,7 +1529,6 @@ test("player pick: a crit plays the player's critical finisher on the surviving 
   const f = await boot("pf2e");
   playerOwns(t, f);
   const writes = watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical")] });
   await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
@@ -1548,7 +1544,6 @@ test("player pick: a plain hit does not play a critical pick", async (t) => {
   const f = await boot("pf2e");
   playerOwns(t, f);
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical")] });
   await f.fire("createChatMessage", strikeMessage(f, "hit", "success"));
@@ -1559,7 +1554,6 @@ test("player pick: a plain hit does not play a critical pick", async (t) => {
 test("GM crit finisher: an NPC's item (no player owners) plays its name-matched critical finisher", async () => {
   const f = await boot("pf2e");
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("criticalOrKill", []), id: "gmcrit", name: "GM crit" }] });
   await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
@@ -1609,7 +1603,6 @@ test("player item with no pick: a crit plays the GM's critical finisher", async 
   const f = await boot("pf2e");
   playerOwns(t, f, { choice: null });
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("criticalOrKill", []), id: "gmcrit", name: "GM crit" }] });
   await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
@@ -1622,7 +1615,6 @@ test("player pick: a crit with a kill pick plays no GM critical finisher", async
   const f = await boot("pf2e");
   playerOwns(t, f);
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [pickFin("kill"), { ...pickFin("critical", []), id: "gmcrit", name: "GM crit" }] });
   await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
@@ -1634,7 +1626,6 @@ test("player pick: a use pick plays on a successful use, and the GM's name-match
   const f = await boot("pf2e");
   playerOwns(t, f);
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("use", []), id: "gmuse", name: "GM use" }, pickFin("use")] });
   await f.fire("createChatMessage", strikeMessage(f, "miss", "failure"));
@@ -1660,7 +1651,6 @@ test("player pick: a crit that then kills with critical damage plays the travel 
   playerOwns(t, f);
   const writes = watchTarget(f);
   f.target.actor.getActiveTokens = () => [f.target];
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [pickFin("criticalOrKill")] });
   await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
@@ -1696,7 +1686,6 @@ async function critOnClientA(t) {
   const a = await boot("pf2e");
   playerOwns(t, a);
   watchTarget(a);
-  a.settings.set("finishers", true);
   a.settings.set("automatic", true);
   a.settings.set("recipes", { schema: 1, recipes: [pickFin("criticalOrKill")] });
   await a.fire("createChatMessage", strikeMessage(a, "crit", "criticalSuccess"));
@@ -1747,7 +1736,6 @@ test("finished marks: a crit whose play never starts takes its mark back", async
   const f = await boot("pf2e");
   playerOwns(t, f);
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   // No stage can play (its artwork is not installed), so nothing starts.
   f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("critical"), stages: [{ kind: "cast", assets: [] }] }] });
@@ -1761,7 +1749,6 @@ test("crit finisher and GM use finisher on the same target: only the crit finish
   const f = await boot("pf2e");
   playerOwns(t, f);
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [pickFin("critical"), { ...pickFin("use", []), id: "gmuse", name: "GM use" }] });
   await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
@@ -1778,7 +1765,6 @@ const saveMessage = (f, id, outcome, saver = "target") => ({ id, author: { id: "
 const gmCrit = () => ({ ...pickFin("criticalOrKill", []), id: "gmcrit", name: "GM crit" });
 function saveSetup(f, finishers) {
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: finishers });
 }
@@ -1845,7 +1831,6 @@ test("kill path: one area spell that kills two creatures plays a finisher on eac
   const npc = { id: "npc", type: "npc", system: { attributes: { hp: { value: 5 } } }, getActiveTokens: () => [f.target] };
   Object.assign(f.target, { name: "Orc", actor: npc, w: 100, h: 100 });
   Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [killFin("burn", "Burn up", "Ignition")] });
   // An area's damage roll is aimed at nobody in particular.
@@ -2036,7 +2021,6 @@ test("synthetic strike: a Fist crit plays the actor's pick", async (t) => {
   const f = await boot("pf2e");
   const { fist } = strikeOwner(t, f);
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [fistPick("critical")] });
   await f.fire("createChatMessage", { ...strikeMessage(f, "crit", "criticalSuccess"), item: fist, flags: { pf2e: { context: { type: "attack-roll", outcome: "criticalSuccess", target: { token: "Scene.s.Token.target" } }, origin: { uuid: fist.uuid, actor: "Actor.a" } } } });
@@ -2062,7 +2046,6 @@ test("synthetic strike: a player's Fist with no pick plays the GM's Fist finishe
   const f = await boot("pf2e");
   const { fist } = strikeOwner(t, f, { pick: null });
   watchTarget(f);
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("critical", []), id: "gmcrit", name: "GM crit", match: "Fist" }] });
   await f.fire("createChatMessage", { ...strikeMessage(f, "crit", "criticalSuccess"), item: fist });
@@ -2149,7 +2132,6 @@ async function killDaggerheart(f, { type = "adversary", track = "hitPoints", bef
   for (const id of owners) game.users.set(id, { id, isGM: false });
   Object.assign(f.target, { name: "Bandit", actor: npc, w: 100, h: 100 });
   Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
-  f.settings.set("finishers", true);
   f.settings.set("automatic", true);
   f.settings.set("defaultFinisher", defaultFinisher);
   f.settings.set("recipes", { schema: 1, recipes: finishers });
@@ -2196,7 +2178,7 @@ test("PF2e kill path is unchanged: a heal or an NPC already at 0 plays nothing",
     const npc = { id: "npc", type: "npc", system: { attributes: { hp: { value: before } } }, getActiveTokens: () => [f.target] };
     Object.assign(f.target, { name: "Orc", actor: npc, w: 100, h: 100 });
     Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
-    f.settings.set("finishers", true); f.settings.set("automatic", true); f.settings.set("defaultFinisher", "def");
+    f.settings.set("automatic", true); f.settings.set("defaultFinisher", "def");
     f.settings.set("recipes", { schema: 1, recipes: [killFin("def", "Default drop", "")] });
     const changes = { system: { attributes: { hp: { value: after } } } }, options = {};
     await f.fire("preUpdateActor", npc, changes, options);
@@ -2421,7 +2403,6 @@ async function dhDamageThenKill(f, { item, damage, defaultFinisher = "by-damage-
   const npc = { id: "npc", type: "adversary", system: { resources: { hitPoints: { value: 3, max: 4 } } }, getActiveTokens: () => [f.target] };
   Object.assign(f.target, { name: "Bandit", actor: npc, w: 100, h: 100 });
   Object.assign(f.target.document, { parent: { id: "s" }, hidden: false, width: 1, height: 1, rotation: 0, texture: {} });
-  f.settings.set("finishers", true);
   f.settings.set("defaultFinisher", defaultFinisher);
   f.settings.set("recipes", { schema: 1, recipes: finishers });
   await f.fire("updateChatMessage", rollMessage({ id: "dmg", item: f.item, actor: f.actor, damage, targets: [dhTarget("target", { actorId: "Actor.npc" })] }), { system: { damage: {} } }, {}, "u");
@@ -2465,7 +2446,6 @@ test("Daggerheart kill: the killing item's own kill finisher wins, for a player'
 
 test("Daggerheart finishers: a use finisher plays on a hit, not a miss or an untargeted roll; a critical plays the critical finisher", async () => {
   const f = await bootDaggerheart();
-  f.settings.set("finishers", true);
   const fling = { id: "fling", name: "Fling", trigger: "manual", match: "Longsword", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] };
   const crit = { id: "crit", name: "Crit", trigger: "manual", match: "Longsword", finisher: { on: "critical" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] };
   f.settings.set("recipes", { schema: 1, recipes: [fling, crit] });
@@ -2488,7 +2468,6 @@ test("Daggerheart finishers: one roll at two targets plays the use finisher only
   const f = await bootDaggerheart();
   addGoblin(t, f);
   f.target.name = "Bandit";
-  f.settings.set("finishers", true);
   const fling = { id: "fling", name: "Fling", trigger: "manual", match: "Longsword", finisher: { on: "use" }, stages: [{ kind: "motion", motion: "shake", subject: "targets", duration: 600, assets: [] }] };
   f.settings.set("recipes", { schema: 1, recipes: [fling] });
   await f.fire("createChatMessage", rollMessage({ id: "two", item: f.item, actor: f.actor, targets: [dhTarget("target", { evasion: 10 }), dhTarget("gob", { evasion: 30 })] }));

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Finishers are always on.** The Module Settings → Finishers switch is gone: finishers are part of Animater, so a finisher you assign plays without turning anything on. To keep one from playing, disable it or remove its Applies-to items.
+
 ## 1.1.2 (2026-10-16)
 
 - **Combat start and end cards have an On switch** in the Flash screens library, like the other combat moments, instead of a "Set default" badge that showed only on hover. On is the world default. Several openings can be on: at Begin Combat the GM gets the same window as for Combat initiated, with each one playing, and clicks the one everyone sees (or None). A screen picked for that combat in the Combat Tracker still plays without asking.
