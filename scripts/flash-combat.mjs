@@ -97,7 +97,17 @@ export function flashScreens(host) {
   }
   const activeGM = () => game.user.isGM && (game.users.activeGM ? game.users.activeGM.isSelf : true);
   const flagKey = (event) => (event === "start" ? "flashStart" : "flashEnd");
+  // The screens a combat may open with: its own Combat Tracker pick, else the world default, which
+  // may be several switched-on screens (the GM picks one at Begin Combat).
+  function openingChoices(combat) {
+    const all = screens(), pick = combat?.getFlag?.(ID, "flashStart"), d = defaults().start;
+    if (pick === "none") return [];
+    if (pick && (pick === "random" || all.some((s) => s.id === pick))) return [chooseFlash(all, "start", pick)].filter(Boolean);
+    if (!Array.isArray(d)) return [chooseFlash(all, "start", undefined, d)].filter(Boolean);
+    return flashesOn(d).map((id) => all.find((s) => s.id === id && (s.event === "start" || s.event === "any"))).filter(Boolean);
+  }
   function forCombat(combat, event) {
+    if (event === "start") return openingChoices(combat)[0] ?? null;
     const pick = ["start", "end"].includes(event) ? combat?.getFlag?.(ID, flagKey(event)) : undefined;
     return chooseFlash(screens(), event, pick, defaults()[event]);
   }
@@ -121,19 +131,24 @@ export function flashScreens(host) {
   }
   // The opening plays when the GM begins combat. Once per combat.
   const opened = (combat) => combat?.getFlag?.(ID, "flashOpened");
-  function open(combat) {
+  async function open(combat) {
     if (!activeGM() || opened(combat)) return;
-    const screen = forCombat(combat, "start");
-    if (!screen) return;
+    const options = openingChoices(combat);
+    if (!options.length) return;
     void combat.setFlag?.(ID, "flashOpened", true);
-    play(screen, { everyone: true, combat });
+    const screen = options.length > 1 ? await choose(options, combat, "start") : options[0];
+    if (screen) play(screen, { everyone: true, combat });
   }
-  Hooks.on("combatStart", (combat) => open(combat));
+  Hooks.on("combatStart", (combat) => void open(combat).catch((error) => host.trace("Blocked", `Flash screen: ${error.message}`)));
   // Combat initiated: the encounter has its first visible combatants and waits for Begin Combat
   // ("Roll for Initiative!"). Once per combat.
   const initiated = (combat) => combat?.getFlag?.(ID, "flashInitiated");
   // With several switched on, the GM watches them play and picks one (or None); closing the window plays nothing.
-  const pickInitiated = host.pickFlash ?? ((options, combat) => pickFlash(options, { resolveMedia: host.resolveMedia, vars: vars(combat) }));
+  const pickOne = host.pickFlash ?? ((options, combat, event) => pickFlash(options, { event, resolveMedia: host.resolveMedia, vars: vars(combat) }));
+  const choose = async (options, combat, event) => {
+    const id = await Promise.resolve(pickOne(options, combat, event)).catch(() => null);
+    return options.find((s) => s.id === id) ?? null;
+  };
   async function initiate(combat) {
     if (!activeGM() || initiated(combat)) return;
     const all = screens(), options = flashesOn(defaults().initiated).map((id) => all.find((s) => s.id === id && s.event === "initiated")).filter(Boolean);
@@ -141,10 +156,9 @@ export function flashScreens(host) {
     void combat.setFlag?.(ID, "flashInitiated", true);
     let screen = options[0];
     if (options.length > 1) {
-      const id = await Promise.resolve(pickInitiated(options, combat)).catch(() => null);
+      screen = await choose(options, combat, "initiated");
       // Begun while the GM was choosing: the opening plays instead.
-      screen = combat.started ? null : options.find((s) => s.id === id);
-      if (!screen) return;
+      if (!screen || combat.started) return;
     }
     play(screen, { everyone: true, combat });
   }
@@ -192,7 +206,8 @@ export function flashScreens(host) {
     const fitting = (event) => all.filter((s) => s.event === event || s.event === "any");
     const menu = (event) => {
       const fits = all.filter((s) => s.event === event || s.event === "any");
-      const fallback = d[event] === "random" ? "Random" : all.find((s) => s.id === d[event])?.name ?? "None";
+      const on = flashesOn(d[event]);
+      const fallback = d[event] === "random" ? "Random" : on.length > 1 ? `GM picks of ${on.length}` : all.find((s) => s.id === on[0])?.name ?? "None";
       const value = combat.getFlag(ID, flagKey(event)) ?? "";
       const opts = [["", `Default (${fallback})`], ["random", "Random"], ["none", "None"], ...fits.map((s) => [s.id, s.name])];
       return `<label title="${event === "start" ? "Flash screen when this combat starts" : "Flash screen when this combat ends"}">${event === "start" ? "Opening" : "Ending"}<select data-animater-flash="${event}">${opts.map(([k, v]) => `<option value="${esc(k)}" ${k === value ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`;
@@ -200,12 +215,17 @@ export function flashScreens(host) {
     const bar = document.createElement("div");
     bar.className = "animater-flash-pick";
     // The world defaults (used when a combat picks nothing), behind the ⚙.
-    const defaultMenu = (event) => `<label>${event === "start" ? "Default opening" : "Default ending"}<select data-animater-flash-default="${event}">${[["none", "None"], ["random", "Random"], ...fitting(event).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[event] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`;
+    // Several switched-on openings show as one entry; picking another replaces them.
+    const defaultMenu = (event) => {
+      const on = flashesOn(d[event]), value = on.length > 1 ? "several" : d[event] === "random" ? "random" : on[0] ?? "none";
+      const opts = [...(on.length > 1 ? [["several", `Several on: GM picks (${on.length})`]] : []), ["none", "None"], ["random", "Random"], ...fitting(event).map((s) => [s.id, s.name])];
+      return `<label>${event === "start" ? "Default opening" : "Default ending"}<select data-animater-flash-default="${event}">${opts.map(([k, v]) => `<option value="${esc(k)}" ${k === value ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`;
+    };
     bar.innerHTML = `<span aria-hidden="true">⚡</span>${menu("start")}${menu("end")}<span class="animater-flash-tools"><button type="button" data-animater-flash-defaults class="${showDefaults ? "active" : ""}" title="Defaults for every combat" aria-label="Defaults for every combat" aria-expanded="${showDefaults}"><i class="fa-solid fa-gear"></i></button><button type="button" data-animater-flash-test title="Preview this combat's opening on your screen" aria-label="Preview opening flash screen">▶</button></span>${showDefaults ? `<span class="animater-flash-defaults">${defaultMenu("start")}${defaultMenu("end")}<span class="animater-flash-moments-title">During combat</span>${MOMENT_EVENTS.filter((ev) => ev !== "initiated").map((ev) => `<label>${esc(FLASH_EVENTS[ev])}<select data-animater-flash-default="${ev}">${[["none", "Off"], ...fitting(ev).filter((s) => s.event === ev).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[ev] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`).join("")}</span>` : ""}`;
     bar.querySelector("[data-animater-flash-defaults]").addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); showDefaults = !showDefaults; bar.replaceWith(Object.assign(picker(combat), { className: bar.className })); });
     bar.addEventListener("change", (e) => {
       const world = e.target.dataset.animaterFlashDefault;
-      if (world) return void game.settings.set(ID, FLASH_DEFAULTS, { ...defaults(), [world]: e.target.value });
+      if (world) return void (e.target.value === "several" || game.settings.set(ID, FLASH_DEFAULTS, { ...defaults(), [world]: e.target.value }));
       const event = e.target.dataset.animaterFlash;
       if (event) void (e.target.value ? combat.setFlag(ID, flagKey(event), e.target.value) : combat.unsetFlag(ID, flagKey(event)));
     });

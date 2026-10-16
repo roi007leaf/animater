@@ -160,13 +160,14 @@ export const fillText = (value, vars = {}) => String(value ?? "").replace(/\{(sc
 
 // The screen to play: the combat's own choice, else the world default, for this event.
 // A choice is a screen id, "random" (any screen for the event) or "none".
-// The screens switched on for an event. "Combat initiated" may have several (the GM picks one
-// as the encounter fills); every other moment has one, or "none".
+// The screens switched on for an event. "Combat initiated" and "Combat start" may have several
+// (the GM picks one when it happens); every other moment has one, or "none".
+export const MULTI_FLASH_EVENTS = ["initiated", "start"];
 export const flashesOn = (value) => (Array.isArray(value) ? value : [value]).filter((v) => typeof v === "string" && v && !["none", "random"].includes(v));
 export const flashOn = (defaults, event, id) => flashesOn(defaults?.[event]).includes(id);
 export function toggleFlashOn(defaults, event, id) {
   const on = flashesOn(defaults?.[event]);
-  if (event !== "initiated") return on.includes(id) ? "none" : id;
+  if (!MULTI_FLASH_EVENTS.includes(event)) return on.includes(id) ? "none" : id;
   return on.includes(id) ? on.filter((x) => x !== id) : [...on, id];
 }
 export function chooseFlash(screens, event, choice, fallback, random = Math.random) {

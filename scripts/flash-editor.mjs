@@ -225,7 +225,7 @@ export class FlashEditor {
     };
     const section = (key, title, hint) => { const items = list.filter((x) => group(x) === key); return items.length ? `<div class="an-flash-libgroup"><div class="an-flash-libgroup-head"><span class="an-flash-sub">${title}</span><small>${hint}</small></div><div class="an-flash-tiles">${items.map((x) => card(x, key)).join("")}</div></div>` : ""; };
     return `<section class="an-flash-page is-library">${list.length
-      ? section("initiated", "Combat initiated", "Plays once when combatants are added, before Begin Combat. With more than one on, you pick which plays.") + section("start", "Combat start", "Switch on the default; the Combat Tracker can pick another per combat.") + section("moment", "During combat", "Switch on the ones that should play.") + section("end", "Combat end", "Switch on the default; the Combat Tracker can pick another per combat.") + section("action", "Before an animation", "Attach one to a recipe in its settings.")
+      ? section("initiated", "Combat initiated", "Plays once when combatants are added, before Begin Combat. With more than one on, you pick which plays.") + section("start", "Combat start", "Switch on the default. With more than one on, you pick which plays at Begin Combat; the Combat Tracker can still pick one per combat.") + section("moment", "During combat", "Switch on the ones that should play.") + section("end", "Combat end", "Switch on the default; the Combat Tracker can pick another per combat.") + section("action", "Before an animation", "Attach one to a recipe in its settings.")
       : `<div class="an-preview-empty">No flash screens yet. Make one with <b>+ New flash screen</b>.</div>`}</section>`;
   }
 
@@ -724,7 +724,7 @@ export class FlashEditor {
       case "flash-moment-toggle": {
         const defaults = this.host.flashDefaults(), on = flashOn(defaults, b.dataset.event, b.dataset.id), next = toggleFlashOn(defaults, b.dataset.event, b.dataset.id);
         await this.host.setFlashDefault(b.dataset.event, next);
-        this.w.message = on ? "Turned off." : Array.isArray(next) && next.length > 1 ? `${next.length} are on: you pick which plays when combatants are added.` : `It now plays on every ${FLASH_EVENTS[b.dataset.event].toLowerCase()}.`;
+        this.w.message = on ? "Turned off." : Array.isArray(next) && next.length > 1 ? `${next.length} are on: you pick which plays ${b.dataset.event === "start" ? "at Begin Combat" : "when combatants are added"}.` : `It now plays on every ${FLASH_EVENTS[b.dataset.event].toLowerCase()}.`;
         break;
       }
       case "flash-zoom": {

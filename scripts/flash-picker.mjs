@@ -5,21 +5,25 @@ import { createFlash } from "./flash-render.mjs";
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const seconds = (ms) => `${(ms / 1000).toFixed(1).replace(/\.0$/, "")} s`;
 
-export function pickerHTML(options) {
-  return `<p class="an-flash-picker-hint">The encounter is ready. Pick the flash screen everyone sees.</p><div class="an-flash-picker-grid">${options.map((s, i) =>
+const MOMENTS = {
+  initiated: { title: "Combat initiated", hint: "The encounter is ready. Pick the flash screen everyone sees." },
+  start: { title: "Combat start", hint: "Combat begins. Pick the flash screen everyone sees." },
+};
+export function pickerHTML(options, event = "initiated") {
+  return `<p class="an-flash-picker-hint">${MOMENTS[event]?.hint ?? MOMENTS.initiated.hint}</p><div class="an-flash-picker-grid">${options.map((s, i) =>
     `<button type="button" class="an-flash-picker-card" data-flash-pick="${esc(s.id)}" ${i === 0 ? "autofocus" : ""}><span class="an-flash-picker-stage" data-flash-pick-stage="${esc(s.id)}"></span><span class="an-flash-picker-name">${esc(s.name)}</span><small>${seconds(s.duration)} · click to play for everyone</small></button>`).join("")}</div>`;
 }
 
-export async function pickFlash(options, { resolveMedia, vars = {} } = {}) {
+export async function pickFlash(options, { event = "initiated", resolveMedia, vars = {} } = {}) {
   let chosen = null;
   const runs = [];
   const stopAll = () => { for (const r of runs.splice(0)) r.stop(); };
   try {
     const answer = await foundry.applications.api.DialogV2.wait({
-      window: { title: "Combat initiated", icon: "fa-solid fa-bolt" },
+      window: { title: MOMENTS[event]?.title ?? MOMENTS.initiated.title, icon: "fa-solid fa-bolt" },
       classes: ["animater-flash-picker"],
       position: { width: Math.min(920, 140 + options.length * 270) },
-      content: pickerHTML(options),
+      content: pickerHTML(options, event),
       buttons: [{ action: "none", label: "None", icon: "fa-solid fa-ban" }],
       rejectClose: false,
       render: (_event, dialog) => {

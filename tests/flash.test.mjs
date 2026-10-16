@@ -299,7 +299,7 @@ test("start and end cards have an On switch for their section's default, without
   assert.match(html, /data-action="flash-moment-toggle" data-id="c" data-event="end" role="switch" aria-checked="true"/, "the end section toggles the end event");
   await ed.action("flash-moment-toggle", { dataset: { id: "a", event: "start" } });
   await ed.action("flash-moment-toggle", { dataset: { id: "b", event: "start" } });
-  assert.deepEqual(calls, [["start", "none"], ["start", "b"]]);
+  assert.deepEqual(calls, [["start", []], ["start", ["a", "b"]]], "openings switch on and off like Combat initiated; several may be on");
   assert.ok(!ed.editing, "the card stays closed");
 });
 

@@ -9,7 +9,7 @@ const wait = (ms = 350) => new Promise((r) => setTimeout(r, ms));
 // A world with one GM client: hooks are captured, flash screens go out over the socket.
 function world({ defaults = {}, gm = true, pick } = {}) {
   const hooks = {}, sent = [];
-  const screens = [validateFlash({ id: "roll", name: "Roll for Initiative", event: "initiated" }), validateFlash({ id: "ambush", name: "Ambush!", event: "initiated" }), validateFlash({ id: "go", name: "Combat Started", event: "start" })];
+  const screens = [validateFlash({ id: "roll", name: "Roll for Initiative", event: "initiated" }), validateFlash({ id: "ambush", name: "Ambush!", event: "initiated" }), validateFlash({ id: "go", name: "Combat Started", event: "start" }), validateFlash({ id: "boss", name: "Boss Battle", event: "start" }), validateFlash({ id: "duel", name: "Face Off", event: "any" })];
   const settings = { flashScreens: { schema: 1, screens }, flashDefaults: { start: "none", end: "none", ...defaults } };
   globalThis.Hooks = { on: (name, fn) => (hooks[name] ??= []).push(fn) };
   globalThis.canvas = { scene: { name: "Crypt" } };
@@ -114,4 +114,28 @@ test("the picker's None, a closed window or Begin Combat while choosing play not
   single.fire("createCombatant", encounter().add());
   await wait();
   assert.deepEqual(single.played(), ["ambush"]);
+});
+
+test("with several openings on, the GM picks one at Begin Combat; one on or a tracker pick plays without asking", async () => {
+  const asked = [];
+  const w = world({ defaults: { start: ["go", "boss", "duel"] }, pick: async (options, _combat, event) => { asked.push([event, options.map((s) => s.id)]); return "boss"; } });
+  const { combat } = encounter({ started: true });
+  w.fire("combatStart", combat);
+  await wait(10);
+  assert.deepEqual(asked, [["start", ["go", "boss", "duel"]]]);
+  assert.deepEqual(w.played(), ["boss"]);
+  w.fire("combatStart", combat);
+  await wait(10);
+  assert.equal(asked.length, 1, "once per combat");
+  const one = world({ defaults: { start: ["go"] }, pick: () => assert.fail("asked with one on") });
+  one.fire("combatStart", encounter({ started: true }).combat);
+  assert.deepEqual(one.played(), ["go"]);
+  const tracker = world({ defaults: { start: ["go", "boss"] }, pick: () => assert.fail("asked despite the tracker pick") }), picked = encounter({ started: true }).combat;
+  await picked.setFlag("animater", "flashStart", "duel");
+  tracker.fire("combatStart", picked);
+  assert.deepEqual(tracker.played(), ["duel"]);
+  const none = world({ defaults: { start: ["go", "boss"] }, pick: async () => "none" });
+  none.fire("combatStart", encounter({ started: true }).combat);
+  await wait(10);
+  assert.deepEqual(none.played(), []);
 });
