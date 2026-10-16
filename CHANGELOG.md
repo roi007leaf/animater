@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.2 (2026-10-16)
 
 - **Combat start and end cards have an On switch** in the Flash screens library, like the other combat moments, instead of a "Set default" badge that showed only on hover. On is the world default. Several openings can be on: at Begin Combat the GM gets the same window as for Combat initiated, with each one playing, and clicks the one everyone sees (or None). A screen picked for that combat in the Combat Tracker still plays without asking.
 - **Combat initiated flash screen:** a new moment that plays once when an encounter gets its combatants, before Begin Combat, so it can say "Roll for Initiative!" while the opening (Combat start) waits for the GM to begin. Set a screen's "Plays at" to Combat initiated and switch it on in the library's own Combat initiated section. Several can be on (say "Roll for Initiative!" and "Ambush!"): as combatants are added, the GM gets a window with each one playing and clicks the one everyone sees (or None). Off by default. It replaces the "On add" switch: the Combat start screen now always plays on Begin Combat.
