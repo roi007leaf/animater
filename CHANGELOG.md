@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **No more stall on load with JB2A Patreon.** Animater read Sequencer's database one key at a time, and each lookup scanned the whole database, so with Patreon's thousands of animations Foundry froze for 1-3 seconds after loading (twice: on ready and when Sequencer finished). It now indexes the database in one pass, about 20 times faster, with the same results.
+
 ## 1.1.0 (2026-10-15)
 
 - **Daggerheart** (system 2.10.12): actions, attack and spellcast rolls (with a hit, miss or critical per target), damage and kills animate automatically. Damage written onto an attack card plays once; private rolls stay quiet; a message whose item cannot be found shows a Skipped row in Activity.

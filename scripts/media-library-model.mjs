@@ -147,6 +147,28 @@ export function tokenFxAssets(catalog) {
   if(!catalog?.tokenReady)return [];
   return (catalog.presets??[]).map(p=>libraryItem({type:'tokenfx',fxPreset:p.name,fxLibrary:p.library,filterTypes:p.filterTypes,tintable:p.tintable})).filter(Boolean);
 }
+// Sequencer's getEntry and getAllFileEntries scan the whole database on every call, so reading
+// JB2A Patreon's thousands of keys one by one froze the client for seconds on load. One sorted
+// pass over a namespace's entries answers the same prefix lookups, in Sequencer's order.
+function entryIndex(database, namespace) {
+  const list = database?.entries?.[namespace];
+  if (!Array.isArray(list) || !list.every(e => typeof e?.dbPath === 'string' && typeof e.getAllFiles === 'function')) return null;
+  const sorted = list.map((entry, order) => ({entry, order, path: entry.dbPath})).sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
+  const under = key => {
+    let lo = 0, hi = sorted.length;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (sorted[mid].path < key) lo = mid + 1; else hi = mid; }
+    let end = lo;
+    while (end < sorted.length && sorted[end].path.startsWith(key)) end++;
+    return sorted.slice(lo, end).sort((a, b) => a.order - b.order).map(s => s.entry);
+  };
+  return {
+    entry(key) {
+      const found = under(key), exact = found.filter(e => e.dbPath === key), matches = exact.length ? exact : found;
+      return matches.length === 1 ? matches[0] : matches.length ? matches : false;
+    },
+    files: key => [...new Set(under(key).flatMap(e => e.getAllFiles()))],
+  };
+}
 // Only public namespaces; include every file variation, not only curated cues.
 export function registeredMedia(database) {
   let namespaces;
@@ -156,11 +178,13 @@ export function registeredMedia(database) {
   for (const namespace of namespaces) {
     let keys;
     try { keys = database.getPathsUnder(namespace, {fullyQualified:true}); } catch { continue; }
+    let index;
+    try { index = entryIndex(database, namespace); } catch { index = null; }
     for (const key of [...new Set(Array.isArray(keys) ? keys : [])]) {
       try {
-        const raw = database.getEntry?.(key, {softFail:true});
+        const raw = index ? index.entry(key) : database.getEntry?.(key, {softFail:true});
         const entry = Array.isArray(raw) ? raw.find(e => e.dbPath === key) ?? raw[0] : raw;
-        const files = [...new Set(fileValues(database.getAllFileEntries?.(key)).filter(f => safeMediaFile(f)))];
+        const files = [...new Set(fileValues(index ? index.files(key) : database.getAllFileEntries?.(key)).filter(f => safeMediaFile(f)))];
         const preferred = fileValues(entry?.getFile?.('15ft')).find(f => safeMediaFile(f)) ?? files[0];
         if (!preferred) continue;
         if (!files.includes(preferred)) files.unshift(preferred);
