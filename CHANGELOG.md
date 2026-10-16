@@ -3,6 +3,8 @@
 ## Unreleased
 
 - **Combat initiated flash screen:** a new moment that plays once when an encounter gets its combatants, before Begin Combat, so it can say "Roll for Initiative!" while the opening (Combat start) waits for the GM to begin. Set a screen's "Plays at" to Combat initiated and switch it on in the library's own Combat initiated section (or the tracker's defaults). Off by default. It replaces the "On add" switch: the Combat start screen now always plays on Begin Combat.
+- **Finishers on players' weapons play again.** A finisher the GM linked to a player character's weapon (Applies to) never played unless a player had picked it in Combater, and such an item played no default finisher either. Now only an actual pick replaces the GM's finishers for that item; with no pick, Applies-to and the default finisher play as they do for NPCs.
+- **Available to shows only with pf2e-combater.** It decides which players may pick a finisher in Combater's item sheet, so without Combater the setting and the cards' Players pill are hidden.
 
 ## 1.1.1 (2026-10-16)
 

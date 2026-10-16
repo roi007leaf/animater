@@ -261,7 +261,7 @@ function playersPill(f, players) {
   return `<span class="an-pill an-pill-players">${who === "All players" ? who : who ? `Players: ${who}` : "GM only"}</span>`;
 }
 
-function finisherCardHTML(r, players, itemSummary) {
+function finisherCardHTML(r, players, itemSummary, playerPicks) {
   const f = r.finisher, path = finisherTravelPath(r), squares = path ? pathSquares(normalizeKeyframes(path.keyframes, { limit: 24 })) : 0;
   const reach = path ? (squares ? `Travels ${squares} sq` : "In place") : f.knockback ? `Knockback: ${f.knockback} sq` : "Knockback: none";
   const id = esc(r.id), off = r.enabled === false;
@@ -269,7 +269,7 @@ function finisherCardHTML(r, players, itemSummary) {
     + `<button type="button" data-action="select" data-id="${id}" class="an-fcard-open" aria-label="Open ${esc(r.name)}">`
     + `<div class="an-art an-fcard-art">${cardGlyph(r)}<span class="an-fcard-badges"><span class="an-fcard-badge">${esc(FINISHER_ON[f.on])}</span>${off ? `<span class="an-fcard-badge is-off">Off</span>` : ""}</span></div>`
     + `<div class="an-card-body"><h2>${esc(r.name)}</h2><div class="an-fcard-chips">${cardChipsHTML(r, itemSummary)}</div>`
-    + `<div class="an-fcard-pills"><span class="an-pill">Ending: ${esc(ENDING_PILL[f.ending] ?? FINISHER_ENDINGS[f.ending] ?? f.ending)}</span><span class="an-pill">${esc(reach)}</span>${playersPill(f, players)}</div></div></button>`
+    + `<div class="an-fcard-pills"><span class="an-pill">Ending: ${esc(ENDING_PILL[f.ending] ?? FINISHER_ENDINGS[f.ending] ?? f.ending)}</span><span class="an-pill">${esc(reach)}</span>${playerPicks ? playersPill(f, players) : ""}</div></div></button>`
     + `<span class="an-fcard-actions"><button type="button" data-action="select" data-id="${id}" class="an-fcard-quick">Edit</button><button type="button" data-action="recipe-menu-duplicate" data-id="${id}" class="an-fcard-quick">Duplicate</button></span></article>`;
 }
 
@@ -285,7 +285,8 @@ export function finishersPageHTML(w, recipe) {
   bindGlyphHover();
   const all = w.listedRecipes().filter((r) => r.finisher), def = w.host.defaultFinisher?.() ?? "";
   const players = w.host.players?.() ?? [], itemSummary = w.host.itemSummary ? (uuid) => w.host.itemSummary(uuid) : null;
-  const cards = all.map((r) => finisherCardHTML(r, players, itemSummary)).join("");
+  const playerPicks = w.host.playerPicks?.() === true;
+  const cards = all.map((r) => finisherCardHTML(r, players, itemSummary, playerPicks)).join("");
   const groups = presetGroupsHTML();
   return `<div class="an-work is-library"><section class="an-library an-finishers">
     <div class="an-finishers-sub"><span>${all.length} finisher${all.length === 1 ? "" : "s"}</span><small>Assign them to spells, feats, actions and weapons. They play on the real token.</small></div>
@@ -321,7 +322,7 @@ function appliesToHTML(r, itemSummary) {
 function availableToHTML(f, players) {
   const has = f.players ?? [], everyone = has.includes("*");
   const boxes = players.map((p) => `<label class="an-check"><input type="checkbox" data-finisher-player="${esc(p.id)}" ${has.includes(p.id) ? "checked" : ""} ${everyone ? "disabled" : ""}><i class="an-player-dot" style="background:${esc(p.color)}"></i>${esc(p.name)}</label>`).join("");
-  return `<div class="an-finisher-players"><span class="an-label">Available to</span><label class="an-check"><input type="checkbox" data-finisher-player="*" ${everyone ? "checked" : ""}>All players</label>${boxes}</div><p class="an-hint">Chosen players can pick this finisher for their own items in Combater; only a player's pick plays for their items. NPCs and GM creatures use Applies-to automatically.</p>`;
+  return `<div class="an-finisher-players"><span class="an-label">Available to</span><label class="an-check"><input type="checkbox" data-finisher-player="*" ${everyone ? "checked" : ""}>All players</label>${boxes}</div><p class="an-hint">Chosen players can pick this finisher for their own items in Combater. A player's pick replaces Applies-to for that item; with no pick, Applies-to and the default finisher still play.</p>`;
 }
 
 // "Needs" only means something for a use or a killing blow (a critical is always critical):
@@ -332,12 +333,13 @@ const needsHTML = (f, select) => (NEEDS_HINTS[f.on] ? `${select("success", "Need
 // The At walls option in effect, with what it does.
 const WALL_HINTS = { slam: "Flies toward the nearest wall within reach (never back toward the attacker) and crashes into it." };
 
-export function finisherSettingsHTML(r, { itemSummary, players = [] } = {}) {
+// Available to only decides what players may pick in pf2e-combater (playerPicks): hidden without it.
+export function finisherSettingsHTML(r, { itemSummary, players = [], playerPicks = false } = {}) {
   const f = r.finisher, path = finisherTravelPath(r), select = (key, label, table) => `<label>${label}<select data-field="finisher.${key}">${choices(table, f[key])}</select></label>`;
   return `<div class="an-editor-section an-binding an-finisher"><div class="an-section-title"><b>Finisher</b><label class="an-check"><input type="checkbox" data-field="enabled" ${r.enabled ? "checked" : ""}>Enabled</label></div>
     <label>Description<textarea aria-label="Description" data-field="description" rows="2" class="an-description">${esc(r.description)}</textarea></label>
     ${appliesToHTML(r, itemSummary)}
-    ${select("on", "Plays on", FINISHER_ON)}${availableToHTML(f, players)}${needsHTML(f, select)}
+    ${select("on", "Plays on", FINISHER_ON)}${playerPicks ? availableToHTML(f, players) : ""}${needsHTML(f, select)}
     ${path ? `<p class="an-hint">Lands where its keyframed path ends (${pathSquares(path.keyframes)} sq), away from the attacker and stopping at walls.</p>${select("wall", "At walls", FINISHER_WALLS)}${WALL_HINTS[f.wall] ? `<p class="an-hint">${esc(WALL_HINTS[f.wall])}</p>` : ""}` : `<label>Knockback (squares)<input type="number" min="0" max="6" step="1" data-field="finisher.knockback" value="${f.knockback}"></label><p class="an-hint">Shoves the target this far away from the attacker before the rest plays (stops at walls).</p>`}
     ${select("ending", "Ending", FINISHER_ENDINGS)}
     <p class="an-hint">${path ? "A stage named “landing” plays where it lands." : "Set a travel motion's End to “Hold at the end”: knockback replaces its distance and the token is moved to where it lands, stopping at walls. A stage named “landing” plays there."} Vanish and Body apply only to a creature at 0 HP.</p></div>`;

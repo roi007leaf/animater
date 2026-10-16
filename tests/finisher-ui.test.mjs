@@ -112,9 +112,9 @@ test("the catalog dropdown carries the entry's uuid when it has one", () => {
   assert.doesNotMatch(finisherLinkHTML(list, "Greataxe"), /data-finisher-uuid/);
 });
 
-test("finisher settings let the GM give it to players", () => {
+test("finisher settings let the GM give it to players while Combater offers picks", () => {
   const r = fin("a", "Longsword", { players: ["u1"] });
-  const html = finisherSettingsHTML(r, { players: [{ id: "u1", name: "Ana", color: "#f00" }, { id: "u2", name: "Bo", color: "#0f0" }] });
+  const html = finisherSettingsHTML(r, { playerPicks: true, players: [{ id: "u1", name: "Ana", color: "#f00" }, { id: "u2", name: "Bo", color: "#0f0" }] });
   assert.match(html, /data-finisher-player="\*"/);
   assert.match(html, /data-finisher-player="u1"[^>]*checked/);
   assert.doesNotMatch(html, /data-finisher-player="u2"[^>]*checked/);
@@ -123,14 +123,23 @@ test("finisher settings let the GM give it to players", () => {
 
 test("finisher cards say who has it", () => {
   const players = [{ id: "u1", name: "Ana" }];
-  const page = (p) => finishersPageHTML({ studio: false, listedRecipes: () => [fin("a", "X", { players: p })], host: { recipes: () => [], defaultFinisher: () => "", players: () => players } });
+  const page = (p) => finishersPageHTML({ studio: false, listedRecipes: () => [fin("a", "X", { players: p })], host: { recipes: () => [], defaultFinisher: () => "", players: () => players, playerPicks: () => true } });
   assert.match(page(["*"]), /All players/);
   assert.match(page(["u1"]), /Ana/);
   assert.match(page([]), /GM only/);
 });
 
+// Available to only feeds Combater's picker: without Combater it has nothing to decide.
+test("without Combater, finisher settings and cards hide Available to and the Players pill", () => {
+  const players = [{ id: "u1", name: "Ana", color: "#f00" }];
+  const html = finisherSettingsHTML(fin("a", "X", { players: ["u1"] }), { players });
+  assert.doesNotMatch(html, /data-finisher-player|Available to/);
+  const page = finishersPageHTML({ studio: false, listedRecipes: () => [fin("a", "X", { players: ["u1"] })], host: { recipes: () => [], defaultFinisher: () => "", players: () => players } });
+  assert.doesNotMatch(page, /an-pill-players|GM only/);
+});
+
 test("All players disables the per-player boxes", () => {
-  const html = finisherSettingsHTML(fin("a", "X", { players: ["*"] }), { players: [{ id: "u1", name: "Ana", color: "#f00" }] });
+  const html = finisherSettingsHTML(fin("a", "X", { players: ["*"] }), { playerPicks: true, players: [{ id: "u1", name: "Ana", color: "#f00" }] });
   assert.match(html, /data-finisher-player="\*"[^>]*checked/);
   assert.match(html, /data-finisher-player="u1"[^>]*disabled/);
 });
@@ -145,9 +154,9 @@ test("Needs shows only for Every successful use and Killing blow, each with its 
   assert.match(html("use"), /<option value="success" >Any success<\/option><option value="critical" selected>Only on a critical<\/option>/);
 });
 
-test("Available to says only a player's pick plays for their items", () => {
-  const html = finisherSettingsHTML(fin("a", "X"), { players: [{ id: "u1", name: "Ana", color: "#f00" }] });
-  assert.match(html, /<p class="an-hint">Chosen players can pick this finisher for their own items in Combater; only a player's pick plays for their items\. NPCs and GM creatures use Applies-to automatically\.<\/p>/);
+test("Available to says a player's pick replaces Applies-to for that item", () => {
+  const html = finisherSettingsHTML(fin("a", "X"), { playerPicks: true, players: [{ id: "u1", name: "Ana", color: "#f00" }] });
+  assert.match(html, /<p class="an-hint">Chosen players can pick this finisher for their own items in Combater\. A player's pick replaces Applies-to for that item; with no pick, Applies-to and the default finisher still play\.<\/p>/);
   assert.doesNotMatch(html, /The GM always can/);
 });
 
@@ -247,7 +256,7 @@ test("finisherGlyphSVG is deterministic, static by default, live on request, and
   assert.match(bad, /style="--glyph:#9e8aff"/, "an invalid colour falls back");
 });
 
-const pageOf = (recipes, { players = [], itemSummary, def = "" } = {}) => finishersPageHTML({ studio: false, listedRecipes: () => recipes, host: { recipes: () => recipes, defaultFinisher: () => def, players: () => players, itemSummary } });
+const pageOf = (recipes, { players = [], itemSummary, def = "" } = {}) => finishersPageHTML({ studio: false, listedRecipes: () => recipes, host: { recipes: () => recipes, defaultFinisher: () => def, players: () => players, playerPicks: () => true, itemSummary } });
 
 test("finisher cards show the Plays on badge, an Off badge when disabled, and a glyph", () => {
   const html = pageOf([fin("a", "X", { on: "critical" }), { ...fin("b", "Y"), enabled: false }]);

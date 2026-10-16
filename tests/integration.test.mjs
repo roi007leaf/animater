@@ -1579,29 +1579,33 @@ test("player pick: a kill pick beats the GM's name-matched kill finisher", async
   await f.api.stop();
 });
 
-test("player pick: a pick whose player was removed from Available to plays nothing, and the old collapse stands in", async (t) => {
+test("player pick: a pick whose player was removed from Available to falls back to the GM's finisher", async (t) => {
   const f = await boot("pf2e");
   playerOwns(t, f);
-  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill", ["u2"])], defaultFinisher: "gm" });
-  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
-  await new Promise((resolve) => setTimeout(resolve, 200));
-  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill", ["u2"])] });
+  assert.deepEqual(entries.map((e) => e.detail), ["GM drop: Orc"], JSON.stringify(f.api.activity()));
   await f.api.stop();
 });
 
-for (const [label, choice] of [["no pick", null], ["\"None\"", ""]]) {
-  test(`player item with ${label}: a finisher matching it by name does not play, nor the default; the old collapse stands in`, async (t) => {
-    const f = await boot("pf2e");
-    playerOwns(t, f, { choice });
-    const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition"), pickFin("kill")], defaultFinisher: "gm" });
-    assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
-    await new Promise((resolve) => setTimeout(resolve, 200));
-    assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
-    await f.api.stop();
-  });
-}
+// Available to only decides what a player may pick (pf2e-combater's item sheet, api.finishers):
+// a player's item with no pick plays the GM's Applies-to finishers and the default, like an NPC's.
+test("player item with no pick: a finisher linked to it by the GM plays, though no player is given it", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f, { choice: null });
+  const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition")] });
+  assert.deepEqual(entries.map((e) => e.detail), ["GM drop: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
 
-test("player item with no pick: a crit plays no GM critical finisher", async (t) => {
+test("player item with no pick: the default finisher plays", async (t) => {
+  const f = await boot("pf2e");
+  playerOwns(t, f, { choice: null });
+  const entries = await killTarget(f, { finishers: [killFin("other", "Other", "Dagger"), killFin("def", "Default drop", "")], defaultFinisher: "def" });
+  assert.deepEqual(entries.map((e) => e.detail), ["Default drop: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
+});
+
+test("player item with no pick: a crit plays the GM's critical finisher", async (t) => {
   const f = await boot("pf2e");
   playerOwns(t, f, { choice: null });
   watchTarget(f);
@@ -1609,8 +1613,9 @@ test("player item with no pick: a crit plays no GM critical finisher", async (t)
   f.settings.set("automatic", true);
   f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("criticalOrKill", []), id: "gmcrit", name: "GM crit" }] });
   await f.fire("createChatMessage", strikeMessage(f, "crit", "criticalSuccess"));
-  await settle();
-  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.deepEqual(f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail), ["GM crit: Orc"], JSON.stringify(f.api.activity()));
+  await f.api.stop();
 });
 
 test("player pick: a crit with a kill pick plays no GM critical finisher", async (t) => {
@@ -1924,7 +1929,7 @@ test("save: a GM critical-only finisher's travel is not replayed by the default 
   await f.api.stop();
 });
 
-test("save: a player caster's spell that cannot be found plays no GM crit finisher", async (t) => {
+test("save: a player caster's spell that cannot be found plays the GM's crit finisher", async (t) => {
   const f = await boot("pf2e");
   game.users.set("u1", { id: "u1", isGM: false });
   f.actor.testUserPermission = (user, level) => user?.id === "u1" && level === "OWNER";
@@ -1932,19 +1937,17 @@ test("save: a player caster's spell that cannot be found plays no GM crit finish
   saveSetup(f, [{ ...gmCrit(), itemUuid: f.item.uuid }]);
   await f.fire("createChatMessage", saveMessage(f, "sv", "criticalFailure"));
   await new Promise((resolve) => setTimeout(resolve, 250));
-  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, JSON.stringify(f.api.activity()));
+  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 1, JSON.stringify(f.api.activity()));
   await f.api.stop();
 });
 
-test("kill path: an unknown killing item from a player's token plays no finisher, not even the default", async (t) => {
+test("kill path: an unknown killing item from a player's token plays the default finisher", async (t) => {
   const f = await boot("pf2e");
   game.users.set("u1", { id: "u1", isGM: false });
   f.actor.testUserPermission = (user, level) => user?.id === "u1" && level === "OWNER";
   stubGlobal(t, "fromUuidSync", () => null);
   const entries = await killTarget(f, { finishers: [killFin("gm", "GM drop", "Ignition")], defaultFinisher: "gm", damage: { item: null, flags: { pf2e: { context: { type: "damage-roll", target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: "Actor.a.Item.gone" } } } } });
-  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
-  await new Promise((resolve) => setTimeout(resolve, 200));
-  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  assert.deepEqual(entries.map((e) => e.detail), ["GM drop: Orc"], JSON.stringify(f.api.activity()));
   await f.api.stop();
 });
 
@@ -2055,21 +2058,23 @@ test("synthetic strike: a Fist kill plays the actor's pick, even when the messag
   }
 });
 
-test("synthetic strike: a player's Fist with no pick plays no finisher on a crit or a kill, not even the default", async (t) => {
+test("synthetic strike: a player's Fist with no pick plays the GM's Fist finishers on a crit and a kill", async (t) => {
   const f = await boot("pf2e");
   const { fist } = strikeOwner(t, f, { pick: null });
   watchTarget(f);
-  const gm = { ...pickFin("criticalOrKill", []), id: "gmcrit", name: "GM crit", match: "Fist" };
   f.settings.set("finishers", true);
   f.settings.set("automatic", true);
-  f.settings.set("recipes", { schema: 1, recipes: [gm] });
+  f.settings.set("recipes", { schema: 1, recipes: [{ ...pickFin("critical", []), id: "gmcrit", name: "GM crit", match: "Fist" }] });
   await f.fire("createChatMessage", { ...strikeMessage(f, "crit", "criticalSuccess"), item: fist });
-  await settle();
-  assert.equal(f.api.activity().filter((e) => e.status === "Finisher").length, 0, JSON.stringify(f.api.activity()));
-  const entries = await killTarget(f, { finishers: [gm, killFin("gm", "GM drop", "Fist")], defaultFinisher: "gm",
-    damage: { id: "dmg2", item: fist, flags: { pf2e: { context: { type: "damage-roll", target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: fist.uuid, actor: "Actor.a" } } } } });
-  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
+  await new Promise((resolve) => setTimeout(resolve, 250));
+  assert.deepEqual(f.api.activity().filter((e) => e.status === "Finisher").map((e) => e.detail), ["GM crit: Orc"], JSON.stringify(f.api.activity()));
   await f.api.stop();
+  const k = await boot("pf2e");
+  const { fist: kfist } = strikeOwner(t, k, { pick: null });
+  const entries = await killTarget(k, { finishers: [killFin("gm", "GM drop", "Fist")],
+    damage: { id: "dmg2", item: kfist, flags: { pf2e: { context: { type: "damage-roll", target: { token: "Scene.s.Token.target", actor: "Actor.npc" } }, origin: { uuid: kfist.uuid, actor: "Actor.a" } } } } });
+  assert.deepEqual(entries.map((e) => e.detail), ["GM drop: Orc"], JSON.stringify(k.api.activity()));
+  await k.api.stop();
 });
 
 test("Defeated look: the finisher body ending marks Defeated without the overlay unless the look is Foundry's", async () => {
@@ -2128,13 +2133,12 @@ test("kill path, by damage type: the killing item's own kill finisher still wins
   await f.api.stop();
 });
 
-test("kill path, by damage type: a player's item plays only its pick, never the built-in", async (t) => {
+test("kill path, by damage type: a player's item with no pick plays the built-in", async (t) => {
   const f = await boot("pf2e");
   playerOwns(t, f, { choice: null });
   const entries = await killTarget(f, { defaultFinisher: "by-damage-type" });
-  assert.equal(entries.length, 0, JSON.stringify(f.api.activity()));
-  await new Promise((resolve) => setTimeout(resolve, 200));
-  assert.notEqual(f.target.mesh.rotation, 0, "the old collapse tips the token");
+  assert.equal(entries.length, 1, JSON.stringify(f.api.activity()));
+  assert.match(entries[0].detail, /^Cinders: Orc/);
   await f.api.stop();
 });
 
@@ -2445,7 +2449,7 @@ test("Daggerheart kill by damage type: a Longsword carves, a Shortbow perforates
   }
 });
 
-test("Daggerheart kill: the killing item's own kill finisher wins; a player's item plays only its pick", async (t) => {
+test("Daggerheart kill: the killing item's own kill finisher wins, for a player's item with no pick too", async (t) => {
   const own = await bootDaggerheart();
   const mine = await dhDamageThenKill(own, { item: { type: "weapon", name: "Longsword" }, damage: damageRoll(), finishers: [killFin("cut", "Clean cut", "Longsword")] });
   assert.equal(mine.length, 1, JSON.stringify(own.api.activity()));
@@ -2453,8 +2457,9 @@ test("Daggerheart kill: the killing item's own kill finisher wins; a player's it
   await own.api.stop();
   const pc = await bootDaggerheart();
   playerOwns(t, pc, { choice: null });
-  const none = await dhDamageThenKill(pc, { item: { type: "weapon", name: "Longsword" }, damage: damageRoll() });
-  assert.equal(none.length, 0, "a player's item with no pick plays no finisher, not even the built-in");
+  const theirs = await dhDamageThenKill(pc, { item: { type: "weapon", name: "Longsword" }, damage: damageRoll(), finishers: [killFin("cut", "Clean cut", "Longsword")] });
+  assert.equal(theirs.length, 1, JSON.stringify(pc.api.activity()));
+  assert.match(theirs[0].detail, /Clean cut: Bandit/, "a player's item with no pick plays the GM's finisher for it");
   await pc.api.stop();
 });
 

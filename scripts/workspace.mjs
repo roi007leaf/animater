@@ -1333,7 +1333,7 @@ export class Workspace {
   }
   motionSyncNoticeHTML() { return motionSyncNoticeHTML(this.host.environment()); }
   recipeSettingsHTML(r) {
-    if (r.finisher) return finisherSettingsHTML(r, { itemSummary: (uuid) => this.host.itemSummary?.(uuid), players: this.host.players?.() ?? [] });
+    if (r.finisher) return finisherSettingsHTML(r, { itemSummary: (uuid) => this.host.itemSummary?.(uuid), players: this.host.players?.() ?? [], playerPicks: this.host.playerPicks?.() === true });
     const linked = r.lifecycle === "document";
     const scope = Object.hasOwn(STRIKE_SCOPES, r.matchScope ?? '') ? r.matchScope : null;
     const binding = !linked && ['attack', 'damage'].includes(r.trigger) ? `<label>Applies to<select data-field="matchScope">${options({ '': 'Item names / slugs', ...STRIKE_SCOPES }, r.matchScope ?? '')}</select></label>` : '';

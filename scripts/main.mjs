@@ -156,9 +156,11 @@ const ownerUsers = (actor) => [...(game.users?.values?.() ?? [])].filter((u) => 
 // matches finishers by name and slug only (a rule-element strike's uuid names its feat).
 const itemKeys = (item) => ({ itemName: item?.name, itemSlug: item?.slug ?? item?.system?.slug, itemUuid: picksOnActor(item) ? undefined : item?.uuid });
 const choiceOf = (item) => (picksOnActor(item) ? strikePick(item.actor, strikeOf(item)) : item?.getFlag?.(ID, "finisher") ?? null);
-// An item whose actor any player owns plays only its owner's pick; NPC items keep the GM's name matching.
-const playerItem = (item) => Boolean(item) && ownerUsers(item.actor).length > 0;
 const pickFor = (item) => (item ? pickedFinisher(recipes(), { choiceId: choiceOf(item), ownerUserIds: ownerUsers(item.actor), ...itemKeys(item) }) : null);
+// A player's pick (pf2e-combater's item sheet, or api.finishers) replaces the GM's finishers for
+// its item. With no pick, or one no longer given to an owner, every item keeps the GM's Applies-to
+// matching and the default finisher; an NPC item's stray pick flag is ignored.
+const ownerPick = (item) => (item && ownerUsers(item.actor).length > 0 ? pickFor(item) : null);
 const finisherChoices = (item, user = game.user) => playerFinisherChoices(recipes(), { userId: user?.id, ...itemKeys(item) })
   .map((r) => ({ id: r.id, name: r.name, description: r.description ?? "", on: r.finisher.on }));
 // Other modules (pf2e-combater's item sheet) read and set an item's pick through api.finishers.
@@ -815,6 +817,8 @@ function workspaceHost() {
     // While the GM reviews a player, the Studio shows and saves that player's recipes.
     defaultFinisher: () => game.settings.get(ID, DEFAULT_FINISHER) ?? "",
     players: () => game.users.filter((u) => !u.isGM).map((u) => ({ id: u.id, name: u.name, color: u.color?.css ?? u.color ?? "" })),
+    // Players pick finishers only in pf2e-combater's item sheet: Available to shows only with it.
+    playerPicks: () => game.modules.get("pf2e-combater")?.active === true,
     setDefaultFinisher: async (id) => {
       if (!game.user.isGM) throw Error("Only a GM can choose the default finisher.");
       await game.settings.set(ID, DEFAULT_FINISHER, String(id ?? ""));
@@ -1503,15 +1507,13 @@ Hooks.once("ready", () => {
     const dead = hpOf(mover.actor)?.down === true;
     return playFinisher({ recipe, mover, attacker, dead }, finisherHost(attacker)).catch((error) => { runtime.trace("Blocked", error.message); return null; });
   };
-  // A critical strike: a player's item plays only its owner's pick, when it plays on crits; an NPC's
-  // item plays the GM's critical finishers. It plays on each critically struck target (critTargets),
-  // from the event's source (for a save, the caster), marks each one on every client and answers
-  // the ids of the targets it started on.
+  // A critical strike: a player's pick plays when it plays on crits; with no pick, the GM's critical
+  // finishers. It plays on each critically struck target (critTargets), from the event's source
+  // (for a save, the caster), marks each one on every client and answers the ids of the targets it started on.
   const playCritFinisher = (event, item, struck) => {
     const started = new Set();
-    // A save against a player caster's spell that cannot be found is still that player's: no GM finisher.
-    const players = event.item ? playerItem(event.item) : event.type === "save" && ownerUsers(event.source?.actor).length > 0;
-    const recipe = players ? pickPlays(pickFor(event.item), "crit", { outcome: "criticalSuccess" }) : critFinishers(recipes(), item)[0];
+    const pick = ownerPick(event.item);
+    const recipe = pick ? pickPlays(pick, "crit", { outcome: "criticalSuccess" }) : critFinishers(recipes(), item)[0];
     if (!recipe) return started;
     const keyOf = (target) => finishedKey({ attackerId: event.source?.id, targetId: target.id, itemUuid: item.itemUuid ?? "", recipeId: recipe.id, save: event.type === "save" });
     for (const mover of struck) {
@@ -1533,8 +1535,9 @@ Hooks.once("ready", () => {
     const item = { itemName: event.item?.name ?? event.itemName, itemSlug: event.item?.slug ?? event.item?.system?.slug, itemUuid: event.itemUuid ?? event.item?.uuid };
     const crit = struck.length ? playCritFinisher(event, item, struck) : new Set();
     if (!moment) return crit;
-    // A player's item: only its owner's use pick. An NPC's item: the GM's use finishers.
-    const uses = playerItem(event.item) ? [pickPlays(pickFor(event.item), "use", { event })].filter(Boolean)
+    // A player's pick: only it, when it plays on uses. Otherwise the GM's use finishers.
+    const pick = ownerPick(event.item);
+    const uses = pick ? [pickPlays(pick, "use", { event })].filter(Boolean)
       : matchFinishers(recipes(), item, "use").filter((recipe) => usePasses(recipe.finisher, event));
     for (const recipe of uses) for (const mover of (event.targets ?? []).filter((t) => t && targetPassed(event, t))) {
       // A crit finisher already moves this target in this action: one finisher per token.
@@ -1549,20 +1552,17 @@ Hooks.once("ready", () => {
     const ids = { actorId: actor.id, tokenId: token.id };
     const by = recallAttribution(damageLog, ids) ?? recallDamage(damageLog, ids);
     const attacker = by?.sourceTokenId ? canvas.tokens.get(by.sourceTokenId) ?? null : null;
-    // A player's killing item plays only its owner's pick ("None" or no pick: no finisher, not even
-    // the default); "Needs: Only on a critical" holds for it. An item that cannot be found, struck by a
-    // player's token, is still a player's kill: no finisher. An NPC's item, or no known item and no
-    // known attacker, keeps the GM's kill finishers and the default finisher.
-    const struck = killingItem(by, attacker);
-    const players = struck ? playerItem(struck) : ownerUsers(attacker?.actor).length > 0;
-    const pick = players ? pickFor(struck) : null, item = { itemUuid: by?.synthetic ? undefined : by?.itemUuid, itemName: by?.itemName, itemSlug: by?.itemSlug ?? undefined };
+    // A player's pick on the killing item plays only itself, when it plays on kills ("Needs: Only on a
+    // critical" holds for it). Any other killing item (an NPC's, a player's with no pick, or one that
+    // cannot be found) keeps the GM's kill finishers and the default finisher.
+    const pick = ownerPick(killingItem(by, attacker)), item = { itemUuid: by?.synthetic ? undefined : by?.itemUuid, itemName: by?.itemName, itemSlug: by?.itemSlug ?? undefined };
     // A critically failed save against this item left its crit finisher's mark on this token: the
     // spell's own (non-critical) damage is that crit's killing blow, so the kill counts as critical.
     const base = { attackerId: by?.sourceTokenId, targetId: token.id, itemUuid: by?.itemUuid ?? "" };
-    const critIds = (players ? [pick] : critFinishers(recipes(), item)).filter(Boolean).map((r) => r.id);
+    const critIds = (pick ? [pick] : critFinishers(recipes(), item)).filter(Boolean).map((r) => r.id);
     const saveKey = critIds.map((recipeId) => finishedKey({ ...base, recipeId, save: true })).find((key) => finished.has(key));
     const crit = by?.crit === true || Boolean(saveKey);
-    const recipe = players ? pickPlays(pick, "kill", { outcome: crit ? "criticalSuccess" : "success" })
+    const recipe = pick ? pickPlays(pick, "kill", { outcome: crit ? "criticalSuccess" : "success" })
       : killFinisher(recipes(), item, game.settings.get(ID, DEFAULT_FINISHER), { crit, damageType: recallDamage(damageLog, ids)?.type ?? by?.type });
     if (!recipe) return null;
     // The crit already played a finisher's travel on this token: only an ending is left. A critical
