@@ -55,7 +55,7 @@ import { stateCatalogHTML } from "./state-catalog-ui.mjs";
 import { FlashEditor } from "./flash-editor.mjs";
 import { recipeConflicts, unlinked } from "./recipe-conflicts.mjs";
 import { handleStateCatalogAction } from "./state-catalog-actions.mjs";
-import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem,BORROWED_PAGES,borrowedNavigation} from './catalog-system.mjs';
+import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem,BORROWED_PAGES,borrowedNavigation,borrowedSystem,pf2eCatalogPage,pf2eCatalogsLive} from './catalog-system.mjs';
 import {DndCatalogWorkspace} from './dnd5e-catalog-ui.mjs';
 import {sfCatalogProfile} from './sf2e-catalog.mjs';
 import {dhCatalogProfile} from './daggerheart-catalog.mjs';
@@ -400,17 +400,17 @@ export class Workspace {
       const entry = catalogStateEntry(this.selectedState[this.page === "conditions" ? "condition" : "effect"]);
       return entry && stateRecipe(entry, {damageType:this.stateDamageType,auraVariant:this.stateAuraVariant,catalog:this.host.catalog?.()});
     }
-    if (this.page === "weapons") {
+    if (this.pf2ePage() === "weapons") {
       const weapon = catalogWeapon(this.selectedWeapon), state = normalizeWeaponCatalogState(this.host.weaponCatalogState?.());
       const mode = weapon?.modes.some(m => m.mode === this.weaponMode) ? this.weaponMode : weapon?.modes[0]?.mode;
       return weapon && weaponRecipe(weapon, mode, { motion: state.motion, soundCatalog: state.sound ? this.host.soundCatalog?.() : null, soundVolume: state.soundVolume });
     }
-    if (abilityProfileForPage(this.page)) {
-      const profile = abilityProfileForPage(this.page), feat = profile.catalog.entry(this[profile.selectedKey]);
+    if (abilityProfileForPage(this.pf2ePage())) {
+      const profile = abilityProfileForPage(this.pf2ePage()), feat = profile.catalog.entry(this[profile.selectedKey]);
       const state = profile.catalog.normalizeState(this.host[profile.stateKey]?.());
       return feat && profile.catalog.recipe(feat, state, this.host.soundCatalog?.());
     }
-    if (this.page === "spells") {
+    if (this.pf2ePage() === "spells") {
       const spell = catalogSpell(this.selectedSpell);
       return (
         spell && spellRecipe(spell, undefined, catalogSoundOptions(this.host))
@@ -479,10 +479,10 @@ export class Workspace {
   }
   // Picked-only catalogs: a card's ✓ adds or removes just that entry.
   catalogStore() {
-    const host = this.host, profile = abilityProfileForPage(this.page);
-    if (this.page === "spells") return { get: () => normalizeCatalogState(host.catalogState()), set: (c) => host.setCatalogState(c), use: useCatalogSpell };
+    const host = this.host, profile = abilityProfileForPage(this.pf2ePage());
+    if (this.pf2ePage() === "spells") return { get: () => normalizeCatalogState(host.catalogState()), set: (c) => host.setCatalogState(c), use: useCatalogSpell };
     if (profile) return { get: () => profile.catalog.normalizeState(host[profile.stateKey]()), set: (c) => host[profile.setStateKey](c), use: profile.catalog.use };
-    if (this.page === "weapons") return { get: () => normalizeWeaponCatalogState(host.weaponCatalogState?.()), set: (c) => host.setWeaponCatalogState(c), use: useCatalogWeapon };
+    if (this.pf2ePage() === "weapons") return { get: () => normalizeWeaponCatalogState(host.weaponCatalogState?.()), set: (c) => host.setWeaponCatalogState(c), use: useCatalogWeapon };
     if (["conditions", "effects"].includes(this.page)) {
       const kind = this.page === "conditions" ? "condition" : "effect";
       return { get: () => normalizeStateCatalogState(host.stateCatalogState?.(kind)), set: (c) => host.setStateCatalogState(kind, c), use: useStateEntry };
@@ -492,7 +492,7 @@ export class Workspace {
   async toggleCardInclude(id) {
     const env = this.host.environment(), store = this.catalogStore();
     if (!store || !id) return;
-    if (env.demo || env.systemId !== "pf2e" || !env.ready) throw Error("Choose plug & play animations inside a PF2e world with Sequencer and JB2A active.");
+    if (env.demo || !pf2eCatalogsLive(env) || !env.ready) throw Error("Choose plug & play animations inside a PF2e world with Sequencer and JB2A active.");
     const state = store.get(), included = state.enabled && state.selected.includes(id);
     await store.set(included ? { selected: state.selected.filter((v) => v !== id) } : store.use(state, id));
     this.message = included ? "Removed from plug & play." : "Added to plug & play. It plays automatically; other entries stay manual.";
@@ -522,16 +522,18 @@ export class Workspace {
     return [
       group("CREATE", [["recipes", "✦", "Recipes"], ["finishers", "✸", "Finishers"], ...(flash ? [["flash", "⚡", "Flash screens"]] : [])]),
       group("LIBRARY", [...catalogNavigation(env), ["assets", "▦", "Assets"]]),
-      ...(borrowedNavigation(env).length ? [group("BORROWED FROM SF2E", borrowedNavigation(env))] : []),
+      ...(borrowedNavigation(env).length ? [group(`BORROWED FROM ${borrowedSystem(env).toUpperCase()}`, borrowedNavigation(env))] : []),
       group("TOOLS", [["activity", "◷", "Activity"], ["setup", "⚙", "Setup"]]),
     ].join("");
   }
+  // The PF2e catalog page on screen: the page itself in a PF2e world, a borrowed pf2e-* page in an SF2e one.
+  pf2ePage() { return pf2eCatalogPage(this.page, this.host.environment?.() ?? {}); }
   render() { return withRenderMemo(this, () => this.renderPage()); }
   renderPage() {
     if(this.page!=='assets'||this.mediaLibrary?.fxScene)void this.mediaLibrary?.stopTokenPreview();
     if(!catalogPageAllowed(this.page,this.host.environment()))this.page='recipes';
-    if (abilityProfileForPage(this.page)&&!this.dndCatalog?.isCatalogPage()) {
-      const profile = abilityProfileForPage(this.page), matches = profile.catalog.filter(this[profile.filtersKey] ?? defaultAbilityFilters());
+    if (abilityProfileForPage(this.pf2ePage())&&!this.dndCatalog?.isCatalogPage()) {
+      const profile = abilityProfileForPage(this.pf2ePage()), matches = profile.catalog.filter(this[profile.filtersKey] ?? defaultAbilityFilters());
       if (!matches.some((feat) => feat.id === this[profile.selectedKey]))
         this[profile.selectedKey] = matches[0]?.id;
     }
@@ -543,13 +545,13 @@ export class Workspace {
     cancelAnimationFrame(this.motionFrame);
     this.thumbnails?.disconnect();
     const scrollKeys = {
-      ".an-inspector": `${this.page}:${this.dndCatalog?.isCatalogPage()?this.dndCatalog.entry()?.id:this.page === "spells" ? this.selectedSpell : abilityProfileForPage(this.page) ? this[abilityProfileForPage(this.page).selectedKey] : this.selected}`,
+      ".an-inspector": `${this.page}:${this.dndCatalog?.isCatalogPage()?this.dndCatalog.entry()?.id:this.pf2ePage() === "spells" ? this.selectedSpell : abilityProfileForPage(this.pf2ePage()) ? this[abilityProfileForPage(this.pf2ePage()).selectedKey] : this.selected}`,
       ".an-library": `${this.page}:${this.search}:${this.category}`,
       ".an-asset-list": `${this.page}:${JSON.stringify(this.mediaLibrary?.filters)}:${this.mediaLibrary?.page}`,
       ".an-media-detail-body": `${this.page}:${this.mediaLibrary?.selectedId}`,
       ".an-builder": this.page,
       ".an-spell-library": this.dndCatalog?.isCatalogPage()?`${this.page}:${JSON.stringify(this.dndCatalog.filters)}:${this.dndCatalog.pages[this.dndCatalog.kind]}`:`${this.page}:${JSON.stringify(this.spellFilters)}:${this.spellPage}`,
-      ".an-feat-library": `${this.page}:${JSON.stringify(this[abilityProfileForPage(this.page)?.filtersKey])}:${this[abilityProfileForPage(this.page)?.pageKey]}`,
+      ".an-feat-library": `${this.page}:${JSON.stringify(this[abilityProfileForPage(this.pf2ePage())?.filtersKey])}:${this[abilityProfileForPage(this.pf2ePage())?.pageKey]}`,
     };
     const scroll = Object.fromEntries(
       Object.entries(scrollKeys).map(([selector, key]) => [
@@ -588,7 +590,7 @@ export class Workspace {
         ${this.reviewBannerHTML()}
         ${env.demo ? `<div class="an-demo">DESIGN PREVIEW <span>Real installed JB2A videos. Canvas playback and game triggers require Foundry.</span></div>` : ""}
         ${this.envBannerHTML(env)}
-        ${this.page === "flash" && this.host.flashScreens ? (this.flashEditor ??= new FlashEditor(this)).html() : this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.page === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.page) ? featCatalogHTML(this, abilityProfileForPage(this.page)) : this.page === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "finishers" ? finishersPageHTML(this, recipe) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
+        ${this.page === "flash" && this.host.flashScreens ? (this.flashEditor ??= new FlashEditor(this)).html() : this.dndCatalog?.isCatalogPage()?this.dndCatalog.html():this.page === "builder" ? this.builderHTML() : this.pf2ePage() === "spells" ? spellCatalogHTML(this) : abilityProfileForPage(this.pf2ePage()) ? featCatalogHTML(this, abilityProfileForPage(this.pf2ePage())) : this.pf2ePage() === "weapons" ? weaponCatalogHTML(this) : ["conditions", "effects"].includes(this.page) ? stateCatalogHTML(this) : this.page === "finishers" ? finishersPageHTML(this, recipe) : this.page === "recipes" ? this.recipesHTML(recipe) : this.page === "assets" ? this.assetsHTML(recipe) : this.page === "activity" ? this.activityHTML() : this.setupHTML(env)}
       </main>${this.pendingImport !== null ? this.importHTML() : ""}${this.newChooser ? this.newChooserHTML() : ""}</div>`,
     );
     this.root.querySelectorAll("details[data-options-group]").forEach((e) => {
@@ -2099,7 +2101,7 @@ export class Workspace {
     }
     if (["auto", "exclude", "motion"].includes(verb)) {
       const env = this.host.environment();
-      if (env.demo || env.systemId !== "pf2e" || !env.ready)
+      if (env.demo || !pf2eCatalogsLive(env) || !env.ready)
         throw Error(`Configure ${noun} animations inside a PF2e world with Sequencer and JB2A active.`);
       const state = catalog.normalizeState(this.host[profile.stateKey]());
       if (verb === "auto") {
@@ -2115,7 +2117,7 @@ export class Workspace {
     }
     if (verb === "use") {
       const env = this.host.environment();
-      if (env.demo || env.systemId !== "pf2e" || !env.ready)
+      if (env.demo || !pf2eCatalogsLive(env) || !env.ready)
         throw Error(`Use ${noun} animations inside a PF2e world with Sequencer and JB2A active.`);
       const feat = catalog.entry(selected);
       if (!feat || feat.trigger === "manual") throw Error(`This ${noun} uses manual playback.`);
@@ -2203,7 +2205,7 @@ export class Workspace {
       if (action === "weapon-reset") { for (const key of Object.keys(this.weaponFilters)) this.weaponFilters[key] = key === "search" ? "" : "all"; this.weaponPage = 0; this.render(); return; }
       if (["weapon-auto", "weapon-pause", "weapon-exclude", "weapon-motion", "weapon-sound", "use-weapon"].includes(action)) {
         const env = this.host.environment(), state = normalizeWeaponCatalogState(this.host.weaponCatalogState?.());
-        if (!["weapon-sound", "weapon-motion"].includes(action) && (env.demo || env.systemId !== "pf2e" || !env.ready)) throw Error("Configure automatic weapon animations inside a PF2e world.");
+        if (!["weapon-sound", "weapon-motion"].includes(action) && (env.demo || !pf2eCatalogsLive(env) || !env.ready)) throw Error("Configure automatic weapon animations inside a PF2e world.");
         const change = action === "weapon-auto" ? { enabled: !(state.enabled && state.scope === "all" && (state.independent || this.host.enabled())), independent: true, scope: "all", preferCatalog: true }
           : action === "weapon-pause" ? { enabled: false }
           : action === "weapon-motion" ? { motion: !state.motion }
@@ -2298,7 +2300,7 @@ export class Workspace {
       }
       if (action === "use-spell") {
         const env = this.host.environment();
-        if (env.demo || env.systemId !== "pf2e" || !env.ready)
+        if (env.demo || !pf2eCatalogsLive(env) || !env.ready)
           throw Error(
             "Use catalog animations inside a PF2e world with Sequencer and JB2A active.",
           );

@@ -1,3 +1,4 @@
+import { pf2eCatalogsLive } from "./catalog-system.mjs";
 import { finisherLinkHTML } from "./finisher-ui.mjs";
 import {
   PF2E_FEATS,
@@ -74,7 +75,7 @@ export function featCatalogHTML(w, profile = ABILITY_PAGE_PROFILES.feats) {
   const allRunning = running && state.scope === "all";
   const selectedCount = [...new Set([...state.selected, ...state.customized])]
     .filter((id) => !state.excluded.includes(id)).length;
-  const canConfigure = !env.demo && env.systemId === "pf2e" && env.ready && !w.busy;
+  const canConfigure = !env.demo && pf2eCatalogsLive(env) && env.ready && !w.busy;
   const categories = [...new Set(catalog.entries.map((f) => f.category).filter(Boolean))].sort();
   const classes = [...new Set(catalog.entries.flatMap((f) => f.classTraits ?? []))].sort();
   return `<div class="an-work an-spell-work an-feat-work"><section class="an-library an-spell-library an-feat-library">
@@ -99,7 +100,7 @@ function featDetailHTML(w, feat, state, env, p) {
   const automatic = recipe.trigger !== "manual" && !roleNotice;
   const usingCatalog = automatic && (state.independent || w.host.enabled()) && catalog.enabled(feat.id, state) &&
     (!saved || state.selected.includes(feat.id) || (state.preferCatalog && !state.customized.includes(feat.id)));
-  const canUse = !env.demo && env.systemId === "pf2e" && env.ready;
+  const canUse = !env.demo && pf2eCatalogsLive(env) && env.ready;
   const duration = w.previewDuration(recipe);
   const status = roleNotice ? "Manual token selection needed" : !automatic ? "Manual animation" : usingCatalog ? "Using catalog animation"
     : saved && (w.host.enabled() || state.enabled && state.customized.includes(feat.id))

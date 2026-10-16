@@ -1,3 +1,4 @@
+import { pf2eCatalogsLive } from "./catalog-system.mjs";
 import { catalogNameHTML, cardToggleHTML, cardSlotClass } from "./catalog-details.mjs";
 import { finisherLinkHTML } from "./finisher-ui.mjs";
 import {
@@ -102,7 +103,7 @@ function spellDetailHTML(w, spell, state, env) {
     (!saved ||
       state.selected.includes(spell.id) ||
       (state.preferCatalog && !state.customized.includes(spell.id)));
-  const canUse = !env.demo && env.systemId === "pf2e" && env.ready;
+  const canUse = !env.demo && pf2eCatalogsLive(env) && env.ready;
   const status = !automatic
     ? "Manual animation"
     : usingCatalog

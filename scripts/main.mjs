@@ -68,7 +68,7 @@ import { dndSettingKey,sfSettingKey,dhSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState} from './sf2e-catalog.mjs';
 import {sfStateHost} from './sf2e-states.mjs';
-import { CROSSOVER_CATALOG, crossoverSystem, crossoverState, crossoverResolve, crossoverSettingText, twoeCatalogRecipe, twoeSettingKey, seedBorrowedState, TWOE_KINDS } from "./twoe-crossover.mjs";
+import { CROSSOVER_CATALOG, crossoverSystem, crossoverResolve, crossoverSettingText, twoeCatalogRecipe, twoeSettingKey, seedBorrowedState, TWOE_KINDS } from "./twoe-crossover.mjs";
 import { DH_KINDS, DAGGERHEART_SOURCE, dhEntries, dhEntry, dhRecipe, normalizeDhCatalogState, resolveDaggerheartAutomaticRecipe, findDhEntry } from "./daggerheart-catalog.mjs";
 import {QUALITY_CHOICES,qualityRank,allowsMotion,allowsTokenFx,stateBudget,usersForTier,usersForSound} from './quality.mjs';
 import {ConditionBody,bodyTreatment} from './condition-body.mjs';
@@ -601,14 +601,17 @@ const CATALOG_KINDS = { pf2e: ["spellCatalog", "featCatalog", "actionCatalog", "
 const crossoverOn = () => game.settings.get(ID, CROSSOVER_CATALOG) === true;
 // A PF2e world shows (and so manages) the SF2e catalogs it borrows.
 const borrowsSfPages = () => game.system.id === "pf2e" && crossoverOn();
+// The other 2e system whose catalogs this world shows and plays (crossover on), or null.
+const borrowedSystemId = () => (crossoverOn() ? crossoverSystem(game.system.id) : null);
 async function seedBorrowedCatalogs() {
-  if (!borrowsSfPages() || !game.user.isGM || !(game.users.activeGM?.isSelf ?? true)) return;
+  const other = borrowedSystemId();
+  if (!other || !game.user.isGM || !(game.users.activeGM?.isSelf ?? true)) return;
   for (const kind of TWOE_KINDS) {
-    const seeded = seedBorrowedState(game.settings.get(ID, twoeSettingKey("pf2e", kind)), game.settings.get(ID, sfSettingKey(kind)));
-    if (seeded) await game.settings.set(ID, sfSettingKey(kind), normalizeSfCatalogState(seeded));
+    const key = twoeSettingKey(other, kind), seeded = seedBorrowedState(game.settings.get(ID, twoeSettingKey(game.system.id, kind)), game.settings.get(ID, key));
+    if (seeded) await game.settings.set(ID, key, other === "sf2e" ? normalizeSfCatalogState(seeded) : seeded);
   }
 }
-const catalogKeys = () => [...(CATALOG_KINDS[game.system.id] ?? []), ...(borrowsSfPages() ? TWOE_KINDS.map(sfSettingKey) : [])].filter((key) => game.settings.settings.has(`${ID}.${key}`));
+const catalogKeys = () => [...(CATALOG_KINDS[game.system.id] ?? []), ...(borrowedSystemId() ? TWOE_KINDS.map((kind) => twoeSettingKey(borrowedSystemId(), kind)) : [])].filter((key) => game.settings.settings.has(`${ID}.${key}`));
 const catalogOn = (key) => { const s = game.settings.get(ID, key) ?? {}; return s.enabled === true && (s.scope ?? "all") === "all"; };
 function catalogsOn() { const keys = catalogKeys(); return { on: keys.filter(catalogOn).length, total: keys.length }; }
 async function useEveryCatalog() {
@@ -1141,10 +1144,8 @@ Hooks.once("init", () => {
 function systemRecipe(event, saved) {
   const sys = game.system.id, sounds = installedSoundCatalog(game.modules, globalThis.Sequencer?.Database);
   if (["pf2e", "sf2e"].includes(sys)) return crossoverResolve(event, { systemId: sys, on: crossoverOn(),
-    // A PF2e world manages its borrowed SF2e catalogs on their own pages; an SF2e world's borrowed
-    // PF2e catalogs follow its own catalog of the same kind.
-    resolve: (from, e) => twoeCatalogRecipe(from, e, saved, { customEnabled: enabled(), sounds,
-      stateFor: (kind) => from === sys || sys === "pf2e" ? game.settings.get(ID, twoeSettingKey(from, kind)) : crossoverState(game.settings.get(ID, twoeSettingKey(sys, kind))) }),
+    // Borrowed catalogs are managed on their own pages, so each reads its own settings.
+    resolve: (from, e) => twoeCatalogRecipe(from, e, saved, { customEnabled: enabled(), sounds, stateFor: (kind) => game.settings.get(ID, twoeSettingKey(from, kind)) }),
     knows: (e) => Boolean(catalogEntryFor(e.item) || saved.some((r) => matchRecipe([{ ...r, enabled: true }], e))) });
   return sys==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds}):sys==='daggerheart'?resolveDaggerheartAutomaticRecipe(event,kind=>game.settings.get(ID,dhSettingKey(kind)),saved,{customEnabled:enabled()}):matchRecipe(saved,event);
 }

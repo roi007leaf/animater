@@ -20,13 +20,11 @@ export function crossoverSettingText(systemId) {
   const other = LABELS[crossoverSystem(systemId)] ?? "other 2e";
   return {
     name: `Also use the ${other} catalogs`,
-    hint: systemId === "pf2e"
-      ? "Items none of this world's recipes or catalogs know, such as Starfinder Anachronism guns and tech, play their SF2e catalog animation. The SF2e spell, feat, action, feature and weapon catalogs appear in Animater under Borrowed from SF2e, where you can turn them on, exclude entries or customize them."
-      : `Items none of this world's recipes or catalogs know, such as Pathfinder spells, feats and weapons, play their ${other} catalog animation. Each follows this world's catalog of the same kind: on when that catalog is on for every entry, with its token motion, sound and volume.`,
+    hint: `Items none of this world's recipes or catalogs know, such as ${systemId === "pf2e" ? "Starfinder Anachronism guns and tech" : "Pathfinder spells, feats and weapons"}, play their ${other} catalog animation. The ${other} spell, feat, action, feature and weapon catalogs appear in Animater under Borrowed from ${other}, where you can turn them on, exclude entries or customize them.`,
   };
 }
-// Turning crossover on in a PF2e world: an SF2e catalog nobody has set up yet starts like this
-// world's catalog of the same kind (on for every entry, same motion and sound), or null to leave it.
+// Turning crossover on: a borrowed catalog nobody has set up yet starts like this world's catalog
+// of the same kind (on for every entry, same motion and sound), or null to leave it.
 export function seedBorrowedState(own, borrowed) {
   borrowed ??= {};
   const untouched = borrowed.enabled !== true && ![borrowed.selected, borrowed.excluded, borrowed.customized].some((ids) => ids?.length);
@@ -34,8 +32,8 @@ export function seedBorrowedState(own, borrowed) {
   if (!untouched || !start.enabled) return null;
   return { ...borrowed, enabled: true, independent: true, scope: "all", preferCatalog: own?.preferCatalog === true, motion: start.motion, sound: start.sound, soundVolume: start.soundVolume };
 }
-// A borrowed catalog follows this world's catalog of the same kind. Its picks and exclusions
-// name this system's entries, so the borrowed one is on for all of its entries or none.
+// This world's catalog as a starting point for a borrowed one. Its picks and exclusions name this
+// system's entries, so the borrowed one starts on for all of its entries or none.
 export function crossoverState(own) {
   own ??= {};
   return { enabled: own.enabled === true && own.scope !== "selected", independent: true, scope: "all", selected: [], excluded: [], customized: [],

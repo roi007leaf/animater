@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { crossoverSystem, crossoverState, crossoverResolve, twoeCatalogRecipe, twoeSettingKey, seedBorrowedState } from "../scripts/twoe-crossover.mjs";
-import { borrowedNavigation, catalogPageAllowed, catalogPageTitle, catalogNavigation } from "../scripts/catalog-system.mjs";
+import { borrowedNavigation, catalogPageAllowed, catalogPageTitle, catalogNavigation, pf2eCatalogPage, pf2eCatalogsLive } from "../scripts/catalog-system.mjs";
 
 const on = { enabled: true, scope: "all", motion: false, sound: true, soundVolume: 0.6 };
 const stateFor = (state) => () => crossoverState(state);
@@ -54,7 +54,7 @@ test("crossover runs only when on and only for items this world does not know", 
 test("a PF2e world with crossover on lists the borrowed SF2e catalogs on their own pages", () => {
   const off = { systemId: "pf2e" }, on = { systemId: "pf2e", crossover: true };
   assert.deepEqual(borrowedNavigation(off), []);
-  assert.deepEqual(borrowedNavigation({ systemId: "sf2e", crossover: true }), []);
+  assert.deepEqual(borrowedNavigation({ systemId: "dnd5e", crossover: true }), []);
   assert.deepEqual(borrowedNavigation(on).map(([page]) => page), ["sf2e-spells", "sf2e-feats", "sf2e-actions", "sf2e-features", "sf2e-weapons"]);
   assert.equal(catalogPageAllowed("sf2e-weapons", off), false);
   assert.equal(catalogPageAllowed("sf2e-weapons", on), true);
@@ -89,4 +89,21 @@ test("a PF2e world configures its borrowed SF2e weapons from the sf2e-weapons pa
   // PF2e's own pages are not this catalog's.
   w.page = "weapons";
   assert.equal(ui.isCatalogPage(), false);
+});
+
+test("an SF2e world with crossover on shows the PF2e catalogs on pf2e-* pages", () => {
+  const off = { systemId: "sf2e" }, on = { systemId: "sf2e", crossover: true };
+  assert.deepEqual(borrowedNavigation(on).map(([page, , label]) => [page, label]), [["pf2e-spells", "PF2e spells"], ["pf2e-feats", "PF2e feats"], ["pf2e-actions", "PF2e actions"], ["pf2e-features", "PF2e features"], ["pf2e-weapons", "PF2e weapons"]]);
+  assert.equal(catalogPageAllowed("pf2e-spells", off), false);
+  assert.equal(catalogPageAllowed("pf2e-spells", on), true);
+  assert.equal(catalogPageAllowed("pf2e-spells", { systemId: "pf2e", crossover: true }), false);
+  assert.equal(catalogPageTitle("pf2e-feats", on), "PF2e active feat catalog");
+  // Which PF2e page renders: the borrowed one here, SF2e's own pages never.
+  assert.equal(pf2eCatalogPage("pf2e-weapons", on), "weapons");
+  assert.equal(pf2eCatalogPage("pf2e-weapons", off), null);
+  assert.equal(pf2eCatalogPage("weapons", on), null);
+  assert.equal(pf2eCatalogPage("weapons", { systemId: "pf2e" }), "weapons");
+  assert.equal(pf2eCatalogsLive(on), true);
+  assert.equal(pf2eCatalogsLive(off), false);
+  assert.equal(pf2eCatalogsLive({ systemId: "pf2e" }), true);
 });
