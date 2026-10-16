@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.5 (2026-10-16)
+
+- **Folder sources work while the library is indexing** ([#3](https://github.com/roi007leaf/animater/issues/3)). Add folder and Remove were greyed out until the whole library finished scanning, which could take a while, and removing a folder started a full rescan that greyed them out again. They now always work: a folder added or removed mid-scan is indexed once that scan ends. The source name you type is no longer wiped while indexing, and the panel stays open.
+- **Folder sources with spaces or accents in their path are indexed, subfolders included** (#3). Foundry reports file paths URL-encoded (`My%20Sounds/...`), so they never matched the folder you picked and nothing was found.
+- **Sounds are no longer re-indexed every time you open the world** (#3). The media index is saved in your browser and reused until your modules, Sequencer's database or your folder sources change. Refresh still rescans.
+- **Local preview always gives the window back** (#3). The window is tucked away during a preview; if the preview never finished it stayed minimized. It now comes back when the preview ends, when you press Stop, or after 30 seconds at most.
+- **The window fits smaller screens** (#3). Its minimum width no longer pushes it under Foundry's sidebar, the studio inspector is never wider than the window leaves room for (a width saved in a bigger window is kept for later), and the folder sources panel fits the window.
+
 ## 1.1.4 (2026-10-16)
 
 - **SF2e lasting animations: "Play once, then fade" saves again.** Switching an SF2e condition or effect to play once and fade did nothing, because the setting was dropped when the catalog saved. ([#4](https://github.com/roi007leaf/animater/issues/4))
