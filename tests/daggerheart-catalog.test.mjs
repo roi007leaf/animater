@@ -17,7 +17,7 @@ test("every Daggerheart entry has a valid recipe per variant, tied to its native
   assert.deepEqual([...DH_KINDS], ["card", "weapon", "condition"]);
   assert.equal(dhSettingKey("card"), "daggerheartCardCatalog");
   assert.equal(dhEntries("card").length, DAGGERHEART_SOURCE.counts.card);
-  assert.equal(dhEntries("weapon").length, DAGGERHEART_SOURCE.counts.weapon + 2 + 7 + 4, "plus the melee and ranged, feature and ability fallbacks");
+  assert.equal(dhEntries("weapon").length, DAGGERHEART_SOURCE.counts.weapon + 5 + 7 + 4, "plus the melee, claw, bite, unarmed and ranged, feature and ability fallbacks");
   assert.equal(dhEntries("condition").length, 7);
   const ids = new Set();
   for (const entry of dhEntries()) {
@@ -91,9 +91,9 @@ test("weapon families pick the strike, range picks melee or projectile", () => {
   assert.equal(style("Javelins", "close").strike[0], "jb2a.javelin.01.throw");
   assert.equal(style("Round Shield", "melee").family, "shield");
   assert.equal(style("Whip", "veryClose").family, null);
-  assert.deepEqual(style("Whip", "veryClose").strike, ["jb2a.melee_generic.slash.01.orange"]);
+  assert.deepEqual(style("Whip", "veryClose").strike, ["jb2a.melee_generic.slashing.one_handed", "jb2a.unarmed_strike.physical.01.blue"]);
   assert.equal(style("Mystery Thing", "far").strike[0], "jb2a.arrow.physical.white.01", "unknown and ranged: an arrow");
-  assert.deepEqual(weaponStages({ name: "Longsword", range: "melee", damageTypes: ["physical"] }).map((s) => s.kind), ["impact", "impact"]);
+  assert.deepEqual(weaponStages({ name: "Longsword", range: "melee", damageTypes: ["physical"] }).map((s) => s.kind), ["travel", "impact"], "the swing reaches from wielder to target");
   assert.deepEqual(weaponStages({ name: "Runelock Pistol", range: "far", damageTypes: ["magical"] }).map((s) => s.kind), ["cast", "travel", "impact"]);
   assert.deepEqual(weaponStages({ name: "Shortbow", range: "far", damageTypes: ["physical"] }).map((s) => s.kind), ["travel", "impact"]);
   assert.deepEqual(Object.keys(WEAPON_STYLES).sort(), ["blade", "bow", "firearm", "generic", "hammer", "magic", "shield", "spear"]);
@@ -119,7 +119,7 @@ test("events match entries by name, then compendium source; homebrew and adversa
   assert.equal(findDhEntry({ type: "attack", item: { type: "weapon", name: "Grandpa's Blade", _stats: { compendiumSource: sword.uuid } } }), sword);
   assert.equal(findDhEntry({ type: "attack", item: { type: "weapon", name: "Homebrew Lance" }, weaponMode: "melee" }).id, "daggerheart-weapon-generic-melee");
   assert.equal(findDhEntry({ type: "attack", item: null, itemName: "Longbow", rollType: "attack", weaponMode: "ranged" }), named("weapon", "Longbow"));
-  assert.equal(findDhEntry({ type: "attack", item: null, itemName: "Claws", rollType: "attack", weaponMode: "melee" }).id, "daggerheart-weapon-generic-melee");
+  assert.equal(findDhEntry({ type: "attack", item: null, itemName: "Claws", rollType: "attack", weaponMode: "melee" }).id, "daggerheart-weapon-generic-claws", "an adversary's claws rake");
   assert.equal(findDhEntry({ type: "attack", item: null, itemName: "Spit", rollType: "attack", weaponMode: "ranged" }).id, "daggerheart-weapon-generic-ranged");
   const blink = named("card", "Blink Out");
   assert.equal(findDhEntry({ type: "attack", item: { type: "domainCard", name: "Blink Out" } }), blink);

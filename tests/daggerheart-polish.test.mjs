@@ -26,7 +26,9 @@ test("weapons sound like their family; magic shots and cards like their element 
   assert.equal(design("Longbow").profile, "longbow");
   assert.equal(weaponSoundDesign({ family: "firearm", melee: false }, "Runelock Pistol").profile, "pistol");
   assert.equal(weaponSoundDesign({ family: "magic", melee: false }, "Wand").profile, "force");
-  assert.equal(named("weapon", "Any melee attack").variants[0].sound.profile, "claw", "adversary bites and claws");
+  assert.equal(named("weapon", "Any claw attack").variants[0].sound.profile, "claw", "adversary claws");
+  assert.equal(named("weapon", "Any bite attack").variants[0].sound.profile, "naturalPierce");
+  assert.equal(named("weapon", "Any melee attack").variants[0].sound.profile, "sword");
   assert.equal(cardSoundDesign({ name: "Cinder Grasp", domain: "arcana" }, "bolt").profile, "fire");
   assert.equal(cardSoundDesign({ name: "Untouchable", domain: "midnight" }, "aura").profile, "shadow");
   assert.equal(cardSoundDesign({ name: "Not Good Enough", domain: "blade" }, "aura").profile, "slash");
@@ -58,11 +60,11 @@ test("weapon strikes move the token: melee lunges, bows draw, guns kick, struck 
   assert.deepEqual(motions("Longbow"), ["source:brace", "targets:shake"]);
   assert.deepEqual(motions("Any melee attack"), ["source:lunge", "targets:shake"]);
   const sword = dhRecipe(named("weapon", "Longsword"), named("weapon", "Longsword").variants[0].id);
-  const lunge = sword.stages.find((s) => s.motion === "lunge"), contact = sword.stages.find((s) => s.stageId === "strike-contact");
+  const lunge = sword.stages.find((s) => s.motion === "lunge"), contact = sword.stages.find((s) => s.stageId === "swing");
   assert.ok(contact.delay > lunge.delay && contact.delay < lunge.delay + lunge.duration, "the blade lands during the lunge");
   assert.ok(!dhRecipe(named("weapon", "Longsword"), named("weapon", "Longsword").variants[0].id, { motion: false }).stages.some((s) => s.kind === "motion"), "Token motion off");
   // The visual stages stay as authored.
-  assert.deepEqual(weaponStages({ name: "Longsword", range: "melee", damageTypes: ["physical"] }).map((s) => s.stageId), ["strike-contact", "hit-accent"]);
+  assert.deepEqual(weaponStages({ name: "Longsword", range: "melee", damageTypes: ["physical"] }).map((s) => s.stageId), ["swing", "hit-contact"]);
   for (const id of ["daggerheart-weapon-feature-physical-burst", "daggerheart-weapon-utility-heal-use"])
     assert.ok(dhRecipe(dhEntry(id.replace(/-(burst|use)$/, "")), id).stages.some((s) => s.kind === "motion"), id);
 });
@@ -72,4 +74,36 @@ test("richer conditions: Vulnerable wobbles, Hidden has a second veil, Death mov
   assert.ok(named("condition", "Hidden").variants[0].recipe.stages.length >= 2);
   const death = named("condition", "Death move");
   assert.ok(kinds(dhRecipe(death, death.variants[0].id, { sounds })).includes("sound"));
+});
+
+test("fit: swings stretch from wielder to target, natural attacks land on it, bursts stay under the token", async () => {
+  const { findDhEntry } = await import("../scripts/daggerheart-catalog.mjs");
+  const swing = (name) => weaponStages({ name, range: "melee", damageTypes: ["physical"] })[0];
+  assert.equal(swing("Longsword").kind, "travel", "a blade reaches from the wielder to the target");
+  assert.equal(swing("Battleaxe").kind, "travel");
+  const melee = (itemName) => findDhEntry({ type: "attack", rollType: "attack", item: null, itemName, weaponMode: "melee" })?.name;
+  assert.equal(melee("Bite and Claws"), "Any claw attack");
+  assert.equal(melee("Bite"), "Any bite attack");
+  assert.equal(melee("Tail Swipe"), "Any unarmed attack");
+  assert.equal(melee("Strike"), "Any melee attack");
+  assert.equal(findDhEntry({ type: "attack", rollType: "attack", item: null, itemName: "Hurled Stones", weaponMode: "ranged" })?.name, "Any ranged attack");
+  for (const [name, kind] of [["Any claw attack", "impact"], ["Any bite attack", "impact"], ["Any unarmed attack", "travel"]])
+    assert.equal(dhRecipe(named("weapon", name), named("weapon", name).variants[0].id).stages.find((s) => s.stageId === "swing").kind, kind, name);
+  // Physical blows: a crisp star for blades and arrows, a warm burst for blunt weapons; never the fiery flash.
+  const hit = (name, range = "melee") => weaponStages({ name, range, damageTypes: ["physical"] }).find((s) => s.stageId.startsWith("hit")).assets[0];
+  assert.equal(hit("Longsword"), "jb2a.impact.007.white");
+  assert.equal(hit("Longbow", "far"), "jb2a.impact.007.white");
+  assert.equal(hit("Warhammer"), "jb2a.impact.010.orange");
+  assert.ok(weaponStages({ name: "Runelock Pistol", range: "far", damageTypes: ["physical"] }).find((s) => s.stageId === "flash")?.faceTarget, "the muzzle flash faces the target");
+  const burst = dhRecipe(dhEntry("daggerheart-weapon-feature-fire"), "daggerheart-weapon-feature-fire-burst").stages.find((s) => s.stageId === "burst");
+  assert.equal(burst.below, true);
+  assert.equal(burst.assets[0], "jb2a.fire_ring.500px.red");
+});
+
+test("card designs: melee and unarmed clips aimed at targets stretch from the caster; no on-token layer is a speck", () => {
+  const card = (name) => { const e = named("card", name); return dhRecipe(e, e.variants[0].id); };
+  const choke = card("Chokehold").stages.find((s) => s.assets?.[0]?.startsWith("jb2a.unarmed_strike."));
+  assert.equal(choke.kind, "travel");
+  for (const entry of dhEntries("card")) for (const v of entry.variants)
+    for (const s of dhRecipe(entry, v.id).stages) if (["cast", "impact", "aura"].includes(s.kind)) assert.ok(s.scale >= 1, `${entry.name} ${s.stageId} ${s.scale}`);
 });

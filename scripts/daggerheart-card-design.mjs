@@ -97,11 +97,15 @@ export function validateCardDesign(record, { nested = false, quoted = !nested } 
 const round = (n) => Math.round(n * 100) / 100;
 // Default timing (ms from the start) and look per role; `at`, `duration`, `scale` and the rest override.
 const ROLE = {
-  cast: { duration: 1000, scale: 0.8, opacity: 0.95 },
-  travel: { duration: 1000, scale: 0.85 },
-  impact: { duration: 1200, scale: 0.95 },
-  aura: { duration: 2000, scale: 0.95, opacity: 0.85 },
+  cast: { duration: 1000, scale: 1, opacity: 0.95 },
+  travel: { duration: 1000, scale: 1 },
+  impact: { duration: 1200, scale: 1.2 },
+  aura: { duration: 2000, scale: 1.2, opacity: 0.95 },
 };
+// JB2A melee and unarmed clips carry a stretch template: aimed at targets they reach from the caster.
+const STRETCH = /^(?:jb2a.)?(?:[a-z_]+.melee.|melee_generic.|unarmed_strike.|greatclub.standard)/;
+// On a token, a layer below this reads as a speck (markers and icons fill little of their frame).
+const MIN_SCALE = { cast: 1, impact: 1, aura: 1 };
 // Stages for one record: cast, travel, impact, aura, extra layers, afterimages, then motion, timed in that order
 // unless a layer gives `at`. `palette` supplies the cast when the record leaves it out; `level` scales.
 export function designStages(record, { palette, level = 1, levelScale = () => 1 } = {}) {
@@ -117,7 +121,7 @@ export function designStages(record, { palette, level = 1, levelScale = () => 1 
     const on = role === "cast" ? "self" : role === "travel" ? "targets" : l.on ?? (SELF.has(record.shape) ? "self" : "targets");
     const d = ROLE[role];
     const colour = l.tint === false ? {} : l.tint ?? record.tint ? tint(l.tint ?? record.tint) : {};
-    const options = { delay: l.at ?? times[role], duration: l.duration ?? d.duration, scale: round((l.scale ?? d.scale) * grow),
+    const options = { delay: l.at ?? times[role], duration: l.duration ?? d.duration, scale: round(Math.max(MIN_SCALE[role] ?? 0, (l.scale ?? d.scale) * grow)),
       ...(l.opacity ?? d.opacity ? { opacity: l.opacity ?? d.opacity } : {}), ...colour,
       ...Object.fromEntries(["below", "above", "repeats", "repeatInterval", "travelOrigin", "targetSelection", "targetStagger", "offsetY", "offsetUnits", "fadeIn", "fadeOut", "playbackRate"]
         .filter((k) => l[k] !== undefined).map((k) => [k, l[k]])),
@@ -125,6 +129,7 @@ export function designStages(record, { palette, level = 1, levelScale = () => 1 
     const name = l.label ?? label;
     if (role === "aura") return aura(name, l.assets, { ...options, subject: on === "targets" ? "targets" : "source" });
     if (role === "travel") return travel(name, l.assets, options);
+    if (on !== "self" && STRETCH.test(asList(l.assets)[0] ?? "")) return travel(name, l.assets, options);
     return on === "self" ? cast(name, l.assets, options) : impact(name, l.assets, options);
   };
   const stages = [];

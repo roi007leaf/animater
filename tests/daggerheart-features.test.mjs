@@ -28,9 +28,9 @@ test("the Ice Dragon's standard attack: no Item on the real message, melee fallb
   assert.equal(e.rollType, "attack");
   assert.equal(e.weaponMode, "melee", "Close, but bite and claws strike in melee");
   assert.equal(daggerheartAttackKind(msg), "melee");
-  assert.equal(findDhEntry(e).id, "daggerheart-weapon-generic-melee");
+  assert.equal(findDhEntry(e).id, "daggerheart-weapon-generic-claws", "Bite and Claws rakes the target");
   const r = resolveDaggerheartAutomaticRecipe(e, weaponsOn, []);
-  assert.equal(r.catalogEntry, "daggerheart-weapon-generic-melee");
+  assert.equal(r.catalogEntry, "daggerheart-weapon-generic-claws");
   assert.equal(r.trigger, "attack");
 });
 
@@ -72,7 +72,7 @@ test("feature actions that are not strikes get no strike shape: a spotlight, a F
 });
 
 test("a feature's attack roll is its roll message's event and gets the weapon fallback by its range", () => {
-  const expect = { "Tail Swipe": "melee", "Dive-Bomb": "ranged", "Leaping Strike": "ranged" };
+  const expect = { "Tail Swipe": "unarmed", "Dive-Bomb": "ranged", "Leaping Strike": "ranged" };
   for (const [name, mode] of Object.entries(expect)) {
     const feature = rolledFeatures[name], e = rolled(feature);
     assert.equal(e.type, "attack", name);

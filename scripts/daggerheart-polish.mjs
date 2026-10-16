@@ -17,7 +17,8 @@ const MELEE_SOUNDS = {
   hammer: [[/mace|club|baton|shillelagh/i, "club"], [/knuckle|gauntlet|fist/i, "unarmed"], [/flail/i, "flail"], [/whip|lash/i, "whip"], [/./, "hammer"]],
   spear: [[/halberd|glaive|polearm|corbin|pike|scythe/i, "polearmBlade"], [/./, "spear"]],
   shield: [[/./, "shieldStrike"]],
-  generic: [[/./, "claw"]],
+  generic: [[/claw|talon|rake|scratch/i, "claw"], [/bite|fang|jaw|maw|teeth|mandible|gnaw/i, "naturalPierce"],
+    [/fist|punch|slam|tail|horn|ram\b|tentacle|unarmed|kick|headbutt|hoof|stomp|tusk|gore/i, "unarmed"], [/./, "sword"]],
 };
 const RANGED_SOUNDS = {
   blade: [[/axe|hatchet/i, "thrownAxe"], [/./, "thrownDagger"]],

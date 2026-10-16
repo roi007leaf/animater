@@ -78,14 +78,14 @@ export function cardDesigns(card) {
 export const levelScale = (level) => round(1 + (Math.min(10, Math.max(1, Number(level) || 1)) - 1) * 0.04);
 export function cardStages(design, palette, level) {
   const s = levelScale(level), extra = (Number(level) || 1) >= 5;
-  const cast = { stageId: "cast", kind: "cast", assets: [...palette.cast], duration: 1000, scale: round(0.8 * s), opacity: 0.95 };
+  const cast = { stageId: "cast", kind: "cast", assets: [...palette.cast], duration: 1000, scale: round(1 * s), opacity: 0.95 };
   switch (design) {
     case "bolt": return [cast,
-      { stageId: "bolt", kind: "travel", assets: [...palette.projectile], delay: 400, duration: 1000, scale: round(0.85 * s) },
-      { stageId: "hit", kind: "impact", assets: [...palette.impact], delay: 1100, duration: 1200, scale: round(0.95 * s) },
+      { stageId: "bolt", kind: "travel", assets: [...palette.projectile], delay: 400, duration: 1000, scale: round(1 * s) },
+      { stageId: "hit", kind: "impact", assets: [...palette.impact], delay: 1100, duration: 1200, scale: round(1.2 * s) },
       ...(extra ? [{ stageId: "flare", kind: "impact", assets: [...palette.aura], delay: 1250, duration: 1400, scale: round(0.8 * s), opacity: 0.7 }] : [])];
     case "mend": return [cast,
-      { stageId: "mend", kind: "impact", assets: [...palette.aura], delay: 500, duration: 1500, scale: round(0.9 * s) },
+      { stageId: "mend", kind: "impact", assets: [...palette.aura], delay: 500, duration: 1500, scale: round(1.2 * s) },
       ...(extra ? [{ stageId: "glow", kind: "impact", assets: [...palette.impact], delay: 800, duration: 1200, scale: round(0.7 * s), opacity: 0.8 }] : [])];
     case "circle": return [
       { stageId: "circle", kind: "cast", assets: [...palette.circle], duration: 2200, scale: round(1.1 * s), below: true, opacity: 0.85 },
@@ -93,14 +93,22 @@ export function cardStages(design, palette, level) {
       { stageId: "hit", kind: "impact", assets: [...palette.impact], delay: 1200, duration: 1200, scale: round(0.9 * s), optionalTargets: true },
       ...(extra ? [{ stageId: "runes", kind: "aura", assets: [...palette.aura], delay: 200, duration: 2000, scale: round(0.9 * s), opacity: 0.6 }] : [])];
     default: return [cast,
-      { stageId: "aura", kind: "aura", assets: [...palette.aura], delay: 300, duration: 2000, scale: round(0.95 * s), opacity: 0.85 },
+      { stageId: "aura", kind: "aura", assets: [...palette.aura], delay: 300, duration: 2000, scale: round(1.2 * s), opacity: 0.95 },
       ...(extra ? [{ stageId: "circle", kind: "cast", assets: [...palette.circle], duration: 2000, scale: round(1.05 * s), below: true, opacity: 0.7 }] : [])];
   }
 }
 
 // Weapons: the family (daggerheart.mjs weaponFamily) picks the strike style, the name the swing inside
 // it, the range melee or projectile (Melee and Very Close strike in melee).
-const PHYSICAL_HIT = ["jb2a.impact.001.orange", "jb2a.impact.003.blue"];
+// A crisp white star for edged and piercing blows, a warm burst for blunt ones; magic keeps its glow.
+const PHYSICAL_HIT = ["jb2a.impact.007.white", "jb2a.impact.003.blue"];
+const BLUNT_HIT = ["jb2a.impact.010.orange", "jb2a.impact.003.blue"];
+// Natural attacks land on the target (claw rakes, a bite); weapon swings stretch from wielder to target.
+const CLAWS = ["jb2a.claws.400px.red", "jb2a.claws.200px.red"], BITE = ["jb2a.bite.400px.red", "jb2a.bite.200px.red"];
+const UNARMED = ["jb2a.unarmed_strike.physical.01.blue"], GENERIC_SLASH = ["jb2a.melee_generic.slashing.one_handed", "jb2a.unarmed_strike.physical.01.blue"];
+const ON_TARGET = new Set([CLAWS[0], BITE[0]]);
+export const NATURAL_ATTACK = Object.freeze({ claws: /claw|talon|rake|scratch/i, bite: /bite|fang|jaw|maw|teeth|mandible|gnaw/i,
+  unarmed: /fist|punch|slam|tail|horn|ram\b|tentacle|unarmed|kick|headbutt|hoof|stomp|tusk|gore/i });
 const MAGICAL_HIT = ["jb2a.impact.004.dark_purple", "jb2a.impact.005.purple", "jb2a.particle_burst.01.rune.bluepurple"];
 const ARROW = ["jb2a.arrow.physical.white.01", "jb2a.arrow.physical.blue"];
 const BOLT = ["jb2a.bolt.physical.white", "jb2a.bolt.physical.orange"];
@@ -123,25 +131,28 @@ export const WEAPON_STYLES = Object.freeze({
     melee: [[/halberd|polearm|corbin|pike/i, ["jb2a.halberd.melee.01.white", "jb2a.spear.melee.01.white"]], [/glaive/i, ["jb2a.glaive.melee.01.white"]], [/./, ["jb2a.spear.melee.01.white"]]],
     ranged: [[/./, ["jb2a.javelin.01.throw", "jb2a.spear.throw.01", "jb2a.arrow.physical.white.01"]]] },
   shield: { label: "Shield", melee: [[/./, ["jb2a.melee_generic.bludgeoning.one_handed", "jb2a.unarmed_strike.physical.01.blue"]]], ranged: [[/./, ["jb2a.bullet.01.orange"]]] },
-  generic: { label: "Other", melee: [[/./, SLASH]], ranged: [[/./, ARROW]] },
+  generic: { label: "Other", melee: [[NATURAL_ATTACK.claws, CLAWS], [NATURAL_ATTACK.bite, BITE], [NATURAL_ATTACK.unarmed, UNARMED], [/./, GENERIC_SLASH]], ranged: [[/./, ARROW]] },
 });
 const pick = (rules, name) => rules.find(([pattern]) => pattern.test(String(name ?? "")))?.[1] ?? null;
-export function weaponStyle({ name, range, damageTypes } = {}) {
-  const family = weaponFamily(name, damageTypes), magical = dhDamageKind(damageTypes) === "magical";
+export function weaponStyle({ name, range, damageTypes, generic = false } = {}) {
+  // A fallback ("Any claw attack") is not a compendium weapon: its name picks the strike, not a family.
+  const family = generic ? null : weaponFamily(name, damageTypes), magical = dhDamageKind(damageTypes) === "magical";
   const style = WEAPON_STYLES[family] ?? WEAPON_STYLES.generic, melee = MELEE_RANGES.has(range);
   const strike = pick(melee ? style.melee : style.ranged, name) ?? (magical ? MISSILE.magical : MISSILE.physical);
-  return { family, label: style.label, melee, magical, strike: [...strike], hit: [...(magical ? MAGICAL_HIT : PHYSICAL_HIT)],
+  const blunt = ["hammer", "shield"].includes(family) || [UNARMED[0]].includes(strike[0]);
+  return { family, label: style.label, melee, magical, strike: [...strike], hit: [...(magical ? MAGICAL_HIT : blunt ? BLUNT_HIT : PHYSICAL_HIT)], onTarget: ON_TARGET.has(strike[0]),
     muzzle: !melee && style.muzzle ? [...style.muzzle] : null,
     cast: !melee && family === "magic" ? (magical ? ["jb2a.cast_generic.01.dark_purple", "jb2a.cast_generic.02.blue"] : ["jb2a.cast_generic.01.yellow"]) : null };
 }
 export function weaponStages(weapon) {
   const s = weaponStyle(weapon);
   if (s.melee) return [
-    { stageId: "strike-contact", kind: "impact", assets: s.strike, duration: 1400, scale: 1.3 },
-    { stageId: "hit-accent", kind: "impact", assets: s.hit, delay: 550, duration: 900, scale: 0.85 }];
+    // JB2A melee clips carry a stretch template (wielder to target); claws and bites are drawn small in a large frame.
+    { stageId: "swing", kind: s.onTarget ? "impact" : "travel", assets: s.strike, duration: 1400, scale: s.strike[0] === BITE[0] ? 2.4 : s.onTarget ? 1.1 : 1 },
+    { stageId: "hit-contact", kind: "impact", assets: s.hit, delay: 550, duration: 900, scale: 0.9 }];
   const lead = s.muzzle ?? s.cast;
   return [
-    ...(lead ? [{ stageId: s.muzzle ? "flash" : "cast", kind: "cast", assets: lead, duration: s.muzzle ? 500 : 700, scale: 0.6 }] : []),
+    ...(lead ? [{ stageId: s.muzzle ? "flash" : "cast", kind: "cast", assets: lead, duration: s.muzzle ? 500 : 700, scale: 0.6, ...(s.muzzle ? { faceTarget: true } : {}) }] : []),
     { stageId: "shot", kind: "travel", assets: s.strike, delay: lead ? 150 : 0, duration: 900, scale: 0.8 },
     { stageId: "hit-accent", kind: "impact", assets: s.hit, delay: lead ? 1000 : 850, duration: 900, scale: 0.9 }];
 }
@@ -154,7 +165,7 @@ export const AREA_LOOKS = Object.freeze({
     breath: ["jb2a.breath_weapons02.burst.cone.ice.01", "jb2a.breath_weapons.cold.cone.blue"], burst: ["jb2a.ice_spikes.radial.burst.white"],
     hit: ["jb2a.impact.ground_crack.frost.01.white", "jb2a.impact.frost.white.01"] },
   fire: { label: "Fire", color: "#ff7a2f", cast: ["jb2a.cast_generic.fire.01.orange"], breath: ["jb2a.breath_weapons.fire.cone.orange.01"],
-    burst: ["jb2a.fireball.explosion.orange", "jb2a.explosion.01.orange"], hit: ["jb2a.impact.fire.01.orange"] },
+    burst: ["jb2a.fire_ring.500px.red", "jb2a.explosion.01.orange"], hit: ["jb2a.impact.fire.01.orange"] },
   lightning: { label: "Lightning", color: "#7fb8ff", cast: ["jb2a.static_electricity.02.blue"], breath: ["jb2a.breath_weapons.lightning.line.blue"],
     burst: ["jb2a.thunderwave.center.blue"], hit: ["jb2a.static_electricity.01.blue"] },
   acid: { label: "Acid", color: "#9be060", cast: ["jb2a.smoke.puff.side.green", "jb2a.smoke.puff.side.grey"], breath: ["jb2a.breath_weapons.acid.line.green"],
@@ -176,7 +187,7 @@ export function featureStages(element, shape) {
     { stageId: "cast", kind: "cast", assets: [...look.cast], duration: 700, scale: 0.5, opacity: 0.85 },
     { stageId: "hit", kind: "impact", assets: [...look.hit], delay: 300, duration: 1000, scale: 0.9, optionalTargets: true }];
   return [
-    { stageId: "burst", kind: "cast", assets: [...look.burst], duration: 2000, scale: 1.6 },
+    { stageId: "burst", kind: "cast", assets: [...look.burst], duration: 2000, scale: 1.6, below: true },
     { stageId: "hit", kind: "impact", assets: [...look.hit], delay: 700, duration: 1000, scale: 0.8, optionalTargets: true }];
 }
 
@@ -208,6 +219,9 @@ export const DH_CONDITIONS = Object.freeze([
 const CARD_TYPES = { ability: "Ability", spell: "Spell", grimoire: "Grimoire" };
 const GENERIC_WEAPONS = [
   { id: "generic-melee", name: "Any melee attack", img: "icons/svg/sword.svg", tier: 0, range: "melee", trait: null, damageTypes: ["physical"], burden: "", generic: true },
+  { id: "generic-claws", name: "Any claw attack", img: "icons/svg/claw.svg", tier: 0, range: "melee", trait: null, damageTypes: ["physical"], burden: "", generic: true },
+  { id: "generic-bite", name: "Any bite attack", img: "icons/svg/fangs.svg", tier: 0, range: "melee", trait: null, damageTypes: ["physical"], burden: "", generic: true },
+  { id: "generic-unarmed", name: "Any unarmed attack", img: "icons/svg/fist.svg", tier: 0, range: "melee", trait: null, damageTypes: ["physical"], burden: "", generic: true },
   { id: "generic-ranged", name: "Any ranged attack", img: "icons/svg/target.svg", tier: 0, range: "far", trait: null, damageTypes: ["physical"], burden: "", generic: true },
 ];
 const recipeFor = (entry, variantId, trigger, stages, extra = {}) => validateRecipe({
@@ -259,8 +273,8 @@ export const UTILITY_LOOKS = Object.freeze({
 export function utilityStages(look) {
   const l = UTILITY_LOOKS[look] ?? UTILITY_LOOKS.boon;
   return [
-    { stageId: "self", kind: "cast", assets: [...l.self], duration: 1600, scale: 1 },
-    { stageId: "target", kind: "impact", assets: [...l.target], delay: 400, duration: 1400, scale: 0.9, optionalTargets: true }];
+    { stageId: "self", kind: "cast", assets: [...l.self], duration: 1600, scale: 1.3 },
+    { stageId: "target", kind: "impact", assets: [...l.target], delay: 400, duration: 1400, scale: 1.2, optionalTargets: true }];
 }
 function utilityEntry(look) {
   const l = UTILITY_LOOKS[look];
@@ -339,7 +353,14 @@ export function dhVariantForEvent(entry, event) {
 // library does not know (homebrew, or an adversary's standard attack with no Item) gets the melee or
 // ranged fallback; a condition effect is found by its status. An adversary feature's attack roll gets
 // the same fallback, its unrolled strike (a breath, a save, damage) the fallback of its element.
-const genericWeapon = (event) => dhEntry(`daggerheart-weapon-generic-${event?.weaponMode === "ranged" ? "ranged" : "melee"}`);
+// A melee attack the library does not know is told by its name: "Bite and Claws" rakes, "Bite" bites,
+// "Tail Swipe" or "Fists" strike unarmed, anything else slashes.
+function genericWeapon(event) {
+  if (event?.weaponMode === "ranged") return dhEntry("daggerheart-weapon-generic-ranged");
+  const name = String(event?.itemName ?? event?.item?.name ?? "");
+  const natural = Object.entries(NATURAL_ATTACK).find(([, pattern]) => pattern.test(name))?.[0];
+  return dhEntry(`daggerheart-weapon-generic-${natural ?? "melee"}`);
+}
 const utilityEntryFor = (event) => (event?.type === "use" && event?.utilityLook ? dhEntry(`daggerheart-weapon-utility-${event.utilityLook}`) : null);
 export function findDhEntry(event) {
   const item = event?.item ?? null;

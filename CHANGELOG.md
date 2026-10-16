@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- **Daggerheart animations fit their targets.** Checked on the canvas, frame by frame:
+  - **Weapon swings reach the target.** Sword, axe, hammer and spear clips stretch from the wielder to the target as JB2A draws them, instead of sitting small on the target's edge.
+  - **Natural attacks look natural.** An adversary's "Claws" or "Bite and Claws" rakes red claw marks across the target, a "Bite" bites, a "Tail Swipe" or fists strike unarmed; other unknown melee attacks slash. Each sounds like itself.
+  - **Hits match the blow.** Blades, arrows and bullets land a crisp white star, hammers and shields a warm burst; the fiery flash is gone from physical hits. A gun's muzzle flash faces the target.
+  - **A fire burst rings the adversary** in flame under its token, instead of a fireball that hid the creature.
+  - **No more specks.** Card, heal, Hope, Fear and effect layers on a token are at least token-sized, and card designs that swing a weapon or strike unarmed reach from the caster to the target.
 - **Daggerheart animations have sound.** Weapons, domain cards, feature attacks, abilities and the Death move now play matching sounds when GGG, PSFX or Sound FX Library is active: a blade strike for a Longsword, a bowstring for a Longbow, claws for an adversary's bite, a gust for Whirlwind, a heal for a potion. Weapons sound like their family, cards like what their name describes (fire, frost, healing, a teleport…) or else their domain. The catalog pages' Sounds switch and volume slider apply.
 - **Daggerheart strikes move the token.** As in PF2e, a melee wielder lunges into the swing, a bow draws, a gun kicks, a thrower winds back, and a struck target shakes. Feature attacks rear back, burst or slam, and abilities rise or pulse. The Token motion switch turns it off.
 - **Richer Daggerheart conditions.** Vulnerable makes the creature wobble off balance, Hidden adds a faint veil to its smoke, and the Death move tolls with a sound.
