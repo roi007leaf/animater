@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.3 (2026-10-16)
 
 - **Finishers are always on.** The Module Settings → Finishers switch is gone: finishers are part of Animater, so a finisher you assign plays without turning anything on. To keep one from playing, disable it or remove its Applies-to items.
 
