@@ -679,7 +679,10 @@ export class Workspace {
       try { stored = Number(globalThis.localStorage?.getItem("animater.inspectorWidth")); } catch {}
       this.panelWidth = Number.isFinite(stored) && stored >= 300 ? stored : 380;
     }
-    return this.panelWidth;
+    // A width saved in a bigger window is shown no wider than this one leaves room for
+    // (62px nav, 8px splitter, 320px for the stage and timeline); the saved width is kept.
+    const width = this.root?.getBoundingClientRect?.().width;
+    return width ? Math.min(this.panelWidth, Math.max(300, Math.round(width - 390))) : this.panelWidth;
   }
   setInspectorWidth(px, work) {
     const max = Math.max(320, (work?.getBoundingClientRect().width ?? 1200) - 260);
@@ -2128,6 +2131,23 @@ export class Workspace {
     }
     return false;
   }
+  // Tucks the window away for a canvas preview or table playback. The answer restores it once;
+  // Stop (this.untuck) and a time limit also restore it, so a playback that never settles
+  // cannot leave the window minimized for good.
+  async tuckForPlayback(limitMs = 30000) {
+    const restore = await this.host.tuckWindow?.().catch(() => null);
+    if (!restore) return null;
+    let timer = null;
+    const once = async () => {
+      if (this.untuck !== once) return;
+      this.untuck = null;
+      clearTimeout(timer);
+      await restore().catch(() => {});
+    };
+    this.untuck = once;
+    timer = setTimeout(() => void once(), limitMs);
+    return once;
+  }
   async onClick(e) {
     const b = e.target.closest("[data-action]");
     if (!b || b.disabled) return;
@@ -2761,7 +2781,7 @@ export class Workspace {
         this.render();
         let restore = null;
         try {
-          restore = await this.host.tuckWindow?.().catch(() => null);
+          restore = await this.tuckForPlayback();
           const result = await this.host.play(
             validateRecipe(this.recipe()),
             action === "preview",
@@ -2808,6 +2828,8 @@ export class Workspace {
       if (action === "stop") {
         this.stopEditorPreview();
         await this.host.stop();
+        await this.untuck?.();
+        this.busy = false;
         this.message = "Your Animater effects stopped.";
       }
       if (action === "refresh") {

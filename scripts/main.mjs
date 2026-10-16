@@ -20,6 +20,7 @@ import { AnimaterRuntime, sameEffectName } from "./runtime.mjs";
 import { nowPlayingRows } from "./activity-actions.mjs";
 import { installedSoundCatalog, catalogSoundOptions } from "./spell-sounds.mjs";
 import { Workspace, JB2A_MISSING } from "./workspace.mjs";
+import { mediaIndexStore } from "./media-index-store.mjs";
 import { MediaLibraryLoader } from './media-library-sources.mjs';
 import { libraryPreferences } from './media-library.mjs';
 import {TokenFxPreview} from './token-fx-preview.mjs';
@@ -81,7 +82,7 @@ let runtime, app;
 registerTriggerEngine();
 const mediaLibraryLoader=new MediaLibraryLoader(()=>({modules:game.modules,database:globalThis.Sequencer?.Database,
   folderSources:libraryPreferences(game.settings.get(ID,'mediaLibrary')).sources,
-  browse:path=>foundry.applications.apps.FilePicker.implementation.browse('data',path)}));
+  browse:path=>foundry.applications.apps.FilePicker.implementation.browse('data',path)}),{store:mediaIndexStore()});
 let motions;
 let optionalFx;
 let persistentStates;

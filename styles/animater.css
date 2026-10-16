@@ -39,7 +39,8 @@
   color: var(--an-text);
   font-family: Inter, "Segoe UI", sans-serif;
   color-scheme: dark;
-  min-width: 760px;
+  /* Never wider than the screen: a fixed minimum pushed the window under Foundry's sidebar. */
+  min-width: min(760px, calc(100vw - 32px));
   container-type: inline-size;
 }
 .animater *,

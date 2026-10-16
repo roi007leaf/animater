@@ -90,3 +90,66 @@ test('failed preference save leaves source state unchanged and canceled picker c
   abort.abort();library.error='';await picked(root);
   assert.deepEqual(library.prefs.sources,[]);assert.equal(library.error,'');
 });
+
+// Issue #3: Foundry's browse answers URL-encoded paths ("My%20Sounds/..."); the picker hands back the folder as typed.
+test('a folder source with spaces in its name indexes its files and subfolders',async()=>{
+  const calls=[];
+  const result=await installedMediaLibrary({folderSources:[{path:'My Sounds',name:'Mine'}],browse:async path=>{
+    calls.push(path);
+    return path==='My Sounds'?{dirs:['My%20Sounds/Big%20Hits'],files:['My%20Sounds/zap%20one.ogg']}:{dirs:[],files:['My%20Sounds/Big%20Hits/boom.ogg']};
+  }});
+  assert.deepEqual(calls,['My Sounds','My%20Sounds/Big%20Hits']);
+  assert.deepEqual(result.entries.map(item=>item.file).sort(),['My%20Sounds/Big%20Hits/boom.ogg','My%20Sounds/zap%20one.ogg']);
+});
+
+// Issue #3: Add and Remove stay usable while the library is still indexing, and the change is indexed once that scan ends.
+test('folder sources can be added and removed while a scan is running',async()=>{
+  let prefs=libraryPreferences(),picked,release;
+  const scans=[];
+  const host={catalog:()=>[],mediaPreferences:()=>prefs,setMediaPreferences:async value=>{prefs=libraryPreferences(value);},pickMediaFolder:callback=>{picked=callback;},
+    loadMediaCatalog:async()=>{const sources=prefs.sources.map(s=>s.path);scans.push(sources);if(scans.length===1)await new Promise(r=>{release=r;});return installedMediaLibrary({folderSources:prefs.sources,browse});}};
+  const w={host,page:'assets',root:{querySelector:selector=>selector==='[data-media-source-name]'?{value:'BossLoot'}:null},recipe:()=>null,stageLabel:stage=>stage.kind,stageIndex:0,abort:new AbortController()};
+  const library=new MediaLibrary(w);library.render=()=>{};
+  const first=library.load();
+  assert.equal(library.loading,true);
+  assert.doesNotMatch(library.sourceControls(),/disabled/,'Add stays enabled while indexing');
+  await library.action('media-source-add',{dataset:{}});
+  assert.ok(picked,'the folder picker opens while indexing');
+  const adding=picked(root);
+  release();await first;await adding;
+  assert.deepEqual(scans,[[],[root]],'the added folder is indexed after the running scan');
+  assert.equal(library.results().count,2);
+  assert.equal(library.loading,false);
+});
+
+test('the folder source name typed by the user survives a re-render',()=>{
+  const library=new MediaLibrary({host:{catalog:()=>[],pickMediaFolder:()=>{}},root:{querySelector:()=>null},abort:new AbortController()});
+  library.input({dataset:{mediaSourceName:''},hasAttribute:name=>name==='data-media-source-name',value:'Boss Loot'});
+  assert.match(library.sourceControls(),/data-media-source-name[^>]*value="Boss Loot"/);
+});
+
+// Issue #3: the index survives a world reload; a new client finds it in the store and does not rescan.
+test('the media index is saved and reused after a reload until something it depends on changes or Refresh is pressed',async()=>{
+  const saved=new Map(),store={get:async key=>saved.get(key)??null,set:async(key,result)=>{saved.set(key,structuredClone(result));}};
+  let calls=0,folderSources=folders;
+  const options=()=>({folderSources,browse:async path=>{calls++;return browse(path);}});
+  const first=await new MediaLibraryLoader(options,{store}).load();
+  assert.equal(first.entries.length,4);const scanned=calls;assert.ok(scanned>0);
+  const progress=[];
+  const reloaded=new MediaLibraryLoader(options,{store});
+  const again=await reloaded.load(false,part=>progress.push(...part.entries));
+  assert.equal(calls,scanned,'a reloaded client reuses the saved index');
+  assert.equal(again.entries.length,4);assert.equal(progress.length,4,'the saved entries reach the library as progress');
+  assert.equal(reloaded.peek()?.entries.length,4);
+  await reloaded.load(true);assert.ok(calls>scanned,'Refresh rescans');
+  const afterRefresh=calls;
+  folderSources=[{path:root,name:'Renamed'}];await new MediaLibraryLoader(options,{store}).load();
+  folderSources=folders;await new MediaLibraryLoader(options,{store}).load();
+  assert.equal(calls,afterRefresh+2,'a changed folder list rescans; the saved index for it is reused');
+});
+
+test('a failing media index store never stops a scan',async()=>{
+  const store={get:async()=>{throw Error('blocked');},set:async()=>{throw Error('quota');}};
+  const result=await new MediaLibraryLoader(()=>({folderSources:folders,browse}),{store}).load();
+  assert.equal(result.entries.length,4);
+});

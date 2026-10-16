@@ -100,7 +100,9 @@ export class MediaLibrary {
   }
   sameFamily(a,b) { return a&&b&&a.type===b.type&&a.source===b.source&&a.family===b.family; }
   sourceControls() {
-    return `<details class="an-media-sources"><summary>Folder sources${this.prefs.sources.length?` (${this.prefs.sources.length})`:''}</summary><div class="an-media-source-panel"><p class="an-hint">Include media from a User Data folder and its subfolders.</p><div class="an-media-source-add"><input data-media-source-name aria-label="Folder source name" maxlength="100" placeholder="Source name (optional)"><button data-action="media-source-add" ${this.loading||!this.w.host.pickMediaFolder?'disabled':''}>+ Add folder</button></div>${this.prefs.sources.map(source=>`<div class="an-media-source-row"><span><b>${esc(source.name)}</b> <small>${esc(source.path)}</small></span><button data-action="media-source-remove" data-path="${esc(source.path)}" ${this.loading?'disabled':''} aria-label="Remove ${esc(source.name)} folder source">Remove</button></div>`).join('')}</div></details>`;
+    // Add and Remove stay usable while indexing: a change made mid-scan is indexed when that scan ends.
+    const open=this.w.root?.querySelector?.('.an-media-sources')?.open;
+    return `<details class="an-media-sources" ${open?'open':''}><summary>Folder sources${this.prefs.sources.length?` (${this.prefs.sources.length})`:''}</summary><div class="an-media-source-panel"><p class="an-hint">Include media from a User Data folder and its subfolders.</p><div class="an-media-source-add"><input data-media-source-name aria-label="Folder source name" maxlength="100" placeholder="Source name (optional)" value="${esc(this.sourceName??'')}"><button data-action="media-source-add" ${!this.w.host.pickMediaFolder?'disabled':''}>+ Add folder</button></div>${this.prefs.sources.map(source=>`<div class="an-media-source-row"><span><b>${esc(source.name)}</b> <small>${esc(source.path)}</small></span><button data-action="media-source-remove" data-path="${esc(source.path)}" aria-label="Remove ${esc(source.name)} folder source">Remove</button></div>`).join('')}</div></details>`;
   }
   inspect(id,{reveal=false} = {}) {
     const previous=this.selected;
@@ -135,8 +137,18 @@ export class MediaLibrary {
     this.syncPreview();
     if(changedThumbnail)this.w.observeThumbnails?.();
   }
-  async load(refresh = false) {
-    if (this.loading || this.loaded && !refresh) return;
+  // A refresh asked for while a scan runs (a folder source added or removed) runs once that scan ends.
+  load(refresh = false) {
+    if (this.loading) { if (refresh) this.reloadQueued = true; return this.loadPromise; }
+    if (this.loaded && !refresh) return Promise.resolve();
+    this.loadPromise = this.loadOnce(refresh).then(() => {
+      if (!this.reloadQueued || this.w.abort?.signal.aborted) return;
+      this.reloadQueued = false;
+      return this.load(true);
+    });
+    return this.loadPromise;
+  }
+  async loadOnce(refresh) {
     this.loading = true;
     this.error = '';
     let scheduled=null;
@@ -221,6 +233,7 @@ export class MediaLibrary {
     }
   }
   input(target) {
+    if(target.hasAttribute?.('data-media-source-name')){this.sourceName=target.value;return true;}
     if(target.dataset.mediaFx) {
       const before=JSON.stringify([this.tokenFx,this.fxArtwork]);
       const key=target.dataset.mediaFx;
@@ -332,8 +345,7 @@ export class MediaLibrary {
       return true;
     }
     if(action==='media-source-add') {
-      if(this.loading)return true;
-      const name=this.w.root.querySelector('[data-media-source-name]')?.value??'';
+      const name=this.sourceName??this.w.root.querySelector('[data-media-source-name]')?.value??'';
       this.w.host.pickMediaFolder?.(async path=>{
         if(this.w.abort?.signal.aborted)return;
         const [source]=mediaFolderSources([{path,name}]);
@@ -342,7 +354,7 @@ export class MediaLibrary {
         if(!next.some(row=>row.path===source.path)){this.error='Folder source limit reached (50). Remove a source first.';this.render();return;}
         try {
           await this.w.host.setMediaPreferences?.({...this.prefs,sources:next});
-          this.prefs.sources=next;
+          this.prefs.sources=next;this.sourceName='';
           this.filters.source=source.name;this.filters.collection='all';this.filters.search='';this.filters.category='all';this.filters.color='all';this.filters.loop='all';this.page=0;
           await this.load(true);
         } catch(error){this.error=error.message;this.render();}
@@ -350,7 +362,6 @@ export class MediaLibrary {
       return true;
     }
     if(action==='media-source-remove') {
-      if(this.loading)return true;
       const next=this.prefs.sources.filter(source=>source.path!==button.dataset.path);
       await this.w.host.setMediaPreferences?.({...this.prefs,sources:next});
       this.prefs.sources=next;this.filters.source='all';this.page=0;

@@ -1,5 +1,8 @@
 import {registeredMedia, mergeMedia, libraryItem, safeMediaFile, mediaFolderSources} from './media-library-model.mjs';
 import {installedSoundCatalog, SOUND_SOURCE} from './spell-sounds.mjs';
+// Foundry's browse answers URL-encoded paths ("My%20Sounds/..."); a folder source is stored as picked.
+const decoded=path=>{try{return decodeURIComponent(path);}catch{return path;}};
+const within=(path,root)=>decoded(path).startsWith(decoded(root)+'/');
 // FilePicker remains the permission boundary. Scan enabled sound modules and selected folders,
 // skip code/non-media files, and report partial discovery instead of hiding it.
 export async function installedMediaLibrary({modules,database,browse,folderSources=[],maxFolders=10_000,onProgress}) {
@@ -29,12 +32,12 @@ export async function installedMediaLibrary({modules,database,browse,folderSourc
       if(visited.has(job.path))return;visited.add(job.path);
       try {
         const result=await browse(job.path);
-        for(const file of result.files??[])if(safeMediaFile(file,job.type)&&file.startsWith(job.root+'/')) {
+        for(const file of result.files??[])if(safeMediaFile(file,job.type)&&within(file,job.root)) {
           const item=libraryItem({file,type:job.type,source:job.source});
           if(item&&!inventory.has(item.id)&&!knownFiles.has(file)){inventory.set(item.id,item);knownFiles.add(file);added.push(item);}
         }
         for(const path of result.dirs??[]) {
-          if(typeof path==='string'&&path.startsWith(job.root+'/')&&mediaFolderSources([{path}]).length&&!scheduled.has(path)) {
+          if(typeof path==='string'&&within(path,job.root)&&mediaFolderSources([{path}]).length&&!scheduled.has(path)) {
             scheduled.add(path);jobs.push({...job,path});
           }
         }
@@ -54,8 +57,10 @@ export async function installedMediaLibrary({modules,database,browse,folderSourc
 
 // One client/session cache across workspace instances. Namespace counts catch
 // late Sequencer registrations; module state/version changes invalidate it.
+// `store` ({get(key), set(key, result)}) keeps the last index across world reloads under the
+// same key, so reopening a world does not rescan; Refresh always rescans. A failing store is ignored.
 export class MediaLibraryLoader {
-  constructor(sources){this.sources=sources;}
+  constructor(sources,{store=null}={}){this.sources=sources;this.store=store;}
   state() {
     const options=this.sources(),{modules,database}=options;
     const packs=modules?.entries?[...modules.entries()].filter(([,m])=>m.active).map(([id,m])=>[id,m.version??m.data?.version??'',m.title??'']).sort()
@@ -81,10 +86,17 @@ export class MediaLibraryLoader {
     const row={...state,listeners:new Set(onProgress?[onProgress]:[]),available:new Map()};
     this.pending=row;
     // Defer one microtask so the pending row is installed before callbacks run.
-    row.promise=Promise.resolve().then(()=>installedMediaLibrary({...state.options,onProgress:part=>{
+    const progress=part=>{
       for(const item of part.entries)row.available.set(item.id,item);
       for(const listener of row.listeners)listener(part);
-    }})).then(result=>{if(this.pending===row)this.cached={...state,result};return result;})
+    };
+    row.promise=Promise.resolve().then(async()=>{
+      const saved=refresh?null:await Promise.resolve(this.store?.get(state.key)).catch(()=>null);
+      if(Array.isArray(saved?.entries)){if(saved.entries.length)progress({entries:saved.entries,normalized:true});return saved;}
+      const result=await installedMediaLibrary({...state.options,onProgress:progress});
+      void Promise.resolve(this.store?.set(state.key,result)).catch(()=>{});
+      return result;
+    }).then(result=>{if(this.pending===row)this.cached={...state,result};return result;})
       .finally(()=>{row.listeners.clear();if(this.pending===row)this.pending=null;});
     return row.promise;
   }

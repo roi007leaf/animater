@@ -841,3 +841,39 @@ test("a finisher's Applies to takes a PF2e strike dragged from a sheet's Attacks
   assert.equal(r.match, 'Shove, Unarmed Attack, Greataxe', 'ordinary item drops still work');
   assert.equal(r.finisher.links.greataxe, 'Item.axe');
 });
+
+// Issue #3: Local preview tucks the window away; it must come back even when playback never settles.
+test("a tucked window comes back once: when playback ends, on Stop, or after the limit", async () => {
+  const tucked = () => {
+    const calls = { restores: 0 };
+    const w = Object.assign(Object.create(Workspace.prototype), { host: { tuckWindow: async () => async () => { calls.restores++; } } });
+    return { w, calls };
+  };
+  const ended = tucked();
+  const restore = await ended.w.tuckForPlayback(1000);
+  await restore(); await restore();
+  assert.equal(ended.calls.restores, 1, "restored once when playback ends");
+  const stopped = tucked();
+  await stopped.w.tuckForPlayback(1000);
+  await stopped.w.untuck();
+  assert.equal(stopped.calls.restores, 1, "Stop restores it");
+  const hung = tucked();
+  await hung.w.tuckForPlayback(20);
+  await new Promise((resolve) => setTimeout(resolve, 60));
+  assert.equal(hung.calls.restores, 1, "a playback that never settles still gives the window back");
+  const off = Object.assign(Object.create(Workspace.prototype), { host: { tuckWindow: async () => null } });
+  assert.equal(await off.tuckForPlayback(20), null, "nothing to restore when the window was not tucked");
+});
+
+// Issue #3: an inspector width saved in a big window must not push the inspector out of a smaller one.
+test("the studio inspector is never wider than the window leaves room for, without forgetting the saved width", () => {
+  const w = Object.assign(Object.create(Workspace.prototype), { panelWidth: 700 });
+  w.root = { getBoundingClientRect: () => ({ width: 760 }) };
+  assert.equal(w.inspectorWidth(), 370, "760 window: 62 nav + 8 splitter + 320 timeline area leaves 370");
+  w.root = { getBoundingClientRect: () => ({ width: 1600 }) };
+  assert.equal(w.inspectorWidth(), 700, "a big window shows the saved width");
+  w.root = { getBoundingClientRect: () => ({ width: 500 }) };
+  assert.equal(w.inspectorWidth(), 300, "never below the 300px minimum");
+  w.root = null;
+  assert.equal(w.inspectorWidth(), 700);
+});
