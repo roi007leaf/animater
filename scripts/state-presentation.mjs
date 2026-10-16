@@ -6,6 +6,9 @@ const COVERING=/\.(?:web|vine|entangle|ice_spikes|fog_cloud|ambient_fog|fumes|sm
 // Rings that surround the creature without filling the middle: on top of square art they frame the face.
 const HOLLOW=/\.(?:token_border|condition\.curse|markers|template_circle|magic_signs\.circle|aura_themed|fire_ring)\./;
 export const hollowFootage = asset => HOLLOW.test(`.${String(asset).replace(/^jb2a\./,'')}`);
+// Refraction clips bend what lies behind them; their frame is a full square that only reads as a
+// ripple under the token. Lifted over the art, the whole frame shows as a pale sheet (Invisible).
+export const refractionFootage = asset => /refraction/.test(String(asset));
 export function coversToken(stage, asset = stage?.asset ?? stage?.assets?.[0] ?? '') {
  if(!stage||stage.below||stage.maskToken||(stage.scale??1)<.9||stage.offsetX||stage.offsetY)return false;
  return COVERING.test(`.${String(asset).replace(/^jb2a\./,'')}`);

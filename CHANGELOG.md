@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- **Invisible looks right on the token again (PF2e)** ([#3](https://github.com/roi007leaf/animater/issues/3)). Its ripple is a refraction clip, which only reads as a ripple under the token; Animater drew it on top, so a pale square covered the creature. Refraction layers now always stay under the token, as in the local preview.
+- **The Folder sources panel is no longer cut off** (#3). In a narrower window it opened leftwards from its button, under Foundry's sidebar. It now opens rightwards and stays inside the library.
+
 ## 1.2.2 (2026-10-16)
 
 - **Choose how lasting conditions show on your screen.** New setting *Lasting condition animations (this device)* in Configure Settings → Animater, for every system. *Follow the catalog setting* (the default) uses each catalog's Lasting animation switch in Animater; *Always visible* keeps them on; *On application only* plays each once when applied; *On application and at its turn start* also replays a creature's conditions briefly whenever its turn starts in combat, one after another so they read separately. The creature's own motion (trembling, swaying) follows the same choice. Reloading or changing scenes never replays them. The Defeated look keeps its own setting, and each player's choice affects only their screen.

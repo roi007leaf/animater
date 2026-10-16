@@ -384,3 +384,15 @@ test('the catalog\'s Play once and at turn start replays at turn start when the 
   assert.equal(mine.calls.filter(c => c[0] === 'file').length, 0, 'a player\'s On application only wins on their screen');
   await mine.manager.destroy();
 });
+test('Invisible\'s refraction ripple stays under the token, round or square art: on top its whole frame shows as a pale square', async () => {
+  const invisible = PF2E_CONDITIONS.find(e => e.slug === 'invisible');
+  assert.ok(stateRecipe(invisible).stages.some(s => /refraction/.test(s.assets?.[0] ?? '')), 'Invisible uses a refraction clip');
+  for (const square of [false, true]) {
+    const f = fixture([{ ...native(invisible), slug: 'invisible' }]);
+    if (square) f.manager.host.opaqueArt = () => true;
+    await f.manager.reconcile(); await flush();
+    assert.ok(f.calls.some(c => c[0] === 'file' && /refraction/.test(c[1])), 'drawn');
+    assert.ok(f.calls.some(c => c[0] === 'belowTokens'), `${square ? 'square' : 'round'} art: under the token`);
+    await f.manager.destroy();
+  }
+});
