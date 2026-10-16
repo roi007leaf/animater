@@ -1,10 +1,12 @@
 // Shared by library discovery, recipe validation and runtime preflight.
+const MEDIA_EXTENSIONS = new Map([
+  ...['ogg', 'mp3', 'wav', 'flac', 'm4a', 'aac'].map(ext => [ext, 'audio']),
+  ...['webm', 'mp4', 'm4v'].map(ext => [ext, 'animation']),
+  ...['png', 'jpg', 'jpeg', 'webp', 'gif', 'avif', 'svg'].map(ext => [ext, 'image']),
+]);
 export function mediaType(file) {
-  const ext = String(file).split('.').at(-1)?.toLowerCase();
-  if (['ogg', 'mp3', 'wav', 'flac', 'm4a', 'aac'].includes(ext)) return 'audio';
-  if (['webm', 'mp4', 'm4v'].includes(ext)) return 'animation';
-  if (['png', 'jpg', 'jpeg', 'webp', 'gif', 'avif', 'svg'].includes(ext)) return 'image';
-  return null;
+  const name = String(file);
+  return MEDIA_EXTENSIONS.get(name.slice(name.lastIndexOf('.') + 1).toLowerCase()) ?? null;
 }
 export function safeMediaFile(file, type) {
   if (typeof file !== 'string' || !/^(?![\\/]|.*(?:\.\.|:|[<>"'\x00-\x1f]))[^?#]+$/.test(file)) return false;
@@ -15,7 +17,7 @@ export const databaseKey = value => typeof value === 'string' && /^[a-zA-Z0-9_-]
 export const visualReference = value => databaseKey(value) || (safeMediaFile(value) && mediaType(value) !== 'audio');
 export const fileValues = value => typeof value === 'string' ? [value] : Array.isArray(value)
   ? value.flatMap(fileValues) : value && typeof value === 'object' ? Object.values(value).flatMap(fileValues) : [];
-export const words = value => String(value ?? '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_.\-/]+/g, ' ').replace(/\s+/g, ' ').trim();
+export const words = value => String(value ?? '').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[\s_.\-/]+/g, ' ').trim();
 export const title = value => words(value).replace(/\b\w/g, c => c.toUpperCase());
 export function mediaFolderSources(value) {
   const sources=new Map();
@@ -30,8 +32,8 @@ export function mediaFolderSources(value) {
 }
 const palettes = ['bluepurple','blueteal','greenpurple','pinkyellow','greenyellow','orangeyellow','purplered','greenorange','darkpurple','darkred','darkblue','lightblue','blue','green','orange','purple','red','yellow','white','black','pink','grey','gray','brown','rainbow','multicolored'];
 export function assetColor(key, file = '') {
-  const tokens = (key + ' ' + file.split('/').at(-1)).toLowerCase().replace(/[^a-z]+/g, ' ').split(' ');
-  return palettes.find(c => tokens.includes(c)) ?? 'none';
+  const tokens = new Set((key + ' ' + file.split('/').at(-1)).toLowerCase().replace(/[^a-z]+/g, ' ').split(' '));
+  return palettes.find(c => tokens.has(c)) ?? 'none';
 }
 // Database dimensions describe a variant. File pixel dimensions describe the
 // video resolution and must not become footprint choices.
@@ -105,6 +107,45 @@ export function assetCategory(text, type) {
   if (/aura|shield|ward|buff|condition|border|loop|energy strands/.test(text)) return 'Auras & loops';
   return 'Other';
 }
+// libraryItem runs over the whole catalog on every merge, and the first Assets visit merges it
+// twice. Its derived text depends only on these values, so it is memoized by value: an entry
+// mutated in place presents new values and misses, never a stale row.
+const MEMO_LIMIT = 50_000;
+const memoValue = value => value == null || typeof value === 'string';
+const safeMemo = new Map(), textMemo = new Map();
+function safeLibraryFile(file, type) {
+  if (!memoValue(type)) return safeMediaFile(file, type);
+  let rows = safeMemo.get(type ?? '');
+  if (!rows) safeMemo.set(type ?? '', rows = new Map());
+  let safe = rows.get(file);
+  if (safe === undefined) {
+    if (rows.size >= MEMO_LIMIT) rows.clear();
+    rows.set(file, safe = safeMediaFile(file, type));
+  }
+  return safe;
+}
+function libraryText(item, file, type, source) {
+  const {key, family: given} = item;
+  const compute = () => {
+    const family = given ?? familyFor({type, key, file});
+    return {family, color: assetColor(key ?? '', file),
+      loop: /(?:^|[._/ -])loop(?:[._/ -]|$)/i.test((key ?? '') + ' ' + file),
+      search: words((key ?? '') + ' ' + family + ' ' + source + ' ' + file).toLowerCase()};
+  };
+  if (![key, source, given, type].every(memoValue)) return compute();
+  let rows = textMemo.get(file);
+  // A given family equal to a row's resolved one derives the same text (normalized rows carry theirs).
+  let row = rows?.find(r => r.type === type && r.key === key && r.source === source && (given == null ? r.given == null : r.family === given));
+  if (!row) {
+    if (!rows) {
+      if (textMemo.size >= MEMO_LIMIT) textMemo.clear();
+      textMemo.set(file, rows = []);
+    }
+    if (rows.length >= 8) rows.shift();
+    rows.push(row = {type, key, source, given, ...compute()});
+  }
+  return row;
+}
 function familyFor(item) {
   if (item.type === 'audio' || !item.key || safeMediaFile(item.key)) {
     return item.file.split('/').at(-1).replace(/\.[^.]+$/, '').replace(/(?:[-_ ](?:\d+|\d+ft))+$/i, '');
@@ -130,17 +171,16 @@ export function libraryItem(item) {
   }
   const file = typeof item.file==='string'?item.file.replace(/^\//, ''):'';
   const type = item.type ?? mediaType(file);
-  if (!safeMediaFile(file, type)) return null;
+  if (!safeLibraryFile(file, type)) return null;
   const source = item.source ?? item.pack ?? item.module ?? item.key?.split('.')[0] ?? 'Custom files';
-  const family = item.family ?? familyFor({...item, type, file});
-  const color = assetColor(item.key ?? '', file);
-  return {...item, file, type, source, family, color,
+  const text = libraryText(item, file, type, source), family = text.family;
+  return {...item, file, type, source, family, color: text.color,
     id: item.id ?? (type === 'audio' ? `audio:${file}` : item.key ?? file),
-    label: item.label ?? title(family),
-    category: item.category ?? assetCategory(type==='audio' ? (item.key ?? '') + ' ' + file : item.key ?? file, type),
-    loop: /(?:^|[._/ -])loop(?:[._/ -]|$)/i.test((item.key ?? '') + ' ' + file),
-    search: words((item.key ?? '') + ' ' + family + ' ' + source + ' ' + file).toLowerCase(),
-    files: [...new Set([file, ...fileValues(item.files), ...fileValues(item.distanceFiles)].filter(f => safeMediaFile(f, type)))],
+    label: item.label ?? (text.label ??= title(family)),
+    category: item.category ?? (text.category ??= assetCategory(type==='audio' ? (item.key ?? '') + ' ' + file : item.key ?? file, type)),
+    loop: text.loop,
+    search: text.search,
+    files: [...new Set([file, ...fileValues(item.files), ...fileValues(item.distanceFiles)].filter(f => safeLibraryFile(f, type)))],
   };
 }
 export function tokenFxAssets(catalog) {
@@ -207,7 +247,7 @@ export function mergeMedia(...lists) {
   const unique = new Map();
   for (const entry of lists.flat()) {
     const item = libraryItem(entry);
-    if (item) unique.set(item.id, {...unique.get(item.id), ...item});
+    if (item) unique.set(item.id, unique.has(item.id) ? {...unique.get(item.id), ...item} : item);
   }
   return [...unique.values()];
 }
@@ -217,7 +257,7 @@ export function appendMedia(existing,...lists) {
   const unique=new Map(existing.map(item=>[item.id,item]));
   for(const entry of lists.flat()) {
     const item=libraryItem(entry);
-    if(item)unique.set(item.id,{...unique.get(item.id),...item});
+    if(item)unique.set(item.id,unique.has(item.id)?{...unique.get(item.id),...item}:item);
   }
   return [...unique.values()];
 }
