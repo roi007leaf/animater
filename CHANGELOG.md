@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.3 (2026-10-16)
 
 - **Invisible looks right on the token again (PF2e)** ([#3](https://github.com/roi007leaf/animater/issues/3)). Its ripple is a refraction clip, which only reads as a ripple under the token; Animater drew it on top, so a pale square covered the creature. Refraction layers now always stay under the token, as in the local preview.
 - **The Folder sources panel is no longer cut off** (#3). In a narrower window it opened leftwards from its button, under Foundry's sidebar. It now opens rightwards and stays inside the library.
