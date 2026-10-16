@@ -80,11 +80,13 @@ export const motionOnly=i=>i.type==='condition'&&!i.animaterPerceived&&!!PERCEPT
 // already on the token (a reload or scene change), since it only counts as applied within APPLIED_WINDOW.
 export const FADE_MS=3000;
 const APPLIED_WINDOW=15000;
-// Each player's own choice for lasting layers (client setting lastingMode): the GM's catalog
-// setting, always on, played once when applied, or played when applied and again briefly whenever
+// Each player's own choice for lasting layers (client setting lastingMode): the catalog's Lasting
+// animation setting, always on, played once when applied, or played when applied and again briefly whenever
 // the token's turn starts. Built-in states (Defeated) keep the Defeated look setting.
-export const LASTING_MODES=Object.freeze({world:'As the GM set it',always:'Always visible',turn:'On application and at its turn start',once:'On application only'});
+export const LASTING_MODES=Object.freeze({world:'Follow the catalog setting',always:'Always visible',turn:'On application and at its turn start',once:'On application only'});
 export const lastingFade=(worldFade,mode)=>mode==='always'?false:mode==='turn'||mode==='once'?true:worldFade===true;
+// Replays at turn start: the player chose it, or follows a catalog set to Play once and at turn start.
+export const lastingTurn=(state,mode)=>mode==='turn'||(!LASTING_MODES[mode]||mode==='world')&&state?.fade===true&&state?.turn===true;
 // Conditions replaying together at turn start start this far apart, so they read one by one.
 export const REPLAY_STAGGER=350;
 export function justApplied(item,now=Date.now()){
@@ -152,8 +154,8 @@ export class PersistentStates{
      if(shown>=budget.states||this.stopped.has(key)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
      const kind=h.stateKind?.(item)??item.type,state=item.animaterRecipe?BUILTIN_STATE:(h.normalizeState??normalizeStateCatalogState)(h.state(kind)),recipe=item.animaterRecipe??(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType,grantedByOtherAura(item,token)]);
-     const fade=item.animaterRecipe?state.fade===true:lastingFade(state.fade,h.lastingMode?.());
-     if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':'')+(motionOnly(item)?'body':'')+(fade?'fade':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false,bodyOnly:motionOnly(item),fade,quiet:fade&&!justApplied(item)});shown++;}
+     const mode=h.lastingMode?.(),fade=item.animaterRecipe?state.fade===true:lastingFade(state.fade,mode),turn=!item.animaterRecipe&&fade&&lastingTurn(state,mode);
+     if(!desired.has(key)){desired.set(key,{key,signature:signature+JSON.stringify(budget)+(state.motion===false?'still':'')+(motionOnly(item)?'body':'')+(fade?'fade':'')+(turn?'turn':''),token,item,recipe,opacity:state.opacity,motion:state.motion!==false,bodyOnly:motionOnly(item),fade,turn,quiet:fade&&!justApplied(item)});shown++;}
     }
    }
    // Removed, its next application animates again.
@@ -243,12 +245,12 @@ export class PersistentStates{
    if(r.fade)setTimeout(()=>{if(this.active.get(r.key)===r)h.body?.remove?.(r.name);},FADE_MS+offset)?.unref?.();
   }
  }
- // A token's turn starts: with "On application and at its turn start", its played-once layers show
- // again briefly, one after another. Other modes and other tokens' layers are left alone.
+ // A token's turn starts: its layers set to replay at turn start (the player's choice, or the catalog's
+ // Play once and at turn start) show again briefly, one after another. Other layers are left alone.
  async replay(token){
-  if(this.closed||this.host.lastingMode?.()!=='turn'||!token)return 0;
+  if(this.closed||!token)return 0;
   const same=r=>r.token===token||(r.token?.document?.uuid??r.token?.id)===(token.document?.uuid??token.id);
-  const records=[...this.active.values()].filter(r=>!r.cancelled&&r.fade&&same(r));
+  const records=[...this.active.values()].filter(r=>!r.cancelled&&r.fade&&r.turn&&same(r));
   await Promise.all(records.map((r,i)=>this.end(r).then(()=>{r.quiet=false;r.replaying=true;r.offset=i*REPLAY_STAGGER;r.startedAt=Date.now();return this.start(r);})
    .catch(e=>this.host.trace?.('Blocked',`${r.recipe?.name??'Animation'}: ${e.message}`))));
   return records.length;

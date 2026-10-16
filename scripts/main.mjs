@@ -1038,7 +1038,7 @@ Hooks.once("init", () => {
     scope:'client',config:true,type:String,choices:{...QUALITY_CHOICES},default:'full',
     onChange:()=>{syncQuality();persistentStates?.schedule();}});
   game.settings.register(ID,'lastingMode',{name:'Lasting condition animations (this device)',
-    hint:'How conditions and effects that last show on your screen. "As the GM set it" follows each catalog\'s Lasting animation switch. "On application and at its turn start" plays them when applied and again briefly whenever that creature\'s turn starts in combat. The Defeated look keeps its own setting. Other players keep their own choice.',
+    hint:'How lasting conditions and effects show on your screen. "Follow the catalog setting" uses each catalog\'s Lasting animation switch in Animater. "On application and at its turn start" plays them when applied and again briefly whenever that creature\'s turn starts in combat. The Defeated look keeps its own setting. Each player\'s choice affects only their screen.',
     scope:'client',config:true,type:String,choices:{...LASTING_MODES},default:'world',onChange:()=>persistentStates?.schedule()});
   game.settings.register(ID,CROSSOVER_CATALOG,{...crossoverSettingText(game.system.id),scope:'world',
     // PF2e and SF2e only: the two systems share one rules engine.

@@ -24,7 +24,7 @@ export function addDndBookEntries(entries,active=()=>true){
 export const dndEntry=id=>byId.get(String(id).replace(/^animater-/,''))??null;
 export function normalizeDndCatalogState(state={}){
  state??={};const ids=values=>[...new Set((Array.isArray(values)?values:[]).filter(id=>byId.has(id)))];
- return {enabled:state.enabled===true,independent:state.independent===true,preferCatalog:state.preferCatalog===true,scope:state.scope==='selected'?'selected':'all',selected:ids(state.selected),excluded:ids(state.excluded),customized:ids(state.customized),motion:state.motion!==false,fade:state.fade===true,sound:state.sound!==false,soundVolume:Number.isFinite(Number(state.soundVolume))?Math.max(0,Math.min(1,Number(state.soundVolume))):.35,opacity:Number.isFinite(Number(state.opacity))?Math.max(.1,Math.min(1,Number(state.opacity))):1};
+ return {enabled:state.enabled===true,independent:state.independent===true,preferCatalog:state.preferCatalog===true,scope:state.scope==='selected'?'selected':'all',selected:ids(state.selected),excluded:ids(state.excluded),customized:ids(state.customized),motion:state.motion!==false,fade:state.fade===true,turn:state.turn===true,sound:state.sound!==false,soundVolume:Number.isFinite(Number(state.soundVolume))?Math.max(0,Math.min(1,Number(state.soundVolume))):.35,opacity:Number.isFinite(Number(state.opacity))?Math.max(.1,Math.min(1,Number(state.opacity))):1};
 }
 export const dndEntryEnabled=(id,state)=>state?.enabled===true&&!state.excluded?.includes(id)&&(state.scope!=='selected'||state.selected?.includes(id)||state.customized?.includes(id));
 export function useDndEntry(state,id){

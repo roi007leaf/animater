@@ -366,3 +366,21 @@ test('On application and at its turn start: a quiet layer replays briefly when t
   assert.equal(f.calls.slice(before).filter(c => c[0] === 'play').length, 0, 'another token\'s turn replays nothing here');
   await f.manager.destroy();
 });
+test('the catalog\'s Play once and at turn start replays at turn start when the player follows the catalog', async () => {
+  const entry = auraEntry();
+  const f = fixture([{ ...native(entry), _stats: { createdTime: Date.now() - 60000 } }]);
+  f.states.effect.fade = true; f.states.effect.turn = true;
+  await f.manager.reconcile(); await flush();
+  assert.equal(f.calls.filter(c => c[0] === 'file').length, 0);
+  await f.manager.replay(f.token); await flush();
+  assert.ok(f.calls.some(c => c[0] === 'file'), 'replayed from the catalog setting');
+  await f.manager.destroy();
+  const plain = fixture([{ ...native(entry), _stats: { createdTime: Date.now() - 60000 } }]); plain.states.effect.fade = true;
+  await plain.manager.reconcile(); await flush(); await plain.manager.replay(plain.token); await flush();
+  assert.equal(plain.calls.filter(c => c[0] === 'file').length, 0, 'plain Play once, then fade never replays');
+  await plain.manager.destroy();
+  const mine = fixture([{ ...native(entry), _stats: { createdTime: Date.now() - 60000 } }]); mine.states.effect.fade = true; mine.states.effect.turn = true; mine.manager.host.lastingMode = () => 'once';
+  await mine.manager.reconcile(); await flush(); await mine.manager.replay(mine.token); await flush();
+  assert.equal(mine.calls.filter(c => c[0] === 'file').length, 0, 'a player\'s On application only wins on their screen');
+  await mine.manager.destroy();
+});

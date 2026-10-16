@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-- **Choose how lasting conditions show on your screen.** New setting *Lasting condition animations (this device)* in Configure Settings → Animater, for every system. *As the GM set it* (the default) follows each catalog's Lasting animation switch; *Always visible* keeps them on; *On application only* plays each once when applied; *On application and at its turn start* also replays a creature's conditions briefly whenever its turn starts in combat, one after another so they read separately. The creature's own motion (trembling, swaying) follows the same choice. Reloading or changing scenes never replays them. The Defeated look keeps its own setting, and each player's choice affects only their screen.
+- **Choose how lasting conditions show on your screen.** New setting *Lasting condition animations (this device)* in Configure Settings → Animater, for every system. *Follow the catalog setting* (the default) uses each catalog's Lasting animation switch in Animater; *Always visible* keeps them on; *On application only* plays each once when applied; *On application and at its turn start* also replays a creature's conditions briefly whenever its turn starts in combat, one after another so they read separately. The creature's own motion (trembling, swaying) follows the same choice. Reloading or changing scenes never replays them. The Defeated look keeps its own setting, and each player's choice affects only their screen.
+- **Catalogs can replay conditions at turn start too.** The Lasting animation switch on the Conditions and Effects catalog pages (every system) now has a third choice, *Play once and at turn start*, after *Stay while active* and *Play once, then fade*. Players who follow the catalog setting see it on their screen.
 
 ## 1.2.1 (2026-10-16)
 
