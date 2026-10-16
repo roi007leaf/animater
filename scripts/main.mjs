@@ -33,7 +33,6 @@ import { TokenMotionPlayer, motionDirection, withFragmentSeed, withFragmentCut, 
 import { installedFxCatalog, OptionalFxPlayer, fxAvailability, startTokenFxPreview, effectOptions } from './optional-fx.mjs';
 import {catalogFxSettings} from './catalog-fx.mjs';
 import {
-  resolveAutomaticRecipe,
   normalizeCatalogState,
   catalogSpell,
   spellRecipe,
@@ -46,7 +45,6 @@ import {
   catalogFeat,
   featRecipe,
   normalizeFeatCatalogState,
-  resolveAutomaticFeatRecipe,
 } from "./feat-catalog.mjs";
 import { PF2E_ACTION_CATALOG, PF2E_FEATURE_CATALOG, isFeatureItem, riderRecipes } from "./ability-catalog.mjs";
 // PF2e ability catalogs beside feats: setting key → catalog.
@@ -59,7 +57,7 @@ import { findDndEntry as findDndCatalogEntry } from "./dnd5e-catalog.mjs";
 import { findSfEntry as findSfCatalogEntry } from "./sf2e-catalog.mjs";
 const ABILITY_CATALOGS = { actionCatalog: PF2E_ACTION_CATALOG, featureCatalog: PF2E_FEATURE_CATALOG };
 const abilitySettingKey = item => item?.type === "action" ? "actionCatalog" : isFeatureItem(item) ? "featureCatalog" : null;
-import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState, resolveAutomaticWeaponRecipe } from "./weapon-catalog.mjs";
+import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState } from "./weapon-catalog.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, PF2E_STATE_SOURCE, normalizeStateCatalogState, catalogStateEntry, stateRecipe } from "./state-catalog.mjs";
 import { PersistentStates, perceivedStates } from "./persistent-states.mjs";
 import { DEFEATED_LOOK, registerDefeatedLook, installDefeatedLook, markDefeated, defeatedStates, defeatedStatusId } from "./defeated-look.mjs";
@@ -68,8 +66,9 @@ import { saveReaction, twoeSaveOutcome, dnd5eSaveOutcome } from './outcome.mjs';
 import { approvalState, approvedPlayerRecipe, playerSubmissions, validatePlayerRecipes, decide } from './player-recipes.mjs';
 import { dndSettingKey,sfSettingKey,dhSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
-import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState,resolveSfAutomaticRecipe} from './sf2e-catalog.mjs';
+import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState} from './sf2e-catalog.mjs';
 import {sfStateHost} from './sf2e-states.mjs';
+import { CROSSOVER_CATALOG, crossoverSystem, crossoverState, crossoverResolve, crossoverSettingText, twoeCatalogRecipe, twoeSettingKey } from "./twoe-crossover.mjs";
 import { DH_KINDS, DAGGERHEART_SOURCE, dhEntries, dhEntry, dhRecipe, normalizeDhCatalogState, resolveDaggerheartAutomaticRecipe, findDhEntry } from "./daggerheart-catalog.mjs";
 import {QUALITY_CHOICES,qualityRank,allowsMotion,allowsTokenFx,stateBudget,usersForTier,usersForSound} from './quality.mjs';
 import {ConditionBody,bodyTreatment} from './condition-body.mjs';
@@ -621,25 +620,30 @@ async function welcome() {
   const { on, total } = await useEveryCatalog();
   ChatMessage.create({ whisper: [game.user.id], speaker: { alias: "Animater" }, content: `<p><b>Animater is ready.</b> ${on} of ${total} catalogs are on: spells, feats, actions, weapons, conditions and effects animate when used. Open Animater to pause a catalog, exclude an entry or make your own version.</p>` });
 }
+// A catalog recipe by id; an SF2e id in a PF2e world (or back) once crossover is on.
 function builtinRecipe(id) {
- if(game.system.id==='sf2e'){
+ const sys=game.system.id,other=game.settings.get(ID,CROSSOVER_CATALOG)===true?crossoverSystem(sys):null;
+ return systemBuiltinRecipe(id,sys)??(other?systemBuiltinRecipe(id,other):null);
+}
+function systemBuiltinRecipe(id,sys) {
+ if(sys==='sf2e'){
   const entry=sfEntry(id);if(!entry)return null;
   const state=normalizeSfCatalogState(game.settings.get(ID,sfSettingKey(entry.kind))),variant=entry.variants.find(v=>v.recipe.id===id);
   return sfRecipe(entry,variant?.id,{motion:state.motion,sounds:state.sound?installedSoundCatalog(game.modules,globalThis.Sequencer?.Database):null,soundVolume:state.soundVolume,catalog:runtime.getCatalog()});
  }
- if(game.system.id==='dnd5e') {
+ if(sys==='dnd5e') {
   const entry=dndEntry(id)??dndEntries().find(e=>e.variants.some(v=>v.recipe.id===id));
   if(!entry)return null;
   const variant=entry.variants.find(v=>v.recipe.id===id),state=normalizeDndCatalogState(game.settings.get(ID,dndSettingKey(entry.kind)));
   return dndRecipe(entry,variant?.id,{motion:state.motion,sounds:state.sound?installedSoundCatalog(game.modules,globalThis.Sequencer?.Database):null,soundVolume:state.soundVolume});
  }
- if(game.system.id==='daggerheart'){
+ if(sys==='daggerheart'){
   const entry=dhEntry(id)??dhEntries().find(e=>e.variants.some(v=>v.recipe.id===id));
   if(!entry)return null;
   const variant=entry.variants.find(v=>v.recipe.id===id),state=normalizeDhCatalogState(game.settings.get(ID,dhSettingKey(entry.kind)));
   return dhRecipe(entry,variant?.id,{motion:state.motion});
  }
- if(game.system.id!=='pf2e')return null;
+ if(sys!=='pf2e')return null;
  return (catalogStateEntry(id) && stateRecipe(catalogStateEntry(id),{catalog:runtime.getCatalog()})) ??
         (catalogSpell(id) &&
           spellRecipe(
@@ -1017,6 +1021,9 @@ Hooks.once("init", () => {
     hint:'Lower this on slower computers. Applies only to what you see; other players keep their own setting.',
     scope:'client',config:true,type:String,choices:{...QUALITY_CHOICES},default:'full',
     onChange:()=>{syncQuality();persistentStates?.schedule();}});
+  game.settings.register(ID,CROSSOVER_CATALOG,{...crossoverSettingText(game.system.id),scope:'world',
+    // PF2e and SF2e only: the two systems share one rules engine.
+    config:Boolean(crossoverSystem(game.system.id)),type:Boolean,default:false});
   for(const kind of SF_KINDS)game.settings.register(ID,sfSettingKey(kind),{scope:"world",config:false,type:Object,default:normalizeSfCatalogState(),onChange:()=>persistentStates?.schedule()});
   for(const kind of DND_KINDS)game.settings.register(ID,dndSettingKey(kind),{scope:'world',config:false,type:Object,default:normalizeDndCatalogState(),onChange:()=>persistentStates?.schedule()});
   for(const kind of DH_KINDS)game.settings.register(ID,dhSettingKey(kind),{scope:'world',config:false,type:Object,default:normalizeDhCatalogState(),onChange:()=>persistentStates?.schedule()});
@@ -1118,28 +1125,13 @@ Hooks.once("init", () => {
   });
 });
 function systemRecipe(event, saved) {
-  return game.system.id === "pf2e" && abilitySettingKey(event.item)
-        ? ABILITY_CATALOGS[abilitySettingKey(event.item)].resolveAutomaticRecipe(event, game.settings.get(ID, abilitySettingKey(event.item)), saved,
-            { customEnabled: enabled(), soundCatalog: installedSoundCatalog(game.modules, globalThis.Sequencer?.Database) })
-        : game.system.id === "pf2e"
-        ? (event.item?.type === "weapon" ? resolveAutomaticWeaponRecipe : event.item?.type === "feat"
-            ? resolveAutomaticFeatRecipe
-            : resolveAutomaticRecipe)(
-            event,
-            game.settings.get(
-              ID,
-              event.item?.type === "weapon" ? "weaponCatalog" : event.item?.type === "feat" ? "featCatalog" : "spellCatalog",
-            ),
-            saved,
-            {
-              customEnabled: enabled(),
-              soundCatalog: installedSoundCatalog(
-                game.modules,
-                globalThis.Sequencer?.Database,
-              ),
-            },
-          )
-        : game.system.id==='sf2e'?resolveSfAutomaticRecipe(event,kind=>game.settings.get(ID,sfSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):game.system.id==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds:installedSoundCatalog(game.modules,globalThis.Sequencer?.Database)}):game.system.id==='daggerheart'?resolveDaggerheartAutomaticRecipe(event,kind=>game.settings.get(ID,dhSettingKey(kind)),saved,{customEnabled:enabled()}):matchRecipe(saved,event);
+  const sys = game.system.id, sounds = installedSoundCatalog(game.modules, globalThis.Sequencer?.Database);
+  if (["pf2e", "sf2e"].includes(sys)) return crossoverResolve(event, { systemId: sys, on: game.settings.get(ID, CROSSOVER_CATALOG) === true,
+    // Borrowed catalogs follow this world's catalog of the same kind; this world's saved recipes stay its own.
+    resolve: (from, e) => twoeCatalogRecipe(from, e, from === sys ? saved : [], { customEnabled: from === sys && enabled(), sounds,
+      stateFor: (kind) => from === sys ? game.settings.get(ID, twoeSettingKey(sys, kind)) : crossoverState(game.settings.get(ID, twoeSettingKey(sys, kind))) }),
+    knows: (e) => Boolean(catalogEntryFor(e.item) || saved.some((r) => matchRecipe([{ ...r, enabled: true }], e))) });
+  return sys==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds}):sys==='daggerheart'?resolveDaggerheartAutomaticRecipe(event,kind=>game.settings.get(ID,dhSettingKey(kind)),saved,{customEnabled:enabled()}):matchRecipe(saved,event);
 }
 // The recipe dispatch would play, or null. AA-customized items stay with AA.
 function resolveEvent(event) {

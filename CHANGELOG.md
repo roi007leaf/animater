@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **PF2e and SF2e can use each other's catalogs.** New world setting *Also use the SF2e catalogs* (in a PF2e world) or *Also use the PF2e catalogs* (in an SF2e world), off by default. With it on, an item that none of the world's recipes or catalogs know plays the other system's catalog animation: Starfinder Anachronism guns and tech in a PF2e game, Pathfinder magic in an SF2e game. Covers spells, feats, actions, features and weapons. A borrowed animation follows the world's own catalog of the same kind: it plays when that catalog is on for every entry, with its token motion, sound and volume. Items the world already covers keep their own animation, and an entry you excluded stays silent. Conditions and effects are not borrowed.
+
 ## 1.1.6 (2026-10-16)
 
 - **Faster page switching in the workspace** ([#3](https://github.com/roi007leaf/animater/issues/3)). Each switch re-read the sound catalog several times and, on Recipes, copied every recipe and re-checked conflicts once per card. Those are now read once per switch: the Recipes page switches about 10× faster and the catalog pages (Spells, Feats, Weapons…) 2-4× faster.

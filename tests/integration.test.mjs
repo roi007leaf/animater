@@ -284,6 +284,18 @@ test('actual workspace host reuses discovery after closing and reopening; explic
  await f.app().close();
 });
 
+test('PF2e world borrows the SF2e catalog for items it does not know once crossover is on',async()=>{
+ const laser=sfEntries('weapon').find(e=>e.name==='Laser Pistol'),f=await boot('pf2e',laser.variants.flatMap(v=>sfRecipe(laser,v.id,{motion:false,sounds:null}).stages.flatMap(s=>s.assets)));
+ f.settings.set('recipes',{schema:1,recipes:[]});f.settings.set('weaponCatalog',{enabled:true,independent:true,scope:'all',motion:false});
+ Object.assign(f.item,{type:'weapon',name:laser.name,system:{slug:laser.slug,range:40,group:'laser'},_stats:{}});
+ let n=0;const attack=async()=>{await f.fire('createChatMessage',{id:`pf-laser-${n++}`,author:{id:'u'},item:f.item,actor:f.actor,isRoll:true,flags:{pf2e:{context:{type:'attack-roll',target:{token:'Scene.s.Token.target'}},origin:{uuid:f.item.uuid}}},speaker:{scene:'s',token:'t'}});await new Promise(resolve=>setTimeout(resolve,600));return f.calls.filter(c=>c[0]==='file'&&c[1].startsWith('jb2a.lasershot.')).length;};
+ assert.equal(await attack(),0);
+ f.settings.set('crossoverCatalog',true);
+ assert.equal(await attack(),1,JSON.stringify(f.api.activity()));
+ // Follows this world's weapon catalog: off there, off here.
+ f.settings.set('weaponCatalog',{enabled:false});assert.equal(await attack(),1);
+ await f.fire('canvasTearDown');
+});
 test('native SF2e bootstrap routes native chat, area placement, isolated API and optional sounds',async()=>{
  const laser=sfEntries('weapon').find(e=>e.name==='Laser Pistol'),plasma=sfEntries('weapon').find(e=>e.name==='Plasma Cannon');
  const keys=[laser,plasma].flatMap(e=>e.variants.flatMap(v=>sfRecipe(e,v.id,{motion:false,sounds:null}).stages.flatMap(s=>s.assets))),f=await boot('sf2e',keys);
