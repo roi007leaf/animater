@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.4 (2026-10-16)
+
+- **SF2e lasting animations: "Play once, then fade" saves again.** Switching an SF2e condition or effect to play once and fade did nothing, because the setting was dropped when the catalog saved. ([#4](https://github.com/roi007leaf/animater/issues/4))
+
 ## 1.1.3 (2026-10-16)
 
 - **Finishers are always on.** The Module Settings → Finishers switch is gone: finishers are part of Animater, so a finisher you assign plays without turning anything on. To keep one from playing, disable it or remove its Applies-to items.
