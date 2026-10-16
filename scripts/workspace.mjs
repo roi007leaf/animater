@@ -55,7 +55,7 @@ import { stateCatalogHTML } from "./state-catalog-ui.mjs";
 import { FlashEditor } from "./flash-editor.mjs";
 import { recipeConflicts, unlinked } from "./recipe-conflicts.mjs";
 import { handleStateCatalogAction } from "./state-catalog-actions.mjs";
-import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem} from './catalog-system.mjs';
+import {catalogNavigation,catalogPageAllowed,catalogPageTitle,worldCatalogSystem,BORROWED_PAGES,borrowedNavigation} from './catalog-system.mjs';
 import {DndCatalogWorkspace} from './dnd5e-catalog-ui.mjs';
 import {sfCatalogProfile} from './sf2e-catalog.mjs';
 import {dhCatalogProfile} from './daggerheart-catalog.mjs';
@@ -121,7 +121,9 @@ export class Workspace {
     this.root = root;
     this.host = host;
     const catalogSystem = worldCatalogSystem(host.environment?.() ?? {});
-    this.dndCatalog = ['dnd5e','sf2e','daggerheart'].includes(catalogSystem) ? new DndCatalogWorkspace(this, catalogSystem === 'sf2e' ? sfCatalogProfile : catalogSystem === 'daggerheart' ? dhCatalogProfile : {}) : null;
+    // A PF2e world shows the SF2e catalogs it borrows (crossover) on their own sf2e-* pages.
+    this.dndCatalog = ['dnd5e','sf2e','daggerheart'].includes(catalogSystem) ? new DndCatalogWorkspace(this, catalogSystem === 'sf2e' ? sfCatalogProfile : catalogSystem === 'daggerheart' ? dhCatalogProfile : {})
+      : catalogSystem === 'pf2e' ? new DndCatalogWorkspace(this, { ...sfCatalogProfile, kinds: BORROWED_PAGES, borrowed: true, intro: "Borrowed from Starfinder 2e for items this world's own catalogs do not cover; passive feats excluded." }) : null;
     this.page = "recipes";
     this.search = "";
     this.category = "All";
@@ -520,6 +522,7 @@ export class Workspace {
     return [
       group("CREATE", [["recipes", "✦", "Recipes"], ["finishers", "✸", "Finishers"], ...(flash ? [["flash", "⚡", "Flash screens"]] : [])]),
       group("LIBRARY", [...catalogNavigation(env), ["assets", "▦", "Assets"]]),
+      ...(borrowedNavigation(env).length ? [group("BORROWED FROM SF2E", borrowedNavigation(env))] : []),
       group("TOOLS", [["activity", "◷", "Activity"], ["setup", "⚙", "Setup"]]),
     ].join("");
   }
@@ -527,7 +530,7 @@ export class Workspace {
   renderPage() {
     if(this.page!=='assets'||this.mediaLibrary?.fxScene)void this.mediaLibrary?.stopTokenPreview();
     if(!catalogPageAllowed(this.page,this.host.environment()))this.page='recipes';
-    if (abilityProfileForPage(this.page)&&!this.dndCatalog) {
+    if (abilityProfileForPage(this.page)&&!this.dndCatalog?.isCatalogPage()) {
       const profile = abilityProfileForPage(this.page), matches = profile.catalog.filter(this[profile.filtersKey] ?? defaultAbilityFilters());
       if (!matches.some((feat) => feat.id === this[profile.selectedKey]))
         this[profile.selectedKey] = matches[0]?.id;

@@ -68,7 +68,7 @@ import { dndSettingKey,sfSettingKey,dhSettingKey } from './catalog-system.mjs';
 import { dndStateHost } from './dnd5e-states.mjs';
 import {SF_KINDS,SF2E_SOURCE,sfEntries,sfEntry,sfRecipe,normalizeSfCatalogState} from './sf2e-catalog.mjs';
 import {sfStateHost} from './sf2e-states.mjs';
-import { CROSSOVER_CATALOG, crossoverSystem, crossoverState, crossoverResolve, crossoverSettingText, twoeCatalogRecipe, twoeSettingKey } from "./twoe-crossover.mjs";
+import { CROSSOVER_CATALOG, crossoverSystem, crossoverState, crossoverResolve, crossoverSettingText, twoeCatalogRecipe, twoeSettingKey, seedBorrowedState, TWOE_KINDS } from "./twoe-crossover.mjs";
 import { DH_KINDS, DAGGERHEART_SOURCE, dhEntries, dhEntry, dhRecipe, normalizeDhCatalogState, resolveDaggerheartAutomaticRecipe, findDhEntry } from "./daggerheart-catalog.mjs";
 import {QUALITY_CHOICES,qualityRank,allowsMotion,allowsTokenFx,stateBudget,usersForTier,usersForSound} from './quality.mjs';
 import {ConditionBody,bodyTreatment} from './condition-body.mjs';
@@ -247,6 +247,7 @@ function environment() {
     version: game.modules.get(ID)?.version,
     motionServerVersion: game.modules.get(ID)?.version,
     systemId: game.system.id,
+    crossover: crossoverOn(),
     pack,
     system,
     conflicts: ["autoanimations", "trigger-animations"]
@@ -478,8 +479,10 @@ function recipeOrigin(recipe, context = {}) {
   if (recipes().some((r) => r.id === recipe.id)) return { type: "recipe", id: recipe.id };
   const sys = game.system.id, named = recipe.catalogEntry ?? recipe.stateEntry;
   if (named) {
-    const entry = sys === "sf2e" ? sfEntry(named) : sys === "dnd5e" ? dndEntry(named) : sys === "daggerheart" ? dhEntry(named) : catalogStateEntry(named);
-    if (entry?.kind) return { type: "catalog", system: sys, kind: entry.kind, id: entry.id ?? named };
+    // A PF2e world's borrowed SF2e entries are managed on their own pages.
+    const sf = sys === "sf2e" || (recipe.systemId === "sf2e" && borrowsSfPages());
+    const entry = sf ? sfEntry(named) : sys === "dnd5e" ? dndEntry(named) : sys === "daggerheart" ? dhEntry(named) : catalogStateEntry(named);
+    if (entry?.kind) return { type: "catalog", system: sf ? "sf2e" : sys, kind: entry.kind, id: entry.id ?? named };
   }
   const item = context?.item, entry = item ? catalogEntryFor(item) : null;
   // A rider (Sneak Attack on a Strike) plays for the Strike's item but is not its entry.
@@ -595,7 +598,17 @@ const CATALOG_KINDS = { pf2e: ["spellCatalog", "featCatalog", "actionCatalog", "
   sf2e: ["spell", "feat", "action", "feature", "weapon", "item", "condition", "effect"].map(sfSettingKey),
   dnd5e: ["spell", "feat", "weapon", "item", "condition", "effect"].map(dndSettingKey),
   daggerheart: DH_KINDS.map(dhSettingKey) };
-const catalogKeys = () => (CATALOG_KINDS[game.system.id] ?? []).filter((key) => game.settings.settings.has(`${ID}.${key}`));
+const crossoverOn = () => game.settings.get(ID, CROSSOVER_CATALOG) === true;
+// A PF2e world shows (and so manages) the SF2e catalogs it borrows.
+const borrowsSfPages = () => game.system.id === "pf2e" && crossoverOn();
+async function seedBorrowedCatalogs() {
+  if (!borrowsSfPages() || !game.user.isGM || !(game.users.activeGM?.isSelf ?? true)) return;
+  for (const kind of TWOE_KINDS) {
+    const seeded = seedBorrowedState(game.settings.get(ID, twoeSettingKey("pf2e", kind)), game.settings.get(ID, sfSettingKey(kind)));
+    if (seeded) await game.settings.set(ID, sfSettingKey(kind), normalizeSfCatalogState(seeded));
+  }
+}
+const catalogKeys = () => [...(CATALOG_KINDS[game.system.id] ?? []), ...(borrowsSfPages() ? TWOE_KINDS.map(sfSettingKey) : [])].filter((key) => game.settings.settings.has(`${ID}.${key}`));
 const catalogOn = (key) => { const s = game.settings.get(ID, key) ?? {}; return s.enabled === true && (s.scope ?? "all") === "all"; };
 function catalogsOn() { const keys = catalogKeys(); return { on: keys.filter(catalogOn).length, total: keys.length }; }
 async function useEveryCatalog() {
@@ -622,7 +635,7 @@ async function welcome() {
 }
 // A catalog recipe by id; an SF2e id in a PF2e world (or back) once crossover is on.
 function builtinRecipe(id) {
- const sys=game.system.id,other=game.settings.get(ID,CROSSOVER_CATALOG)===true?crossoverSystem(sys):null;
+ const sys=game.system.id,other=crossoverOn()?crossoverSystem(sys):null;
  return systemBuiltinRecipe(id,sys)??(other?systemBuiltinRecipe(id,other):null);
 }
 function systemBuiltinRecipe(id,sys) {
@@ -759,7 +772,7 @@ function workspaceHost() {
     loadMediaCatalog:(refresh,onProgress)=>mediaLibraryLoader.load(refresh,onProgress),
     sfCatalogState:kind=>normalizeSfCatalogState(game.settings.get(ID,sfSettingKey(kind))),
     setSfCatalogState:async(kind,change)=>{
-      if(!game.user.isGM||game.system.id!=="sf2e"||!SF_KINDS.includes(kind))throw Error("SF2e catalog configuration requires a GM in an SF2e world.");
+      if(!game.user.isGM||!(game.system.id==="sf2e"||borrowsSfPages()&&TWOE_KINDS.includes(kind))||!SF_KINDS.includes(kind))throw Error("SF2e catalog configuration requires a GM in an SF2e world, or a PF2e world that uses the SF2e catalogs.");
       const key=sfSettingKey(kind);
       await game.settings.set(ID,key,normalizeSfCatalogState({...game.settings.get(ID,key),...change}));
       persistentStates?.schedule();
@@ -1023,7 +1036,8 @@ Hooks.once("init", () => {
     onChange:()=>{syncQuality();persistentStates?.schedule();}});
   game.settings.register(ID,CROSSOVER_CATALOG,{...crossoverSettingText(game.system.id),scope:'world',
     // PF2e and SF2e only: the two systems share one rules engine.
-    config:Boolean(crossoverSystem(game.system.id)),type:Boolean,default:false});
+    config:Boolean(crossoverSystem(game.system.id)),type:Boolean,default:false,
+    onChange:()=>{void seedBorrowedCatalogs().finally(()=>{persistentStates?.schedule();app?.workspace?.render();});}});
   for(const kind of SF_KINDS)game.settings.register(ID,sfSettingKey(kind),{scope:"world",config:false,type:Object,default:normalizeSfCatalogState(),onChange:()=>persistentStates?.schedule()});
   for(const kind of DND_KINDS)game.settings.register(ID,dndSettingKey(kind),{scope:'world',config:false,type:Object,default:normalizeDndCatalogState(),onChange:()=>persistentStates?.schedule()});
   for(const kind of DH_KINDS)game.settings.register(ID,dhSettingKey(kind),{scope:'world',config:false,type:Object,default:normalizeDhCatalogState(),onChange:()=>persistentStates?.schedule()});
@@ -1126,10 +1140,11 @@ Hooks.once("init", () => {
 });
 function systemRecipe(event, saved) {
   const sys = game.system.id, sounds = installedSoundCatalog(game.modules, globalThis.Sequencer?.Database);
-  if (["pf2e", "sf2e"].includes(sys)) return crossoverResolve(event, { systemId: sys, on: game.settings.get(ID, CROSSOVER_CATALOG) === true,
-    // Borrowed catalogs follow this world's catalog of the same kind; this world's saved recipes stay its own.
-    resolve: (from, e) => twoeCatalogRecipe(from, e, from === sys ? saved : [], { customEnabled: from === sys && enabled(), sounds,
-      stateFor: (kind) => from === sys ? game.settings.get(ID, twoeSettingKey(sys, kind)) : crossoverState(game.settings.get(ID, twoeSettingKey(sys, kind))) }),
+  if (["pf2e", "sf2e"].includes(sys)) return crossoverResolve(event, { systemId: sys, on: crossoverOn(),
+    // A PF2e world manages its borrowed SF2e catalogs on their own pages; an SF2e world's borrowed
+    // PF2e catalogs follow its own catalog of the same kind.
+    resolve: (from, e) => twoeCatalogRecipe(from, e, saved, { customEnabled: enabled(), sounds,
+      stateFor: (kind) => from === sys || sys === "pf2e" ? game.settings.get(ID, twoeSettingKey(from, kind)) : crossoverState(game.settings.get(ID, twoeSettingKey(sys, kind))) }),
     knows: (e) => Boolean(catalogEntryFor(e.item) || saved.some((r) => matchRecipe([{ ...r, enabled: true }], e))) });
   return sys==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds}):sys==='daggerheart'?resolveDaggerheartAutomaticRecipe(event,kind=>game.settings.get(ID,dhSettingKey(kind)),saved,{customEnabled:enabled()}):matchRecipe(saved,event);
 }

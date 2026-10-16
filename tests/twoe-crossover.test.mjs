@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { crossoverSystem, crossoverState, crossoverResolve, twoeCatalogRecipe, twoeSettingKey } from "../scripts/twoe-crossover.mjs";
+import { crossoverSystem, crossoverState, crossoverResolve, twoeCatalogRecipe, twoeSettingKey, seedBorrowedState } from "../scripts/twoe-crossover.mjs";
+import { borrowedNavigation, catalogPageAllowed, catalogPageTitle, catalogNavigation } from "../scripts/catalog-system.mjs";
 
 const on = { enabled: true, scope: "all", motion: false, sound: true, soundVolume: 0.6 };
 const stateFor = (state) => () => crossoverState(state);
@@ -48,4 +49,44 @@ test("crossover runs only when on and only for items this world does not know", 
   // This world's own recipe always wins.
   assert.deepEqual(crossoverResolve(event, { systemId: "sf2e", on: true, resolve, knows: () => false }), { id: "sf" });
   assert.equal(crossoverResolve(event, { systemId: "dnd5e", on: true, resolve: () => null, knows: () => false }), null);
+});
+
+test("a PF2e world with crossover on lists the borrowed SF2e catalogs on their own pages", () => {
+  const off = { systemId: "pf2e" }, on = { systemId: "pf2e", crossover: true };
+  assert.deepEqual(borrowedNavigation(off), []);
+  assert.deepEqual(borrowedNavigation({ systemId: "sf2e", crossover: true }), []);
+  assert.deepEqual(borrowedNavigation(on).map(([page]) => page), ["sf2e-spells", "sf2e-feats", "sf2e-actions", "sf2e-features", "sf2e-weapons"]);
+  assert.equal(catalogPageAllowed("sf2e-weapons", off), false);
+  assert.equal(catalogPageAllowed("sf2e-weapons", on), true);
+  assert.equal(catalogPageTitle("sf2e-weapons", on), "SF2e weapon catalog");
+  // PF2e's own pages are untouched.
+  assert.deepEqual(catalogNavigation(on), catalogNavigation(off));
+});
+
+test("turning crossover on starts untouched SF2e catalogs like this world's own", () => {
+  assert.deepEqual(seedBorrowedState({ enabled: true, scope: "all", motion: false, soundVolume: 0.5 }, {}),
+    { enabled: true, independent: true, scope: "all", preferCatalog: false, motion: false, sound: true, soundVolume: 0.5 });
+  // Off or limited to picks in this world: leave the SF2e catalog off.
+  assert.equal(seedBorrowedState({ enabled: false }, {}), null);
+  assert.equal(seedBorrowedState({ enabled: true, scope: "selected" }, {}), null);
+  // A GM's own SF2e choices are never overwritten.
+  assert.equal(seedBorrowedState(on, { enabled: false, excluded: ["x"] }), null);
+  assert.equal(seedBorrowedState(on, { enabled: true, motion: true }), null);
+});
+
+test("a PF2e world configures its borrowed SF2e weapons from the sf2e-weapons page", async () => {
+  const { DndCatalogWorkspace } = await import("../scripts/dnd5e-catalog-ui.mjs");
+  const { sfCatalogProfile } = await import("../scripts/sf2e-catalog.mjs");
+  const { BORROWED_PAGES } = await import("../scripts/catalog-system.mjs");
+  const states = {};
+  const w = { page: "sf2e-weapons", stageIndex: 0, render() {}, recipePreviewHTML: () => "", recipe() { return ui.recipe(); },
+    host: { environment: () => ({ systemId: "pf2e", crossover: true, ready: true }), sfCatalogState: (k) => states[k], setSfCatalogState: async (k, v) => { states[k] = { ...states[k], ...v }; }, recipes: () => [], soundCatalog: () => null } };
+  const ui = new DndCatalogWorkspace(w, { ...sfCatalogProfile, kinds: BORROWED_PAGES, borrowed: true });
+  assert.equal(ui.kind, "weapon");
+  assert.ok(ui.html().includes("SF2E"));
+  await ui.action("dnd-auto", {});
+  assert.equal(states.weapon.enabled, true);
+  // PF2e's own pages are not this catalog's.
+  w.page = "weapons";
+  assert.equal(ui.isCatalogPage(), false);
 });
