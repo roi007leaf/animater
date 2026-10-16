@@ -9,6 +9,7 @@ import {
   validateRecipe,
   parseImport,
   resolveAsset,
+  catalogIndex,
   MOTIONS,
   MAX_STAGES,
   normalizeFinisher,
@@ -30,6 +31,7 @@ import { trackOf, studioHTML, studioAfterRender, studioAction, studioFrame, stud
 import { previewMediaFailed, markPreviewMediaFailure, clearPreviewMediaFailure } from "./preview-media-status.mjs";
 import { chainPreview, hasChain } from "./chain-preview.mjs";
 import { patchDOM } from "./dom-patch.mjs";
+import { withRenderMemo, renderMemo } from "./render-memo.mjs";
 import { MediaLibrary } from './media-library.mjs';
 import { mediaForReference, mediaType } from './media-library-model.mjs';
 import {
@@ -462,10 +464,12 @@ export class Workspace {
     }
     if (recipe.stages.some((s) => s.kind === "sound" && !s.soundFile?.trim()))
       return "Choose an audio file";
+    // Every recipe card checks its stages: index the catalog once per render.
+    const catalog = renderMemo(this.host, "catalogIndex", () => catalogIndex(this.host.catalog()), () => this.host.catalog());
     const missing = recipe.stages.filter(
       (s) =>
         !["motion", "sprite", "sound"].includes(s.kind) && !OPTIONAL_FX_KINDS.has(s.kind) &&
-        !resolveAsset(s, this.host.catalog()),
+        !resolveAsset(s, catalog),
     );
     return missing.length
       ? `${missing.length} missing asset${missing.length > 1 ? "s" : ""}`
@@ -519,7 +523,8 @@ export class Workspace {
       group("TOOLS", [["activity", "◷", "Activity"], ["setup", "⚙", "Setup"]]),
     ].join("");
   }
-  render() {
+  render() { return withRenderMemo(this, () => this.renderPage()); }
+  renderPage() {
     if(this.page!=='assets'||this.mediaLibrary?.fxScene)void this.mediaLibrary?.stopTokenPreview();
     if(!catalogPageAllowed(this.page,this.host.environment()))this.page='recipes';
     if (abilityProfileForPage(this.page)&&!this.dndCatalog) {
@@ -657,7 +662,8 @@ export class Workspace {
       ? `${stage.subject === "targets" ? "Target" : "Source"} · ${{ lunge: "Lunge", recoil: "Recoil", shake: "Shake", spin: "Spin", levitate: "Rise", pulse: "Pulse", rush: "Rush", leap: "Leap", roll: "Roll", dodge: "Dodge" }[stage.motion] ?? "Motion"}`
       : KINDS[stage.kind];
   }
-  updateInspector() {
+  updateInspector() { return withRenderMemo(this, () => this.patchInspector()); }
+  patchInspector() {
     if (this.isStudio()) return this.render();
     const inspector = this.root.querySelector(".an-inspector");
     if (!inspector) return this.render();
@@ -1251,7 +1257,9 @@ export class Workspace {
   linkNote(r) {
     const thing = r.lifecycle === "document" ? "condition or effect" : "item";
     if (unlinked(r)) return { warn: true, short: "Not linked yet", text: `Not linked to anything yet: name the ${thing} in Recipe settings.` };
-    const note = recipeConflicts(this.host.recipes ? this.listedRecipes() : [r], { entryName: (id) => catalogStateEntry(id)?.name }).get(r.id);
+    const entryName = (id) => catalogStateEntry(id)?.name;
+    // One conflicts pass per render, not one per recipe card.
+    const note = (this.host.recipes ? renderMemo(this.host, "recipeConflicts", () => recipeConflicts(this.listedRecipes(), { entryName })) : recipeConflicts([r], { entryName })).get(r.id);
     if (!note) return null;
     const what = [...note.what].map((w) => w.startsWith("item:") ? `“${this.host.itemSummary?.(w.slice(5))?.name ?? "the same item"}”` : `“${w}”`).join(", ");
     if (!note.plays) return { warn: true, short: `Not playing: “${note.winner.name}” plays instead`, text: `Not playing: “${note.winner.name}” is also linked to ${what} and plays instead. Disable one, or link this one to something else.` };

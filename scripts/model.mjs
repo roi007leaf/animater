@@ -395,14 +395,36 @@ export function resolveAsset(stage, catalog) {
 // unless the stage picks at random).
 export function installedAssets(stage, catalog, limit = Infinity) {
   if (["motion", "sprite", "sound"].includes(stage.kind)) return [];
-  const keys = catalog.map((e) => e.key), found = [];
+  const index = catalog instanceof CatalogIndex ? catalog : null, keys = index ? null : catalog.map((e) => e.key), found = [];
   for (const key of stage.assets) {
     if (found.length >= limit) break;
-    const hit = keys.includes(key) ? key : safeMediaFile(key) && mediaType(key) !== 'audio' ? key : keys.find((k) => k.startsWith(key + "."));
+    const hit = (index ? index.has(key) : keys.includes(key)) ? key : safeMediaFile(key) && mediaType(key) !== 'audio' ? key : index ? index.firstWithPrefix(key + ".") : keys.find((k) => k.startsWith(key + "."));
     if (hit && !found.includes(hit)) found.push(hit);
   }
   return found;
 }
+// The catalog's keys prepared for many lookups (a render checks every stage of
+// every recipe card): a set for exact keys, and keys sorted by code unit so a
+// "key." prefix is a binary search. A prefix still resolves to its first match
+// in catalog order, as the plain catalog does.
+class CatalogIndex {
+  constructor(catalog) {
+    this.keys = new Set();
+    this.order = new Map();
+    catalog.forEach(({ key }, i) => { this.keys.add(key); if (!this.order.has(key)) this.order.set(key, i); });
+    this.sorted = [...this.keys].sort();
+  }
+  has(key) { return this.keys.has(key); }
+  firstWithPrefix(prefix) {
+    let lo = 0, hi = this.sorted.length;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (this.sorted[mid] < prefix) lo = mid + 1; else hi = mid; }
+    let best;
+    for (let i = lo; i < this.sorted.length && this.sorted[i].startsWith(prefix); i++)
+      if (best === undefined || this.order.get(this.sorted[i]) < this.order.get(best)) best = this.sorted[i];
+    return best;
+  }
+}
+export const catalogIndex = (catalog) => new CatalogIndex(catalog);
 export function planRecipe(recipe, catalog, context) {
   return buildPlan(recipe, catalog, context, true);
 }
