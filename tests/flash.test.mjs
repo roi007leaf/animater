@@ -323,3 +323,15 @@ test("moments in Daggerheart: a creature is down once it marks its last hit poin
   assert.equal(downMoment(combat([orcA]), orcA.actor, "daggerheart"), "finalEnemy");
   assert.equal(downMoment(combat([orcA, orcB]), orcA.actor, "pf2e"), "finalEnemy", "no PF2e hp track: nobody counts as standing");
 });
+
+test("the library gives Combat initiated its own section, before Combat start, with an On/Off switch", async () => {
+  const { FlashEditor } = await import("../scripts/flash-editor.mjs");
+  const screens = [validateFlash({ id: "go", name: "Go", event: "start" }), validateFlash({ id: "roll", name: "Roll", event: "initiated" }), validateFlash({ id: "r", name: "Round", event: "round" })];
+  const host = { flashScreens: () => screens, flashDefaults: () => ({ initiated: "roll" }), flashFonts: () => [], flashVars: () => ({}) };
+  const html = new FlashEditor({ host, page: "flash", root: null, render() {} }).html();
+  const at = (s) => html.indexOf(s);
+  assert.ok(at("Combat initiated</span>") >= 0 && at("Combat initiated</span>") < at("Combat start</span>") && at("Combat start</span>") < at("During combat</span>"));
+  assert.match(html, /an-flash-tile is-initiated">.*?data-action="flash-moment-toggle" data-id="roll" data-event="initiated" role="switch" aria-checked="true"/);
+  assert.doesNotMatch(html, /flash-card-default" data-id="roll"/, "no Set default: it is switched on, not picked per combat");
+  assert.doesNotMatch(html, /flash-start-when|On add:/, "the old On add switch is gone");
+});

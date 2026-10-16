@@ -2688,6 +2688,7 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-libgroup-head small { color: var(--an-muted); font-size: 11.5px; }
 .animater .an-flash-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
 .animater .an-flash-tile { position: relative; --flash-accent: #9e8aff; }
+.animater .an-flash-tile.is-initiated { --flash-accent: #e0565b; }
 .animater .an-flash-tile.is-start { --flash-accent: #ff8a4c; }
 .animater .an-flash-tile.is-moment { --flash-accent: #ffd34d; }
 .animater .an-flash-tile.is-end { --flash-accent: #7ad1a1; }
@@ -2704,10 +2705,6 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater .an-flash-tile:hover .an-flash-default.is-offer, .animater .an-flash-tile:focus-within .an-flash-default.is-offer, .animater .an-flash-default.is-offer:focus-visible { opacity: 1; }
 @media (hover: none), (max-width: 700px) { .animater .an-flash-tile .an-flash-default.is-offer { opacity: 1; } }
 .animater .an-flash-unsaved { color: #ffd34d; }
-.animater .an-flash-switch.is-inline { position: static; transform: none; margin-left: auto; }
-.animater-flash-pick .an-flash-switch { display: inline-flex; align-items: center; gap: 5px; width: auto; flex: 0 0 auto; height: 22px; min-height: 22px; line-height: 1; padding: 0 7px 0 3px; border-radius: 999px; font-size: 10.5px; font-weight: 700; color: var(--color-text-secondary, #aaa); background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; }
-.animater-flash-pick .an-flash-switch span { width: 14px; height: 14px; border-radius: 50%; background: currentColor; }
-.animater-flash-pick .an-flash-switch.is-on { color: #1b1530; background: #ffd34d; border-color: #ffd34d; padding: 0 3px 0 7px; flex-direction: row-reverse; }
 .animater .an-flash-tile .an-flash-switch { top: auto; bottom: 12px; right: 10px; transform: none; }
 .animater .an-brand small { white-space: nowrap; letter-spacing: 0.06em; }
 /* Editor header: back, name and actions; then the screen's timing. */

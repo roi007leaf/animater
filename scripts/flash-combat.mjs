@@ -48,7 +48,7 @@ export function registerFlashSettings(ID) {
 export function flashScreens(host) {
   const { ID } = host;
   const screens = () => validateFlashes(game.settings.get(ID, FLASH_SETTING)?.screens);
-  const defaults = () => ({ start: "none", end: "none", startWhen: "begin", ...Object.fromEntries(MOMENT_EVENTS.map((e) => [e, "none"])), ...game.settings.get(ID, FLASH_DEFAULTS) });
+  const defaults = () => ({ start: "none", end: "none", ...Object.fromEntries(MOMENT_EVENTS.map((e) => [e, "none"])), ...game.settings.get(ID, FLASH_DEFAULTS) });
   const vars = (combat = game.combat, extra = {}) => ({ scene: canvas.scene?.name ?? "", round: String(combat?.round ?? ""), combatants: encounterPeople(combat), ...extra });
   let showing = null;
   const playSound = (src, volume) => { if (src && !host.quietHere()) void foundry.audio.AudioHelper.play({ src, volume, loop: false }, false); };
@@ -94,13 +94,6 @@ export function flashScreens(host) {
     if (everyone) game.socket.emit(`module.${ID}`, { type: "flash", sender: host.clientId, screen, vars: v });
     void show(screen, v).catch((error) => host.trace("Blocked", `Flash screen: ${error.message}`));
   }
-  // Turning "opening on add" on with no default opening picks the first combat start screen, so something plays.
-  function setStartOnAdd(on) {
-    const d = defaults(), all = screens();
-    const has = d.start === "random" || all.some((s) => s.id === d.start);
-    const first = all.find((s) => s.event === "start") ?? all.find((s) => s.event === "any");
-    return game.settings.set(ID, FLASH_DEFAULTS, { ...d, startWhen: on ? "add" : "begin", ...(on && !has && first ? { start: first.id } : {}) });
-  }
   const activeGM = () => game.user.isGM && (game.users.activeGM ? game.users.activeGM.isSelf : true);
   const flagKey = (event) => (event === "start" ? "flashStart" : "flashEnd");
   function forCombat(combat, event) {
@@ -123,29 +116,37 @@ export function flashScreens(host) {
   }
   function receive(data) {
     if (data?.type === "flash" && data.screen) void show(data.screen, data.vars ?? {}).catch(() => {});
-    if (data?.type === "flash-moment" && MOMENT_EVENTS.includes(data.event) && activeGM()) moment(data.event, { name: String(data.extra?.name ?? "").slice(0, 80) }, game.combats?.get(data.combatId) ?? runningCombat());
+    if (data?.type === "flash-moment" && MOMENT_EVENTS.includes(data.event) && data.event !== "initiated" && activeGM()) moment(data.event, { name: String(data.extra?.name ?? "").slice(0, 80) }, game.combats?.get(data.combatId) ?? runningCombat());
   }
-  // The opening plays when the GM begins combat, or (world default "startWhen": "add") as soon as the
-  // encounter has someone visible in it, so players see the screen before the tracker. Once per combat.
+  // The opening plays when the GM begins combat. Once per combat.
   const opened = (combat) => combat?.getFlag?.(ID, "flashOpened");
   function open(combat) {
     if (!activeGM() || opened(combat)) return;
-    // Only a screen that actually plays counts as the opening; with none picked, a later add or Begin Combat may still play one.
     const screen = forCombat(combat, "start");
     if (!screen) return;
     void combat.setFlag?.(ID, "flashOpened", true);
     play(screen, { everyone: true, combat });
   }
   Hooks.on("combatStart", (combat) => open(combat));
+  // Combat initiated: the encounter has its first visible combatants and waits for Begin Combat
+  // ("Roll for Initiative!"). Once per combat.
+  const initiated = (combat) => combat?.getFlag?.(ID, "flashInitiated");
+  function initiate(combat) {
+    if (!activeGM() || initiated(combat)) return;
+    const screen = chooseFlash(screens(), "initiated", undefined, defaults().initiated);
+    if (!screen) return;
+    void combat.setFlag?.(ID, "flashInitiated", true);
+    play(screen, { everyone: true, combat });
+  }
   // Adding everyone arrives as a burst of combatants: wait for it to settle, then play once.
   const adding = new Map();
   Hooks.on("createCombatant", (combatant) => {
     const combat = combatant.combat ?? combatant.parent;
-    if (!activeGM() || defaults().startWhen !== "add" || !combat || combat.started || opened(combat)) return;
+    if (!activeGM() || !combat || combat.started || defaults().initiated === "none" || initiated(combat)) return;
     clearTimeout(adding.get(combat.id));
     adding.set(combat.id, setTimeout(() => {
       adding.delete(combat.id);
-      if (!combat.started && encounterPeople(combat).length) open(combat);
+      if (!combat.started && encounterPeople(combat).length) initiate(combat);
     }, 300));
   });
   Hooks.on("deleteCombat", (combat) => { if (activeGM() && combat.started) play(forCombat(combat, "end"), { everyone: true, combat }); });
@@ -190,7 +191,7 @@ export function flashScreens(host) {
     bar.className = "animater-flash-pick";
     // The world defaults (used when a combat picks nothing), behind the ⚙.
     const defaultMenu = (event) => `<label>${event === "start" ? "Default opening" : "Default ending"}<select data-animater-flash-default="${event}">${[["none", "None"], ["random", "Random"], ...fitting(event).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[event] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`;
-    bar.innerHTML = `<span aria-hidden="true">⚡</span>${menu("start")}${menu("end")}<span class="animater-flash-tools"><button type="button" data-animater-flash-defaults class="${showDefaults ? "active" : ""}" title="Defaults for every combat" aria-label="Defaults for every combat" aria-expanded="${showDefaults}"><i class="fa-solid fa-gear"></i></button><button type="button" data-animater-flash-test title="Preview this combat's opening on your screen" aria-label="Preview opening flash screen">▶</button></span>${showDefaults ? `<span class="animater-flash-defaults">${defaultMenu("start")}${defaultMenu("end")}<button type="button" class="an-flash-switch${d.startWhen === "add" ? " is-on" : ""}" data-animater-flash-onadd role="switch" aria-checked="${d.startWhen === "add"}" title="Play the opening as soon as combatants are added, before players see the tracker"><span></span>Opening on add: ${d.startWhen === "add" ? "On" : "Off"}</button><span class="animater-flash-moments-title">During combat</span>${MOMENT_EVENTS.map((ev) => `<label>${esc(FLASH_EVENTS[ev])}<select data-animater-flash-default="${ev}">${[["none", "Off"], ...fitting(ev).filter((s) => s.event === ev).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[ev] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`).join("")}</span>` : ""}`;
+    bar.innerHTML = `<span aria-hidden="true">⚡</span>${menu("start")}${menu("end")}<span class="animater-flash-tools"><button type="button" data-animater-flash-defaults class="${showDefaults ? "active" : ""}" title="Defaults for every combat" aria-label="Defaults for every combat" aria-expanded="${showDefaults}"><i class="fa-solid fa-gear"></i></button><button type="button" data-animater-flash-test title="Preview this combat's opening on your screen" aria-label="Preview opening flash screen">▶</button></span>${showDefaults ? `<span class="animater-flash-defaults">${defaultMenu("start")}${defaultMenu("end")}<span class="animater-flash-moments-title">During combat</span>${MOMENT_EVENTS.map((ev) => `<label>${esc(FLASH_EVENTS[ev])}<select data-animater-flash-default="${ev}">${[["none", "Off"], ...fitting(ev).filter((s) => s.event === ev).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[ev] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`).join("")}</span>` : ""}`;
     bar.querySelector("[data-animater-flash-defaults]").addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); showDefaults = !showDefaults; bar.replaceWith(Object.assign(picker(combat), { className: bar.className })); });
     bar.addEventListener("change", (e) => {
       const world = e.target.dataset.animaterFlashDefault;
@@ -198,7 +199,6 @@ export function flashScreens(host) {
       const event = e.target.dataset.animaterFlash;
       if (event) void (e.target.value ? combat.setFlag(ID, flagKey(event), e.target.value) : combat.unsetFlag(ID, flagKey(event)));
     });
-    bar.querySelector("[data-animater-flash-onadd]")?.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); void setStartOnAdd(d.startWhen !== "add"); });
     bar.querySelector("[data-animater-flash-test]").addEventListener("click", () => play(forCombat(combat, "start"), { combat }));
     return bar;
   }
@@ -250,7 +250,6 @@ export function flashScreens(host) {
   return {
     screens, defaults, vars, play, receive, sound, playSound, before,
     save: (list) => game.settings.set(ID, FLASH_SETTING, { schema: 1, screens: validateFlashes(list) }),
-    setStartOnAdd,
     setDefault: (event, id) => game.settings.set(ID, FLASH_DEFAULTS, { ...defaults(), [event]: id }),
     events: FLASH_EVENTS,
   };

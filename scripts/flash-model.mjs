@@ -3,11 +3,12 @@ import { uuid } from "./uuid.mjs";
 // or ends ("Roll for Initiative!", "Victory"). The GM builds them from text,
 // image and band layers, each with a position, timing, entrance and exit.
 export const FLASH_EVENTS = Object.freeze({
-  start: "Combat start", end: "Combat end", any: "Combat start or end", action: "Before an animation",
+  initiated: "Combat initiated", start: "Combat start", end: "Combat end", any: "Combat start or end", action: "Before an animation",
   round: "New round", crit: "Critical hit", enemyDown: "Enemy defeated", lastEnemy: "Last enemy standing", finalEnemy: "Last enemy falls", partyDown: "Party member down",
 });
-// Moments during combat (not start or end): one default each, set on the Flash screens page.
-export const MOMENT_EVENTS = ["round", "crit", "enemyDown", "lastEnemy", "finalEnemy", "partyDown"];
+// Moments around combat (not start or end): one default each, set on the Flash screens page.
+// "initiated" plays when an encounter gets its first combatants, before the GM begins it.
+export const MOMENT_EVENTS = ["initiated", "round", "crit", "enemyDown", "lastEnemy", "finalEnemy", "partyDown"];
 // Animated backgrounds: JB2A loops that fill the screen behind the layers.
 export const FLASH_BACKGROUNDS = Object.freeze({
   "": "None", "jb2a.screen_overlay.01.bad_omen": "Bad omen", "jb2a.ambient_fog.001.loop.large.white": "Fog",

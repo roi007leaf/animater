@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Combat initiated flash screen:** a new moment that plays once when an encounter gets its combatants, before Begin Combat, so it can say "Roll for Initiative!" while the opening (Combat start) waits for the GM to begin. Set a screen's "Plays at" to Combat initiated and switch it on in the library's own Combat initiated section (or the tracker's defaults). Off by default. It replaces the "On add" switch: the Combat start screen now always plays on Begin Combat.
+
 ## 1.1.1 (2026-10-16)
 
 - **No more stall on load with JB2A Patreon.** Animater read Sequencer's database one key at a time, and each lookup scanned the whole database, so with Patreon's thousands of animations Foundry froze for 1-3 seconds after loading (twice: on ready and when Sequencer finished). It now indexes the database in one pass, about 20 times faster, with the same results.
