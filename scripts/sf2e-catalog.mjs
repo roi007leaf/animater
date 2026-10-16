@@ -18,7 +18,7 @@ export const sfEntry=id=>byId.get(id)??byRecipe.get(id)??null;
 export function normalizeSfCatalogState(state={}){
  state??={};const ids=values=>[...new Set((Array.isArray(values)?values:[]).filter(id=>byId.has(id)))];
  const number=(v,fallback,min,max)=>Number.isFinite(Number(v))?Math.max(min,Math.min(max,Number(v))):fallback;
- return {enabled:state.enabled===true,independent:state.independent===true,preferCatalog:state.preferCatalog===true,scope:state.scope==='selected'?'selected':'all',selected:ids(state.selected),excluded:ids(state.excluded),customized:ids(state.customized),motion:state.motion!==false,sound:state.sound!==false,soundVolume:number(state.soundVolume,.35,0,1),opacity:number(state.opacity,1,.1,1)};
+ return {enabled:state.enabled===true,independent:state.independent===true,preferCatalog:state.preferCatalog===true,scope:state.scope==='selected'?'selected':'all',selected:ids(state.selected),excluded:ids(state.excluded),customized:ids(state.customized),motion:state.motion!==false,fade:state.fade===true,sound:state.sound!==false,soundVolume:number(state.soundVolume,.35,0,1),opacity:number(state.opacity,1,.1,1)};
 }
 export const sfEntryEnabled=(id,state)=>state?.enabled===true&&!state.excluded?.includes(id)&&(state.scope!=='selected'||state.selected?.includes(id)||state.customized?.includes(id));
 export function useSfEntry(state,id){

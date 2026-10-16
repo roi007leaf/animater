@@ -93,3 +93,9 @@ test('SF workspace uses native IDs for details and never exposes D&D edition con
  const ui=new DndCatalogWorkspace(w,sfCatalogProfile),html=ui.html();assert.ok(html.includes('SF2E'));assert.ok(html.includes('Rank 10'));assert.ok(!html.includes('2014')&&!html.includes('D&D')&&!html.includes('PF2e'));
  await ui.action('dnd-details',{});assert.equal(calls[0],ui.entry().uuid);await ui.action('dnd-use',{});assert.ok(states.spell.selected.includes(ui.entry().id));
 });
+
+test('SF2e catalog keeps the lasting animation choice so Play once, then fade sticks', () => {
+ assert.equal(normalizeSfCatalogState({}).fade, false);
+ assert.equal(normalizeSfCatalogState({fade:true}).fade, true);
+ assert.equal(normalizeSfCatalogState({...normalizeSfCatalogState({fade:true}),motion:false}).fade, true);
+});
