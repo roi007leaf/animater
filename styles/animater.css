@@ -2398,6 +2398,9 @@
 .animater .an-flash-actions { margin-left: auto; display: flex; gap: 6px; align-items: center; }
 .animater .an-flash-actions button { width: auto; height: 34px; white-space: nowrap; }
 .animater .an-flash-stage-wrap { border-radius: 10px; overflow: hidden; border: 1px solid var(--an-line); }
+/* Dragged smaller (the bar under the play controls): the 16:9 stage takes that height, centred, and the layers get the room. */
+.animater .an-flash-main.has-stage-height .an-flash-stage-wrap { width: min(100%, calc(var(--an-flash-stage-height) * 16 / 9)); align-self: center; }
+.animater .an-flash-hsplit { flex: none; height: 10px; margin: -4px 0 -2px; }
 .animater .an-flash-frame { position: relative; aspect-ratio: 16 / 9; background: repeating-conic-gradient(#20242e 0 25%, #1a1d26 0 50%) 0 0 / 24px 24px; }
 .animater .an-flash-transport { display: flex; align-items: center; gap: 8px; }
 .animater .an-flash-transport button { width: auto; height: 32px; white-space: nowrap; }

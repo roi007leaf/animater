@@ -332,6 +332,7 @@ export class Workspace {
       }
       const h = e.target.closest?.("[data-splitter]"); if (h) this.setInspectorWidth(380, h.closest(".an-work, .an-studio"));
       if (e.target.closest?.("[data-st-hsplit]")) { this.studioTimelineHeight = 280; try { globalThis.localStorage?.removeItem("animater.timelineHeight"); } catch {} this.render(); }
+      if (e.target.closest?.("[data-flash-hsplit]")) this.flashEditor?.resetStageHeight();
     }, { signal: this.abort.signal });
     root.addEventListener("keydown", (e) => {
       if (this.isStudio() && studioKey(this, e)) return;

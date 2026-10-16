@@ -257,7 +257,10 @@ export class FlashEditor {
     // Inspector tabs: the selected layer, or the screen as a whole.
     const tab = this.tab === "screen" || !layer ? "screen" : "layer";
     const tabs = `<div class="an-flash-tabs" role="tablist"><button role="tab" data-action="flash-tab" data-tab="layer" aria-selected="${tab === "layer"}" class="${tab === "layer" ? "is-on" : ""}" ${layer ? "" : "disabled"}>${layer ? `<span class="an-flash-row-icon kind-${layer.kind}" aria-hidden="true">${KIND_ICONS[layer.kind]}</span>` : ""}Layer</button><button role="tab" data-action="flash-tab" data-tab="screen" aria-selected="${tab === "screen"}" class="${tab === "screen" ? "is-on" : ""}">Screen</button></div>`;
-    return `<section class="${pageClass}"><div class="an-flash-main">${head}${stage}${layersHTML}</div><aside class="an-flash-inspector">${tabs}${tab === "layer" ? this.layerHTML(layer) : scene}</aside></section>`;
+    // Drag the bar under the play controls to trade stage size for taller tracks, as in the recipe studio.
+    const split = `<div class="an-st-hsplit an-flash-hsplit" data-flash-hsplit role="separator" aria-orientation="horizontal" aria-label="Resize the stage and the layers" tabindex="0" data-tooltip="Drag to make the stage smaller and the layers taller · double-click to reset"></div>`;
+    const height = this.stageHeight(), main = height ? `<div class="an-flash-main has-stage-height" style="--an-flash-stage-height:${height}px">` : `<div class="an-flash-main">`;
+    return `<section class="${pageClass}">${main}${head}${stage}${split}${layersHTML}</div><aside class="an-flash-inspector">${tabs}${tab === "layer" ? this.layerHTML(layer) : scene}</aside></section>`;
   }
   // The toolbar over the stage: the most used actions for the selected kind of layer.
   quickTools(l) {
@@ -449,9 +452,43 @@ export class FlashEditor {
     if (sy !== undefined) { y = sy; frame.insertAdjacentHTML("beforeend", `<span class="an-flash-guide is-h" style="top:${y}%"></span>`); }
     return { x, y };
   }
+  // The stage's height when the bar under it was dragged (remembered on this device), else null: full width.
+  stageHeight() {
+    if (this._stageHeight === undefined) {
+      let stored = NaN;
+      try { stored = Number(globalThis.localStorage?.getItem("animater.flashStageHeight")); } catch {}
+      this._stageHeight = Number.isFinite(stored) && stored >= 120 ? stored : null;
+    }
+    return this._stageHeight;
+  }
+  setStageHeight(px, main = null) {
+    const widest = main ? (main.getBoundingClientRect().width * 9) / 16 : Infinity;
+    this._stageHeight = Math.round(Math.max(120, Math.min(widest, px)));
+    if (main) { main.classList.add("has-stage-height"); main.style.setProperty("--an-flash-stage-height", `${this._stageHeight}px`); }
+    try { globalThis.localStorage?.setItem("animater.flashStageHeight", String(this._stageHeight)); } catch {}
+  }
+  resetStageHeight() {
+    this._stageHeight = null;
+    try { globalThis.localStorage?.removeItem("animater.flashStageHeight"); } catch {}
+    this.w.render();
+  }
+  stageSplitDrag(e) {
+    const split = e.target.closest?.("[data-flash-hsplit]");
+    if (!split) return false;
+    e.preventDefault();
+    const main = split.closest(".an-flash-main"), frame = main?.querySelector(".an-flash-frame");
+    if (!main || !frame) return true;
+    const top = frame.getBoundingClientRect().top, below = split.getBoundingClientRect().top - frame.getBoundingClientRect().bottom;
+    split.setPointerCapture?.(e.pointerId);
+    split.classList.add("is-active");
+    const move = (ev) => this.setStageHeight(ev.clientY - top - below, main);
+    const up = () => { split.classList.remove("is-active"); split.removeEventListener("pointermove", move); split.removeEventListener("pointerup", up); split.removeEventListener("pointercancel", up); };
+    split.addEventListener("pointermove", move); split.addEventListener("pointerup", up); split.addEventListener("pointercancel", up);
+    return true;
+  }
   pointer(e) {
     if (e.button !== 0) return false;
-    const handled = this.scrubLabel(e) || this.lengthDrag(e) || this.rulerDrag(e) || this.timelineDrag(e) || this.stageDrag(e);
+    const handled = this.stageSplitDrag(e) || this.scrubLabel(e) || this.lengthDrag(e) || this.rulerDrag(e) || this.timelineDrag(e) || this.stageDrag(e);
     // Working on the stage or timeline leaves any text field, so shortcuts apply.
     if (handled && e.target.closest?.("[data-flash-stage], .an-flash-row-track")) document.activeElement?.blur?.();
     return handled;

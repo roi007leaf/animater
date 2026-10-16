@@ -335,3 +335,26 @@ test("the library gives Combat initiated its own section, before Combat start, w
   assert.doesNotMatch(html, /flash-card-default" data-id="roll"/, "no Set default: it is switched on, not picked per combat");
   assert.doesNotMatch(html, /flash-start-when|On add:/, "the old On add switch is gone");
 });
+
+test("editor: a drag bar between the stage and the layers trades stage size for taller tracks, like the recipe studio", async () => {
+  const { FlashEditor } = await import("../scripts/flash-editor.mjs");
+  const screens = [validateFlash({ id: "s", name: "Test", layers: [{ kind: "text", text: "HI" }, { kind: "band" }] })];
+  const host = { flashScreens: () => screens, flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
+  const renders = [];
+  const ed = new FlashEditor({ host, page: "recipes", root: null, render() { renders.push(1); } });
+  ed.editing = true;
+  let html = ed.html();
+  const bar = html.indexOf("data-flash-hsplit");
+  assert.ok(bar > html.indexOf("an-flash-transport") && bar < html.indexOf('class="an-flash-layers"'), "the bar sits under the play controls, above the layers");
+  assert.match(html, /data-flash-hsplit[^>]*role="separator"[^>]*aria-orientation="horizontal"/);
+  assert.doesNotMatch(html, /--an-flash-stage-height/, "the stage fills the width until you drag");
+  ed.setStageHeight(40);
+  assert.equal(ed.stageHeight(), 120, "never smaller than a readable stage");
+  ed.setStageHeight(260);
+  html = ed.html();
+  assert.match(html, /an-flash-main has-stage-height" style="--an-flash-stage-height:260px"/);
+  ed.resetStageHeight();
+  assert.equal(ed.stageHeight(), null, "double-click goes back to the full-width stage");
+  assert.doesNotMatch(ed.html(), /--an-flash-stage-height/);
+  assert.ok(renders.length > 0);
+});

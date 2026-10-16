@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Taller layer tracks in the flash screen editor.** A drag bar under the stage's play controls works like the one in the recipe studio: drag it up to make the stage smaller and see more layers at once, down for a bigger stage. Your choice is remembered on this device; double-click the bar to go back to a full-width stage.
+
 ## 1.2.3 (2026-10-16)
 
 - **Invisible looks right on the token again (PF2e)** ([#3](https://github.com/roi007leaf/animater/issues/3)). Its ripple is a refraction clip, which only reads as a ripple under the token; Animater drew it on top, so a pale square covered the creature. Refraction layers now always stay under the token, as in the local preview.
