@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.1 (2026-10-16)
 
 - **Daggerheart animations fit their targets.** Checked on the canvas, frame by frame:
   - **Weapon swings reach the target.** Sword, axe, hammer and spear clips stretch from the wielder to the target as JB2A draws them, instead of sitting small on the target's edge.
