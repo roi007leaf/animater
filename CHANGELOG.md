@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.1 (2026-10-16)
 
 - **No more stall on load with JB2A Patreon.** Animater read Sequencer's database one key at a time, and each lookup scanned the whole database, so with Patreon's thousands of animations Foundry froze for 1-3 seconds after loading (twice: on ready and when Sequencer finished). It now indexes the database in one pass, about 20 times faster, with the same results.
 
