@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.4 (2026-10-16)
 
 - **Taller layer tracks in the flash screen editor.** A drag bar under the stage's play controls works like the one in the recipe studio: drag it up to make the stage smaller and see more layers at once, down for a bigger stage. Your choice is remembered on this device; double-click the bar to go back to a full-width stage.
 - **The popped-out Combat Tracker looks right again.** Right-click → pop out put the Opening and Ending flash menus in the window's title bar, over its menu and close buttons. They now sit in the tracker's own header, as in the sidebar.
