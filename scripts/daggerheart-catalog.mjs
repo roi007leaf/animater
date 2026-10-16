@@ -9,6 +9,7 @@ import { designStages } from "./daggerheart-card-design.mjs";
 import { clone, normalize, validateRecipe, matchRecipe, matchStrikeOverride } from "./model.mjs";
 import { DH_ROLL_TYPES, MELEE_RANGES, dhDamageKind, weaponFamily } from "./daggerheart.mjs";
 import { DEFEATED_RECIPE } from "./defeated-look.mjs";
+import { weaponSoundDesign, cardSoundDesign, featureSoundDesign, utilitySoundDesign, withDhSounds, weaponMotion, featureMotion, utilityMotion } from "./daggerheart-polish.mjs";
 export { DAGGERHEART_SOURCE };
 export const DH_KINDS = Object.freeze(["card", "weapon", "condition"]);
 const SOURCE_URL = `https://github.com/${DAGGERHEART_SOURCE.repository ?? "Foundryborne/daggerheart"}/tree/${DAGGERHEART_SOURCE.version}`;
@@ -136,13 +137,13 @@ export function weaponStyle({ name, range, damageTypes } = {}) {
 export function weaponStages(weapon) {
   const s = weaponStyle(weapon);
   if (s.melee) return [
-    { stageId: "strike", kind: "impact", assets: s.strike, duration: 1400, scale: 1.3 },
-    { stageId: "hit", kind: "impact", assets: s.hit, delay: 550, duration: 900, scale: 0.85 }];
+    { stageId: "strike-contact", kind: "impact", assets: s.strike, duration: 1400, scale: 1.3 },
+    { stageId: "hit-accent", kind: "impact", assets: s.hit, delay: 550, duration: 900, scale: 0.85 }];
   const lead = s.muzzle ?? s.cast;
   return [
     ...(lead ? [{ stageId: s.muzzle ? "flash" : "cast", kind: "cast", assets: lead, duration: s.muzzle ? 500 : 700, scale: 0.6 }] : []),
     { stageId: "shot", kind: "travel", assets: s.strike, delay: lead ? 150 : 0, duration: 900, scale: 0.8 },
-    { stageId: "hit", kind: "impact", assets: s.hit, delay: lead ? 1000 : 850, duration: 900, scale: 0.9 }];
+    { stageId: "hit-accent", kind: "impact", assets: s.hit, delay: lead ? 1000 : 850, duration: 900, scale: 0.9 }];
 }
 
 // Adversary features used without an attack roll (daggerheart.mjs featureFields): one fallback per
@@ -188,7 +189,8 @@ export const DH_CONDITIONS = Object.freeze([
       { stageId: "shimmer", kind: "aura", assets: ["jb2a.energy_strands.overlay.dark_red.01", "jb2a.markers.shield_cracked.purple.02"], scale: 0.85, opacity: 0.45 }] },
   { statusId: "hidden", name: "Hidden", group: "Lasting", lasting: true, color: "#9aa0a6", img: "icons/magic/perception/silhouette-stealth-shadow.webp",
     description: "A smoky fade; only the creature's owners and the GM see it.",
-    stages: [{ stageId: "smoke", kind: "aura", assets: ["jb2a.smoke.plumes_loop.01.grey", "jb2a.smoke.puff.centered.grey"], scale: 1, opacity: 0.55, below: true }] },
+    stages: [{ stageId: "smoke", kind: "aura", assets: ["jb2a.smoke.plumes_loop.01.grey", "jb2a.smoke.puff.centered.grey"], scale: 1, opacity: 0.55, below: true },
+      { stageId: "veil", kind: "aura", assets: ["jb2a.energy_strands.overlay.blue.01", "jb2a.energy_strands.overlay.dark_purple.01", "jb2a.smoke.puff.centered.grey"], scale: 0.8, opacity: 0.3 }] },
   { statusId: "restrained", name: "Restrained", group: "Lasting", lasting: true, color: "#8c8f99", img: "icons/magic/control/debuff-chains-shackle-movement-red.webp",
     description: "Chains and vines hold the creature while it is Restrained.",
     stages: [{ stageId: "chains", kind: "aura", assets: ["jb2a.markers.chain.standard.loop.02.grey", "jb2a.markers.chain.standard.loop.02.red"], scale: 0.9, opacity: 0.9 },
@@ -196,7 +198,8 @@ export const DH_CONDITIONS = Object.freeze([
   { statusId: "deathMove", name: "Death move", group: "Moment", moment: true, color: "#6b6f78", img: null,
     description: "A short, dramatic toll when a character makes their death move.",
     stages: [{ stageId: "toll", kind: "cast", assets: ["jb2a.toll_the_dead.grey.skull_smoke", "jb2a.toll_the_dead.green.skull_smoke"], duration: 2200, scale: 1.1 },
-      { stageId: "smoke", kind: "cast", assets: ["jb2a.smoke.puff.centered.grey"], delay: 900, duration: 1600, scale: 1 }] },
+      { stageId: "smoke", kind: "cast", assets: ["jb2a.smoke.puff.centered.grey"], delay: 900, duration: 1600, scale: 1 }],
+    sound: "drain" },
   { statusId: "defeated", name: "Defeated", group: "Defeated", defeated: true, color: "#9aa0a6", img: null, description: "Follows the Defeated look setting." },
   { statusId: "unconscious", name: "Unconscious", group: "Defeated", defeated: true, color: "#9aa0a6", img: null, description: "Follows the Defeated look setting." },
   { statusId: "dead", name: "Dead", group: "Defeated", defeated: true, color: "#9aa0a6", img: null, description: "Follows the Defeated look setting." },
@@ -228,6 +231,7 @@ function cardEntry(card) {
     const own = (card.actions ?? []).filter((a) => a?.id && record?.actions?.[a.id] && (DH_ROLL_TYPES.has(a.roll) ? "attack" : "use") === trigger);
     const actions = own.length ? Object.fromEntries(own.map((a) => [a.id, recipeFor(entry, id, trigger, designStages(record.actions[a.id], { palette, level: card.level, levelScale }))])) : null;
     return { id, label: `${trigger === "attack" ? "spellcast roll" : "use"} · ${part ? part.shape : design}`, design: part ? part.shape : design, recipe: recipeFor(entry, id, trigger, stages),
+      sound: cardSoundDesign(card, design, record?.motif),
       ...(actions ? { actions } : {}) };
   });
   return entry;
@@ -241,7 +245,7 @@ function weaponEntry(weapon) {
     color: style.magical ? "#a070ff" : "#c9a36b", sourceURL: `${SOURCE_URL}/src/packs/items/weapons`,
     descriptionText: `${weapon.range} ${weapon.trait ?? ""} ${(weapon.damageTypes ?? []).join(" ")} ${weapon.burden ?? ""}`.replace(/\s+/g, " ").trim() };
   const id = `${entry.id}-attack`;
-  entry.variants = [{ id, label: `attack · ${mode}`, weaponMode: mode, recipe: recipeFor(entry, id, "attack", weaponStages(weapon)) }];
+  entry.variants = [{ id, label: `attack · ${mode}`, weaponMode: mode, recipe: recipeFor(entry, id, "attack", weaponMotion(style, weaponStages(weapon))), sound: weaponSoundDesign(style, weapon.name) }];
   return entry;
 }
 // Actions that only heal, gain Hope or Fear, or apply an effect (daggerheart.mjs utilityFields): a
@@ -265,7 +269,7 @@ function utilityEntry(look) {
     quality: "themed", color: l.color, sourceURL: `${SOURCE_URL}/src/packs`,
     descriptionText: `any feature, potion or item action that only ${look === "boon" ? "applies an effect" : look === "heal" ? "heals" : `gains or spends ${l.label}`}` };
   const id = `${entry.id}-use`;
-  entry.variants = [{ id, label: "use", recipe: recipeFor(entry, id, "use", utilityStages(look)) }];
+  entry.variants = [{ id, label: "use", recipe: recipeFor(entry, id, "use", utilityMotion(look, utilityStages(look))), sound: utilitySoundDesign(look) }];
   return entry;
 }
 function featureEntry(element) {
@@ -276,7 +280,7 @@ function featureEntry(element) {
     descriptionText: `adversary feature ${look.label.toLowerCase()} breath burst strike area save` };
   entry.variants = FEATURE_SHAPES.map((shape) => {
     const id = `${entry.id}-${shape}`;
-    return { id, label: `use · ${shape}`, featureShape: shape, recipe: recipeFor(entry, id, "use", featureStages(element, shape)) };
+    return { id, label: `use · ${shape}`, featureShape: shape, recipe: recipeFor(entry, id, "use", featureMotion(element, shape, featureStages(element, shape))), sound: featureSoundDesign(element, shape) };
   });
   return entry;
 }
@@ -288,7 +292,7 @@ function conditionEntry(c) {
   const recipe = c.defeated
     ? validateRecipe({ ...clone(DEFEATED_RECIPE), id: `animater-${id}`, name: c.name, description: "", systemId: "daggerheart", catalogEntry: entry.id, stateEntry: entry.id })
     : recipeFor(entry, id, "effect", c.stages, c.lasting ? { lifecycle: "document", stateEntry: entry.id } : {});
-  entry.variants = [{ id, label: c.lasting ? "while the condition lasts" : c.moment ? "when it is applied" : "follows the Defeated look setting", recipe }];
+  entry.variants = [{ id, label: c.lasting ? "while the condition lasts" : c.moment ? "when it is applied" : "follows the Defeated look setting", recipe, ...(c.sound ? { sound: { namespace: "spell", profile: c.sound } } : {}) }];
   return entry;
 }
 
@@ -313,14 +317,16 @@ export function useDhEntry(state, id) {
   return normalizeDhCatalogState({ ...state, enabled: true, independent: true, scope: state.enabled ? state.scope : "selected", selected: state.enabled ? [...state.selected, id] : [id],
     excluded: state.excluded.filter((v) => v !== id), customized: state.customized.filter((v) => v !== id) });
 }
-// v1 designs carry no sound cues; `motion: false` drops any motion stage a variant has. `actionId`
+// `motion: false` drops any motion stage a variant has; `sounds` (an installed audio catalog, null
+// when the Sounds switch is off) adds the variant's sound design (daggerheart-polish.mjs). `actionId`
 // (the action that fired) picks that action's own design; without one, or for an action with none,
 // the variant's card design plays (the library's Use and preview).
-export function dhRecipe(entry, variantId, { motion = true, actionId = null } = {}) {
+export function dhRecipe(entry, variantId, { motion = true, actionId = null, sounds = null, soundVolume = 0.35 } = {}) {
   if (!entry) throw Error("Choose a Daggerheart catalog entry first.");
   const variant = entry.variants.find((v) => v.id === variantId) ?? entry.variants[0];
   const recipe = clone((actionId && variant.actions?.[actionId]) || variant.recipe);
   if (!motion && recipe.stages.some((s) => s.kind !== "motion")) recipe.stages = recipe.stages.filter((s) => s.kind !== "motion");
+  if (recipe.lifecycle !== "document") recipe.stages = withDhSounds(entry, variant, recipe.stages, { sounds, soundVolume });
   return validateRecipe(recipe);
 }
 // A feature fallback plays the variant of the event's shape.
@@ -356,7 +362,7 @@ export function findDhEntry(event) {
 
 // Plays like the D&D catalog: your recipes that match by name win unless you picked the catalog's;
 // lasting conditions and the defeated set belong to the persistent layers, not to dispatch.
-export function resolveDaggerheartAutomaticRecipe(event, stateFor, saved = [], { customEnabled = true } = {}) {
+export function resolveDaggerheartAutomaticRecipe(event, stateFor, saved = [], { customEnabled = true, sounds = null } = {}) {
   const entry = findDhEntry(event), state = normalizeDhCatalogState(entry && stateFor(entry.kind));
   const selected = entry && dhEntryEnabled(entry.id, state), prefer = selected && (state.selected.includes(entry.id) || (state.preferCatalog && !state.customized.includes(entry.id)));
   const custom = customEnabled || (selected && state.customized.includes(entry.id)) ? saved : [];
@@ -366,7 +372,7 @@ export function resolveDaggerheartAutomaticRecipe(event, stateFor, saved = [], {
   if (!selected || entry.state?.lasting || entry.state?.defeated) return null;
   if (!prefer && custom.some((r) => !r.enabled && matchRecipe([{ ...r, enabled: true }], event))) return null;
   const variant = dhVariantForEvent(entry, event);
-  return variant ? dhRecipe(entry, variant.id, { motion: state.motion, actionId: event?.actionId ?? null }) : null;
+  return variant ? dhRecipe(entry, variant.id, { motion: state.motion, actionId: event?.actionId ?? null, sounds: state.sound ? sounds : null, soundVolume: state.soundVolume }) : null;
 }
 
 export function filterDhEntries(kind, { search = "", level = "all", theme = "all" } = {}) {

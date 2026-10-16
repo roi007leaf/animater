@@ -657,7 +657,7 @@ function systemBuiltinRecipe(id,sys) {
   const entry=dhEntry(id)??dhEntries().find(e=>e.variants.some(v=>v.recipe.id===id));
   if(!entry)return null;
   const variant=entry.variants.find(v=>v.recipe.id===id),state=normalizeDhCatalogState(game.settings.get(ID,dhSettingKey(entry.kind)));
-  return dhRecipe(entry,variant?.id,{motion:state.motion});
+  return dhRecipe(entry,variant?.id,{motion:state.motion,sounds:state.sound?installedSoundCatalog(game.modules,globalThis.Sequencer?.Database):null,soundVolume:state.soundVolume});
  }
  if(sys!=='pf2e')return null;
  return (catalogStateEntry(id) && stateRecipe(catalogStateEntry(id),{catalog:runtime.getCatalog()})) ??
@@ -1147,7 +1147,7 @@ function systemRecipe(event, saved) {
     // Borrowed catalogs are managed on their own pages, so each reads its own settings.
     resolve: (from, e) => twoeCatalogRecipe(from, e, saved, { customEnabled: enabled(), sounds, stateFor: (kind) => game.settings.get(ID, twoeSettingKey(from, kind)) }),
     knows: (e) => Boolean(catalogEntryFor(e.item) || saved.some((r) => matchRecipe([{ ...r, enabled: true }], e))) });
-  return sys==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds}):sys==='daggerheart'?resolveDaggerheartAutomaticRecipe(event,kind=>game.settings.get(ID,dhSettingKey(kind)),saved,{customEnabled:enabled()}):matchRecipe(saved,event);
+  return sys==='dnd5e'?resolveDndAutomaticRecipe(event,kind=>game.settings.get(ID,dndSettingKey(kind)),saved,{customEnabled:enabled(),sounds}):sys==='daggerheart'?resolveDaggerheartAutomaticRecipe(event,kind=>game.settings.get(ID,dhSettingKey(kind)),saved,{customEnabled:enabled(),sounds}):matchRecipe(saved,event);
 }
 // The recipe dispatch would play, or null. AA-customized items stay with AA.
 function resolveEvent(event) {

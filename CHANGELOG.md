@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- **Daggerheart animations have sound.** Weapons, domain cards, feature attacks, abilities and the Death move now play matching sounds when GGG, PSFX or Sound FX Library is active: a blade strike for a Longsword, a bowstring for a Longbow, claws for an adversary's bite, a gust for Whirlwind, a heal for a potion. Weapons sound like their family, cards like what their name describes (fire, frost, healing, a teleport…) or else their domain. The catalog pages' Sounds switch and volume slider apply.
+- **Daggerheart strikes move the token.** As in PF2e, a melee wielder lunges into the swing, a bow draws, a gun kicks, a thrower winds back, and a struck target shakes. Feature attacks rear back, burst or slam, and abilities rise or pulse. The Token motion switch turns it off.
+- **Richer Daggerheart conditions.** Vulnerable makes the creature wobble off balance, Hidden adds a faint veil to its smoke, and the Death move tolls with a sound.
 - **Daggerheart heals, Hope, Fear and effects animate.** Actions that only heal, gain Hope or Fear, or apply an effect played nothing: a Minor Health Potion, Hardy, No Mercy, Retract, an adversary's Relentless or Momentum. They now glow on the user, and on each target when there is one: green for healing, gold for Hope, purple for Fear, a soft boon for other effects. Domain cards and weapons keep their own animations. The four looks sit with the fallbacks on the Weapons page, governed by its switch.
 - **No more Skipped rows for feature and potion damage (Daggerheart).** A damage card from a feature, potion or other non-weapon item added a Skipped row to Activity although its use had already played.
 

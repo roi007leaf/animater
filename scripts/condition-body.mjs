@@ -12,6 +12,8 @@ const BY_NAME = {
   exhaustion: 'sag', fatigued: 'sag', encumbered: 'sag', 'heavily encumbered': 'sag', 'exceeding carrying capacity': 'sag', drained: 'sag', enfeebled: 'sag', slowed: 'sag', dehydration: 'sag', malnutrition: 'sag',
   grappled: 'struggle', grabbed: 'struggle', restrained: 'struggle', immobilized: 'struggle',
   blinded: 'search',
+  // Daggerheart: Vulnerable is off balance.
+  vulnerable: 'wobble',
   unconscious: 'breathe', sleeping: 'breathe', dying: 'breathe', stable: 'breathe',
   petrified: 'stone', prone: 'prone',
   paralyzed: 'still', dead: 'still',
