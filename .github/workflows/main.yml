@@ -10,7 +10,8 @@
 # often, so Foundry hears about at most one release per 24 hours: a later
 # release in that window stays on GitHub (its update link still works) and the
 # publish job stops with an error. "Run workflow" (Publish to Foundry) sends an
-# existing release to Foundry by hand once the window has passed.
+# existing release to Foundry by hand once the window has passed. Release notes
+# containing <!-- no-foundry --> keep that release on GitHub only.
 #
 # Audits, docs, tests, tools, previews and publication reports never ship.
 name: Animater Release Pipeline
@@ -132,8 +133,9 @@ jobs:
   publish-to-foundry:
     runs-on: ubuntu-latest
     needs: [build]
-    # After a published (non-pre)release's build, or by hand (the build is skipped then).
-    if: ${{ always() && ((github.event_name == 'release' && github.event.release.prerelease != true && github.event.release.tag_name != 'manifest' && needs.build.result == 'success') || github.event_name == 'workflow_dispatch') }}
+    # After a published (non-pre)release's build, or by hand (the build is skipped then). A release whose
+    # notes contain <!-- no-foundry --> (an HTML comment, invisible on GitHub) stays on GitHub only.
+    if: ${{ always() && ((github.event_name == 'release' && github.event.release.prerelease != true && github.event.release.tag_name != 'manifest' && !contains(github.event.release.body, '<!-- no-foundry -->') && needs.build.result == 'success') || github.event_name == 'workflow_dispatch') }}
     permissions:
       actions: read
       contents: read
