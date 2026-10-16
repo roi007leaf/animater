@@ -117,10 +117,47 @@ export function targetOutcomes(system, roll) {
 const RANK = { criticalSuccess: 3, success: 2, failure: 1 };
 export const bestOutcome = (outcomes) => list(outcomes).reduce((best, o) => ((RANK[o?.outcome] ?? 0) > (RANK[best] ?? 0) ? o.outcome : best), null);
 
+// An adversary's reach: a Close attack named for a natural weapon, limb, lash or long blade strikes in
+// melee (a dragon's Bite and Claws, a Tail Swipe); a thrown, shot or blasted one stays ranged.
+const REACH = /bite|claw|fang|teeth|tooth|jaw|maw|talon|tail|wing|tentacle|pseudo|lash|whip|vine|\barms?\b|\bhands?\b|fist|strangle|slash|sword|scythe|lance|armaments|weaponry|horn|tusk|hoo(?:f|ves)|slam|swipe|crush|rend/i;
+const MISSILE_WORDS = /throw|arrow|blast|bolt|flash|flame|fire|javelin|spit|shot|breath/i;
+export const strikeMode = (range, name = "") =>
+  MELEE_RANGES.has(range) || (range === "close" && REACH.test(name) && !MISSILE_WORDS.test(name)) ? "melee" : "ranged";
 function weaponModeOf(item, action) {
-  if (item && item?.type !== "weapon") return {};
-  const range = item ? item?.system?.attack?.range : action?.range;
-  return range ? { weaponMode: MELEE_RANGES.has(range) ? "melee" : "ranged" } : {};
+  if (item?.type === "weapon") { const range = item?.system?.attack?.range; return range ? { weaponMode: MELEE_RANGES.has(range) ? "melee" : "ranged" } : {}; }
+  if (item && item?.type !== "feature") return {};
+  // An adversary's standard attack (no Item) is named by its action, a feature by the feature.
+  return action?.range ? { weaponMode: strikeMode(action.range, item?.name ?? action?.name ?? "") } : {};
+}
+
+// An adversary feature's action (Item type "feature"): what it looks like when it is used without an
+// attack roll (a breath, an Avalanche, Rend and Crush). Shape by its area (a cone or line breathes, an
+// emanation or circle bursts) or, without one, its range; element by the feature's own words, then its
+// damage type. Only attacks, damage and saves play: a spotlight or a Fear gain is not a strike.
+const ELEMENTS = [
+  ["cold", /\b(?:ice|icy|frost|froze|freez|cold|snow|blizzard|chill|glaci|hail|avalanche|rime|sleet)/i],
+  ["fire", /\b(?:fire|flam|burn|blaz|inferno|ember|magma|lava|scorch|smolder|pyre|molten|ash(?:es)?\b|heat\b)/i],
+  ["lightning", /\b(?:lightning|thunder|storm|electr|shock(?!wave)|spark|static|volt)/i],
+  ["acid", /\b(?:acid|corro|caustic|dissolv)/i],
+  ["poison", /\b(?:poison|venom|toxi|spore|miasma|noxious|gas\b)/i],
+];
+const BREATH_SHAPES = new Set(["inFront", "line", "cone"]);
+const plain = (html) => String(html ?? "").replace(/<[^>]*>|@\w+\[[^\]]*\]/g, " ");
+// The element named first in the earliest text that names one; magical damage without one is arcane.
+export function featureElement(texts, damageTypes) {
+  for (const text of texts) {
+    let best = null, at = Infinity;
+    for (const [element, pattern] of ELEMENTS) { const m = pattern.exec(String(text ?? "")); if (m && m.index < at) [best, at] = [element, m.index]; }
+    if (best) return best;
+  }
+  return dhDamageKind(damageTypes) === "magical" ? "arcane" : "physical";
+}
+export function featureFields(item, action) {
+  if (item?.type !== "feature" || !action) return {};
+  if (!["attack", "damage"].includes(action?.type) && !action?.save?.trait) return {};
+  const area = list(action?.areas)[0]?.shape, range = action?.range || null;
+  const featureShape = area ? (BREATH_SHAPES.has(area) ? "breath" : "burst") : range && !MELEE_RANGES.has(range) ? "breath" : "strike";
+  return { featureShape, featureElement: featureElement([item?.name, action?.name, plain(item?.system?.description)], list(action?.damage?.main?.type)) };
 }
 // The action's own id (its key in the item's system.actions): a card's per-action design is found by it.
 const actionIdOf = (action) => action?.id || action?._id || null;
@@ -130,8 +167,8 @@ const named = (item, name) => (item ? {} : { itemName: name, activityName: name 
 export function daggerheartAttackKind(message) {
   const { item, action } = sourceOf(message);
   if (rollTypeOf(message) === "spellcast") return "spell";
-  const range = item?.type === "weapon" ? item?.system?.attack?.range : !item ? action?.range : null;
-  if (range) return MELEE_RANGES.has(range) ? "melee" : "ranged";
+  if (item?.type === "weapon") { const range = item?.system?.attack?.range; if (range) return MELEE_RANGES.has(range) ? "melee" : "ranged"; }
+  else if ((!item || item?.type === "feature") && action?.range) return strikeMode(action.range, item?.name ?? action?.name ?? "");
   return "other";
 }
 
@@ -153,7 +190,7 @@ export function daggerheartRollEvent(message, userId, { sceneId = null } = {}) {
     ...(outcomes.length ? { targetOutcomes: Object.fromEntries(outcomes.map((o) => [o.id, o.outcome])) } : {}),
     outcome: outcomes.length ? bestOutcome(outcomes) : rollIsCritical(roll) ? "criticalSuccess" : null,
     rollType, duality: message?.type === "dualityRoll" ? dualityOf(roll) : null, actionId: message?.system?.source?.action || actionIdOf(action),
-    ...weaponModeOf(item, action), ...cardFields(item),
+    ...weaponModeOf(item, action), ...cardFields(item), ...featureFields(item, action),
   };
 }
 
@@ -171,7 +208,7 @@ export function daggerheartUseEvent(action, config, { sceneId = null, tokenId = 
     item, itemUuid: item?.uuid, ...named(item, name), actor, sceneId,
     tokenId: tokenId ?? config?.message?.speaker?.token ?? config?.speaker?.token,
     targetUuids: tokenUuids(ids, sceneId), outcome: null, rollType: action?.roll?.type ?? null, duality: null, actionId: actionIdOf(action),
-    ...weaponModeOf(item, action), ...cardFields(item),
+    ...weaponModeOf(item, action), ...cardFields(item), ...featureFields(item, action),
   };
 }
 
