@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.0 (2026-10-16)
 
 - **PF2e and SF2e can use each other's catalogs.** New world setting *Also use the SF2e catalogs* (in a PF2e world) or *Also use the PF2e catalogs* (in an SF2e world), off by default. With it on, an item that none of the world's recipes or catalogs know plays the other system's catalog animation: Starfinder Anachronism guns and tech in a PF2e game, Pathfinder magic in an SF2e game. Covers spells, feats, actions, features and weapons; conditions and effects are not borrowed. Items the world already covers keep their own animation, and an entry you excluded stays silent.
   - **Borrowed catalogs have their own pages.** A PF2e world gets a *Borrowed from SF2e* section in Animater's sidebar, an SF2e world a *Borrowed from PF2e* section, each with the other system's spell, feat, action, feature and weapon catalogs: turn them on, exclude or customize entries as in that system's own world. Turning the setting on starts each untouched borrowed catalog like the matching one of the world (on for every entry, same motion and sound).
