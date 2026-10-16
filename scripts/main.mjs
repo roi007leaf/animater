@@ -59,7 +59,7 @@ const ABILITY_CATALOGS = { actionCatalog: PF2E_ACTION_CATALOG, featureCatalog: P
 const abilitySettingKey = item => item?.type === "action" ? "actionCatalog" : isFeatureItem(item) ? "featureCatalog" : null;
 import { PF2E_WEAPONS, PF2E_WEAPON_SOURCE, catalogWeapon, weaponRecipe, normalizeWeaponCatalogState } from "./weapon-catalog.mjs";
 import { PF2E_CONDITIONS, PF2E_EFFECTS, PF2E_STATE_SOURCE, normalizeStateCatalogState, catalogStateEntry, stateRecipe } from "./state-catalog.mjs";
-import { PersistentStates, perceivedStates } from "./persistent-states.mjs";
+import { PersistentStates, perceivedStates, LASTING_MODES } from "./persistent-states.mjs";
 import { DEFEATED_LOOK, registerDefeatedLook, installDefeatedLook, markDefeated, defeatedStates, defeatedStatusId } from "./defeated-look.mjs";
 import { DND_KINDS,DND5E_SOURCE,dndEntries,dndEntry,dndRecipe,normalizeDndCatalogState,resolveDndAutomaticRecipe, addDndBookEntries } from './dnd5e-catalog.mjs';
 import { saveReaction, twoeSaveOutcome, dnd5eSaveOutcome } from './outcome.mjs';
@@ -1037,6 +1037,9 @@ Hooks.once("init", () => {
     hint:'Lower this on slower computers. Applies only to what you see; other players keep their own setting.',
     scope:'client',config:true,type:String,choices:{...QUALITY_CHOICES},default:'full',
     onChange:()=>{syncQuality();persistentStates?.schedule();}});
+  game.settings.register(ID,'lastingMode',{name:'Lasting condition animations (this device)',
+    hint:'How conditions and effects that last show on your screen. "As the GM set it" follows each catalog\'s Lasting animation switch. "On application and at its turn start" plays them when applied and again briefly whenever that creature\'s turn starts in combat. The Defeated look keeps its own setting. Other players keep their own choice.',
+    scope:'client',config:true,type:String,choices:{...LASTING_MODES},default:'world',onChange:()=>persistentStates?.schedule()});
   game.settings.register(ID,CROSSOVER_CATALOG,{...crossoverSettingText(game.system.id),scope:'world',
     // PF2e and SF2e only: the two systems share one rules engine.
     config:Boolean(crossoverSystem(game.system.id)),type:Boolean,default:false,
@@ -1372,6 +1375,7 @@ Hooks.once("ready", () => {
       ready: () => Boolean(canvas.ready && environment().ready),
       sceneId: () => canvas.scene?.id,
       tokens: () => canvas.tokens?.placeables ?? [],
+      lastingMode: () => game.settings.get(ID, "lastingMode"),
       recipes,
       // Your own lasting recipes follow the same switch as every other custom recipe.
       customEnabled: () => enabled(),
@@ -1404,6 +1408,12 @@ Hooks.once("ready", () => {
     });
     for (const hook of ["createActiveEffect","updateActiveEffect","deleteActiveEffect","createItem", "updateItem", "deleteItem", "updateActor", "createToken", "updateToken", "deleteToken", "refreshToken", "canvasReady", "updateWorldTime", "updateCombat", "deleteCombat", "updateUser", "controlToken"])
       Hooks.on(hook, () => persistentStates.schedule());
+    // A creature's turn starts: its played-once conditions show again for a moment (lastingMode "turn").
+    Hooks.on("updateCombat", (combat, changed) => {
+      if (!("turn" in (changed ?? {}) || "round" in (changed ?? {})) || combat?.scene?.id && combat.scene.id !== canvas.scene?.id) return;
+      const token = combat?.combatant?.token?.object;
+      if (token) void persistentStates.replay(token);
+    });
     Hooks.on("preCreateSequencerEffect", (data) => persistentStates.accepts(data.name) ? undefined : false);
     Hooks.on("createSequencerEffect", (effect) => {
       queueMicrotask(() => {

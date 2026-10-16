@@ -321,3 +321,48 @@ test('an ally inside someone else\'s aura gets a quiet copy: one layer, dimmer; 
  assert.doesNotMatch(String(ally.calls.find(c=>c[0]==='file')[1]),/template_circle/,"the aura's own glyph, not the generic ring");
  await owner.manager.destroy();await ally.manager.destroy();
 });
+
+// Each player's "Lasting condition animations (this device)" choice.
+test('lasting mode: the GM\'s choice by default; a player can keep layers on, play them once, or replay them at turn start', async () => {
+  const { lastingFade, LASTING_MODES } = await import('../scripts/persistent-states.mjs');
+  assert.deepEqual(Object.keys(LASTING_MODES), ['world', 'always', 'turn', 'once']);
+  assert.equal(lastingFade(true, 'world'), true);
+  assert.equal(lastingFade(false, 'world'), false);
+  assert.equal(lastingFade(true, 'always'), false);
+  assert.equal(lastingFade(false, 'turn'), true);
+  assert.equal(lastingFade(false, 'once'), true);
+  assert.equal(lastingFade(true, undefined), true, 'unknown: the GM\'s choice');
+});
+const auraEntry = () => PF2E_EFFECTS.find(e => stateRecipe(e).stages.some(s => s.kind === 'aura' && s.persist && !s.auraRadius));
+test('a player\'s Always visible keeps a layer the GM set to play once; Play once fades a layer the GM keeps', async () => {
+  const entry = auraEntry();
+  const keep = fixture([{ ...native(entry), _stats: { createdTime: Date.now() - 60000 } }]); keep.states.effect.fade = true; keep.manager.host.lastingMode = () => 'always';
+  await keep.manager.reconcile(); await flush();
+  assert.ok(keep.calls.some(c => c[0] === 'persist'), 'always visible');
+  await keep.manager.destroy();
+  const once = fixture([{ ...native(entry), _stats: { createdTime: Date.now() } }]); once.manager.host.lastingMode = () => 'once';
+  await once.manager.reconcile(); await flush();
+  assert.ok(once.calls.some(c => c[0] === 'duration' && c[1] === FADE_MS), 'played once on application');
+  assert.ok(!once.calls.some(c => c[0] === 'persist'));
+  const before = once.calls.length; await once.manager.replay(once.token); await flush();
+  assert.equal(once.calls.slice(before).filter(c => c[0] === 'play').length, 0, 'Play once never replays at turn start');
+  await once.manager.destroy();
+});
+test('On application and at its turn start: a quiet layer replays briefly when the token\'s turn starts, conditions staggered', async () => {
+  const entry = auraEntry();
+  const f = fixture([{ ...native(entry), _stats: { createdTime: Date.now() - 60000 } }, { ...native(fear, 'f'), _stats: { createdTime: Date.now() - 60000 } }]);
+  f.manager.host.lastingMode = () => 'turn';
+  await f.manager.reconcile(); await flush();
+  assert.equal(f.calls.filter(c => c[0] === 'file').length, 0, 'already on the token: nothing on reload');
+  const traces = []; f.manager.host.trace = (...a) => traces.push(a);
+  await f.manager.replay(f.token); await flush();
+  assert.ok(f.calls.some(c => c[0] === 'file'), 'replayed at turn start');
+  assert.ok(f.calls.filter(c => c[0] === 'duration').every(c => c[1] === FADE_MS), 'briefly, then fades');
+  const delays = f.calls.filter(c => c[0] === 'delay').map(c => c[1]);
+  assert.ok(Math.max(...delays) >= 350, `the second condition waits its turn (${delays})`);
+  assert.ok(!traces.some(t => t[0] === 'Persistent'), 'a replay adds no Activity row');
+  const other = { ...f.token, id: 'other', document: { uuid: 'Scene.s.Token.other' } }, before = f.calls.length;
+  await f.manager.replay(other); await flush();
+  assert.equal(f.calls.slice(before).filter(c => c[0] === 'play').length, 0, 'another token\'s turn replays nothing here');
+  await f.manager.destroy();
+});

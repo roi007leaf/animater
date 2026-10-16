@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Choose how lasting conditions show on your screen.** New setting *Lasting condition animations (this device)* in Configure Settings → Animater, for every system. *As the GM set it* (the default) follows each catalog's Lasting animation switch; *Always visible* keeps them on; *On application only* plays each once when applied; *On application and at its turn start* also replays a creature's conditions briefly whenever its turn starts in combat, one after another so they read separately. The creature's own motion (trembling, swaying) follows the same choice. Reloading or changing scenes never replays them. The Defeated look keeps its own setting, and each player's choice affects only their screen.
+
 ## 1.2.1 (2026-10-16)
 
 - **Daggerheart animations fit their targets.** Checked on the canvas, frame by frame:
