@@ -139,3 +139,19 @@ test("with several openings on, the GM picks one at Begin Combat; one on or a tr
   await wait(10);
   assert.deepEqual(none.played(), []);
 });
+
+test("a trimmed sound layer stops at its trimmed length with a short fade; an untrimmed one plays out", async (t) => {
+  const stops = [], played = [];
+  const sound = { stop: (opts) => stops.push(opts) };
+  const prev = globalThis.foundry;
+  globalThis.foundry = { audio: { AudioHelper: { play: async (data) => { played.push(data.src); return sound; } } } };
+  t.after(() => { globalThis.foundry = prev; });
+  globalThis.Hooks = { on: () => {} };
+  globalThis.game = { system: { id: "pf2e" }, user: { id: "gm", isGM: true }, users: { activeGM: { isSelf: true } }, combats: [], settings: { get: () => ({}) } };
+  const api = flashScreens({ ID, clientId: "gm", quietHere: () => false, resolveMedia: (s) => s, trace: () => {} });
+  api.playSound("door.ogg", 0.7, 120);
+  api.playSound("door.ogg", 0.7, 0);
+  await wait(250);
+  assert.deepEqual(played, ["door.ogg", "door.ogg"]);
+  assert.deepEqual(stops, [{ fade: 150 }], "only the trimmed one is stopped");
+});

@@ -2931,3 +2931,42 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
 .animater-flash-picker .an-flash-picker-stage { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 7px; overflow: hidden; background: #0b0912; margin-bottom: 4px; }
 .animater-flash-picker .an-flash-picker-name { font-size: 14px; font-weight: 700; }
 .animater-flash-picker .an-flash-picker-card small { font-size: 11px; opacity: 0.65; }
+
+/* Flash screen layer tracks, drawn like the recipe timeline: tall labelled bars, visible end grips,
+   a faint gridline every half second. Each layer keeps its kind's colour. */
+.animater .an-flash-row { min-height: 40px; }
+.animater .an-flash-row-track { height: 34px; border-radius: 0; background: transparent; }
+.animater .an-flash-row.is-ruler .an-flash-row-track { height: 24px; }
+.animater .an-flash-row:not(.is-ruler):not(.is-scroll) .an-flash-lane {
+  background-image: repeating-linear-gradient(90deg, transparent 0 calc(var(--an-grid, 100%) - 1px), rgba(255, 255, 255, 0.06) calc(var(--an-grid, 100%) - 1px) var(--an-grid, 100%));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.animater .an-flash-row-bar,
+.animater .an-flash-row-bar.kind-sound,
+.animater .an-flash-row-bar.kind-flash,
+.animater .an-flash-row-bar.kind-shake {
+  top: 2px; bottom: 2px; height: auto; border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start; overflow: hidden;
+  background: linear-gradient(180deg, #9b7bff, #7458d8);
+}
+.animater .an-flash-row-bar.kind-band { background: linear-gradient(180deg, #e07a55, #b04a2c); }
+.animater .an-flash-row-bar.kind-image { background: linear-gradient(180deg, #4fa3ff, #2f74d0); }
+.animater .an-flash-row-bar.kind-portraits { background: linear-gradient(180deg, #e3b341, #b88916); }
+.animater .an-flash-row-bar.kind-sound { background: linear-gradient(180deg, #5fbf7a, #3a8f55); }
+.animater .an-flash-row-bar.kind-flash { background: linear-gradient(180deg, #fff3c4, #e2c96e); }
+.animater .an-flash-row-bar.kind-shake,
+.animater .an-flash-row-bar.kind-punch { background: linear-gradient(180deg, #ff8a4c, #d65c24); }
+.animater .an-flash-row-bar.kind-lines,
+.animater .an-flash-row-bar.kind-slash { background: linear-gradient(180deg, #49c9a4, #2b9a7a); }
+.animater .an-flash-row-bar.kind-burst,
+.animater .an-flash-row-bar.kind-particles { background: linear-gradient(180deg, #e070c0, #b04494); }
+.animater .an-flash-bar-label,
+.animater .an-flash-bar-when { position: relative; z-index: 1; max-width: 100%; padding: 0 9px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+.animater .an-flash-bar-label { font-size: 11px; font-weight: 600; line-height: 1.15; color: #fff; }
+.animater .an-flash-bar-when { font-size: 9.5px; line-height: 1.1; color: rgba(255, 255, 255, 0.78); }
+.animater .an-flash-row-bar.kind-flash .an-flash-bar-label,
+.animater .an-flash-row-bar.kind-flash .an-flash-bar-when { color: #3a2f12; }
+.animater .an-flash-grip { z-index: 2; }
+.animater .an-flash-grip.is-visible { width: 8px; background: rgba(255, 255, 255, 0.25); }
+.animater .an-flash-grip.is-visible:hover { background: rgba(255, 255, 255, 0.45); }
+.animater .an-flash-key { top: 50%; margin-top: -5.5px; z-index: 3; }

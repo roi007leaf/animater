@@ -358,3 +358,39 @@ test("editor: a drag bar between the stage and the layers trades stage size for 
   assert.doesNotMatch(ed.html(), /--an-flash-stage-height/);
   assert.ok(renders.length > 0);
 });
+
+test("editor: layer tracks look like the recipe timeline: labelled bars, visible grips, half-second grid and ruler", async () => {
+  const { FlashEditor } = await import("../scripts/flash-editor.mjs");
+  const screens = [validateFlash({ id: "s", name: "Test", duration: 3000, layers: [{ kind: "text", name: "Title", text: "HI", start: 400, duration: 1700 }, { kind: "sound" }] })];
+  const host = { flashScreens: () => screens, flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
+  const ed = new FlashEditor({ host, page: "recipes", root: null, render() {} });
+  ed.editing = true;
+  const html = ed.html();
+  assert.match(html, /an-flash-row-bar kind-text[^>]*>.*?<span class="an-flash-bar-label">Title<\/span><span class="an-flash-bar-when">0\.40s – 2\.10s<\/span>/, "the bar names its layer and its span");
+  assert.match(html, /an-flash-row-bar kind-sound[^>]*>.*?<span class="an-flash-bar-label">Sound<\/span>/, "moments are labelled too");
+  assert.match(html, /class="an-flash-grip is-end is-visible"/, "the end grip shows, as on recipe bars");
+  assert.match(html, /an-flash-lane" style="width:100%;--an-grid:16\.67%"/, "a gridline every half second");
+  const labels = [...html.matchAll(/an-flash-tick is-major[^>]*><b>([^<]+)<\/b>/g)].map((m) => m[1]);
+  assert.deepEqual(labels, ["0s", "0.5s", "1s", "1.5s", "2s", "2.5s", "3s"], "the ruler is labelled every half second");
+});
+
+test("sound layers: the bar is as long as the file, its end trims it, and it never outlasts the file", async () => {
+  const { FlashEditor } = await import("../scripts/flash-editor.mjs");
+  const { soundEnd } = await import("../scripts/flash-model.mjs");
+  const s = validateFlash({ id: "s", name: "Test", duration: 3600, layers: [{ kind: "sound", file: "assets/door.ogg", soundMs: 1200, soundSrc: "assets/door.ogg" }] });
+  const l = s.layers[0];
+  assert.equal(l.soundMs, 1200, "the file's length is kept with the layer");
+  assert.equal(soundEnd(l, 3600), 1200, "whole file: 1.2s");
+  assert.equal(soundEnd({ ...l, start: 3000 }, 3600), 3600, "cut off by the end of the screen");
+  assert.equal(soundEnd({ ...l, duration: 500 }, 3600), 500, "trimmed shorter");
+  assert.equal(soundEnd({ ...l, duration: 2500 }, 3600), 1200, "never longer than the file");
+  assert.equal(soundEnd({ ...l, soundSrc: "assets/other.ogg" }, 3600), 3600, "a length measured for another file does not count");
+  assert.equal(soundEnd({ ...l, soundMs: 0 }, 3600), 3600, "unknown length: to the end of the screen");
+  const host = { flashScreens: () => [s], flashDefaults: () => ({}), flashFonts: () => ["Signika"], flashVars: () => ({}) };
+  const ed = new FlashEditor({ host, page: "recipes", root: null, render() {} });
+  ed.editing = true;
+  const html = ed.html();
+  assert.match(html, /an-flash-row-bar kind-sound" data-flash-part="move" style="left:0\.00%;width:33\.33%"/, "the bar spans the file's 1.2s");
+  assert.match(html, /an-flash-bar-when">0\.00s – 1\.20s/);
+  assert.match(html, /kind-sound[^]*?class="an-flash-grip is-end is-visible" data-flash-part="end"/, "an end grip to trim it");
+});

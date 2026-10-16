@@ -352,7 +352,8 @@ export function createFlash(container, screen, { resolveMedia, vars = {}, editin
     play() {
       for (const a of animations) { a.currentTime = 0; a.play(); }
       // Sound layers fire at their start times.
-      for (const [i, l] of screen.layers.entries()) if (l.kind === "sound" && l.file && playSound && !skip.has(i)) timers.push(setTimeout(() => playSound(l.file, l.volume), l.start));
+      for (const [i, l] of screen.layers.entries()) // A trimmed sound (duration) stops there; otherwise the whole file plays.
+      if (l.kind === "sound" && l.file && playSound && !skip.has(i)) timers.push(setTimeout(() => playSound(l.file, l.volume, l.duration > 0 ? l.duration : 0), l.start));
       return animations[0] ? animations[0].finished.catch(() => {}) : Promise.resolve();
     },
     stop() { for (const t of timers) clearTimeout(t); timers.length = 0; for (const a of animations) a.cancel(); el.remove(); },

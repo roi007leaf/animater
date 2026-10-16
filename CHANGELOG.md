@@ -3,6 +3,8 @@
 ## Unreleased
 
 - **Taller layer tracks in the flash screen editor.** A drag bar under the stage's play controls works like the one in the recipe studio: drag it up to make the stage smaller and see more layers at once, down for a bigger stage. Your choice is remembered on this device; double-click the bar to go back to a full-width stage.
+- **Flash screen sounds show their real length and can be trimmed.** A Sound layer's bar was drawn to the end of the screen whatever the file. It is now as long as the sound file (read when you pick it), and its end has a grip: drag it to cut the sound shorter, back to the file's end to play it whole. A trimmed sound stops there with a short fade, in the preview and at the table.
+- **Flash screen tracks look like the recipe timeline.** Each layer is a full-height bar showing its name and time span, with visible grips at its ends for trimming, a faint gridline every half second, and a ruler labelled every half second. Moving, trimming, entrances and exits and keyframes work as before.
 
 ## 1.2.3 (2026-10-16)
 

@@ -812,7 +812,7 @@ function workspaceHost() {
         return flash.play(screen, { ...options, extra: { name, action, actor, ...options?.extra } });
       },
       flashSound: (screen) => flash.sound(screen),
-      flashPlaySound: (src, volume) => flash.playSound(src, volume),
+      flashPlaySound: (src, volume, ms) => flash.playSound(src, volume, ms),
       downloadJSON: (data, name) => foundry.utils.saveDataToFile(JSON.stringify(data, null, 2), "application/json", name),
       // A text file the GM picks, or null if they cancel.
       pickTextFile: (accept) => new Promise((resolve) => {

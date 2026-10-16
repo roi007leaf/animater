@@ -52,7 +52,12 @@ export function flashScreens(host) {
   const defaults = () => ({ start: "none", end: "none", ...Object.fromEntries(MOMENT_EVENTS.map((e) => [e, "none"])), ...game.settings.get(ID, FLASH_DEFAULTS) });
   const vars = (combat = game.combat, extra = {}) => ({ scene: canvas.scene?.name ?? "", round: String(combat?.round ?? ""), combatants: encounterPeople(combat), ...extra });
   let showing = null;
-  const playSound = (src, volume) => { if (src && !host.quietHere()) void foundry.audio.AudioHelper.play({ src, volume, loop: false }, false); };
+  // ms > 0: a sound layer trimmed in the editor stops there, with a short fade.
+  const playSound = (src, volume, ms = 0) => {
+    if (!src || host.quietHere()) return;
+    const playing = foundry.audio.AudioHelper.play({ src, volume, loop: false }, false);
+    if (ms > 0) void Promise.resolve(playing).then((sound) => setTimeout(() => sound?.stop?.({ fade: 150 }), ms)).catch(() => {});
+  };
   function sound(screen) { playSound(screen.sound.file, screen.sound.volume); }
   // Playing music dips while a screen shows, then comes back.
   function duck() {

@@ -57,6 +57,13 @@ const safeMedia = (v) => {
 };
 const id = (v) => (/^[A-Za-z0-9-]{1,40}$/.test(v ?? "") ? v : (uuid() ?? Math.random().toString(36).slice(2)).slice(0, 12));
 
+// Where a sound layer stops (ms into the screen): its trimmed length, else the whole file, never past
+// the file's own end or the screen's. Without a measured length, it runs to the end of the screen.
+export function soundEnd(l, total) {
+  const file = l.soundMs > 0 && l.soundSrc === l.file ? l.soundMs : Infinity;
+  const length = Math.min(l.duration > 0 ? l.duration : Infinity, file);
+  return Math.min(total, Number.isFinite(length) ? l.start + length : total);
+}
 export function validateLayer(l = {}, duration = 4000) {
   const kind = pick(l.kind, FLASH_KINDS, "text");
   const start = num(l.start, 0, duration, 0);
@@ -86,7 +93,9 @@ export function validateLayer(l = {}, duration = 4000) {
     } : kind === "image" ? {
       src: safeMedia(l.src), width: num(l.width, 1, 150, 40),
     } : kind === "sound" ? {
+      // soundMs: the file's own length, measured when it was chosen (soundSrc says for which file).
       file: safeAudio(l.file), volume: num(l.volume, 0, 1, 0.7),
+      soundMs: Math.round(num(l.soundMs, 0, 600000, 0)), soundSrc: text(l.soundSrc, 300),
     } : kind === "portraits" ? {
       side: pick(l.side, PORTRAIT_SIDES, "party"), art: pick(l.art, { token: 1, portrait: 1 }, "token"), shape: pick(l.shape, PORTRAIT_SHAPES, "circle"),
       size: num(l.size, 3, 60, 18), gap: num(l.gap, 0, 20, 2), max: Math.round(num(l.max, 1, 12, 6)), stagger: num(l.stagger, 0, 1000, 120),

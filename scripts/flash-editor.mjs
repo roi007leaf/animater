@@ -2,7 +2,7 @@ import { uuid } from "./uuid.mjs";
 // The Flash screens page: a library of combat title cards and an editor with a
 // live 16:9 stage (drag layers to place them), a scrub bar, a layer timeline and
 // an inspector for the selected layer.
-import { FLASH_BACKGROUNDS, MOMENT_EVENTS, flashOn, toggleFlashOn, validateFlashes, PORTRAIT_SIDES, PORTRAIT_SHAPES, FLASH_EVENTS, FLASH_MOTIONS, FLASH_KINDS, FLASH_LOOPS, LAYER_LIMIT, FLASH_LIMIT, KEY_LIMIT, validateFlash, validateLayer, keyValueAt, MOMENT_KINDS, FLASH_BLENDS, PARTICLE_TYPES, PARTICLE_DIRECTIONS, SCENE_LOOKS, STARTER_FLASHES } from "./flash-model.mjs";
+import { soundEnd, FLASH_BACKGROUNDS, MOMENT_EVENTS, flashOn, toggleFlashOn, validateFlashes, PORTRAIT_SIDES, PORTRAIT_SHAPES, FLASH_EVENTS, FLASH_MOTIONS, FLASH_KINDS, FLASH_LOOPS, LAYER_LIMIT, FLASH_LIMIT, KEY_LIMIT, validateFlash, validateLayer, keyValueAt, MOMENT_KINDS, FLASH_BLENDS, PARTICLE_TYPES, PARTICLE_DIRECTIONS, SCENE_LOOKS, STARTER_FLASHES } from "./flash-model.mjs";
 import { createFlash } from "./flash-render.mjs";
 import { runFlashTour, FLASH_TOURS } from "./flash-tour.mjs";
 
@@ -51,6 +51,27 @@ export class FlashEditor {
     return Math.round(Math.min(end - l.exitMs - 1, l.start + l.enterMs + 150));
   }
   // Every change first records the screen as it was (quick successive edits, like typing, share one step).
+  // A sound layer's bar is as long as its file: read each new file's length once, then redraw.
+  measureSounds() {
+    const s = this.draft;
+    if (!s?.layers || typeof globalThis.Audio !== "function") return;
+    this.measuring ??= new Set();
+    for (const l of s.layers) {
+      if (l.kind !== "sound" || !l.file || (l.soundSrc === l.file && l.soundMs > 0) || this.measuring.has(l.file)) continue;
+      const file = l.file, audio = new globalThis.Audio();
+      this.measuring.add(file);
+      audio.preload = "metadata";
+      audio.addEventListener("loadedmetadata", () => {
+        this.measuring.delete(file);
+        const ms = Math.round(audio.duration * 1000);
+        if (!Number.isFinite(ms) || ms <= 0) return;
+        for (const x of this.draft?.layers ?? []) if (x.kind === "sound" && x.file === file) { x.soundMs = ms; x.soundSrc = file; }
+        this.w.render();
+      }, { once: true });
+      audio.addEventListener("error", () => this.measuring.delete(file), { once: true });
+      audio.src = this.host.resolveFlashMedia?.(file) ?? file;
+    }
+  }
   edit() {
     const snap = JSON.stringify(this.draft), now = Date.now();
     this.undoStack ??= []; this.redoStack ??= [];
@@ -134,20 +155,25 @@ export class FlashEditor {
   // entrance and exit; the body moves the whole layer in time.
   barHTML(l, total) {
     const pct = (ms) => ((ms / total) * 100).toFixed(2);
-    const end = l.duration > 0 ? Math.min(total, l.start + l.duration) : total, len = Math.max(1, end - l.start);
+    const end = l.kind === "sound" ? soundEnd(l, total) : l.duration > 0 ? Math.min(total, l.start + l.duration) : total, len = Math.max(1, end - l.start);
     const share = (ms) => ((Math.min(ms, len) / len) * 100).toFixed(1);
     const visual = !MOMENT_KINDS.includes(l.kind);
     const segs = visual ? `<span class="an-flash-seg is-enter" style="width:${share(l.enterMs)}%"></span><span class="an-flash-seg is-exit" style="width:${share(l.exitMs)}%"></span><span class="an-flash-grip is-mid" data-flash-part="enter" style="left:${share(l.enterMs)}%" title="Drag: entrance length"></span><span class="an-flash-grip is-mid" data-flash-part="exit" style="left:${(100 - share(l.exitMs)).toFixed(1)}%" title="Drag: exit length"></span>` : "";
-    const edges = l.kind === "sound" ? "" : `${["flash", "shake", "punch"].includes(l.kind) ? "" : `<span class="an-flash-grip is-start" data-flash-part="start" title="Drag: when it starts"></span>`}<span class="an-flash-grip is-end" data-flash-part="end" title="Drag: when it ends"></span>`;
-    return `<span class="an-flash-row-bar kind-${l.kind}" data-flash-part="move" style="left:${pct(l.start)}%;width:${pct(len)}%" title="Drag to move in time">${segs}${edges}</span>`;
+    const edges = `${["flash", "shake", "punch", "sound"].includes(l.kind) ? "" : `<span class="an-flash-grip is-start is-visible" data-flash-part="start" title="Drag: when it starts"></span>`}<span class="an-flash-grip is-end is-visible" data-flash-part="end" title="Drag: when it ends"></span>`;
+    // Named and timed like a recipe bar, so a glance at the timeline says what plays when.
+    const at = (ms) => `${(ms / 1000).toFixed(2)}s`;
+    const label = `<span class="an-flash-bar-label">${esc(l.name || FLASH_KINDS[l.kind])}</span><span class="an-flash-bar-when">${at(l.start)} – ${at(end)}</span>`;
+    return `<span class="an-flash-row-bar kind-${l.kind}" data-flash-part="move" style="left:${pct(l.start)}%;width:${pct(len)}%" title="Drag to move in time">${segs}${label}${edges}</span>`;
   }
   trackHTML(l, i, total) {
     const pct = (ms) => ((ms / total) * 100).toFixed(2);
-    return `<div class="an-flash-lane" style="width:${(this.tlZoom ?? 1) * 100}%">${this.barHTML(l, total)}${(l.keys ?? []).map((k) => `<button class="an-flash-key${i === this.layerIndex && Math.abs(k.at - this.time) <= 40 ? " is-on" : ""}" style="left:${pct(k.at)}%" data-action="flash-key-go" data-index="${i}" data-at="${k.at}" aria-label="Keyframe at ${seconds(k.at)}" title="Click to go there; drag to retime"></button>`).join("")}<span class="an-flash-row-head" style="left:${pct(this.time)}%"></span></div>`;
+    // A faint gridline every half second, as across the recipe timeline's rows.
+    return `<div class="an-flash-lane" style="width:${(this.tlZoom ?? 1) * 100}%;--an-grid:${pct(500)}%">${this.barHTML(l, total)}${(l.keys ?? []).map((k) => `<button class="an-flash-key${i === this.layerIndex && Math.abs(k.at - this.time) <= 40 ? " is-on" : ""}" style="left:${pct(k.at)}%" data-action="flash-key-go" data-index="${i}" data-at="${k.at}" aria-label="Keyframe at ${seconds(k.at)}" title="Click to go there; drag to retime"></button>`).join("")}<span class="an-flash-row-head" style="left:${pct(this.time)}%"></span></div>`;
   }
   // The seconds ruler above the rows (click or drag it to move the playhead), finer as you zoom in.
   rulerHTML(total) {
-    const z = this.tlZoom ?? 1, step = z < 2 ? 500 : z < 4 ? 250 : z < 8 ? 100 : 50, label = z < 2 ? 1000 : z < 4 ? 500 : z < 8 ? 250 : 100;
+    // Labelled every half second with fine ticks between, like the recipe timeline's ruler.
+    const z = this.tlZoom ?? 1, step = z < 4 ? 100 : 50, label = z < 2 ? 500 : z < 4 ? 250 : 100;
     const ticks = [];
     for (let t = 0; t <= total; t += step) ticks.push(`<span class="an-flash-tick${t % label === 0 ? " is-major" : ""}" style="left:${((t / total) * 100).toFixed(3)}%">${t % label === 0 ? `<b>${(t / 1000).toFixed(label < 1000 ? 2 : 0).replace(/\.?0+$/, "") || "0"}s</b>` : ""}</span>`);
     return `<div class="an-flash-lane" style="width:${z * 100}%">${ticks.join("")}<span class="an-flash-row-head" style="left:${((this.time / total) * 100).toFixed(2)}%"></span><span class="an-flash-length-grip" data-flash-length data-tooltip="The screen ends here (${seconds(total)}): drag to make it longer or shorter"></span></div>`;
@@ -187,7 +213,7 @@ export class FlashEditor {
     if (this.playing) { this.playing = false; this.mount(); return; }
     this.preview?.stop();
     frame.replaceChildren();
-    const run = createFlash(frame, validateFlash(s), { resolveMedia: (src) => this.host.resolveFlashMedia(src), vars: this.host.flashVars(), editing: true, skip: this.skipped(), playSound: (src, volume) => this.host.flashPlaySound(src, volume) });
+    const run = createFlash(frame, validateFlash(s), { resolveMedia: (src) => this.host.resolveFlashMedia(src), vars: this.host.flashVars(), editing: true, skip: this.skipped(), playSound: (src, volume, ms) => this.host.flashPlaySound(src, volume, ms) });
     this.preview = run; this.playing = true;
     this.host.flashSound(s);
     const finished = run.play();
@@ -312,7 +338,7 @@ export class FlashEditor {
       : l.kind === "particles"
       ? `<div class="an-field-row">${sel("ptype", "Particles", PARTICLE_TYPES, l.ptype)}${sel("direction", "Moving", PARTICLE_DIRECTIONS, l.direction)}</div><div class="an-field-row">${n("count", "Amount", l.count, 5, 150, 1)}${n("speed", "Speed", l.speed, 0.3, 3, 0.1)}${n("size", "Size", l.size, 0.3, 3, 0.1)}</div>${c("color", "Color", l.color)}<p class="an-hint">They fill the whole screen while the layer is shown.</p>`
       : MOMENT_KINDS.includes(l.kind)
-      ? l.kind !== "sound" ? "" : `<label>Sound file<span class="an-flash-sound"><input data-flash-layer-field="file" placeholder="sounds/drums.ogg" value="${esc(l.file)}"><button data-action="flash-browse" data-target="layer-sound" aria-label="Browse sounds">…</button></span></label>${n("volume", "Volume", l.volume, 0, 1, 0.05)}${n("start", "Plays at (ms)", l.start, 0, 12000, 50)}<p class="an-hint">Plays once at that moment of the screen. Add more sound layers for more cues.</p>`
+      ? l.kind !== "sound" ? "" : `<label>Sound file<span class="an-flash-sound"><input data-flash-layer-field="file" placeholder="sounds/drums.ogg" value="${esc(l.file)}"><button data-action="flash-browse" data-target="layer-sound" aria-label="Browse sounds">…</button></span></label>${n("volume", "Volume", l.volume, 0, 1, 0.05)}${n("start", "Plays at (ms)", l.start, 0, 12000, 50)}<p class="an-hint">Plays once from that moment; its bar is as long as the file. Drag the bar's end to cut it shorter. Add more sound layers for more cues.</p>`
       : l.kind === "portraits"
       ? `${sel("side", "Show", PORTRAIT_SIDES, l.side)}<div class="an-field-row">${sel("art", "Picture", { token: "Token image", portrait: "Actor portrait" }, l.art)}${sel("shape", "Frame", PORTRAIT_SHAPES, l.shape)}</div><div class="an-field-row">${n("size", "Size", l.size, 3, 60, 0.5)}${n("gap", "Spacing", l.gap, 0, 20, 0.5)}${n("max", "Up to", l.max, 1, 12, 1)}</div><div class="an-field-row">${n("perRow", "Per row (0 = one line)", l.perRow, 0, 12, 1)}</div><div class="an-field-row">${c("ring", "Frame color", l.ring)}${n("stagger", "One after another (ms)", l.stagger, 0, 1000, 10)}</div><label class="an-check"><input type="checkbox" data-flash-layer-field="names" ${l.names ? "checked" : ""}> Show names</label><p class="an-hint">${l.side === "actor" ? "The one using the action, when the screen plays before an animation (a stand-in shows here). Try the Slash frame for a cut-in. " : ""}Filled in from the encounter when the screen plays: the party is player-owned or friendly tokens, the enemies hostile ones. Hidden combatants never appear. With no encounter, stand-ins show here.</p>`
       : l.kind === "image"
@@ -346,6 +372,7 @@ export class FlashEditor {
   }
   // Redraw the stage at the current time (after every render or edit).
   mount() {
+    this.measureSounds();
     const frame = this.w.root.querySelector("[data-flash-stage]");
     this.thumbs();
     this.syncScroll();
@@ -563,7 +590,8 @@ export class FlashEditor {
     const s = this.draft, i = Number(track.dataset.index), layer = s.layers[i], total = s.duration;
     const rect = (track.querySelector(".an-flash-lane") ?? track).getBoundingClientRect(), msPer = total / Math.max(1, rect.width), x0 = e.clientX;
     const part = e.target.closest("[data-flash-part]")?.dataset.flashPart ?? "move";
-    const from = { start: layer.start, end: layer.duration > 0 ? Math.min(total, layer.start + layer.duration) : total, enter: layer.enterMs, exit: layer.exitMs, toEnd: !(layer.duration > 0) };
+    const sound = layer.kind === "sound", fileMs = sound && layer.soundMs > 0 && layer.soundSrc === layer.file ? layer.soundMs : Infinity;
+    const from = { start: layer.start, end: sound ? soundEnd(layer, total) : layer.duration > 0 ? Math.min(total, layer.start + layer.duration) : total, enter: layer.enterMs, exit: layer.exitMs, toEnd: !(layer.duration > 0) && !Number.isFinite(fileMs) };
     const key = keyEl ? layer.keys.find((k) => k.at === Number(keyEl.dataset.at)) : null, at0 = key?.at;
     const marks = [this.time, 0, total, ...s.layers.flatMap((l, j) => (j === i ? [] : [l.start, l.duration > 0 ? l.start + l.duration : total]))];
     const snapT = (t, ev) => (ev.altKey ? t : marks.find((c) => Math.abs(c - t) <= 6 * msPer) ?? t);
@@ -580,6 +608,10 @@ export class FlashEditor {
       } else if (part === "start") {
         const start = clamp(snapT(from.start + dt, ev), 0, from.end - 50);
         layer.start = start; if (!from.toEnd) layer.duration = from.end - start;
+      } else if (part === "end" && sound) {
+        // A sound is trimmed, never stretched past its file: back at the file's end it plays whole again.
+        const whole = Math.min(total, from.start + fileMs), end = clamp(snapT(from.end + dt, ev), from.start + 50, whole);
+        layer.duration = end >= whole - 5 ? 0 : end - from.start;
       } else if (part === "end") {
         const end = clamp(snapT(from.end + dt, ev), from.start + 50, total);
         layer.duration = end >= total - 5 && !["flash", "shake", "punch"].includes(layer.kind) ? 0 : end - from.start;
