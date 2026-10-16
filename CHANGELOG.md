@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.6 (2026-10-16)
+
+- **Faster page switching in the workspace** ([#3](https://github.com/roi007leaf/animater/issues/3)). Each switch re-read the sound catalog several times and, on Recipes, copied every recipe and re-checked conflicts once per card. Those are now read once per switch: the Recipes page switches about 10× faster and the catalog pages (Spells, Feats, Weapons…) 2-4× faster.
+- **Assets opens faster the first time** (#3). Media details are worked out once instead of on every pass over the library.
+
 ## 1.1.5 (2026-10-16)
 
 - **Folder sources work while the library is indexing** ([#3](https://github.com/roi007leaf/animater/issues/3)). Add folder and Remove were greyed out until the whole library finished scanning, which could take a while, and removing a folder started a full rescan that greyed them out again. They now always work: a folder added or removed mid-scan is indexed once that scan ends. The source name you type is no longer wiped while indexing, and the panel stays open.
