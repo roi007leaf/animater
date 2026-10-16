@@ -38,6 +38,11 @@ export function downMoment(combat, actor, systemId = systemOf()) {
 }
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
+// The Combat Tracker's own header. Popped out, the tracker is a whole window whose title bar is
+// also a <header> and comes first, so a plain "header" lookup put the menus over its buttons.
+export function trackerHeader(root) {
+  return root?.querySelector(".combat-tracker-header") ?? root?.querySelector("header:not(.window-header)") ?? null;
+}
 export function registerFlashSettings(ID) {
   game.settings.register(ID, FLASH_SETTING, { scope: "world", config: false, type: Object, default: { schema: 1, screens: STARTER_FLASHES },
     onChange: () => ui.combat?.render() });
@@ -243,7 +248,7 @@ export function flashScreens(host) {
     const combat = app.viewed ?? game.combat;
     if (!game.user.isGM || !root || !combat) return;
     root.querySelector(".animater-flash-pick")?.remove();
-    const bar = picker(combat), header = root.querySelector(".combat-tracker-header, header");
+    const bar = picker(combat), header = trackerHeader(root);
     if (header) header.append(bar); else root.prepend(bar);
   });
   // PF2e HUD's tracker: a ⚡ button in its header (its footer has no room) opens the same menus.

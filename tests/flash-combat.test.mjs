@@ -155,3 +155,16 @@ test("a trimmed sound layer stops at its trimmed length with a short fade; an un
   assert.deepEqual(played, ["door.ogg", "door.ogg"]);
   assert.deepEqual(stops, [{ fade: 150 }], "only the trimmed one is stopped");
 });
+
+test("the tracker's flash menus go in its own header, never a popped-out window's title bar", async () => {
+  const { trackerHeader } = await import("../scripts/flash-combat.mjs");
+  const titleBar = { name: "window title bar" }, own = { name: "tracker header" };
+  // A popped-out tracker is a whole window: its title bar comes first in the page.
+  const popout = { querySelector: (sel) => ({ ".combat-tracker-header": own, "header:not(.window-header)": own, ".combat-tracker-header, header": titleBar })[sel] ?? null };
+  assert.equal(trackerHeader(popout), own);
+  const sidebar = { querySelector: (sel) => (sel === ".combat-tracker-header" ? own : null) };
+  assert.equal(trackerHeader(sidebar), own);
+  const plain = { querySelector: (sel) => (sel === "header:not(.window-header)" ? own : null) };
+  assert.equal(trackerHeader(plain), own, "a tracker without the usual class still uses its own header");
+  assert.equal(trackerHeader({ querySelector: () => null }), null);
+});
