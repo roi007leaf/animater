@@ -287,18 +287,18 @@ test("a Finish Him! starter plays when the last enemy falls", () => {
   assert.equal(s.backdrop.freeze, "dark");
 });
 
-test("gallery cards toggle the default for their section without opening the editor", async () => {
+test("start and end cards have an On switch for their section's default, without opening the editor", async () => {
   const { FlashEditor } = await import("../scripts/flash-editor.mjs");
   const screens = [validateFlash({ id: "a", name: "A", event: "start", layers: [{ kind: "text", text: "A" }] }), validateFlash({ id: "b", name: "B", event: "any", layers: [{ kind: "text", text: "B" }] }), validateFlash({ id: "c", name: "C", event: "end", layers: [{ kind: "text", text: "C" }] })];
   const defaults = { start: "a", end: "c" }, calls = [];
   const host = { flashScreens: () => screens, flashDefaults: () => defaults, flashFonts: () => ["Signika"], flashVars: () => ({}), setFlashDefault: async (ev, id) => { calls.push([ev, id]); } };
   const ed = new FlashEditor({ host, page: "recipes", root: null, render() {} });
   const html = ed.html();
-  assert.match(html, /data-action="flash-card-default" data-id="a" data-event="start" role="switch" aria-checked="true"/);
-  assert.match(html, /data-action="flash-card-default" data-id="b" data-event="start" role="switch" aria-checked="false"/);
-  assert.match(html, /data-action="flash-card-default" data-id="c" data-event="end" role="switch" aria-checked="true"/, "the end section toggles the end event");
-  await ed.action("flash-card-default", { dataset: { id: "a", event: "start" } });
-  await ed.action("flash-card-default", { dataset: { id: "b", event: "start" } });
+  assert.match(html, /data-action="flash-moment-toggle" data-id="a" data-event="start" role="switch" aria-checked="true"/);
+  assert.match(html, /data-action="flash-moment-toggle" data-id="b" data-event="start" role="switch" aria-checked="false"/);
+  assert.match(html, /data-action="flash-moment-toggle" data-id="c" data-event="end" role="switch" aria-checked="true"/, "the end section toggles the end event");
+  await ed.action("flash-moment-toggle", { dataset: { id: "a", event: "start" } });
+  await ed.action("flash-moment-toggle", { dataset: { id: "b", event: "start" } });
   assert.deepEqual(calls, [["start", "none"], ["start", "b"]]);
   assert.ok(!ed.editing, "the card stays closed");
 });

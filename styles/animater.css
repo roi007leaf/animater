@@ -2380,7 +2380,8 @@
 /* The editor page: library, stage and layers, inspector. */
 /* The page fills the window; each column scrolls on its own so the stage stays in view. */
 .animater .an-flash-page { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: 180px minmax(0, 1fr) 270px; grid-template-rows: minmax(0, 1fr); gap: 14px; align-items: stretch; overflow: hidden; }
-.animater .an-flash-page > * { min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; padding-bottom: 16px; align-content: start; }
+/* The editor's columns scroll on their own; library groups must not, or they trap the wheel. */
+.animater .an-flash-page:not(.is-library) > * { min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding-right: 4px; padding-bottom: 16px; align-content: start; }
 .animater .an-flash-list { display: grid; gap: 6px; }
 .animater .an-flash-list .an-section-title button { width: auto; padding: 4px 10px; }
 .animater .an-flash-card { display: grid; justify-items: start; justify-content: stretch; align-content: start; gap: 2px; width: 100%; height: auto; padding: 8px 10px; text-align: left; border-radius: 10px; background: var(--an-surface); border: 1px solid var(--an-line); }
@@ -2918,3 +2919,11 @@ body.an-scrubbing, body.an-scrubbing * { cursor: ew-resize !important; user-sele
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* Combat initiated picker: each switched-on screen plays in its own card; a click plays it for everyone. */
+.animater-flash-picker .an-flash-picker-hint { margin: 0 0 10px; opacity: 0.8; }
+.animater-flash-picker .an-flash-picker-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.animater-flash-picker button.an-flash-picker-card { display: grid; gap: 3px; height: auto; min-height: 0; padding: 8px; text-align: left; align-content: start; justify-items: stretch; line-height: 1.2; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04); cursor: pointer; transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s; }
+.animater-flash-picker button.an-flash-picker-card:hover, .animater-flash-picker button.an-flash-picker-card:focus-visible { border-color: #ffd34d; box-shadow: 0 0 0 1px #ffd34d, 0 6px 18px rgba(0, 0, 0, 0.45); transform: translateY(-1px); outline: none; }
+.animater-flash-picker .an-flash-picker-stage { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: 7px; overflow: hidden; background: #0b0912; margin-bottom: 4px; }
+.animater-flash-picker .an-flash-picker-name { font-size: 14px; font-weight: 700; }
+.animater-flash-picker .an-flash-picker-card small { font-size: 11px; opacity: 0.65; }

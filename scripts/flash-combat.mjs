@@ -3,8 +3,9 @@
 // combat's own pick from the Combat Tracker, else the world default) and sends it
 // to everyone, so all clients show the same screen once. Any client may notice a
 // moment (a crit it rolled, a creature it dropped) and ask the active GM to play it.
-import { STARTER_FLASHES, MOMENT_EVENTS, validateFlashes, validateFlash, chooseFlash, FLASH_EVENTS } from "./flash-model.mjs";
+import { STARTER_FLASHES, MOMENT_EVENTS, flashesOn, validateFlashes, validateFlash, chooseFlash, FLASH_EVENTS } from "./flash-model.mjs";
 import { createFlash } from "./flash-render.mjs";
+import { pickFlash } from "./flash-picker.mjs";
 import { hpState, isKillTransition } from "./hp-state.mjs";
 
 export const FLASH_SETTING = "flashScreens", FLASH_DEFAULTS = "flashDefaults";
@@ -131,22 +132,31 @@ export function flashScreens(host) {
   // Combat initiated: the encounter has its first visible combatants and waits for Begin Combat
   // ("Roll for Initiative!"). Once per combat.
   const initiated = (combat) => combat?.getFlag?.(ID, "flashInitiated");
-  function initiate(combat) {
+  // With several switched on, the GM watches them play and picks one (or None); closing the window plays nothing.
+  const pickInitiated = host.pickFlash ?? ((options, combat) => pickFlash(options, { resolveMedia: host.resolveMedia, vars: vars(combat) }));
+  async function initiate(combat) {
     if (!activeGM() || initiated(combat)) return;
-    const screen = chooseFlash(screens(), "initiated", undefined, defaults().initiated);
-    if (!screen) return;
+    const all = screens(), options = flashesOn(defaults().initiated).map((id) => all.find((s) => s.id === id && s.event === "initiated")).filter(Boolean);
+    if (!options.length) return;
     void combat.setFlag?.(ID, "flashInitiated", true);
+    let screen = options[0];
+    if (options.length > 1) {
+      const id = await Promise.resolve(pickInitiated(options, combat)).catch(() => null);
+      // Begun while the GM was choosing: the opening plays instead.
+      screen = combat.started ? null : options.find((s) => s.id === id);
+      if (!screen) return;
+    }
     play(screen, { everyone: true, combat });
   }
   // Adding everyone arrives as a burst of combatants: wait for it to settle, then play once.
   const adding = new Map();
   Hooks.on("createCombatant", (combatant) => {
     const combat = combatant.combat ?? combatant.parent;
-    if (!activeGM() || !combat || combat.started || defaults().initiated === "none" || initiated(combat)) return;
+    if (!activeGM() || !combat || combat.started || !flashesOn(defaults().initiated).length || initiated(combat)) return;
     clearTimeout(adding.get(combat.id));
     adding.set(combat.id, setTimeout(() => {
       adding.delete(combat.id);
-      if (!combat.started && encounterPeople(combat).length) initiate(combat);
+      if (!combat.started && encounterPeople(combat).length) void initiate(combat).catch((error) => host.trace("Blocked", `Flash screen: ${error.message}`));
     }, 300));
   });
   Hooks.on("deleteCombat", (combat) => { if (activeGM() && combat.started) play(forCombat(combat, "end"), { everyone: true, combat }); });
@@ -191,7 +201,7 @@ export function flashScreens(host) {
     bar.className = "animater-flash-pick";
     // The world defaults (used when a combat picks nothing), behind the ⚙.
     const defaultMenu = (event) => `<label>${event === "start" ? "Default opening" : "Default ending"}<select data-animater-flash-default="${event}">${[["none", "None"], ["random", "Random"], ...fitting(event).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[event] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`;
-    bar.innerHTML = `<span aria-hidden="true">⚡</span>${menu("start")}${menu("end")}<span class="animater-flash-tools"><button type="button" data-animater-flash-defaults class="${showDefaults ? "active" : ""}" title="Defaults for every combat" aria-label="Defaults for every combat" aria-expanded="${showDefaults}"><i class="fa-solid fa-gear"></i></button><button type="button" data-animater-flash-test title="Preview this combat's opening on your screen" aria-label="Preview opening flash screen">▶</button></span>${showDefaults ? `<span class="animater-flash-defaults">${defaultMenu("start")}${defaultMenu("end")}<span class="animater-flash-moments-title">During combat</span>${MOMENT_EVENTS.map((ev) => `<label>${esc(FLASH_EVENTS[ev])}<select data-animater-flash-default="${ev}">${[["none", "Off"], ...fitting(ev).filter((s) => s.event === ev).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[ev] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`).join("")}</span>` : ""}`;
+    bar.innerHTML = `<span aria-hidden="true">⚡</span>${menu("start")}${menu("end")}<span class="animater-flash-tools"><button type="button" data-animater-flash-defaults class="${showDefaults ? "active" : ""}" title="Defaults for every combat" aria-label="Defaults for every combat" aria-expanded="${showDefaults}"><i class="fa-solid fa-gear"></i></button><button type="button" data-animater-flash-test title="Preview this combat's opening on your screen" aria-label="Preview opening flash screen">▶</button></span>${showDefaults ? `<span class="animater-flash-defaults">${defaultMenu("start")}${defaultMenu("end")}<span class="animater-flash-moments-title">During combat</span>${MOMENT_EVENTS.filter((ev) => ev !== "initiated").map((ev) => `<label>${esc(FLASH_EVENTS[ev])}<select data-animater-flash-default="${ev}">${[["none", "Off"], ...fitting(ev).filter((s) => s.event === ev).map((s) => [s.id, s.name])].map(([k, v]) => `<option value="${esc(k)}" ${k === (d[ev] ?? "none") ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`).join("")}</span>` : ""}`;
     bar.querySelector("[data-animater-flash-defaults]").addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); showDefaults = !showDefaults; bar.replaceWith(Object.assign(picker(combat), { className: bar.className })); });
     bar.addEventListener("change", (e) => {
       const world = e.target.dataset.animaterFlashDefault;

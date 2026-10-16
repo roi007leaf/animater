@@ -2,9 +2,11 @@
 
 ## Unreleased
 
-- **Combat initiated flash screen:** a new moment that plays once when an encounter gets its combatants, before Begin Combat, so it can say "Roll for Initiative!" while the opening (Combat start) waits for the GM to begin. Set a screen's "Plays at" to Combat initiated and switch it on in the library's own Combat initiated section (or the tracker's defaults). Off by default. It replaces the "On add" switch: the Combat start screen now always plays on Begin Combat.
+- **Combat start and end cards have an On switch** in the Flash screens library, like the other combat moments, instead of a "Set default" badge that showed only on hover. On is the world default; the Combat Tracker can still pick another per combat.
+- **Combat initiated flash screen:** a new moment that plays once when an encounter gets its combatants, before Begin Combat, so it can say "Roll for Initiative!" while the opening (Combat start) waits for the GM to begin. Set a screen's "Plays at" to Combat initiated and switch it on in the library's own Combat initiated section. Several can be on (say "Roll for Initiative!" and "Ambush!"): as combatants are added, the GM gets a window with each one playing and clicks the one everyone sees (or None). Off by default. It replaces the "On add" switch: the Combat start screen now always plays on Begin Combat.
 - **Finishers on players' weapons play again.** A finisher the GM linked to a player character's weapon (Applies to) never played unless a player had picked it in Combater, and such an item played no default finisher either. Now only an actual pick replaces the GM's finishers for that item; with no pick, Applies-to and the default finisher play as they do for NPCs.
 - **Available to shows only with pf2e-combater.** It decides which players may pick a finisher in Combater's item sheet, so without Combater the setting and the cards' Players pill are hidden.
+- **Flash screens page scrolls with the mouse wheel again.** Each group of screens was its own scroll box, so the wheel stopped over the cards instead of moving the page.
 
 ## 1.1.1 (2026-10-16)
 
