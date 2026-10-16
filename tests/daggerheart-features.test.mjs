@@ -63,12 +63,11 @@ test("the Ice Dragon's feature attacks each play: breath, avalanche burst, and c
   assert.ok(avalanche.stages.some((s) => s.kind === "cast" && s.assets.includes("jb2a.ice_spikes.radial.burst.white")), "ice bursts around the dragon");
 });
 
-test("feature actions that are not strikes stay quiet: a spotlight, a Fear gain", () => {
+test("feature actions that are not strikes get no strike shape: a spotlight, a Fear gain", () => {
   for (const name of ["Relentless (3)", "Momentum"]) {
     const e = used(iceDragon.features[name]);
     assert.equal(e.featureShape, undefined, name);
-    assert.equal(findDhEntry(e), null, name);
-    assert.equal(resolveDaggerheartAutomaticRecipe(e, weaponsOn, []), null, name);
+    assert.ok(findDhEntry(e)?.id.startsWith("daggerheart-weapon-utility-"), name);
   }
 });
 
@@ -124,4 +123,44 @@ test("every feature fallback has a use variant per shape, each a valid recipe", 
     assert.deepEqual(entry.variants.map((v) => v.featureShape), [...FEATURE_SHAPES]);
     for (const v of entry.variants) { assert.equal(v.recipe.trigger, "use"); validateRecipe(v.recipe); }
   }
+});
+
+// Actions that only heal, gain a resource or apply an effect: no attack, no damage type.
+const utilityItem = (type, name, action) => ({ id: name, uuid: `Actor.pc.Item.${name}`, documentName: "Item", type, name, actor: { id: "pc", type: "character" }, system: { actions: new Map([[action._id, action]]) } });
+const useOf = (item) => { const [a, c] = useHook({ item, actor: item.actor, action: firstAction(item), config: { targets: [] } }); return daggerheartUseEvent(a, c, { sceneId: "s" }); };
+test("heal, Hope, Fear and effect actions play a look by what they restore or spend", async () => {
+  const { utilityFields } = await import("../scripts/daggerheart.mjs");
+  const heal = { _id: "h", type: "healing", name: "Drink", damage: { main: null, resources: { hitPoints: { applyTo: "hitPoints" } } }, cost: [{ key: "quantity", value: 1 }] };
+  const cases = [
+    [utilityItem("consumable", "Minor Health Potion", heal), "heal"],
+    [utilityItem("feature", "Hardy", { ...heal, _id: "hardy", name: "Healing" }), "heal"],
+    [utilityItem("feature", "Inspire", { _id: "i", type: "healing", name: "Gain Hope", damage: { main: null, resources: { hope: { applyTo: "hope" } } } }), "hope"],
+    [iceDragon.features.Momentum, "fear"],
+    [iceDragon.features["Relentless (3)"], "boon"],
+    [utilityItem("feature", "Relentless (3)", { _id: "r", type: "effect", name: "Spotlight", cost: [{ key: "fear", value: 1 }] }), "fear"],
+    [utilityItem("feature", "No Mercy", { _id: "n", type: "effect", name: "Spend Hope", cost: [{ key: "hope", value: 3 }] }), "hope"],
+    [utilityItem("feature", "Retract", { _id: "t", type: "effect", name: "Mark Stress", cost: [{ key: "stress", value: 1 }] }), "boon"],
+  ];
+  for (const [item, look] of cases) {
+    assert.equal(utilityFields(item, firstAction(item)).utilityLook, look, item.name);
+    const e = useOf(item);
+    assert.equal(findDhEntry(e)?.id, `daggerheart-weapon-utility-${look}`, item.name);
+    const r = resolveDaggerheartAutomaticRecipe(e, weaponsOn, []);
+    assert.equal(r?.catalogEntry, `daggerheart-weapon-utility-${look}`, item.name);
+    assert.equal(r.trigger, "use");
+    assert.equal(resolveDaggerheartAutomaticRecipe(e, allOff, []), null, "the weapon catalog switch governs them");
+  }
+  // Domain cards and weapons keep their own animations; attacks and damage are not utilities.
+  assert.deepEqual(utilityFields(utilityItem("domainCard", "Whirlwind", { _id: "w", type: "effect", cost: [{ key: "hope" }] }), { _id: "w", type: "effect" }), {});
+  assert.deepEqual(utilityFields(iceDragon.features["Rend and Crush"], firstAction(iceDragon.features["Rend and Crush"])), {});
+  // A feature's own element look still wins over a utility look.
+  assert.equal(findDhEntry(used(iceDragon.features["Blizzard Breath"])).id, "daggerheart-weapon-feature-cold");
+});
+
+test("a damage card from a feature, potion or other non-weapon item stays quiet: its use already played", async () => {
+  const { daggerheartDamageEvent } = await import("../scripts/daggerheart.mjs");
+  const { damageRoll } = await import("./fixtures/daggerheart-messages.mjs");
+  const splash = rolledFeatures["Tail Swipe"];
+  const msg = rollMessage({ type: "adversaryRoll", roll: null, hasRoll: false, actor: splash.actor, item: splash, action: firstAction(splash), damage: damageRoll() });
+  assert.equal(daggerheartDamageEvent(msg, "u"), null);
 });

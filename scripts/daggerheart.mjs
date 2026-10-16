@@ -159,6 +159,19 @@ export function featureFields(item, action) {
   const featureShape = area ? (BREATH_SHAPES.has(area) ? "breath" : "burst") : range && !MELEE_RANGES.has(range) ? "breath" : "strike";
   return { featureShape, featureElement: featureElement([item?.name, action?.name, plain(item?.system?.description)], list(action?.damage?.main?.type)) };
 }
+// An action that only heals, gains a resource or applies an effect (a potion, Relentless, Momentum):
+// its look by what it restores or spends. Domain cards and weapons keep their own animations.
+const valuesOf = (value) => (value instanceof Map ? [...value.values()] : Object.values(value ?? {}));
+export function utilityFields(item, action) {
+  if (!item || !action || ["domainCard", "weapon"].includes(item.type)) return {};
+  if (action.type === "healing") {
+    const to = valuesOf(action.damage?.resources).map((r) => r?.applyTo);
+    return { utilityLook: to.includes("fear") ? "fear" : to.includes("hope") ? "hope" : "heal" };
+  }
+  if (action.type !== "effect") return {};
+  const spends = (Array.isArray(action.cost) ? action.cost : []).map((c) => c?.key);
+  return { utilityLook: spends.includes("fear") ? "fear" : spends.includes("hope") ? "hope" : "boon" };
+}
 // The action's own id (its key in the item's system.actions): a card's per-action design is found by it.
 const actionIdOf = (action) => action?.id || action?._id || null;
 const cardFields = (item) => (item?.type === "domainCard" ? { domain: domainOf(item), cardLevel: Number(item?.system?.level) || undefined } : {});
@@ -208,7 +221,7 @@ export function daggerheartUseEvent(action, config, { sceneId = null, tokenId = 
     item, itemUuid: item?.uuid, ...named(item, name), actor, sceneId,
     tokenId: tokenId ?? config?.message?.speaker?.token ?? config?.speaker?.token,
     targetUuids: tokenUuids(ids, sceneId), outcome: null, rollType: action?.roll?.type ?? null, duality: null, actionId: actionIdOf(action),
-    ...weaponModeOf(item, action), ...cardFields(item), ...featureFields(item, action),
+    ...weaponModeOf(item, action), ...cardFields(item), ...featureFields(item, action), ...utilityFields(item, action),
   };
 }
 
@@ -261,6 +274,8 @@ export function daggerheartDamageEvent(message, userId, { sceneId = null } = {})
   // Resource-only damage (stress, fear...) has no hit-point type: nothing to play.
   if (!system?.hasHealing && !damageKindOf(message)) return null;
   if (!name) return { skipped: `${system?.title || "Daggerheart damage"}: its item or action could not be found.` };
+  // A feature's, potion's or other non-weapon item's damage card: its use or attack roll already played.
+  if (item && !["weapon", "domainCard"].includes(item.type)) return null;
   const { all, hit } = damagedTargets(message);
   if (all.length && !hit.length) return null;
   const scene = message?.speaker?.scene ?? sceneId;

@@ -17,7 +17,7 @@ test("every Daggerheart entry has a valid recipe per variant, tied to its native
   assert.deepEqual([...DH_KINDS], ["card", "weapon", "condition"]);
   assert.equal(dhSettingKey("card"), "daggerheartCardCatalog");
   assert.equal(dhEntries("card").length, DAGGERHEART_SOURCE.counts.card);
-  assert.equal(dhEntries("weapon").length, DAGGERHEART_SOURCE.counts.weapon + 2 + 7, "plus the melee and ranged fallbacks and the feature fallbacks");
+  assert.equal(dhEntries("weapon").length, DAGGERHEART_SOURCE.counts.weapon + 2 + 7 + 4, "plus the melee and ranged, feature and ability fallbacks");
   assert.equal(dhEntries("condition").length, 7);
   const ids = new Set();
   for (const entry of dhEntries()) {

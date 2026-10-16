@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- **Daggerheart heals, Hope, Fear and effects animate.** Actions that only heal, gain Hope or Fear, or apply an effect played nothing: a Minor Health Potion, Hardy, No Mercy, Retract, an adversary's Relentless or Momentum. They now glow on the user, and on each target when there is one: green for healing, gold for Hope, purple for Fear, a soft boon for other effects. Domain cards and weapons keep their own animations. The four looks sit with the fallbacks on the Weapons page, governed by its switch.
+- **No more Skipped rows for feature and potion damage (Daggerheart).** A damage card from a feature, potion or other non-weapon item added a Skipped row to Activity although its use had already played.
+
 ## 1.2.0 (2026-10-16)
 
 - **PF2e and SF2e can use each other's catalogs.** New world setting *Also use the SF2e catalogs* (in a PF2e world) or *Also use the PF2e catalogs* (in an SF2e world), off by default. With it on, an item that none of the world's recipes or catalogs know plays the other system's catalog animation: Starfinder Anachronism guns and tech in a PF2e game, Pathfinder magic in an SF2e game. Covers spells, feats, actions, features and weapons; conditions and effects are not borrowed. Items the world already covers keep their own animation, and an entry you excluded stays silent.

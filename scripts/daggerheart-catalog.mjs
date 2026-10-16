@@ -244,6 +244,30 @@ function weaponEntry(weapon) {
   entry.variants = [{ id, label: `attack · ${mode}`, weaponMode: mode, recipe: recipeFor(entry, id, "attack", weaponStages(weapon)) }];
   return entry;
 }
+// Actions that only heal, gain Hope or Fear, or apply an effect (daggerheart.mjs utilityFields): a
+// glow on the user, and on each target when it has some. Patreon keys first, then keys JB2A Free has.
+export const UTILITY_LOOKS = Object.freeze({
+  heal: { label: "Heal", color: "#6fe08a", self: ["jb2a.healing_generic.400px.green", "jb2a.healing_generic.200px.green"], target: ["jb2a.cure_wounds.400px.blue", "jb2a.healing_generic.200px.green"] },
+  hope: { label: "Hope", color: "#f2c94c", self: ["jb2a.divine_smite.caster.yellowwhite", "jb2a.particle_burst.01.star.yellow", "jb2a.twinkling_stars.points07.orange"], target: ["jb2a.bless.200px.intro.yellow", "jb2a.particle_burst.01.star.yellow"] },
+  fear: { label: "Fear", color: "#7a3fc9", self: ["jb2a.markers.fear.dark_purple.03", "jb2a.energy_strands.overlay.dark_purple.01", "jb2a.smoke.puff.centered.dark_purple"], target: ["jb2a.condition.curse.01.019.purple", "jb2a.smoke.puff.centered.dark_purple", "jb2a.condition.curse.01.019.red"] },
+  boon: { label: "Effect", color: "#8fb8ff", self: ["jb2a.condition.boon.01.007.yellow", "jb2a.bless.200px.intro.yellow", "jb2a.particle_burst.01.star.yellow"], target: ["jb2a.condition.boon.01.007.green", "jb2a.particle_burst.01.star.yellow"] },
+});
+export function utilityStages(look) {
+  const l = UTILITY_LOOKS[look] ?? UTILITY_LOOKS.boon;
+  return [
+    { stageId: "self", kind: "cast", assets: [...l.self], duration: 1600, scale: 1 },
+    { stageId: "target", kind: "impact", assets: [...l.target], delay: 400, duration: 1400, scale: 0.9, optionalTargets: true }];
+}
+function utilityEntry(look) {
+  const l = UTILITY_LOOKS[look];
+  const entry = { id: `daggerheart-weapon-utility-${look}`, systemId: "daggerheart", kind: "weapon", uuid: null, name: `Any ability · ${l.label}`, img: "icons/svg/aura.svg",
+    level: 0, tier: 0, range: null, damageTypes: [], family: null, generic: true, edition: "Fallback", group: "Ability", theme: "Ability",
+    quality: "themed", color: l.color, sourceURL: `${SOURCE_URL}/src/packs`,
+    descriptionText: `any feature, potion or item action that only ${look === "boon" ? "applies an effect" : look === "heal" ? "heals" : `gains or spends ${l.label}`}` };
+  const id = `${entry.id}-use`;
+  entry.variants = [{ id, label: "use", recipe: recipeFor(entry, id, "use", utilityStages(look)) }];
+  return entry;
+}
 function featureEntry(element) {
   const look = AREA_LOOKS[element];
   const entry = { id: `daggerheart-weapon-feature-${element}`, systemId: "daggerheart", kind: "weapon", uuid: null, name: `Any feature attack · ${look.label}`, img: "icons/svg/explosion.svg",
@@ -268,7 +292,7 @@ function conditionEntry(c) {
   return entry;
 }
 
-const DH_ENTRIES = [...DAGGERHEART_CARDS.map(cardEntry), ...DAGGERHEART_WEAPONS.map(weaponEntry), ...GENERIC_WEAPONS.map(weaponEntry), ...Object.keys(AREA_LOOKS).map(featureEntry), ...DH_CONDITIONS.map(conditionEntry)];
+const DH_ENTRIES = [...DAGGERHEART_CARDS.map(cardEntry), ...DAGGERHEART_WEAPONS.map(weaponEntry), ...GENERIC_WEAPONS.map(weaponEntry), ...Object.keys(AREA_LOOKS).map(featureEntry), ...Object.keys(UTILITY_LOOKS).map(utilityEntry), ...DH_CONDITIONS.map(conditionEntry)];
 const byId = new Map(DH_ENTRIES.map((e) => [e.id, e]));
 const byUuid = new Map(DH_ENTRIES.filter((e) => e.uuid).map((e) => [e.uuid, e]));
 export const dhEntries = (kind) => (kind ? DH_ENTRIES.filter((e) => e.kind === kind) : DH_ENTRIES);
@@ -310,6 +334,7 @@ export function dhVariantForEvent(entry, event) {
 // ranged fallback; a condition effect is found by its status. An adversary feature's attack roll gets
 // the same fallback, its unrolled strike (a breath, a save, damage) the fallback of its element.
 const genericWeapon = (event) => dhEntry(`daggerheart-weapon-generic-${event?.weaponMode === "ranged" ? "ranged" : "melee"}`);
+const utilityEntryFor = (event) => (event?.type === "use" && event?.utilityLook ? dhEntry(`daggerheart-weapon-utility-${event.utilityLook}`) : null);
 export function findDhEntry(event) {
   const item = event?.item ?? null;
   if (event?.type === "effect") {
@@ -318,10 +343,10 @@ export function findDhEntry(event) {
   }
   if (item?.type === "feature") {
     if (event?.type === "attack" && DH_ROLL_TYPES.has(event?.rollType)) return genericWeapon(event);
-    return event?.type === "use" && event?.featureElement ? dhEntry(`daggerheart-weapon-feature-${event.featureElement}`) : null;
+    return event?.type === "use" && event?.featureElement ? dhEntry(`daggerheart-weapon-feature-${event.featureElement}`) : utilityEntryFor(event);
   }
   const kind = item?.type === "domainCard" ? "card" : item?.type === "weapon" || (!item && event?.type === "attack" && event?.rollType === "attack") ? "weapon" : null;
-  if (!kind) return null;
+  if (!kind) return utilityEntryFor(event);
   const name = normalize(item?.name ?? event?.itemName);
   const byName = name ? dhEntries(kind).find((e) => e.uuid && normalize(e.name) === name) : null;
   if (byName) return byName;
