@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.10 (2026-10-17)
+
+- **Finisher fragment tints show on the table.** Frozen, charred, stone, ghostly, burning, electric, acid and poison fragments played untinted on the table, both from the studio's Play at table and on a real kill, although the studio preview showed the tint. The pieces now take their tint everywhere.
+
 ## 1.2.9 (2026-10-17)
 
 - **Athletics maneuvers animate (PF2e, SF2e).** Shove, Trip, Grapple, Disarm, Reposition, Escape, Force Open and other actions rolled as a skill check played nothing, because skill checks were never animated. The check now plays the action's catalog animation on its target. Finishers still play once, from the check.
