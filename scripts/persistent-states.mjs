@@ -128,7 +128,7 @@ export class PersistentStates{
  // Would a lasting animation show for this condition or effect (its catalog on, or your own
  // version)? Taking over Automated Animations stops AA's animation for the same document.
  covers(item){
-  const h=this.host;if(this.closed||!item||!h.ready?.())return false;
+  const h=this.host;if(this.closed||!item||!h.ready?.()||h.yields?.(item))return false;
   try{
    const state=(h.normalizeState??normalizeStateCatalogState)(h.state(h.stateKind?.(item)??item.type));
    const recipe=(h.resolveStateRecipe??resolveStateRecipe)(item,state,h.recipes?.()??[],h.catalog(),{customEnabled:h.customEnabled?.()??true});
@@ -151,7 +151,7 @@ export class PersistentStates{
      if(!(h.activeState??activeState)(item))continue;
      // A state stopped from the Activity page stays off while it remains on the token.
      const key=`${scene}:${token.document?.uuid??token.id}:${(h.documentKey??stateDocumentKey)(item)}`;present.add(key);
-     if(shown>=budget.states||this.stopped.has(key)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
+     if(shown>=budget.states||this.stopped.has(key)||h.yields?.(item)||!(h.stateVisible??stateVisible)(item,token,visibility))continue;
      const kind=h.stateKind?.(item)??item.type,state=item.animaterRecipe?BUILTIN_STATE:(h.normalizeState??normalizeStateCatalogState)(h.state(kind)),recipe=item.animaterRecipe??(h.resolveStateRecipe??resolveStateRecipe)(item,state,saved,h.catalog(),{customEnabled:h.customEnabled?.()??true});if(!recipe||!recipe.stages.some(s=>['aura','tokenfx'].includes(s.kind)&&s.persist))continue;
      const signature=JSON.stringify([recipe,state.opacity,tokenFootprint(token,h.gridSize()),token.mechanicalBounds?.width,token.mesh?.uid,token.document?.texture?.src,h.gridDistance?.()??5,(h.storedDocument??storedStateDocument)(item),item.uuid,item.system?.badge?.value,item.value??item.system?.value?.value,item.system?.persistent?.damageType,grantedByOtherAura(item,token)]);
      const mode=h.lastingMode?.(),fade=item.animaterRecipe?state.fade===true:lastingFade(state.fade,mode),turn=!item.animaterRecipe&&fade&&lastingTurn(state,mode);

@@ -13,7 +13,7 @@ import { pf2eEvent, sf2eEvent, dnd5eEvent, twoeEvent } from "./adapters.mjs";
 import { daggerheartRollEvent, daggerheartUseEvent, daggerheartDamageEvent, dualityAccent, versionBelow as daggerheartVersionBelow, DAGGERHEART_VERIFIED } from "./daggerheart.mjs";
 import { dhStateHost, dhDefeatedStates, DH_DEFEATED_STATUSES, findDhState } from "./daggerheart-states.mjs";
 import { applyEventElement } from "./element-choice.mjs";
-import { AA_ID, AA_TAKEOVER, aaCustomized, registerAATakeover } from "./integrations/automated-animations.mjs";
+import { AA_ID, AA_TAKEOVER, AA_FILL_GAPS, aaCustomized, aaAnimates, registerAATakeover } from "./integrations/automated-animations.mjs";
 import { registerSpellArsenal } from "./integrations/spell-arsenal.mjs";
 import { registerTriggerEngine } from "./integrations/trigger-engine.mjs";
 import { AnimaterRuntime, sameEffectName } from "./runtime.mjs";
@@ -252,7 +252,7 @@ function environment() {
     pack,
     system,
     conflicts: ["autoanimations", "trigger-animations"]
-      .filter((id) => game.modules.get(id)?.active && !(id === AA_ID && aaTakeover()))
+      .filter((id) => game.modules.get(id)?.active && !(id === AA_ID && (aaTakeover() || aaFillGaps())))
       .map((id) => game.modules.get(id).title),
     problem: !seq?.active
       ? "Activate Sequencer, then reload Foundry."
@@ -403,7 +403,7 @@ async function dispatch(event) {
   if (!event || !(acceptsEvents() || hasOwnApproved())) return;
   // An event the adapter chose not to play (a hidden roll): Activity says why.
   if (event.skipped) return runtime.trace("Skipped", event.skipped);
-  if (yieldsToAA(event)) return runtime.trace("Skipped", `${event.item?.name ?? "Unknown item"}: customized in Automated Animations.`);
+  if (yieldsToAA(event)) return runtime.trace("Skipped", `${event.item?.name ?? "Unknown item"}: ${aaYield(event)}.`);
   try {
     await afterDice(event);
     const enriched = await enrich(event);
@@ -1095,6 +1095,15 @@ Hooks.once("init", () => {
     type: Boolean,
     default: true,
   });
+  game.settings.register(ID, AA_FILL_GAPS, {
+    name: "Only animate what Automated Animations doesn't",
+    hint: "Items Automated Animations animates (by its Automatic Recognition or a customized item) stay with it; Animater animates the rest. Items turned off in Automated Animations play Animater's animation.",
+    scope: "world",
+    // Listed only where Automated Animations is active; elsewhere there are no gaps to fill.
+    config: Boolean(game.modules.get(AA_ID)?.active),
+    type: Boolean,
+    default: false,
+  });
   game.settings.register(ID, "automatic", {
     name: "Automatic playback",
     hint: "Play saved Animater recipes on system events. Disable overlapping animations in other modules to avoid duplicate playback.",
@@ -1163,7 +1172,15 @@ function resolveEvent(event) {
   if (!event || yieldsToAA(event)) return null;
   return applyEventElement(systemRecipe({ systemId: game.system.id, ...event }, recipes()), event.element) ?? null;
 }
-const yieldsToAA = event => Boolean(game.modules.get(AA_ID)?.active && aaCustomized(event.item, event.activity));
+// Why an event stays with Automated Animations, or null when Animater plays it.
+function aaYield(event) {
+  if (!game.modules.get(AA_ID)?.active) return null;
+  if (aaCustomized(event.item, event.activity)) return "customized in Automated Animations";
+  if (aaFillGaps() && aaAnimates(event, (key) => game.settings.get(AA_ID, key))) return "Automated Animations animates it";
+  return null;
+}
+const yieldsToAA = event => Boolean(aaYield(event));
+const aaFillGaps = () => Boolean(game.modules.get(AA_ID)?.active && game.settings.get(ID, AA_FILL_GAPS));
 const aaTakeover = () => Boolean(game.modules.get(AA_ID)?.active && game.settings.get(ID, AA_TAKEOVER));
 function eventFrom(input) {
   if (input?.documentName === "ChatMessage") {
@@ -1388,6 +1405,8 @@ Hooks.once("ready", () => {
       recipes,
       // Your own lasting recipes follow the same switch as every other custom recipe.
       customEnabled: () => enabled(),
+      // Filling AA's gaps: a condition or effect AA animates stays with AA.
+      yields: (item) => aaFillGaps() && yieldsToAA({ type: "effect", item }),
       catalog: () => runtime.getCatalog(),
       state: (kind) => game.settings.get(ID, game.system.id==='sf2e'?sfSettingKey(kind):game.system.id==='dnd5e'?dndSettingKey(kind):game.system.id==='daggerheart'?dhSettingKey(kind):kind === "condition" ? "conditionCatalog" : "effectCatalog"),
       visibility: () => ({ isGM: game.user.isGM, secretConditions: ['pf2e','sf2e'].includes(game.system.id)&&game.settings.get(game.system.id, "metagame_secretCondition") === true }),
@@ -1475,7 +1494,8 @@ Hooks.once("ready", () => {
     stop: () => runtime.stop(),
   };
   registerAATakeover({
-    enabled: () => acceptsEvents() && aaTakeover(),
+    // Filling gaps, AA keeps whatever it animates: Animater only stops AA for items AA has nothing for.
+    enabled: () => acceptsEvents() && aaTakeover() && !aaFillGaps(),
     // Conditions and effects are Animater's lasting animations, not recipes: AA stops for those too.
     resolve: (event) => resolveEvent(event) ?? (event.type === "effect" && persistentStates?.covers(event.item) ? true : null),
     context: () => ({ systemId: game.system.id, userId: game.user.id, twoe: ["pf2e", "sf2e"].includes(game.system.id) ? twoeEvent : null }),
