@@ -727,13 +727,15 @@ export default {
     stages: [
       cast('Matter gathers', ['particles.swirl.greenyellow.01', 'particles.swirl.greenyellow.01'], { stageId: 'eb-in', scale: 0.6, duration: 900, elementTint: true }),
       motion('throw', 'source', { after: 'eb-in', anchor: 'start', offset: 300, duration: 700, intensity: 0.5 }),
-      // Durations and contacts measured on the 30 ft JB2A clips: each element's projectile flies its own clip
-      // and the blast lands when it arrives (wood's leaves stream for 4.5 s and arrive at 1.3 s).
-      travel('Elemental blast', ['ranged.02.projectile.01.yellow', 'ranged.02.projectile.01.yellow'], { stageId: 'eb', after: 'eb-in', anchor: 'start', offset: 550, duration: 1450, contact: 450, elementTint: true,
+      // Each element's projectile flies its own clip and the blast lands when it arrives (contacts measured on
+      // the 30 ft JB2A clips: wood's leaves arrive at 1.3 s). Sequencer picks the clip by distance (wood runs
+      // 3.5 s at 5 ft to 5.5 s at 90 ft), so the flight lasts as long as the longest and plays once: a shorter
+      // clip ends instead of looping back to its start after the hit.
+      travel('Elemental blast', ['ranged.02.projectile.01.yellow', 'ranged.02.projectile.01.yellow'], { stageId: 'eb', after: 'eb-in', anchor: 'start', offset: 550, duration: 2200, contact: 450, oneShot: true, elementTint: true,
         elementTiming: {
-          fire: { duration: 1550, contact: 550 }, cold: { duration: 2750, contact: 950 }, electricity: { duration: 2850, contact: 1050 },
-          air: { duration: 1000, contact: 450 }, earth: { duration: 1600, contact: 1400 }, metal: { duration: 1850, contact: 600 },
-          water: { duration: 1850, contact: 550 }, wood: { duration: 4550, contact: 1300 },
+          fire: { duration: 1800, contact: 550 }, cold: { duration: 3250, contact: 950 }, electricity: { duration: 3200, contact: 1050 },
+          air: { duration: 1000, contact: 450 }, earth: { duration: 3300, contact: 1400 }, metal: { duration: 2350, contact: 600 },
+          water: { duration: 2500, contact: 550 }, wood: { duration: 5550, contact: 1300 },
         },
         elementAssets: {
           fire: ['jb2a.fire_bolt.orange'], cold: ['jb2a.spell_projectile.ice_shard.blue'], electricity: ['jb2a.bolt.lightning.blue', 'jb2a.witch_bolt.blue'],

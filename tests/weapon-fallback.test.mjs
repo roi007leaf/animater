@@ -68,10 +68,14 @@ test("each Elemental Blast element flies for its own clip's length and lands whe
   const timing = (element) => {
     const r = applyEventElement(base, element), stages = timedStages(r);
     const flight = stages.find((s) => s.stageId === "eb"), hit = stages.find((s) => s.kind === "impact");
-    return { duration: flight.duration, lands: hit.delay - flight.delay };
+    return { duration: flight.duration, lands: hit.delay - flight.delay, oneShot: flight.oneShot === true };
   };
   // Measured on the 30 ft JB2A clips: wood's leaves stream for 4.5 s and reach the target at 1.3 s.
-  assert.deepEqual(timing("wood"), { duration: 4550, lands: 1300 }, "wood is no longer cut off as its leaves arrive");
+  // Sequencer picks the clip by distance (wood: 3.5 s at 5 ft to 5.5 s at 90 ft): the flight lasts as long as the
+  // longest and plays once, so a shorter one ends instead of looping back to its start after the hit.
+  assert.deepEqual(timing("wood"), { duration: 5550, lands: 1300, oneShot: true }, "wood is neither cut off nor replayed");
+  assert.equal(timing("earth").duration, 3300);
+  assert.equal(applyEventElement(base, null).stages.find((s) => s.stageId === "eb").oneShot, true, "the default projectile plays once too");
   assert.equal(timing("earth").lands, 1400, "the boulder lands when it lands, not half a second early");
   assert.equal(timing("fire").lands, 550);
   for (const element of ["fire", "cold", "electricity", "air", "earth", "metal", "water", "wood"]) {
