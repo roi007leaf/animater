@@ -396,3 +396,12 @@ test('Invisible\'s refraction ripple stays under the token, round or square art:
     await f.manager.destroy();
   }
 });
+test('lasting flames burn over round token art at half strength; a web on round art stays under', async () => {
+ const blaze = PF2E_EFFECTS.find(e => e.name === 'Effect: Blaze');
+ assert.ok(stateRecipe(blaze).stages.some(s => /\.flames\./.test(s.assets?.[0] ?? '')), 'Blaze burns with flames footage');
+ const f = fixture([native(blaze)]); await f.manager.reconcile(); await flush();
+ assert.ok(f.calls.some(c => c[0] === 'file' && /flames/.test(c[1])), 'drawn');
+ assert.ok(!f.calls.some(c => c[0] === 'belowTokens'), 'over the token, as the preview shows it');
+ assert.ok(f.calls.find(c => c[0] === 'opacity')[1] <= 0.5, 'at half strength, so the face still shows');
+ await f.manager.destroy();
+});

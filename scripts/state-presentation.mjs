@@ -8,6 +8,9 @@ const HOLLOW=/\.(?:token_border|condition\.curse|markers|template_circle|magic_s
 export const hollowFootage = asset => HOLLOW.test(`.${String(asset).replace(/^jb2a\./,'')}`);
 // Refraction clips bend what lies behind them; their frame is a full square that only reads as a
 // ripple under the token. Lifted over the art, the whole frame shows as a pale sheet (Invisible).
+// Flames rise from the bearer: under round art only an ember shows past the edge, so the creature does
+// not look on fire. They burn over any token at half strength, as filling footage does over square art.
+export const risingFlames = asset => /^(?:jb2a\.)?flames\./.test(String(asset));
 export const refractionFootage = asset => /refraction/.test(String(asset));
 export function coversToken(stage, asset = stage?.asset ?? stage?.assets?.[0] ?? '') {
  if(!stage||stage.below||stage.maskToken||(stage.scale??1)<.9||stage.offsetX||stage.offsetY)return false;

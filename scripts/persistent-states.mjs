@@ -5,7 +5,7 @@ import {applyEffectOptions} from './stage-options.mjs';
 import {mediaForReference} from './media-library-model.mjs';
 import {previewFields} from './activity-actions.mjs';
 import {bodyTreatment} from './condition-body.mjs';
-import {coversToken,hollowFootage,refractionFootage} from './state-presentation.mjs';
+import {coversToken,hollowFootage,refractionFootage,risingFlames} from './state-presentation.mjs';
 
 export function activeState(item){
  if(item?.animaterAura){const source=item.animaterAura.source;return source?.type==='effect'?activeState(source):Boolean(source);}
@@ -213,7 +213,7 @@ export class PersistentStates{
    // under it a ring just outside the edge is hidden by art that reaches the edge. Filling footage (webs, smoke,
    // sparkles) stays under round art and goes on top of square art at half strength.
    const hollow=hollowFootage(s.asset),under=s.below||(!authored&&coversToken(s,s.asset));
-   const lifted=!authored&&under&&(granted||!s.auraRadius)&&!s.maskToken&&!refractionFootage(s.asset)&&(hollow||squareArt);
+   const lifted=!authored&&under&&(granted||!s.auraRadius)&&!s.maskToken&&!refractionFootage(s.asset)&&(hollow||squareArt||risingFlames(s.asset));
    const overArt=lifted&&!hollow?.5:1;
    const e=sequence.effect().file(s.asset).name(r.name).origin(r.item.uuid??r.recipe.itemUuid)
     .attachTo(r.token,{offset:offsetInGridSquares(s,r.token,grid),gridUnits:true,bindRotation:s.bindRotation,bindAlpha:true,bindVisibility:true,bindElevation:true})
