@@ -10,7 +10,7 @@ import { PF2E_EFFECTS,stateRecipe } from '../scripts/state-catalog.mjs';
 import { previewPose } from "../scripts/stage-options.mjs";
 import { motionPose, combineMotionPoses } from "../scripts/motion.mjs";
 
-function runtimeFixture(file = "test_1000x400.webm") {
+function runtimeFixture(file = "test_1000x400.webm", key = "jb2a.test") {
   const calls = [];
   const effect = new Proxy(
     {},
@@ -29,7 +29,7 @@ function runtimeFixture(file = "test_1000x400.webm") {
     gridSize: () => 100,
     database: {
       entryExists: () => true,
-      getPathsUnder: () => ["jb2a.test"],
+      getPathsUnder: () => [key],
       getAllFileEntries: () => [file],
     },
     sequence: () => ({ effect: () => effect, play: async () => {} }),
@@ -308,4 +308,16 @@ test("width/height animation tracks use rendered artwork dimensions and preserve
   const pose = previewPose(s, 1000, 55, { width: 55, height: 110 });
   assert.equal(pose.scaleX * 55, 110);
   assert.equal(pose.scaleY * 110, 165);
+});
+
+test("a JB2A melee swing is stretched from the wielder to the target, never sized on the target", async () => {
+  const { runtime, calls } = runtimeFixture("Sword01_01_Regular_White_800x600.webm", "jb2a.sword.melee.01.white");
+  const source = { w: 100, h: 100, center: { x: 400, y: 100 } }, target = { w: 100, h: 100, center: { x: 300, y: 100 } };
+  const r = validateRecipe({ ...starterRecipes()[0], stages: [{ kind: "impact", assets: ["jb2a.sword.melee.01.white"], duration: 100, scale: 1.2 }] });
+  await runtime.play(r, { source, targets: [target] }, { preview: true });
+  assert.equal(calls.find(c => c[0] === "atLocation")[1], source);
+  assert.equal(calls.find(c => c[0] === "stretchTo")[1], target);
+  assert.deepEqual(calls.find(c => c[0] === "scale")[1], { x: 1, y: 1.2 });
+  assert.ok(!calls.some(c => ["size", "rotateTowards"].includes(c[0])));
+  assert.ok(calls.some(c => c[0] === "mirrorY" && c[1] === true), "swinging leftward: kept blade-up");
 });

@@ -133,8 +133,8 @@ test("PF2e adapter separates events and suppresses private, remote, reroll messa
   };
   assert.equal(pf2eEvent(nativeTarget, "u").targetUuid, "Scene.s.Token.target");
   assert.equal(pf2eEvent(msg, "other"), null);
-  assert.equal(pf2eEvent({ ...msg, blind: true }, "u"), null);
-  assert.equal(pf2eEvent({ ...msg, whisper: ["g"] }, "u"), null);
+  assert.match(pf2eEvent({ ...msg, blind: true }, "u").skipped, /blind roll/);
+  assert.match(pf2eEvent({ ...msg, whisper: ["g"] }, "u").skipped, /private roll/);
   assert.equal(
     pf2eEvent(
       { ...msg, flags: { pf2e: { context: { isReroll: true } } } },
@@ -167,8 +167,5 @@ test("D&D 5e adapter reads activity subject and skips anonymous global rolls", (
   assert.equal(e.item, item);
   assert.equal(e.actor, actor);
   assert.equal(e.outcome, null);
-  assert.equal(
-    dnd5eEvent("use", subject, { results: { message: { blind: true } } }),
-    null,
-  );
+  assert.match(dnd5eEvent("use", subject, { results: { message: { blind: true } } }).skipped, /blind roll/);
 });

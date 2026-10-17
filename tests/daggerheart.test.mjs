@@ -86,8 +86,8 @@ test("a multi-target spellcast with mixed results: per-target outcomes, the best
 test("trait, reaction and other non-attack rolls, other users' and private messages are not attack events", () => {
   assert.equal(daggerheartRollEvent(rollMessage({ item: sword, roll: dualityRoll({ type: "trait" }), action: { name: "Act", roll: { type: "trait" } } }), "u"), null);
   assert.equal(daggerheartRollEvent(rollMessage({ item: sword, author: "other" }), "u"), null);
-  assert.equal(daggerheartRollEvent(rollMessage({ item: sword, whisper: ["gm"] }), "u"), null);
-  assert.equal(daggerheartRollEvent(rollMessage({ item: sword, blind: true }), "u"), null);
+  assert.match(daggerheartRollEvent(rollMessage({ item: sword, whisper: ["gm"] }), "u").skipped, /private roll/);
+  assert.match(daggerheartRollEvent(rollMessage({ item: sword, blind: true }), "u").skipped, /blind roll/);
   assert.equal(daggerheartRollEvent({ ...rollMessage({ item: sword }), type: "base" }, "u"), null);
   assert.equal(daggerheartRollEvent(null, "u"), null);
 });
@@ -142,7 +142,7 @@ test("an ability used with no roll is a use event; an attack or spellcast action
   assert.equal(roar.itemName, "Roar");
   assert.deepEqual(roar.targetUuids, ["Scene.s.Token.p1"]);
   const [secret, secretConfig] = useHook({ item: bond, config: { selectedMessageMode: "gm" } });
-  assert.equal(daggerheartUseEvent(secret, secretConfig), null, "a private use plays nothing");
+  assert.match(daggerheartUseEvent(secret, secretConfig).skipped, /private roll/, "a player's private use plays nothing");
   assert.equal(daggerheartUseEvent(null, {}), null);
 });
 
@@ -189,7 +189,7 @@ test("damage events: the roller's own, private ones skipped, nothing when every 
   assert.equal(e.damageType, "physical");
   assert.equal(e.weaponMode, "melee");
   assert.equal(daggerheartDamageEvent(rollMessage({ item: sword, damage: damageRoll() }), "other"), null);
-  assert.equal(daggerheartDamageEvent(rollMessage({ item: sword, damage: damageRoll(), whisper: ["gm"] }), "u"), null);
+  assert.match(daggerheartDamageEvent(rollMessage({ item: sword, damage: damageRoll(), whisper: ["gm"] }), "u").skipped, /private roll/);
   assert.equal(daggerheartDamageEvent(rollMessage({ item: sword }), "u"), null);
   assert.equal(daggerheartDamageEvent(rollMessage({ item: sword, roll: dualityRoll({ hope: 2, fear: 1, modifier: 0 }), damage: damageRoll() }), "u"), null);
   const direct = daggerheartDamageEvent(rollMessage({ type: "adversaryRoll", roll: null, hasRoll: false, item: sword, damage: damageRoll() }), "u");

@@ -15,8 +15,8 @@ const bolt = () => validateRecipe({ id: "bolt", name: "Bolt", trigger: "attack",
 
 test("a miss flies but never lands: no impact, flinch or impact sound on the target", () => {
   const out = withOutcome(bolt(), { outcome: "failure", type: "attack" });
-  assert.deepEqual(out.stages.map((s) => s.stageId), ["c", "t", "r"]);
-  assert.equal(withOutcome(bolt(), { outcome: "criticalFailure", type: "attack" }).stages.length, 4, "the miss plus the fumble");
+  assert.deepEqual(out.stages.map((s) => s.stageId), ["c", "t", "r", "miss-dodge"], "the target dodges instead");
+  assert.equal(withOutcome(bolt(), { outcome: "criticalFailure", type: "attack" }).stages.length, 5, "the miss, the dodge and the fumble");
   // Damage and use events are never treated as misses.
   assert.equal(withOutcome(bolt(), { outcome: "failure", type: "damage" }).stages.length, 6);
 });

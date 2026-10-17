@@ -1,42 +1,30 @@
 import { dnd5eAttackOutcome } from './outcome.mjs';
 import { twoeEventElement, dnd5eEventElement } from "./element-choice.mjs";
+import { rollPrivacy, modePrivacy, stricter, hidden, hiddenReason } from "./privacy.mjs";
 // Normalize system events without changing rolls, items, HP, or system state.
 export const pf2eEvent=(message,userId)=>twoeEvent(message,userId,'pf2e');
 export const sf2eEvent=(message,userId)=>twoeEvent(message,userId,'sf2e');
 export function twoeEvent(message, userId, systemId='pf2e') {
-  const flags=message.flags?.[systemId], author=message.author ?? message.user;
-  // A GM's private roll (Private GM Roll mode, secret NPC rolls) still happens on the table: it animates
-  // for everyone, without the outcome that would give the hidden result away. Blind rolls and a
-  // player's own private rolls stay hidden.
-  const gmPrivate = Boolean(message.whisper?.length) && author?.isGM === true && !message.blind;
-  if (
-    author?.id !== userId ||
-    message.blind ||
-    (message.whisper?.length && !gmPrivate) ||
-    flags?.context?.isReroll
-  )
-    return null;
-  const context = flags?.context;
-  if (
-    [
-      "damage-taken",
-      "saving-throw",
-      "skill-check",
-      "perception-check",
-      "flat-check",
-    ].includes(context?.type)
-  )
-    return null;
-  const type = context?.type?.includes("attack")
+  const flags=message.flags?.[systemId], author=message.author ?? message.user, context = flags?.context;
+  if (author?.id !== userId || context?.isReroll) return null;
+  if (["damage-taken", "saving-throw", "perception-check", "flat-check"].includes(context?.type)) return null;
+  // An action rolled as a skill check (Shove, Trip, Grapple, Demoralize: action:shove) plays as that
+  // action's use; other skill checks are no event. Finishers ride the check (checkFinisherEvent).
+  const maneuver = context?.type === "skill-check" ? maneuverItem(message, context) : null;
+  if (context?.type === "skill-check" && !maneuver) return null;
+  const type = maneuver ? "use" : context?.type?.includes("attack")
     ? "attack"
     : message.isDamageRoll
       ? "damage"
       : !message.isRoll
         ? "use"
         : null;
-  if (!type || (!message.item && !flags?.origin?.uuid))
+  if (!type || (!maneuver && !message.item && !flags?.origin?.uuid))
     return null;
-  const item = message.item ?? originSpell(message.actor, flags?.origin);
+  const item = maneuver ?? message.item ?? originSpell(message.actor, flags?.origin);
+  // See privacy.mjs: a GM's private roll plays without its outcome; hidden ones are a Skipped row.
+  const privacy = rollPrivacy(message), gmPrivate = privacy === "gm";
+  if (hidden(privacy)) return { skipped: hiddenReason(item?.name ?? flags?.origin?.name, privacy) };
   const options = context?.options ?? [];
   // Enabled damage dice/modifiers identify riders such as Sneak Attack (flags.<system>.dice/.modifiers).
   const live = rows => (Array.isArray(rows) ? rows : []).filter(r => r?.slug && r.enabled !== false && r.ignored !== true);
@@ -68,6 +56,7 @@ export function twoeEvent(message, userId, systemId='pf2e') {
     actor: message.actor,
     targetUuid: context?.target?.token ?? flags?.target?.token,
     ...(twoeEventElement(message, systemId) ? { element: twoeEventElement(message, systemId) } : {}),
+    ...(maneuver ? { skillCheck: true } : {}),
     outcome: gmPrivate ? undefined : context?.outcome,
     ...(gmPrivate ? { private: true } : {}),
   };
@@ -97,17 +86,25 @@ function originSpell(actor, origin) {
   const traits = options.filter((o) => o.startsWith("origin:item:trait:")).map((o) => o.slice(18));
   return { type: "spell", name, slug, rank: Number(origin.castRank) || undefined, system: { slug, traits: { value: traits } }, actor };
 }
+// The action a skill check names (action:force-open): the actor's own action item, else a stand-in
+// the action catalogs find by slug.
+function maneuverItem(message, context) {
+  const slug = (context.options ?? []).map(String).find((o) => o.startsWith("action:"))?.slice(7);
+  if (!slug) return null;
+  if (message.item?.type === "action" && (message.item.slug ?? message.item.system?.slug) === slug) return message.item;
+  const own = Array.from(message.actor?.items ?? []).find((i) => i?.type === "action" && (i.slug ?? i.system?.slug) === slug);
+  const name = slug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  return own ?? { type: "action", name, slug, system: { slug, traits: { value: [] } }, actor: message.actor };
+}
 export function dnd5eEvent(type, subject, { rolls = [], results = {} } = {}) {
   const message=results.message??rolls.find(r=>r.parent?.system?.targets)?.parent??rolls[0]?.parent;
-  if (
-    !subject?.item ||
-    message?.blind || message?.data?.blind ||
-    message?.whisper?.length || message?.data?.whisper?.length ||
-    rolls.some(
-      (r) => r.options?.rollMode && r.options.rollMode !== "publicroll",
-    )
-  )
-    return null;
+  if (!subject?.item) return null;
+  // The message's whisper and every roll's mode, the most hidden wins (privacy.mjs). The hooks run on
+  // the roller's own client, so without a message author the roller is this user.
+  const isGM = (message?.author ?? message?.user)?.isGM ?? globalThis.game?.user?.isGM;
+  const privacy = rolls.reduce((p, r) => stricter(p, modePrivacy(r.options?.rollMode, isGM)), rollPrivacy(message, { isGM }));
+  if (hidden(privacy)) return { skipped: hiddenReason(subject.item.name ?? subject.name, privacy) };
+  const gmPrivate = privacy === "gm";
   return {
     type,
     systemId: 'dnd5e',
@@ -125,7 +122,8 @@ export function dnd5eEvent(type, subject, { rolls = [], results = {} } = {}) {
     ...(subject.item.type==='weapon'?{weaponMode:String(rolls[0]?.options?.attackMode??'').startsWith('thrown')?'thrown':rolls[0]?.options?.attackMode==='ranged'||subject.attack?.type?.value==='ranged'?'ranged':'melee'}:{}),
     spellLevel: subject.item.type==='spell' ? Number(message?.system?.level??message?.data?.system?.level??subject.getRollData?.()?.item?.level??rolls[0]?.data?.item?.level??subject.item.getRollData?.()?.item?.level??subject.item.system?.level) : undefined,
     // Attack rolls: natural 20/1, or the total against a single target's AC.
-    outcome: type === "attack" ? dnd5eAttackOutcome(rolls, Array.from(message?.system?.targets ?? [])) : null,
+    outcome: gmPrivate ? undefined : type === "attack" ? dnd5eAttackOutcome(rolls, Array.from(message?.system?.targets ?? [])) : null,
+    ...(gmPrivate ? { private: true } : {}),
     rolls,
   };
 }

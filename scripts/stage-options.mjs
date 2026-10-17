@@ -280,7 +280,7 @@ export function applyEffectOptions(effect, stage) {
   if (s.customAnchor) effect.anchor({ x: s.anchorX, y: s.anchorY });
   if (s.rotation) effect.rotate(s.rotation);
   if (s.mirrorX) effect.mirrorX(true);
-  if (s.mirrorY) effect.mirrorY(true);
+  if (Boolean(s.mirrorY) !== Boolean(stage.facingMirror)) effect.mirrorY(true);
   if (s.zIndex) effect.zIndex(s.zIndex);
   if (s.playbackRate !== 1) effect.playbackRate(s.playbackRate);
   for (const method of ["fadeIn", "fadeOut"])

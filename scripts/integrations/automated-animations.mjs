@@ -17,7 +17,7 @@ export function aaEvent(data, { systemId, userId, twoe } = {}) {
   if (data.activeEffect) return { ...base, type: 'effect' };
   if (message && twoe) {
     const event = twoe(message, message.author?.id ?? userId, systemId);
-    return event ? { ...base, ...event, item: event.item ?? item } : null;
+    return event && !event.skipped ? { ...base, ...event, item: event.item ?? item } : null;
   }
   const type = data.rollAttackHook ? 'attack' : data.rollDamageHook ? 'damage' : 'use';
   return { ...base, type };

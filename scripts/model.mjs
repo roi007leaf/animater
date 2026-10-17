@@ -10,6 +10,7 @@ import { repeatStride } from "./stage-options.mjs";
 import { completeMediaStage } from "./media-lifetime.mjs";
 import { normalizePlaybackRoles } from "./playback-roles.mjs";
 import { isPathMotion, PATH_MOTIONS, HOLDING_MOTIONS } from "./motion-path.mjs";
+import { meleeClip } from "./outcome.mjs";
 import {
   compositionOptions,
   timedStages,
@@ -689,6 +690,12 @@ function buildPlan(recipe, catalog, context, requireMedia) {
             // Directional source cues (muzzle flash) turn toward their target.
             ...(o.faceTarget && !["travel", "projectile", "template"].includes(s.kind) && context.targets?.length
               ? { facing: context.targets[targetIndex] ?? context.targets[0] }
+              : {}),
+            // A JB2A melee clip is drawn from the wielder's side (Sequencer anchors it there when
+            // turned): it plays at the attacker, turned toward the target, mirrored when the
+            // target stands to the left so the blade stays on top.
+            ...(s.kind === "impact" && meleeClip(asset) && context.source && destination && destination !== context.source
+              ? { meleeFrom: context.source, facing: destination, ...(centerOf(destination).x < centerOf(context.source).x ? { facingMirror: true } : {}) }
               : {}),
             ...(areaFan ? { areaFan: true } : {}),
             landing,

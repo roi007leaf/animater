@@ -336,6 +336,12 @@ export class AnimaterRuntime {
             })
             .scale(s.scale);
           if (s.overlayFit) e.screenSpaceScale({ fitX: true, fitY: true });
+        } else if (s.meleeFrom) {
+          // A JB2A melee clip is stretched like a flight: its template's start point on the
+          // wielder, its end point on the target, so the swing reaches exactly that far.
+          e.atLocation(s.meleeFrom, location)
+            .stretchTo(s.facing, { cacheLocation: true })
+            .scale({ x: 1, y: s.scale });
         } else {
           e.atLocation(s.landing ?? s.destination, location);
           if (s.facing) e.rotateTowards(s.facing, { cacheLocation: true });

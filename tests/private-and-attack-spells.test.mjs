@@ -14,8 +14,8 @@ test("a GM's private roll animates for the table, without giving away its result
   assert.equal(e.outcome, undefined, "no crit, hit or miss variant reveals the hidden roll");
   assert.equal(e.private, true);
   assert.equal(twoeEvent(strike(), "gm").outcome, "criticalSuccess", "a public roll keeps its outcome");
-  assert.equal(twoeEvent(strike({ whisper: ["gm"], blind: true }), "gm"), null, "blind rolls stay hidden");
-  assert.equal(twoeEvent(strike({ whisper: ["p"], author: { id: "p", isGM: false } }), "p"), null, "a player's own private roll stays hidden");
+  assert.match(twoeEvent(strike({ whisper: ["gm"], blind: true }), "gm").skipped, /blind roll/, "blind rolls stay hidden");
+  assert.match(twoeEvent(strike({ whisper: ["p"], author: { id: "p", isGM: false } }), "p").skipped, /private roll/, "a player's own private roll stays hidden");
 });
 
 test("a spell with the attack trait animates on its attack roll, not on its cast card", () => {

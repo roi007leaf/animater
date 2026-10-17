@@ -1,3 +1,4 @@
+import { rollPrivacy, hidden } from "./privacy.mjs";
 // Which finishers an item plays, and the link between a catalog entry and a finisher.
 // Applies-to reuses recipe matching: comma-separated names in `match`, or one exact itemUuid.
 import { normalize, FINISHER_ON } from "./model.mjs";
@@ -60,11 +61,13 @@ export function finisherMoment(event) {
 export function checkFinisherEvent(message, systemId, userId) {
   const context = message?.flags?.[systemId]?.context;
   if ((message?.author?.id ?? message?.user?.id) !== userId || context?.type !== "skill-check") return null;
-  // Hidden or repeated rolls stay quiet, as normal dispatch does (twoeEvent).
-  if (message.blind || message.whisper?.length || context.isReroll) return null;
+  // Hidden or repeated rolls stay quiet, as normal dispatch does (twoeEvent); a GM's private one
+  // plays without its outcome, so no crit finisher gives it away.
+  const privacy = rollPrivacy(message);
+  if (hidden(privacy) || context.isReroll) return null;
   const action = (context.options ?? []).map(String).find((o) => o.startsWith("action:"))?.slice(7);
   if (!action) return null;
-  return { type: "check", systemId, id: `finisher-check:${message.id}`, messageId: message.id, itemName: action, tokenId: message.speaker?.token, sceneId: message.speaker?.scene, targetUuid: context.target?.token, outcome: context.outcome };
+  return { type: "check", systemId, id: `finisher-check:${message.id}`, messageId: message.id, itemName: action, tokenId: message.speaker?.token, sceneId: message.speaker?.scene, targetUuid: context.target?.token, outcome: privacy === "gm" ? undefined : context.outcome };
 }
 
 // PF2e/SF2e: a creature's saving throw against a spell or effect. The saver (the speaker, also

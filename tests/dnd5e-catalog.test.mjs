@@ -99,11 +99,11 @@ test('every eligible D&D weapon release/contact/material cue has an actual synch
 test('recorded D&D targets and private roll suppression use native activity data',()=>{
  const subject={id:'native',item:{type:'spell'},name:'Cast'};const event=dnd5eEvent('use',subject,{results:{message:{id:'m',system:{targets:[{token:'Scene.s.Token.a'},{token:'Scene.s.Token.b'}]}}}});
  assert.deepEqual(event.targetUuids,['Scene.s.Token.a','Scene.s.Token.b']);assert.equal(event.activityId,'native');
- assert.equal(dnd5eEvent('use',subject,{results:{message:{data:{blind:true}}}}),null);
+ assert.match(dnd5eEvent('use',subject,{results:{message:{data:{blind:true}}}}).skipped,/blind roll/);
  const spell={...subject,item:{type:'spell',system:{level:1}},getRollData:()=>({item:{level:4}})};
  const native=dnd5eEvent('damage',spell,{rolls:[{parent:{id:'roll',system:{level:5,targets:[{token:'Scene.s.Token.recorded'}]}}}]});
  assert.equal(native.spellLevel,5);assert.deepEqual(native.targetUuids,['Scene.s.Token.recorded']);assert.equal(dnd5eEvent('use',spell).spellLevel,4);
- assert.equal(dnd5eEvent('attack',spell,{rolls:[{parent:{blind:true}}]}),null);
+ assert.match(dnd5eEvent('attack',spell,{rolls:[{parent:{blind:true}}]}).skipped,/^Cast: a blind roll/);
 });
 test('same spell name matches native source and edition; foreign bound recipes never cross systems',()=>{
  const e=find('Fireball');assert.equal(findDndEntry({item:{type:'spell',name:'Renamed',_stats:{compendiumSource:e.uuid}}}),e);

@@ -9,6 +9,7 @@
 // (DHActorRoll._getCurrentTargets): a critical, or the total reaching difficulty || evasion.
 // Every read is optional-chained: a shape that moves in a later version skips the event
 // ({ skipped } for the caller to trace) and never throws.
+import { rollPrivacy, modePrivacy, hidden, hiddenReason } from "./privacy.mjs";
 export const DAGGERHEART_VERIFIED = "2.10.12";
 export const DH_ROLL_TYPES = new Set(["attack", "spellcast"]);
 export const DH_MESSAGE_TYPES = new Set(["dualityRoll", "adversaryRoll"]);
@@ -16,8 +17,6 @@ export const DH_MESSAGE_TYPES = new Set(["dualityRoll", "adversaryRoll"]);
 export const MELEE_RANGES = new Set(["melee", "veryClose"]);
 // The domains of 2.10.12's domain cards (the spec's nine, plus Dread).
 export const DH_DOMAINS = Object.freeze(["arcana", "blade", "bone", "codex", "dread", "grace", "midnight", "sage", "splendor", "valor"]);
-// Foundry v14 message modes (and their legacy roll-mode names) that hide a roll from the table.
-const PRIVATE_MODES = new Set(["gm", "blind", "self", "gmroll", "blindroll", "selfroll"]);
 
 export function versionBelow(version, floor = DAGGERHEART_VERIFIED) {
   const parts = (v) => String(v ?? "").split(".").map((n) => Number.parseInt(n, 10) || 0);
@@ -28,7 +27,8 @@ export function versionBelow(version, floor = DAGGERHEART_VERIFIED) {
 
 const list = (value) => (Array.isArray(value) ? value : value instanceof Set ? [...value] : []);
 const authorOf = (message) => message?.author?.id ?? message?.user?.id;
-const isPrivate = (message) => Boolean(message?.blind) || Array.from(message?.whisper ?? []).length > 0;
+// privacy.mjs: a GM's private roll plays without its outcome; a hidden one is a Skipped row.
+const isPrivate = (message) => rollPrivacy(message) !== "public";
 // A D20 or Duality roll only: a direct-damage message's rolls[0] is a DamageRoll.
 const isD20Roll = (r) => Boolean(r?.dHope || r?.d20 || /Duality|D20/.test(r?.constructor?.name ?? ""));
 const rollOf = (message) => message?.system?.roll ?? Array.from(message?.rolls ?? []).find(isD20Roll) ?? null;
@@ -188,13 +188,19 @@ export function daggerheartAttackKind(message) {
 // An attack or spellcast roll message by this user: one event, outcome per target.
 export function daggerheartRollEvent(message, userId, { sceneId = null } = {}) {
   if (!DH_MESSAGE_TYPES.has(message?.type)) return null;
-  if (authorOf(message) !== userId || isPrivate(message)) return null;
+  if (authorOf(message) !== userId) return null;
   const rollType = rollTypeOf(message);
   if (!DH_ROLL_TYPES.has(rollType)) return null;
-  const roll = rollOf(message), { item, action, actor, name } = sourceOf(message);
+  const roll = rollOf(message), { item, action, actor, name } = sourceOf(message), privacy = rollPrivacy(message);
+  if (hidden(privacy)) return { skipped: hiddenReason(name ?? message?.system?.title, privacy) };
   if (!name) return { skipped: `${message?.system?.title || "Daggerheart roll"}: its item or action could not be found.` };
   if (!roll) return { skipped: `${name}: its roll could not be read.` };
   const scene = message?.speaker?.scene ?? sceneId, outcomes = targetOutcomes(message?.system, roll);
+  if (privacy === "gm") return { type: "attack", systemId: "daggerheart", id: `chat:${message?.id}`, messageId: message?.id,
+    item, itemUuid: item?.uuid, ...named(item, name), actor, tokenId: message?.speaker?.token, sceneId: scene,
+    targetUuids: tokenUuids(outcomes.map((o) => o.id), scene), outcome: undefined, private: true,
+    rollType, duality: null, actionId: message?.system?.source?.action || actionIdOf(action),
+    ...weaponModeOf(item, action), ...cardFields(item), ...featureFields(item, action) };
   return {
     type: "attack", systemId: "daggerheart", id: `chat:${message?.id}`, messageId: message?.id,
     item, itemUuid: item?.uuid, ...named(item, name), actor,
@@ -209,11 +215,13 @@ export function daggerheartRollEvent(message, userId, { sceneId = null } = {}) {
 
 // daggerheart.postUseAction: an action used without an attack or spellcast roll (a buff, a heal, a
 // feature). A rolled one is skipped: its roll message is the event, so it never plays twice.
-export function daggerheartUseEvent(action, config, { sceneId = null, tokenId = null } = {}) {
+export function daggerheartUseEvent(action, config, { sceneId = null, tokenId = null, isGM = globalThis.game?.user?.isGM } = {}) {
   if (!action || (config?.hasRoll && DH_ROLL_TYPES.has(action?.roll?.type))) return null;
-  if (PRIVATE_MODES.has(config?.selectedMessageMode)) return null;
   const item = action?.item?.documentName === "Item" ? action.item : null;
   const actor = action?.actor ?? item?.actor ?? null, name = item?.name ?? action?.name ?? null;
+  // The hook runs on the user's own client: a GM's private action still plays.
+  const privacy = modePrivacy(config?.selectedMessageMode, isGM);
+  if (hidden(privacy)) return { skipped: hiddenReason(name ?? "Daggerheart action", privacy) };
   if (!name) return { skipped: "Daggerheart action: its item could not be found." };
   const ids = list(config?.targets).map((t) => t?.id).filter(Boolean);
   return {
@@ -269,8 +277,9 @@ export function daggerheartDamage(message) {
 export function daggerheartDamageEvent(message, userId, { sceneId = null } = {}) {
   const system = message?.system;
   if (!damageMain(system) && !Object.keys(system?.damage?.resources ?? {}).length) return null;
-  if (authorOf(message) !== userId || isPrivate(message)) return null;
-  const { item, action, actor, name } = sourceOf(message);
+  if (authorOf(message) !== userId) return null;
+  const { item, action, actor, name } = sourceOf(message), privacy = rollPrivacy(message);
+  if (hidden(privacy)) return { skipped: hiddenReason(name ?? system?.title, privacy) };
   // Resource-only damage (stress, fear...) has no hit-point type: nothing to play.
   if (!system?.hasHealing && !damageKindOf(message)) return null;
   if (!name) return { skipped: `${system?.title || "Daggerheart damage"}: its item or action could not be found.` };
@@ -283,7 +292,7 @@ export function daggerheartDamageEvent(message, userId, { sceneId = null } = {})
     type: "damage", systemId: "daggerheart", id: `damage:${message?.id}`, messageId: message?.id,
     item, itemUuid: item?.uuid, ...named(item, name), actor,
     tokenId: message?.speaker?.token, sceneId: scene, targetUuids: tokenUuids(hit.map((o) => o.id), scene),
-    damageType: damageKindOf(message), healing: Boolean(system?.hasHealing), crit: damageCrit(message),
+    damageType: damageKindOf(message), healing: Boolean(system?.hasHealing), crit: privacy === "gm" ? false : damageCrit(message),
     ...weaponModeOf(item, action), ...cardFields(item),
   };
 }

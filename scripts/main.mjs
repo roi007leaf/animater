@@ -384,7 +384,7 @@ const DAMAGE_REACTIONS = "damageReactions", DRAMATIC_DEATHS = "dramaticDeaths", 
 const COLLAPSE = { id: "animater-collapse", name: "Dropped to 0 HP", trigger: "manual", stages: [{ stageId: "collapse", kind: "motion", motion: "collapse", subject: "source", duration: 1800, distance: 0.25, intensity: 0.8, assets: [] }] };
 async function afterDice(event) {
   const dice = globalThis.game?.dice3d;
-  if (!event.messageId || !dice?.waitFor3DAnimationByMessageID || !["attack", "damage", "save", "check"].includes(event.type)) return;
+  if (!event.messageId || !dice?.waitFor3DAnimationByMessageID || !(["attack", "damage", "save", "check"].includes(event.type) || event.skillCheck)) return;
   if (game.settings.get(ID, WAIT_FOR_DICE) === false) return;
   // Dice So Nice marks the message as animating from its own creation hook.
   await new Promise((resolve) => setTimeout(resolve, 60));
@@ -401,11 +401,14 @@ async function playSaveReaction(outcome, tokenId, messageId, sceneId) {
 let playUseFinishers = async () => {};
 async function dispatch(event) {
   if (!event || !(acceptsEvents() || hasOwnApproved())) return;
+  // An event the adapter chose not to play (a hidden roll): Activity says why.
+  if (event.skipped) return runtime.trace("Skipped", event.skipped);
   if (yieldsToAA(event)) return runtime.trace("Skipped", `${event.item?.name ?? "Unknown item"}: customized in Automated Animations.`);
   try {
     await afterDice(event);
     const enriched = await enrich(event);
-    await Promise.all([runtime.dispatch(enriched), playUseFinishers(enriched)]);
+    // A maneuver's check carries its finishers on its own (checkFinisherEvent): never twice.
+    await Promise.all([runtime.dispatch(enriched), enriched?.skillCheck ? null : playUseFinishers(enriched)]);
   } catch (error) {
     runtime.trace("Blocked", error.message);
   }
@@ -1164,7 +1167,10 @@ const yieldsToAA = event => Boolean(game.modules.get(AA_ID)?.active && aaCustomi
 const aaTakeover = () => Boolean(game.modules.get(AA_ID)?.active && game.settings.get(ID, AA_TAKEOVER));
 function eventFrom(input) {
   if (input?.documentName === "ChatMessage") {
-    if (["pf2e", "sf2e"].includes(game.system.id)) return twoeEvent(input, input.author?.id ?? game.user.id, game.system.id);
+    if (["pf2e", "sf2e"].includes(game.system.id)) {
+      const event = twoeEvent(input, input.author?.id ?? game.user.id, game.system.id);
+      return event?.skipped ? null : event;
+    }
     if (game.system.id === "daggerheart") {
       const author = input.author?.id ?? game.user.id, event = daggerheartRollEvent(input, author) ?? daggerheartDamageEvent(input, author);
       return event?.skipped ? null : event;
@@ -1644,7 +1650,7 @@ Hooks.once("ready", () => {
   });
   if (["pf2e","sf2e"].includes(game.system.id)) {
     Hooks.on("createChatMessage", (message) => {
-      // Actions such as Shove roll a skill check that normal dispatch skips; finishers ride it.
+      // Actions such as Shove roll a skill check; dispatch plays the action, finishers ride the check.
       // Gated and paced like dispatch: events accepted, AA-customized items left alone, dice landed.
       const check = acceptsEvents() ? checkFinisherEvent(message, game.system.id, game.user.id) : null;
       if (check && !yieldsToAA(check)) void afterDice(check).then(() => enrich(check)).then((e) => e && !yieldsToAA(e) && playUseFinishers(e)).catch((error) => runtime.trace("Blocked", error.message));
@@ -1695,7 +1701,7 @@ Hooks.once("ready", () => {
     });
     // A saving throw against a known DC: the saving creature reacts to passing or failing.
     const onSave = (rolls, data) => {
-      const outcome = dnd5eSaveOutcome(rolls), actor = data?.subject;
+      const outcome = dnd5eSaveOutcome(rolls, { isGM: game.user.isGM }), actor = data?.subject;
       const token = actor?.getActiveTokens?.()?.find((t) => t.document?.parent?.id === canvas.scene?.id);
       if (outcome && token) void playSaveReaction(outcome, token.id, rolls[0]?.parent?.id, canvas.scene?.id);
     };

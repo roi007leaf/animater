@@ -2,8 +2,12 @@
 
 ## Unreleased
 
+- **Athletics maneuvers animate (PF2e, SF2e).** Shove, Trip, Grapple, Disarm, Reposition, Escape, Force Open and other actions rolled as a skill check played nothing, because skill checks were never animated. The check now plays the action's catalog animation on its target. Finishers still play once, from the check.
+- **Private GM rolls animate everywhere.** Monster and NPC rolls in Private GM Roll mode now animate in D&D 5e and Daggerheart too (attacks, damage, actions), and so do PF2e and SF2e maneuver checks. As before, they play without the hidden result: no critical, hit or miss variant. A GM's private saving throw now gets a neutral "braces" reaction instead of nothing. Blind rolls and players' own private rolls stay hidden.
+- **Activity explains hidden rolls.** A blind roll, or a player's private roll, that Animater leaves alone now shows as a Skipped row in Activity with the reason, instead of disappearing without a trace.
+- **Targets dodge missed attacks.** On a miss the target now sidesteps as the attack arrives (as a shot reaches it, or as the swing comes in), instead of only the attacker moving. A missed melee weapon still swings through the air. Every player sees the target dodge to the same side.
+- **Melee swings come from the attacker.** A sword, axe or fist swing played at the target, always facing the same way wherever the attacker stood. It now stretches from the attacker to the target, reaching exactly that far, and is mirrored when it swings leftward so the blade stays on top.
 - **Weapon runes show on Strikes (PF2e, SF2e).** A catalog weapon Strike now wears the attacking weapon's runes. Potency (+1 to +3) adds a glint that brightens per tier, striking makes the hit land bigger per tier, and every property rune adds its own accent on a hit. All 89 PF2e and SF2e property runes are covered, for example flaming fire, frost ice, shock lightning, corrosive acid, thundering sound, holy and unholy radiance, ghost touch mist, keen glint, vorpal slash, bloodthirsty bats, rooting vines, anchoring chains and speed wind. Greater, major and true runes play larger. Accents only play on a hit, and your saved recipes are never changed. Turn it off with the new **Weapon rune flourishes** setting.
-
 - **Staff, wand and scroll spells animate (PF2e, SF2e).** A spell cast from a staff prepared by PF2e Dailies, a wand, a scroll or another consumable is not an item on the character, so its attack and damage rolls found no spell and played nothing. Animater now finds the spell in the staff or item it was cast from, or recognizes it from the roll itself, and plays its animation as usual.
 
 ## 1.2.8 (2026-10-17)
