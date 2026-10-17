@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.12 (2026-10-17)
+
+- **Animate only what Automated Animations doesn't.** A new world setting, shown when Automated Animations is active: with it on, anything Automated Animations animates (an item customized there, or a spell, weapon, feat, action, condition or effect its Automatic Recognition matches by name) stays with it, and Animater animates everything else. Area templates check its template menu, and conditions and effects its active effect menu, as Automated Animations does. Items turned off in Automated Animations play Animater's animation, and the Activity page says when an event was left to Automated Animations. Off by default.
+
 ## 1.2.11 (2026-10-17)
 
 - **NPC weapon Strikes animate (PF2e).** An NPC's Light Mace, Longsword or other weapon Strike logged "no enabled attack recipe" and played nothing, because NPC attacks never reached the weapon catalog. They now play their weapon's catalog animation, by the weapon they were made from or by name. An NPC Fist punches like a PC's fist, and an NPC attack made from a homebrew weapon plays its weapon group.
