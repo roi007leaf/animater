@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.6 (2026-10-17)
 
 - **Melee and ranged Elemental Blasts look different (PF2e).** A melee blast now has the kineticist lunge and an elemental strike reaching the target; a ranged blast is thrown and flies as the element's own projectile (a fire bolt for fire). Both take the element rolled. The element is also read from the blast's traits.
 
