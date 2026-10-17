@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.8 (2026-10-17)
 
 - **Private GM rolls animate (PF2e, SF2e).** Monster and NPC attacks and spells rolled in Private GM Roll mode, or made private by the world, played nothing, so most enemy actions never animated. They now play for everyone, without giving away the hidden result: no critical, hit or miss variant, just the attack itself. Blind rolls and players' own private rolls stay hidden.
 - **Attack spells animate on their attack roll (PF2e).** A spell with the attack trait whose animation was set to play when cast (legacy Ray of Enfeeblement, matched to the remaster's Enfeeble) never played on its attack. It now plays once, on the attack roll.
