@@ -467,7 +467,7 @@ function catalogEntryFor(item) {
     if (game.system.id === "sf2e") return findSfCatalogEntry(event);
     if (game.system.id === "daggerheart") return findDhEntry(event);
     if (item.type === "spell") return findSpellEntry(event);
-    if (["weapon", "shield"].includes(item.type)) return findWeaponEntry(event);
+    if (["weapon", "shield", "melee"].includes(item.type)) return findWeaponEntry(event);
     if (["condition", "effect"].includes(item.type)) return findConditionEntry(item);
     const key = abilitySettingKey(item);
     if (key) return ABILITY_CATALOGS[key].find(event);

@@ -21,7 +21,10 @@ function catalogForItem(item,itemUuid){
  return byName.get(normalize(item.system?.slug??item.slug))??byName.get(normalize(item.name))??byBase.get(item.system?.baseItem)??null;
 }
 export function findCatalogWeapon(event){
- const item=event?.item;if(item?.type!=='weapon')return null;
+ const item=event?.item;
+ // An NPC Strike is a melee item: it plays the weapon it was made from, else the catalog weapon of its name.
+ if(item?.type==='melee'){const linked=item.linkedWeapon;return (linked?.type==='weapon'&&catalogForItem(linked))||catalogForItem(item);}
+ if(item?.type!=='weapon')return null;
  const direct=catalogForItem(item,event.itemUuid);if(direct)return direct;
  if((item.category??item.system?.category)!=='unarmed')return null;
  // Match PF2e prepareAttacks: only its first worn, invested, tagged pair
@@ -40,10 +43,16 @@ export function standardWeapon(item,mode){
  const fits=w=>w&&(!mode||w.modes.some(m=>m.mode===mode)),standard=byName.get(normalize(GROUP_STANDARD[group]));
  return fits(standard)?standard:PF2E_WEAPONS.find(w=>w.group===group&&w.edition!=='legacy'&&fits(w))??(standard?.group===group?standard:null);
 }
+// An NPC Strike has no weapon group: its linked weapon's group, or a Fist's, else no guess (Jaws, Claw).
+function npcStandardWeapon(item,mode){
+ if(item?.type!=='melee')return null;
+ if(item.linkedWeapon?.type==='weapon')return standardWeapon(item.linkedWeapon,mode);
+ return [item.system?.slug,item.name].some(n=>normalize(n)==='fist')?standardWeapon({system:{group:'brawling'}},mode):null;
+}
 // PF2e calls some throws "ranged"; the catalog keeps them as thrown (and the reverse).
 const modeOf=(weapon,mode)=>!weapon||weapon.modes.some(m=>m.mode===mode)?mode:mode==='ranged'&&weapon.modes.some(m=>m.mode==='thrown')?'thrown':mode==='thrown'&&weapon.modes.some(m=>m.mode==='ranged')?'ranged':mode;
 export function resolveAutomaticWeaponRecipe(event,state,custom=[],{customEnabled=true,soundCatalog,runes=runeFlourishesEnabled()}={}){
- const known=findCatalogWeapon(event),fallback=known||event?.item?.type!=='weapon'?null:standardWeapon(event.item,event.weaponMode);
+ const known=findCatalogWeapon(event),fallback=known?null:event?.item?.type==='weapon'?standardWeapon(event.item,event.weaponMode):npcStandardWeapon(event?.item,event?.weaponMode);
  const weapon=known??fallback,mode=modeOf(weapon,event.weaponMode??weapon?.modes[0]?.mode),key=weaponCustomizationKey(weapon?.id,mode);
  // A fallback plays under the attacker's own weapon name, with an id of its own.
  const named=r=>r&&fallback?{...r,id:`pf2e-weapon-group-${fallback.group}-${mode}`,name:`${event.item.name} · ${mode}`}:r;

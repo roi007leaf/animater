@@ -47,6 +47,8 @@ export function twoeCatalogRecipe(systemId, event, saved = [], { stateFor, custo
   const options = { customEnabled, soundCatalog: sounds };
   if (ability) return PF2E_ABILITY[ability].resolveAutomaticRecipe(event, stateFor(ability), saved, options) ?? null;
   if (item?.type === "weapon") return resolveAutomaticWeaponRecipe(event, stateFor("weapon"), saved, options) ?? null;
+  // An NPC Strike the weapon catalog knows plays like that weapon; other NPC attacks keep their saved recipes.
+  if (item?.type === "melee") { const strike = resolveAutomaticWeaponRecipe(event, stateFor("weapon"), saved, options); if (strike) return strike; }
   if (item?.type === "feat") return resolveAutomaticFeatRecipe(event, stateFor("feat"), saved, options) ?? null;
   return resolveAutomaticRecipe(event, stateFor("spell"), saved, options) ?? null;
 }
