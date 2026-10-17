@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.5 (2026-10-17)
 
 - **Every PF2e Strike animates.** A weapon the catalog did not know by name played nothing: the basic Fist, homebrew weapons, renamed or reskinned ones. It now plays its group's standard weapon (a homebrew sword swings like a longsword, a fist strikes like a gauntlet, an unknown bow shoots like a longbow), shown under its own name in Activity. The Weapons catalog switch and exclusions apply as before.
 - **Thrown weapons thrown as ranged attacks animate (PF2e).** A javelin or dagger thrown from its ranged attack found no animation, since the catalog keeps it as a thrown weapon. Ranged and thrown now stand in for each other.
