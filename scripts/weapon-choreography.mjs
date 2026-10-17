@@ -25,7 +25,7 @@ export function weaponRecipe(weapon,modeName=weapon?.modes?.[0]?.mode,options={}
  let contactStage;
  if(options.motion!==false)stages.push(gesture);
  if(mode.mode==='melee'){
-  const contact=stage('impact','contact',mode.family==='contact'?'Weapon contact':`${mode.family} contact`,start,{scale:mode.family==='dagger'?.85:mode.heavy?1.2:1,rotation:mode.family==='axe'?-25:mode.family==='whip'?25:0});
+  const contact=stage('impact','contact',mode.family==='contact'?'Weapon contact':`${mode.family} contact`,start,{scale:mode.contactScale??(mode.family==='dagger'?.85:mode.heavy?1.2:1),rotation:mode.family==='axe'?-25:mode.family==='whip'?25:0});
   stages.push(contact);
   contactStage=contact;
   if(mode.element!=='physical')stages.push(stage('impact','accent',`${mode.element} finish`,start+180,{scale:.9,afterStage:contact.stageId,timingAnchor:'start',startOffset:180,...payloadAppearance(mode.element,mode.assets.accent)}));
@@ -55,6 +55,6 @@ export function weaponRecipe(weapon,modeName=weapon?.modes?.[0]?.mode,options={}
  // Item-trait/construction flourishes (Staff of Fire, holy starknives): visual only, never damage.
  for(const [index,flavor]of (mode.flavor??[]).entries())if(mode.assets[`flavor${index+1}`]?.length)stages.push(stage('impact',`flavor${index+1}`,`${flavor} flourish`,contactStage.delay+220+index*110,{afterStage:contactStage.stageId,timingAnchor:'start',startOffset:220+index*110,scale:.8,opacity:.9,...payloadAppearance(flavor,mode.assets[`flavor${index+1}`])}));
  if(mode.assets.residue?.length)stages.push(stage('aura','residue',`${mode.payload?.style==='spores'?'Fungal growth':mode.payload?.style==='foam'?'Hardening debris':mode.persistent||mode.payload?.element||mode.element} residue · brief visual cue`,contactStage.delay+300,{subject:'targets',afterStage:contactStage.stageId,timingAnchor:'start',startOffset:300,duration:2400,oneShot:false,fadeIn:180,fadeOut:500,scale:.85,opacity:.75,persist:false,...payloadAppearance(mode.payload?.style==='spores'?'poison':mode.payload?.style==='insects'?'darkInsects':mode.persistent||mode.payload?.element||mode.element,mode.assets.residue)}));
- stages=addAbilitySounds(weapon,stages,{...options,mode:mode.mode});
+ stages=addAbilitySounds(weapon,stages,{...options,mode:mode.mode,...(mode.soundDesign?{design:mode.soundDesign}:{})});
  return withCatalogFx(validateRecipe({id,name:`${weapon.name} · ${mode.mode}`,description:mode.rationale,category:'Weapons',color,trigger:'attack',match:`${weapon.name},${weapon.slug}`,itemUuid:weapon.uuid??`Compendium.${systemId}.${systemId==='sf2e'?'equipment':'equipment-srd'}.Item.${weapon.id}`,weaponMode:mode.mode,stages}),weapon,{...options,mode});
 }

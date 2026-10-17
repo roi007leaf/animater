@@ -1,10 +1,13 @@
-import {PF2E_WEAPONS,PF2E_WEAPON_SOURCE} from '../data/pf2e-weapons.mjs';
+import {PF2E_WEAPONS as EQUIPMENT,PF2E_WEAPON_SOURCE} from '../data/pf2e-weapons.mjs';
 import {weaponRecipe} from './weapon-choreography.mjs';
 import {normalize,matchRecipe,matchStrikeOverride} from './model.mjs';
 import {withRuneFlourishes,runeFlourishesEnabled} from './weapon-runes.mjs';
+import {NATURAL_WEAPONS,naturalWeaponFor,naturalVariant} from './natural-weapons.mjs';
+// Equipment weapons, then creature attacks (Jaws, Claw) the equipment has no entry for.
+const PF2E_WEAPONS=[...EQUIPMENT,...NATURAL_WEAPONS];
 export {PF2E_WEAPONS,PF2E_WEAPON_SOURCE,weaponRecipe};
 const byId=new Map(PF2E_WEAPONS.map(w=>[w.id,w])),byName=new Map(),byBase=new Map();
-for(const w of [...PF2E_WEAPONS].sort((a,b)=>Number(a.edition==='legacy')-Number(b.edition==='legacy')||a.level-b.level)){
+for(const w of [...EQUIPMENT].sort((a,b)=>Number(a.edition==='legacy')-Number(b.edition==='legacy')||a.level-b.level)){
  for(const n of [w.name,w.slug])if(!byName.has(normalize(n)))byName.set(normalize(n),w);
  if(w.base&&normalize(w.base)===normalize(w.slug)&&!byBase.has(w.base))byBase.set(w.base,w);
 }
@@ -23,10 +26,11 @@ function catalogForItem(item,itemUuid){
 export function findCatalogWeapon(event){
  const item=event?.item;
  // An NPC Strike is a melee item: it plays the weapon it was made from, else the catalog weapon of its name.
- if(item?.type==='melee'){const linked=item.linkedWeapon;return (linked?.type==='weapon'&&catalogForItem(linked))||catalogForItem(item);}
+ if(item?.type==='melee'){const linked=item.linkedWeapon;return (linked?.type==='weapon'&&catalogForItem(linked))||catalogForItem(item)||naturalWeaponFor(item);}
  if(item?.type!=='weapon')return null;
  const direct=catalogForItem(item,event.itemUuid);if(direct)return direct;
  if((item.category??item.system?.category)!=='unarmed')return null;
+ const natural=naturalWeaponFor(item);if(natural)return natural;
  // Match PF2e prepareAttacks: only its first worn, invested, tagged pair
  // supplies the synthetic unarmed attacks. Never infer wraps from a roll name.
  const actor=item.actor??event.actor;
@@ -53,7 +57,7 @@ function npcStandardWeapon(item,mode){
 const modeOf=(weapon,mode)=>!weapon||weapon.modes.some(m=>m.mode===mode)?mode:mode==='ranged'&&weapon.modes.some(m=>m.mode==='thrown')?'thrown':mode==='thrown'&&weapon.modes.some(m=>m.mode==='ranged')?'ranged':mode;
 export function resolveAutomaticWeaponRecipe(event,state,custom=[],{customEnabled=true,soundCatalog,runes=runeFlourishesEnabled()}={}){
  const known=findCatalogWeapon(event),fallback=known?null:event?.item?.type==='weapon'?standardWeapon(event.item,event.weaponMode):npcStandardWeapon(event?.item,event?.weaponMode);
- const weapon=known??fallback,mode=modeOf(weapon,event.weaponMode??weapon?.modes[0]?.mode),key=weaponCustomizationKey(weapon?.id,mode);
+ const weapon=known?.natural?naturalVariant(known,event.item):known??fallback,mode=modeOf(weapon,event.weaponMode??weapon?.modes[0]?.mode),key=weaponCustomizationKey(weapon?.id,mode);
  // A fallback plays under the attacker's own weapon name, with an id of its own.
  const named=r=>r&&fallback?{...r,id:`pf2e-weapon-group-${fallback.group}-${mode}`,name:`${event.item.name} · ${mode}`}:r;
  // Catalog Strikes wear the attacking weapon's runes; saved recipes play as authored.
