@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- **Private GM rolls animate (PF2e, SF2e).** Monster and NPC attacks and spells rolled in Private GM Roll mode, or made private by the world, played nothing, so most enemy actions never animated. They now play for everyone, without giving away the hidden result: no critical, hit or miss variant, just the attack itself. Blind rolls and players' own private rolls stay hidden.
+- **Attack spells animate on their attack roll (PF2e).** A spell with the attack trait whose animation was set to play when cast (legacy Ray of Enfeeblement, matched to the remaster's Enfeeble) never played on its attack. It now plays once, on the attack roll.
+
 ## 1.2.7 (2026-10-17)
 
 - **Ranged Elemental Blasts are no longer cut off (PF2e).** Every element flew for the same 1.3 seconds and landed at the same moment, so wood's stream of leaves stopped just as it reached the target, a boulder landed half a second after its impact, and ice, lightning and water were trimmed. Each element now flies for its own clip's length and lands when its projectile arrives. The flight plays once, so at short range (where the clip is shorter) it no longer starts over after the target is hit.

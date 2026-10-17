@@ -4,11 +4,15 @@ import { twoeEventElement, dnd5eEventElement } from "./element-choice.mjs";
 export const pf2eEvent=(message,userId)=>twoeEvent(message,userId,'pf2e');
 export const sf2eEvent=(message,userId)=>twoeEvent(message,userId,'sf2e');
 export function twoeEvent(message, userId, systemId='pf2e') {
-  const flags=message.flags?.[systemId];
+  const flags=message.flags?.[systemId], author=message.author ?? message.user;
+  // A GM's private roll (Private GM Roll mode, secret NPC rolls) still happens on the table: it animates
+  // for everyone, without the outcome that would give the hidden result away. Blind rolls and a
+  // player's own private rolls stay hidden.
+  const gmPrivate = Boolean(message.whisper?.length) && author?.isGM === true && !message.blind;
   if (
-    (message.author?.id ?? message.user?.id) !== userId ||
+    author?.id !== userId ||
     message.blind ||
-    message.whisper?.length ||
+    (message.whisper?.length && !gmPrivate) ||
     flags?.context?.isReroll
   )
     return null;
@@ -64,7 +68,8 @@ export function twoeEvent(message, userId, systemId='pf2e') {
     actor: message.actor,
     targetUuid: context?.target?.token ?? flags?.target?.token,
     ...(twoeEventElement(message, systemId) ? { element: twoeEventElement(message, systemId) } : {}),
-    outcome: context?.outcome,
+    outcome: gmPrivate ? undefined : context?.outcome,
+    ...(gmPrivate ? { private: true } : {}),
   };
 }
 export function dnd5eEvent(type, subject, { rolls = [], results = {} } = {}) {

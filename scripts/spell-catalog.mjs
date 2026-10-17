@@ -94,9 +94,12 @@ export function automaticCatalogRecipe(
 ) {
   if (!state?.enabled) return null;
   const spell = findCatalogSpell(event);
+  // A spell with the attack trait plays on its attack roll, not its cast card, even when its catalog entry
+  // casts on use (legacy Ray of Enfeeblement rolls an attack; its remaster, Enfeeble, is a save).
+  const trigger = spell?.trigger === "use" && attackSpell(event.item) ? "attack" : spell?.trigger;
   if (
     !spell ||
-    spell.trigger !== event.type ||
+    trigger !== event.type ||
     !catalogSpellEnabled(spell.id, state)
   )
     return null;
@@ -107,13 +110,15 @@ export function automaticCatalogRecipe(
     )
   )
     return null;
-  return spellRecipe(spell, undefined, {
+  const recipe = spellRecipe(spell, undefined, {
     castRank: event.castRank ?? event.item?.rank ?? event.item?.system?.location?.heightenedLevel ?? spell.rank,
     motion: state.motion !== false,
     sounds: state.sound === false ? null : soundCatalog,
     soundVolume: state.soundVolume ?? 0.35,
   });
+  return trigger === recipe.trigger ? recipe : { ...recipe, trigger };
 }
+const attackSpell = (item) => (item?.system?.traits?.value ?? item?.traits ?? []).includes("attack");
 export function resolveAutomaticRecipe(
   event,
   state,
