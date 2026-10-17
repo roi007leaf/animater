@@ -60,3 +60,22 @@ test("a melee Elemental Blast strikes up close; a ranged one flies, each in its 
   assert.ok(up.stages.some((s) => s.kind === "travel" && s.tint === "#ff9a4d"), "melee: the strike burns fire-orange");
   assert.ok(far.stages.some((s) => s.kind === "travel" && /fire/.test(s.assets[0])), "ranged: the element's own projectile (a fire bolt)");
 });
+
+test("each Elemental Blast element flies for its own clip's length and lands when its projectile arrives", async () => {
+  const { timedStages } = await import("../scripts/composition.mjs");
+  const blast = PF2E_ACTIONS.find((e) => e.slug === "elemental-blast");
+  const base = PF2E_ACTION_CATALOG.recipe(blast, on);
+  const timing = (element) => {
+    const r = applyEventElement(base, element), stages = timedStages(r);
+    const flight = stages.find((s) => s.stageId === "eb"), hit = stages.find((s) => s.kind === "impact");
+    return { duration: flight.duration, lands: hit.delay - flight.delay };
+  };
+  // Measured on the 30 ft JB2A clips: wood's leaves stream for 4.5 s and reach the target at 1.3 s.
+  assert.deepEqual(timing("wood"), { duration: 4550, lands: 1300 }, "wood is no longer cut off as its leaves arrive");
+  assert.equal(timing("earth").lands, 1400, "the boulder lands when it lands, not half a second early");
+  assert.equal(timing("fire").lands, 550);
+  for (const element of ["fire", "cold", "electricity", "air", "earth", "metal", "water", "wood"]) {
+    const t = timing(element);
+    assert.ok(t.lands < t.duration, `${element}: lands within its flight`);
+  }
+});

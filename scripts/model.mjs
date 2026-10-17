@@ -218,6 +218,14 @@ export function validateRecipe(input) {
           persist: input.lifecycle === 'document' && input.trigger === 'effect' ? ['aura', 'tokenfx'].includes(s.kind) : (s.kind === "aura" || s.kind === "template") && s.persist === true,
           ...(s.kind==='aura'&&Number(s.auraRadius)>0?{auraRadius:number(s.auraRadius,0.1,240,5),auraSlug:text(s.auraSlug,100)}:{}),
           ...(s.elementTint === true ? { elementTint: true } : {}),
+          // When a flight's projectile reaches its target (ms into the clip): arrival timing uses it.
+          ...(Number(s.contact) > 0 ? { contact: number(s.contact, 1, 60000, 0) } : {}),
+          // A chosen element's own clip length and contact (applyEventElement).
+          ...(s.elementTiming && typeof s.elementTiming === "object"
+            ? { elementTiming: Object.fromEntries(Object.entries(s.elementTiming)
+                .filter(([k, v]) => /^[a-z]{2,15}$/.test(k) && Number(v?.duration) > 0)
+                .map(([k, v]) => [k, { duration: number(v.duration, 50, 60000, 1000), ...(Number(v.contact) > 0 ? { contact: number(v.contact, 1, 60000, 0) } : {}) }])) }
+            : {}),
           ...(s.elementAssets && typeof s.elementAssets === "object"
             ? { elementAssets: Object.fromEntries(Object.entries(s.elementAssets)
                 .filter(([k, v]) => /^[a-z]{2,15}$/.test(k) && Array.isArray(v))

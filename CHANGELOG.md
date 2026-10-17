@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Ranged Elemental Blasts are no longer cut off (PF2e).** Every element flew for the same 1.3 seconds and landed at the same moment, so wood's stream of leaves stopped just as it reached the target, a boulder landed half a second after its impact, and ice, lightning and water were trimmed. Each element now flies for its own clip's length and lands when its projectile arrives.
+
 ## 1.2.6 (2026-10-17)
 
 - **Melee and ranged Elemental Blasts look different (PF2e).** A melee blast now has the kineticist lunge and an elemental strike reaching the target; a ranged blast is thrown and flies as the element's own projectile (a fire bolt for fire). Both take the element rolled. The element is also read from the blast's traits.

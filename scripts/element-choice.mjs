@@ -50,8 +50,9 @@ export function applyEventElement(recipe, element) {
     ...recipe,
     chosenElement: chosen,
     stages: recipe.stages.map(stage => {
-      const swap = stage.elementAssets?.[chosen];
-      if (swap?.length) return { ...stage, assets: swap };
+      const swap = stage.elementAssets?.[chosen], timing = stage.elementTiming?.[chosen];
+      // The element's own clip plays its own length and lands when its projectile arrives.
+      if (swap?.length) return { ...stage, assets: swap, ...(timing ? { duration: timing.duration, ...(timing.contact ? { contact: timing.contact } : {}) } : {}) };
       if (stage.elementTint) return { ...stage, tintEnabled: true, colorize: true, tint: hex, hue: 0 };
       return stage;
     }),
