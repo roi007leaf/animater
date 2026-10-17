@@ -5,6 +5,7 @@ import { PF2E_ACTIONS, PF2E_ACTION_SOURCE } from "../data/pf2e-actions.mjs";
 import { PF2E_CLASS_FEATURES, PF2E_CLASS_FEATURE_SOURCE } from "../data/pf2e-class-features.mjs";
 import { normalize, matchRecipe } from "./model.mjs";
 import { featRecipe } from "./feat-choreography.mjs";
+import { withElementChoice } from "./element-choice.mjs";
 export { PF2E_ACTIONS, PF2E_ACTION_SOURCE, PF2E_CLASS_FEATURES, PF2E_CLASS_FEATURE_SOURCE };
 
 export function createAbilityCatalog({ entries, source, recipeKind, label, packs, matchesItem }) {
@@ -37,7 +38,10 @@ export function createAbilityCatalog({ entries, source, recipeKind, label, packs
     }
     return byName.get(normalize(item.system?.slug ?? item.slug)) ?? byName.get(normalize(item.name)) ?? null;
   }
-  const recipe = (found, state = {}, soundCatalog) => featRecipe(found, { motion: state.motion !== false, soundCatalog: state.sound === false ? null : soundCatalog, soundVolume: state.soundVolume });
+  const recipe = (found, state = {}, soundCatalog) => {
+    const built = featRecipe(found, { motion: state.motion !== false, soundCatalog: state.sound === false ? null : soundCatalog, soundVolume: state.soundVolume });
+    return found.elementChoice ? withElementChoice(built) : built;
+  };
   function automaticRecipe(event, state, customRecipes = [], soundCatalog) {
     const found = find(event);
     if (!found || found.rider || !enabled(found.id,state) || found.trigger !== event.type) return null;
@@ -62,6 +66,10 @@ export function createAbilityCatalog({ entries, source, recipeKind, label, packs
   return { entries, source, recipeKind, label, entry, normalizeState, enabled, use, find, recipe, automaticRecipe, resolveAutomaticRecipe, filter };
 }
 
+// Actions that play as attack rolls and look like the element rolled: Elemental Blast is a Strike
+// in an element (its roll carries element:fire, element:water…). The built entry only knows a use.
+const ROLLED_ELEMENTAL = new Set(["elemental-blast"]);
+for (const entry of PF2E_ACTIONS) if (ROLLED_ELEMENTAL.has(entry.slug)) Object.assign(entry, { trigger: "attack", elementChoice: true });
 export const PF2E_ACTION_CATALOG = createAbilityCatalog({ entries: PF2E_ACTIONS, source: PF2E_ACTION_SOURCE, recipeKind: "action", label: "action",
   packs: ["actionspf2e"], matchesItem: item => item.type === "action" });
 const FEATURE_CATEGORIES = new Set(["classfeature", "ancestryfeature"]);

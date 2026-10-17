@@ -30,15 +30,29 @@ export function findCatalogWeapon(event){
  const catalog=wraps&&catalogForItem(wraps);
  return catalog?.strikeBinding==='unarmed'?catalog:null;
 }
+// A weapon the catalog does not know by name (the basic Fist, homebrew, a renamed blade) plays its
+// group's standard weapon: a homebrew sword swings like a longsword, a fist strikes like a gauntlet.
+const GROUP_STANDARD={club:'club',sword:'longsword',knife:'dagger',flail:'flail',spear:'spear',polearm:'halberd',axe:'battle-axe',bow:'longbow',brawling:'gauntlet',hammer:'warhammer',dart:'dart',crossbow:'crossbow',sling:'sling',pick:'pick',shield:'shield-boss',firearm:'flintlock-musket',bomb:'alchemists-fire-lesser'};
+export function standardWeapon(item,mode){
+ const group=item?.system?.group??item?.group??((item?.category??item?.system?.category)==='unarmed'?'brawling':null);
+ if(!group)return null;
+ const fits=w=>w&&(!mode||w.modes.some(m=>m.mode===mode)),standard=byName.get(normalize(GROUP_STANDARD[group]));
+ return fits(standard)?standard:PF2E_WEAPONS.find(w=>w.group===group&&w.edition!=='legacy'&&fits(w))??(standard?.group===group?standard:null);
+}
+// PF2e calls some throws "ranged"; the catalog keeps them as thrown (and the reverse).
+const modeOf=(weapon,mode)=>!weapon||weapon.modes.some(m=>m.mode===mode)?mode:mode==='ranged'&&weapon.modes.some(m=>m.mode==='thrown')?'thrown':mode==='thrown'&&weapon.modes.some(m=>m.mode==='ranged')?'ranged':mode;
 export function resolveAutomaticWeaponRecipe(event,state,custom=[],{customEnabled=true,soundCatalog}={}){
- const weapon=findCatalogWeapon(event),mode=event.weaponMode??weapon?.modes[0]?.mode,key=weaponCustomizationKey(weapon?.id,mode);
+ const known=findCatalogWeapon(event),fallback=known||event?.item?.type!=='weapon'?null:standardWeapon(event.item,event.weaponMode);
+ const weapon=known??fallback,mode=modeOf(weapon,event.weaponMode??weapon?.modes[0]?.mode),key=weaponCustomizationKey(weapon?.id,mode);
+ // A fallback plays under the attacker's own weapon name, with an id of its own.
+ const named=r=>r&&fallback?{...r,id:`pf2e-weapon-group-${fallback.group}-${mode}`,name:`${event.item.name} · ${mode}`}:r;
  const active=weapon&&event.type==='attack'&&catalogWeaponEnabled(weapon.id,state)&&weapon.modes.some(m=>m.mode===mode);
  const bound={...event,weaponMode:mode,...(weapon?.strikeBinding==='unarmed'?{itemUuid:`Compendium.pf2e.equipment-srd.Item.${weapon.id}`}:{})};
  const configured=customEnabled||active&&state.customized?.includes(key)?custom:[];
  const override=matchStrikeOverride(configured,bound);if(override)return override;
- if(active&&(state.selected?.includes(weapon.id)||state.preferCatalog)&&!state.customized?.includes(key))return weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume});
+ if(active&&(state.selected?.includes(weapon.id)||state.preferCatalog)&&!state.customized?.includes(key))return named(weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume}));
  const saved=matchRecipe(configured,bound);if(saved)return saved;
  if(!active||configured.some(r=>!r.enabled&&matchRecipe([{...r,enabled:true}],bound)))return null;
- return weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume});
+ return named(weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume}));
 }
 export function filterWeapons({search='',group='all',mode='all',category='all',edition='all'}={}){const q=normalize(search);return PF2E_WEAPONS.filter(w=>(group==='all'||w.group===group)&&(mode==='all'||w.modes.some(m=>m.mode===mode))&&(category==='all'||w.category===category)&&(edition==='all'||w.edition===edition)&&(!q||normalize(`${w.name} ${w.slug} ${w.traits.join(' ')} ${w.publication} ${w.plainDescription}`).includes(q)));}

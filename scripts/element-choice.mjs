@@ -71,11 +71,13 @@ export function offersElementChoice(text) {
   if (EXPLICIT.test(t)) return true;
   return t.split(/(?<=[.!?])\s+/).some(sentence => CHOICE_WORD.test(sentence) && LIST.test(sentence));
 }
+// The moving or landing energy takes the element rolled at play time (applyEventElement).
+export const withElementChoice = recipe => ({
+  ...recipe,
+  elementChoice: true,
+  stages: recipe.stages.map(s => ['travel', 'projectile', 'impact', 'template'].includes(s.kind) && !s.tintEnabled && !s.catalogFx ? { ...s, elementTint: true } : s),
+});
 export function markElementChoice(recipe, text) {
   if (!recipe || recipe.elementChoice || !offersElementChoice(text)) return recipe;
-  return {
-    ...recipe,
-    elementChoice: true,
-    stages: recipe.stages.map(s => ['travel', 'projectile', 'impact', 'template'].includes(s.kind) && !s.tintEnabled && !s.catalogFx ? { ...s, elementTint: true } : s),
-  };
+  return withElementChoice(recipe);
 }
