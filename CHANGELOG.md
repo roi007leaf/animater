@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.2.9 (2026-10-17)
 
 - **Athletics maneuvers animate (PF2e, SF2e).** Shove, Trip, Grapple, Disarm, Reposition, Escape, Force Open and other actions rolled as a skill check played nothing, because skill checks were never animated. The check now plays the action's catalog animation on its target. Finishers still play once, from the check.
 - **Private GM rolls animate everywhere.** Monster and NPC rolls in Private GM Roll mode now animate in D&D 5e and Daggerheart too (attacks, damage, actions), and so do PF2e and SF2e maneuver checks. As before, they play without the hidden result: no critical, hit or miss variant. A GM's private saving throw now gets a neutral "braces" reaction instead of nothing. Blind rolls and players' own private rolls stay hidden.
