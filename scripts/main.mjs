@@ -32,6 +32,7 @@ import {
 import { TokenMotionPlayer, motionDirection, withFragmentSeed, withFragmentCut, withFragmentTowards } from "./motion.mjs";
 import { installedFxCatalog, OptionalFxPlayer, fxAvailability, startTokenFxPreview, effectOptions } from './optional-fx.mjs';
 import {catalogFxSettings} from './catalog-fx.mjs';
+import {RUNE_SETTING} from './weapon-runes.mjs';
 import {
   normalizeCatalogState,
   catalogSpell,
@@ -1030,6 +1031,8 @@ Hooks.once("init", () => {
       onChange:()=>{persistentStates?.schedule();app?.workspace?.render();}});
   game.settings.register(ID,'weaponScale',{name:'Weapon effect size',hint:'Multiplies the size of weapon hit and residue effects (1 = the target token\'s footprint).',
     scope:'world',config:true,type:Number,range:{min:0.5,max:3,step:0.1},default:1.5});
+  game.settings.register(ID,RUNE_SETTING,{name:'Weapon rune flourishes',hint:'Catalog weapon Strikes show each weapon’s runes: potency adds a glint, striking a bigger hit, and each property rune (flaming, frost, shock, holy…) its own accent on a hit. Saved recipes are never changed.',
+    scope:'world',config:true,type:Boolean,default:true});
   game.settings.register(ID,'tuckDuringPlayback',{name:'Minimize Animater during canvas playback',
     hint:'Local preview and Play at table minimize the Animater window while the animation runs, then restore it.',
     scope:'client',config:true,type:Boolean,default:true});

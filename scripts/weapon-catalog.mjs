@@ -1,6 +1,7 @@
 import {PF2E_WEAPONS,PF2E_WEAPON_SOURCE} from '../data/pf2e-weapons.mjs';
 import {weaponRecipe} from './weapon-choreography.mjs';
 import {normalize,matchRecipe,matchStrikeOverride} from './model.mjs';
+import {withRuneFlourishes,runeFlourishesEnabled} from './weapon-runes.mjs';
 export {PF2E_WEAPONS,PF2E_WEAPON_SOURCE,weaponRecipe};
 const byId=new Map(PF2E_WEAPONS.map(w=>[w.id,w])),byName=new Map(),byBase=new Map();
 for(const w of [...PF2E_WEAPONS].sort((a,b)=>Number(a.edition==='legacy')-Number(b.edition==='legacy')||a.level-b.level)){
@@ -41,18 +42,20 @@ export function standardWeapon(item,mode){
 }
 // PF2e calls some throws "ranged"; the catalog keeps them as thrown (and the reverse).
 const modeOf=(weapon,mode)=>!weapon||weapon.modes.some(m=>m.mode===mode)?mode:mode==='ranged'&&weapon.modes.some(m=>m.mode==='thrown')?'thrown':mode==='thrown'&&weapon.modes.some(m=>m.mode==='ranged')?'ranged':mode;
-export function resolveAutomaticWeaponRecipe(event,state,custom=[],{customEnabled=true,soundCatalog}={}){
+export function resolveAutomaticWeaponRecipe(event,state,custom=[],{customEnabled=true,soundCatalog,runes=runeFlourishesEnabled()}={}){
  const known=findCatalogWeapon(event),fallback=known||event?.item?.type!=='weapon'?null:standardWeapon(event.item,event.weaponMode);
  const weapon=known??fallback,mode=modeOf(weapon,event.weaponMode??weapon?.modes[0]?.mode),key=weaponCustomizationKey(weapon?.id,mode);
  // A fallback plays under the attacker's own weapon name, with an id of its own.
  const named=r=>r&&fallback?{...r,id:`pf2e-weapon-group-${fallback.group}-${mode}`,name:`${event.item.name} · ${mode}`}:r;
+ // Catalog Strikes wear the attacking weapon's runes; saved recipes play as authored.
+ const catalog=r=>withRuneFlourishes(named(r),event.item,{runes});
  const active=weapon&&event.type==='attack'&&catalogWeaponEnabled(weapon.id,state)&&weapon.modes.some(m=>m.mode===mode);
  const bound={...event,weaponMode:mode,...(weapon?.strikeBinding==='unarmed'?{itemUuid:`Compendium.pf2e.equipment-srd.Item.${weapon.id}`}:{})};
  const configured=customEnabled||active&&state.customized?.includes(key)?custom:[];
  const override=matchStrikeOverride(configured,bound);if(override)return override;
- if(active&&(state.selected?.includes(weapon.id)||state.preferCatalog)&&!state.customized?.includes(key))return named(weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume}));
+ if(active&&(state.selected?.includes(weapon.id)||state.preferCatalog)&&!state.customized?.includes(key))return catalog(weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume}));
  const saved=matchRecipe(configured,bound);if(saved)return saved;
  if(!active||configured.some(r=>!r.enabled&&matchRecipe([{...r,enabled:true}],bound)))return null;
- return named(weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume}));
+ return catalog(weaponRecipe(weapon,mode,{motion:state.motion,soundCatalog:state.sound===false?null:soundCatalog,soundVolume:state.soundVolume}));
 }
 export function filterWeapons({search='',group='all',mode='all',category='all',edition='all'}={}){const q=normalize(search);return PF2E_WEAPONS.filter(w=>(group==='all'||w.group===group)&&(mode==='all'||w.modes.some(m=>m.mode===mode))&&(category==='all'||w.category===category)&&(edition==='all'||w.edition===edition)&&(!q||normalize(`${w.name} ${w.slug} ${w.traits.join(' ')} ${w.publication} ${w.plainDescription}`).includes(q)));}

@@ -8,6 +8,7 @@ import {addAbilitySounds} from './ability-sounds.mjs';
 import {withoutCatalogMotion} from './catalog-motion.mjs';
 import {withCatalogFx} from './catalog-fx.mjs';
 import {applySfMotionPatch} from './sf2e-motion.mjs';
+import {withRuneFlourishes,runeFlourishesEnabled} from './weapon-runes.mjs';
 export {SF2E_ENTRIES,SF2E_SOURCE};
 export const SF_KINDS=['spell','feat','action','feature','weapon','condition','effect'];
 const byId=new Map(SF2E_ENTRIES.map(e=>[e.id,e]));
@@ -54,7 +55,7 @@ export function sfVariantForEvent(entry,event){
  const candidates=entry.variants.filter(v=>v.recipe.trigger===event.type&&(!v.weaponMode||v.weaponMode===event.weaponMode||event.type==='template'||!event.weaponMode));
  return candidates.length===1?candidates[0]:null;
 }
-export function resolveSfAutomaticRecipe(event,stateFor,saved=[],{customEnabled=true,sounds}={}){
+export function resolveSfAutomaticRecipe(event,stateFor,saved=[],{customEnabled=true,sounds,runes=runeFlourishesEnabled()}={}){
  if(event.systemId&&event.systemId!=='sf2e')return null;
  const entry=findSfEntry(event),state=normalizeSfCatalogState(entry&&stateFor(entry.kind));
  const selected=entry&&sfEntryEnabled(entry.id,state),prefer=selected&&(state.selected.includes(entry.id)||state.preferCatalog&&!state.customized.includes(entry.id));
@@ -63,7 +64,9 @@ export function resolveSfAutomaticRecipe(event,stateFor,saved=[],{customEnabled=
  if(!prefer){const recipe=matchRecipe(custom,event);if(recipe)return recipe;}
  if(!selected||entry.state)return null;
  if(!prefer&&custom.some(r=>!r.enabled&&matchRecipe([{...r,enabled:true}],event)))return null;
- const variant=sfVariantForEvent(entry,event);return variant?sfRecipe(entry,variant.id,{motion:state.motion,sounds:state.sound?sounds:null,soundVolume:state.soundVolume,castRank:event.castRank}):null;
+ const variant=sfVariantForEvent(entry,event),recipe=variant?sfRecipe(entry,variant.id,{motion:state.motion,sounds:state.sound?sounds:null,soundVolume:state.soundVolume,castRank:event.castRank}):null;
+ // Catalog Strikes wear the attacking weapon's runes; saved recipes play as authored.
+ return recipe&&entry.kind==='weapon'?withRuneFlourishes(recipe,event.item,{runes}):recipe;
 }
 export function filterSfEntries(kind,{search='',level='all',theme='all'}={}){
  const query=normalize(search),score=e=>normalize(e.name)===query?3:normalize(e.name).startsWith(query)?2:normalize(e.name).includes(query)?1:0;
