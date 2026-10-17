@@ -8,6 +8,15 @@ import { featRecipe } from "./feat-choreography.mjs";
 import { withElementChoice } from "./element-choice.mjs";
 export { PF2E_ACTIONS, PF2E_ACTION_SOURCE, PF2E_CLASS_FEATURES, PF2E_CLASS_FEATURE_SOURCE };
 
+// A melee use of a ranged-looking action (a melee Elemental Blast): the thrower lunges instead, and
+// the projectile becomes an elemental strike reaching from the kineticist to the target.
+const MELEE_STRIKE = ["jb2a.unarmed_strike.magical.01.blue", "jb2a.unarmed_strike.magical.02.blue"];
+function meleeLook(recipe) {
+  return { ...recipe, id: `${recipe.id}-melee`, stages: recipe.stages.map((s) =>
+    s.kind === "motion" && s.subject === "source" && s.motion === "throw" ? { ...s, motion: "lunge", label: "Lunge into the strike" }
+      // Its per-element projectiles would replace the strike; the strike takes the element's tint instead.
+      : s.kind === "travel" ? { ...s, assets: [...MELEE_STRIKE], elementAssets: undefined, label: "Elemental strike" } : s) };
+}
 export function createAbilityCatalog({ entries, source, recipeKind, label, packs, matchesItem }) {
   const byId = new Map(entries.map(entry => [entry.id, entry])), byName = new Map();
   for (const entry of [...entries].sort((a,b) => Number(a.edition === "legacy") - Number(b.edition === "legacy")))
@@ -38,15 +47,16 @@ export function createAbilityCatalog({ entries, source, recipeKind, label, packs
     }
     return byName.get(normalize(item.system?.slug ?? item.slug)) ?? byName.get(normalize(item.name)) ?? null;
   }
-  const recipe = (found, state = {}, soundCatalog) => {
-    const built = featRecipe(found, { motion: state.motion !== false, soundCatalog: state.sound === false ? null : soundCatalog, soundVolume: state.soundVolume });
+  const recipe = (found, state = {}, soundCatalog, event = null) => {
+    let built = featRecipe(found, { motion: state.motion !== false, soundCatalog: state.sound === false ? null : soundCatalog, soundVolume: state.soundVolume });
+    if (found.meleeLook && event?.weaponMode === "melee") built = meleeLook(built);
     return found.elementChoice ? withElementChoice(built) : built;
   };
   function automaticRecipe(event, state, customRecipes = [], soundCatalog) {
     const found = find(event);
     if (!found || found.rider || !enabled(found.id,state) || found.trigger !== event.type) return null;
     if (customRecipes.some(saved => !saved.enabled && matchRecipe([{...saved, enabled:true}],event))) return null;
-    return recipe(found, state, soundCatalog);
+    return recipe(found, state, soundCatalog, event);
   }
   function resolveAutomaticRecipe(event, state, customRecipes = [], { customEnabled = true, soundCatalog } = {}) {
     state = normalizeState(state);
@@ -69,7 +79,7 @@ export function createAbilityCatalog({ entries, source, recipeKind, label, packs
 // Actions that play as attack rolls and look like the element rolled: Elemental Blast is a Strike
 // in an element (its roll carries element:fire, element:water…). The built entry only knows a use.
 const ROLLED_ELEMENTAL = new Set(["elemental-blast"]);
-for (const entry of PF2E_ACTIONS) if (ROLLED_ELEMENTAL.has(entry.slug)) Object.assign(entry, { trigger: "attack", elementChoice: true });
+for (const entry of PF2E_ACTIONS) if (ROLLED_ELEMENTAL.has(entry.slug)) Object.assign(entry, { trigger: "attack", elementChoice: true, meleeLook: true });
 export const PF2E_ACTION_CATALOG = createAbilityCatalog({ entries: PF2E_ACTIONS, source: PF2E_ACTION_SOURCE, recipeKind: "action", label: "action",
   packs: ["actionspf2e"], matchesItem: item => item.type === "action" });
 const FEATURE_CATEGORIES = new Set(["classfeature", "ancestryfeature"]);

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- **Melee and ranged Elemental Blasts look different (PF2e).** A melee blast now has the kineticist lunge and an elemental strike reaching the target; a ranged blast is thrown and flies as the element's own projectile (a fire bolt for fire). Both take the element rolled. The element is also read from the blast's traits.
+
 ## 1.2.5 (2026-10-17)
 
 - **Every PF2e Strike animates.** A weapon the catalog did not know by name played nothing: the basic Fist, homebrew weapons, renamed or reskinned ones. It now plays its group's standard weapon (a homebrew sword swings like a longsword, a fist strikes like a gauntlet, an unknown bow shoots like a longbow), shown under its own name in Activity. The Weapons catalog switch and exclusions apply as before.

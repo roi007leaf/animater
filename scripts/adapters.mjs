@@ -44,7 +44,11 @@ export function twoeEvent(message, userId, systemId='pf2e') {
         : options.includes('item:melee') ? 'melee'
           : item?.isThrown === true || (item?.system?.traits?.value?.includes("thrown") || ['bomb','grenade'].includes(item?.system?.group)) && item?.system?.range ? "thrown"
         : item?.isRanged === true || options.includes("item:ranged") || item?.system?.range
-          ? "ranged" : "melee" : undefined;
+          ? "ranged" : "melee"
+    // An action rolled as a Strike says which (PF2e's Elemental Blast: self:action:melee / item:ranged…).
+    : item?.type === "action" ? options.includes("self:action:melee") || options.includes("item:melee") ? "melee"
+      : options.includes("self:action:ranged") || options.includes("item:ranged") ? "ranged" : undefined
+    : undefined;
   return {
     type,
     systemId,

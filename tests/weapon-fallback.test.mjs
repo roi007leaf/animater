@@ -39,3 +39,24 @@ test("Elemental Blast plays on its attack roll, in the blast's element", () => {
   assert.ok(fire.stages.some((s) => s.tint === "#ff9a4d"), "fire blasts burn orange");
   assert.ok(applyEventElement(r, "water").stages.some((s) => s.tint === "#87d6ee"), "water blasts run blue");
 });
+
+test("a melee Elemental Blast strikes up close; a ranged one flies, each in its element", async () => {
+  const { twoeEvent } = await import("../scripts/adapters.mjs");
+  const item = { type: "action", name: "Elemental Blast", slug: "elemental-blast", system: { slug: "elemental-blast" } };
+  // PF2e's ElementalBlast#attack adds these roll options (self:action:melee, melee, item:melee); the element is a trait.
+  const message = (mode) => ({ id: `m-${mode}`, author: { id: "u" }, isRoll: true, item, speaker: {}, actor: {},
+    flags: { pf2e: { context: { type: "attack-roll", options: ["action:elemental-blast", `self:action:${mode}`, mode, `item:${mode}`, "item:trait:fire", "item:trait:impulse"] }, origin: { uuid: "Actor.a.Item.b" } } } });
+  const melee = twoeEvent(message("melee"), "u"), ranged = twoeEvent(message("ranged"), "u");
+  assert.equal(melee.weaponMode, "melee");
+  assert.equal(ranged.weaponMode, "ranged");
+  assert.equal(melee.element, "fire", "the element trait colours the blast");
+  const resolve = (event) => applyEventElement(PF2E_ACTION_CATALOG.resolveAutomaticRecipe(event, on, [], { customEnabled: false }), event.element);
+  const up = resolve(melee), far = resolve(ranged);
+  const shows = (r) => r.stages.map((s) => s.kind === "motion" ? `${s.subject}:${s.motion}` : `${s.kind}:${s.assets?.[0] ?? ""}`);
+  assert.ok(shows(up).includes("source:lunge") && !shows(up).includes("source:throw"), "melee: the kineticist lunges");
+  assert.ok(shows(up).some((x) => x.startsWith("travel:jb2a.unarmed_strike.magical.")), "melee: an elemental strike reaches the target");
+  assert.ok(shows(far).includes("source:throw") && shows(far).some((x) => x.startsWith("travel:") && !x.includes("unarmed_strike")), "ranged: thrown and flown");
+  assert.notEqual(up.id, far.id, "each has its own id");
+  assert.ok(up.stages.some((s) => s.kind === "travel" && s.tint === "#ff9a4d"), "melee: the strike burns fire-orange");
+  assert.ok(far.stages.some((s) => s.kind === "travel" && /fire/.test(s.assets[0])), "ranged: the element's own projectile (a fire bolt)");
+});

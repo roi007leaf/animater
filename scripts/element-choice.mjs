@@ -29,7 +29,9 @@ export function twoeEventElement(message, systemId = 'pf2e') {
   const fromOptions = options.map(o => /^(?:item:|self:action:|action:)?damage:type:([a-z-]+)$/.exec(o)?.[1] ?? /^(?:item:)?element:([a-z]+)$/.exec(o)?.[1]).filter(Boolean);
   const instances = (message?.rolls ?? []).flatMap(r => r?.instances ?? []).map(i => i?.type ?? i?.damageType);
   const selections = Object.values(message?.item?.flags?.[systemId]?.rulesSelections ?? {}).filter(v => typeof v === 'string');
-  return first([...fromOptions, ...instances, ...selections]);
+  // Last, an element trait on the rolled item (Elemental Blast in fire carries item:trait:fire).
+  const traits = options.map(o => /^item:trait:([a-z]+)$/.exec(o)?.[1]).filter(Boolean);
+  return first([...fromOptions, ...instances, ...selections, ...traits]);
 }
 // D&D 5e activity: chosen damage type on the roll, else a single damage type on the activity.
 export function dnd5eEventElement(activity, rolls = []) {
