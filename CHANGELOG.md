@@ -4,6 +4,8 @@
 
 - **Weapon runes show on Strikes (PF2e, SF2e).** A catalog weapon Strike now wears the attacking weapon's runes. Potency (+1 to +3) adds a glint that brightens per tier, striking makes the hit land bigger per tier, and every property rune adds its own accent on a hit. All 89 PF2e and SF2e property runes are covered, for example flaming fire, frost ice, shock lightning, corrosive acid, thundering sound, holy and unholy radiance, ghost touch mist, keen glint, vorpal slash, bloodthirsty bats, rooting vines, anchoring chains and speed wind. Greater, major and true runes play larger. Accents only play on a hit, and your saved recipes are never changed. Turn it off with the new **Weapon rune flourishes** setting.
 
+- **Staff, wand and scroll spells animate (PF2e, SF2e).** A spell cast from a staff prepared by PF2e Dailies, a wand, a scroll or another consumable is not an item on the character, so its attack and damage rolls found no spell and played nothing. Animater now finds the spell in the staff or item it was cast from, or recognizes it from the roll itself, and plays its animation as usual.
+
 ## 1.2.8 (2026-10-17)
 
 - **Private GM rolls animate (PF2e, SF2e).** Monster and NPC attacks and spells rolled in Private GM Roll mode, or made private by the world, played nothing, so most enemy actions never animated. They now play for everyone, without giving away the hidden result: no critical, hit or miss variant, just the attack itself. Blind rolls and players' own private rolls stay hidden.

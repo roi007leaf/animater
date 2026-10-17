@@ -36,7 +36,7 @@ export function twoeEvent(message, userId, systemId='pf2e') {
         : null;
   if (!type || (!message.item && !flags?.origin?.uuid))
     return null;
-  const item = message.item;
+  const item = message.item ?? originSpell(message.actor, flags?.origin);
   const options = context?.options ?? [];
   // Enabled damage dice/modifiers identify riders such as Sneak Attack (flags.<system>.dice/.modifiers).
   const live = rows => (Array.isArray(rows) ? rows : []).filter(r => r?.slug && r.enabled !== false && r.ignored !== true);
@@ -71,6 +71,31 @@ export function twoeEvent(message, userId, systemId='pf2e') {
     outcome: gmPrivate ? undefined : context?.outcome,
     ...(gmPrivate ? { private: true } : {}),
   };
+}
+// A spell cast from a staff (PF2e Dailies), wand or scroll is no item on the actor, and its attack and
+// damage messages carry no embedded spell, so message.item is null. Find it in the actor's spellcasting
+// collections or a consumable's embedded spell by id, else stand in from the origin's roll options.
+function originSpell(actor, origin) {
+  if (origin?.type !== "spell") return null;
+  const id = /Item\.([^.]+)$/.exec(String(origin.uuid ?? ""))?.[1];
+  const tryGet = (fn) => { try { return fn() ?? null; } catch { return null; } };
+  if (id) {
+    for (const collection of tryGet(() => actor?.spellcasting?.collections?.values()) ?? []) {
+      const spell = tryGet(() => collection?.get?.(id));
+      if (spell?.type === "spell") return spell;
+    }
+    for (const item of tryGet(() => Array.from(actor?.items ?? [])) ?? []) {
+      if (item?.type !== "consumable") continue;
+      const spell = tryGet(() => item.embeddedSpell);
+      if (spell?.id === id) return spell;
+    }
+  }
+  const options = (Array.isArray(origin.rollOptions) ? origin.rollOptions : []).map(String);
+  const slug = options.find((o) => o.startsWith("origin:item:slug:"))?.slice(17);
+  if (!slug) return null;
+  const name = slug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  const traits = options.filter((o) => o.startsWith("origin:item:trait:")).map((o) => o.slice(18));
+  return { type: "spell", name, slug, rank: Number(origin.castRank) || undefined, system: { slug, traits: { value: traits } }, actor };
 }
 export function dnd5eEvent(type, subject, { rolls = [], results = {} } = {}) {
   const message=results.message??rolls.find(r=>r.parent?.system?.targets)?.parent??rolls[0]?.parent;
