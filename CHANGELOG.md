@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.11 (2026-10-17)
+
+- **NPC weapon Strikes animate (PF2e).** An NPC's Light Mace, Longsword or other weapon Strike logged "no enabled attack recipe" and played nothing, because NPC attacks never reached the weapon catalog. They now play their weapon's catalog animation, by the weapon they were made from or by name. An NPC Fist punches like a PC's fist, and an NPC attack made from a homebrew weapon plays its weapon group.
+- **Natural attacks animate (PF2e).** Jaws, Bite, Fangs, Beak and Mandibles bite; Claw, Talon and Rake rake; Tail, Tentacle, Horn, Slam, Hoof, Wing and Stinger strike a blow. Only these exact names match, for NPCs and for PC unarmed attacks such as an ancestry's Jaws. The animation takes the colour of the attack's damage type (a fire bite glows orange and ends in flame, a poison claw is green), and the attacks are listed on the PF2e weapons page under Natural, where they can be turned off or customized. JB2A Free plays the red bite and claws and the blue blow.
+
 ## 1.2.10 (2026-10-17)
 
 - **Finisher fragment tints show on the table.** Frozen, charred, stone, ghostly, burning, electric, acid and poison fragments played untinted on the table, both from the studio's Play at table and on a real kill, although the studio preview showed the tint. The pieces now take their tint everywhere.
