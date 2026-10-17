@@ -469,6 +469,9 @@ function buildPlan(recipe, catalog, context, requireMedia) {
     );
   for (const [index, s] of recipe.stages.entries()) {
     const o = normalizeOptions(s);
+    // A fragments stage's `tint` names a fragments tint ("frozen"), not an effect colour: the
+    // generic "#ffffff" default would overwrite it and the pieces would play untinted.
+    if (s.kind === "motion" && s.motion === "fragments") delete o.tint;
     // A chat-card use or unknown/missed attack cannot establish this rider.
     // Editor and local canvas previews deliberately show the success branch.
     if(requireMedia && o.requiresHit && !context.preview && !['success','criticalSuccess'].includes(context.outcome))continue;

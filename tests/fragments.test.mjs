@@ -266,3 +266,11 @@ test("fragment flights keep their own eases now that path keyframes default to l
     });
   }
 });
+
+test("a played fragments stage keeps its tint, not the generic effect colour", async () => {
+  const { validateRecipe, previewPlan } = await import("../scripts/model.mjs");
+  const recipe = validateRecipe({ id: "t", name: "T", trigger: "manual", stages: [{ stageId: "cut", kind: "motion", motion: "fragments", subject: "targets", tint: "frozen", assets: [] }] });
+  const token = { id: "a", center: { x: 50, y: 50 }, w: 100, h: 100 };
+  const plan = previewPlan(recipe, { source: token, targets: [{ ...token, id: "b" }] });
+  assert.equal(plan.find((s) => s.motion === "fragments").tint, "frozen");
+});
