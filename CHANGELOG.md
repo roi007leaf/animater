@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.13 (2026-10-17)
+
+- **Burning shows on the token.** A lasting Burning condition (D&D 5e) and other lasting fire effects drew their flames under round tokens (dynamic token rings), so only an ember showed past the token's edge, although the studio preview showed the creature on fire. Lasting flames now burn over the token at half strength, so the creature looks on fire and its face still shows. Your own saved recipes keep their Below tokens choice.
+
 ## 1.2.12 (2026-10-17)
 
 - **Animate only what Automated Animations doesn't.** A new world setting, shown when Automated Animations is active: with it on, anything Automated Animations animates (an item customized there, or a spell, weapon, feat, action, condition or effect its Automatic Recognition matches by name) stays with it, and Animater animates everything else. Area templates check its template menu, and conditions and effects its active effect menu, as Automated Animations does. Items turned off in Automated Animations play Animater's animation, and the Activity page says when an event was left to Automated Animations. Off by default.
